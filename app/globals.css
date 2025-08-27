@@ -1,0 +1,252 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme extend {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-aspekta: var(--font-aspekta);
+  --text-xxs: 0.75rem;
+  --font-nyghtserif: var(--font-nyghtserif);
+  /* Brand Colors - From Figma Design */
+  --color-brand-lime: #afff40; /* Primary lime from button */
+  --color-brand-orange: #ff8800; /* Orange accent */
+  --color-brand-pink: #e5c0c0; /* Pink background */
+  --leading-compress: 0.75; /* 85% for compressed leading */
+  /* Brand Colors - Extended Palette */
+  --color-brand-lime-50: oklch(0.98 0.02 120);
+  --color-brand-lime-100: oklch(0.95 0.05 120);
+  --color-brand-lime-200: oklch(0.9 0.1 120);
+  --color-brand-lime-300: oklch(0.85 0.15 120);
+  --color-brand-lime-400: oklch(0.78 0.2 120);
+  --color-brand-lime-500: oklch(0.72 0.25 120);
+  --color-brand-lime-600: oklch(0.65 0.22 120);
+  --color-brand-lime-700: oklch(0.55 0.18 120);
+  --color-brand-lime-800: oklch(0.45 0.15 120);
+  --color-brand-lime-900: oklch(0.35 0.12 120);
+
+  /* Neutral Grays - From Figma Design */
+  --color-neutral-50: #f4f4f4; /* Light background */
+  --color-neutral-100: #f0f0f0; /* Badge text light */
+  --color-neutral-200: #bbbbbb; /* Secondary text */
+  --color-neutral-300: oklch(0.85 0 0);
+  --color-neutral-400: oklch(0.708 0 0);
+  --color-neutral-500: oklch(0.556 0 0);
+  --color-neutral-600: #2f2f2f; /* Dark gray */
+  --color-neutral-700: oklch(0.35 0 0);
+  --color-neutral-800: oklch(0.269 0 0);
+  --color-neutral-900: #121212; /* Dark background */
+  --color-neutral-950: #000000; /* Pure black */
+
+  /* Accent Colors */
+  --color-purple-400: oklch(0.7 0.2 300);
+  --color-purple-500: oklch(0.65 0.22 300);
+  --color-purple-600: oklch(0.6 0.24 300);
+  --color-blue-400: oklch(0.7 0.18 240);
+  --color-blue-500: oklch(0.65 0.2 240);
+  --color-blue-600: oklch(0.6 0.22 240);
+
+  /* Typography Scale - From Figma Design */
+  --font-size-xxs: 0.4625rem; /* 9px */
+  --font-size-xs: 0.5625rem; /* 9px */
+  --font-size-sm: 0.6875rem; /* 11px */
+  --font-size-base: 0.75rem; /* 12px */
+  --font-size-md: 0.8125rem; /* 17px */
+  --font-size-lg: 1.0625rem; /* 17px */
+  --font-size-xl: 1.5rem; /* 24px */
+  --font-size-2xl: 2.5rem; /* 40px */
+  --font-size-3xl: 4.3125rem; /* 69px - Mackay font */
+  --font-size-4xl: 4.5rem; /* 72px */
+  --font-size-5xl: 8rem; /* 128px */
+  --font-size-6xl: 10rem;
+  --font-size-7xl: 12rem;
+  --font-size-8xl: 14rem;
+  --font-size-9xl: 16rem;
+  --text-xs: 0.6125rem; /* 0.75rem (12px) */
+
+  /* Line Heights - From Figma Design */
+  --line-height-tight: 0.87; /* 87% for Mackay */
+  --line-height-tighter: 0.9; /* 90% for headlines */
+  --line-height-snug: 0.98; /* 98% for Aspekta bold */
+  --line-height-normal: 1.09; /* 109% for body */
+  --line-height-relaxed: 1.12; /* 112% for small text */
+  --line-height-loose: 1.24; /* 124% for medium text */
+  --line-height-looser: 1.25; /* 125% for body text */
+  --line-height-extra: 1.45; /* 145% for tiny text */
+
+  /* Letter Spacing - From Figma Design */
+  --letter-spacing-tightest: -0.05em; /* -5% */
+  --letter-spacing-tighter: -0.03em; /* -3% */
+  --letter-spacing-tight: -0.02em; /* -2% */
+  --letter-spacing-normal: 0;
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-aspekta), system-ui, -apple-system, sans-serif;
+  }
+
+  /* Gradient Text Utilities */
+  .text-gradient-lime {
+    background: linear-gradient(
+      135deg,
+      var(--color-brand-lime-400),
+      var(--color-brand-lime-600)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-rainbow {
+    background: linear-gradient(
+      135deg,
+      var(--color-brand-lime-400),
+      var(--color-purple-500),
+      var(--color-blue-500)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Animation Utilities */
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Focus styles */
+  .focus-lime {
+    @apply focus:outline-none focus:ring-2 focus:ring-brand-lime-500 focus:ring-offset-2;
+  }
+}
+
+.diagnose * {
+  outline: 1px dotted red;
+}
+
+/* Diagnostic layout box model helper (alias of .diagnose) */
+.dialog * {
+  outline: 1px dotted red;
+}
+::view-transition-group(root) {
+  z-index: auto !important;
+}
+
+::view-transition-image-pair(root) {
+  isolation: isolate;
+  will-change: transform, opacity, scale;
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+  animation: none !important;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+  animation: none !important;
+}
