@@ -26,6 +26,7 @@ export default function Home() {
           useVideo={true}
           videoSrc="/video/7.mp4"
           enableParallax={true}
+          opacity="opacity-55"
         />
         {/* Navigation */}
         <FrontNavOverlay />

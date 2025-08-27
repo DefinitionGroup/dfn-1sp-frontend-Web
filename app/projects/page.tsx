@@ -20,9 +20,8 @@ export default function Home() {
   return (
     <>
       {/* <Nav /> */}
-
+      <FrontNavOverlay color="dark" />
       <div className="grid grid-cols-12 z-1 mx-auto container font-aspekta">
-        <FrontNavOverlay color="dark" />
         <GridBackground />
         <div className="z-1 grid col-span-12 pt-32 col-start-1  row-start-1 grid-cols-12 ">
           <div className="col-span-1 relative ">

@@ -12,6 +12,7 @@ interface HeaderImageVideoCompProps {
   imageAlt?: string;
   className?: string;
   enableParallax?: boolean;
+  opacity?: string;
 }
 
 const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
@@ -21,6 +22,7 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
   imageAlt = "Hero Background",
   className = "",
   enableParallax = true,
+  opacity = "opacity-45",
 }) => {
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 500], [0, 250]);
@@ -35,7 +37,7 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
 
   return (
     <motion.div
-      className={`absolute inset-0 ${className}`}
+      className={`absolute bg-black inset-0 ${className}`}
       initial={{ opacity: 0, scaleX: 0.9, y: 100 }}
       animate={{
         opacity: 1,
@@ -65,7 +67,7 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
             autoPlay
             loop
             muted
-            className="object-cover w-full h-full"
+            className={`object-cover w-full h-full ${opacity}`}
           />
         ) : (
           <Image
