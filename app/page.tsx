@@ -20,6 +20,10 @@ import PeopleShowcaseHero from "./components/PeopleShowcaseHero";
 import { Typewriter } from "motion-plus/react";
 import TextReveal from "./components/CursortrailExample";
 import ScrollHighlight from "./components/ScrollHighlight";
+import ListContainerComponent from "./components/ListContainerComponent";
+import ListItemComponent from "./components/ListItemComponent";
+import CtaMiniComponent from "./components/CtaMiniComponent";
+import { ArrowRight } from "@phosphor-icons/react";
 export default function Home() {
   const typewriterref = useRef(null);
   const isInView = useInView(typewriterref);
@@ -79,8 +83,8 @@ export default function Home() {
         <div className="z-1 grid col-span-12 pt-32 col-start-1 gap-4 row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2"
-            text="The Proof"
-            subtitle="What we do"
+            text="Level Up!"
+            subtitle="Client Stories"
             numberEl={"001"}
           />
 
@@ -93,7 +97,7 @@ export default function Home() {
                 cursorStyle={{ backgroundColor: "transparent" }}
                 variance={0.8}
                 backspace="word">
-                SuperCases
+                Showtime!
               </Typewriter>
             </h2>
 
@@ -121,8 +125,9 @@ export default function Home() {
       <div className="grid grid-cols-12 z-1 mx-auto  mt-8 min-h-[90vh] relative font-aspekta">
         <HeaderImageVideoComp2
           useVideo={true}
-          videoSrc="/video/3.mp4"
-          enableParallax={false}
+          opacity={0.5}
+          videoSrc="/video/12.mp4"
+          enableParallax={true}
         />
 
         <div className="z-1 grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
@@ -139,7 +144,7 @@ export default function Home() {
               staggerDelay={0.1}
               duration={0.5}
               distance={80}>
-              <h2 className="text-7xl   text-gray-100 max-w-lg font-semibold tracking-loose leading-tighter mb-4">
+              <h2 className="text-9xl leading-compress    text-gray-100 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
                 We tell your story.
               </h2>
               <p className="text-body-lg text-gray-100  max-w-2xs mx-auto">
@@ -149,52 +154,24 @@ export default function Home() {
             </StaggeredSlideUp>
           </div>
           <div className="col-span-2 col-start-3 mt-8 pr-8 text-gray-100 ">
-            <StaggeredSlideUp
-              className="flex flex-col  items-stretch  "
-              delay={0.6}
-              staggerDelay={0.1}
-              duration={0.5}
-              distance={22}>
-              <h3 className="text-lg mb-4 font-semibold">
-                Our roots are gaming.
-              </h3>
-              <p className="text-xxs mb-8 ">
-                This is where we get our creative spark from. And epochs of
-                customer focus and talking to the public.
-              </p>
-              <p className="text-xxs mb-8 min-w-full w-full  ">
-                <Button2
-                  variant="limesmall"
-                  className="w-fit  "
-                  text="Explore"></Button2>
-              </p>
-            </StaggeredSlideUp>
+            <CtaMiniComponent
+              heading="Our roots are gaming."
+              paragraph="This is where we get our creative spark from. And epochs of customer focus and talking to the public."
+              buttonText="Explore"
+              buttonVariant="limesmall"
+              align="right"
+            />
           </div>
-          <div className="col-span-5 border border-red-500 col-start-5 mt-8 ">
-            <div className="lg:col-span-8  text-gray-100">
-              <StaggeredSlideUp
-                delay={0.6}
-                staggerDelay={0.1}
-                duration={0.7}
-                distance={22}>
-                <div className="py-2">
-                  <span className="text-body-md font-medium">Super*</span>
-                  <div className="w-full h-px bg-gray-100 mt-2"></div>
-                </div>
-                <div className="py-2">
-                  <p className="text-body-md font-normal">
-                    helping world-class brands create ground-breaking stuff
-                  </p>
-                  <div className="w-full h-px bg-gray-100 mt-2"></div>
-                </div>
-                <div className="py-2">
-                  <p className="text-body-md font-normal">
-                    helping world-class
-                  </p>
-                  <div className="w-full h-px bg-gray-100 mt-2"></div>
-                </div>
-              </StaggeredSlideUp>
-            </div>
+          <div className="col-span-5 col-start-5 mt-8 ">
+            <ListContainerComponent>
+              <ListItemComponent fontWeight="bold">Super*</ListItemComponent>
+              <ListItemComponent fontWeight="normal">
+                helping world-class brands create ground-breaking stuff
+              </ListItemComponent>
+              <ListItemComponent fontWeight="normal">
+                helping world-class
+              </ListItemComponent>
+            </ListContainerComponent>
           </div>
         </div>
       </div>
@@ -205,15 +182,14 @@ export default function Home() {
           enableParallax={false}
         />
 
-        <div className="z-1 grid col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
-          <div className="col-span-1 relative ">
-            <Badgemodule
-              className="absolute top-0 left-0 z-10"
-              text="Super Form"
-              subtitle="Our Story"
-              numberEl={"003"}
-            />
-          </div>
+        <div className="z-1 grid col-span-12 py-32 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+          <Badgemodule
+            className="col-span-2"
+            text="Our Story"
+            subtitle="What we do"
+            numberEl={"002"}
+          />
+
           <div className="col-span-10 col-start-3 ">
             <StaggeredSlideUp
               className="flex flex-col  items-start justify-start "
@@ -280,26 +256,57 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-12 z-1 mx-auto container font-aspekta">
+      <div className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta">
         <GridBackground />
-        <div className="z-1 col-span-12 container pt-32 col-start-3  row-start-1 grid-cols-12   ">
-          <TextReveal />
+        <div className="z-1 grid col-span-12 py-32 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+          <Badgemodule
+            className="col-span-2"
+            text="Our Story"
+            subtitle="What we do"
+            numberEl={"002"}
+          />
+          <div className="col-start-3 col-span-9">
+            <TextReveal />
+          </div>
         </div>
       </div>
-      <div className="grid grid-cols-12 z-1 mx-auto container font-aspekta">
+      <div className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta">
         <GridBackground />
-        <div className="z-1 col-span-12 container pt-32 col-start-1 row-start-1 grid-cols-12   ">
-          <ScrollHighlight />
+        <div className="z-1 grid col-span-12  relative top-0 py-32 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+          <Badgemodule
+            text="Our Story"
+            subtitle="What we do"
+            numberEl={"003"}
+          />
+
+          <div className="col-span-9">
+            <ScrollHighlight />
+          </div>
         </div>
       </div>
-      <div className="grid grid-cols-12 z-1 mx-auto container font-aspekta">
+      <div className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta gap-4  ">
         <GridBackground />
-        <div className="z-1 col-span-12 container pt-32 col-start-1 row-start-1 grid-cols-12   ">
+        <div className="z-1 flex flex-col col-span-2  justify-end items-end  col-start-1 pt-32 mx-auto row-start-1  ">
+          <Badgemodule
+            text="Our Story"
+            subtitle="What we do"
+            numberEl={"007"}
+          />
+          <ArrowRight size={170} className=" -rotate-45 " />
+          <CtaMiniComponent
+            heading="Our roots are gaming."
+            paragraph="This is where we get our creative spark from. And epochs of customer focus and talking to the public."
+            buttonText="Explore"
+            buttonVariant="limesmall"
+            align="right"
+          />
+        </div>
+        <div className="z-1 col-span-9 container col-start-3 row-start-1 grid-cols-12 pt-32  ">
           <PeopleShowcaseHero />
         </div>
-        <div className="z-1 col-span-2   col-start-10 ">
+        <div className="z-1 col-span-3  border col-start-10 ">
           {/* Description and CTA Section */}
-          <div className="flex flex-col gap-7 items-start justify-center w-full max-w-[320px]">
+          <div className="flex flex-col gap-8 items-start justify-center w-full max-w-[320px]">
             {/* Description */}
             <p className="text-[15px] md:text-[16px] leading-[1.25] text-neutral-950 font-aspekta font-normal">
               At msm.digital, our passionate team thrives on creativity and

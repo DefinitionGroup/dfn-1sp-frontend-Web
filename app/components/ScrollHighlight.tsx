@@ -45,7 +45,7 @@ export default function ScrollHighlight() {
 
   return (
     <div className="containerElement border ">
-      <h1>Skills</h1>
+      <h3 className="containerED1">Skills</h3>
       <ul className="skills-list">
         {skills.map((skill, index) => (
           <ScrollHighlightItem
@@ -72,23 +72,20 @@ function Stylesheet() {
     <style>
       {`
         .containerElement {
-          padding: 300px 20px 100vh;
           display: flex;
         }
 
-        .container h1 {
-          font-size: 48px;
+        .container h3.containerED1 {
+          font-size: 24px;
           line-height: 1;
           font-weight: 700;
           margin: 0;
           padding: 0;
           text-align: center;
           position: sticky;
-          top: 100px;
-          transform: rotate(-90deg);
+          top: 10px;
           text-transform: uppercase;
-          flex: 1 1 fit-content;
-          transform: rotate(-90deg) translate(-36%, 50%);
+  
           height: fit-content;
         }
 
@@ -114,11 +111,7 @@ function Stylesheet() {
           text-wrap: nowrap;
         }
 
-        @media (max-width: 768px) {
-          .container h1 {
-            font-size: 24px;
-          }
-        }
+       
       `}
     </style>
   );

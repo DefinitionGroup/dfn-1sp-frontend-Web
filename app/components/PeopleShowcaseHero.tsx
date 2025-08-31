@@ -71,7 +71,7 @@ export default function PeopleShowcaseHero() {
 
   return (
     <section
-      className="flex flex-col gap-8 items-start justify-start w-full mx-auto py-8 lg:py-12"
+      className="flex flex-col gap-8 items-start justify-start w-full mx-auto "
       data-component="people-showcase-hero"
       aria-labelledby="people-showcase-title">
       {/* Main Content Section */}
@@ -93,12 +93,12 @@ export default function PeopleShowcaseHero() {
             <div className="flex-1 flex flex-col min-w-0">
               <h2
                 id="people-showcase-title"
-                className="text-5xl text-neutral-900 font-normal font-aspekta">
+                className="text-7xl text-neutral-900 font-bold font-aspekta">
                 Igniting Creativity:{" "}
               </h2>
               <h4
                 id="people-showcase-title"
-                className="text-5xl  text-neutral-900 font-normal font-aspekta">
+                className="text-7xl  text-neutral-900 font-bold font-aspekta">
                 <span className="text-neutral-200">Unique People.</span>
               </h4>
 

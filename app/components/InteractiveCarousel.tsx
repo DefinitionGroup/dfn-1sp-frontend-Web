@@ -125,15 +125,15 @@ export default function InteractiveCarousel() {
     <section className=" overflow-hidden ">
       <div className="container  mx-auto w-full ">
         <motion.div
-          className="text-center mb-16"
+          className="text-center "
           initial={{ opacity: 1, y: 50 }}
           whileInView={{ opacity: 1, y: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}></motion.div>
 
-        <div className="relative h-[800px] flex items-center justify-center">
+        <div className="relative h-[800px] flex items-start">
           {/* Main Carousel */}
-          <div className="relative w-full   h-full perspective-1000">
+          <div className="relative w-full  rounded-sm overflow-hidden h-full perspective-1000">
             <AnimatePresence initial={false} custom={direction}>
               <motion.div
                 key={currentIndex}
@@ -169,10 +169,11 @@ export default function InteractiveCarousel() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                   {/* Content */}
-                  <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+                  <div className="absolute bottom-0  flex align-center justify-center items-center left-0 right-0 p-8 text-white">
                     <motion.div
                       initial="hidden"
                       animate="visible"
+                      className=" flex-col justify-center items-center p-8 max-w-3xl space-y-4"
                       variants={{
                         hidden: { opacity: 0 },
                         visible: {
@@ -183,16 +184,16 @@ export default function InteractiveCarousel() {
                           },
                         },
                       }}>
-                      <motion.span className="inline-block px-3 py-1 bg-lime-400 text-black text-xs rounded-xs mb-2">
+                      <motion.div className="w-fit  px-3 py-1 bg-lime-400  mx-auto text-black flex justify-center text-center text-xs rounded-xs mb-2">
                         {carouselItems[currentIndex].category}
-                      </motion.span>
-                      <motion.h3 className="text-4xl md:text-5xl">
+                      </motion.div>
+                      <motion.h3 className="text-7xl font-semibold text-center">
                         {carouselItems[currentIndex].title}
                       </motion.h3>
-                      <motion.p className="text-xl text-gray-100">
+                      <motion.p className="text-xl text-gray-100 text-center">
                         {carouselItems[currentIndex].subtitle}
                       </motion.p>
-                      <motion.p className="text-gray-100 text-sm max-w-2xl">
+                      <motion.p className="text-gray-100 text-sm max-w-2xl text-center">
                         {carouselItems[currentIndex].description}
                       </motion.p>
                     </motion.div>
