@@ -38,7 +38,7 @@ export default function Home() {
               delay={0.0}
               debug={false}
               easing="smooth"
-              staggerDelay={0.215}
+              staggerDelay={0.1}
               duration={1}
               distance={120}>
               <h2 className="text-7xl font-normal tracking-tighter pr-2 mb-4">

@@ -58,7 +58,8 @@ const sizeMap = {
   },
 };
 
-const spacingMap = {
+type SpacingKey = NonNullable<TextHeadlineComboProps["spacing"]>;
+const spacingMap: Record<SpacingKey, string> = {
   tight: "space-y-2",
   normal: "space-y-3",
   loose: "space-y-5",
@@ -75,7 +76,7 @@ export const TextHeadlineCombo: React.FC<TextHeadlineComboProps> = ({
   bleed = false,
   animate = true,
   clamp,
-  spacing = "none",
+  spacing = "normal",
   gradientFrom = "from-lime-400",
   gradientTo = "to-lime-600",
   className = "",

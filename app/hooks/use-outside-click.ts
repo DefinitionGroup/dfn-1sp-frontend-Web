@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 
+// Accept both RefObject and MutableRefObject shapes
+type AnyRef<T extends HTMLElement = HTMLElement> = { current: T | null };
+
 export const useOutsideClick = (
-  ref: React.RefObject<HTMLDivElement>,
+  ref: AnyRef,
   callback: Function
 ) => {
   useEffect(() => {

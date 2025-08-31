@@ -35,62 +35,64 @@ export default function Badgemodule({
     }
   }, [isInView, numberEl]);
   return (
-    <motion.div
-      ref={ref}
-      className={`flex flex-col rounded-sm p-4 min-w-[108px] bg-black items-start justify-start ${className}`}
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
-      variants={{
-        hidden: { opacity: 0, scaleY: 0 },
-        visible: {
-          opacity: 1,
-          scaleY: 1,
-          transition: {
-            staggerChildren: 0.2,
-            delayChildren: 0.1,
-          },
-        },
-      }}>
-      <motion.span
-        className="text-xs self-end  text-gray-100"
+    <div className={` ${className}`}>
+      <motion.div
+        ref={ref}
+        className={`flex flex-col rounded-sm p-4 w-full aspect-square bg-black items-start justify-start ${className}`}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
         variants={{
-          hidden: { opacity: 0, y: 20 },
+          hidden: { opacity: 0, scaleY: 0 },
           visible: {
             opacity: 1,
-            y: 0,
-            transition: { duration: 0.6, ease: "easeOut" },
+            scaleY: 1,
+            transition: {
+              staggerChildren: 0.2,
+              delayChildren: 0.1,
+            },
           },
         }}>
-        <AnimateNumber
-          format={{ minimumIntegerDigits: 3 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}>
-          {animateNumberValue}
-        </AnimateNumber>
-      </motion.span>
-      <motion.span
-        className="text-3xl font-bold  leading-none text-gray-200"
-        variants={{
-          hidden: { opacity: 0, y: 20 },
-          visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.6, ease: "easeOut" },
-          },
-        }}>
-        {text}
-      </motion.span>
-      <motion.span
-        className="text-body-md font-medium text-gray-200"
-        variants={{
-          hidden: { opacity: 0, y: 20 },
-          visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.6, ease: "easeOut" },
-          },
-        }}>
-        {subtitle}
-      </motion.span>
-    </motion.div>
+        <motion.span
+          className="text-xs font-bold self-end  text-gray-100"
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.6, ease: "easeOut" },
+            },
+          }}>
+          <AnimateNumber
+            format={{ minimumIntegerDigits: 3 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}>
+            {animateNumberValue}
+          </AnimateNumber>
+        </motion.span>
+        <motion.span
+          className="text-5xl font-bold  leading-none text-gray-200"
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.6, ease: "easeOut" },
+            },
+          }}>
+          {text}
+        </motion.span>
+        <motion.span
+          className="text-sm font-bold text-gray-200"
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.6, ease: "easeOut" },
+            },
+          }}>
+          {subtitle}
+        </motion.span>
+      </motion.div>
+    </div>
   );
 }

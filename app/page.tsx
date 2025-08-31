@@ -1,4 +1,6 @@
 "use client";
+import { useRef } from "react";
+import { useInView } from "motion/react";
 import Badgemodule from "./components/Badgemodule";
 import Button2 from "./components/Button2";
 import ExpandableCards from "./components/ExpandableCards";
@@ -15,16 +17,20 @@ import TextLayout from "./components/TextLayout";
 import TypewriterChangeContentExample from "./components/TyperwriterHeadline";
 import HeaderImageVideoComp2 from "./components/HeaderImageVideoComp2";
 import PeopleShowcaseHero from "./components/PeopleShowcaseHero";
-
+import { Typewriter } from "motion-plus/react";
+import TextReveal from "./components/CursortrailExample";
+import ScrollHighlight from "./components/ScrollHighlight";
 export default function Home() {
+  const typewriterref = useRef(null);
+  const isInView = useInView(typewriterref);
   return (
     <>
-      {/* <Nav /> */}
+      <Nav />
       <section className="relative h-[95vh] overflow-hidden">
         {/* Background Image with Overlay */}
         <HeaderImageVideoComp
           useVideo={true}
-          videoSrc="/video/7.mp4"
+          videoSrc="/video/atf.mp4"
           enableParallax={true}
           opacity="opacity-55"
         />
@@ -34,17 +40,14 @@ export default function Home() {
 
         <div className="relative z-10 container top-[200px]  mx-auto ">
           <StaggeredSlideUp className="space-y-6 max-w-full ">
-            <p className="text-neutral-50 font-aspekta text-base font-normal ">
-              Welcome at the Superagency · We are 1SP1
-            </p>
             <h1 className="text-neutral-50 text-headline-xl font-normal"></h1>
             <TypewriterChangeContentExample />
 
-            <p className="text-neutral-50 text-base font-normal max-w-1/3">
+            <p className="text-neutral-50 text-lg font-normal max-w-1/3">
               We are group of several laser focused agencies. Each one with a
               distinctive competetive edge.
             </p>
-            <p className="text-neutral-50 text-md font-medium">
+            <p className="text-neutral-50 text-lg font-medium">
               Together we are{" "}
               <span className="bg-gradient-to-r font-bold from-lime-300 to-lime-500 bg-clip-text text-transparent">
                 one Superagency.
@@ -64,7 +67,7 @@ export default function Home() {
         <div className="absolute top-0 left-[1321px] w-px h-full bg-neutral-50/50" />
         <div className="absolute top-0 left-[1033px] w-px h-full bg-neutral-50/50" />
         {/* Corner Text */}
-        <div className="absolute bottom-[42px] left-[15px] text-white text-eyebrow font-medium -rotate-90 origin-bottom-left">
+        <div className="absolute bottom-[42px] left-[24px] text-white text-xs font-medium  -rotate-90 origin-bottom-left">
           SUPER*
         </div>
         <div className="absolute bottom-[19px] right-[18px] text-white text-eyebrow font-medium">
@@ -73,27 +76,35 @@ export default function Home() {
       </section>
       <div className="grid grid-cols-12 z-1 mx-auto container font-aspekta">
         <GridBackground />
-        <div className="z-1 grid col-span-12 pt-32 col-start-1  row-start-1 grid-cols-12 ">
-          <div className="col-span-1 relative ">
-            <Badgemodule
-              className="absolute top-0 left-0 z-10"
-              text="Our Units"
-              subtitle="Services"
-              numberEl={"002"}
-            />
-          </div>
+        <div className="z-1 grid col-span-12 pt-32 col-start-1 gap-4 row-start-1 grid-cols-12 ">
+          <Badgemodule
+            className="col-span-2"
+            text="The Proof"
+            subtitle="What we do"
+            numberEl={"001"}
+          />
+
           <div className="col-span-10 col-start-3 ">
+            <h2 className="text-7xl font-bold tracking-tighter pr-2 mb-4">
+              <Typewriter
+                ref={typewriterref}
+                play={isInView}
+                speed="fast"
+                cursorStyle={{ backgroundColor: "transparent" }}
+                variance={0.8}
+                backspace="word">
+                SuperCases
+              </Typewriter>
+            </h2>
+
             <StaggeredSlideUp
               className="flex flex-col   items-start justify-start "
               delay={0.0}
               debug={false}
               easing="smooth"
-              staggerDelay={0.215}
-              duration={1}
-              distance={120}>
-              <h2 className="text-7xl font-normal tracking-tighter pr-2 mb-4">
-                SuperCases
-              </h2>
+              staggerDelay={0.1}
+              duration={0.5}
+              distance={40}>
               <p className="text-body-lg text-gray-600  max-w-2xs mx-auto">
                 Discover our latest projects in gaming,
               </p>
@@ -114,16 +125,14 @@ export default function Home() {
           enableParallax={false}
         />
 
-        <div className="z-1 grid col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
-          <div className="col-span-1 relative ">
-            <Badgemodule
-              className="absolute top-0 left-0 z-10"
-              text="Super Form"
-              subtitle="Our Story"
-              numberEl={"003"}
-            />
-          </div>
-          <div className="col-span-10 col-start-3 ">
+        <div className="z-1 grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+          <Badgemodule
+            className="col-span-2"
+            text="Our Story"
+            subtitle="What we do"
+            numberEl={"002"}
+          />
+          <div className="col-span-10 col-start-3  ">
             <StaggeredSlideUp
               className="flex flex-col  items-start justify-start "
               delay={0.1}
@@ -161,7 +170,7 @@ export default function Home() {
               </p>
             </StaggeredSlideUp>
           </div>
-          <div className="col-span-5 col-start-5 mt-8 ">
+          <div className="col-span-5 border border-red-500 col-start-5 mt-8 ">
             <div className="lg:col-span-8  text-gray-100">
               <StaggeredSlideUp
                 delay={0.6}
@@ -271,7 +280,43 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <PeopleShowcaseHero />
+      <div className="grid grid-cols-12 z-1 mx-auto container font-aspekta">
+        <GridBackground />
+        <div className="z-1 col-span-12 container pt-32 col-start-3  row-start-1 grid-cols-12   ">
+          <TextReveal />
+        </div>
+      </div>
+      <div className="grid grid-cols-12 z-1 mx-auto container font-aspekta">
+        <GridBackground />
+        <div className="z-1 col-span-12 container pt-32 col-start-1 row-start-1 grid-cols-12   ">
+          <ScrollHighlight />
+        </div>
+      </div>
+      <div className="grid grid-cols-12 z-1 mx-auto container font-aspekta">
+        <GridBackground />
+        <div className="z-1 col-span-12 container pt-32 col-start-1 row-start-1 grid-cols-12   ">
+          <PeopleShowcaseHero />
+        </div>
+        <div className="z-1 col-span-2   col-start-10 ">
+          {/* Description and CTA Section */}
+          <div className="flex flex-col gap-7 items-start justify-center w-full max-w-[320px]">
+            {/* Description */}
+            <p className="text-[15px] md:text-[16px] leading-[1.25] text-neutral-950 font-aspekta font-normal">
+              At msm.digital, our passionate team thrives on creativity and
+              innovation, crafting outstanding marketing campaigns that
+              genuinely resonate with audiences.
+            </p>
+
+            {/* CTA Button */}
+            <Button2
+              variant="lime"
+              text="Visit msm.digital"
+              className="w-fit"
+            />
+          </div>
+        </div>
+      </div>
+
       {/* Headline Combo Section */}
       <div className="grid grid-cols-12 z-1 mx-auto container font-aspekta">
         <GridBackground />

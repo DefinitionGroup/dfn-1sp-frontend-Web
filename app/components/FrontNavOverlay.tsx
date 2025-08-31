@@ -20,12 +20,12 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   return (
     <nav
       className={`relative z-10 grid grid-cols-12 pt-5 mx-auto container ${className}`}>
-      <div className="w-[50px] h-[49px] col-start-1 col-span-1">
+      <div className="w-[90px] h-[90px] col-start-1 col-span-1 pt-2">
         <Image
-          src="/figma-assets/home4/logo-small-home4-42826e.png"
+          src="/ci/1sp-fulllogotype.svg"
           alt="1SP Logo"
-          width={50}
-          height={49}
+          width={90}
+          height={90}
           className="object-contain"
         />
       </div>
@@ -51,8 +51,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           distance={10}
           maskHeight="150%"
           easing="spring">
-          <span
-            className={`${textColor}  text-[11px] leading-[1.45] font-bold`}>
+          <span className={`${textColor}  text-xs leading-[1.45] font-bold`}>
             <Link
               href={"/projects"}
               onClick={(e) => {
@@ -65,8 +64,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             </Link>
           </span>
           <span
-            className={`${textColor} text-[11px] leading-[1.45] font-bold`}></span>
-          <span className={`${textColor} text-[11px] leading-[1.45] font-bold`}>
+            className={`${textColor} text-xs leading-[1.45] font-bold`}></span>
+          <span className={`${textColor} text-xs leading-[1.45] font-bold`}>
             <Link
               href={"/"}
               onClick={(e) => {
@@ -78,7 +77,9 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               Home
             </Link>
           </span>
-          <span className={`${textColor} text-[11px] leading-[1.45] font-bold`}>
+          <span
+            className={`${textColor} text-xs leading-[1.45] font-bold`}></span>
+          <span className={`${textColor} text-xs leading-[1.45] font-bold`}>
             About us
           </span>
         </StaggeredSlideUp>
@@ -89,16 +90,13 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             staggerDelay={0.02}
             duration={0.1}
             distance={10}>
-            <span
-              className={`${textColor} text-[11px] leading-[1.45] font-normal`}>
+            <span className={`${textColor} text-xs leading-[1.45] font-normal`}>
               Marketing
             </span>{" "}
-            <span
-              className={`${textColor} text-[11px] leading-[1.45] font-normal`}>
+            <span className={`${textColor} text-xs leading-[1.45] font-normal`}>
               Social
             </span>{" "}
-            <span
-              className={`${textColor} text-[11px] leading-[1.45] font-normal`}>
+            <span className={`${textColor} text-xs leading-[1.45] font-normal`}>
               Design
             </span>{" "}
           </StaggeredSlideUp>
@@ -108,16 +106,13 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             staggerDelay={0.02}
             duration={0.1}
             distance={10}>
-            <span
-              className={`${textColor} text-[11px] leading-[1.45] font-normal`}>
+            <span className={`${textColor} text-xs leading-[1.45] font-normal`}>
               AR / VR
             </span>{" "}
-            <span
-              className={`${textColor} text-[11px] leading-[1.45] font-normal`}>
+            <span className={`${textColor} text-xs leading-[1.45] font-normal`}>
               POS
             </span>{" "}
-            <span
-              className={`${textColor} text-[11px] leading-[1.45] font-normal`}>
+            <span className={`${textColor} text-xs leading-[1.45] font-normal`}>
               Campaign
             </span>{" "}
           </StaggeredSlideUp>
@@ -127,28 +122,22 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             staggerDelay={0.02}
             duration={0.1}
             distance={10}>
-            <span
-              className={`${textColor} text-[11px] leading-[1.45] font-normal`}>
+            <span className={`${textColor} text-xs leading-[1.45] font-normal`}>
               EA GAMES
             </span>{" "}
-            <span
-              className={`${textColor} text-[11px] leading-[1.45] font-normal`}>
+            <span className={`${textColor} text-xs leading-[1.45] font-normal`}>
               SAMSUNG
             </span>{" "}
-            <span
-              className={`${textColor} text-[11px] leading-[1.45] font-normal`}>
+            <span className={`${textColor} text-xs leading-[1.45] font-normal`}>
               MICROSOFT
             </span>{" "}
-            <span
-              className={`${textColor} text-[11px] leading-[1.45] font-normal`}>
+            <span className={`${textColor} text-xs leading-[1.45] font-normal`}>
               META
             </span>{" "}
-            <span
-              className={`${textColor} text-[11px] leading-[1.45] font-normal`}>
+            <span className={`${textColor} text-xs leading-[1.45] font-normal`}>
               MARSHALL
             </span>{" "}
-            <span
-              className={`${textColor} text-[11px] leading-[1.45] font-normal`}>
+            <span className={`${textColor} text-xs leading-[1.45] font-normal`}>
               BLIZZARD
             </span>{" "}
           </StaggeredSlideUp>
@@ -158,16 +147,13 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             staggerDelay={0.02}
             duration={0.1}
             distance={10}>
-            <span
-              className={`${textColor} text-[11px] leading-[1.45] font-normal`}>
+            <span className={`${textColor} text-xs leading-[1.45] font-normal`}>
               Our Story
             </span>{" "}
-            <span
-              className={`${textColor} text-[11px] leading-[1.45] font-normal`}>
+            <span className={`${textColor} text-xs leading-[1.45] font-normal`}>
               Work with us
             </span>{" "}
-            <span
-              className={`${textColor} text-[11px] leading-[1.45] font-normal`}>
+            <span className={`${textColor} text-xs leading-[1.45] font-normal`}>
               What we do
             </span>{" "}
           </StaggeredSlideUp>

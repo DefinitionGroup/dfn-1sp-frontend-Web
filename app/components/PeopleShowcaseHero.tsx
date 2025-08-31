@@ -71,7 +71,7 @@ export default function PeopleShowcaseHero() {
 
   return (
     <section
-      className="flex flex-col gap-8 items-start justify-start w-full max-w-6xl mx-auto px-4 py-8 lg:py-12"
+      className="flex flex-col gap-8 items-start justify-start w-full mx-auto py-8 lg:py-12"
       data-component="people-showcase-hero"
       aria-labelledby="people-showcase-title">
       {/* Main Content Section */}
@@ -139,19 +139,6 @@ export default function PeopleShowcaseHero() {
             src={lineImage}
           />
         </div>
-      </div>
-
-      {/* Description and CTA Section */}
-      <div className="flex flex-col gap-7 items-start justify-center w-full max-w-[320px]">
-        {/* Description */}
-        <p className="text-[15px] md:text-[16px] leading-[1.25] text-neutral-950 font-aspekta font-normal">
-          At msm.digital, our passionate team thrives on creativity and
-          innovation, crafting outstanding marketing campaigns that genuinely
-          resonate with audiences.
-        </p>
-
-        {/* CTA Button */}
-        <Button2 variant="lime" text="Visit msm.digital" className="w-fit" />
       </div>
     </section>
   );

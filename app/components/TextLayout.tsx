@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 /**
  * TextLayout
  * A versatile, animated text layout block for marketing / section intros.
- * Inspired by the grid + badge patterns in existing components (Badgemodule, ServicesSection)
+ * Inspired by clean grid + badge patterns used elsewhere,
  * while remaining purely typographic. Built for easy reuse with rich props.
  */
 

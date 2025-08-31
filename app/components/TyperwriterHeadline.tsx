@@ -13,8 +13,7 @@ export default function TypewriterChangeContentExample({
 
   return (
     <h2 style={container}>
-      <span style={label}>We boost</span>
-
+      <span style={label}>We boost:</span>
       <Typewriter
         as="div"
         speed="normal"
@@ -49,7 +48,7 @@ const container: React.CSSProperties = {
 };
 
 const label: React.CSSProperties = {
-  fontSize: 13,
+  fontSize: 24,
 };
 
 const animatingText: React.CSSProperties = {
