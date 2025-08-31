@@ -61,26 +61,26 @@ export default function ExpandableCards() {
                   duration: 0.05,
                 },
               }}
-              className="flex absolute top-2 right-2 lg:hidden items-center justify-center bg-white rounded-full h-6 w-6"
+              className="flex absolute top-2 right-2 lg:hidden items-center   justify-around   rounded-full h-6 w-6"
               onClick={() => setActive(null)}>
               <CloseIcon />
             </motion.button>
             <motion.div
               layoutId={`card-${active.title}-${id}`}
               ref={ref}
-              className="w-full max-w-[500px]  h-full md:h-fit md:max-h-[90%]  flex flex-col bg-white  dark:bg-neutral-900 sm:rounded-sm overflow-hidden">
+              className="w-full max-w-[500px]  h-full md:h-fit md:max-h-[90%]   flex flex-col bg-white  dark:bg-neutral-900 sm:rounded-sm overflow-hidden">
               <motion.div layoutId={`image-${active.title}-${id}`}>
                 <img
                   width={200}
                   height={200}
                   src={active.src}
                   alt={active.title}
-                  className="w-full h-80 lg:h-80 sm:rounded-sm sm:rounded-sm object-cover object-top"
+                  className="w-full h-80 lg:h-80 sm:rounded-sm object-cover object-top"
                 />
               </motion.div>
 
               <div>
-                <div className="flex justify-between items-start p-4">
+                <div className="flex justify-between items-start p-4 ">
                   <div className="">
                     <motion.h3
                       layoutId={`title-${active.title}-${id}`}
@@ -120,7 +120,7 @@ export default function ExpandableCards() {
         ) : null}
       </AnimatePresence>
       <ul className=" w-full ">
-        <StaggeredSlideUp className="max-w-3xl grid grid-cols-3 gap-2.5 mx-auto w-full ">
+        <StaggeredSlideUp className=" grid grid-cols-3 gap-8 mx-auto w-full px-4 ">
           {cards.map((card, index) => (
             <motion.div
               layoutId={`card-${card.title}-${id}`}

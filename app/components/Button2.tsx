@@ -21,8 +21,8 @@ function Button2({ text, className, href, variant = "default" }: Button2Props) {
   // Variant styles
   const getVariantStyles = (isTop: boolean) => {
     const baseStyles = isTop
-      ? "pointer-events-auto absolute top-0 left-0 border justify-between font-bold flex w-fit  hover:cursor-pointer tracking-wider group-hover/btn:-top-12 transition-all duration-250 ease-in-out"
-      : "pointer-events-auto border absolute font-bold left-0 flex justify-between top-[100%] w-full group-hover/btn:top-0 transition-all duration-250 ease-in-out p-4 hover:cursor-pointer tracking-wider";
+      ? "pointer-events-auto absolute rounded-sm top-0 left-0 border justify-between font-bold flex w-fit  hover:cursor-pointer tracking-wider group-hover/btn:-top-12 transition-all duration-250 ease-in-out"
+      : "pointer-events-auto border absolute rounded-sm  font-bold left-0 flex justify-between top-[100%] w-full group-hover/btn:top-0 transition-all duration-250 ease-in-out p-4 hover:cursor-pointer tracking-wider";
 
     switch (variant) {
       case "black":
@@ -59,7 +59,7 @@ function Button2({ text, className, href, variant = "default" }: Button2Props) {
   return (
     <div
       className={`inline-block relative top-0 left-0 min-w-full ml-[1px] ${
-        variant === "limesmall" ? "h-8" : "h-14"
+        variant === "limesmall" ? "h-9" : "h-14"
       } overflow-hidden group/btn min-h-2`}>
       {isExternal ? (
         // External links use regular anchor tags

@@ -116,7 +116,7 @@ export default function PeopleShowcaseHero() {
             {teamMembers.map((member, index) => (
               <div
                 key={member.name}
-                className="group relative bg-neutral-100 h-[204px] w-[272px] flex-shrink-0 rounded-sm overflow-hidden transition-transform duration-300 hover:scale-[1.02] focus-within:scale-[1.02]"
+                className="group relative bg-neutral-600 h-[204px] w-[272px] flex-shrink-0 rounded-sm overflow-hidden transition-transform duration-300 hover:scale-[1.02] focus-within:scale-[1.02]"
                 data-member={member.name.toLowerCase()}>
                 <img
                   src={member.image}
@@ -125,19 +125,10 @@ export default function PeopleShowcaseHero() {
                   loading={index === 0 ? "eager" : "lazy"}
                 />
                 {/* Optional: Add hover overlay with name */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10  transition-colors duration-300"></div>
               </div>
             ))}
           </StaggeredSlideUp>
-        </div>
-
-        {/* Bottom Line */}
-        <div className="h-px w-full relative" aria-hidden="true">
-          <img
-            alt=""
-            className="block w-full h-px object-cover"
-            src={lineImage}
-          />
         </div>
       </div>
     </section>

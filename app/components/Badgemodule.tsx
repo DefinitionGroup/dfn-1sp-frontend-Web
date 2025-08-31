@@ -3,6 +3,7 @@
 import { motion, AnimatePresence, PanInfo, useInView } from "motion/react";
 import { AnimateNumber } from "motion-plus/react";
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 
 export default function Badgemodule({
   text,
@@ -52,24 +53,44 @@ export default function Badgemodule({
             },
           },
         }}>
+        <div className="flex justify-between mb-4 w-full ">
+          <motion.div
+            className=" self-center "
+            variants={{
+              hidden: { opacity: 0, scale: 0.8 },
+              visible: {
+                opacity: 1,
+                scale: 1,
+                transition: { duration: 0.6, ease: "easeOut", delay: 0.3 },
+              },
+            }}>
+            <Image
+              src="/ci/1sp-outline.svg"
+              alt="1SP Logo"
+              width={60}
+              height={60}
+              className="w-3 h-3"
+            />
+          </motion.div>
+          <motion.span
+            className="text-xs font-bold self-end  text-gray-100"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: {
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.6, ease: "easeOut" },
+              },
+            }}>
+            <AnimateNumber
+              format={{ minimumIntegerDigits: 3 }}
+              transition={{ duration: 1.5, ease: "easeOut" }}>
+              {animateNumberValue}
+            </AnimateNumber>
+          </motion.span>
+        </div>
         <motion.span
-          className="text-xs font-bold self-end  text-gray-100"
-          variants={{
-            hidden: { opacity: 0, y: 20 },
-            visible: {
-              opacity: 1,
-              y: 0,
-              transition: { duration: 0.6, ease: "easeOut" },
-            },
-          }}>
-          <AnimateNumber
-            format={{ minimumIntegerDigits: 3 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}>
-            {animateNumberValue}
-          </AnimateNumber>
-        </motion.span>
-        <motion.span
-          className="text-5xl font-bold  leading-none text-gray-200"
+          className="text-5xl font-bold   text-gray-200"
           variants={{
             hidden: { opacity: 0, y: 20 },
             visible: {
@@ -81,7 +102,7 @@ export default function Badgemodule({
           {text}
         </motion.span>
         <motion.span
-          className="text-sm font-bold text-gray-200"
+          className="text-xs font-bold mt-2 text-gray-200"
           variants={{
             hidden: { opacity: 0, y: 20 },
             visible: {

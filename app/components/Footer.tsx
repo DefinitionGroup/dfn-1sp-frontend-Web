@@ -33,10 +33,10 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 min-h-[163px]">
           {/* Company Name */}
           <div className="lg:col-span-3 flex flex-col gap-3">
-            <h1 className="text-headline-lg font-medium tracking-tighter text-neutral-300">
+            <h1 className="text-7xl font-medium tracking-tighter text-neutral-300">
               1SP
             </h1>
-            <h2 className="text-headline-sm font-bold tracking-tight text-neutral-300">
+            <h2 className="text-xl font-bold tracking-tight text-neutral-300">
               Superagency
             </h2>
           </div>

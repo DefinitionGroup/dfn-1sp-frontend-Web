@@ -187,7 +187,7 @@ export default function InteractiveCarousel() {
                       <motion.div className="w-fit  px-3 py-1 bg-lime-400  mx-auto text-black flex justify-center text-center text-xs rounded-xs mb-2">
                         {carouselItems[currentIndex].category}
                       </motion.div>
-                      <motion.h3 className="text-7xl font-semibold text-center">
+                      <motion.h3 className="text-7xl font-semibold leading-compressed text-center pb-0">
                         {carouselItems[currentIndex].title}
                       </motion.h3>
                       <motion.p className="text-xl text-gray-100 text-center">

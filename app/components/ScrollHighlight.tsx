@@ -19,7 +19,7 @@ function ScrollHighlightItem({
       className="skill-item"
       initial={false}
       animate={{
-        opacity: isHighlighted ? 1 : 0.1,
+        opacity: isHighlighted ? 1 : 0.4,
         scale: isHighlighted ? 1.02 : 1,
       }}
       transition={{
@@ -44,8 +44,7 @@ export default function ScrollHighlight() {
   const [activeSkill, setActiveSkill] = useState<number | null>(null);
 
   return (
-    <div className="containerElement border ">
-      <h3 className="containerED1">Skills</h3>
+    <div className="containerElement  ">
       <ul className="skills-list">
         {skills.map((skill, index) => (
           <ScrollHighlightItem
@@ -93,7 +92,7 @@ function Stylesheet() {
           padding: 50vh 0;
           list-style: none;
           padding: 0;
-          margin: 0;
+          margin: 0;color: white;
           display: flex;
           flex-direction: column;
           gap: 20px;
