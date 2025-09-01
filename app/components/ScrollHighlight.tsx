@@ -125,16 +125,10 @@ interface Skill {
 }
 
 const skills: Skill[] = [
-  { name: "Branding" },
-  { name: "Web Design" },
-  { name: "Marketing" },
-  { name: "UI/UX Design" },
-  { name: "Development" },
-  { name: "Motion Design" },
-  { name: "Branding" },
-  { name: "Web Design" },
-  { name: "Marketing" },
-  { name: "UI/UX Design" },
-  { name: "Development" },
-  { name: "Motion Design" },
+  { name: "Branding", text: "branding is text lorem ipsum" },
+  { name: "Web Design", text: "branding is text lorem ipsum" },
+  { name: "Marketing", text: "branding is text lorem ipsum" },
+  { name: "UI/UX Design", text: "branding is text lorem ipsum" },
+  { name: "Development", text: "branding is text lorem ipsum" },
+  { name: "Motion Design", text: "branding is text lorem ipsum" },
 ];

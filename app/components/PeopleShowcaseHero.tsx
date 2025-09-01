@@ -75,61 +75,26 @@ export default function PeopleShowcaseHero() {
       data-component="people-showcase-hero"
       aria-labelledby="people-showcase-title">
       {/* Main Content Section */}
-      <div className="flex flex-col gap-8 items-start justify-start w-full">
-        {/* Header Section */}
-        <header className="flex flex-col gap-4 items-start justify-start w-full">
-          {/* Top Line */}
-          <div className="h-px w-full relative" aria-hidden="true">
-            <img
-              alt=""
-              className="block w-full h-px object-cover"
-              src={lineImage}
-            />
-          </div>
 
-          {/* Headlines */}
-          <div className="flex flex-col lg:gap-8 items-start justify-start w-full">
-            {/* Main Headline */}
-            <div className="flex-1 flex flex-col min-w-0">
-              <h2
-                id="people-showcase-title"
-                className="text-7xl text-neutral-900 font-bold font-aspekta">
-                Igniting Creativity:{" "}
-              </h2>
-              <h4
-                id="people-showcase-title"
-                className="text-7xl  text-neutral-900 font-bold font-aspekta">
-                <span className="text-neutral-200">Unique People.</span>
-              </h4>
-
-              <p className=" text-neutral-950 font-normal font-aspekta mt-4 ">
-                Emotion with passion. <br className="hidden sm:block" />
-                Digital by nature.
-              </p>
+      {/* Team Photos */}
+      <div className="flex  sm:flex-row gap-4 items-center justify-start w-full overflow-x-auto">
+        <StaggeredSlideUp className="flex  flex-wrap sm:flex-row gap-4 items-center justify-start w-full overflow-x-auto">
+          {teamMembers.map((member, index) => (
+            <div
+              key={member.name}
+              className="group relative bg-neutral-600 h-[204px] w-[272px] flex-shrink-0 rounded-sm overflow-hidden transition-transform duration-300 hover:scale-[1.02] focus-within:scale-[1.02]"
+              data-member={member.name.toLowerCase()}>
+              <img
+                src={member.image}
+                alt={member.alt}
+                className="w-full h-full object-cover transition-all duration-300 group-hover:brightness-110"
+                loading={index === 0 ? "eager" : "lazy"}
+              />
+              {/* Optional: Add hover overlay with name */}
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10  transition-colors duration-300"></div>
             </div>
-          </div>
-        </header>
-
-        {/* Team Photos */}
-        <div className="flex  sm:flex-row gap-4 items-center justify-start w-full overflow-x-auto">
-          <StaggeredSlideUp className="flex  flex-wrap sm:flex-row gap-4 items-center justify-start w-full overflow-x-auto">
-            {teamMembers.map((member, index) => (
-              <div
-                key={member.name}
-                className="group relative bg-neutral-600 h-[204px] w-[272px] flex-shrink-0 rounded-sm overflow-hidden transition-transform duration-300 hover:scale-[1.02] focus-within:scale-[1.02]"
-                data-member={member.name.toLowerCase()}>
-                <img
-                  src={member.image}
-                  alt={member.alt}
-                  className="w-full h-full object-cover transition-all duration-300 group-hover:brightness-110"
-                  loading={index === 0 ? "eager" : "lazy"}
-                />
-                {/* Optional: Add hover overlay with name */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10  transition-colors duration-300"></div>
-              </div>
-            ))}
-          </StaggeredSlideUp>
-        </div>
+          ))}
+        </StaggeredSlideUp>
       </div>
     </section>
   );

@@ -29,28 +29,28 @@ export interface TextHeadlineComboProps {
 
 const sizeMap = {
   xl: {
-    headline: "text-5xl md:text-7xl lg:text-8xl",
+    headline: "text-5xl md:text-7xl lg:text-7xl",
     subhead: "text-xl md:text-2xl",
-    eyebrow: "text-[11px]",
+    eyebrow: "text-xxs]",
     kicker: "text-sm",
-    gap: "gap-6 md:gap-7",
+    gap: "gap-6 md:gap-2",
   },
   lg: {
-    headline: "text-4xl md:text-6xl",
+    headline: "text-4xl md:text-5xl",
     subhead: "text-lg md:text-xl",
     eyebrow: "text-[11px]",
     kicker: "text-sm",
     gap: "gap-5 md:gap-6",
   },
   md: {
-    headline: "text-3xl md:text-5xl",
+    headline: "text-3xl md:text-3xl",
     subhead: "text-base md:text-lg",
     eyebrow: "text-[10px]",
     kicker: "text-xs md:text-sm",
     gap: "gap-4 md:gap-5",
   },
   sm: {
-    headline: "text-2xl md:text-3xl",
+    headline: "text-xl md:text-xl",
     subhead: "text-sm md:text-base",
     eyebrow: "text-[10px]",
     kicker: "text-xs",
@@ -78,7 +78,7 @@ export const TextHeadlineCombo: React.FC<TextHeadlineComboProps> = ({
   clamp,
   spacing = "normal",
   gradientFrom = "from-lime-400",
-  gradientTo = "to-lime-600",
+  gradientTo = "to-lime-500",
   className = "",
 }) => {
   const sizes = sizeMap[size];
@@ -118,7 +118,7 @@ export const TextHeadlineCombo: React.FC<TextHeadlineComboProps> = ({
         )}
         <motion.h1
           {...baseMotion(0.05)}
-          className={`font-regular leading-[0.92] tracking-tight text-foreground ${sizes.headline}`}>
+          className={`font-semibold leading-compress tracking-tight text-foreground ${sizes.headline}`}>
           {typeof headline === "string" && highlight ? (
             <>
               {headline}{" "}

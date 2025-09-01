@@ -117,7 +117,7 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.5, delay: baseDelay }}
-                className="uppercase tracking-widest text-[10px] font-semibold text-lime-500/90">
+                className="uppercase tracking-widest text-xs font-bold text-lime-500/90">
                 {eyebrow}
               </motion.span>
             )}
@@ -130,11 +130,11 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
                 ease: "easeOut",
                 delay: baseDelay + 0.05,
               }}
-              className={`font-light leading-[0.95] text-4xl md:text-6xl tracking-tight ${alignment}`}>
+              className={`leading-[0.95] font-semibold text-5xl md:text-7xl tracking-tight ${alignment}`}>
               {typeof title === "string" && highlight ? (
                 <>
                   {title}{" "}
-                  <span className="bg-gradient-to-r from-lime-400 to-lime-600 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-lime-400 to-lime-500 bg-clip-text text-transparent">
                     {highlight}
                   </span>
                 </>
@@ -148,7 +148,7 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.6, delay: baseDelay + 0.1 }}
-                className={`text-lg md:text-xl font-medium text-neutral-500 dark:text-neutral-400 ${alignment}`}>
+                className={`text-lg md:text-xl font-semibold text-neutral-500 dark:text-neutral-400 ${alignment}`}>
                 {subtitle}
               </motion.p>
             )}
@@ -164,7 +164,7 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.6, delay: baseDelay + 0.15 }}
-                className="text-xl md:text-2xl text-neutral-700 dark:text-neutral-200 max-w-2xl leading-relaxed">
+                className="text-xl md:text-3xl text-neutral-700 font-semibold dark:text-neutral-200 max-w-2xl leading-tight">
                 {lead}
               </motion.p>
             )}
@@ -211,7 +211,7 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
                       visible: { opacity: 1, y: 0 },
                     }}
                     className="flex items-start gap-2 text-sm md:text-base text-neutral-700 dark:text-neutral-200">
-                    <span className="mt-3 inline-block h-1 w-1 rounded-full bg-gradient-to-tr from-lime-400 to-lime-600" />
+                    <span className="mt-3 inline-block h-1 w-1 rounded-full bg-gradient-to-tr from-lime-400 to-lime-500" />
                     <span>{b}</span>
                   </motion.li>
                 ))}
@@ -227,7 +227,7 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
                 className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
                 {stats.map((s, i) => (
                   <div key={i} className="flex flex-col">
-                    <span className="text-2xl md:text-3xl font-semiboldd bg-gradient-to-r from-lime-400 to-lime-600 bg-clip-text text-transparent">
+                    <span className="text-2xl md:text-5xl font-semibold bg-gradient-to-r from-lime-400 to-lime-500 bg-clip-text text-transparent">
                       {s.value}
                       {s.suffix && (
                         <span className="text-lg align-top ml-0.5">
@@ -235,7 +235,7 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
                         </span>
                       )}
                     </span>
-                    <span className="text-[11px] tracking-wide uppercase text-neutral-500 dark:text-neutral-400 font-medium">
+                    <span className="text-xs tracking-wide uppercase text-neutral-500 dark:text-neutral-400 font-bold">
                       {s.label}
                     </span>
                   </div>

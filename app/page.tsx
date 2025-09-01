@@ -248,7 +248,7 @@ export default function Home() {
       {/* People Gallery Section */}
       <div className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta gap-4  ">
         <GridBackground />
-        <div className="z-1 flex flex-col col-span-2  justify-end items-end  col-start-1 pt-32 mx-auto row-start-1">
+        <div className="z-1 flex flex-col col-span-2 pt-32 justify-start items-start  col-start-1 mx-auto row-start-1">
           <Badgemodule
             text="Our Story"
             subtitle="What we do"
@@ -267,8 +267,43 @@ export default function Home() {
             align="right"
           />
         </div>
-        <div className="z-1 col-span-9 container col-start-3 row-start-1 grid-cols-12 pt-32  ">
-          <PeopleShowcaseHero />
+        <div className="col-span-12 container col-start-3 row-start-1 grid grid-cols-12 pt-32  ">
+          <header className="col-span-5 col-start-1 mt-8  ">
+            {/* Top Line */}
+            <div className="h-px w-full relative" aria-hidden="true">
+              <img alt="" className="block w-full h-px object-cover" />
+            </div>
+
+            {/* Headlines */}
+            <div className="flex flex-col lg:gap-8 items-start justify-start w-full">
+              {/* Main Headline */}
+              <div className="flex-1 flex flex-col min-w-0">
+                <h2 className="text-7xl text-neutral-900 font-bold font-aspekta">
+                  Igniting Creativity:{" "}
+                </h2>
+                <h4 className="text-7xl  text-neutral-900 font-bold font-aspekta">
+                  <span className="text-neutral-200">Unique People.</span>
+                </h4>
+              </div>
+            </div>
+          </header>
+
+          <div className="col-span-5 col-start-6 mt-8 ">
+            <ListContainerComponent>
+              <ListItemComponent size="small" fontWeight="bold" color="black">
+                Super*
+              </ListItemComponent>
+              <ListItemComponent size="small" fontWeight="bold" color="black">
+                helping world-class brands create ground-breaking stuff
+              </ListItemComponent>
+              <ListItemComponent size="small" fontWeight="bold" color="black">
+                helping world-class
+              </ListItemComponent>
+            </ListContainerComponent>
+          </div>
+          <div className="col-span-12  col-start-1 mt-8 ">
+            <PeopleShowcaseHero />
+          </div>
         </div>
       </div>
 
@@ -330,7 +365,7 @@ export default function Home() {
         </div>
       </div>
       {/* Visual Background 2 Section */}
-      <div className="grid grid-cols-12 z-1 mx-auto bg-amber-500 mt-8 min-h-[90vh] relative font-aspekta">
+      <div className="grid grid-cols-12 z-1 mx-auto bg-neutral-100 mt-8 min-h-[90vh] relative font-aspekta">
         <div className="z-1 grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2"
@@ -345,16 +380,16 @@ export default function Home() {
               staggerDelay={0.1}
               duration={0.5}
               distance={80}>
-              <h2 className="text-9xl leading-compress text-gray-100 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
+              <h2 className="text-7xl leading-compress text-gray-900 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
                 We tell your story.
               </h2>
-              <p className="text-lg text-gray-100 font-medium  max-w-2xs mx-auto">
+              <p className="text-lg text-gray-900 font-medium  max-w-2xs mx-auto">
                 Discover our latest projects in gaming, marketing, and
                 interactive experiences
               </p>
             </StaggeredSlideUp>
           </div>
-          <div className="col-span-2 col-start-3 mt-8 pr-8 text-gray-100 ">
+          <div className="col-span-2 col-start-3 mt-8 pr-8 text-gray-900 ">
             <CtaMiniComponent
               heading="Our roots are gaming."
               paragraph="This is where we get our creative spark from. And epochs of customer focus and talking to the public."
@@ -365,22 +400,22 @@ export default function Home() {
           </div>
           <div className="col-span-5 col-start-5 mt-8 ">
             <ListContainerComponent>
-              <ListItemComponent size="medium" fontWeight="bold">
+              <ListItemComponent size="small" fontWeight="bold" color="black">
                 Super*
               </ListItemComponent>
-              <ListItemComponent size="medium" fontWeight="bold">
+              <ListItemComponent size="small" fontWeight="bold" color="black">
                 helping world-class brands create ground-breaking stuff
               </ListItemComponent>
-              <ListItemComponent size="medium" fontWeight="normal">
+              <ListItemComponent size="small" fontWeight="bold" color="black">
                 helping world-class
               </ListItemComponent>
             </ListContainerComponent>
           </div>
         </div>
       </div>
-      {/* Headline Combo Section */}
+      {/* Unified engagement O */}
 
-      <div className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta">
+      <div className="grid grid-cols-12 z-1 gap-8  mx-auto relative container font-aspekta">
         <GridBackground />
         <div className="z-1 grid col-span-12  relative top-0 py-32 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
@@ -404,32 +439,31 @@ export default function Home() {
         </div>
       </div>
       {/* Portfolio Grid */}
-      <div className="grid grid-cols-12 z-1 relative gap-8 mx-auto container">
+      <div className="z-1 grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
         <GridBackground delay={0.2} staggerDelay={0.06} />
-        <div className="z-1 grid col-span-12  col-start-1 pt-32 row-start-1 grid-cols-12 ">
-          <div className="col-span-2 relative ">
-            <Badgemodule
-              className="col-span-2"
-              text="Our Units"
-              subtitle="Services"
-              numberEl={"005"}
-            />
-          </div>
-          <div className="col-span-9 col-start-3 border ">
+        <div className="z-1 grid col-span-12 gap-8 col-start-1 pt-32 row-start-1 grid-cols-12 ">
+          <Badgemodule
+            className="col-span-2"
+            text="Our Units"
+            subtitle="Services"
+            numberEl={"005"}
+          />
+
+          <div className="col-span-9 col-start-3  ">
             <ExpandableCards />
           </div>
 
-          <div className="col-span-1 col-start-1 relative ">
-            <Badgemodule
-              className="absolute top-0 left-0 z-10"
-              text="Our Units"
-              subtitle="Services"
-              numberEl={"005"}
-            />
-          </div>
+          <Badgemodule
+            className="col-span-2 col-start-1"
+            text="Our Units"
+            subtitle="Services"
+            numberEl={"005"}
+          />
+
           <div className="col-span-9  col-start-3 ">
             <TextLayout
               width="full"
+              padded={false}
               eyebrow="About"
               title="Integrated Experiences"
               highlight="Platform"

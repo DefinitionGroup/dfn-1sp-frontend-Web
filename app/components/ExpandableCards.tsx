@@ -120,22 +120,22 @@ export default function ExpandableCards() {
         ) : null}
       </AnimatePresence>
       <ul className=" w-full ">
-        <StaggeredSlideUp className=" grid grid-cols-3 gap-8 mx-auto w-full px-4 ">
+        <StaggeredSlideUp className=" grid grid-cols-3 gap-1 mx-auto h-full min-h-full w-full px-4 ">
           {cards.map((card, index) => (
             <motion.div
               layoutId={`card-${card.title}-${id}`}
               key={`card-${card.title}-${id}`}
               onClick={() => setActive(card)}
-              className="py-4 col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[288px] hover:bg-neutral-50 dark:hover:bg-neutral-800  cursor-pointer">
+              className=" col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[400px] h-[400px] hover:bg-neutral-50 dark:hover:bg-neutral-800  cursor-pointer">
               <motion.div
                 layoutId={`image-${card.title}-${id}`}
-                className="col-start-1 col-span-1 row-start-1 bg-neutral-950  rounded-sm overflow-hidden">
+                className="col-start-1 col-span-1 row-start-1 bg-neutral-950 h-full min-h-full  rounded-sm overflow-hidden">
                 <img
                   width={1000}
                   height={1000}
                   src={card.src}
                   alt={card.title}
-                  className="w-full h-full object-cover object-top opacity-30"
+                  className="w-full h-full object-cover  object-top opacity-30"
                 />
               </motion.div>
               <div className="col-start-1 col-span-1 row-start-1 p-8">
@@ -151,7 +151,7 @@ export default function ExpandableCards() {
                 </motion.p>
                 <motion.button
                   layoutId={`button-${card.title}-${id}`}
-                  className="px-4 py-2 text-xxs font-bold bg-gray-100 hover:bg-lime-500 hover:text-white text-black mt-4 md:mt-0">
+                  className="px-6 py-2 text-xs font-bold bg-gray-100 hover:bg-lime-500 rounded-sm hover:text-white text-black  z-100 mt-4 md:mt-0">
                   {card.ctaText}
                 </motion.button>
               </div>
