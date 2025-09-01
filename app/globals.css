@@ -252,3 +252,35 @@
   z-index: 1;
   animation: none !important;
 }
+
+@keyframes logo-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@layer utilities {
+  .logo-marquee-track {
+    animation: logo-marquee var(--marquee-duration, 120s) linear infinite;
+    width: max-content;
+  }
+  .logo-carousel-mask {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+  }
+}

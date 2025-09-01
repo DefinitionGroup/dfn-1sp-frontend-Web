@@ -25,6 +25,7 @@ import ListItemComponent from "./components/ListItemComponent";
 import CtaMiniComponent from "./components/CtaMiniComponent";
 import { ArrowRight } from "@phosphor-icons/react";
 import ArrowBig from "./components/arrowBig";
+import LogoCarousel from "./components/LogoCarousel";
 export default function Home() {
   const typewriterref = useRef(null);
   const isInView = useInView(typewriterref);
@@ -75,6 +76,9 @@ export default function Home() {
         </div>
         <div className="absolute bottom-[19px] right-[18px] text-white text-xxs text-eyebrow font-medium">
           / 1SP
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 invert py-8 container mx-auto">
+          <LogoCarousel />
         </div>
       </section>
 

@@ -223,9 +223,9 @@ const cards = [
     description: "StudioCO2",
     title: "Let us help you grow your business and brand awareness",
     src: "/s1.png",
-    logo: "/msmlogo.svg",
+    logo: "/studioco2.svg",
     ctaText: "Play",
-    ctaLink: "https://www.msm.digital",
+    ctaLink: "https://studioco2.com",
     content: () => {
       return (
         <p>
