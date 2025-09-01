@@ -35,9 +35,9 @@ export default function Home() {
         {/* Background Image with Overlay */}
         <HeaderImageVideoComp
           useVideo={true}
-          videoSrc="/video/atf.mp4"
+          videoSrc="/video/cases/1SP Agency - 1SP Homepage-07.mp4"
           enableParallax={true}
-          opacity="opacity-55"
+          opacity="opacity-25"
         />
         {/* Navigation */}
         <FrontNavOverlay />
@@ -45,16 +45,16 @@ export default function Home() {
 
         <div className="relative z-10 container top-[200px]  mx-auto ">
           <StaggeredSlideUp className="space-y-6 max-w-full ">
-            <h1 className="text-neutral-50 text-lg font-semibold">
+            <h1 className="text-neutral-50 uppercase pb-2 text-xs border-b font-bold  max-w-1/3">
               Welcome at 1SP
             </h1>
             <TypewriterChangeContentExample />
 
-            <p className="text-neutral-50 text-lg font-bold max-w-1/3">
+            <p className="text-neutral-50 text-lg  max-w-1/3">
               We are group of several laser focused agencies. Each one with a
               distinctive competetive edge.
             </p>
-            <p className="text-neutral-50 text-lg font-medium">
+            <p className="text-neutral-50 text-lg">
               Together we are{" "}
               <span className="bg-gradient-to-r font-bold from-lime-300 to-lime-500 bg-clip-text text-transparent">
                 one Superagency.
@@ -73,7 +73,7 @@ export default function Home() {
         <div className="absolute bottom-[42px] left-[24px] text-white text-xs font-medium  -rotate-90 origin-bottom-left">
           SUPER*
         </div>
-        <div className="absolute bottom-[19px] right-[18px] text-white text-eyebrow font-medium">
+        <div className="absolute bottom-[19px] right-[18px] text-white text-xxs text-eyebrow font-medium">
           / 1SP
         </div>
       </section>
@@ -86,16 +86,16 @@ export default function Home() {
             {/* Description and CTA Section */}
             <div className="flex flex-col items-start gap-8 justify-center w-full">
               {/* Description */}
-              <p className="text-sm leading-[1.25] text-neutral-950 font-aspekta font-normal">
-                At msm.digital, our passionate team thrives on creativity and
+              <p className="text-xs leading-normal text-neutral-800 font-aspekta font-normal">
+                At 1SP, our passionate team thrives on creativity and
                 innovation, crafting outstanding marketing campaigns that
                 genuinely resonate with audiences.
               </p>
 
               {/* CTA Button */}
               <Button2
-                variant="lime"
-                text="Visit msm.digital"
+                variant="limesmall"
+                text="Contact us"
                 className="w-fit"
               />
             </div>
@@ -150,10 +150,10 @@ export default function Home() {
       </div>
 
       {/* We tell your Story */}
-      <div className="grid grid-cols-12 z-1 mx-auto min-h-[90vh] relative font-aspekta">
+      <div className="grid grid-cols-12 z-1 mx-auto  relative font-aspekta">
         <HeaderImageVideoComp2
           useVideo={true}
-          videoSrc="/video/9.mp4"
+          videoSrc="/video/cases/1SP Agency - 1SP Homepage-06.mp4"
           enableParallax={false}
         />
 
@@ -172,7 +172,7 @@ export default function Home() {
               staggerDelay={0.1}
               duration={0.5}
               distance={80}>
-              <h2 className="text-9xl text-gray-100 max-w-lg font-nyghtserif font-semibold tracking-tight leading-compress mb-4">
+              <h2 className="text-9xl text-gray-100 max-w-xl font-nyghtserif font-semibold tracking-tight leading-compress mb-4 pb-8">
                 We tell your story.
               </h2>
               <p className="text-body-lg text-gray-100  max-w-2xs mx-auto">
@@ -183,7 +183,7 @@ export default function Home() {
           </div>
           <div className="col-span-2 col-start-3 mt-8 pr-8 text-gray-100 ">
             <CtaMiniComponent
-              heading="We know Business."
+              heading="We use Gaming Experience"
               paragraph="This is where we get our creative spark from. And epochs of customer focus and talking to the public."
               buttonText="Explore"
               buttonVariant="limesmall"
@@ -192,13 +192,13 @@ export default function Home() {
           </div>
           <div className="col-span-9 col-start-5 mt-8 ">
             <ListContainerComponent>
-              <ListItemComponent size="large" fontWeight="bold">
-                Super*
+              <ListItemComponent size="medium" fontWeight="">
+                From Game and Retail.
               </ListItemComponent>
-              <ListItemComponent size="medium" fontWeight="bold">
+              <ListItemComponent size="medium" fontWeight="">
                 helping world-class brands create ground-breaking stuff
               </ListItemComponent>
-              <ListItemComponent size="medium" fontWeight="bold">
+              <ListItemComponent size="medium" fontWeight="">
                 helping world-class
               </ListItemComponent>
             </ListContainerComponent>
@@ -226,7 +226,7 @@ export default function Home() {
         className="z-1 mx-auto  mt-8 min-h-[90vh] relative font-aspekta">
         <HeaderImageVideoComp2
           useVideo={true}
-          videoSrc="/video/13.mp4"
+          videoSrc="/video/14.mp4"
           enableParallax={true}
         />
         <div className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta">
@@ -254,56 +254,67 @@ export default function Home() {
             subtitle="What we do"
             numberEl={"007"}
           />
-          <ArrowBig
-            animate={true}
-            size={230}
-            className="hover:rotate-45 transition-transform my-16 pt-16"
-          />
+          <ArrowBig animate={true} size={230} className=" my-16 pr-32 pt-32" />
           <CtaMiniComponent
-            heading="Our roots are gaming."
-            paragraph="This is where we get our creative spark from. And epochs of customer focus and talking to the public."
-            buttonText="Explore"
-            buttonVariant="limesmall"
-            align="right"
+            className="pt-32 max-w-1/2"
+            heading="Ideas."
+            paragraph="At 1sp, our dedicated team is fueled by creativity and innovation, designing exceptional marketing campaigns that truly connect with audiences."
           />
         </div>
-        <div className="col-span-12 container col-start-3 row-start-1 grid grid-cols-12 pt-32  ">
-          <header className="col-span-5 col-start-1 mt-8  ">
-            {/* Top Line */}
-            <div className="h-px w-full relative" aria-hidden="true">
-              <img alt="" className="block w-full h-px object-cover" />
-            </div>
-
+        <div className="col-span-12 container col-start-3 row-start-1 grid grid-cols-12 gap-4  pt-32  ">
+          <header className="col-span-3 col-start-1  border-t ">
             {/* Headlines */}
             <div className="flex flex-col lg:gap-8 items-start justify-start w-full">
               {/* Main Headline */}
               <div className="flex-1 flex flex-col min-w-0">
-                <h2 className="text-7xl text-neutral-900 font-bold font-aspekta">
-                  Igniting Creativity:{" "}
+                <h2 className="text-xl text-neutral-900 font-bold font-aspekta">
+                  Super*
                 </h2>
-                <h4 className="text-7xl  text-neutral-900 font-bold font-aspekta">
-                  <span className="text-neutral-200">Unique People.</span>
+                <h4 className="text-7xl  text-neutral-900 font-semibold leading-compress font-aspekta">
+                  Human Touch
                 </h4>
               </div>
             </div>
           </header>
 
-          <div className="col-span-5 col-start-6 mt-8 ">
+          <div className="col-span-8 col-start-4  border-t pt-8  ">
             <ListContainerComponent>
-              <ListItemComponent size="small" fontWeight="bold" color="black">
-                Super*
+              <ListItemComponent size="small" fontWeight="normal" color="black">
+                We are 350 Experts.
               </ListItemComponent>
-              <ListItemComponent size="small" fontWeight="bold" color="black">
-                helping world-class brands create ground-breaking stuff
+              <ListItemComponent size="small" fontWeight="normal" color="black">
+                Connected by one vision. Perfoming your mission.
               </ListItemComponent>
-              <ListItemComponent size="small" fontWeight="bold" color="black">
-                helping world-class
+              <ListItemComponent size="small" fontWeight="normal" color="black">
+                From longstanding veterans to fresh talents. The best of both
+                worlds.
               </ListItemComponent>
             </ListContainerComponent>
           </div>
-          <div className="col-span-12  col-start-1 mt-8 ">
+          <div className="col-span-12  col-start-1 ">
             <PeopleShowcaseHero />
           </div>
+          <header className="col-span-3 col-start-1 ">
+            {/* Headlines */}
+            <div className="flex flex-col lg:gap-8 items-start justify-start w-full">
+              {/* Main Headline */}
+              <div className="flex-1 flex flex-col min-w-0">
+                <h2 className="text-3xl text-neutral-900 f font-aspekta">
+                  Igniting Creativity:{" "}
+                </h2>
+                <h4 className="text-3xl  text-neutral-900  font-aspekta">
+                  <span className="text-neutral-200">Unique People.</span>
+                </h4>
+              </div>
+            </div>
+          </header>
+          <header className="col-span-6 col-start-4  ">
+            <h2 className="text-base text-neutral-900 font-aspekta">
+              At 1sp, we are driven by a team of passionate individuals who
+              thrive on creativity and innovation, crafting unique marketing
+              campaigns that resonate with audiences.
+            </h2>
+          </header>
         </div>
       </div>
 

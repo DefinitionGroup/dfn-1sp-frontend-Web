@@ -16,16 +16,16 @@ export default function TypewriterChangeContentExample({
       <span style={label}>We boost:</span>
       <Typewriter
         as="div"
-        speed="normal"
-        variance={0.8}
+        variance={2.8}
+        speed={"normal"}
         backspace="character"
-        cursorBlinkDuration={0.16}
+        cursorBlinkDuration={0.26}
         cursorStyle={cursor}
         onComplete={() => {
           delay(() => setIndex(wrap(0, text.length, index + 1)), 1);
         }}
         textStyle={animatingText}>
-        {text[index]}
+        {text[index + 1]}
       </Typewriter>
     </h2>
   );
@@ -53,7 +53,7 @@ const label: React.CSSProperties = {
 
 const animatingText: React.CSSProperties = {
   fontSize: 128,
-  fontWeight: 500,
+  fontWeight: 600,
   lineHeight: 0.75,
   letterSpacing: "-0.25rem",
 };

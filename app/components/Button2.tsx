@@ -11,81 +11,97 @@ interface Button2Props {
   variant?: "default" | "black" | "lime" | "limesmall";
 }
 
+// Centralized variant styles
+const variantStyles: Record<
+  NonNullable<Button2Props["variant"]>,
+  { top: string; bottom: string; container: string }
+> = {
+  default: {
+    top: "border-white/20 text-white fill-white p-4",
+    bottom: "border-slate-100 bg-slate-100 text-slate-900 ",
+    container: "h-14",
+  },
+  black: {
+    top: "border-neutral-800/30 bg-neutral-900 text-white p-4 ",
+    bottom: "border-neutral-900 bg-neutral-800 text-white ",
+    container: "h-14",
+  },
+  lime: {
+    top: "border-lime-500/30 bg-lime-400  p-4",
+    bottom: "border-neutral-800 bg-neutral-900 text-white ",
+    container: "h-14",
+  },
+  limesmall: {
+    top: "border-lime-500/30 bg-lime-400 text-neutral-900 px-4 py-2 ",
+    bottom: "border-neutral-800 bg-neutral-800 text-white px-4 py-2 ",
+    container: "h-9",
+  },
+};
+
 function Button2({ text, className, href, variant = "default" }: Button2Props) {
   // Check if the href is external
-  const isExternal =
-    href?.startsWith("http") ||
-    href?.startsWith("mailto:") ||
-    href?.startsWith("tel:");
+  const isExternal = !!href && /^(https?:|mailto:|tel:)/.test(href);
 
-  // Variant styles
-  const getVariantStyles = (isTop: boolean) => {
-    const baseStyles = isTop
-      ? "pointer-events-auto absolute rounded-sm top-0 left-0 border justify-between font-bold flex w-fit  hover:cursor-pointer tracking-wider group-hover/btn:-top-12 transition-all duration-250 ease-in-out"
-      : "pointer-events-auto border absolute rounded-sm  font-bold left-0 flex justify-between top-[100%] w-full group-hover/btn:top-0 transition-all duration-250 ease-in-out p-4 hover:cursor-pointer tracking-wider";
+  // Fallback if an unsupported variant sneaks in
+  const safeVariant: NonNullable<Button2Props["variant"]> =
+    variant in variantStyles ? variant : "default";
 
-    switch (variant) {
-      case "black":
-        return isTop
-          ? `${baseStyles} border-neutral-800/30 bg-neutral-900 text-white p-4 text-xs `
-          : `${baseStyles} border-neutral-900 bg-neutral-800 text-white text-xs `;
-      case "lime":
-        return isTop
-          ? `${baseStyles} border-lime-500/30 bg-lime-400 text-neutral-900 p-4 text-xs `
-          : `${baseStyles} border-neutral-800  bg-neutral-800 text-neutral-100 text-xs `;
-      case "limesmall":
-        return isTop
-          ? `${baseStyles} border-lime-500/30 bg-lime-400 text-neutral-900 text-xs px-2 py-2`
-          : `${baseStyles} border-neutral-800  bg-neutral-800 text-neutral-100 px-2 py-2 text-xs `;
-      default:
-        return isTop
-          ? `${baseStyles} border-white/20 text-white p-4 text-xs `
-          : `${baseStyles} border-slate-100 bg-slate-100 text-slate-900 text-xs `;
-    }
-  };
+  const baseTop =
+    "pointer-events-auto text-xxs absolute rounded-xs top-0 left-0 border justify-between font-bold flex w-fit hover:cursor-pointer tracking-wider group-hover/btn:-top-12 transition-all duration-250 ease-in-out";
+  const baseBottom =
+    "pointer-events-auto text-xxs border absolute rounded-xs font-bold left-0 flex justify-between top-[100%] w-full group-hover/btn:top-0 transition-all duration-250 ease-in-out p-4 hover:cursor-pointer tracking-wider";
 
-  // Helper function to get className for each layer
-  const getClassName = (isTop: boolean) =>
-    cn(getVariantStyles(isTop), className);
+  const topClass = cn(baseTop, variantStyles[safeVariant].top, className);
+  const bottomClass = cn(
+    baseBottom,
+    variantStyles[safeVariant].bottom,
+    // remove p-4 when variant already supplies its own padding (handled inside map)
+    className
+  );
 
-  // Content for both links
-  const content = (isRotated: boolean) => (
+  const containerClass = cn(
+    "inline-block relative top-0 left-0 min-w-full ml-[1px] overflow-hidden group/btn",
+    variantStyles[safeVariant].container
+  );
+
+  const content = (rotated: boolean) => (
     <div className="flex justify-between items-center w-full">
-      <span>{text}</span>
-      <ArrowRight className={isRotated ? "rotate" : "-rotate-45"} size={16} />
+      <span className="text-xxs">{text}</span>
+      <ArrowRight
+        className={cn(
+          rotated ? "rotate-0" : "-rotate-45",
+          "transition-transform"
+        )}
+        size={16}
+      />
     </div>
   );
 
   return (
-    <div
-      className={`inline-block relative top-0 left-0 min-w-full ml-[1px] ${
-        variant === "limesmall" ? "h-9" : "h-14"
-      } overflow-hidden group/btn min-h-2`}>
+    <div className={containerClass}>
       {isExternal ? (
-        // External links use regular anchor tags
         <>
           <a
             href={href}
             target="_blank"
-            rel="noopener noreferrer"
-            className={getClassName(true)}>
+            rel="noopener noreferrer nofollow"
+            className={topClass}>
             {content(false)}
           </a>
           <a
             href={href}
             target="_blank"
-            rel="noopener noreferrer"
-            className={getClassName(false)}>
+            rel="noopener noreferrer nofollow"
+            className={bottomClass}>
             {content(true)}
           </a>
         </>
       ) : (
-        // Internal links use Next.js Link component
         <>
-          <Link href={href || "#"} className={getClassName(true)}>
+          <Link href={href || "#"} className={topClass}>
             {content(false)}
           </Link>
-          <Link href={href || "#"} className={getClassName(false)}>
+          <Link href={href || "#"} className={bottomClass}>
             {content(true)}
           </Link>
         </>

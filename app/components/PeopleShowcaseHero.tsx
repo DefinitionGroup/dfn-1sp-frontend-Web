@@ -2,13 +2,9 @@ import React from "react";
 import Button2 from "./Button2";
 import StaggeredSlideUp from "./StaggeredSlideUp";
 // Image imports from Figma assets
-const torstenImage =
-  "/figma-assets/8fda3690b2ecf98551e7ad4b0476a0eb38ccbc93.png";
-const svenImage = "/figma-assets/3b647a430cf29747afe610df39cefa32893f4118.png";
-const markusImage =
-  "/figma-assets/cc92bb9d2bfb8ff0d37fb1475621a71703478baf.png";
-const lineImage = "/figma-assets/beb614433c5ac223755af656c4291b170c1ece44.svg";
-const arrowIcon = "/figma-assets/2bf3a6153f84d855d678d77fd5f42c6df569d50c.svg";
+const torstenImage = "/torsten.png";
+const svenImage = "/sven.png";
+const markusImage = "/markus.png";
 
 interface TeamMember {
   name: string;
@@ -17,36 +13,6 @@ interface TeamMember {
 }
 
 const teamMembers: TeamMember[] = [
-  {
-    name: "Torsten",
-    image: torstenImage,
-    alt: "Torsten O - Team Member",
-  },
-  {
-    name: "Sven",
-    image: svenImage,
-    alt: "Sven We - Team Member",
-  },
-  {
-    name: "Markus",
-    image: markusImage,
-    alt: "Markus O - Team Member",
-  },
-  {
-    name: "Torsten",
-    image: torstenImage,
-    alt: "Torsten O - Team Member",
-  },
-  {
-    name: "Sven",
-    image: svenImage,
-    alt: "Sven We - Team Member",
-  },
-  {
-    name: "Markus",
-    image: markusImage,
-    alt: "Markus O - Team Member",
-  },
   {
     name: "Torsten",
     image: torstenImage,

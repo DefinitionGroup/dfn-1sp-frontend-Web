@@ -110,14 +110,14 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
           <div
             className={`${
               split ? "lg:col-span-5" : ""
-            } flex flex-col gap-6 ${containerAlign}`}>
+            } flex flex-col ${containerAlign}`}>
             {eyebrow && (
               <motion.span
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.5, delay: baseDelay }}
-                className="uppercase tracking-widest text-xs font-bold text-lime-500/90">
+                className="uppercase tracking-widest text-xs font-bold text-lime-500">
                 {eyebrow}
               </motion.span>
             )}
@@ -148,7 +148,7 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.6, delay: baseDelay + 0.1 }}
-                className={`text-lg md:text-xl font-semibold text-neutral-500 dark:text-neutral-400 ${alignment}`}>
+                className={`text-base  text-neutral-500 dark:text-neutral-400 max-w-1/2 ${alignment}`}>
                 {subtitle}
               </motion.p>
             )}

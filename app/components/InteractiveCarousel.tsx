@@ -18,7 +18,7 @@ const carouselItems: CarouselItem[] = [
     id: 1,
     title: "Gaming Campaign",
     subtitle: "Epic Battle Royale",
-    image: "/hero-bg-home2-34f136.png",
+    image: "/s1.png",
     description: "Immersive gaming experience with cutting-edge visuals",
     category: "Gaming",
   },
@@ -26,7 +26,7 @@ const carouselItems: CarouselItem[] = [
     id: 2,
     title: "Brand Identity",
     subtitle: "Visual Storytelling",
-    image: "/tmp4h0jaxcl.jpg",
+    image: "/s4.jpg",
     description: "Complete brand transformation with interactive elements",
     category: "Branding",
   },
@@ -34,7 +34,7 @@ const carouselItems: CarouselItem[] = [
     id: 3,
     title: "Interactive Web",
     subtitle: "User Experience",
-    image: "/tmpfzpy88xv.jpg",
+    image: "/s2.png",
     description: "Revolutionary web experiences that engage and convert",
     category: "Web Design",
   },
@@ -42,7 +42,7 @@ const carouselItems: CarouselItem[] = [
     id: 4,
     title: "Motion Graphics",
     subtitle: "Dynamic Content",
-    image: "/tmpwdynab9d.jpg",
+    image: "/s3.png",
     description: "Stunning motion graphics for digital campaigns",
     category: "Animation",
   },
@@ -50,7 +50,7 @@ const carouselItems: CarouselItem[] = [
     id: 5,
     title: "AR Experience",
     subtitle: "Augmented Reality",
-    image: "/hero-bg-home2-34f136.png",
+    image: "/s1.png",
     description: "Next-generation AR solutions for marketing",
     category: "AR/VR",
   },
@@ -265,7 +265,7 @@ export default function InteractiveCarousel() {
           {carouselItems.map((_, index) => (
             <motion.button
               key={index}
-              className={`w-1 h-1.5 rounded-xs  transition-all duration-300 ${
+              className={`w-1 h-2 rounded-full  transition-all duration-300 ${
                 index === currentIndex
                   ? "bg-lime-400 min-w-16 "
                   : "bg-gray-300 min-w-3"
@@ -281,14 +281,14 @@ export default function InteractiveCarousel() {
         </div>
 
         {/* Thumbnail Strip */}
-        <div className="flex justify-center mt-8 space-x-4 overflow-x-auto pb-4">
+        <div className="flex justify-center mt-8 space-x-4 pt-4overflow-x-auto pb-4">
           {carouselItems.map((item, index) => (
             <motion.button
               key={item.id}
-              className={`flex-shrink-0 w-20 h-20 rounded-sm overflow-hidden border-2 transition-colors ${
+              className={`flex-shrink-0 w-32 h-32  rounded-sm overflow-hidden outline-3 transition-colors ${
                 index === currentIndex
-                  ? "border-lime-400"
-                  : "border-transparent"
+                  ? "outline-lime-500"
+                  : "outline-transparent"
               }`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

@@ -20,11 +20,11 @@ function ScrollHighlightItem({
       initial={false}
       animate={{
         opacity: isHighlighted ? 1 : 0.4,
-        scale: isHighlighted ? 1.02 : 1,
+        scale: isHighlighted ? 1.012 : 1,
       }}
       transition={{
-        duration: 0.1,
-        ease: "linear",
+        type: "spring",
+        stiffness: 100,
       }}
       onViewportEnter={() => onHighlight(index)}
       viewport={{
@@ -35,7 +35,20 @@ function ScrollHighlightItem({
         margin: "-28% 0px -68% 0px",
         amount: "some",
       }}>
-      {skill.name}
+      <span className="skill-name">{skill.name}</span>
+      {isHighlighted && (
+        <motion.p
+          className="skill-description"
+          layout
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            type: "spring",
+            stiffness: 100,
+          }}>
+          {skill.text}
+        </motion.p>
+      )}
     </motion.li>
   );
 }
@@ -84,7 +97,6 @@ function Stylesheet() {
           position: sticky;
           top: 10px;
           text-transform: uppercase;
-  
           height: fit-content;
         }
 
@@ -107,9 +119,29 @@ function Stylesheet() {
           padding: 0;
           line-height: 0.9;
           text-transform: uppercase;
-          text-wrap: nowrap;
+          display: flex;
+          flex-direction: column;
         }
 
+        .skill-name {
+          white-space: nowrap; /* keep title on one line */
+        }
+
+        .skill-description {
+          font-size: 1.2rem;
+          min-height: 9.5rem;
+          font-weight: 400;
+          line-height: 1.3;
+          margin-top: 0.75rem;
+          text-transform: none;
+          opacity: 0.85;
+          max-width: min(70ch, 90vw);
+          white-space: normal;
+          overflow-wrap: break-word;
+          word-break: break-word;
+          overflow: hidden;
+          hyphens: auto;
+        }
        
       `}
     </style>
@@ -122,13 +154,32 @@ function Stylesheet() {
 
 interface Skill {
   name: string;
+  text: string; // added
 }
 
 const skills: Skill[] = [
-  { name: "Branding", text: "branding is text lorem ipsum" },
-  { name: "Web Design", text: "branding is text lorem ipsum" },
-  { name: "Marketing", text: "branding is text lorem ipsum" },
-  { name: "UI/UX Design", text: "branding is text lorem ipsum" },
-  { name: "Development", text: "branding is text lorem ipsum" },
-  { name: "Motion Design", text: "branding is text lorem ipsum" },
+  {
+    name: "Branding",
+    text: "branding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsum",
+  },
+  {
+    name: "Web Design",
+    text: "branding is textbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsum lorem ipsum",
+  },
+  {
+    name: "Marketing",
+    text: "branding is texbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumt lorem ipsum",
+  },
+  {
+    name: "UI/UX Design",
+    text: "branding is branding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumtext lorem ipsum",
+  },
+  {
+    name: "Development",
+    text: "branding is text lorebranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumm ipsum",
+  },
+  {
+    name: "Motion Design",
+    text: "branding is text lobranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumbranding is text lorem ipsumrem ipsum",
+  },
 ];

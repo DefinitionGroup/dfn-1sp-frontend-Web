@@ -48,9 +48,24 @@
   --color-blue-600: oklch(0.6 0.22 240);
 
   /* Typography Scale - From Figma Design */
+  --font-size-xxs: 0.4625rem; /* 9px */
+  --font-size-xs: 0.5625rem; /* 9px */
+  --font-size-sm: 0.6875rem; /* 11px */
+  --font-size-base: 0.75rem; /* 12px */
+  --font-size-md: 0.8125rem; /* 17px */
+  --font-size-lg: 1.0625rem; /* 17px */
+  --font-size-xl: 1.5rem; /* 24px */
+  --font-size-2xl: 2.5rem; /* 40px */
+  --font-size-3xl: 4.3125rem; /* 69px - Mackay font */
+  --font-size-4xl: 4.5rem; /* 72px */
+  --font-size-5xl: 8rem; /* 128px */
+  --font-size-6xl: 10rem;
+  --font-size-7xl: 12rem;
+  --font-size-8xl: 14rem;
+  --font-size-9xl: 16rem;
 
-  --text-xs: 0.76; /* 0.75rem (12px) */
-  --text-xxs: 0.6125rem;
+  --text-xxs: 0.625rem;
+  --text-xs: 0.75rem;
 
   /* Line Heights - From Figma Design */
   --line-height-tight: 0.87; /* 87% for Mackay */

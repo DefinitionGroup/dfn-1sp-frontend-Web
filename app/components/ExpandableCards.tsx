@@ -39,7 +39,7 @@ export default function ExpandableCards() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 h-full w-full z-10"
+            className="fixed inset-0 bg-black/80 h-full w-full z-10"
           />
         )}
       </AnimatePresence>
@@ -61,58 +61,63 @@ export default function ExpandableCards() {
                   duration: 0.05,
                 },
               }}
-              className="flex absolute top-2 right-2 lg:hidden items-center   justify-around   rounded-full h-6 w-6"
+              className="flex absolute top-2 right-2 lg:hidden items-center overflow-hidden  justify-around   rounded-full h-6 w-6"
               onClick={() => setActive(null)}>
               <CloseIcon />
             </motion.button>
             <motion.div
               layoutId={`card-${active.title}-${id}`}
               ref={ref}
-              className="w-full max-w-[500px]  h-full md:h-fit md:max-h-[90%]   flex flex-col bg-white  dark:bg-neutral-900 sm:rounded-sm overflow-hidden">
+              className="w-full max-w-[700px] min-h-[70vh] h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col  bg-neutral-900 dark:bg-neutral-900  shadow-2xl overflow-hidden">
               <motion.div layoutId={`image-${active.title}-${id}`}>
                 <img
                   width={200}
-                  height={200}
+                  height={500}
                   src={active.src}
                   alt={active.title}
-                  className="w-full h-80 lg:h-80 sm:rounded-sm object-cover object-top"
+                  className="w-full h-120 sm:rounded-xl object-cover object-top"
                 />
               </motion.div>
 
               <div>
-                <div className="flex justify-between items-start p-4 ">
+                <div className="flex justify-between items-start p-8">
                   <div className="">
-                    <motion.h3
-                      layoutId={`title-${active.title}-${id}`}
-                      className="font-bold text-neutral-700 dark:text-neutral-200">
-                      {active.title}
-                    </motion.h3>
+                    <motion.img
+                      layoutId={`logo-${active.title}-${id}`}
+                      src={active.logo}
+                      alt={active.title}
+                      className="w-12 h-12 object-contain"
+                    />
                     <motion.p
                       layoutId={`description-${active.description}-${id}`}
-                      className="text-neutral-600 dark:text-neutral-400">
+                      className="text-neutral-100 text-5xl py-8 dark:text-neutral-400">
                       {active.description}
-                    </motion.p>
+                    </motion.p>{" "}
+                    <motion.h3
+                      layoutId={`title-${active.title}-${id}`}
+                      className=" text-neutral-300 text-lg max-w-2/3 dark:text-neutral-200">
+                      {active.title}
+                    </motion.h3>
                   </div>
-
-                  <motion.a
-                    layoutId={`button-${active.title}-${id}`}
-                    href={active.ctaLink}
-                    target="_blank"
-                    className="px-4 py-3 text-sm  font-bold bg-lime-500 text-white">
-                    {active.ctaText}
-                  </motion.a>
                 </div>
-                <div className="pt-4 relative px-4">
+                <div className=" relative px-8">
                   <motion.div
                     layout
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="text-neutral-600 text-xs md:text-sm lg:text-base h-40 md:h-fit pb-10 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]">
+                    className="text-white lg:text-base mb-8 md:h-fit pb-10 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]">
                     {typeof active.content === "function"
                       ? active.content()
                       : active.content}
                   </motion.div>
+                  <motion.a
+                    layoutId={`button-${active.title}-${id}`}
+                    href={active.ctaLink}
+                    target="_blank"
+                    className="px-4 py-3 text-sm font-bold bg-lime-500 text-white">
+                    {active.ctaText}
+                  </motion.a>
                 </div>
               </div>
             </motion.div>
@@ -129,31 +134,32 @@ export default function ExpandableCards() {
               className=" col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[400px] h-[400px] hover:bg-neutral-50 dark:hover:bg-neutral-800  cursor-pointer">
               <motion.div
                 layoutId={`image-${card.title}-${id}`}
-                className="col-start-1 col-span-1 row-start-1 bg-neutral-950 h-full min-h-full  rounded-sm overflow-hidden">
+                className="col-start-1 col-span-1 row-start-1 bg-black h-full min-h-full  rounded-sm overflow-hidden">
                 <img
                   width={1000}
                   height={1000}
                   src={card.src}
                   alt={card.title}
-                  className="w-full h-full object-cover  object-top opacity-30"
+                  className="w-full h-full object-cover  object-top opacity-50"
                 />
               </motion.div>
-              <div className="col-start-1 col-span-1 row-start-1 p-8">
-                <motion.h3
-                  layoutId={`title-${card.title}-${id}`}
-                  className="font-medium text-neutral-100 dark:text-neutral-200 text-center md:text-left">
-                  {card.title}
-                </motion.h3>
+              <div className="col-start-1 border col-span-1 opacity-100 row-start-1 p-8 z-1">
+                <motion.img
+                  layoutId={`logo-${card.title}-${id}`}
+                  src={card.logo}
+                  alt={card.title}
+                  className="w-12 h-12 object-contain"
+                />
                 <motion.p
                   layoutId={`description-${card.description}-${id}`}
-                  className="text-neutral-100 dark:text-neutral-400 text-center md:text-left">
+                  className="text-neutral-100 text-3xl dark:text-neutral-400  md:text-left">
                   {card.description}
                 </motion.p>
-                <motion.button
-                  layoutId={`button-${card.title}-${id}`}
-                  className="px-6 py-2 text-xs font-bold bg-gray-100 hover:bg-lime-500 rounded-sm hover:text-white text-black  z-100 mt-4 md:mt-0">
-                  {card.ctaText}
-                </motion.button>
+                <motion.h3
+                  layoutId={`title-${card.title}-${id}`}
+                  className="font-medium text-xl text-neutral-100 dark:text-neutral-200 text-center md:text-left">
+                  {card.title}
+                </motion.h3>
               </div>
             </motion.div>
           ))}
@@ -197,112 +203,52 @@ export const CloseIcon = () => {
 
 const cards = [
   {
-    description: "Lana Del Rey",
-    title: "Summertime Sadness",
-    src: "/case-samsung.jpg",
+    description: "MSM",
+    title: "Let us help you grow your business and brand awareness",
+    src: "/s3.png",
+    logo: "/msmlogo.svg",
     ctaText: "Play",
-    ctaLink: "https://ui.aceternity.com/templates",
+    ctaLink: "https://www.msm.digital",
     content: () => {
       return (
         <p>
-          Lana Del Rey, an iconic American singer-songwriter, is celebrated for
-          her melancholic and cinematic music style. Born Elizabeth Woolridge
-          Grant in New York City, she has captivated audiences worldwide with
-          her haunting voice and introspective lyrics. <br /> <br /> Her songs
-          often explore themes of tragic romance, glamour, and melancholia,
-          drawing inspiration from both contemporary and vintage pop culture.
-          With a career that has seen numerous critically acclaimed albums, Lana
-          Del Rey has established herself as a unique and influential figure in
-          the music industry, earning a dedicated fan base and numerous
-          accolades.
+          This is where we get our creative spark from. And epochs of customer
+          focus and talking to the public. This is where we get our creative
+          spark from. And epochs of customer focus and talking to the public.
         </p>
       );
     },
   },
   {
-    description: "Babbu Maan",
-    title: "Mitran Di Chhatri",
-    src: "/hero-bg-home2-34f136.png",
+    description: "StudioCO2",
+    title: "Let us help you grow your business and brand awareness",
+    src: "/s1.png",
+    logo: "/msmlogo.svg",
     ctaText: "Play",
-    ctaLink: "https://ui.aceternity.com/templates",
+    ctaLink: "https://www.msm.digital",
     content: () => {
       return (
         <p>
-          Babu Maan, a legendary Punjabi singer, is renowned for his soulful
-          voice and profound lyrics that resonate deeply with his audience. Born
-          in the village of Khant Maanpur in Punjab, India, he has become a
-          cultural icon in the Punjabi music industry. <br /> <br /> His songs
-          often reflect the struggles and triumphs of everyday life, capturing
-          the essence of Punjabi culture and traditions. With a career spanning
-          over two decades, Babu Maan has released numerous hit albums and
-          singles that have garnered him a massive fan following both in India
-          and abroad.
-        </p>
-      );
-    },
-  },
-
-  {
-    description: "Metallica",
-    title: "For Whom The Bell Tolls",
-    src: "https://assets.aceternity.com/demos/metallica.jpeg",
-    ctaText: "Play",
-    ctaLink: "https://ui.aceternity.com/templates",
-    content: () => {
-      return (
-        <p>
-          Metallica, an iconic American heavy metal band, is renowned for their
-          powerful sound and intense performances that resonate deeply with
-          their audience. Formed in Los Angeles, California, they have become a
-          cultural icon in the heavy metal music industry. <br /> <br /> Their
-          songs often reflect themes of aggression, social issues, and personal
-          struggles, capturing the essence of the heavy metal genre. With a
-          career spanning over four decades, Metallica has released numerous hit
-          albums and singles that have garnered them a massive fan following
-          both in the United States and abroad.
+          This is where we get our creative spark from. And epochs of customer
+          focus and talking to the public. This is where we get our creative
+          spark from. And epochs of customer focus and talking to the public.
         </p>
       );
     },
   },
   {
-    description: "Led Zeppelin",
-    title: "Stairway To Heaven",
-    src: "https://assets.aceternity.com/demos/led-zeppelin.jpeg",
+    description: "Flizzr",
+    title: "Let us help you grow your business and brand awareness",
+    src: "/s2.png",
+    logo: "/msmlogo.svg",
     ctaText: "Play",
-    ctaLink: "https://ui.aceternity.com/templates",
+    ctaLink: "https://www.msm.digital",
     content: () => {
       return (
         <p>
-          Led Zeppelin, a legendary British rock band, is renowned for their
-          innovative sound and profound impact on the music industry. Formed in
-          London in 1968, they have become a cultural icon in the rock music
-          world. <br /> <br /> Their songs often reflect a blend of blues, hard
-          rock, and folk music, capturing the essence of the 1970s rock era.
-          With a career spanning over a decade, Led Zeppelin has released
-          numerous hit albums and singles that have garnered them a massive fan
-          following both in the United Kingdom and abroad.
-        </p>
-      );
-    },
-  },
-  {
-    description: "Mustafa Zahid",
-    title: "Toh Phir Aao",
-    src: "https://assets.aceternity.com/demos/toh-phir-aao.jpeg",
-    ctaText: "Play",
-    ctaLink: "https://ui.aceternity.com/templates",
-    content: () => {
-      return (
-        <p>
-          &quot;Aawarapan&quot;, a Bollywood movie starring Emraan Hashmi, is
-          renowned for its intense storyline and powerful performances. Directed
-          by Mohit Suri, the film has become a significant work in the Indian
-          film industry. <br /> <br /> The movie explores themes of love,
-          redemption, and sacrifice, capturing the essence of human emotions and
-          relationships. With a gripping narrative and memorable music,
-          &quot;Aawarapan&quot; has garnered a massive fan following both in
-          India and abroad, solidifying Emraan Hashmi&apos;s status as a
-          versatile actor.
+          This is where we get our creative spark from. And epochs of customer
+          focus and talking to the public. This is where we get our creative
+          spark from. And epochs of customer focus and talking to the public.
         </p>
       );
     },
