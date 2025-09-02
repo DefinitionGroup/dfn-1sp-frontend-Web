@@ -117,21 +117,9 @@ function Item({
 export default function TextReveal() {
   return (
     <ul style={list}>
-      <Item
-        label="Torsten"
-        number={1}
-        image="/figma-assets/8fda3690b2ecf98551e7ad4b0476a0eb38ccbc93.png"
-      />
-      <Item
-        label="Marcus"
-        number={2}
-        image="/figma-assets/cc92bb9d2bfb8ff0d37fb1475621a71703478baf.png"
-      />
-      <Item
-        label="Sven"
-        number={3}
-        image="/figma-assets/3b647a430cf29747afe610df39cefa32893f4118.png"
-      />
+      <Item label="Torsten" number={1} image="/torsten.png" />
+      <Item label="Marcus" number={2} image="/markus.png" />
+      <Item label="Sven" number={3} image="/sven.png" />
     </ul>
   );
 }
