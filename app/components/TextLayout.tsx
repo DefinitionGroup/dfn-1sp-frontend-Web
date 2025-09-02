@@ -280,8 +280,6 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
                         <AnimatedNumber
                           value={s.value}
                           shouldAnimate={statsInView && animateNumbers}
-                          duration={numberDuration}
-                          ease={numberEase}
                         />
                       ) : (
                         <span>{s.value}</span>

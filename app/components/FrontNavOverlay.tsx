@@ -17,12 +17,16 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 }) => {
   const router = useTransitionRouter();
   const textColor = color === "dark" ? "text-neutral-800" : "text-neutral-50";
+  const imageLogo =
+    color === "dark"
+      ? "/ci/1sp-fulllogotype-blk.svg"
+      : "/ci/1sp-fulllogotype.svg";
   return (
     <nav
       className={`relative hidden md:grid  z-10 grid-cols-12 pt-5 mx-auto container ${className}`}>
       <div className="w-[90px] h-[90px] col-start-1 col-span-1 pt-2">
         <Image
-          src="/ci/1sp-fulllogotype.svg"
+          src={imageLogo}
           alt="1SP Logo"
           width={90}
           height={90}
@@ -53,6 +57,23 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           easing="spring">
           <span className={`${textColor}  text-xxs leading-compress font-bold`}>
             <Link
+              className="hover:text-lime-400"
+              href={"/"}
+              onClick={(e) => {
+                e.preventDefault();
+                router.push("/", {
+                  onTransitionReady: pageAnimation,
+                });
+              }}>
+              Home
+            </Link>
+          </span>
+          <span
+            className={`${textColor} text-xxs leading-compress font-bold`}></span>
+          <span className={`${textColor} text-xxs leading-compress font-bold`}>
+            {" "}
+            <Link
+              className="hover:text-lime-400"
               href={"/projects"}
               onClick={(e) => {
                 e.preventDefault();
@@ -65,22 +86,20 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           </span>
           <span
             className={`${textColor} text-xxs leading-compress font-bold`}></span>
-          <span className={`${textColor} text-xxs leading-compress font-bold`}>
+          <span
+            className={`${textColor} text-xxs leading-compress font-bold hover:text-lime-500`}>
+            {" "}
             <Link
-              href={"/"}
+              className="hover:text-lime-400"
+              href={"/whatwedo"}
               onClick={(e) => {
                 e.preventDefault();
-                router.push("/", {
+                router.push("/whatwedo", {
                   onTransitionReady: pageAnimation,
                 });
               }}>
-              Home
+              What we do
             </Link>
-          </span>
-          <span
-            className={`${textColor} text-xs leading-compress font-bold`}></span>
-          <span className={`${textColor} text-xxs leading-compress font-bold`}>
-            About us
           </span>
         </StaggeredSlideUp>
         <div className="grid grid-cols-12 col-span-12 items-start">

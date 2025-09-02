@@ -78,14 +78,7 @@ export default function LogoCarousel({
     []
   );
 
-  if (!logos.length) {
-    return (
-      <div className={`text-xxs text-neutral-500 ${className}`}>
-        No logos configured.
-      </div>
-    );
-  }
-
+  // Compute sequence unconditionally (avoid conditional hook ordering issues)
   const sequence = useMemo(
     () =>
       Array.from({ length: Math.max(2, duplicate) }, () => logos)
@@ -94,53 +87,59 @@ export default function LogoCarousel({
     [logos, duplicate]
   );
 
+  const isEmpty = logos.length === 0;
+
   return (
     <div
       className={`relative w-full overflow-hidden ${className}`}
       style={{
         height,
       }}>
-      <motion.ul
-        className="flex items-center"
-        style={{
-          gap: `${gapRem}rem`,
-          height,
-        }}
-        animate={
-          isHovered && pauseOnHover
-            ? {}
-            : {
-                x: [0, -100 * duplicate + "%"],
-              }
-        }
-        transition={{
-          duration: speedSeconds,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-        onHoverStart={() => setIsHovered(true)}
-        onHoverEnd={() => setIsHovered(false)}
-        aria-label="Client & partner logos scrolling continuously">
-        {sequence.map(({ alt, src, key }) => (
-          <motion.li
-            key={key}
-            className="flex items-center justify-center shrink-0"
-            style={{ height }}
-            whileHover={{ scale: 1.1 }}
-            transition={{ type: "spring", stiffness: 300 }}>
-            <Image
-              src={src}
-              alt={alt}
-              height={height}
-              width={height * 2}
-              className={`h-full w-auto object-contain ${
-                grayscale ? "grayscale" : ""
-              } opacity-80 hover:opacity-100 transition-opacity`}
-              priority={key.endsWith("-0")}
-            />
-          </motion.li>
-        ))}
-      </motion.ul>
+      {isEmpty ? (
+        <div className="text-xxs text-neutral-500">No logos configured.</div>
+      ) : (
+        <motion.ul
+          className="flex items-center"
+          style={{
+            gap: `${gapRem}rem`,
+            height,
+          }}
+          animate={
+            isHovered && pauseOnHover
+              ? {}
+              : {
+                  x: [0, -100 * duplicate + "%"],
+                }
+          }
+          transition={{
+            duration: speedSeconds,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+          onHoverStart={() => setIsHovered(true)}
+          onHoverEnd={() => setIsHovered(false)}
+          aria-label="Client & partner logos scrolling continuously">
+          {sequence.map(({ alt, src, key }) => (
+            <motion.li
+              key={key}
+              className="flex items-center justify-center shrink-0"
+              style={{ height }}
+              whileHover={{ scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 300 }}>
+              <Image
+                src={src}
+                alt={alt}
+                height={height}
+                width={height * 2}
+                className={`h-full w-auto object-contain ${
+                  grayscale ? "grayscale" : ""
+                } opacity-80 hover:opacity-100 transition-opacity`}
+                priority={key.endsWith("-0")}
+              />
+            </motion.li>
+          ))}
+        </motion.ul>
+      )}
     </div>
   );
 }

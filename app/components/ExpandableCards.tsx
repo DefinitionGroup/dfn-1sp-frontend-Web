@@ -69,13 +69,15 @@ export default function ExpandableCards() {
               layoutId={`card-${active.title}-${id}`}
               ref={ref}
               className="w-full max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col  bg-neutral-900 dark:bg-neutral-900  shadow-2xl overflow-hidden">
-              <motion.div layoutId={`image-${active.title}-${id}`}>
+              <motion.div
+                className="w-full h-100  min-h-[70vh]absolute sm:rounded-t-xl opacity-80 object-cover object-top"
+                layoutId={`image-${active.title}-${id}`}>
                 <img
                   width={200}
                   height={500}
                   src={active.src}
                   alt={active.title}
-                  className="w-full h-100 sm:rounded-t-xl opacity-80 object-cover object-top"
+                  className="w-full h-100 absolute min-h-[70vh] sm:rounded-t-xl opacity-50 object-cover object-top"
                 />
               </motion.div>{" "}
               <motion.img
@@ -84,8 +86,8 @@ export default function ExpandableCards() {
                 alt={active.title}
                 className="w-24 h-20 object-contain absolute top-24 left-8"
               />
-              <div>
-                <div className="flex justify-between items-start p-8">
+              <div className="flex justify-between items-start p-8  z-10 ">
+                <div className="flex justify-between items-start    z-10 left-0">
                   <div className="">
                     <motion.p
                       layoutId={`description-${active.description}-${id}`}
