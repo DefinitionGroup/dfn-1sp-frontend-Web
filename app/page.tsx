@@ -227,6 +227,53 @@ export default function Home() {
           </div>
         </div>
       </div>
+      {/* Portfolio Grid */}
+      <div className="z-1 grid gap-8 col-span-12 col-start-1 container mx-auto row-start-1 grid-cols-12 mb-32">
+        <GridBackground delay={0.2} staggerDelay={0.06} />
+        <div className="z-1 grid col-span-12 gap-4 col-start-1 pt-32 row-start-1 grid-cols-12 ">
+          <Badgemodule
+            className="col-span-2"
+            text="Experts"
+            subtitle="Services"
+            numberEl={"005"}
+          />
+          <header className="col-span-4 col-start-3 border-t ">
+            {/* Headlines */}
+            <div className="flex flex-col lg:gap-8 items-start justify-start w-full">
+              {/* Main Headline */}
+              <div className="flex-1 flex flex-col min-w-0">
+                <h2 className="text-xl text-neutral-900 font-bold font-aspekta">
+                  Super*
+                </h2>
+                <h4 className="text-7xl  text-neutral-900 font-semibold leading-compress font-aspekta">
+                  Brrrroadside
+                </h4>
+                <h4 className="text-xl mt-2 text-neutral-900 font-semibold leading-compress font-aspekta">
+                  One Strategy. Multiple Experts
+                </h4>
+              </div>
+            </div>
+          </header>
+
+          <div className="col-span-8 col-start-7 border-t pt-8  ">
+            <ListContainerComponent>
+              <ListItemComponent size="small" fontWeight="normal" color="black">
+                Full Service. From Start to End.
+              </ListItemComponent>
+              <ListItemComponent size="small" fontWeight="normal" color="black">
+                Connected by one vision. Perfoming your mission.
+              </ListItemComponent>
+              <ListItemComponent size="small" fontWeight="normal" color="black">
+                From longstanding veterans to fresh talents. The best of both
+                worlds.
+              </ListItemComponent>
+            </ListContainerComponent>
+          </div>
+          <div className="col-span-9 col-start-3  mt-32  ">
+            <ExpandableCards />
+          </div>
+        </div>
+      </div>
       {/* Skills Combo Section */}
       <div
         id="Step1"
@@ -385,55 +432,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      {/* Visual Background 2 Section */}
-      <div className="grid grid-cols-12 z-1 mx-auto bg-neutral-100 mt-8 min-h-[90vh] relative font-aspekta">
-        <div className="z-1 grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
-          <Badgemodule
-            className="col-span-2"
-            text="Our Story"
-            subtitle="What we do"
-            numberEl={"012"}
-          />
-          <div className="col-span-10 col-start-3  ">
-            <StaggeredSlideUp
-              className="flex flex-col  items-start justify-start "
-              delay={0.1}
-              staggerDelay={0.1}
-              duration={0.5}
-              distance={80}>
-              <h2 className="text-7xl leading-compress text-gray-900 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
-                We tell your story.
-              </h2>
-              <p className="text-lg text-gray-900 font-medium  max-w-2xs mx-auto">
-                Discover our latest projects in gaming, marketing, and
-                interactive experiences
-              </p>
-            </StaggeredSlideUp>
-          </div>
-          <div className="col-span-2 col-start-3 mt-8 pr-8 text-gray-900 ">
-            <CtaMiniComponent
-              heading="Our roots are gaming."
-              paragraph="This is where we get our creative spark from. And epochs of customer focus and talking to the public."
-              buttonText="Explore"
-              buttonVariant="limesmall"
-              align="left"
-            />
-          </div>
-          <div className="col-span-5 col-start-5 mt-8 ">
-            <ListContainerComponent>
-              <ListItemComponent size="small" fontWeight="bold" color="black">
-                Super*
-              </ListItemComponent>
-              <ListItemComponent size="small" fontWeight="bold" color="black">
-                helping world-class brands create ground-breaking stuff
-              </ListItemComponent>
-              <ListItemComponent size="small" fontWeight="bold" color="black">
-                helping world-class
-              </ListItemComponent>
-            </ListContainerComponent>
-          </div>
-        </div>
-      </div>
+
       {/* Unified engagement O */}
 
       <div className="grid grid-cols-12 z-1 gap-8  mx-auto  relative container font-aspekta">
@@ -455,65 +454,6 @@ export default function Home() {
               kicker="Latency <40ms · Active Retention 68%"
               align="left"
               size="xl"
-            />
-          </div>
-        </div>
-      </div>
-      {/* Portfolio Grid */}
-      <div className="z-1 grid gap-8 col-span-12 col-start-1 container mx-auto row-start-1 grid-cols-12 mb-32">
-        <GridBackground delay={0.2} staggerDelay={0.06} />
-        <div className="z-1 grid col-span-12 gap-4 col-start-1 pt-32 row-start-1 grid-cols-12 ">
-          <Badgemodule
-            className="col-span-2"
-            text="Our Units"
-            subtitle="Services"
-            numberEl={"005"}
-          />
-
-          <div className="col-span-9 col-start-3  ">
-            <ExpandableCards />
-          </div>
-
-          <Badgemodule
-            className="col-span-2 col-start-1 mt-16"
-            text="Our Units"
-            subtitle="Services"
-            numberEl={"005"}
-          />
-
-          <div className="col-span-9  col-start-3 mt-32">
-            <TextLayout
-              width="full"
-              padded={false}
-              eyebrow="About"
-              title="Integrated Experiences"
-              highlight="Platform"
-              subtitle="Bridging interactive engagement & scalable infrastructure."
-              lead="We design modular experiential systems that unify gaming dynamics, marketing funnels, and real-time data insights."
-              paragraphs={[
-                "Our approach starts from core player motivations— translating intent into progressive interaction loops.",
-                "Through layered narrative states and adaptive UI motion, we maintain momentum while surfacing actionable context.",
-              ]}
-              bullets={[
-                "Progressive onboarding",
-                "Behavioral telemetry",
-                "Realtime segmentation",
-                "Composable reward layer",
-                "Progressive onboarding",
-                "Behavioral telemetry",
-                "Realtime segmentation",
-                "Composable reward layer",
-              ]}
-              stats={[
-                { label: "Avg. Retention", value: 1268, suffix: "%" },
-                { label: "Latency", value: "<40", suffix: "ms" },
-                { label: "Avg. Retention", value: 638, suffix: "%" },
-                { label: "Latency", value: "<40", suffix: "ms" },
-                { label: "Avg. Retention", value: 26, suffix: "%" },
-                { label: "Latency", value: "<40", suffix: "ms" },
-              ]}
-              align="left"
-              split
             />
           </div>
         </div>
