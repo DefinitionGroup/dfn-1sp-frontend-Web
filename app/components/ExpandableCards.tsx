@@ -68,34 +68,33 @@ export default function ExpandableCards() {
             <motion.div
               layoutId={`card-${active.title}-${id}`}
               ref={ref}
-              className="w-full max-w-[700px] min-h-[70vh] h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col  bg-neutral-900 dark:bg-neutral-900  shadow-2xl overflow-hidden">
+              className="w-full max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col  bg-neutral-900 dark:bg-neutral-900  shadow-2xl overflow-hidden">
               <motion.div layoutId={`image-${active.title}-${id}`}>
                 <img
                   width={200}
                   height={500}
                   src={active.src}
                   alt={active.title}
-                  className="w-full h-120 sm:rounded-xl object-cover object-top"
+                  className="w-full h-100 sm:rounded-t-xl opacity-80 object-cover object-top"
                 />
-              </motion.div>
-
+              </motion.div>{" "}
+              <motion.img
+                layoutId={`logo-${active.title}-${id}`}
+                src={active.logo}
+                alt={active.title}
+                className="w-24 h-20 object-contain absolute top-24 left-8"
+              />
               <div>
                 <div className="flex justify-between items-start p-8">
                   <div className="">
-                    <motion.img
-                      layoutId={`logo-${active.title}-${id}`}
-                      src={active.logo}
-                      alt={active.title}
-                      className="w-12 h-12 object-contain"
-                    />
                     <motion.p
                       layoutId={`description-${active.description}-${id}`}
-                      className="text-neutral-100 text-5xl py-8 dark:text-neutral-400">
+                      className="text-neutral-100 text-5xl  dark:text-neutral-400">
                       {active.description}
                     </motion.p>{" "}
                     <motion.h3
                       layoutId={`title-${active.title}-${id}`}
-                      className=" text-neutral-300 text-lg max-w-2/3 dark:text-neutral-200">
+                      className=" text-neutral-300 text-xl max-w-2/3 dark:text-neutral-200">
                       {active.title}
                     </motion.h3>
                   </div>
@@ -106,7 +105,7 @@ export default function ExpandableCards() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="text-white lg:text-base mb-8 md:h-fit pb-10 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]">
+                    className="text-white text-md md:text-sm lg:text-base max-w-2/3 mb-2 md:h-fit pb-10 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]">
                     {typeof active.content === "function"
                       ? active.content()
                       : active.content}
@@ -125,16 +124,16 @@ export default function ExpandableCards() {
         ) : null}
       </AnimatePresence>
       <ul className=" w-full ">
-        <StaggeredSlideUp className=" grid grid-cols-3 gap-1 mx-auto h-full min-h-full w-full px-4 ">
+        <StaggeredSlideUp className=" grid grid-cols-3 gap-4 mx-auto h-full min-h-full w-full ">
           {cards.map((card, index) => (
             <motion.div
               layoutId={`card-${card.title}-${id}`}
               key={`card-${card.title}-${id}`}
               onClick={() => setActive(card)}
-              className=" col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[400px] h-[400px] hover:bg-neutral-50 dark:hover:bg-neutral-800  cursor-pointer">
+              className=" col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[400px] rounded-lg overflow-hidden h-[200px]   cursor-pointer">
               <motion.div
                 layoutId={`image-${card.title}-${id}`}
-                className="col-start-1 col-span-1 row-start-1 bg-black h-full min-h-full  rounded-sm overflow-hidden">
+                className="col-start-1 col-span-1 row-start-1 bg-black h-full min-h-full  rounded-lg overflow-hidden">
                 <img
                   width={1000}
                   height={1000}
@@ -204,7 +203,7 @@ export const CloseIcon = () => {
 const cards = [
   {
     description: "MSM",
-    title: "Let us help you grow your business and brand awareness",
+    title: "Let us help you grow your business and brand awarenessxx",
     src: "/s3.png",
     logo: "/msmlogo.svg",
     ctaText: "Play",
@@ -221,11 +220,11 @@ const cards = [
   },
   {
     description: "StudioCO2",
-    title: "Let us help you grow your business and brand awareness",
+    title: "Let us help you grow your business and brand awarenessx",
     src: "/s1.png",
     logo: "/studioco2.svg",
     ctaText: "Play",
-    ctaLink: "https://studioco2.com",
+    ctaLink: "https://studioco2.",
     content: () => {
       return (
         <p>
@@ -238,7 +237,7 @@ const cards = [
   },
   {
     description: "Flizzr",
-    title: "Let us help you grow your business and brand awareness",
+    title: "Let us help you grow your business and brand awarenessa",
     src: "/s2.png",
     logo: "/msmlogo.svg",
     ctaText: "Play",

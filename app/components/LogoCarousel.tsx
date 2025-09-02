@@ -59,7 +59,7 @@ const logoMap: Record<string, string> = {
 };
 
 export default function LogoCarousel({
-  speedSeconds = 40,
+  speedSeconds = 80,
   height = 28,
   gapRem = 4,
   pauseOnHover = true,

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "motion/react";
-
+import { AnimateNumber } from "motion-plus/react";
 /**
  * TextLayout
  * A versatile, animated text layout block for marketing / section intros.
@@ -89,6 +89,11 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
 
   const baseDelay = delay;
 
+  const formatStatValue = (val: StatItem["value"]) => {
+    if (typeof val === "number") return val.toLocaleString();
+    return val; // string as-is (can contain symbols like <40)
+  };
+
   return (
     <div
       className={`relative w-full  ${
@@ -148,7 +153,7 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.6, delay: baseDelay + 0.1 }}
-                className={`text-base  text-neutral-500 dark:text-neutral-400 max-w-1/2 ${alignment}`}>
+                className={`text-base pt-4 text-neutral-800 dark:text-neutral-400 max-w-1/2 ${alignment}`}>
                 {subtitle}
               </motion.p>
             )}
@@ -228,7 +233,26 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
                 {stats.map((s, i) => (
                   <div key={i} className="flex flex-col">
                     <span className="text-2xl md:text-5xl font-semibold bg-gradient-to-r from-lime-400 to-lime-500 bg-clip-text text-transparent">
-                      {s.value}
+                      {typeof s.value === "number" ? (
+                        <motion.span
+                          className="text-lime-500"
+                          variants={{
+                            hidden: { opacity: 0, y: 20 },
+                            visible: {
+                              opacity: 1,
+                              y: 0,
+                              transition: { duration: 0.6, ease: "easeOut" },
+                            },
+                          }}>
+                          <AnimateNumber
+                            format={{ minimumIntegerDigits: 3 }}
+                            transition={{ duration: 1.5, ease: "easeOut" }}>
+                            {s.value}
+                          </AnimateNumber>
+                        </motion.span>
+                      ) : (
+                        <span>{s.value}</span>
+                      )}
                       {s.suffix && (
                         <span className="text-lg align-top ml-0.5">
                           {s.suffix}

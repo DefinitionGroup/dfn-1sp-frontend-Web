@@ -264,7 +264,7 @@
 
 @layer utilities {
   .logo-marquee-track {
-    animation: logo-marquee var(--marquee-duration, 120s) linear infinite;
+    animation: logo-marquee var(--marquee-duration, 220s) linear infinite;
     width: max-content;
   }
   .logo-carousel-mask {

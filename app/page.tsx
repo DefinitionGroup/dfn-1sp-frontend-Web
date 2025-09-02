@@ -328,8 +328,9 @@ export default function Home() {
         className="grid grid-cols-12 z-1 mx-auto  mt-8 min-h-[90vh] relative font-aspekta">
         <HeaderImageVideoComp2
           useVideo={true}
-          videoSrc="/video/12.mp4"
+          videoSrc="/video/cases/squareenix.mp4"
           enableParallax={true}
+          opacity={0.1}
         />
 
         <div className="z-1 grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
@@ -430,7 +431,7 @@ export default function Home() {
       </div>
       {/* Unified engagement O */}
 
-      <div className="grid grid-cols-12 z-1 gap-8  mx-auto relative container font-aspekta">
+      <div className="grid grid-cols-12 z-1 gap-8  mx-auto  relative container font-aspekta">
         <GridBackground />
         <div className="z-1 grid col-span-12  relative top-0 py-32 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
@@ -454,9 +455,9 @@ export default function Home() {
         </div>
       </div>
       {/* Portfolio Grid */}
-      <div className="z-1 grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+      <div className="z-1 grid gap-8 col-span-12 col-start-1 container mx-auto row-start-1 grid-cols-12 mb-32">
         <GridBackground delay={0.2} staggerDelay={0.06} />
-        <div className="z-1 grid col-span-12 gap-8 col-start-1 pt-32 row-start-1 grid-cols-12 ">
+        <div className="z-1 grid col-span-12 gap-4 col-start-1 pt-32 row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2"
             text="Our Units"
@@ -469,13 +470,13 @@ export default function Home() {
           </div>
 
           <Badgemodule
-            className="col-span-2 col-start-1"
+            className="col-span-2 col-start-1 mt-16"
             text="Our Units"
             subtitle="Services"
             numberEl={"005"}
           />
 
-          <div className="col-span-9  col-start-3 ">
+          <div className="col-span-9  col-start-3 mt-32">
             <TextLayout
               width="full"
               padded={false}

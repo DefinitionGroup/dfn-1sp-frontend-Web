@@ -12,6 +12,7 @@ interface HeaderImageVideoCompProps {
   imageAlt?: string;
   className?: string;
   enableParallax?: boolean;
+  opacity?: number; // overlay target opacity when in view
 }
 
 const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
@@ -21,6 +22,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   imageAlt = "Hero Background",
   className = "",
   enableParallax = true,
+  opacity = 0.5, // default overlay opacity
 }) => {
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 500], [0, 250]);
@@ -68,7 +70,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
         <motion.div
           className="absolute inset-0 bg-black"
           initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 0.6 } : { opacity: 0 }}
+          animate={isInView ? { opacity } : { opacity: 0 }}
           transition={{
             duration: 0.8,
             delay: 0.3,
