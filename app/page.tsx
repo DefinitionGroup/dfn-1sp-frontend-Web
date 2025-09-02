@@ -26,6 +26,8 @@ import CtaMiniComponent from "./components/CtaMiniComponent";
 import { ArrowRight } from "@phosphor-icons/react";
 import ArrowBig from "./components/arrowBig";
 import LogoCarousel from "./components/LogoCarousel";
+import WarpOverlay from "./components/overlayNav";
+import HamburgerGradientMenu from "./components/HamburgerGradientMenu";
 export default function Home() {
   const typewriterref = useRef(null);
   const isInView = useInView(typewriterref);
@@ -33,6 +35,9 @@ export default function Home() {
     <>
       <Nav />
       <section className="relative h-[95vh] overflow-hidden">
+        <header className="fixed top-4 right-4 border min-full text-white min-h-[120px] z-[3000]">
+          <HamburgerGradientMenu />
+        </header>
         {/* Background Image with Overlay */}
         <HeaderImageVideoComp
           useVideo={true}
