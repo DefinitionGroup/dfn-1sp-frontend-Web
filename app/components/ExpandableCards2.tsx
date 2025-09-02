@@ -61,23 +61,23 @@ export default function ExpandableCards2() {
                   duration: 0.05,
                 },
               }}
-              className="flex absolute top-2 right-2 lg:hidden items-center overflow-hidden  justify-around   rounded-full h-6 w-6"
+              className="flex absolute top-2 right-2 lg:hidden items-center overflow-hidden bg-neutral-900 justify-around   rounded-full h-6 w-6"
               onClick={() => setActive(null)}>
               <CloseIcon />
             </motion.button>
             <motion.div
               layoutId={`card-${active.title}-${id}`}
               ref={ref}
-              className="w-full max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col  bg-neutral-900 dark:bg-neutral-900  shadow-2xl overflow-hidden">
+              className="w-full max-w-[900px] min-h-[70vh]  relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col  bg-neutral-900 dark:bg-neutral-900  shadow-2xl overflow-hidden">
               <motion.div
-                className="w-full h-100  min-h-[70vh]absolute sm:rounded-t-xl opacity-80 object-cover object-top"
+                className="w-full h-100   sm:rounded-t-xl opacity-80 object-cover object-top"
                 layoutId={`image-${active.title}-${id}`}>
                 <img
                   width={200}
                   height={500}
                   src={active.src}
                   alt={active.title}
-                  className="w-full h-100 absolute min-h-[70vh] sm:rounded-t-xl opacity-50 object-cover object-top"
+                  className="w-full h-100 absolute  sm:rounded-t-xl opacity-50 object-cover object-top"
                 />
               </motion.div>{" "}
               <motion.img
@@ -86,7 +86,7 @@ export default function ExpandableCards2() {
                 alt={active.title}
                 className="w-24 h-20 object-contain absolute top-24 left-8"
               />
-              <div className="flex justify-between border-t border-neutral-100 items-start m-8 pt-8 z-10 ">
+              <div className="flex justify-between border-t h-full border-neutral-100 items-start m-8 pt-8 z-10 ">
                 <div className="flex justify-between items-start   z-10 left-0">
                   <div className="">
                     <motion.p
@@ -135,7 +135,7 @@ export default function ExpandableCards2() {
               className=" col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[240px] rounded-lg overflow-hidden hover:scale-105 transition duration-200 h-[100px] cursor-pointer">
               <motion.div
                 layoutId={`image-${card.title}-${id}`}
-                className="col-start-1 col-span-1 row-start-1 bg-black h-full min-h-full  rounded-lg overflow-hidden">
+                className="col-start-1 col-span-1 row-start-1 bg-black h-full  rounded-lg overflow-hidden">
                 <img
                   width={1000}
                   height={1000}

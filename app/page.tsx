@@ -85,7 +85,6 @@ export default function Home() {
           <LogoCarousel />
         </div>
       </section>
-
       {/* subline rightection */}
       <div className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta">
         <GridBackground />
@@ -110,7 +109,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
       {/* SHOWTIME  GALLERY */}
       <div className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta">
         <GridBackground />
@@ -156,7 +154,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
       {/* We tell your Story */}
       <div className="grid grid-cols-12 z-1 mx-auto  relative font-aspekta">
         <HeaderImageVideoComp2
@@ -299,7 +296,6 @@ export default function Home() {
           </div>
         </div>{" "}
       </div>
-
       {/* People Gallery Section */}
       <div className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta gap-4  ">
         <GridBackground />
@@ -309,9 +305,9 @@ export default function Home() {
             subtitle="What we do"
             numberEl={"006"}
           />
-          <ArrowBig animate={true} size={230} className=" my-16 pr-32 pt-32" />
+          <ArrowBig animate={true} size={230} className="  pr-32" />
           <CtaMiniComponent
-            className="pt-32 max-w-1/2"
+            className=" w-2/3"
             heading="Ideas."
             paragraph="At 1sp, our dedicated team is fueled by creativity and innovation, designing exceptional marketing campaigns that truly connect with audiences."
             buttonText="Get in touch"
@@ -348,37 +344,38 @@ export default function Home() {
               </ListItemComponent>
             </ListContainerComponent>
           </div>
-          <div className="col-span-12  col-start-1 ">
+          <div className="col-span-12    col-start-1 ">
             <PeopleShowcaseHero />
-          </div>
-          <header className="col-span-3 col-start-1 ">
-            {/* Headlines */}
-            <div className="flex flex-col lg:gap-8 items-start justify-start w-full">
-              {/* Main Headline */}
-              <div className="flex-1 flex flex-col min-w-0">
-                <h2 className="text-3xl text-neutral-900 f font-aspekta">
-                  Igniting Creativity:{" "}
+            <div className="grid gap-8 grid-cols-12 mt-16 mb-32">
+              <header className="col-span-3  col-start-1 ">
+                {/* Headlines */}
+                <div className="flex flex-col lg:gap-8 items-start justify-start w-full">
+                  {/* Main Headline */}
+                  <div className="flex-1 flex flex-col min-w-0">
+                    <h2 className="text-3xl text-neutral-900 f font-aspekta">
+                      Igniting Creativity:{" "}
+                    </h2>
+                    <h4 className="text-3xl  text-neutral-900  font-aspekta">
+                      <span className="text-neutral-200">Unique People.</span>
+                    </h4>
+                  </div>
+                </div>
+              </header>{" "}
+              <header className="col-span-3 col-start-4  ">
+                <h2 className="text-sm text-neutral-500 font-medium font-aspekta">
+                  At 1sp, we are driven by a team of passionate individuals who
+                  thrive on creativity and innovation, crafting unique marketing
+                  campaigns that resonate with audiences.
                 </h2>
-                <h4 className="text-3xl  text-neutral-900  font-aspekta">
-                  <span className="text-neutral-200">Unique People.</span>
-                </h4>
-              </div>
+              </header>{" "}
             </div>
-          </header>
-          <header className="col-span-6 col-start-4  ">
-            <h2 className="text-base text-neutral-900 font-aspekta">
-              At 1sp, we are driven by a team of passionate individuals who
-              thrive on creativity and innovation, crafting unique marketing
-              campaigns that resonate with audiences.
-            </h2>
-          </header>
+          </div>
         </div>
       </div>
-
       {/* Visual Background 2 Section */}
       <div
         id="Step3"
-        className="grid grid-cols-12 z-1 mx-auto  mt-8 min-h-[90vh] relative font-aspekta">
+        className="grid grid-cols-12 z-2 mx-auto  mt-8 min-h-[90vh] relative font-aspekta">
         <HeaderImageVideoComp2
           useVideo={true}
           videoSrc="/video/cases/squareenix.mp4"
@@ -415,33 +412,86 @@ export default function Home() {
           </div>
         </div>
       </div>
+      {/* Unified engagement Overview */}
+      <section className="bg-neutral-50 relative">
+        <div className="grid grid-cols-12 z-1 gap-8  mx-auto elative container font-aspekta">
+          <GridBackground />
+          <div className="z-1 grid col-span-12  relative top-0 py-64 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+            <div className="col-span-9 col-start-3 row-start-1 ">
+              <TextHeadlineCombo
+                eyebrow="We build Software"
+                headline="Unified "
+                highlight="Engagement"
+                subhead="A modular interaction layer bridging real‑time data, progression & storytelling dynamics. "
+                kicker="Latency <40ms · Active Retention 68%"
+                align="left"
+                size="xl"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* We tell your Story */}
+      <div className="grid grid-cols-12 z-1 mx-auto  relative font-aspekta">
+        <HeaderImageVideoComp2
+          useVideo={false}
+          imageSrc="/hr.png"
+          enableParallax={false}
+        />
 
-      {/* Unified engagement O */}
-
-      <div className="grid grid-cols-12 z-1 gap-8  mx-auto  relative container font-aspekta">
-        <GridBackground />
-        <div className="z-1 grid col-span-12  relative top-0 py-32 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+        <div className="z-1 grid col-span-12 py-32 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2"
-            text="Our Units"
-            subtitle="Services"
-            numberEl={1}
+            text="Next Step"
+            subtitle="Work with us."
+            numberEl={"008"}
           />
 
-          <div className="col-span-9 col-start-3 row-start-1 ">
-            <TextHeadlineCombo
-              eyebrow="Overview"
-              headline="Unified Engagement"
-              highlight="OS"
-              subhead="A modular interaction layer bridging real‑time data, progression & storytelling dynamics."
-              kicker="Latency <40ms · Active Retention 68%"
-              align="left"
-              size="xl"
-            />
+          <div className="col-span-10 col-start-3 ">
+            <StaggeredSlideUp
+              className="flex flex-col  items-start justify-start "
+              delay={0.0}
+              staggerDelay={0.1}
+              duration={0.5}
+              distance={80}>
+              <h2 className="text-9xl text-gray-100  font-nyghtserif font-semibold tracking-tight leading-compress pb-8">
+                Show&nbsp;Time
+              </h2>
+              <p className="text-3xl text-gray-100  max-w-2xs mx-auto">
+                Turn & Burn around Ideas, Deadlines, Campaigns.
+              </p>
+              <p className="text-base mt-4 text-gray-100  max-w-2xs mx-auto">
+                With the best clients and colleagues.
+              </p>
+            </StaggeredSlideUp>
+          </div>
+
+          <div className="col-span-9 col-start-3 mt-8 ">
+            <ListContainerComponent>
+              <ListItemComponent size="medium" fontWeight="normal">
+                Play the business game.
+              </ListItemComponent>
+              <ListItemComponent size="medium" fontWeight="normal">
+                Touch the hearts and minds of audiences.
+              </ListItemComponent>
+              <ListItemComponent size="medium" fontWeight="normal">
+                Use the newest tools. Bring in your ideas. Work with top tier
+                clients.
+              </ListItemComponent>
+              <ListItemComponent size="medium" fontWeight="normal">
+                Be heard – as we listen.
+              </ListItemComponent>
+            </ListContainerComponent>
+
+            <p className="mt-8 flex items-start justify-start gap-8">
+              <Button2
+                variant="lime"
+                text="Join us for a ride"
+                className="w-fit"></Button2>
+            </p>
           </div>
         </div>
       </div>
-
       {/* Footer */}
       <Footer />
       {/* Footer Bottom */}
