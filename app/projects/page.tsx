@@ -408,9 +408,9 @@ export default function Home() {
                 "Composable reward layer",
               ]}
               stats={[
-                { label: "Avg. Retention", value: 68, suffix: "%" },
+                { label: "Avg. Retention", value: 168, suffix: "%" },
                 { label: "Latency", value: "<40", suffix: "ms" },
-                { label: "Avg. Retention", value: 68, suffix: "%" },
+                { label: "Avg. Retention", value: 1268, suffix: "%" },
                 { label: "Latency", value: "<40", suffix: "ms" },
                 { label: "Avg. Retention", value: 68, suffix: "%" },
                 { label: "Latency", value: "<40", suffix: "ms" },

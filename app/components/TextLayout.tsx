@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { motion } from "motion/react";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, animate } from "motion/react";
 import { AnimateNumber } from "motion-plus/react";
 /**
  * TextLayout
@@ -46,7 +46,45 @@ export interface TextLayoutProps {
   className?: string;
   /** Two-column split (lead + body) at large screens */
   split?: boolean;
+  /** Animate numeric stats counting up when in view */
+  animateNumbers?: boolean;
+  /** Duration (seconds) for number animation */
+  numberDuration?: number;
+  /** Easing for number animation */
+  numberEase?: [number, number, number, number];
 }
+
+// AnimatedNumber sub-component
+const AnimatedNumber: React.FC<{
+  value: number;
+  shouldAnimate: boolean;
+  duration: number;
+  ease: [number, number, number, number];
+}> = ({ value, shouldAnimate, duration, ease }) => {
+  const ref = useRef<HTMLSpanElement | null>(null);
+  const lastTarget = useRef<number>(0);
+
+  useEffect(() => {
+    if (!shouldAnimate || !ref.current) return;
+    if (lastTarget.current === value) return;
+    lastTarget.current = value;
+
+    const controls = animate(0, value, {
+      duration,
+      ease,
+      onUpdate: (latest) => {
+        if (ref.current) {
+          ref.current.textContent = Math.round(latest).toLocaleString();
+        }
+      },
+    });
+    return () => controls.stop();
+  }, [shouldAnimate, value, duration, ease]);
+
+  return (
+    <span ref={ref}>{!shouldAnimate ? value.toLocaleString() : null}</span>
+  );
+};
 
 const widthMap = {
   sm: "max-w-md",
@@ -72,6 +110,9 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
   delay = 0,
   className = "",
   split = true,
+  animateNumbers = true,
+  numberDuration = 2.2,
+  numberEase = [0.16, 1, 0.3, 1],
 }) => {
   const alignment =
     align === "center"
@@ -88,6 +129,7 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
       : "items-start";
 
   const baseDelay = delay;
+  const [statsInView, setStatsInView] = useState(false);
 
   const formatStatValue = (val: StatItem["value"]) => {
     if (typeof val === "number") return val.toLocaleString();
@@ -228,28 +270,19 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true, amount: 0.2 }}
+                onViewportEnter={() => setStatsInView(true)}
                 transition={{ duration: 0.6, delay: baseDelay + 0.3 }}
                 className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
                 {stats.map((s, i) => (
                   <div key={i} className="flex flex-col">
                     <span className="text-2xl md:text-5xl font-semibold bg-gradient-to-r from-lime-400 to-lime-500 bg-clip-text text-transparent">
                       {typeof s.value === "number" ? (
-                        <motion.span
-                          className="text-lime-500"
-                          variants={{
-                            hidden: { opacity: 0, y: 20 },
-                            visible: {
-                              opacity: 1,
-                              y: 0,
-                              transition: { duration: 0.6, ease: "easeOut" },
-                            },
-                          }}>
-                          <AnimateNumber
-                            format={{ minimumIntegerDigits: 3 }}
-                            transition={{ duration: 1.5, ease: "easeOut" }}>
-                            {s.value}
-                          </AnimateNumber>
-                        </motion.span>
+                        <AnimatedNumber
+                          value={s.value}
+                          shouldAnimate={statsInView && animateNumbers}
+                          duration={numberDuration}
+                          ease={numberEase}
+                        />
                       ) : (
                         <span>{s.value}</span>
                       )}

@@ -500,11 +500,11 @@ export default function Home() {
                 "Composable reward layer",
               ]}
               stats={[
-                { label: "Avg. Retention", value: 68, suffix: "%" },
+                { label: "Avg. Retention", value: 1268, suffix: "%" },
                 { label: "Latency", value: "<40", suffix: "ms" },
-                { label: "Avg. Retention", value: 68, suffix: "%" },
+                { label: "Avg. Retention", value: 638, suffix: "%" },
                 { label: "Latency", value: "<40", suffix: "ms" },
-                { label: "Avg. Retention", value: 68, suffix: "%" },
+                { label: "Avg. Retention", value: 26, suffix: "%" },
                 { label: "Latency", value: "<40", suffix: "ms" },
               ]}
               align="left"
