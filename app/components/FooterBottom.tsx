@@ -21,19 +21,15 @@ const FooterBottom = () => {
               href="#"
               className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
               aria-label="Meta">
-              <img
-                src="/figma-assets/dbe4393bf025a2ee6f52b6ffa67839900d2dde3f.svg"
-                alt="Meta"
-                className="w-full h-full"
-              />
+              <img src="/MetaLogo.svg" alt="Meta" className="w-full h-full" />
             </a>
             <a
               href="#"
               className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
               aria-label="Instagram">
               <img
-                src="/figma-assets/c3ec72b912f3db71ebfdd6dc8982a3994219f580.svg"
                 alt="Instagram"
+                src="/InstagramLogo.svg"
                 className="w-full h-full"
               />
             </a>
@@ -42,7 +38,7 @@ const FooterBottom = () => {
               className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
               aria-label="TikTok">
               <img
-                src="/figma-assets/7a52484c3cf48e40037625c162561fb8e28184a1.svg"
+                src="TiktokLogo.svg"
                 alt="TikTok"
                 className="w-full h-full"
               />
@@ -52,7 +48,7 @@ const FooterBottom = () => {
               className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
               aria-label="LinkedIn">
               <img
-                src="/figma-assets/38295afaf7520d16ccbdb33c470334ed843164f5.svg"
+                src="/LinkedinLogo.svg"
                 alt="LinkedIn"
                 className="w-full h-full"
               />
