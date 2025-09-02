@@ -86,8 +86,8 @@ export default function ExpandableCards() {
                 alt={active.title}
                 className="w-24 h-20 object-contain absolute top-24 left-8"
               />
-              <div className="flex justify-between items-start p-8  z-10 ">
-                <div className="flex justify-between items-start    z-10 left-0">
+              <div className="flex justify-between border-t border-neutral-100 items-start m-8 pt-8 z-10 ">
+                <div className="flex justify-between items-start   z-10 left-0">
                   <div className="">
                     <motion.p
                       layoutId={`description-${active.description}-${id}`}
@@ -208,7 +208,7 @@ const cards = [
     title: "Let us help you grow your business and brand awarenessxx",
     src: "/s3.png",
     logo: "/msmlogo.svg",
-    ctaText: "Play",
+    ctaText: "Visit MSM",
     ctaLink: "https://www.msm.digital",
     content: () => {
       return (
@@ -225,7 +225,7 @@ const cards = [
     title: "Let us help you grow your business and brand awarenessx",
     src: "/s1.png",
     logo: "/studioco2.svg",
-    ctaText: "Play",
+    ctaText: "Play @ StudioCo2",
     ctaLink: "https://studioco2.",
     content: () => {
       return (
@@ -242,7 +242,7 @@ const cards = [
     title: "Let us help you grow your business and brand awarenessa",
     src: "/s2.png",
     logo: "/msmlogo.svg",
-    ctaText: "Play",
+    ctaText: "Rush to Flizzr",
     ctaLink: "https://www.msm.digital",
     content: () => {
       return (

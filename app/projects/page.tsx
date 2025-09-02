@@ -147,13 +147,13 @@ export default function Home() {
           </div>
           <div className="col-span-9 col-start-5 mt-8 ">
             <ListContainerComponent>
-              <ListItemComponent size="medium" fontWeight="">
+              <ListItemComponent size="medium" fontWeight="normal">
                 From Game and Retail.
               </ListItemComponent>
-              <ListItemComponent size="medium" fontWeight="">
+              <ListItemComponent size="medium" fontWeight="normal">
                 helping world-class brands create ground-breaking stuff
               </ListItemComponent>
-              <ListItemComponent size="medium" fontWeight="">
+              <ListItemComponent size="medium" fontWeight="normal">
                 helping world-class
               </ListItemComponent>
             </ListContainerComponent>
@@ -175,6 +175,8 @@ export default function Home() {
             className="pt-32 max-w-1/2"
             heading="Ideas."
             paragraph="At 1sp, our dedicated team is fueled by creativity and innovation, designing exceptional marketing campaigns that truly connect with audiences."
+            buttonText="Get in touch"
+            buttonVariant="limesmall"
           />
         </div>
         <div className="col-span-12 container col-start-3 row-start-1 grid grid-cols-12 gap-4  pt-32  ">

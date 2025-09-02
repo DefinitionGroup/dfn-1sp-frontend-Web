@@ -3,8 +3,16 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "motion/react";
 
+// Hoisted constant to avoid recreating object each render
+const EASING_MAP = {
+  smooth: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
+  spring: [0.16, 1, 0.3, 1] as [number, number, number, number],
+  "ease-out": [0, 0, 0.2, 1] as [number, number, number, number],
+  bounce: [0.68, -0.55, 0.265, 1.55] as [number, number, number, number],
+};
+
 interface StaggeredSlideUpProps {
-  children: React.ReactNode[];
+  children: React.ReactNode | React.ReactNode[];
   className?: string;
   delay?: number;
   staggerDelay?: number;
@@ -44,7 +52,6 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
   });
   const [hasTriggered, setHasTriggered] = useState(false);
 
-  // More reliable trigger mechanism
   useEffect(() => {
     if (isInView && !hasTriggered) {
       setHasTriggered(true);
@@ -54,7 +61,6 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
     }
   }, [isInView, hasTriggered, debug]);
 
-  // Reset trigger if triggerOnce is false
   useEffect(() => {
     if (!triggerOnce && !isInView) {
       setHasTriggered(false);
@@ -63,19 +69,10 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
       }
     }
   }, [isInView, triggerOnce, debug]);
-  const easingMap = {
-    smooth: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
-    spring: [0.16, 1, 0.3, 1] as [number, number, number, number],
-    "ease-out": [0, 0, 0.2, 1] as [number, number, number, number],
-    bounce: [0.68, -0.55, 0.265, 1.55] as [number, number, number, number],
-  };
 
-  // Performance optimization: Memoize variants
   const memoizedContainerVariants = React.useMemo(
     () => ({
-      hidden: {
-        opacity: 1,
-      },
+      hidden: { opacity: 1 },
       visible: {
         opacity: 1,
         transition: {
@@ -92,45 +89,34 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
 
   const memoizedItemVariants = React.useMemo(
     () => ({
-      hidden: {
-        opacity: 0,
-        y: distance,
-        scale: 0.95,
-      },
+      hidden: { opacity: 0, y: distance, scale: 0.95 },
       visible: {
         opacity: 1,
         y: 0,
         scale: 1,
-        transition: {
-          duration,
-          ease: easingMap[easing],
-        },
+        transition: { duration, ease: EASING_MAP[easing] },
       },
     }),
-    [distance, duration, easing, easingMap]
+    [distance, duration, easing]
   );
 
   const memoizedMaskVariants = React.useMemo(
     () => ({
-      hidden: {
-        y: 0,
-      },
+      hidden: { y: 0 },
       visible: {
         y: `-${maskHeight}`,
         transition: {
           duration: duration * 0.8,
-          ease: easingMap[easing],
+          ease: EASING_MAP[easing],
           delay: 0.1,
         },
       },
     }),
-    [maskHeight, duration, easing, easingMap]
+    [maskHeight, duration, easing]
   );
 
-  // Determine animation state based on our reliable trigger
   const shouldAnimate = hasTriggered || isInView;
 
-  // Add intersection observer fallback for better browser support
   useEffect(() => {
     const currentRef = ref.current;
     if (!currentRef || hasTriggered) return;
@@ -166,10 +152,36 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
     };
   }, [threshold, viewport.margin, hasTriggered, triggerOnce, debug]);
 
-  // Validate children array
   if (!Array.isArray(children) || children.length === 0) {
     if (debug) {
       console.warn("StaggeredSlideUp: No valid children provided");
+    }
+    // If a single child (ReactNode) was passed, still render container without map
+    if (!Array.isArray(children) && children) {
+      return (
+        <motion.div
+          ref={ref}
+          className={`relative ${className}`}
+          variants={memoizedContainerVariants}
+          initial="hidden"
+          animate={shouldAnimate ? "visible" : "hidden"}
+          style={
+            debug ? { border: "2px dashed red", padding: "4px" } : undefined
+          }>
+          <div className="relative overflow-hidden">
+            <motion.div
+              variants={memoizedItemVariants}
+              className="relative z-10">
+              {children}
+            </motion.div>
+            <motion.div
+              variants={memoizedMaskVariants}
+              className="absolute inset-0 z-20 pointer-events-none"
+              style={{ height: maskHeight }}
+            />
+          </div>
+        </motion.div>
+      );
     }
     return <div className={className}></div>;
   }
@@ -189,18 +201,13 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
       )}
       {children.map((child, index) => (
         <div key={index} className="relative overflow-hidden">
-          {/* Content with slide-up animation */}
           <motion.div variants={memoizedItemVariants} className="relative z-10">
             {child}
           </motion.div>
-
-          {/* Animated mask overlay */}
           <motion.div
             variants={memoizedMaskVariants}
             className="absolute inset-0 z-20 pointer-events-none"
-            style={{
-              height: maskHeight,
-            }}
+            style={{ height: maskHeight }}
           />
         </div>
       ))}

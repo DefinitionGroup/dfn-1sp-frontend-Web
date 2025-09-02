@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, animate } from "motion/react";
-import { AnimateNumber } from "motion-plus/react";
 /**
  * TextLayout
  * A versatile, animated text layout block for marketing / section intros.
@@ -280,6 +279,8 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
                         <AnimatedNumber
                           value={s.value}
                           shouldAnimate={statsInView && animateNumbers}
+                          duration={numberDuration}
+                          ease={numberEase}
                         />
                       ) : (
                         <span>{s.value}</span>
