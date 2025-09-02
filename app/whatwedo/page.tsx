@@ -31,8 +31,6 @@ export default function Home() {
   const isInView = useInView(typewriterref);
   return (
     <>
-      <Nav />
-
       {/* Navigation */}
       <FrontNavOverlay color="dark" />
 

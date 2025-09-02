@@ -26,12 +26,12 @@ import TextLayout from "@/app/components/TextLayout";
 import TypewriterChangeContentExample from "@/app/components/TyperwriterHeadline";
 import HeaderImageVideoComp2 from "@/app/components/HeaderImageVideoComp2";
 import PeopleShowcaseHero from "@/app/components/PeopleShowcaseHero";
+import HamburgerGradientMenu from "@/app/components/HamburgerGradientMenu";
 export default function Home() {
   const typewriterref = useRef(null);
   const isInView = useInView(typewriterref);
   return (
     <>
-      <Nav />
       <section className="relative h-[95vh] overflow-hidden">
         {/* Background Image with Overlay */}
         <HeaderImageVideoComp
@@ -41,9 +41,9 @@ export default function Home() {
           opacity="opacity-75"
         />
         {/* Navigation */}
+        <HamburgerGradientMenu />
         <FrontNavOverlay />
         {/* Hero Content */}
-
         <div className="relative z-10 container top-[200px]  mx-auto ">
           <StaggeredSlideUp className="space-y-6 max-w-full ">
             <h1 className="text-neutral-50  pb-2 text-9xl border-b font-bold  max-w-1/3">

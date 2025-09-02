@@ -33,7 +33,6 @@ export default function Home() {
   const isInView = useInView(typewriterref);
   return (
     <>
-      <Nav />
       <section className="relative h-[95vh] overflow-hidden">
         <HamburgerGradientMenu />
 
