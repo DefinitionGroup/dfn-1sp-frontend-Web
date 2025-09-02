@@ -25,6 +25,7 @@ import ListItemComponent from "./components/ListItemComponent";
 import CtaMiniComponent from "./components/CtaMiniComponent";
 import { ArrowRight } from "@phosphor-icons/react";
 import ArrowBig from "./components/arrowBig";
+import ExpandableCards2 from "./components/ExpandableCards2";
 import LogoCarousel from "./components/LogoCarousel";
 import WarpOverlay from "./components/overlayNav";
 import HamburgerGradientMenu from "./components/HamburgerGradientMenu";
@@ -169,7 +170,7 @@ export default function Home() {
             className="col-span-2"
             text="Our Story"
             subtitle="What we do"
-            numberEl={"003"}
+            numberEl={"002"}
           />
 
           <div className="col-span-10 col-start-3 ">
@@ -220,7 +221,7 @@ export default function Home() {
             className="col-span-2"
             text="Visions"
             subtitle="The Founders"
-            numberEl={"004"}
+            numberEl={"003"}
           />
           <div className="col-start-3 col-span-9">
             <TextReveal />
@@ -228,14 +229,14 @@ export default function Home() {
         </div>
       </div>
       {/* Portfolio Grid */}
-      <div className="z-1 grid gap-8 col-span-12 col-start-1 container mx-auto row-start-1 grid-cols-12 mb-32">
+      <div className="z-4 grid gap-8 col-span-12 relative col-start-1 container mx-auto row-start-1 grid-cols-12 mb-32">
         <GridBackground delay={0.2} staggerDelay={0.06} />
         <div className="z-1 grid col-span-12 gap-4 col-start-1 pt-32 row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2"
             text="Experts"
             subtitle="Services"
-            numberEl={"005"}
+            numberEl={"004"}
           />
           <header className="col-span-4 col-start-3 border-t ">
             {/* Headlines */}
@@ -287,9 +288,9 @@ export default function Home() {
           <div className="z-1 grid col-span-12 py-32 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
             <Badgemodule
               className="col-span-2"
-              text="Our Story"
-              subtitle="What we do"
-              numberEl={"003"}
+              text="Laser Focused"
+              subtitle="Our Services"
+              numberEl={"005"}
             />
 
             <div className="col-span-9 col-start-3">
@@ -304,9 +305,9 @@ export default function Home() {
         <GridBackground />
         <div className="z-1 flex flex-col col-span-2 pt-32 justify-start items-start  col-start-1 mx-auto row-start-1">
           <Badgemodule
-            text="Our Story"
+            text="Per  Form"
             subtitle="What we do"
-            numberEl={"007"}
+            numberEl={"006"}
           />
           <ArrowBig animate={true} size={230} className=" my-16 pr-32 pt-32" />
           <CtaMiniComponent
@@ -390,7 +391,7 @@ export default function Home() {
             className="col-span-2"
             text="Our Story"
             subtitle="What we do"
-            numberEl={"002"}
+            numberEl={"007"}
           />
           <div className="col-span-10 col-start-3  ">
             <StaggeredSlideUp
@@ -408,27 +409,9 @@ export default function Home() {
               </p>
             </StaggeredSlideUp>
           </div>
-          <div className="col-span-2 col-start-3 mt-8 pr-8 text-gray-100 ">
-            <CtaMiniComponent
-              heading="Our roots are gaming."
-              paragraph="This is where we get our creative spark from. And epochs of customer focus and talking to the public."
-              buttonText="Explore"
-              buttonVariant="limesmall"
-              align="left"
-            />
-          </div>
-          <div className="col-span-5 col-start-5 mt-8 ">
-            <ListContainerComponent>
-              <ListItemComponent size="medium" fontWeight="bold">
-                Super*
-              </ListItemComponent>
-              <ListItemComponent size="medium" fontWeight="bold">
-                helping world-class brands create ground-breaking stuff
-              </ListItemComponent>
-              <ListItemComponent size="medium" fontWeight="normal">
-                helping world-class
-              </ListItemComponent>
-            </ListContainerComponent>
+
+          <div className="col-span-9 col-start-3 mt-8 ">
+            <ExpandableCards2 />
           </div>
         </div>
       </div>
