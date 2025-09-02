@@ -35,9 +35,8 @@ export default function Home() {
     <>
       <Nav />
       <section className="relative h-[95vh] overflow-hidden">
-        <header className="fixed top-4 right-4 border min-full text-white min-h-[120px] z-[3000]">
-          <HamburgerGradientMenu />
-        </header>
+        <HamburgerGradientMenu />
+
         {/* Background Image with Overlay */}
         <HeaderImageVideoComp
           useVideo={true}

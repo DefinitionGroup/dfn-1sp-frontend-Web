@@ -120,10 +120,10 @@ function OverlayRoot({
   panelClassName,
 }: {
   id: string;
-  innerRef: React.RefObject<HTMLDivElement>;
+  innerRef: React.RefObject<HTMLDivElement | null>;
   items: MenuItem[];
   onClose: () => void;
-  firstLinkRef: React.RefObject<HTMLAnchorElement>;
+  firstLinkRef: React.RefObject<HTMLAnchorElement | null>;
   panelClassName?: string;
 }) {
   return (
@@ -136,7 +136,8 @@ function OverlayRoot({
       aria-modal="true"
       role="dialog"
       aria-label="Main navigation overlay">
-      <GradientBackdrop onClose={onClose} />
+      {/* Fullscreen animated gradient backdrop */}
+      <FullscreenGradientBackdrop onClose={onClose} />
       <motion.div
         ref={innerRef}
         id={id}
@@ -182,8 +183,96 @@ function OverlayRoot({
   );
 }
 
-/* ------------------ Gradient Backdrop (adapted) ------------------ */
+// Legacy GradientOverlay removed in favor of responsive fullscreen variant
 
+/**
+ * New fullscreen gradient backdrop (no explicit numeric width/height sizing).
+ * Uses inset-0 layers, radial-gradients sized by viewport automatically and animated via scale/opacity.
+ */
+function FullscreenGradientBackdrop({ onClose }: { onClose: () => void }) {
+  const breathe = useMotionValue(0);
+  const isPresent = useIsPresent();
+
+  useEffect(() => {
+    if (!isPresent) {
+      animate(breathe, 0, { duration: 0.4, ease: "easeInOut" });
+      return;
+    }
+    (async () => {
+      await animate(breathe, 1, {
+        duration: 0.6,
+        ease: [0, 0.55, 0.45, 1],
+      });
+      animate(breathe, [null, 0.85, 1.05, 0.9, 1], {
+        duration: 24,
+        repeat: Infinity,
+        ease: "easeInOut",
+      });
+    })();
+  }, [isPresent, breathe]);
+
+  return (
+    <div
+      className="absolute inset-0"
+      aria-hidden="true"
+      onClick={onClose}>
+      {/* Dim layer */}
+      <motion.div
+        className="absolute inset-0 bg-neutral-950"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.55 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+      />
+      {/* Large breathing radial field (covers viewport without explicit sizing) */}
+      <motion.div
+        className="absolute inset-0 mix-blend-screen"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{
+          opacity: [0.5, 0.75, 0.55, 0.7],
+          rotate: [0, 25, -10, 0],
+        }}
+        exit={{ opacity: 0, scale: 0.9 }}
+        transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
+        style={{
+          scale: breathe,
+          background:
+            "radial-gradient(circle at 35% 40%, rgba(90,255,80,0.85), rgba(40,130,20,0.05) 65%)",
+          filter: "blur(220px)",
+        }}
+      />
+      {/* Accent layer top-left */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none mix-blend-screen"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0.2, 0.35, 0.25, 0.3] }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+        style={{
+          background:
+            "radial-gradient(circle at 10% 15%, rgba(200,50,30,0.85), rgba(255,60,40,0.05) 60%)",
+          filter: "blur(260px)",
+        }}
+      />
+      {/* Accent layer bottom-right */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none mix-blend-screen"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0.15, 0.3, 0.2, 0.25] }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 32, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+        style={{
+          background:
+            "radial-gradient(circle at 85% 80%, rgba(60,220,255,0.6), rgba(40,120,180,0.05) 55%)",
+          filter: "blur(200px)",
+        }}
+      />
+    </div>
+  );
+}
+
+/* ------------------ Gradient Backdrop (adapted) ------------------ */
+// ...existing code...
 function GradientBackdrop({ onClose }: { onClose: () => void }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const breathe = useMotionValue(0);
@@ -199,8 +288,8 @@ function GradientBackdrop({ onClose }: { onClose: () => void }) {
         duration: 0.6,
         ease: [0, 0.55, 0.45, 1],
       });
-      animate(breathe, [null, 0.8, 1], {
-        duration: 18,
+      animate(breathe, [null, 0.9, 1.05, 0.9, 1], {
+        duration: 22,
         repeat: Infinity,
         ease: "easeInOut",
       });
@@ -215,82 +304,158 @@ function GradientBackdrop({ onClose }: { onClose: () => void }) {
       aria-hidden="true">
       {/* Base dark veil */}
       <motion.div
-        className="absolute inset-0 bg-neutral-900"
+        className="absolute inset-0 bg-neutral-950"
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.85 }}
+        animate={{ opacity: 0.5 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.4 }}
+        transition={{ duration: 0.5 }}
       />
-      {/* Expanding circle burst */}
+
+      {/* Core expanding pulse */}
       <motion.div
-        className="absolute rounded-full"
+        className="absolute rounded-full mix-blend-screen"
         initial={{
           scale: 0,
-          opacity: 1,
-          backgroundColor: "rgb(233, 167, 160)",
-          filter: "blur(25px)",
+          opacity: 0.2,
+          background:
+            "radial-gradient(circle at 30% 30%, rgba(0,0,140,0.9), rgba(255,70,40,0.15) 70%)",
+          filter: "blur(130px)",
         }}
         animate={{
-          scale: 10,
-          opacity: 0.25,
-          backgroundColor: "rgb(246, 63, 42)",
+          scale: 2,
+          opacity: 0.1,
           transition: {
-            duration: 0.75,
-            opacity: { duration: 0.75, ease: "easeInOut" },
+            duration: 2.2,
+            opacity: { duration: 2.2, ease: "easeOut" },
           },
         }}
         exit={{
           scale: 0,
           opacity: 0,
-          transition: { duration: 0.45 },
+          transition: { duration: 0.5 },
         }}
         style={{
-          width: 160,
-          height: 160,
+          width: 180,
+          height: 180,
           left: "50%",
-          top: "60%",
-          marginLeft: -80,
-          marginTop: -80,
+          top: "55%",
+          marginLeft: -90,
+          marginTop: -90,
         }}
       />
-      {/* Breathing gradient blobs */}
+
+      {/* Primary breathing field */}
       <motion.div
-        className="absolute rounded-full"
+        className="absolute rounded-full mix-blend-screen"
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.9 }}
+        animate={{
+          opacity: [0.75, 0.9, 0.7, 0.85],
+          rotate: [0, 25, -10, 0],
+          x: ["0%", "12%", "-1%", "0%"],
+          y: ["0%", "-11%", "2%", "0%"],
+        }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
         style={{
           scale: breathe,
-          width: "180vmax",
-          height: "180vmax",
-          top: "-60vmax",
-          left: "-60vmax",
-          background: "rgb(246,63,42)",
-          filter: "blur(120px)",
-          opacity: 0.6,
+          width: "95vmax",
+          height: "195vmax",
+          top: "-70vmax",
+          left: "-70vmax",
+          background:
+            "radial-gradient(circle at 40% 45%, rgba(90,255,60,0.9), rgba(40,255,20,0.15) 60%)",
+          filter: "blur(240px)",
+          opacity: 0.5,
         }}
       />
+
+      {/* Secondary field */}
       <motion.div
-        className="absolute rounded-full"
+        className="absolute rounded-full "
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.9 }}
+        animate={{
+          opacity: [0.6, 0.85, 0.55, 0.75],
+          rotate: [0, -30, 15, 0],
+          x: ["0%", "-3%", "1%", "0%"],
+          y: ["0%", "1%", "-2%", "0%"],
+        }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{
+          duration: 24,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 2,
+        }}
         style={{
           scale: breathe,
-          width: "160vmax",
-          height: "160vmax",
-          bottom: "-40vmax",
-          right: "-50vmax",
-          background: "rgb(243,92,76)",
-          filter: "blur(220px)",
-          opacity: 0.6,
+          width: "20vmax",
+          height: "20vmax",
+          bottom: "-50vmax",
+          right: "-60vmax",
+          background:
+            "radial-gradient(circle at 55% 60%, rgba(110,255,80,0.85), rgba(40,210,25,0.1) 70%)",
+          filter: "blur(160px)",
+          opacity: 0.7,
+        }}
+      />
+
+      {/* Accent orb 1 */}
+      <motion.div
+        className="absolute rounded-full mix-blend-screen"
+        initial={{ scale: 0.6, opacity: 1 }}
+        animate={{
+          scale: [0.6, 2.95, 0.7, 2.9, 0.6],
+          opacity: [0.25, 0.45, 0.35, 0.5, 0.25],
+          x: ["0%", "8%", "-4%", "6%", "0%"],
+          y: ["0%", "-6%", "4%", "-3%", "0%"],
+        }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1.2,
+        }}
+        style={{
+          top: "25%",
+          left: "10%",
+          width: 120,
+          height: 10,
+          background:
+            "radial-gradient(circle at 50% 50%, rgba(1050,250,120,0.9), rgba(70,255,30,0.05) 70%)",
+          filter: "blur(222px)",
+        }}
+      />
+
+      {/* Accent orb 2 */}
+      <motion.div
+        className="absolute rounded-full mix-blend-screen"
+        initial={{ scale: 0.5, opacity: 0 }}
+        animate={{
+          scale: [0.5, 2.85, 0.6, 2.9, 0.5],
+          opacity: [0.18, 0.4, 0.25, 0.42, 0.18],
+          x: ["0%", "-6%", "5%", "-3%", "0%"],
+          y: ["0%", "5%", "-4%", "3%", "0%"],
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 0.6,
+        }}
+        style={{
+          bottom: "22%",
+          right: "18%",
+          width: 460,
+          height: 460,
+          background:
+            "radial-gradient(circle at 55% 45%, rgba(120,255,0,0.85), rgba(40,255,25,0.05) 70%)",
+          filter: "blur(95px)",
         }}
       />
     </div>
   );
 }
+// ...existing code...
 
 /* ------------------ Hamburger Button ------------------ */
 
