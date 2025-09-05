@@ -2,7 +2,9 @@
 
 import { motion, AnimatePresence, PanInfo } from "motion/react";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import StaggeredFadeIn from "./StaggeredFadeIn";
+import Button2 from "./Button2";
 interface CarouselItem {
   id: number;
   title: string;
@@ -11,6 +13,7 @@ interface CarouselItem {
   video?: string;
   description: string;
   category: string;
+  logosrc?: string;
 }
 
 const carouselItems: CarouselItem[] = [
@@ -21,6 +24,7 @@ const carouselItems: CarouselItem[] = [
     image: "/s1.png",
     description: "Immersive gaming experience with cutting-edge visuals",
     category: "Gaming",
+    logosrc: "/logos/Ubisoft_logo.svg",
   },
   {
     id: 2,
@@ -29,6 +33,7 @@ const carouselItems: CarouselItem[] = [
     image: "/s4.jpg",
     description: "Complete brand transformation with interactive elements",
     category: "Branding",
+    logosrc: "/logos/Lufthansa_Logo_2018.svg",
   },
   {
     id: 3,
@@ -37,6 +42,7 @@ const carouselItems: CarouselItem[] = [
     image: "/s2.png",
     description: "Revolutionary web experiences that engage and convert",
     category: "Web Design",
+    logosrc: "/logos/Meta_Platforms_Inc._logo.svg",
   },
   {
     id: 4,
@@ -45,6 +51,7 @@ const carouselItems: CarouselItem[] = [
     image: "/s3.png",
     description: "Stunning motion graphics for digital campaigns",
     category: "Animation",
+    logosrc: "/logos/Microsoft-logo_black.svg",
   },
   {
     id: 5,
@@ -122,7 +129,7 @@ export default function InteractiveCarousel() {
   };
 
   return (
-    <section className=" overflow-hidden ">
+    <section className="  ">
       <div className="container  mx-auto w-full ">
         <motion.div
           className="text-center "
@@ -131,9 +138,9 @@ export default function InteractiveCarousel() {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}></motion.div>
 
-        <div className="relative h-[800px] flex items-start">
+        <div className="relative h-[600px] flex items-start">
           {/* Main Carousel */}
-          <div className="relative w-full  rounded-sm overflow-hidden h-full perspective-1000">
+          <div className="relative w-full  rounded-sm h-full perspective-1000">
             <AnimatePresence initial={false} custom={direction}>
               <motion.div
                 key={currentIndex}
@@ -169,11 +176,11 @@ export default function InteractiveCarousel() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                   {/* Content */}
-                  <div className="absolute bottom-0  flex align-center justify-center items-center left-0 right-0 p-8 text-white">
+                  <div className="absolute bottom-0  flex   left-0 right-0 p-8 text-white">
                     <motion.div
                       initial="hidden"
                       animate="visible"
-                      className=" flex-col justify-center items-center p-8 max-w-3xl space-y-4"
+                      className=" flex-col items-start justify-start p-8 max-w-3xl space-y-2"
                       variants={{
                         hidden: { opacity: 0 },
                         visible: {
@@ -184,17 +191,31 @@ export default function InteractiveCarousel() {
                           },
                         },
                       }}>
-                      <motion.div className="w-fit  px-3 py-1 bg-lime-400  mx-auto text-black flex justify-center text-center text-xs rounded-xs mb-2">
-                        {carouselItems[currentIndex].category}
-                      </motion.div>
-                      <motion.h3 className="text-7xl font-semibold leading-compressed text-center pb-0">
-                        {carouselItems[currentIndex].title}
-                      </motion.h3>
-                      <motion.p className="text-xl text-gray-100 text-center">
+                      <div>
+                        <motion.div className="w-fit  px-3   text-black  flex  text-xs rounded-xs ">
+                          <Image
+                            className="mb-8 invert"
+                            src={
+                              carouselItems[currentIndex].logosrc ||
+                              "/logos/Amazon_logo.svg"
+                            }
+                            alt="Logo"
+                            width={96}
+                            height={44}
+                          />
+                        </motion.div>
+                        <motion.h3 className="text-7xl font-semibold  leading-compressed  pb-0">
+                          {carouselItems[currentIndex].title}
+                        </motion.h3>
+                      </div>
+                      <motion.p className="text-xl text-gray-100 r">
                         {carouselItems[currentIndex].subtitle}
                       </motion.p>
-                      <motion.p className="text-gray-100 text-sm max-w-2xl text-center">
+                      <motion.p className="text-gray-100 text-sm max-w-2xl ">
                         {carouselItems[currentIndex].description}
+                      </motion.p>
+                      <motion.p className="text-gray-100 text-sm max-w-2xl ">
+                        <Button2 variant="limesmall" text="View Case Study" />
                       </motion.p>
                     </motion.div>
                   </div>
@@ -222,12 +243,12 @@ export default function InteractiveCarousel() {
 
           {/* Navigation Arrows */}
           <motion.button
-            className="absolute left-32 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-sm rounded-xs flex items-center justify-center text-white hover:bg-white/20 transition-colors z-10"
+            className="absolute -left-12 top-1/2 transform -translate-y-1/2 w-12 h-12  bg-gray-300  backdrop-blur-sm rounded-xs flex items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => paginate(-1)}>
             <svg
-              className="w-6 h-6"
+              className="w-12 h-12"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24">
@@ -241,12 +262,12 @@ export default function InteractiveCarousel() {
           </motion.button>
 
           <motion.button
-            className="absolute right-32 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/10 backdrop-blur-sm rounded-xs flex items-center justify-center text-white hover:bg-white/20 transition-colors z-10"
+            className="absolute -right-12 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm rounded-xs flex items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => paginate(1)}>
             <svg
-              className="w-6 h-6"
+              className="w-12 h-12"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24">

@@ -126,13 +126,13 @@ export default function ExpandableCards() {
         ) : null}
       </AnimatePresence>
       <ul className=" w-full ">
-        <StaggeredSlideUp className=" grid grid-cols-3 gap-4 mx-auto h-full min-h-full w-full ">
+        <StaggeredSlideUp className=" grid grid-cols-5 gap-4  mx-auto h-full min-h-full w-full ">
           {cards.map((card, index) => (
             <motion.div
               layoutId={`card-${card.title}-${id}`}
               key={`card-${card.title}-${id}`}
               onClick={() => setActive(card)}
-              className=" col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[400px] rounded-lg overflow-hidden h-[200px]   cursor-pointer">
+              className=" col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[250px] rounded-lg overflow-hidden h-[200px]   cursor-pointer">
               <motion.div
                 layoutId={`image-${card.title}-${id}`}
                 className="col-start-1 col-span-1 row-start-1 bg-black h-full min-h-full  rounded-lg overflow-hidden">
@@ -149,16 +149,16 @@ export default function ExpandableCards() {
                   layoutId={`logo-${card.title}-${id}`}
                   src={card.logo}
                   alt={card.title}
-                  className="w-12 h-12 object-contain"
+                  className="w-10 h-10 object-contain"
                 />
                 <motion.p
                   layoutId={`description-${card.description}-${id}`}
-                  className="text-neutral-100 text-3xl dark:text-neutral-400  md:text-left">
+                  className="text-neutral-100 text-2xl dark:text-neutral-400  md:text-left">
                   {card.description}
                 </motion.p>
                 <motion.h3
                   layoutId={`title-${card.title}-${id}`}
-                  className="font-medium text-xl text-neutral-100 dark:text-neutral-200 text-center md:text-left">
+                  className="font-medium mt-8 text-sm leading-snug text-neutral-100 dark:text-neutral-200 text-center md:text-left">
                   {card.title}
                 </motion.h3>
               </div>
@@ -239,7 +239,75 @@ const cards = [
   },
   {
     description: "Flizzr",
+    title: "Let us help you grow your business and brand",
+    src: "/s2.png",
+    logo: "/msmlogo.svg",
+    ctaText: "Rush to Flizzr",
+    ctaLink: "https://www.msm.digital",
+    content: () => {
+      return (
+        <p>
+          This is where we get our creative spark from. And epochs of customer
+          focus and talking to the public. This is where we get our creative
+          spark from. And epochs of customer focus and talking to the public.
+        </p>
+      );
+    },
+  },
+  {
+    description: "MSM",
+    title: "Let us help you grow your business ",
+    src: "/s3.png",
+    logo: "/msmlogo.svg",
+    ctaText: "Visit MSM",
+    ctaLink: "https://www.msm.digital",
+    content: () => {
+      return (
+        <p>
+          This is where we get our creative spark from. And epochs of customer
+          focus and talking to the public. This is where we get our creative
+          spark from. And epochs of customer focus and talking to the public.
+        </p>
+      );
+    },
+  },
+  {
+    description: "StudioCO2",
+    title: "Let us help you grow your",
+    src: "/s1.png",
+    logo: "/studioco2.svg",
+    ctaText: "Play @ StudioCo2",
+    ctaLink: "https://studioco2.",
+    content: () => {
+      return (
+        <p>
+          This is where we get our creative spark from. And epochs of customer
+          focus and talking to the public. This is where we get our creative
+          spark from. And epochs of customer focus and talking to the public.
+        </p>
+      );
+    },
+  },
+  {
+    description: "Flizzr",
     title: "Let us help you grow your business and brand awarenessa",
+    src: "/s2.png",
+    logo: "/msmlogo.svg",
+    ctaText: "Rush to Flizzr",
+    ctaLink: "https://www.msm.digital",
+    content: () => {
+      return (
+        <p>
+          This is where we get our creative spark from. And epochs of customer
+          focus and talking to the public. This is where we get our creative
+          spark from. And epochs of customer focus and talking to the public.
+        </p>
+      );
+    },
+  },
+  {
+    description: "Flizzr",
+    title: "Let us help you grow your business + brand ",
     src: "/s2.png",
     logo: "/msmlogo.svg",
     ctaText: "Rush to Flizzr",

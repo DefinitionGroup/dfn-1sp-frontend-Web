@@ -126,7 +126,7 @@ export default function ExpandableCards2() {
         ) : null}
       </AnimatePresence>
       <ul className=" w-full  ">
-        <StaggeredSlideUp className=" grid grid-cols-4 gap-6 mx-auto h-full min-h-full w-full ">
+        <StaggeredSlideUp className=" grid grid-cols-5 gap-2 mx-auto h-full min-h-full w-full ">
           {cards.map((card, index) => (
             <motion.div
               layoutId={`card-${card.title}-${id}`}
@@ -255,8 +255,25 @@ const cards = [
     },
   },
   {
+    description: "GamesCon",
+    title: "Let us help you grow your business and brand awarenessa",
+    src: "/s1.png",
+    logo: "/msmlogo.svg",
+    ctaText: "Rush to Flizzr",
+    ctaLink: "https://www.msm.digital",
+    content: () => {
+      return (
+        <p>
+          This is where we get our creative spark from. And epochs of customer
+          focus and talking to the public. This is where we get our creative
+          spark from. And epochs of customer focus and talking to the public.
+        </p>
+      );
+    },
+  },
+  {
     description: "Samsung",
-    title: "Let us help you grow your business an",
+    title: "elp you grow your business an",
     src: "/s4.jpg",
     logo: "/msmlogo.svg",
     ctaText: "Rush to Flizzr",
