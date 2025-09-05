@@ -250,6 +250,13 @@ export default function Home() {
       <div
         id="Step3"
         className="grid grid-cols-12 z-2 mx-auto bg-neutral-100 mt-8 min-h-[50vh] relative font-aspekta">
+        <HeaderImageVideoComp2
+          useVideo={true}
+          videoSrc="/video/cases/squareenix.mp4"
+          enableParallax={true}
+          opacity={0.1}
+        />
+
         <div className="z-1 grid gap-8 col-span-12 py-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2"
@@ -264,10 +271,10 @@ export default function Home() {
               staggerDelay={0.1}
               duration={0.5}
               distance={80}>
-              <h2 className="text-7xl leading-compress text-gray-700 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
+              <h2 className="text-7xl leading-compress text-gray-100 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
                 News.
               </h2>
-              <p className="text text-gray-500 font-medium  max-w-2xs mx-auto">
+              <p className="text text-gray-100 font-medium  max-w-2xs mx-auto">
                 Discover our latest projects in gaming, marketing, and
                 interactive experiences
               </p>
