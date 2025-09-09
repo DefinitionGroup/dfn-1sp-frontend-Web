@@ -34,7 +34,7 @@ export default function Home() {
   const isInView = useInView(typewriterref);
   return (
     <>
-      <section className="relative h-[65vh] overflow-hidden">
+      <section className="relative h-[85vh] overflow-hidden">
         <HamburgerGradientMenu />
 
         {/* Background Image with Overlay */}
@@ -42,13 +42,13 @@ export default function Home() {
           useVideo={true}
           videoSrc="/video/cases/1SP Agency - 1SP Homepage-07.mp4"
           enableParallax={true}
-          opacity="opacity-25"
+
         />
         {/* Navigation */}
         <FrontNavOverlay />
         {/* Hero Content */}
 
-        <div className="relative z-10 container  mt-24  mx-auto ">
+        <div className="relative z-10 container  mt-[30vh]  mx-auto ">
           <StaggeredSlideUp className="space-y-6 max-w-full ">
             <h1 className="text-neutral-50 uppercase pb-2 text-xs border-b font-bold  max-w-1/3">
               Welcome at 1SP

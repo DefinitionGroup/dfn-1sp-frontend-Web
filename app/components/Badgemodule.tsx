@@ -100,7 +100,7 @@ export default function Badgemodule({
               },
             }}>
             {text}
-          </motion.p>{" "}
+          </motion.p>
         </div>
         <motion.p
           className="text-xxs rounded-b-sm font-semibold mt-2 px-4 py-4  w-full bg-neutral-800 text-gray-200"

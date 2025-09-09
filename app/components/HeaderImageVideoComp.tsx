@@ -4,7 +4,8 @@ import React from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform, useInView } from "motion/react";
 import { useRef } from "react";
-
+import { url } from "inspector";
+import bg from '../../public/dot-background.png'
 interface HeaderImageVideoCompProps {
   useVideo?: boolean;
   imageSrc?: string;
@@ -79,9 +80,9 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
           />
         )}
         <motion.div
-          className="absolute inset-0 bg-black/44"
+          className="absolute inset-0 " style={{  backgroundImage: `url(${bg.src})`, backgroundSize: '24px 24px',}}
           initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : { opacity: 1 }}
           transition={{
             duration: 0.8,
             delay: 0.3,
