@@ -6,6 +6,7 @@ import { useState } from "react";
 
 export default function TypewriterChangeContentExample({
   text = [
+"",
 "One.",
 "Shared.",
 "Passion.",
