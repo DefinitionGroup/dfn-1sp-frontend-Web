@@ -67,7 +67,6 @@ export default function PeopleShowcaseHero() {
                 src={member.image}
                 autoPlay muted loop
                 className="w-full h-full object-cover transition-all duration-300 group-hover:brightness-110"
-                loading={index === 0 ? "eager" : "lazy"}
               />
               {/* Optional: Add hover overlay with name */}
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 p-4 overflow-hidden transition-colors duration-300"></div>
