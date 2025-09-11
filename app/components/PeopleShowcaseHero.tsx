@@ -2,9 +2,12 @@ import React from "react";
 import Button2 from "./Button2";
 import StaggeredSlideUp from "./StaggeredSlideUp";
 // Image imports from Figma assets
-const torstenImage = "/torsten.png";
-const svenImage = "/sven.png";
-const markusImage = "/markus.png";
+const torstenImage = "/video/people/Torsten.mp4";
+const steveImage = "/video/people/Steve.mp4";
+const markusImage = "/video/people/Markus.mp4";
+const kirstenImage = "/video/people/Kirsten.mp4";
+const kerstinImage = "/video/people/Kerstin.mp4";
+
 
 interface TeamMember {
   name: string;
@@ -19,44 +22,24 @@ const teamMembers: TeamMember[] = [
     alt: "Torsten O - Team Member",
   },
   {
-    name: "Sven",
-    image: svenImage,
-    alt: "Sven We - Team Member",
-  },
-  {
     name: "Markus",
     image: markusImage,
     alt: "Markus O - Team Member",
   },
   {
-    name: "Torsten",
-    image: torstenImage,
-    alt: "Torsten O - Team Member",
+    name: "Kirsten",
+    image: kirstenImage,
+    alt: "Kirsten O - Team Member",
   },
   {
-    name: "Sven",
-    image: svenImage,
-    alt: "Sven We - Team Member",
+    name: "Kerstin",
+    image: kerstinImage,
+    alt: "Kerstin O - Team Member",
   },
   {
-    name: "Markus",
-    image: markusImage,
-    alt: "Markus O - Team Member",
-  },
-  {
-    name: "Torsten",
-    image: torstenImage,
-    alt: "Torsten O - Team Member",
-  },
-  {
-    name: "Sven",
-    image: svenImage,
-    alt: "Sven We - Team Member",
-  },
-  {
-    name: "Markus",
-    image: markusImage,
-    alt: "Markus O - Team Member",
+    name: "Steve",
+    image: steveImage,
+    alt: "Steve O - Team Member",
   },
 ];
 
@@ -80,14 +63,14 @@ export default function PeopleShowcaseHero() {
               key={member.name}
               className="group relative border border-neutral-100 overflow-hidden bg-neutral-600   flex-shrink-0 rounded-xs transition-transform duration-300 hover:scale-[1.02] focus-within:scale-[1.02]"
               data-member={member.name.toLowerCase()}>
-              <img
+              <video
                 src={member.image}
-                alt={member.alt}
+                autoPlay muted loop
                 className="w-full h-full object-cover transition-all duration-300 group-hover:brightness-110"
                 loading={index === 0 ? "eager" : "lazy"}
               />
               {/* Optional: Add hover overlay with name */}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 rounded-sm p-4 overflow-hidden transition-colors duration-300"></div>
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 p-4 overflow-hidden transition-colors duration-300"></div>
             </div>
           ))}
         </StaggeredSlideUp>
