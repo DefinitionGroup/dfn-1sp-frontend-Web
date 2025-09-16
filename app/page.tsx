@@ -42,7 +42,6 @@ export default function Home() {
           useVideo={true}
           videoSrc="/video/cases/1SP Agency - 1SP Homepage-07.mp4"
           enableParallax={true}
-
         />
         {/* Navigation */}
         <FrontNavOverlay />
@@ -98,7 +97,8 @@ export default function Home() {
                 speed="fast"
                 cursorStyle={{ backgroundColor: "transparent" }}
                 variance={0.8}
-                backspace="word">
+                backspace="word"
+              >
                 Showtime!
               </Typewriter>
             </h2>
@@ -110,7 +110,8 @@ export default function Home() {
               easing="smooth"
               staggerDelay={0.1}
               duration={0.5}
-              distance={40}>
+              distance={40}
+            >
               <p className="text-lg text-gray-600   ">
                 Discover our latest projects in gaming,
               </p>
@@ -175,7 +176,8 @@ export default function Home() {
       {/* Skills Combo Section */}
       <div
         id="Step1"
-        className="z-1 mx-auto  mt-8 min-h-[90vh] relative font-aspekta">
+        className="z-1 mx-auto  mt-8 min-h-[90vh] relative font-aspekta"
+      >
         <HeaderImageVideoComp2
           useVideo={true}
           videoSrc="/video/14.mp4"
@@ -236,7 +238,7 @@ export default function Home() {
             <header className="col-span-5 col-start-1  ">
               <h2 className="text-lg text-neutral-500  font-aspekta">
                 At 1sp, we are driven by a team of passionate individuals who
-                thrive on creativity and innovation, crafting unique marketing 
+                thrive on creativity and innovation, crafting unique marketing
                 campaigns that resonate with audiences.
               </h2>
             </header>{" "}
@@ -249,7 +251,8 @@ export default function Home() {
       {/* Visual Background 2 Section */}
       <div
         id="Step3"
-        className="grid grid-cols-12 z-2 mx-auto bg-neutral-100 mt-8 min-h-[50vh] relative font-aspekta">
+        className="grid grid-cols-12 z-2 mx-auto bg-neutral-100 mt-8 min-h-[50vh] relative font-aspekta"
+      >
         <HeaderImageVideoComp2
           useVideo={true}
           videoSrc="/video/cases/squareenix.mp4"
@@ -270,7 +273,8 @@ export default function Home() {
               delay={0.1}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-7xl leading-compress text-gray-100 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
                 News.
               </h2>
@@ -302,7 +306,8 @@ export default function Home() {
               delay={0.0}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-7xl text-gray-100  font-nyghtserif font-semibold tracking-tight leading-compress pb-8">
                 Show&nbsp;Time
               </h2>
@@ -323,12 +328,13 @@ export default function Home() {
             <p> Be heard – as we listen. </p>
             <p className="">With the best clients and colleagues.</p>
 
-            <p className="mt-8 flex items-start justify-start gap-8">
+            <div className="mt-8 flex items-start justify-start gap-8">
               <Button2
                 variant="lime"
                 text="Join us for a ride"
-                className="w-fit"></Button2>
-            </p>
+                className="w-fit"
+              ></Button2>
+            </div>
           </div>
         </div>
       </div>

@@ -52,7 +52,8 @@ export default function Badgemodule({
               delayChildren: 0.1,
             },
           },
-        }}>
+        }}
+      >
         <div className="flex-col">
           <div className="flex px-4 py-4 items-start  border-white justify-between w-full ">
             <motion.div
@@ -63,7 +64,8 @@ export default function Badgemodule({
                   scale: 1,
                   transition: { duration: 0.6, ease: "easeOut", delay: 0.3 },
                 },
-              }}>
+              }}
+            >
               <Image
                 src="/ci/1sp-outline.svg"
                 alt="1SP Logo"
@@ -72,7 +74,7 @@ export default function Badgemodule({
                 className="w-8 h-8"
               />
             </motion.div>
-            <motion.p
+            <motion.div
               className="text-xxs font-bold  self-end text-gray-100"
               variants={{
                 hidden: { opacity: 0, y: 20 },
@@ -81,13 +83,15 @@ export default function Badgemodule({
                   y: 0,
                   transition: { duration: 0.6, ease: "easeOut" },
                 },
-              }}>
+              }}
+            >
               <AnimateNumber
                 format={{ minimumIntegerDigits: 3 }}
-                transition={{ duration: 1.5, ease: "easeOut" }}>
+                transition={{ duration: 1.5, ease: "easeOut" }}
+              >
                 {animateNumberValue}
               </AnimateNumber>
-            </motion.p>
+            </motion.div>
           </div>
           <motion.p
             className="text-5xl font-bold px-4  text-gray-200"
@@ -98,7 +102,8 @@ export default function Badgemodule({
                 y: 0,
                 transition: { duration: 0.6, ease: "easeOut" },
               },
-            }}>
+            }}
+          >
             {text}
           </motion.p>
         </div>
@@ -111,7 +116,8 @@ export default function Badgemodule({
               y: 0,
               transition: { duration: 0.6, ease: "easeOut" },
             },
-          }}>
+          }}
+        >
           {subtitle}
         </motion.p>
       </motion.div>
