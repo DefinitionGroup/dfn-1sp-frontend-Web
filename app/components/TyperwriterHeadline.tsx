@@ -5,7 +5,19 @@ import { Typewriter } from "motion-plus/react";
 import { useState } from "react";
 
 export default function TypewriterChangeContentExample({
-  text = ["Campaigns", "Brands", "Games", "Experiences", "Products"],
+  text = [
+"",
+"One.",
+"Shared.",
+"Passion.",
+"Gaming.",
+"Technology.",
+"The.",
+"Superagency.",
+"Consumer electronics.",
+"Gaming.",
+"Technology",
+  ],
 }: {
   text?: string[];
 }) {
@@ -13,7 +25,7 @@ export default function TypewriterChangeContentExample({
 
   return (
     <h2 style={container}>
-      <span style={label}>We boost:</span>
+      {/* <span style={label}>We boost:</span> */}
       <Typewriter
         as="div"
         variance={2.8}

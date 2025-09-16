@@ -34,7 +34,7 @@ export default function Home() {
   const isInView = useInView(typewriterref);
   return (
     <>
-      <section className="relative h-[65vh] overflow-hidden">
+      <section className="relative h-[85vh] overflow-hidden">
         <HamburgerGradientMenu />
 
         {/* Background Image with Overlay */}
@@ -42,15 +42,15 @@ export default function Home() {
           useVideo={true}
           videoSrc="/video/cases/1SP Agency - 1SP Homepage-07.mp4"
           enableParallax={true}
-          opacity="opacity-25"
+
         />
         {/* Navigation */}
         <FrontNavOverlay />
         {/* Hero Content */}
 
-        <div className="relative z-10 container  mt-24  mx-auto ">
+        <div className="relative z-10 container  mt-[30vh]  mx-auto ">
           <StaggeredSlideUp className="space-y-6 max-w-full ">
-            <h1 className="text-neutral-50 uppercase pb-2 text-xs border-b font-bold  max-w-1/3">
+            <h1 className="text-neutral-50 uppercase pb-2 text-xs border-b font-bold  max-w-1/2">
               Welcome at 1SP
             </h1>
             <TypewriterChangeContentExample />
@@ -198,7 +198,7 @@ export default function Home() {
       </div>
       {/* People Gallery Section */}
       <div className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta gap-4  ">
-        <GridBackground />
+        {/* <GridBackground /> */}
         <div className="z-1 flex flex-col col-span-2 pt-32 justify-start items-start  col-start-1 mx-auto row-start-1">
           <Badgemodule
             text="Per  Form"
@@ -236,7 +236,7 @@ export default function Home() {
             <header className="col-span-5 col-start-1  ">
               <h2 className="text-lg text-neutral-500  font-aspekta">
                 At 1sp, we are driven by a team of passionate individuals who
-                thrive on creativity and innovation, crafting unique marketing
+                thrive on creativity and innovation, crafting unique marketing 
                 campaigns that resonate with audiences.
               </h2>
             </header>{" "}
