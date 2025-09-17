@@ -1,32 +1,32 @@
 "use client";
 import { useRef } from "react";
 import { useInView } from "motion/react";
-import LogoCarousel from "../components/LogoCarousel";
+import LogoCarousel from "../../components/LogoCarousel";
 import { Typewriter } from "motion-plus/react";
-import CtaMiniComponent from "../components/CtaMiniComponent";
-import ListContainerComponent from "../components/ListContainerComponent";
-import ListItemComponent from "../components/ListItemComponent";
-import TextReveal from "../components/CursortrailExample";
-import ScrollHighlight from "../components/ScrollHighlight";
-import ArrowBig from "../components/arrowBig";
+import CtaMiniComponent from "../../components/CtaMiniComponent";
+import ListContainerComponent from "../../components/ListContainerComponent";
+import ListItemComponent from "../../components/ListItemComponent";
+import TextReveal from "../../components/CursortrailExample";
+import ScrollHighlight from "../../components/ScrollHighlight";
+import ArrowBig from "../../components/arrowBig";
 import Image from "next/image";
-import Badgemodule from "@/app/components/Badgemodule";
-import Button2 from "@/app/components/Button2";
-import ExpandableCards from "@/app/components/ExpandableCards";
-import Footer from "@/app/components/Footer";
-import FooterBottom from "@/app/components/FooterBottom";
-import FrontNavOverlay from "@/app/components/FrontNavOverlay";
-import GridBackground from "@/app/components/GridBackground";
-import HeaderImageVideoComp from "@/app/components/HeaderImageVideoComp";
-import InteractiveCarousel from "@/app/components/InteractiveCarousel";
-import { Nav } from "@/app/components/Nav";
-import StaggeredSlideUp from "@/app/components/StaggeredSlideUp";
-import TextHeadlineCombo from "@/app/components/TextHeadlineCombo";
-import TextLayout from "@/app/components/TextLayout";
-import TypewriterChangeContentExample from "@/app/components/TyperwriterHeadline";
-import HeaderImageVideoComp2 from "@/app/components/HeaderImageVideoComp2";
-import PeopleShowcaseHero from "@/app/components/PeopleShowcaseHero";
-import HamburgerGradientMenu from "@/app/components/HamburgerGradientMenu";
+import Badgemodule from "@/components/Badgemodule";
+import Button2 from "@/components/Button2";
+import ExpandableCards from "@/components/ExpandableCards";
+import Footer from "@/components/Footer";
+import FooterBottom from "@/components/FooterBottom";
+import FrontNavOverlay from "@/components/FrontNavOverlay";
+import GridBackground from "@/components/GridBackground";
+import HeaderImageVideoComp from "@/components/HeaderImageVideoComp";
+import InteractiveCarousel from "@/components/InteractiveCarousel";
+import { Nav } from "@/components/Nav";
+import StaggeredSlideUp from "@/components/StaggeredSlideUp";
+import TextHeadlineCombo from "@/components/TextHeadlineCombo";
+import TextLayout from "@/components/TextLayout";
+import TypewriterChangeContentExample from "@/components/TyperwriterHeadline";
+import HeaderImageVideoComp2 from "@/components/HeaderImageVideoComp2";
+import PeopleShowcaseHero from "@/components/PeopleShowcaseHero";
+import HamburgerGradientMenu from "@/components/HamburgerGradientMenu";
 export default function Home() {
   const typewriterref = useRef(null);
   const isInView = useInView(typewriterref);
@@ -126,7 +126,8 @@ export default function Home() {
               delay={0.0}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-9xl text-gray-100 max-w-xl font-semibold tracking-tight leading-compress mb-4 pb-8">
                 We tell your story.
               </h2>
@@ -239,7 +240,8 @@ export default function Home() {
       {/* Visual Background 2 Section */}
       <div
         id="Step3"
-        className="grid grid-cols-12 z-1 mx-auto  mt-8 min-h-[90vh] relative font-aspekta">
+        className="grid grid-cols-12 z-1 mx-auto  mt-8 min-h-[90vh] relative font-aspekta"
+      >
         <HeaderImageVideoComp2
           useVideo={true}
           videoSrc="/video/cases/squareenix.mp4"
@@ -260,7 +262,8 @@ export default function Home() {
               delay={0.1}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-9xl leading-compress text-gray-100 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
                 We tell your story.
               </h2>
@@ -309,7 +312,8 @@ export default function Home() {
               delay={0.1}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-7xl leading-compress text-gray-900 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
                 We tell your story.
               </h2>
