@@ -17,22 +17,7 @@ export default defineType({
             description: 'Managed by i18n tooling; do not edit manually.',
         }),
 
-        defineField({
-            name: 'channel',
-            title: 'Channel',
-            type: 'string',
-            options: {
-                list: [
-                    { title: '1sp Website', value: '1spWeb' },
-                    { title: 'MSM Website', value: 'msmWeb' },
-                    { title: 'Studio CO2 Website', value: 'studioco2Web' },
-                ],
-            },
-            readOnly: true,
-            initialValue: (context: any) =>
-                context?.document?.__inferMetadata?.params?.channel || '1spWeb',
-            description: 'Automatically set from creation location',
-        }),
+
 
         defineField({
             name: 'title',
@@ -92,13 +77,27 @@ export default defineType({
             },
             validation: (Rule: any) => Rule.required(),
         }),
+        defineField({
+            name: 'metadata',
+            title: 'Metadata',
+            type: 'object',
+            options: { collapsible: true, collapsed: true },
+            fields: [
+                defineField({ name: 'title', title: 'Meta Title', type: 'string' }),
+                defineField({ name: 'description', title: 'Meta Description', type: 'text' }),
+                defineField({ name: 'image', title: 'Meta Image', type: 'image' }),
+                defineField({ name: 'keywords', title: 'Meta Keywords', type: 'array', of: [{ type: 'string' }] })
+            ]
+        }),
 
         // channel-specific content arrays (hidden when not matching channel)
         defineField({
             name: 'content1sp',
             title: 'Content 1SP',
             type: 'array',
-            of: [{ type: 'block' }],
+            of: [
+                { type: 'showtimeGallery' },
+            ],
             hidden: ({ parent }: any) => parent?.channel !== '1spWeb',
         }),
 
@@ -116,6 +115,22 @@ export default defineType({
             type: 'array',
             of: [{ type: 'block' }],
             hidden: ({ parent }: any) => parent?.channel !== 'studioco2Web',
+        }),
+        defineField({
+            name: 'channel',
+            title: 'Channel',
+            type: 'string',
+            options: {
+                list: [
+                    { title: '1sp Website', value: '1spWeb' },
+                    { title: 'MSM Website', value: 'msmWeb' },
+                    { title: 'Studio CO2 Website', value: 'studioco2Web' },
+                ],
+            },
+            readOnly: true,
+            initialValue: (context: any) =>
+                context?.document?.__inferMetadata?.params?.channel || '1spWeb',
+            description: 'Automatically set from creation location',
         }),
     ],
 

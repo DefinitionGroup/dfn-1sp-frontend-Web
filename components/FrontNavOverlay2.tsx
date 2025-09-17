@@ -13,7 +13,7 @@ interface FrontNavOverlayProps {
 
 const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   className = "",
-  color = "light", 
+  color = "light",
 }) => {
   const router = useTransitionRouter();
   const textColor = color === "dark" ? "text-neutral-800" : "text-neutral-50";
@@ -23,7 +23,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       : "/ci/1sp-fulllogotype.svg";
   return (
     <nav
-      className={`relative hidden md:grid place-items-start z-10 grid-cols-12 pt-5 mx-auto container ${className}`}>
+      className={`relative hidden md:grid place-items-start z-10 grid-cols-12 pt-5 mx-auto container ${className}`}
+    >
       <div className="w-[90px] h-[90px] col-start-1 col-span-1 pt-2">
         <Image
           src={imageLogo}
@@ -46,7 +47,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           duration: 0.5,
           delay: 0.4,
         }}
-        className="col-start-2 flex col-span-10 ">
+        className="col-start-2 flex col-span-10 "
+      >
         <StaggeredSlideUp
           className="flex gap-16 items-center"
           delay={0.55}
@@ -54,7 +56,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           duration={0.8}
           distance={10}
           maskHeight="150%"
-          easing="spring">
+          easing="spring"
+        >
           <span className={`${textColor}  text-xs leading-compress font-bold`}>
             <Link
               className="hover:text-lime-400"
@@ -64,7 +67,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 router.push("/", {
                   onTransitionReady: pageAnimation,
                 });
-              }}>
+              }}
+            >
               Home
             </Link>
           </span>
@@ -78,12 +82,14 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 router.push("/projects", {
                   onTransitionReady: pageAnimation,
                 });
-              }}>
+              }}
+            >
               Cases
             </Link>
           </span>
           <span
-            className={`${textColor} text-xs leading-compress font-bold hover:text-lime-500`}>
+            className={`${textColor} text-xs leading-compress font-bold hover:text-lime-500`}
+          >
             <Link
               className="hover:text-lime-400"
               href={"/whatwedo"}
@@ -92,12 +98,14 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 router.push("/whatwedo", {
                   onTransitionReady: pageAnimation,
                 });
-              }}>
+              }}
+            >
               Services
             </Link>
           </span>
           <span
-            className={`${textColor} text-xs leading-compress font-bold hover:text-lime-500`}>
+            className={`${textColor} text-xs leading-compress font-bold hover:text-lime-500`}
+          >
             <Link
               className="hover:text-lime-400"
               href={"/whatwedo"}
@@ -106,12 +114,14 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 router.push("/whatwedo", {
                   onTransitionReady: pageAnimation,
                 });
-              }}>
+              }}
+            >
               Our Family
             </Link>
           </span>
           <span
-            className={`${textColor} text-xs leading-compress font-bold hover:text-lime-500`}>
+            className={`${textColor} text-xs leading-compress font-bold hover:text-lime-500`}
+          >
             <Link
               className="hover:text-lime-400"
               href={"/whatwedo"}
@@ -120,7 +130,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 router.push("/whatwedo", {
                   onTransitionReady: pageAnimation,
                 });
-              }}>
+              }}
+            >
               Work with us
             </Link>
           </span>{" "}
