@@ -2,7 +2,7 @@
 
 import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { useOutsideClick } from "../hooks/use-outside-click";
+import { useOutsideClick } from "../app/hooks/use-outside-click";
 import StaggeredSlideUp from "./StaggeredSlideUp";
 
 export default function ExpandableCards() {
@@ -62,16 +62,19 @@ export default function ExpandableCards() {
                 },
               }}
               className="flex absolute top-2 right-2 lg:hidden items-center overflow-hidden  justify-around   rounded-full h-6 w-6"
-              onClick={() => setActive(null)}>
+              onClick={() => setActive(null)}
+            >
               <CloseIcon />
             </motion.button>
             <motion.div
               layoutId={`card-${active.title}-${id}`}
               ref={ref}
-              className="w-full max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col  bg-neutral-900 dark:bg-neutral-900  shadow-2xl overflow-hidden">
+              className="w-full max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col  bg-neutral-900 dark:bg-neutral-900  shadow-2xl overflow-hidden"
+            >
               <motion.div
                 className="w-full h-100  min-h-[70vh]absolute sm:rounded-t-xl opacity-80 object-cover object-top"
-                layoutId={`image-${active.title}-${id}`}>
+                layoutId={`image-${active.title}-${id}`}
+              >
                 <img
                   width={200}
                   height={500}
@@ -91,12 +94,14 @@ export default function ExpandableCards() {
                   <div className="">
                     <motion.p
                       layoutId={`description-${active.description}-${id}`}
-                      className="text-neutral-100 text-5xl  dark:text-neutral-400">
+                      className="text-neutral-100 text-5xl  dark:text-neutral-400"
+                    >
                       {active.description}
                     </motion.p>{" "}
                     <motion.h3
                       layoutId={`title-${active.title}-${id}`}
-                      className=" text-neutral-300 text-xl max-w-2/3 dark:text-neutral-200">
+                      className=" text-neutral-300 text-xl max-w-2/3 dark:text-neutral-200"
+                    >
                       {active.title}
                     </motion.h3>
                   </div>
@@ -107,7 +112,8 @@ export default function ExpandableCards() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="text-white text-md md:text-sm lg:text-base max-w-2/3 mb-2 md:h-fit pb-10 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]">
+                    className="text-white text-md md:text-sm lg:text-base max-w-2/3 mb-2 md:h-fit pb-10 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
+                  >
                     {typeof active.content === "function"
                       ? active.content()
                       : active.content}
@@ -116,7 +122,8 @@ export default function ExpandableCards() {
                     layoutId={`button-${active.title}-${id}`}
                     href={active.ctaLink}
                     target="_blank"
-                    className="px-4 py-3 text-sm font-bold bg-lime-500 text-white">
+                    className="px-4 py-3 text-sm font-bold bg-lime-500 text-white"
+                  >
                     {active.ctaText}
                   </motion.a>
                 </div>
@@ -132,10 +139,12 @@ export default function ExpandableCards() {
               layoutId={`card-${card.title}-${id}`}
               key={`card-${card.title}-${id}`}
               onClick={() => setActive(card)}
-              className=" col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[250px] rounded-lg overflow-hidden h-[200px]   cursor-pointer">
+              className=" col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[250px] rounded-lg overflow-hidden h-[200px]   cursor-pointer"
+            >
               <motion.div
                 layoutId={`image-${card.title}-${id}`}
-                className="col-start-1 col-span-1 row-start-1 bg-black h-full min-h-full  rounded-lg overflow-hidden">
+                className="col-start-1 col-span-1 row-start-1 bg-black h-full min-h-full  rounded-lg overflow-hidden"
+              >
                 <img
                   width={1000}
                   height={1000}
@@ -153,12 +162,14 @@ export default function ExpandableCards() {
                 />
                 <motion.p
                   layoutId={`description-${card.description}-${id}`}
-                  className="text-neutral-100 text-2xl dark:text-neutral-400  md:text-left">
+                  className="text-neutral-100 text-2xl dark:text-neutral-400  md:text-left"
+                >
                   {card.description}
                 </motion.p>
                 <motion.h3
                   layoutId={`title-${card.title}-${id}`}
-                  className="font-medium mt-8 text-sm leading-snug text-neutral-100 dark:text-neutral-200 text-center md:text-left">
+                  className="font-medium mt-8 text-sm leading-snug text-neutral-100 dark:text-neutral-200 text-center md:text-left"
+                >
                   {card.title}
                 </motion.h3>
               </div>
@@ -194,7 +205,8 @@ export const CloseIcon = () => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="h-4 w-4 text-black">
+      className="h-4 w-4 text-black"
+    >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M18 6l-12 12" />
       <path d="M6 6l12 12" />
