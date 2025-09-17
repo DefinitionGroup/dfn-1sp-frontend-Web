@@ -1,34 +1,34 @@
 "use client";
 import { useRef } from "react";
 import { useInView } from "motion/react";
-import Badgemodule from "../components/Badgemodule";
-import Button2 from "../components/Button2";
-import ExpandableCards from "../components/ExpandableCards";
-import Footer from "../components/Footer";
-import FooterBottom from "../components/FooterBottom";
-import FrontNavOverlay from "../components/FrontNavOverlay";
-import GridBackground from "../components/GridBackground";
-import HeaderImageVideoComp from "../components/HeaderImageVideoComp";
-import InteractiveCarousel from "../components/InteractiveCarousel";
-import { Nav } from "../components/Nav";
-import StaggeredSlideUp from "../components/StaggeredSlideUp";
-import TextHeadlineCombo from "../components/TextHeadlineCombo";
-import TextLayout from "../components/TextLayout";
-import TypewriterChangeContentExample from "../components/TyperwriterHeadline";
-import HeaderImageVideoComp2 from "../components/HeaderImageVideoComp2";
-import PeopleShowcaseHero from "../components/PeopleShowcaseHero";
+import Badgemodule from "../../components/Badgemodule";
+import Button2 from "../../components/Button2";
+import ExpandableCards from "../../components/ExpandableCards";
+import Footer from "../../components/Footer";
+import FooterBottom from "../../components/FooterBottom";
+import FrontNavOverlay from "../../components/FrontNavOverlay";
+import GridBackground from "../../components/GridBackground";
+import HeaderImageVideoComp from "../../components/HeaderImageVideoComp";
+import InteractiveCarousel from "../../components/InteractiveCarousel";
+import { Nav } from "../../components/Nav";
+import StaggeredSlideUp from "../../components/StaggeredSlideUp";
+import TextHeadlineCombo from "../../components/TextHeadlineCombo";
+import TextLayout from "../../components/TextLayout";
+import TypewriterChangeContentExample from "../../components/TyperwriterHeadline";
+import HeaderImageVideoComp2 from "../../components/HeaderImageVideoComp2";
+import PeopleShowcaseHero from "../../components/PeopleShowcaseHero";
 import { Typewriter } from "motion-plus/react";
-import TextReveal from "../components/CursortrailExample";
-import ScrollHighlight from "../components/ScrollHighlight";
-import ListContainerComponent from "../components/ListContainerComponent";
-import ListItemComponent from "../components/ListItemComponent";
-import CtaMiniComponent from "../components/CtaMiniComponent";
+import TextReveal from "../../components/CursortrailExample";
+import ScrollHighlight from "../../components/ScrollHighlight";
+import ListContainerComponent from "../../components/ListContainerComponent";
+import ListItemComponent from "../../components/ListItemComponent";
+import CtaMiniComponent from "../../components/CtaMiniComponent";
 import { ArrowRight } from "@phosphor-icons/react";
-import ArrowBig from "../components/arrowBig";
-import ExpandableCards2 from "../components/ExpandableCards2";
-import LogoCarousel from "../components/LogoCarousel";
-import WarpOverlay from "../components/overlayNav";
-import HamburgerGradientMenu from "../components/HamburgerGradientMenu";
+import ArrowBig from "../../components/arrowBig";
+import ExpandableCards2 from "../../components/ExpandableCards2";
+import LogoCarousel from "../../components/LogoCarousel";
+import WarpOverlay from "../../components/overlayNav";
+import HamburgerGradientMenu from "../../components/HamburgerGradientMenu";
 export default function Home() {
   const typewriterref = useRef(null);
   const isInView = useInView(typewriterref);
@@ -68,7 +68,8 @@ export default function Home() {
             <Button2
               variant="default"
               text="Read the Story"
-              className="w-fit"></Button2>
+              className="w-fit"
+            ></Button2>
           </StaggeredSlideUp>
         </div>
         {/* Vertical Lines */}
@@ -128,7 +129,8 @@ export default function Home() {
                 speed="fast"
                 cursorStyle={{ backgroundColor: "transparent" }}
                 variance={0.8}
-                backspace="word">
+                backspace="word"
+              >
                 Showtime!
               </Typewriter>
             </h2>
@@ -140,7 +142,8 @@ export default function Home() {
               easing="smooth"
               staggerDelay={0.1}
               duration={0.5}
-              distance={40}>
+              distance={40}
+            >
               <p className="text-lg text-gray-600   ">
                 Discover our latest projects in gaming,
               </p>
@@ -176,7 +179,8 @@ export default function Home() {
               delay={0.0}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-9xl text-gray-100 max-w-xl font-nyghtserif font-semibold tracking-tight leading-compress mb-4 pb-8">
                 We tell your story.
               </h2>
@@ -275,7 +279,8 @@ export default function Home() {
       {/* Skills Combo Section */}
       <div
         id="Step1"
-        className="z-1 mx-auto  mt-8 min-h-[90vh] relative font-aspekta">
+        className="z-1 mx-auto  mt-8 min-h-[90vh] relative font-aspekta"
+      >
         <HeaderImageVideoComp2
           useVideo={true}
           videoSrc="/video/14.mp4"
@@ -375,7 +380,8 @@ export default function Home() {
       {/* Visual Background 2 Section */}
       <div
         id="Step3"
-        className="grid grid-cols-12 z-2 mx-auto  mt-8 min-h-[90vh] relative font-aspekta">
+        className="grid grid-cols-12 z-2 mx-auto  mt-8 min-h-[90vh] relative font-aspekta"
+      >
         <HeaderImageVideoComp2
           useVideo={true}
           videoSrc="/video/cases/squareenix.mp4"
@@ -396,7 +402,8 @@ export default function Home() {
               delay={0.1}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-9xl leading-compress text-gray-100 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
                 We tell your story.
               </h2>
@@ -453,7 +460,8 @@ export default function Home() {
               delay={0.0}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-9xl text-gray-100  font-nyghtserif font-semibold tracking-tight leading-compress pb-8">
                 Show&nbsp;Time
               </h2>
@@ -487,7 +495,8 @@ export default function Home() {
               <Button2
                 variant="lime"
                 text="Join us for a ride"
-                className="w-fit"></Button2>
+                className="w-fit"
+              ></Button2>
             </p>
           </div>
         </div>
