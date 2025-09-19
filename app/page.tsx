@@ -29,6 +29,7 @@ import ExpandableCards2 from "./components/ExpandableCards2";
 import LogoCarousel from "./components/LogoCarousel";
 import WarpOverlay from "./components/overlayNav";
 import HamburgerGradientMenu from "./components/HamburgerGradientMenu";
+import LineMinimap from "./components/MapVertical";
 export default function Home() {
   const typewriterref = useRef(null);
   const isInView = useInView(typewriterref);
@@ -36,6 +37,9 @@ export default function Home() {
     <>
       <section className="relative h-[85vh] overflow-hidden">
         <HamburgerGradientMenu />
+
+        <LineMinimap />
+
 
         {/* Background Image with Overlay */}
         <HeaderImageVideoComp
