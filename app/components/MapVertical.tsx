@@ -12,17 +12,17 @@ import * as React from "react";
 import { clamp } from "../lib/clamp";
 export const LINE_GAP = 8;
 export const LINE_WIDTH = 1;
-export const LINE_COUNT = 40;
-export const LINE_HEIGHT = 24;
-export const LINE_HEIGHT_ACTIVE = 32;
+export const LINE_COUNT = 50;
+export const LINE_HEIGHT = 8;  // Now used as width for horizontal bars
+export const LINE_HEIGHT_ACTIVE = 16;  // Now used as width for active horizontal bars
 
-export const LINE_STEP = LINE_WIDTH + LINE_GAP;
+export const LINE_STEP = LINE_WIDTH + LINE_GAP;  // Now vertical step between bars
 export const MIN = 0;
-export const MAX = LINE_STEP * (LINE_COUNT - 1);
+export const MAX_HEIGHT = LINE_COUNT * LINE_WIDTH + (LINE_COUNT - 1) * LINE_GAP;  // Total height of the vertical stack
 
 // Controls scroll speed (higher = faster)
 // Set to 1 for no smoothing at all
-export const SCROLL_SMOOTHING = 0.5;
+export const SCROLL_SMOOTHING = 1;
 
 // Transformer constants
 export const DEFAULT_INTENSITY = 7;
@@ -34,28 +34,29 @@ export function lerp(start: number, end: number, factor: number): number {
 }
 
 export default function LineMinimap() {
-  const scrollX = useScrollX(MAX);
+  const scrollY = useScrollY(MAX_HEIGHT);
   const { mouseX, onMouseMove, onMouseLeave } = useMouseX();
 
   return (
-    <div className="fixed top-10 z-50 min-h-[200px]" style={{ height: `calc(100vh + ${MAX}px)` }}>
+    <div className="fixed top-0 z-50 min-w-[200px] flex flex-col justify-center h-[100vh]" style={{ width: `calc(100vw + ${MAX_HEIGHT}px)` }}>
       <motion.div
-        className="fixed translate-center"
+        className="relative "
         onPointerMove={onMouseMove}
         onPointerLeave={onMouseLeave}
       >
-        <div className="flex items-end" style={{ gap: LINE_GAP }}>
+        <div className="flex flex-col items-start" style={{ gap: LINE_GAP }}>
           {[...Array(LINE_COUNT)].map((_, i) => (
             <Line
               key={i}
               index={i}
-              scrollX={scrollX}
+              scrollY={scrollY}
               mouseX={mouseX}
               active={isActive(i, LINE_COUNT)}
             />
+
           ))}
         </div>
-        <Indicator x={scrollX} />
+        <Indicator y={scrollY} />
       </motion.div>
     </div>
   );
@@ -64,35 +65,35 @@ export default function LineMinimap() {
 function Line({
   active,
   mouseX,
-  scrollX,
+  scrollY,
   index,
 }: {
   active?: boolean;
   hovered?: boolean;
   mouseX: MotionValue<number>;
-  scrollX: MotionValue<number>;
+  scrollY: MotionValue<number>;
   index: number;
 }) {
   const ref = React.useRef<HTMLDivElement>(null);
-  const scaleY = useSpring(1, { damping: 45, stiffness: 600 });
-  const centerX = index * LINE_STEP + LINE_WIDTH / 2;
+  const scaleX = useSpring(1, { damping: 45, stiffness: 600 });
+  const centerY = index * LINE_STEP + LINE_WIDTH / 2;
 
-  useProximity(scaleY, {
+  useProximity(scaleX, {
     ref,
     baseValue: 1,
     mouseX,
-    scrollX,
-    centerX,
+    scrollY,
+    centerY,
   });
 
   return (
     <motion.div
       ref={ref}
-      className={active ? "bg-bg-red-500" : "bg-red-500"}
+      className={active ? "bg-lime-500" : "bg-neutral-200"}
       style={{
-        width: LINE_WIDTH,
-        height: active ? LINE_HEIGHT_ACTIVE : LINE_HEIGHT,
-        scaleY,
+        height: LINE_WIDTH,
+        width: active ? LINE_HEIGHT_ACTIVE : LINE_HEIGHT,
+        scaleX,
       }}
       transition={{
         type: "spring",
@@ -123,8 +124,8 @@ export interface ProximityOptions {
   ref: React.RefObject<HTMLElement | null>;
   baseValue: number;
   mouseX: MotionValue<number>;
-  scrollX: MotionValue<number>;
-  centerX: number;
+  scrollY: MotionValue<number>;
+  centerY: number;
   intensity?: number;
   reset?: boolean;
   transformer?: (
@@ -141,8 +142,8 @@ export function useProximity(
     ref,
     baseValue,
     mouseX,
-    scrollX,
-    centerX,
+    scrollY,
+    centerY,
     intensity = DEFAULT_INTENSITY,
     reset = true,
     transformer = transformScale,
@@ -158,16 +159,16 @@ export function useProximity(
 
   useMotionValueEvent(mouseX, "change", (latest) => {
     const rect = ref.current!.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const distance = latest - centerX;
+    const centerY = rect.top + rect.height / 2;
+    const distance = latest - centerY;
     value.set(
       transformer(distance, initialValueRef.current!, baseValue, intensity)
     );
   });
 
-  useMotionValueEvent(scrollX, "change", (latest) => {
+  useMotionValueEvent(scrollY, "change", (latest) => {
     const initialValue = initialValueRef.current!;
-    const distance = latest - centerX;
+    const distance = latest - centerY;
     const targetScale = transformer(
       distance,
       initialValue,
@@ -176,7 +177,7 @@ export function useProximity(
     );
 
     if (reset) {
-      const currentVelocity = Math.abs(scrollX.getVelocity());
+      const currentVelocity = Math.abs(scrollY.getVelocity());
       const velocityThreshold = 300;
       const velocityFactor = Math.min(1, currentVelocity / velocityThreshold);
       const lerped = lerp(initialValue, targetScale, velocityFactor);
@@ -190,16 +191,16 @@ export function useProximity(
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 
-export function useScrollX(max: number = MAX) {
-  const scrollX = useSpring(0, {
+export function useScrollY(max: number = MAX_HEIGHT) {
+  const scrollY = useSpring(0, {
     stiffness: 500,
     damping: 40,
     // Lower mass for faster response
     mass: 0.8,
   });
 
-  const { scrollY } = useScroll();
-  const targetX = React.useRef(0);
+  const { scrollY: pageScrollY } = useScroll();
+  const targetY = React.useRef(0);
 
   // State to hold the total scrollable height
   const [totalHeight, setTotalHeight] = React.useState(0);
@@ -214,23 +215,23 @@ export function useScrollX(max: number = MAX) {
     return () => window.removeEventListener('resize', updateHeight);
   }, []);
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
+  useMotionValueEvent(pageScrollY, "change", (latest) => {
     if (totalHeight > 0) {
       // Map the scroll position proportionally to the full page height
-      targetX.current = clamp((latest / totalHeight) * max, [0, max]);
+      targetY.current = clamp((latest / totalHeight) * max, [0, max]);
     }
   });
 
   useRequestAnimationFrame(() => {
-    const currentX = scrollX.get();
-    const smoothX = lerp(currentX, targetX.current, SCROLL_SMOOTHING);
+    const currentY = scrollY.get();
+    const smoothY = lerp(currentY, targetY.current, SCROLL_SMOOTHING);
     // Only update if there's a meaningful difference
-    if (Math.abs(smoothX - currentX) > 0.01) {
-      scrollX.set(smoothX);
+    if (Math.abs(smoothY - currentY) > 0.01) {
+      scrollY.set(smoothY);
     }
   });
 
-  return scrollX;
+  return scrollY;
 }
 
 export function useMouseX() {
@@ -279,21 +280,21 @@ export function isActive(index: number, count: number): boolean {
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-export function Indicator({ x }: { x: MotionValue<number> }) {
+export function Indicator({ y }: { y: MotionValue<number> }) {
   return (
     <motion.div
-      className="flex  bg-white w-[1px] items-center absolute h-[100vh]! -top-8"
-      style={{ x }}
+      className="flex bg-lime-500 h-[3px] rounded-full items-center absolute w-[32px]! -left-2 -top-0"
+      style={{ y }}
     >
       <svg
-        width="7"
-        height="6"
-        viewBox="0 0 7 6"
+        width="6"
+        height="7"
+        viewBox="0 0 6 7"
         fill="none"
-        className="-translate-y-3"
+        className="translate-x-3"
       >
         <path
-          d="M3.54688 6L0.515786 0.75L6.57796 0.75L3.54688 6Z"
+          d="M6 3.54688L0.75 0.515786L0.75 6.57796L6 3.54688Z"
           fill="var(--color-orange)"
         />
       </svg>
