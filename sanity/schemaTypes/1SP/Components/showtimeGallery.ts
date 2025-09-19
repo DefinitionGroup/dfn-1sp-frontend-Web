@@ -1,9 +1,11 @@
 import { defineType, defineField } from 'sanity'
+import { FiGrid } from 'react-icons/fi'
 
 export default defineType({
     name: 'showtimeGallery',
     title: 'Showtime Gallery',
     type: 'object',
+    icon: FiGrid,
     fields: [
         defineField({
             name: 'steps',
@@ -26,7 +28,8 @@ export default defineType({
             const { count } = selection as any;
             const stepCount = Array.isArray(count) ? count.length : (count ? 1 : 0);
             return {
-                title: `Gallery items ${stepCount}`
+                title: `Gallery items ${stepCount}`,
+                media: FiGrid
             };
         }
     }

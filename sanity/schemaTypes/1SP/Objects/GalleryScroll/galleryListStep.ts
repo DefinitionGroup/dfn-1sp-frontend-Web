@@ -1,15 +1,23 @@
 import { defineType, defineField } from 'sanity'
+import { FiList } from 'react-icons/fi'
 
 export default defineType({
     name: 'galleryListStep',
     title: 'Gallery List Step',
     type: 'object',
+    icon: FiList,
+    groups: [
+        { name: 'badge', title: 'Badge' },
+        { name: 'content', title: 'Content', default: true },
+        { name: 'media', title: 'Media' }
+    ],
     fields: [
-        defineField({ name: 'badge', title: 'Badge', type: 'badgeModule' }),
+        defineField({ name: 'badge', title: 'Badge', type: 'badgeModule', group: 'badge' }),
         defineField({
             name: 'header',
             title: 'Header Section',
             type: 'object',
+            group: 'content',
             fields: [
                 { name: 'superText', title: 'Super Text', type: 'string' },
                 { name: 'mainHeadline', title: 'Main Headline', type: 'string' },
@@ -20,6 +28,7 @@ export default defineType({
             name: 'listItems',
             title: 'List Items',
             type: 'array',
+            group: 'content',
             of: [
                 {
                     type: 'object',
@@ -77,9 +86,9 @@ export default defineType({
                 }
             ]
         }),
-        defineField({ name: 'expandableCards', title: 'Expandable Cards', type: 'cards' }),
-        defineField({ name: 'media', title: 'Image/Video', type: 'cloudinary.asset' }),
-        defineField({ name: 'grid', title: 'Grid Element', type: 'gridElement' }),
+        defineField({ name: 'expandableCards', title: 'Expandable Cards', type: 'cards', group: 'content' }),
+        defineField({ name: 'media', title: 'Image/Video', type: 'cloudinary.asset', group: 'media' }),
+        defineField({ name: 'grid', title: 'Grid Element', type: 'gridElement', group: 'media' }),
 
     ],
     preview: {
