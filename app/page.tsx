@@ -139,7 +139,7 @@ export default function Home() {
             {/* Headlines */}
             <div className="flex flex-col items-start justify-start w-full">
               {/* Main Headline */}
-              <div className="flex-1 flex flex-col min-w-0">
+              <div className="flex-1 flex flex-col min-w-0 p-4">
                 <h2 className="text-xl text-neutral-900 font-bold font-aspekta">
                   Super*
                 </h2>
