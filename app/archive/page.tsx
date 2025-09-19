@@ -2,7 +2,7 @@
 import { useRef } from "react";
 import { useInView } from "motion/react";
 import Badgemodule from "../../components/Badgemodule";
-import Button2 from "../../components/Button2";
+import Button2 from "../../components/ui/Button2";
 import ExpandableCards from "../../components/ExpandableCards";
 import Footer from "../../components/Footer";
 import FooterBottom from "../../components/FooterBottom";
