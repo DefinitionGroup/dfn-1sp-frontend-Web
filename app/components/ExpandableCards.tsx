@@ -70,21 +70,21 @@ export default function ExpandableCards() {
               ref={ref}
               className="w-full max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col  bg-neutral-900 dark:bg-neutral-900  shadow-2xl overflow-hidden">
               <motion.div
-                className="w-full h-100  min-h-[70vh]absolute sm:rounded-t-xl opacity-80 object-cover object-top"
+                className="w-full h-100   sm:rounded-t-xl opacity-80 object-cover object-top"
                 layoutId={`image-${active.title}-${id}`}>
                 <img
                   width={200}
                   height={500}
                   src={active.src}
                   alt={active.title}
-                  className="w-full h-100 absolute min-h-[70vh] sm:rounded-t-xl opacity-50 object-cover object-top"
+                  className="w-full h-full absolute min-h-[70vh] sm:rounded-t-xl opacity-50 object-cover object-top"
                 />
               </motion.div>{" "}
               <motion.img
                 layoutId={`logo-${active.title}-${id}`}
                 src={active.logo}
                 alt={active.title}
-                className="w-24 h-20 object-contain absolute top-24 left-8"
+                className="w-24 h-20 object-contain absolute top-10 left-8"
               />
               <div className="flex justify-between border-t border-neutral-100/50 items-start m-8 pt-8 z-10 ">
                 <div className="flex justify-between flex-col items-start   z-10 left-0">
@@ -115,7 +115,7 @@ export default function ExpandableCards() {
                     layoutId={`button-${active.title}-${id}`}
                     href={active.ctaLink}
                     target="_blank"
-                    className="px-4 py-3 text-sm font-bold bg-lime-500 text-white">
+                    className="px-4 py-3 text-sm font-bold bg-lime-500 hover:bg-black transition-all transition duration-500 text-white">
                     {active.ctaText}
                   </motion.a>
                 </div>
