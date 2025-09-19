@@ -1,21 +1,30 @@
 import { defineType, defineField } from 'sanity'
+import { FiZap } from 'react-icons/fi'
 
 export default defineType({
     name: 'galleryScrollHighlightStep',
     title: 'Gallery Scroll Highlight Step',
     type: 'object',
+    icon: FiZap,
+    groups: [
+        { name: 'badge', title: 'Badge' },
+        { name: 'content', title: 'Content', default: true },
+        { name: 'media', title: 'Media' }
+    ],
     fields: [
-        defineField({ name: 'badge', title: 'Badge', type: 'badgeModule' }),
+        defineField({ name: 'badge', title: 'Badge', type: 'badgeModule', group: 'badge' }),
         defineField({
             name: 'backgroundVideo',
             title: 'Background Video',
             type: 'cloudinary.asset',
+            group: 'media'
         }),
         defineField({
             name: 'scrollHighlightContent',
             title: 'Scroll Highlight Content',
             type: 'slideUpContent',
-            description: 'Content that will be highlighted as user scrolls'
+            description: 'Content that will be highlighted as user scrolls',
+            group: 'content'
         })
     ],
     preview: {

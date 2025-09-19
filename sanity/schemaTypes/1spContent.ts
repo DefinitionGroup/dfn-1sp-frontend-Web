@@ -1,4 +1,5 @@
 import showtimeGallery from "./1SP/Components/showtimeGallery";
+import heroShowtime from "./1SP/Components/heroShowtime";
 
 import badgeModule from "./1SP/Items/badgeModule";
 import carouselItem from "./1SP/Items/carouselItem";
@@ -19,7 +20,8 @@ import galleryScrollHighlightStep from "./1SP/Objects/GalleryScroll/galleryScrol
 import grid from "./1SP/Items/grid";
 
 const oneSPComponents = [
-    showtimeGallery
+    showtimeGallery,
+    heroShowtime
 ];
 const oneSPItems = [
     badgeModule,

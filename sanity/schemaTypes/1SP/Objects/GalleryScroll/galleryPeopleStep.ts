@@ -1,15 +1,23 @@
 import { defineType, defineField } from 'sanity'
+import { FiUsers } from 'react-icons/fi'
 
 export default defineType({
     name: 'galleryPeopleStep',
     title: 'Gallery People Step',
     type: 'object',
+    icon: FiUsers,
+    groups: [
+        { name: 'badge', title: 'Badge' },
+        { name: 'content', title: 'Content', default: true },
+        { name: 'media', title: 'Media' }
+    ],
     fields: [
-        defineField({ name: 'badge', title: 'Badge', type: 'badgeModule' }),
+        defineField({ name: 'badge', title: 'Badge', type: 'badgeModule', group: 'badge' }),
         defineField({
             name: 'header',
             title: 'Header Section',
             type: 'object',
+            group: 'content',
             fields: [
                 { name: 'superText', title: 'Super Text', type: 'string' },
                 { name: 'mainHeadline', title: 'Main Headline', type: 'string' },
@@ -21,7 +29,8 @@ export default defineType({
             name: 'description',
             title: 'Description Text',
             type: 'text',
-            rows: 3
+            rows: 3,
+            group: 'content'
         }),
         defineField({
             name: 'teamMembers',
@@ -29,9 +38,10 @@ export default defineType({
             type: 'array',
             of: [
                 { type: 'member' },
-            ]
+            ],
+            group: 'content'
         }),
-        defineField({ name: 'media', title: 'Image/Video', type: 'cloudinary.asset' }),
+        defineField({ name: 'media', title: 'Image/Video', type: 'cloudinary.asset', group: 'media' }),
     ],
     preview: {
         select: {
