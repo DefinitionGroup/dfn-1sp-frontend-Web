@@ -2,7 +2,7 @@
 import React from "react";
 import { cn } from "@/app/lib/utils";
 import StaggeredSlideUp from "./StaggeredSlideUp";
-import Button2 from "./Button2";
+import Button2 from "./ui/Button2";
 
 interface CtaMiniProps {
   heading: string;
@@ -35,15 +35,15 @@ function CtaMiniComponent({
     align === "center"
       ? "items-center"
       : align === "right"
-      ? "items-end"
-      : "items-start";
+        ? "items-end"
+        : "items-start";
 
   const textAlignClass =
     align === "center"
       ? "text-center"
       : align === "right"
-      ? "text-right"
-      : "text-left";
+        ? "text-right"
+        : "text-left";
 
   return (
     <StaggeredSlideUp
@@ -51,9 +51,11 @@ function CtaMiniComponent({
       delay={delay}
       staggerDelay={staggerDelay}
       duration={duration}
-      distance={distance}>
+      distance={distance}
+    >
       <h3
-        className={`text-2xl leading-none mb-4 font-semibold ${textAlignClass}`}>
+        className={`text-2xl leading-none mb-4 font-semibold ${textAlignClass}`}
+      >
         {heading}
       </h3>
       <p className={`text-xs mb-8 ${textAlignClass}`}>{paragraph}</p>

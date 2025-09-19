@@ -11,7 +11,7 @@ import ScrollHighlight from "../../components/ScrollHighlight";
 import ArrowBig from "../../components/arrowBig";
 import Image from "next/image";
 import Badgemodule from "@/components/Badgemodule";
-import Button2 from "@/components/Button2";
+import Button2 from "@/components/ui/Button2";
 import ExpandableCards from "@/components/ExpandableCards";
 import Footer from "@/components/Footer";
 import FooterBottom from "@/components/FooterBottom";

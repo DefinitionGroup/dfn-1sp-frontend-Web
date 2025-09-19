@@ -1,72 +1,59 @@
 "use client";
 
 import { motion, AnimatePresence, PanInfo } from "motion/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
-import StaggeredFadeIn from "./StaggeredFadeIn";
-import Button2 from "./ui/Button2";
-interface CarouselItem {
-  id: number;
+import Button2 from "@/components/ui/Button2";
+import type {
+  CarouselItem as SanityCarouselItem,
+  CTA,
+} from "@/types/sanity.types";
+import { assetUrl, ctaToButtonProps } from "@/utils/utils";
+
+// UI shape normalized from Sanity
+interface UIItem {
+  id: string;
   title: string;
-  subtitle: string;
-  image: string;
-  video?: string;
-  description: string;
-  category: string;
-  logosrc?: string;
+  subtitle?: string;
+  image: string; // resolved URL
+  description?: string;
+  category?: string;
+  logosrc?: string; // resolved URL
+  cta?: CTA;
 }
 
-const carouselItems: CarouselItem[] = [
-  {
-    id: 1,
-    title: "Gaming Campaign",
-    subtitle: "Epic Battle Royale",
-    image: "/s1.png",
-    description: "Immersive gaming experience with cutting-edge visuals",
-    category: "Gaming",
-    logosrc: "/logos/Ubisoft_logo.svg",
-  },
-  {
-    id: 2,
-    title: "Brand Identity",
-    subtitle: "Visual Storytelling",
-    image: "/s4.jpg",
-    description: "Complete brand transformation with interactive elements",
-    category: "Branding",
-    logosrc: "/logos/Lufthansa_Logo_2018.svg",
-  },
-  {
-    id: 3,
-    title: "Interactive Web",
-    subtitle: "User Experience",
-    image: "/s2.png",
-    description: "Revolutionary web experiences that engage and convert",
-    category: "Web Design",
-    logosrc: "/logos/Meta_Platforms_Inc._logo.svg",
-  },
-  {
-    id: 4,
-    title: "Motion Graphics",
-    subtitle: "Dynamic Content",
-    image: "/s3.png",
-    description: "Stunning motion graphics for digital campaigns",
-    category: "Animation",
-    logosrc: "/logos/Microsoft-logo_black.svg",
-  },
-  {
-    id: 5,
-    title: "AR Experience",
-    subtitle: "Augmented Reality",
-    image: "/s1.png",
-    description: "Next-generation AR solutions for marketing",
-    category: "AR/VR",
-  },
-];
+export default function InteractiveCarousel({
+  items,
+}: {
+  items?: SanityCarouselItem[];
+}) {
+  // Normalize input from Sanity → UI items
+  const carouselItems: UIItem[] = useMemo(() => {
+    const list = (items ?? []).map((it, i) => {
+      const image = assetUrl((it as any)?.image) || "";
+      const logosrc =
+        assetUrl((it as any)?.logoSrc || (it as any)?.logo) || undefined;
+      return {
+        id: String((it as any)?.id ?? i),
+        title: it.title || "",
+        subtitle: it.subtitle || (it as any)?.category || "",
+        image,
+        description: (it as any)?.description || "",
+        category: (it as any)?.category || undefined,
+        logosrc,
+        cta: (it as any)?.cta,
+      } as UIItem;
+    });
+    // only keep entries that have an image URL
+    return list.filter((x) => !!x.image);
+  }, [items]);
 
-export default function InteractiveCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+  // Guard: if no content from Sanity, render nothing
+  if (!carouselItems.length) return null;
 
   useEffect(() => {
     if (!isAutoPlaying) return;
@@ -77,7 +64,7 @@ export default function InteractiveCarousel() {
     }, 6000);
 
     return () => clearInterval(interval);
-  }, [isAutoPlaying]);
+  }, [isAutoPlaying, carouselItems.length]);
 
   const slideVariants = {
     enter: (direction: number) => ({
@@ -103,45 +90,31 @@ export default function InteractiveCarousel() {
   };
 
   const swipeConfidenceThreshold = 10000;
-  const swipePower = (offset: number, velocity: number) => {
-    return Math.abs(offset) * velocity;
-  };
+  const swipePower = (offset: number, velocity: number) =>
+    Math.abs(offset) * velocity;
 
   const paginate = (newDirection: number) => {
     setDirection(newDirection);
     setCurrentIndex((prev) => {
-      if (newDirection === 1) {
-        return (prev + 1) % carouselItems.length;
-      } else {
-        return prev === 0 ? carouselItems.length - 1 : prev - 1;
-      }
+      if (newDirection === 1) return (prev + 1) % carouselItems.length;
+      return prev === 0 ? carouselItems.length - 1 : prev - 1;
     });
   };
 
   const handleDragEnd = (e: any, { offset, velocity }: PanInfo) => {
     const swipe = swipePower(offset.x, velocity.x);
-
-    if (swipe < -swipeConfidenceThreshold) {
-      paginate(1);
-    } else if (swipe > swipeConfidenceThreshold) {
-      paginate(-1);
-    }
+    if (swipe < -swipeConfidenceThreshold) paginate(1);
+    else if (swipe > swipeConfidenceThreshold) paginate(-1);
   };
 
-  return (
-    <section className="  ">
-      <div className="container  mx-auto w-full ">
-        <motion.div
-          className="text-center "
-          initial={{ opacity: 1, y: 50 }}
-          whileInView={{ opacity: 1, y: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        ></motion.div>
+  const active = carouselItems[currentIndex];
 
+  return (
+    <section>
+      <div className="container mx-auto w-full ">
         <div className="relative h-[600px] flex items-start">
           {/* Main Carousel */}
-          <div className="relative w-full  rounded-sm h-full perspective-1000">
+          <div className="relative w-full rounded-sm h-full perspective-1000">
             <AnimatePresence initial={false} custom={direction}>
               <motion.div
                 key={currentIndex}
@@ -166,9 +139,9 @@ export default function InteractiveCarousel() {
                 <div className="relative w-full h-full overflow-hidden bg-gradient-to-brshadow-2xl">
                   {/* Background Image */}
                   <motion.img
-                    src={carouselItems[currentIndex].image}
-                    alt={carouselItems[currentIndex].title}
-                    className="absolute inset-0 w-full h-full  object-cover"
+                    src={active.image}
+                    alt={active.title}
+                    className="absolute inset-0 w-full h-full object-cover"
                     initial={{ scale: 1.3, opacity: 1 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ duration: 1.6 }}
@@ -178,48 +151,52 @@ export default function InteractiveCarousel() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                   {/* Content */}
-                  <div className="absolute bottom-0  flex   left-0 right-0 p-8 text-white">
+                  <div className="absolute bottom-0 flex left-0 right-0 p-8 text-white">
                     <motion.div
                       initial="hidden"
                       animate="visible"
-                      className=" flex-col items-start justify-start p-8 max-w-3xl space-y-2"
+                      className="flex-col items-start justify-start p-8 max-w-3xl space-y-2"
                       variants={{
                         hidden: { opacity: 0 },
                         visible: {
                           opacity: 1,
-                          transition: {
-                            delay: 0.6,
-                            staggerChildren: 0.4252,
-                          },
+                          transition: { delay: 0.6, staggerChildren: 0.4252 },
                         },
                       }}
                     >
                       <div>
-                        <motion.div className="w-fit  px-3   text-black  flex  text-xs rounded-xs ">
-                          <Image
-                            className="mb-8 invert"
-                            src={
-                              carouselItems[currentIndex].logosrc ||
-                              "/logos/Amazon_logo.svg"
-                            }
-                            alt="Logo"
-                            width={96}
-                            height={44}
-                          />
-                        </motion.div>
-                        <motion.h3 className="text-7xl font-semibold  leading-compressed  pb-0">
-                          {carouselItems[currentIndex].title}
-                        </motion.h3>
+                        {(active.logosrc || "/logos/Amazon_logo.svg") && (
+                          <motion.div className="w-fit px-3 text-black flex text-xs rounded-xs ">
+                            <Image
+                              className="mb-8 invert"
+                              src={active.logosrc || "/logos/Amazon_logo.svg"}
+                              alt="Logo"
+                              width={96}
+                              height={44}
+                            />
+                          </motion.div>
+                        )}
+                        {active.title && (
+                          <motion.h3 className="text-7xl font-semibold leading-compressed pb-0">
+                            {active.title}
+                          </motion.h3>
+                        )}
                       </div>
-                      <motion.p className="text-xl text-gray-100 r">
-                        {carouselItems[currentIndex].subtitle}
-                      </motion.p>
-                      <motion.p className="text-gray-100 text-sm max-w-2xl ">
-                        {carouselItems[currentIndex].description}
-                      </motion.p>
-                      <motion.div className="text-gray-100 text-sm max-w-2xl ">
-                        <Button2 variant="limesmall" text="View Case Study" />
-                      </motion.div>
+                      {active.subtitle && (
+                        <motion.p className="text-xl text-gray-100">
+                          {active.subtitle}
+                        </motion.p>
+                      )}
+                      {active.description && (
+                        <motion.p className="text-gray-100 text-sm max-w-2xl ">
+                          {active.description}
+                        </motion.p>
+                      )}
+                      {active.cta?.text && (
+                        <motion.div className="text-gray-100 text-sm max-w-2xl ">
+                          <Button2 {...ctaToButtonProps(active.cta)} />
+                        </motion.div>
+                      )}
                     </motion.div>
                   </div>
 
@@ -229,7 +206,7 @@ export default function InteractiveCarousel() {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                   >
-                    <button className="w-6  h-6 cursor-pointer bg-black/50 backdrop-blur-sm rounded-xs flex items-center justify-center text-lime-400 hover:bg-white/100  hover:text-black transition-colors">
+                    <button className="w-6 h-6 cursor-pointer bg-black/50 backdrop-blur-sm rounded-xs flex items-center justify-center text-lime-400 hover:bg-white/100 hover:text-black transition-colors">
                       <svg
                         width="11"
                         height="113"
@@ -248,7 +225,7 @@ export default function InteractiveCarousel() {
 
           {/* Navigation Arrows */}
           <motion.button
-            className="absolute -left-12 top-1/2 transform -translate-y-1/2 w-12 h-12  bg-gray-300  backdrop-blur-sm rounded-xs flex items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
+            className="absolute -left-12 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm rounded-xs flex items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => paginate(-1)}
@@ -295,11 +272,7 @@ export default function InteractiveCarousel() {
           {carouselItems.map((_, index) => (
             <motion.button
               key={index}
-              className={`w-1 h-2 rounded-full  transition-all duration-300 ${
-                index === currentIndex
-                  ? "bg-lime-400 min-w-16 "
-                  : "bg-gray-300 min-w-3"
-              }`}
+              className={`w-1 h-2 rounded-full transition-all duration-300 ${index === currentIndex ? "bg-lime-400 min-w-16" : "bg-gray-300 min-w-3"}`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.8 }}
               onClick={() => {
@@ -311,15 +284,11 @@ export default function InteractiveCarousel() {
         </div>
 
         {/* Thumbnail Strip */}
-        <div className="flex justify-center mt-8 space-x-4 pt-4overflow-x-auto pb-4">
+        <div className="flex justify-center mt-8 space-x-4 pt-4 overflow-x-auto pb-4">
           {carouselItems.map((item, index) => (
             <motion.button
               key={item.id}
-              className={`flex-shrink-0 w-32 h-32  rounded-sm overflow-hidden outline-3 transition-colors ${
-                index === currentIndex
-                  ? "outline-lime-500"
-                  : "outline-transparent"
-              }`}
+              className={`flex-shrink-0 w-32 h-32 rounded-sm overflow-hidden outline-3 transition-colors ${index === currentIndex ? "outline-lime-500" : "outline-transparent"}`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => {

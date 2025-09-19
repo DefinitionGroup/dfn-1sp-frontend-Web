@@ -1,5 +1,5 @@
 import React from "react";
-import Button2 from "./Button2";
+import Button2 from "./ui/Button2";
 import StaggeredSlideUp from "./StaggeredSlideUp";
 // Image imports from Figma assets
 const torstenImage = "/video/people/Torsten.mp4";
@@ -7,7 +7,6 @@ const steveImage = "/video/people/Steve.mp4";
 const markusImage = "/video/people/Markus.mp4";
 const kirstenImage = "/video/people/Kirsten.mp4";
 const kerstinImage = "/video/people/Kerstin.mp4";
-
 
 interface TeamMember {
   name: string;
@@ -52,7 +51,8 @@ export default function PeopleShowcaseHero() {
     <section
       className="flex flex-col gap-8  items-start justify-start w-full mx-auto "
       data-component="people-showcase-hero"
-      aria-labelledby="people-showcase-title">
+      aria-labelledby="people-showcase-title"
+    >
       {/* Main Content Section */}
 
       {/* Team Photos */}
@@ -62,10 +62,13 @@ export default function PeopleShowcaseHero() {
             <div
               key={member.name}
               className="group relative border border-neutral-100 overflow-hidden bg-neutral-600   flex-shrink-0 rounded-xs transition-transform duration-300 hover:scale-[1.02] focus-within:scale-[1.02]"
-              data-member={member.name.toLowerCase()}>
+              data-member={member.name.toLowerCase()}
+            >
               <video
                 src={member.image}
-                autoPlay muted loop
+                autoPlay
+                muted
+                loop
                 className="w-full h-full object-cover transition-all duration-300 group-hover:brightness-110"
               />
               {/* Optional: Add hover overlay with name */}
