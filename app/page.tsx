@@ -128,7 +128,7 @@ export default function Home() {
       {/* Portfolio Grid */}
       <div className="z-4 grid gap-4 col-span-12 relative col-start-1 container mx-auto row-start-1 grid-cols-12 ">
         <GridBackground delay={0.2} staggerDelay={0.06} />
-        <div className="z-1 grid col-span-12 gap-4 col-start-1 pt-32 row-start-1 grid-cols-12 ">
+        <div className="z-1 grid col-span-12 col-start-1 pt-32 row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2"
             text="Experts"
@@ -167,7 +167,7 @@ export default function Home() {
               </ListItemComponent>
             </ListContainerComponent>
           </div>
-          <div className="col-span-10 col-start-3  mt-8  ">
+          <div className="col-span-12 col-start-3 p-4  mt-8  ">
             <ExpandableCards />
           </div>
         </div>
@@ -236,7 +236,7 @@ export default function Home() {
             <header className="col-span-5 col-start-1  ">
               <h2 className="text-lg text-neutral-500  font-aspekta">
                 At 1sp, we are driven by a team of passionate individuals who
-                thrive on creativity and innovation, crafting unique marketing 
+                thrive on creativity and innovation, crafting unique marketing
                 campaigns that resonate with audiences.
               </h2>
             </header>{" "}
