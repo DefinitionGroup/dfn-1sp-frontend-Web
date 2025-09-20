@@ -93,5 +93,4 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
     </motion.div>
   );
 };
-
 export default HeaderImageVideoComp;

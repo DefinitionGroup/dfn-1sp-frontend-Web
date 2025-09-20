@@ -53,8 +53,8 @@ export default function Home() {
         {/* Hero Content */}
 
         <div className="relative z-10 container  mt-[30vh]  mx-auto ">
-          <StaggeredSlideUp className="space-y-6 max-w-full ">
-            <h1 className="text-neutral-50 uppercase pb-2 text-xs border-b font-bold  max-w-1/2">
+          <StaggeredSlideUp className=" max-w-full ">
+            <h1 className="text-neutral-50 uppercase pb-2 text-base  font-bold  max-w-1/2">
               Welcome at 1SP
             </h1>
             <TypewriterChangeContentExample />

@@ -13,7 +13,7 @@ import { clamp } from "../lib/clamp";
 export const LINE_GAP = 8;
 export const LINE_WIDTH = 1;
 export const LINE_COUNT = 50;
-export const LINE_HEIGHT = 8;  // Now used as width for horizontal bars
+export const LINE_HEIGHT = 8;  // Now used as widtwh for horizontal bars
 export const LINE_HEIGHT_ACTIVE = 16;  // Now used as width for active horizontal bars
 
 export const LINE_STEP = LINE_WIDTH + LINE_GAP;  // Now vertical step between bars
@@ -38,7 +38,7 @@ export default function LineMinimap() {
   const { mouseX, onMouseMove, onMouseLeave } = useMouseX();
 
   return (
-    <div className="fixed top-0 z-50 min-w-[200px] flex flex-col justify-center h-[100vh]" style={{ width: `calc(100vw + ${MAX_HEIGHT}px)` }}>
+    <div className="fixed top-0 z-50 min-w-[200px] flex flex-col pointer-events-none justify-center h-[100vh]" style={{ width: `calc(100vw + ${MAX_HEIGHT}px)` }}>
       <motion.div
         className="relative "
         onPointerMove={onMouseMove}
