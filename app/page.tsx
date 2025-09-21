@@ -30,6 +30,8 @@ import LogoCarousel from "./components/LogoCarousel";
 import WarpOverlay from "./components/overlayNav";
 import HamburgerGradientMenu from "./components/HamburgerGradientMenu";
 import LineMinimap from "./components/MapVertical";
+import CircularProgressIndicator from "./components/dataPointerRadial";
+
 export default function Home() {
   const typewriterref = useRef(null);
   const isInView = useInView(typewriterref);
@@ -75,7 +77,7 @@ export default function Home() {
         {/* <div className="absolute top-0 left-[1321px] w-px h-full bg-neutral-50/50" />
         <div className="absolute top-0 left-[1033px] w-px h-full bg-neutral-50/50" /> */}
         {/* Corner Text */}
-        <div className="absolute bottom-[42px] left-[24px] text-white text-xs font-medium  -rotate-90 origin-bottom-left">
+        <div className="absolute bottom-[42px] left-[24px] text-white text-xxs font-medium  -rotate-90 origin-bottom-left">
           SUPER*
         </div>
         <div className="absolute bottom-[19px] right-[18px] text-white text-xxs text-eyebrow font-medium">
@@ -85,7 +87,7 @@ export default function Home() {
 
       {/* SHOWTIME  GALLERY */}
       <div className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta">
-        <GridBackground />
+
         <div className="z-1 grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             text="Level Up!"
@@ -125,6 +127,7 @@ export default function Home() {
           </div>
           <div className="col-span-12 col-start-1 mt-8 ">
             <InteractiveCarousel />
+     <CircularProgressIndicator percentage={85} size={250} strokeWidth={15} />
           </div>
         </div>
       </div>
@@ -202,7 +205,7 @@ export default function Home() {
       </div>
       {/* People Gallery Section */}
       <div className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta gap-4  ">
-        {/* <GridBackground /> */}
+        {/*   */}
         <div className="z-1 flex flex-col col-span-2 pt-32 justify-start items-start  col-start-1 mx-auto row-start-1">
           <Badgemodule
             text="Per  Form"

@@ -43,7 +43,9 @@ export default function LineMinimap() {
         className="relative "
         onPointerMove={onMouseMove}
         onPointerLeave={onMouseLeave}
-      >
+      >  <div className="absolute bottom-[0px] left-[28px] text-white text-[7px] font-medium  -rotate-90 origin-bottom-left">
+        Scroll to Navigate
+        </div>
         <div className="flex flex-col items-start" style={{ gap: LINE_GAP }}>
           {[...Array(LINE_COUNT)].map((_, i) => (
             <Line
@@ -283,7 +285,7 @@ export function isActive(index: number, count: number): boolean {
 export function Indicator({ y }: { y: MotionValue<number> }) {
   return (
     <motion.div
-      className="flex bg-lime-500 h-[3px] rounded-full items-center absolute w-[32px]! -left-2 -top-0"
+      className="flex bg-lime-500 h-[1px] rounded-full items-center absolute w-[96px]! -left-2 -top-0"
       style={{ y }}
     >
       <svg
