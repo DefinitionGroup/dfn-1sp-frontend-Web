@@ -14,8 +14,8 @@ interface CircularDashedGaugeProps {
 export default function CircularDashedGauge({
   percentage = 75,
   size = 200,
-  strokeWidth = 10,
-  dashLength = 10,
+  strokeWidth = 1,
+  dashLength = 12,
   gapLength = 4,
 }: CircularDashedGaugeProps) {
   const ref = React.useRef<HTMLDivElement>(null);
@@ -49,8 +49,8 @@ export default function CircularDashedGauge({
   for (let i = 0; i < numDashes; i++) {
     const angle = (i / numDashes) * 360;
     const rad = (angle * Math.PI) / 180;
-    const startRadius = 0.8 * radius;
-    const endRadius = radius;
+    const startRadius = (i % 5 === 4) ? 0.8 * radius : 0.9 * radius;
+    const endRadius = (i === numDashes - 1) ? 1.1 * radius : radius;
     const x1 = size / 2 + startRadius * Math.cos(rad);
     const y1 = size / 2 + startRadius * Math.sin(rad);
     const x2 = size / 2 + endRadius * Math.cos(rad);
@@ -71,7 +71,7 @@ export default function CircularDashedGauge({
       className="flex items-center justify-center"
       style={{ width: size, height: size }}
     >
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+      <svg width={size} height={size} viewBox={`${-0.1 * size} ${-0.1 * size} ${1.2 * size} ${1.2 * size}`}>
         {/* Background dashed lines (static) */}
         {dashes.map((dash, i) => (
           <line
@@ -89,19 +89,26 @@ export default function CircularDashedGauge({
   {/* Rotating progress group from 0° to target angle once in view */}
   <motion.g style={{ rotate: rotation, transformOrigin: "50% 50%", transformBox: "fill-box" }}>
           {/* Progress dashed lines */}
-          {dashes.slice(0, numProgressDashes).map((dash, i) => (
-            <line
-              key={`progress-${i}`}
-              x1={dash.x1}
-              y1={dash.y1}
-              x2={dash.x2}
-              y2={dash.y2}
-              stroke="currentColor"
-              strokeWidth={strokeWidth}
-              strokeLinecap="round"
-              className="text-lime-500"
-            />
-          ))}
+          {dashes.slice(0, numProgressDashes).map((dash, i) => {
+            const angle = (i / numDashes) * 360;
+            const rad = (angle * Math.PI) / 180;
+            const endRadiusForThis = (i === numProgressDashes - 1) ? 1.1 * radius : radius;
+            const x2 = size / 2 + endRadiusForThis * Math.cos(rad);
+            const y2 = size / 2 + endRadiusForThis * Math.sin(rad);
+            return (
+              <line
+                key={`progress-${i}`}
+                x1={dash.x1}
+                y1={dash.y1}
+                x2={x2}
+                y2={y2}
+                stroke="currentColor"
+                strokeWidth={strokeWidth}
+                strokeLinecap="round"
+                className="text-lime-500"
+              />
+            );
+          })}
         </motion.g>
         {/* Text indicator at 3 o'clock (static) */}
         <text
