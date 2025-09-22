@@ -30,7 +30,7 @@ import LogoCarousel from "./components/LogoCarousel";
 import WarpOverlay from "./components/overlayNav";
 import HamburgerGradientMenu from "./components/HamburgerGradientMenu";
 import LineMinimap from "./components/MapVertical";
-import CircularProgressIndicator from "./components/dataPointerRadial";
+import CircularDashedGauge from "./components/dataPointerRadial";
 
 export default function Home() {
   const typewriterref = useRef(null);
@@ -127,7 +127,7 @@ export default function Home() {
           </div>
           <div className="col-span-12 col-start-1 mt-8 ">
             <InteractiveCarousel />
-     <CircularProgressIndicator percentage={85} size={250} strokeWidth={15} />
+     <CircularDashedGauge percentage={76} size={222} strokeWidth={1} />
           </div>
         </div>
       </div>
