@@ -31,7 +31,7 @@ export default function TypewriterChangeContentExample({
         variance={2.8}
         speed={"normal"}
         backspace="character"
-        cursorBlinkDuration={0.26}
+        cursorBlinkDuration={0.16}
         cursorStyle={cursor}
         onComplete={() => {
           delay(() => setIndex(wrap(0, text.length, index + 1)), 1);
@@ -64,7 +64,7 @@ const label: React.CSSProperties = {
 };
 
 const animatingText: React.CSSProperties = {
-  fontSize: 128,
+  fontSize: "calc(24px + 5vw)",
   fontWeight: 600,
   lineHeight: 0.75,
   letterSpacing: "-0.25rem",
@@ -73,5 +73,5 @@ const animatingText: React.CSSProperties = {
 const cursor: React.CSSProperties = {
   background: "#66ff00",
   width: 6,
-  minHeight: 108,
+  minHeight:"calc(24px + 3.5vw)",
 };

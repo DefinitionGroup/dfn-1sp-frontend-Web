@@ -54,14 +54,14 @@ export default function Home() {
         <FrontNavOverlay />
         {/* Hero Content */}
 
-        <div className="relative z-10 container  mt-[30vh]  mx-auto ">
-          <StaggeredSlideUp className=" max-w-full ">
+        <div className="relative z-10 container  mt-[30vh]  mx-auto p-8 md:p-0">
+          <StaggeredSlideUp className=" max-w-full flex flex-col gap-8 md:gap-0">
             <h1 className="text-neutral-50 uppercase pb-2 text-base  font-bold  max-w-1/2">
               Welcome at 1SP
             </h1>
             <TypewriterChangeContentExample />
 
-            <p className="text-neutral-50 text-lg  max-w-1/3">
+            <p className="text-neutral-50 text-lg  md:max-w-1/3">
               We are group of several laser focused agencies. Each one with a
               distinctive competetive edge.
             </p>

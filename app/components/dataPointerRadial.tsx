@@ -121,6 +121,7 @@ export default function CircularDashedGauge({
 
         </text>
       </svg>
+
       <div className="font-bold  text-lime-500 ">
         <AnimateNumber
         className="number border p-4 min-w-48 absolute"
