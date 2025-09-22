@@ -5,6 +5,7 @@ import type { Page } from "@/types/sanity.types";
 import ShowtimeGallery from "./pagebuilderComponents/showtimeGallery";
 import HeroShowtime from "./pagebuilderComponents/HeroShowtime";
 import { HeroShowtime as HeroShowtimeType } from "@/types/sanity.types";
+import SublineComponent from "./pagebuilderComponents/SublineComponent";
 type PageBuilderProps = { content: NonNullable<Page["content1sp"]> };
 
 export function PageBuilder({ content }: PageBuilderProps) {
@@ -28,6 +29,13 @@ export function PageBuilder({ content }: PageBuilderProps) {
               <HeroShowtime
                 key={block._key ?? `heroShowtime-${i}`}
                 data={block as HeroShowtimeType}
+              />
+            );
+          case "sublineComponent":
+            return (
+              <SublineComponent
+                key={block._key ?? `subline-${i}`}
+                data={block}
               />
             );
 

@@ -97,7 +97,8 @@ export default defineType({
             type: 'array',
             of: [
                 { type: 'showtimeGallery' },
-                { type: 'heroShowTime' }
+                { type: 'heroShowTime' },
+                { type: 'sublineComponent' }
             ],
             hidden: ({ parent }: any) => parent?.channel !== '1spWeb',
         }),

@@ -13,17 +13,44 @@ export default defineType({
     ],
     fields: [
         defineField({ name: 'badge', title: 'Badge', type: 'badgeModule', group: 'badge' }),
+
+        // Staggered slide up toggle
+        defineField({
+            name: 'staggeredSlideUp',
+            title: 'Staggered Slide Up',
+            type: 'boolean',
+            description: 'When enabled, uses the Staggered header and hides the regular header',
+            group: 'content',
+            initialValue: false
+        }),
+
+        // Regular header (hidden when staggeredSlideUp is true)
         defineField({
             name: 'header',
             title: 'Header Section',
             type: 'object',
             group: 'content',
+            hidden: ({ parent }) => Boolean(parent?.staggeredSlideUp),
             fields: [
                 { name: 'superText', title: 'Super Text', type: 'string' },
                 { name: 'mainHeadline', title: 'Main Headline', type: 'string' },
                 { name: 'subHeadline', title: 'Sub Headline', type: 'string' }
             ]
         }),
+
+        // Staggered header shown only when staggeredSlideUp is true
+        defineField({
+            name: 'staggeredHeader',
+            title: 'Staggered Header',
+            type: 'object',
+            group: 'content',
+            hidden: ({ parent }) => !Boolean(parent?.staggeredSlideUp),
+            fields: [
+                { name: 'title', title: 'Title', type: 'string' },
+                { name: 'paragraph', title: 'Paragraph', type: 'text' }
+            ]
+        }),
+
         defineField({
             name: 'listItems',
             title: 'List Items',
@@ -94,7 +121,7 @@ export default defineType({
             description: "Composable items that render after the paragraphs.",
             type: "array",
             group: "content",
-            of: [defineArrayMember({ type: "cta" }), defineArrayMember({ type: "cards" })],
+            of: [defineArrayMember({ type: "cta" }), defineArrayMember({ type: "cards" }), defineArrayMember({ type: "ctaMiniComponent" })],
         }),
 
     ],

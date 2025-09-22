@@ -90,9 +90,62 @@ export interface GalleryCardsStep extends GalleryBase {
     grid?: GridElement
 }
 
+/** NEW: Mini CTA block used inside ListStep.additionalContent */
+export type ButtonVariant = 'default' | 'black' | 'lime' | 'limesmall'
+export type MiniCtaAlignment = 'left' | 'right' | 'center' | 'default'
+
+export interface CtaMiniComponent {
+    heading?: string
+    paragraph?: string
+    buttonText?: string
+    link?: Link
+    variant?: ButtonVariant
+    alignment?: MiniCtaAlignment
+}
+
 export interface GalleryListStep extends GalleryBase {
     type: 'list'
-    items?: Array<{ text?: string; size?: string; fontWeight?: string; color?: 'black' | 'white' | 'gray' }>
+
+    /** Regular header (hidden when staggeredSlideUp is true) */
+    header?: {
+        superText?: string
+        mainHeadline?: string
+        subHeadline?: string
+    }
+
+    /** Toggle + data for the staggered variant */
+    staggeredSlideUp?: boolean
+    staggeredHeader?: {
+        title?: string
+        paragraph?: string
+    }
+
+    /** Primary list field (new schema) */
+    listItems?: Array<{
+        text?: string
+        size?: 'small' | 'medium' | 'large' | string
+        fontWeight?: 'normal' | 'bold' | string
+        color?: 'black' | 'white' | 'gray' | string
+    }>
+
+    /** Back-compat: legacy list field */
+    items?: Array<{
+        text?: string
+        size?: string
+        fontWeight?: string
+        color?: 'black' | 'white' | 'gray'
+    }>
+
+    /** Media + grid from the new schema */
+    media?: CloudinaryAsset
+    grid?: GridElement
+
+    /** Additional content supports cta, cards, and ctaMiniComponent */
+    additionalContent?: Array<
+        | (CTA & { _type?: 'cta' })
+        | (Cards & { _type?: 'cards' })
+        | (CtaMiniComponent & { _type?: 'ctaMiniComponent' })
+    >
 }
 
 export interface GalleryPeopleStep extends GalleryBase {
@@ -128,6 +181,13 @@ export interface HeroShowtime {
     useVideo?: boolean
 }
 
+/** Subline component */
+export interface SublineComponent {
+    description?: string
+    showGridBackground?: boolean
+    additionalContent?: CTA[]
+}
+
 /* Documents */
 export interface Page {
     _id?: SanityID
@@ -145,7 +205,7 @@ export interface Page {
     channel?: '1spWeb' | 'msmWeb' | 'studioco2Web' | string
 
     // channel-specific content (kept generic)
-    content1sp?: Array<any | ShowtimeGallery | HeroShowtime>
+    content1sp?: Array<any | ShowtimeGallery | HeroShowtime | SublineComponent>
     contentMSM?: Array<any>
     contentStudioCO2?: Array<any>
 }
@@ -201,5 +261,7 @@ export type OneSPTypes =
     | GridElement
     | ShowtimeGallery
     | HeroShowtime
+    | SublineComponent
+    | CtaMiniComponent
     | Cards
     | GalleryStep
