@@ -9,6 +9,20 @@ import type {
 } from "@/types/sanity.types";
 import { assetUrl } from "@/utils/utils";
 
+type RawItem = string | { name?: string; text?: string };
+
+function pickItems(step: any): RawItem[] {
+  const candidates = [
+    step?.scrollHighlightContent?.items,
+    step?.items,
+    step?.content?.items,
+  ];
+  for (const c of candidates) {
+    if (Array.isArray(c)) return c as RawItem[];
+  }
+  return [];
+}
+
 export default function HighlightStep({
   step,
 }: {
@@ -16,12 +30,7 @@ export default function HighlightStep({
 }) {
   const video = assetUrl(step.backgroundVideo);
 
-  // Pull items from common Sanity shapes: step.items or step.content.items
-  const rawItems = ((step as any)?.items ??
-    (step as any)?.content?.items ??
-    []) as Array<string | { name?: string; text?: string }>;
-
-  // Normalize to { name, text }
+  const rawItems = pickItems(step);
   const items = rawItems
     .map((it) =>
       typeof it === "string"
@@ -35,6 +44,7 @@ export default function HighlightStep({
       {video && (
         <HeaderImageVideoComp2 useVideo videoSrc={video} enableParallax />
       )}
+
       <div className="grid grid-cols-12 z-1 mx-auto relative container">
         <div className="z-1 grid col-span-12 py-32 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           {step.badge && (
@@ -45,6 +55,7 @@ export default function HighlightStep({
               numberEl={step.badge.numberEl ?? ""}
             />
           )}
+
           <div className="col-span-9 col-start-3">
             {items.length > 0 && <ScrollHighlight items={items} />}
           </div>

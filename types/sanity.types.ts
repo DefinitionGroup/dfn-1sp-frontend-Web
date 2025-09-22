@@ -74,7 +74,7 @@ export interface GalleryBase {
 
 export interface GalleryHeroStep extends GalleryBase {
     type: 'hero'
-    typewriter?: string
+    typewriterText?: string
     description?: string[]
     backgroundVideo?: CloudinaryAsset
 }
@@ -119,6 +119,7 @@ export interface ShowtimeGallery {
 
 export interface HeroShowtime {
     heading?: string
+    subheading?: string
     initialValue?: string
     paragraphs?: string[]
     additionalContent?: CTA[]

@@ -1,4 +1,3 @@
-// components/showtimeGallery/steps/CardsStep.tsx
 "use client";
 import React from "react";
 import Badgemodule from "@/components/Badgemodule";
@@ -12,27 +11,38 @@ import type {
 } from "@/types/sanity.types";
 import { assetUrl } from "@/utils/utils";
 
-export default function CardsStep({
-  step,
-}: {
+type CardsStepProps = {
   step: GalleryCardsStep & {
-    // allow flexible shapes from Sanity
     content?: {
-      title?: string; // e.g. "News."
-      headline?: string; // fallback
-      description?: string; // paragraph under the title
-      subheadline?: string; // optional alt source for description
+      title?: string;
+      headline?: string;
+      description?: string;
+      subheadline?: string;
       cards?: { items?: CardItem[] };
+      items?: CardItem[];
     };
     cards?: { items?: CardItem[] };
+    expandableCards?: { items?: CardItem[] };
     backgroundVideo?: CloudinaryAsset;
-    opacity?: number; // optional dimmer for bg video (if your HeaderImageVideoComp2 supports it)
+    opacity?: number;
   };
-}) {
+};
+
+function pickCardItems(step: CardsStepProps["step"]): CardItem[] {
+  const candidates = [
+    step?.expandableCards?.items,
+    step?.cards?.items,
+    step?.content?.cards?.items,
+    step?.content?.items,
+  ];
+  for (const c of candidates) if (Array.isArray(c)) return c as CardItem[];
+  return [];
+}
+
+export default function CardsStep({ step }: CardsStepProps) {
   const videoSrc = assetUrl(step.backgroundVideo);
   const opacity = (step as any)?.opacity ?? 0.1;
 
-  // Headline + paragraph (flexible sources)
   const title =
     (step as any)?.content?.title ??
     (step as any)?.content?.headline ??
@@ -43,9 +53,7 @@ export default function CardsStep({
     (step as any)?.content?.subheadline ??
     "";
 
-  // Cards for the grid (Sanity-driven)
-  const cards: CardItem[] | undefined =
-    (step as any)?.content?.cards?.items ?? (step as any)?.cards?.items;
+  const cards = pickCardItems(step);
 
   return (
     <section className="grid grid-cols-12 z-2 mx-auto bg-neutral-100 mt-8 min-h-[50vh] relative font-aspekta">
@@ -81,12 +89,12 @@ export default function CardsStep({
               distance={80}
             >
               {title && (
-                <h2 className="text-7xl leading-compress text-gray-100 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
+                <h2 className="text-7xl leading-compress text-neutral-900 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
                   {title}
                 </h2>
               )}
               {description && (
-                <p className="text text-gray-100 font-medium max-w-2xs mx-auto">
+                <p className="text text-neutral-700 font-medium max-w-2xs mx-auto">
                   {description}
                 </p>
               )}
@@ -94,10 +102,12 @@ export default function CardsStep({
           </div>
         )}
 
-        {/* Cards (compact variant – replaces ExpandableCards2) */}
-        <div className="col-span-9 col-start-3 mt-8">
-          <ExpandableCards items={cards} variant="compact" columns={5} />
-        </div>
+        {/* Cards */}
+        {cards.length > 0 && (
+          <div className="col-span-9 col-start-3 mt-8">
+            <ExpandableCards items={cards} variant="compact" columns={5} />
+          </div>
+        )}
       </div>
     </section>
   );

@@ -8,11 +8,12 @@ import StaggeredSlideUp from "@/components/StaggeredSlideUp";
 import { useRef } from "react";
 import { assetUrl } from "@/utils/utils";
 import InteractiveCarousel from "../subComponents/InteractiveCarousel";
+import { useInView } from "motion/react";
 export default function HeroStep({ step }: { step: GalleryHeroStep }) {
   const typewriterref = useRef<HTMLSpanElement | null>(null);
+  const isInView = useInView(typewriterref);
   const videoSrc = assetUrl(step.backgroundVideo);
 
-  // Accept carousel data from Sanity if present (either step.carousel.items or step.content.carousel.items)
   const carouselItems = (((step as any)?.carousel?.items ||
     (step as any)?.content?.carousel?.items) ??
     []) as CarouselItem[];
@@ -39,19 +40,18 @@ export default function HeroStep({ step }: { step: GalleryHeroStep }) {
           )}
 
           <div className="col-span-10 col-start-3 ">
-            {step.headline && (
+            {step.typewriterText && (
               <h2 className="text-7xl font-bold tracking-tighter pr-2 mb-4">
-                {step.typewriter ? (
-                  <Typewriter
-                    ref={typewriterref as any}
-                    play
-                    cursorStyle={{ backgroundColor: "transparent" }}
-                  >
-                    {step.headline}
-                  </Typewriter>
-                ) : (
-                  step.headline
-                )}
+                <Typewriter
+                  ref={typewriterref}
+                  play={isInView}
+                  speed="fast"
+                  cursorStyle={{ backgroundColor: "transparent" }}
+                  variance={0.8}
+                  backspace="word"
+                >
+                  {step.typewriterText}
+                </Typewriter>
               </h2>
             )}
 

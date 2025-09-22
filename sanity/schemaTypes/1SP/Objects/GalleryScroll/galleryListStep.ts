@@ -1,4 +1,4 @@
-import { defineType, defineField } from 'sanity'
+import { defineType, defineField, defineArrayMember } from 'sanity'
 import { FiList } from 'react-icons/fi'
 
 export default defineType({
@@ -86,9 +86,16 @@ export default defineType({
                 }
             ]
         }),
-        defineField({ name: 'expandableCards', title: 'Expandable Cards', type: 'cards', group: 'content' }),
         defineField({ name: 'media', title: 'Image/Video', type: 'cloudinary.asset', group: 'media' }),
         defineField({ name: 'grid', title: 'Grid Element', type: 'gridElement', group: 'media' }),
+        defineField({
+            name: "additionalContent",
+            title: "Additional Content",
+            description: "Composable items that render after the paragraphs.",
+            type: "array",
+            group: "content",
+            of: [defineArrayMember({ type: "cta" }), defineArrayMember({ type: "cards" })],
+        }),
 
     ],
     preview: {
