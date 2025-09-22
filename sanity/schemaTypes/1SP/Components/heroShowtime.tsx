@@ -24,7 +24,7 @@ const PreviewMedia: React.FC<{
 export default defineType({
   name: "heroShowTime",
   title: "Hero – Show Time",
-  type: "document",
+  type: "object",
   groups: [
     { name: "media", title: "Media" },
     { name: "content", title: "Content" },

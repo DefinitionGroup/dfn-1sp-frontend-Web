@@ -66,7 +66,7 @@ export default async function Home({ params }: { params: { locale: string } }) {
       {Array.isArray(page?.content1sp) ? (
         <PageBuilder content={page.content1sp} />
       ) : (
-        "no hay"
+        "No content available"
       )}
     </main>
   );
