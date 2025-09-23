@@ -127,7 +127,13 @@ export default function Home() {
           </div>
           <div className="col-span-12 col-start-1 mt-8 ">
             <InteractiveCarousel />
-     <CircularDashedGauge percentage={76} size={222} strokeWidth={1} />
+            <div className="flex container max-w-3xl justify-center gap-8 mx-auto  ">
+
+     <CircularDashedGauge percentage={75} size={222} strokeWidth={1} />
+     <CircularDashedGauge percentage={35} size={222} strokeWidth={1} />
+     <CircularDashedGauge percentage={45} size={222} strokeWidth={1} />
+            </div>
+
           </div>
         </div>
       </div>

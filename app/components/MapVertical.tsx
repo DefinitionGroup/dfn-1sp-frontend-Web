@@ -97,7 +97,10 @@ function Line({
         width: active ? LINE_HEIGHT_ACTIVE : LINE_HEIGHT,
         scaleX,
       }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{
+        opacity: { delay: index * 0.02, duration: 0.12 },
         type: "spring",
         stiffness: 200,
         damping: 20,
