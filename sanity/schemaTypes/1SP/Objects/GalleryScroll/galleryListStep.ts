@@ -47,7 +47,13 @@ export default defineType({
             hidden: ({ parent }) => !Boolean(parent?.staggeredSlideUp),
             fields: [
                 { name: 'title', title: 'Title', type: 'string' },
-                { name: 'paragraph', title: 'Paragraph', type: 'text' }
+                defineField({
+                    name: 'paragraphs',
+                    title: 'Paragraph Lines',
+                    description: 'Each string renders as its own <p> under the title',
+                    type: 'array',
+                    of: [{ type: 'paragraphLine' }],
+                })
             ]
         }),
 
@@ -98,11 +104,7 @@ export default defineType({
                         }
                     ],
                     preview: {
-                        select: {
-                            text: 'text',
-                            size: 'size',
-                            fontWeight: 'fontWeight'
-                        },
+                        select: { text: 'text', size: 'size', fontWeight: 'fontWeight' },
                         prepare({ text, size, fontWeight }) {
                             return {
                                 title: text || 'List item',
@@ -113,26 +115,27 @@ export default defineType({
                 }
             ]
         }),
+
         defineField({ name: 'media', title: 'Image/Video', type: 'cloudinary.asset', group: 'media' }),
         defineField({ name: 'grid', title: 'Grid Element', type: 'gridElement', group: 'media' }),
+
         defineField({
             name: "additionalContent",
             title: "Additional Content",
             description: "Composable items that render after the paragraphs.",
             type: "array",
             group: "content",
-            of: [defineArrayMember({ type: "cta" }), defineArrayMember({ type: "cards" }), defineArrayMember({ type: "ctaMiniComponent" })],
+            of: [
+                defineArrayMember({ type: "cta" }),
+                defineArrayMember({ type: "cards" }),
+                defineArrayMember({ type: "ctaMiniComponent" })
+            ],
         }),
-
     ],
     preview: {
-        select: {
-            headline: 'header.mainHeadline',
-            badgeText: 'badge.text',
-            itemCount: 'listItems'
-        },
+        select: { headline: 'header.mainHeadline', badgeText: 'badge.text', itemCount: 'listItems' },
         prepare({ headline, badgeText, itemCount }) {
-            const count = Array.isArray(itemCount) ? itemCount.length : 0;
+            const count = Array.isArray(itemCount) ? itemCount.length : 0
             return {
                 title: headline || 'List Step',
                 subtitle: `${badgeText || 'No badge'} • ${count} items`

@@ -10,27 +10,36 @@ import CardsStep from "./GalleryParts/CardsStep";
 import ListStep from "./GalleryParts/ListStep";
 import HighlightStep from "./GalleryParts/HighlightStep";
 import PeopleStep from "./GalleryParts/PeopleStep";
+import RevealStep from "./GalleryParts/RevealStep";
+import OverviewStep from "./GalleryParts/OverviewStep";
 
-type Props =
-  | { data: ShowtimeGalleryType } // passed as {data}
-  | ShowtimeGalleryType; // or spread directly
+type Props = { data: ShowtimeGalleryType } | ShowtimeGalleryType;
 
 function kindFrom(
   step: any
-): "hero" | "cards" | "list" | "people" | "highlight" | undefined {
+):
+  | "hero"
+  | "cards"
+  | "list"
+  | "people"
+  | "highlight"
+  | "reveal"
+  | "overview"
+  | undefined {
   if (!step) return undefined;
-  if (step.type) return step.type; // if you ever add a real 'type' field in Sanity
+  if (step.type) return step.type;
 
-  // Map Sanity object _type to our internal kind
   const map: Record<
     string,
-    "hero" | "cards" | "list" | "people" | "highlight"
+    "hero" | "cards" | "list" | "people" | "highlight" | "reveal" | "overview"
   > = {
     galleryHeroStep: "hero",
     galleryCardsStep: "cards",
     galleryListStep: "list",
     galleryPeopleStep: "people",
     galleryScrollHighlightStep: "highlight",
+    galleryRevealStep: "reveal",
+    galleryOverview: "overview",
   };
   return map[step._type as keyof typeof map];
 }
@@ -60,6 +69,10 @@ export default function ShowtimeGallery(props: Props) {
               return <PeopleStep key={key} step={raw as any} />;
             case "highlight":
               return <HighlightStep key={key} step={raw as any} />;
+            case "reveal":
+              return <RevealStep key={key} step={raw as any} />;
+            case "overview":
+              return <OverviewStep key={key} step={raw as any} />;
             default:
               // Unknown step type — skip safely
               return null;

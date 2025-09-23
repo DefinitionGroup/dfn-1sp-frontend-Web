@@ -20,6 +20,8 @@ import galleryListStep from "./1SP/Objects/GalleryScroll/galleryListStep";
 import galleryPeopleStep from "./1SP/Objects/GalleryScroll/galleryPeopleStep";
 import galleryScrollHighlightStep from "./1SP/Objects/GalleryScroll/galleryScrollHighlightStep";
 import grid from "./1SP/Items/grid";
+import GalleryRevealStep from "./1SP/Objects/GalleryScroll/GalleryRevealStep";
+import GalleryOverviewStep from "./1SP/Objects/GalleryScroll/GalleryOverviewStep";
 
 const oneSPComponents = [
     showtimeGallery,
@@ -48,7 +50,9 @@ const galleryScrollObjects = [
     galleryHeroStep,
     galleryListStep,
     galleryPeopleStep,
-    galleryScrollHighlightStep
+    galleryScrollHighlightStep,
+    GalleryRevealStep,
+    GalleryOverviewStep
 ];
 
 export const OneSPschemaTypes = [

@@ -17,6 +17,8 @@ export default defineType({
                 { type: 'galleryScrollHighlightStep' },
                 { type: 'galleryPeopleStep' },
                 { type: 'galleryCardsStep' },
+                { type: 'galleryRevealStep' },
+                { type: 'galleryOverview' },
             ]
         })
     ],
