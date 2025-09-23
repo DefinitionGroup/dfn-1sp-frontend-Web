@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import GridBackground from "@/components/GridBackground";
 import Badgemodule from "@/components/Badgemodule";
@@ -8,6 +9,7 @@ import ExpandableCards from "../subComponents/ExpandableCards";
 import HeaderImageVideoComp2 from "@/components/HeaderImageVideoComp2";
 import StaggeredSlideUp from "@/components/StaggeredSlideUp";
 import Button2 from "@/components/ui/Button2";
+import CtaMiniComponent from "@/components/CtaMiniComponent";
 
 import type {
   GalleryListStep,
@@ -16,9 +18,15 @@ import type {
   CloudinaryAsset,
   CtaMiniComponent as CtaMiniComponentType,
 } from "@/types/sanity.types";
+
 import { ctaToButtonProps, assetUrl, resolveLink } from "@/utils/utils";
 
-import CtaMiniComponent from "@/components/CtaMiniComponent";
+/* ---------- helpers ---------- */
+
+function isVideoUrl(url?: string) {
+  if (!url) return false;
+  return /\/video\//.test(url) || /\.(mp4|webm|ogg)$/i.test(url);
+}
 
 function pickHeader(step: GalleryListStep) {
   const legacyContentHeader = (step as any)?.content?.header as
@@ -56,11 +64,7 @@ function pickLegacyCards(step: GalleryListStep): CardItem[] {
 
 type AC = NonNullable<GalleryListStep["additionalContent"]>[number];
 
-function isCardsBlock(
-  x: AC
-): x is
-  | (CardItem[] & { _type?: "cards" })
-  | { _type?: "cards"; items?: CardItem[] } {
+function isCardsBlock(x: AC): x is { _type?: "cards"; items?: CardItem[] } {
   return !!x && (x as any)._type === "cards";
 }
 
@@ -103,28 +107,58 @@ function splitAdditionalContent(
   return out;
 }
 
-function isVideoUrl(url?: string) {
-  if (!url) return false;
-  return /\/video\//.test(url) || /\.(mp4|webm|ogg)$/i.test(url);
+const sizeToClass: Record<string, string> = {
+  xs: "text-xs",
+  sm: "text-sm",
+  base: "text-base",
+  lg: "text-lg",
+  xl: "text-xl",
+  "2xl": "text-2xl",
+  "3xl": "text-3xl",
+};
+
+function normalizeParagraphs(
+  lines?: GalleryListStep["staggeredHeader"] extends infer SH
+    ? SH extends { paragraphs?: any[] }
+      ? SH["paragraphs"]
+      : never
+    : never
+) {
+  if (!Array.isArray(lines))
+    return [] as Array<{ text: string; fontSize: string }>;
+
+  return (lines as any[]).map((line, idx) => {
+    if (typeof line === "string") {
+      return { text: line, fontSize: idx === 0 ? "3xl" : "base" };
+    }
+    return {
+      text: line?.text ?? "",
+      fontSize: line?.fontSize || (idx === 0 ? "3xl" : "base"),
+    };
+  });
 }
 
-/** ---------- Component ---------- */
+/* ---------- component ---------- */
+
 export default function ListStep({ step }: { step: GalleryListStep }) {
   const delay = step.grid?.delay;
   const staggerDelay = step.grid?.staggerDelay;
 
   // Background media
   const mediaUrl = assetUrl(step.media as CloudinaryAsset | undefined);
-  const isVideo = isVideoUrl(mediaUrl);
+  const useVideo = isVideoUrl(mediaUrl);
 
   // Headers
   const staggered = Boolean(step.staggeredSlideUp);
   const staggeredHeader = step.staggeredHeader;
-
   const header = pickHeader(step);
+
+  // Staggered paragraphs (new schema, with per-line font sizes)
+  const paragraphLines = normalizeParagraphs(staggeredHeader?.paragraphs);
+
+  // Lists & content
   const listItems = pickListItems(step);
 
-  // Additional content split
   const {
     cards: cardsFromAC,
     ctas,
@@ -147,9 +181,9 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
       {/* Optional background media */}
       {mediaUrl && (
         <HeaderImageVideoComp2
-          useVideo={isVideo}
-          videoSrc={isVideo ? mediaUrl : undefined}
-          imageSrc={!isVideo ? mediaUrl : undefined}
+          useVideo={useVideo}
+          videoSrc={useVideo ? mediaUrl : undefined}
+          imageSrc={!useVideo ? mediaUrl : undefined}
           enableParallax
         />
       )}
@@ -169,11 +203,11 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
         {/* Header area */}
         {staggered
-          ? (staggeredHeader?.title || staggeredHeader?.paragraph) && (
+          ? (staggeredHeader?.title || paragraphLines.length > 0) && (
               <div className="col-span-10 col-start-3">
                 <StaggeredSlideUp
                   className="flex flex-col items-start justify-start"
-                  delay={0.0}
+                  delay={0}
                   staggerDelay={0.1}
                   duration={0.5}
                   distance={80}
@@ -183,11 +217,19 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                       {staggeredHeader.title}
                     </h2>
                   )}
-                  {staggeredHeader?.paragraph && (
-                    <p className="text-body-lg text-gray-100 max-w-2xs mx-auto">
-                      {staggeredHeader.paragraph}
+
+                  {paragraphLines.map((line, idx) => (
+                    <p
+                      key={`para-${idx}`}
+                      className={[
+                        sizeToClass[line.fontSize] || "text-base",
+                        "text-gray-100 max-w-2xs mx-auto",
+                        idx > 0 ? "mt-4" : "",
+                      ].join(" ")}
+                    >
+                      {line.text}
                     </p>
-                  )}
+                  ))}
                 </StaggeredSlideUp>
               </div>
             )
@@ -221,7 +263,6 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
         {hasCtaMini && (
           <div className="col-span-2 col-start-3 mt-8 pr-8 text-gray-100">
             {ctaMini.map((m, i) => {
-              // Optional href from link
               const href = resolveLink(m.link);
               return (
                 <CtaMiniComponent

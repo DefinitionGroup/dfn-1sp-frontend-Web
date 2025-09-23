@@ -1,162 +1,192 @@
-export type SanityID = string
+export type SanityID = string;
 
-export type Reference<T = any> = { _ref: SanityID; _type?: string }
+export type Reference<T = any> = { _ref: SanityID; _type?: string };
 
 export interface CloudinaryAsset {
-    secure_url?: string
-    url?: string
-    public_id?: string
-    width?: number
-    height?: number
-    metadata?: Record<string, any>
+    secure_url?: string;
+    url?: string;
+    public_id?: string;
+    width?: number;
+    height?: number;
+    metadata?: Record<string, any>;
 }
 
 /* Global / Shared objects */
 export interface Link {
-    linkType?: 'internal' | 'external'
-    page?: Reference<Page>
-    externalUrl?: string
-    displayName?: string
+    linkType?: "internal" | "external";
+    page?: Reference<Page>;
+    externalUrl?: string;
+    displayName?: string;
 }
 
 export interface CTA {
-    text?: string
-    link?: Link
-    variant?: string
+    text?: string;
+    link?: Link;
+    variant?: string;
 }
 
 /* 1SP specific items/objects */
 export interface BadgeModule {
-    text?: string
-    subtitle?: string
-    numberEl?: string
-    colSpan?: '' | 'col-span-2'
+    text?: string;
+    subtitle?: string;
+    numberEl?: string;
+    colSpan?: "" | "col-span-2";
 }
 
 export interface GridElement {
-    hasGrid?: boolean
-    customAnimation?: boolean
-    delay?: number
-    staggerDelay?: number
+    hasGrid?: boolean;
+    customAnimation?: boolean;
+    delay?: number;
+    staggerDelay?: number;
 }
 
 export interface CardItem {
-    title?: string
-    description?: string
-    logo?: CloudinaryAsset
-    src?: CloudinaryAsset
-    ctaButton?: CTA
-    content?: string
+    title?: string;
+    description?: string;
+    logo?: CloudinaryAsset;
+    src?: CloudinaryAsset;
+    ctaButton?: CTA;
+    content?: string;
 }
 
 export interface CarouselItem {
-    title?: string
-    subtitle?: string
-    image?: CloudinaryAsset
-    cta?: CTA
+    title?: string;
+    subtitle?: string;
+    image?: CloudinaryAsset;
+    cta?: CTA;
 }
 
 /* Objects */
 export interface Cards {
-    items?: CardItem[]
+    items?: CardItem[];
 }
 
 export interface Carousel {
-    items?: CarouselItem[]
+    items?: CarouselItem[];
 }
 
 /* Gallery step types (union of specific step objects) */
 export interface GalleryBase {
-    badge?: BadgeModule
-    headline?: string
-    type?: string
+    badge?: BadgeModule;
+    headline?: string;
+    type?: string;
 }
 
 export interface GalleryHeroStep extends GalleryBase {
-    type: 'hero'
-    typewriterText?: string
-    description?: string[]
-    backgroundVideo?: CloudinaryAsset
+    type: "hero";
+    typewriterText?: string;
+    description?: string[];
+    backgroundVideo?: CloudinaryAsset;
 }
 
 export interface GalleryCardsStep extends GalleryBase {
-    type: 'cards'
+    type: "cards";
     content?: {
-        headline?: string
+        headline?: string;
         /* ...other fields... */
-    }
-    backgroundVideo?: CloudinaryAsset
-    media?: CloudinaryAsset
-    grid?: GridElement
+    };
+    backgroundVideo?: CloudinaryAsset;
+    media?: CloudinaryAsset;
+    grid?: GridElement;
 }
 
-/** NEW: Mini CTA block used inside ListStep.additionalContent */
-export type ButtonVariant = 'default' | 'black' | 'lime' | 'limesmall'
-export type MiniCtaAlignment = 'left' | 'right' | 'center' | 'default'
+/** Mini CTA block used inside ListStep.additionalContent */
+export type ButtonVariant = "default" | "black" | "lime" | "limesmall";
+export type MiniCtaAlignment = "left" | "right" | "center" | "default";
 
 export interface CtaMiniComponent {
-    heading?: string
-    paragraph?: string
-    buttonText?: string
-    link?: Link
-    variant?: ButtonVariant
-    alignment?: MiniCtaAlignment
+    heading?: string;
+    paragraph?: string;
+    buttonText?: string;
+    link?: Link;
+    variant?: ButtonVariant;
+    alignment?: MiniCtaAlignment;
 }
 
 export interface GalleryListStep extends GalleryBase {
-    type: 'list'
+    type: "list";
 
     /** Regular header (hidden when staggeredSlideUp is true) */
     header?: {
-        superText?: string
-        mainHeadline?: string
-        subHeadline?: string
-    }
+        superText?: string;
+        mainHeadline?: string;
+        subHeadline?: string;
+    };
 
     /** Toggle + data for the staggered variant */
-    staggeredSlideUp?: boolean
+    staggeredSlideUp?: boolean;
     staggeredHeader?: {
-        title?: string
-        paragraph?: string
-    }
+        title?: string;
+        /** New: array of lines with per-line font size; supports legacy string items */
+        paragraphs?: Array<
+            | string
+            | {
+                text?: string;
+                fontSize?: "xs" | "sm" | "base" | "lg" | "xl" | "2xl" | "3xl";
+            }
+        >;
+    };
 
     /** Primary list field (new schema) */
     listItems?: Array<{
-        text?: string
-        size?: 'small' | 'medium' | 'large' | string
-        fontWeight?: 'normal' | 'bold' | string
-        color?: 'black' | 'white' | 'gray' | string
-    }>
+        text?: string;
+        size?: "small" | "medium" | "large" | string;
+        fontWeight?: "normal" | "bold" | string;
+        color?: "black" | "white" | "gray" | string;
+    }>;
 
     /** Back-compat: legacy list field */
     items?: Array<{
-        text?: string
-        size?: string
-        fontWeight?: string
-        color?: 'black' | 'white' | 'gray'
-    }>
+        text?: string;
+        size?: string;
+        fontWeight?: string;
+        color?: "black" | "white" | "gray";
+    }>;
 
     /** Media + grid from the new schema */
-    media?: CloudinaryAsset
-    grid?: GridElement
+    media?: CloudinaryAsset;
+    grid?: GridElement;
 
     /** Additional content supports cta, cards, and ctaMiniComponent */
     additionalContent?: Array<
-        | (CTA & { _type?: 'cta' })
-        | (Cards & { _type?: 'cards' })
-        | (CtaMiniComponent & { _type?: 'ctaMiniComponent' })
-    >
+        | (CTA & { _type?: "cta" })
+        | (Cards & { _type?: "cards" })
+        | (CtaMiniComponent & { _type?: "ctaMiniComponent" })
+    >;
+}
+
+export interface GalleryRevealStep extends GalleryBase {
+    type: "reveal";
+    items?: Array<{
+        label?: string;
+        image?: CloudinaryAsset;
+        number?: number;
+    }>;
+    media?: CloudinaryAsset;
+    grid?: GridElement;
 }
 
 export interface GalleryPeopleStep extends GalleryBase {
-    type: 'people'
-    header?: { superText?: string; mainHeadline?: string }
-    media?: CloudinaryAsset
+    type: "people";
+    header?: { superText?: string; mainHeadline?: string };
+    media?: CloudinaryAsset;
 }
 
 export interface GalleryScrollHighlightStep extends GalleryBase {
-    type: 'highlight'
-    highlightText?: string
+    type: "highlight";
+    highlightText?: string;
+}
+
+export interface GalleryOverview extends GalleryBase {
+    type: "overview";
+    eyebrow?: string;
+    headline?: string;
+    highlight?: string;
+    subhead?: string;
+    kicker?: string;
+    align?: "left" | "center" | "right";
+    size?: "sm" | "md" | "lg" | "xl";
+    grid?: GridElement; // uses hasGrid/customAnimation/delay/staggerDelay
 }
 
 export type GalleryStep =
@@ -165,93 +195,95 @@ export type GalleryStep =
     | GalleryListStep
     | GalleryPeopleStep
     | GalleryScrollHighlightStep
+    | GalleryRevealStep
+    | GalleryOverview;
 
 export interface ShowtimeGallery {
-    steps?: GalleryStep[]
+    steps?: GalleryStep[];
 }
 
 export interface HeroShowtime {
-    heading?: string
-    subheading?: string
-    initialValue?: string
-    paragraphs?: string[]
-    additionalContent?: CTA[]
-    backgroundImage?: CloudinaryAsset
-    backgroundVideo?: CloudinaryAsset
-    useVideo?: boolean
+    heading?: string;
+    subheading?: string;
+    initialValue?: string;
+    paragraphs?: string[];
+    additionalContent?: CTA[];
+    backgroundImage?: CloudinaryAsset;
+    backgroundVideo?: CloudinaryAsset;
+    useVideo?: boolean;
 }
 
 /** Subline component */
 export interface SublineComponent {
-    description?: string
-    showGridBackground?: boolean
-    additionalContent?: CTA[]
+    description?: string;
+    showGridBackground?: boolean;
+    additionalContent?: CTA[];
 }
 
 /* Documents */
 export interface Page {
-    _id?: SanityID
-    _createdAt?: string
-    _updatedAt?: string
-    language?: string
-    title?: string
-    slug?: { current?: string }
+    _id?: SanityID;
+    _createdAt?: string;
+    _updatedAt?: string;
+    language?: string;
+    title?: string;
+    slug?: { current?: string };
     metadata?: {
-        title?: string
-        description?: string
-        image?: CloudinaryAsset
-        keywords?: string[]
-    }
-    channel?: '1spWeb' | 'msmWeb' | 'studioco2Web' | string
+        title?: string;
+        description?: string;
+        image?: CloudinaryAsset;
+        keywords?: string[];
+    };
+    channel?: "1spWeb" | "msmWeb" | "studioco2Web" | string;
 
     // channel-specific content (kept generic)
-    content1sp?: Array<any | ShowtimeGallery | HeroShowtime | SublineComponent>
-    contentMSM?: Array<any>
-    contentStudioCO2?: Array<any>
+    content1sp?: Array<any | ShowtimeGallery | HeroShowtime | SublineComponent>;
+    contentMSM?: Array<any>;
+    contentStudioCO2?: Array<any>;
 }
 
 export interface Menu {
-    _id?: SanityID
-    language?: string
-    channel?: string
-    title?: string
-    menuType?: 'Navbar' | 'Footer' | string
-    imageCloud?: CloudinaryAsset
+    _id?: SanityID;
+    language?: string;
+    channel?: string;
+    title?: string;
+    menuType?: "Navbar" | "Footer" | string;
+    imageCloud?: CloudinaryAsset;
     footerColumns?: Array<{
-        title?: string
+        title?: string;
         links?: Array<{
-            title?: string
-            linkType?: 'internal' | 'external'
-            page?: Reference<Page>
-            externalUrl?: string
-            displayName?: string
-        }>
-    }>
-    socialProfiles?: Array<{ platform?: string; url?: string }>
-    copyright?: string
+            title?: string;
+            linkType?: "internal" | "external";
+            page?: Reference<Page>;
+            externalUrl?: string;
+            displayName?: string;
+        }>;
+    }>;
+    socialProfiles?: Array<{ platform?: string; url?: string }>;
+    copyright?: string;
 }
 
 export interface CaseStudy {
-    _id?: SanityID
-    language?: string
-    title?: string
-    slug?: { current?: string }
-    publishedAt?: string
-    isPublished?: boolean
-    channel?: string[]
+    _id?: SanityID;
+    language?: string;
+    title?: string;
+    slug?: { current?: string };
+    publishedAt?: string;
+    isPublished?: boolean;
+    channel?: string[];
     /* other fields... */
 }
 
 export interface Unit {
-    _id?: SanityID
-    language?: string
-    name?: string
-    slug?: { current?: string }
+    _id?: SanityID;
+    language?: string;
+    name?: string;
+    slug?: { current?: string };
     /* other fields... */
 }
 
 /* Root union of schema types (handy) */
-export type SanityDocument = Page | Menu | CaseStudy | Unit
+export type SanityDocument = Page | Menu | CaseStudy | Unit;
 
 export type OneSPTypes =
     | BadgeModule
@@ -264,4 +296,4 @@ export type OneSPTypes =
     | SublineComponent
     | CtaMiniComponent
     | Cards
-    | GalleryStep
+    | GalleryStep;

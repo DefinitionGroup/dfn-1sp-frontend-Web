@@ -6,6 +6,8 @@ import unitCase from './Global/Cases/unitCase'
 import { OneSPschemaTypes } from './1spContent'
 import link from './Global/Objects/link'
 import cta from './Global/Objects/cta'
+import paragraph from './Global/Objects/paragraph'
+import size from './Global/Objects/size'
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [page, menu, caseStudy, unitCase, ...OneSPschemaTypes, link, cta],
+  types: [page, menu, caseStudy, unitCase, ...OneSPschemaTypes, link, cta, paragraph, size],
 }
