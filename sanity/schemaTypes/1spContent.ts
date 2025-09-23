@@ -1,6 +1,7 @@
 import showtimeGallery from "./1SP/Components/showtimeGallery";
 import heroShowtime from "./1SP/Components/heroShowtime";
 import sublineComponent from "./1SP/Components/sublineComponent";
+import Header from "./1SP/Components/Header";
 
 import badgeModule from "./1SP/Items/badgeModule";
 import carouselItem from "./1SP/Items/carouselItem";
@@ -22,11 +23,13 @@ import galleryScrollHighlightStep from "./1SP/Objects/GalleryScroll/galleryScrol
 import grid from "./1SP/Items/grid";
 import GalleryRevealStep from "./1SP/Objects/GalleryScroll/GalleryRevealStep";
 import GalleryOverviewStep from "./1SP/Objects/GalleryScroll/GalleryOverviewStep";
+import CTASplitHeader from "./1SP/Objects/CTASplitHeader";
 
 const oneSPComponents = [
     showtimeGallery,
     heroShowtime,
-    sublineComponent
+    sublineComponent,
+    Header
 ];
 const oneSPItems = [
     badgeModule,
@@ -41,7 +44,8 @@ const oneSPObjects = [
     slideUpContent,
     galleryStep,
     cards,
-    CtaMiniComponent
+    CtaMiniComponent,
+    CTASplitHeader
 
 ];
 

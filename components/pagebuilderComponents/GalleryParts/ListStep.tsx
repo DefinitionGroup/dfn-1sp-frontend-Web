@@ -10,6 +10,7 @@ import HeaderImageVideoComp2 from "@/components/HeaderImageVideoComp2";
 import StaggeredSlideUp from "@/components/StaggeredSlideUp";
 import Button2 from "@/components/ui/Button2";
 import CtaMiniComponent from "@/components/CtaMiniComponent";
+import CtaSplitHeader from "../subComponents/CtaSplitHeader";
 
 import type {
   GalleryListStep,
@@ -17,6 +18,7 @@ import type {
   CTA,
   CloudinaryAsset,
   CtaMiniComponent as CtaMiniComponentType,
+  CtaSplitHeader as CtaSplitHeaderType,
 } from "@/types/sanity.types";
 
 import { ctaToButtonProps, assetUrl, resolveLink } from "@/utils/utils";
@@ -84,6 +86,12 @@ function isCtaMini(
   );
 }
 
+function isCtaSplitHeader(
+  x: AC
+): x is CtaSplitHeaderType & { _type?: "ctaSplitHeader" } {
+  return !!x && (x as any)._type === "ctaSplitHeader";
+}
+
 function splitAdditionalContent(
   additional?: GalleryListStep["additionalContent"]
 ) {
@@ -91,6 +99,7 @@ function splitAdditionalContent(
     cards: [] as CardItem[],
     ctas: [] as CTA[],
     ctaMini: [] as Array<CtaMiniComponentType & { _type?: "ctaMiniComponent" }>,
+    ctaSplit: [] as Array<CtaSplitHeaderType & { _type?: "ctaSplitHeader" }>,
   };
   if (!Array.isArray(additional)) return out;
 
@@ -100,6 +109,8 @@ function splitAdditionalContent(
       if (Array.isArray(items)) out.cards.push(...items);
     } else if (isCtaMini(item)) {
       out.ctaMini.push({ ...(item as any), _type: "ctaMiniComponent" });
+    } else if (isCtaSplitHeader(item)) {
+      out.ctaSplit.push({ ...(item as any), _type: "ctaSplitHeader" });
     } else if (isCta(item)) {
       out.ctas.push(item);
     }
@@ -107,6 +118,7 @@ function splitAdditionalContent(
   return out;
 }
 
+/** Map tailwind text sizes */
 const sizeToClass: Record<string, string> = {
   xs: "text-xs",
   sm: "text-sm",
@@ -117,25 +129,35 @@ const sizeToClass: Record<string, string> = {
   "3xl": "text-3xl",
 };
 
-function normalizeParagraphs(
-  lines?: GalleryListStep["staggeredHeader"] extends infer SH
-    ? SH extends { paragraphs?: any[] }
-      ? SH["paragraphs"]
-      : never
-    : never
-) {
-  if (!Array.isArray(lines))
-    return [] as Array<{ text: string; fontSize: string }>;
+function normalizeParagraphs(lines: unknown) {
+  const src: any[] = Array.isArray(lines) ? lines : [];
+  const flat: any[] = src.flatMap((item) =>
+    Array.isArray(item) ? item : [item]
+  );
 
-  return (lines as any[]).map((line, idx) => {
-    if (typeof line === "string") {
-      return { text: line, fontSize: idx === 0 ? "3xl" : "base" };
-    }
-    return {
-      text: line?.text ?? "",
-      fontSize: line?.fontSize || (idx === 0 ? "3xl" : "base"),
-    };
-  });
+  return flat
+    .map((line, idx) => {
+      if (typeof line === "string")
+        return { text: line, fontSize: idx === 0 ? "3xl" : "base" };
+
+      if (line && typeof line === "object") {
+        const raw = (line as any)?.fontSize;
+        const value =
+          typeof raw === "string"
+            ? raw
+            : typeof raw === "object"
+              ? raw?.size
+              : undefined;
+
+        return {
+          text: (line as any)?.text ?? "",
+          fontSize: value || (idx === 0 ? "3xl" : "base"),
+        };
+      }
+
+      return { text: "", fontSize: "base" };
+    })
+    .filter((l) => l.text);
 }
 
 /* ---------- component ---------- */
@@ -154,7 +176,9 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
   const header = pickHeader(step);
 
   // Staggered paragraphs (new schema, with per-line font sizes)
-  const paragraphLines = normalizeParagraphs(staggeredHeader?.paragraphs);
+  const paragraphLines = normalizeParagraphs(
+    (staggeredHeader as any)?.paragraphs
+  );
 
   // Lists & content
   const listItems = pickListItems(step);
@@ -163,7 +187,9 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
     cards: cardsFromAC,
     ctas,
     ctaMini,
+    ctaSplit,
   } = splitAdditionalContent(step.additionalContent);
+
   const legacyCards = pickLegacyCards(step);
   const cards = (cardsFromAC.length ? cardsFromAC : legacyCards) as CardItem[];
 
@@ -203,7 +229,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
         {/* Header area */}
         {staggered
-          ? (staggeredHeader?.title || paragraphLines.length > 0) && (
+          ? ((staggeredHeader as any)?.title || paragraphLines.length > 0) && (
               <div className="col-span-10 col-start-3">
                 <StaggeredSlideUp
                   className="flex flex-col items-start justify-start"
@@ -212,9 +238,9 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                   duration={0.5}
                   distance={80}
                 >
-                  {staggeredHeader?.title && (
+                  {(staggeredHeader as any)?.title && (
                     <h2 className="text-9xl text-gray-100 max-w-xl font-nyghtserif font-semibold tracking-tight leading-compress mb-4 pb-8">
-                      {staggeredHeader.title}
+                      {(staggeredHeader as any).title}
                     </h2>
                   )}
 
@@ -297,6 +323,15 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
             </ListContainerComponent>
           </div>
         )}
+
+        {/* Inject any ctaSplitHeader blocks as full-width rows */}
+        {Array.isArray(ctaSplit) &&
+          ctaSplit.length > 0 &&
+          ctaSplit.map((block, i) => (
+            <div key={`ctaSplit-${i}`} className="col-span-12 mt-8">
+              <CtaSplitHeader data={block} />
+            </div>
+          ))}
 
         {/* Variant A: Cards present (no buttons) */}
         {hasCards && (

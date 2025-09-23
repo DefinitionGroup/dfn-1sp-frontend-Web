@@ -1,11 +1,15 @@
 // components/PageBuilder.tsx
 import React from "react";
-import type { ShowtimeGallery as ShowtimeGalleryType } from "@/types/sanity.types";
+import type {
+  ShowtimeGallery as ShowtimeGalleryType,
+  OneSPHeader as OneSPHeaderType,
+} from "@/types/sanity.types";
 import type { Page } from "@/types/sanity.types";
 import ShowtimeGallery from "./pagebuilderComponents/showtimeGallery";
 import HeroShowtime from "./pagebuilderComponents/HeroShowtime";
 import { HeroShowtime as HeroShowtimeType } from "@/types/sanity.types";
 import SublineComponent from "./pagebuilderComponents/SublineComponent";
+import OneSPHeaderStep from "./pagebuilderComponents/Header";
 type PageBuilderProps = { content: NonNullable<Page["content1sp"]> };
 
 export function PageBuilder({ content }: PageBuilderProps) {
@@ -36,6 +40,13 @@ export function PageBuilder({ content }: PageBuilderProps) {
               <SublineComponent
                 key={block._key ?? `subline-${i}`}
                 data={block}
+              />
+            );
+          case "oneSPHeader":
+            return (
+              <OneSPHeaderStep
+                key={block._key ?? `oneSPHeader-${i}`}
+                step={block as OneSPHeaderType}
               />
             );
 
