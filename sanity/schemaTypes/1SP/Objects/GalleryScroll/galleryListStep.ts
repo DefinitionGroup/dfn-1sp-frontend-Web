@@ -128,7 +128,8 @@ export default defineType({
             of: [
                 defineArrayMember({ type: "cta" }),
                 defineArrayMember({ type: "cards" }),
-                defineArrayMember({ type: "ctaMiniComponent" })
+                defineArrayMember({ type: "ctaMiniComponent" }),
+                defineArrayMember({ type: "ctaSplitHeader" })
             ],
         }),
     ],

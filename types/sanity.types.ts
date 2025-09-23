@@ -152,6 +152,7 @@ export interface GalleryListStep extends GalleryBase {
         | (CTA & { _type?: "cta" })
         | (Cards & { _type?: "cards" })
         | (CtaMiniComponent & { _type?: "ctaMiniComponent" })
+        | (CtaSplitHeader & { _type?: 'ctaSplitHeader' })
     >;
 }
 
@@ -175,6 +176,12 @@ export interface GalleryPeopleStep extends GalleryBase {
 export interface GalleryScrollHighlightStep extends GalleryBase {
     type: "highlight";
     highlightText?: string;
+}
+export interface CtaSplitHeader {
+    cta?: CtaMiniComponent;
+    heading?: string;
+    subheading?: string;
+    paragraph?: string;
 }
 
 export interface GalleryOverview extends GalleryBase {
@@ -237,7 +244,7 @@ export interface Page {
     channel?: "1spWeb" | "msmWeb" | "studioco2Web" | string;
 
     // channel-specific content (kept generic)
-    content1sp?: Array<any | ShowtimeGallery | HeroShowtime | SublineComponent>;
+    content1sp?: Array<any | ShowtimeGallery | HeroShowtime | SublineComponent | OneSPHeader>;
     contentMSM?: Array<any>;
     contentStudioCO2?: Array<any>;
 }
@@ -297,3 +304,37 @@ export type OneSPTypes =
     | CtaMiniComponent
     | Cards
     | GalleryStep;
+
+
+/* Font sizes used by paragraph lines */
+export type FontSize = "xs" | "sm" | "base" | "lg" | "xl" | "2xl" | "3xl" | string;
+
+/** Matches the `size` object you defined in Studio (with a `size` string) */
+export interface SizeObject {
+    size?: FontSize;
+}
+
+/** Matches your `paragraphLine` object (text + fontSize of type `size`) */
+export interface ParagraphLine {
+    text?: string;
+    /** In Studio this is an object of type `size`; accept string fallback too */
+    fontSize?: FontSize | SizeObject;
+}
+
+/** New header object (schema: oneSPHeader) */
+export interface OneSPHeader {
+    /** Sanity _type will be "oneSPHeader" */
+    _type?: "oneSPHeader";
+    media?: CloudinaryAsset;
+    enableParallax?: boolean;
+
+    // content
+    eyebrow?: string;
+    rotatingText?: string[];
+    paragraphs?: ParagraphLine[];
+    highlight?: string;
+
+    // decoration
+    cornerLeftText?: string;
+    cornerRightText?: string;
+}
