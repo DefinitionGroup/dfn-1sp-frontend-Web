@@ -10,7 +10,6 @@ import type {
 } from "@/types/sanity.types";
 import { assetUrl, ctaToButtonProps } from "@/utils/utils";
 
-// UI shape normalized from Sanity
 interface UIItem {
   id: string;
   title: string;
@@ -27,6 +26,10 @@ export default function InteractiveCarousel({
 }: {
   items?: SanityCarouselItem[];
 }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
   // Normalize input from Sanity → UI items
   const carouselItems: UIItem[] = useMemo(() => {
     const list = (items ?? []).map((it, i) => {
@@ -48,15 +51,8 @@ export default function InteractiveCarousel({
     return list.filter((x) => !!x.image);
   }, [items]);
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-
-  // Guard: if no content from Sanity, render nothing
-  if (!carouselItems.length) return null;
-
   useEffect(() => {
-    if (!isAutoPlaying) return;
+    if (!isAutoPlaying || !carouselItems.length) return;
 
     const interval = setInterval(() => {
       setDirection(1);
@@ -65,6 +61,8 @@ export default function InteractiveCarousel({
 
     return () => clearInterval(interval);
   }, [isAutoPlaying, carouselItems.length]);
+
+  if (!carouselItems.length) return null;
 
   const slideVariants = {
     enter: (direction: number) => ({

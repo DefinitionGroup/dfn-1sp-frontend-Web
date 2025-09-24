@@ -1,4 +1,3 @@
-// components/ExpandableCards.tsx
 "use client";
 
 import React, { useEffect, useId, useRef, useState, useMemo } from "react";
@@ -9,9 +8,9 @@ import { assetUrl } from "@/utils/utils";
 import { useOutsideClick } from "@/app/hooks/use-outside-click";
 
 export interface ExpandableCardsProps {
-  items?: CardItem[]; // Sanity-driven
-  variant?: "default" | "compact"; // merges ExpandableCards + ExpandableCards2
-  columns?: 3 | 4 | 5; // grid column count (default 5)
+  items?: CardItem[];
+  variant?: "default" | "compact";
+  columns?: 3 | 4 | 5;
 }
 
 type UIShape = {
@@ -88,16 +87,15 @@ export default function ExpandableCards({
   variant = "default",
   columns = 5,
 }: ExpandableCardsProps) {
-  // No content → no render
+  const [active, setActive] = useState<UIShape | boolean | null>(null);
+  const ref = useRef<HTMLDivElement>(null);
+  const id = useId();
+
+  // Compute source cards with useMemo
   const sourceCards = useMemo(
     () => (items || []).map(mapCard).filter(Boolean) as UIShape[],
     [items]
   );
-  if (sourceCards.length === 0) return null;
-
-  const [active, setActive] = useState<UIShape | boolean | null>(null);
-  const ref = useRef<HTMLDivElement>(null);
-  const id = useId();
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -117,7 +115,8 @@ export default function ExpandableCards({
 
   useOutsideClick(ref, () => setActive(null));
 
-  // Variant-specific class tweaks
+  if (sourceCards.length === 0) return null;
+
   const cardHeight =
     variant === "compact"
       ? "min-h-[240px] h-[100px]"
