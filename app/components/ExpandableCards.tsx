@@ -115,7 +115,7 @@ export default function ExpandableCards() {
                     layoutId={`button-${active.title}-${id}`}
                     href={active.ctaLink}
                     target="_blank"
-                    className="px-4 py-3 text-sm font-bold bg-lime-500 hover:bg-black transition-all transition duration-500 text-white">
+                    className="px-4 py-3 text-sm font-bold bg-lime-500 hover:bg-black transition-all duration-500 text-white">
                     {active.ctaText}
                   </motion.a>
                 </div>
@@ -143,18 +143,14 @@ export default function ExpandableCards() {
                   className="w-full h-full object-cover group/card:hover:opacity-50 object-top opacity-50"
                 />
               </motion.div>
-              <div className="col-start-1 border col-span-1 opacity-100 row-start-1 p-4 z-1">
+              <div className="col-start-1 border col-span-1 flex flex-col justify-end opacity-100 row-start-1 p-4 z-1">
                 <motion.img
                   layoutId={`logo-${card.title}-${id}`}
                   src={card.logo}
                   alt={card.title}
                   className="w-28 h-14 object-contain  object-left"
                 />
-                <motion.p
-                  layoutId={`description-${card.description}-${id}`}
-                  className="text-neutral-100 mt-16 text-3xl font-Medium leading-compress tracking-tight dark:text-neutral-400  md:text-left">
-                  {card.description}
-                </motion.p>
+
                 <motion.h3
                   layoutId={`title-${card.title}-${id}`}
                   className="font-medium mt-2  text-sm leading-snug tracking-tight text-neutral-100 dark:text-neutral-200 text-center md:text-left">

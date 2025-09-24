@@ -49,7 +49,7 @@ export default function Home() {
             <h1 className="text-neutral-50  pb-2 text-9xl border-b font-bold  max-w-1/3">
               SquareEnix
             </h1>{" "}
-            <p className="text-neutral-50 text-xl  max-w-1/3">
+            <p className="text-neutral-50 text-xl  max-w-1/1 md:max-w-1/3">
               We are group of several laser focused agencies. Each one with a
               distinctive competetive edge.
             </p>
