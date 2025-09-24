@@ -44,7 +44,7 @@ export default async function SiteLayout({
   const { data: footer } = await sanityFetch({ query: FOOTER_QUERY });
 
   return (
-    <div className={`${aspekta.variable} ${nyghtserif.variable}`}>
+    <main className={`${aspekta.variable} ${nyghtserif.variable}`}>
       {/* {navbar && <Navbar {...navbar} />} */}
       {children}
       {/* {footer && <Footer data={footer} />} */}
@@ -56,6 +56,6 @@ export default async function SiteLayout({
           <DisableDraftMode />
         </>
       )}
-    </div>
+    </main>
   );
 }
