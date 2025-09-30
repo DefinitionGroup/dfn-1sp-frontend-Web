@@ -9,9 +9,5 @@ export default function StudioLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <body className="antialiased">{children}</body>
-    </html>
-  );
+  return <>{children}</>;
 }

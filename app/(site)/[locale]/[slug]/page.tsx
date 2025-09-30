@@ -21,7 +21,7 @@ export default async function Page({
   });
   return (
     <div className=" min-h-screen">
-      {Array.isArray(page?.content1sp) ? (
+      {page?.content1sp ? (
         <PageBuilder content={page.content1sp} />
       ) : (
         <NotFound />

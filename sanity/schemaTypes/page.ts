@@ -120,6 +120,13 @@ export default defineType({
             hidden: ({ parent }: any) => parent?.channel !== 'studioco2Web',
         }),
         defineField({
+            name: 'contentStudioFlizr',
+            title: 'Content StudioFlizr',
+            type: 'array',
+            of: [{ type: 'block' }],
+            hidden: ({ parent }: any) => parent?.channel !== 'flizrWeb',
+        }),
+        defineField({
             name: 'channel',
             title: 'Channel',
             type: 'string',
@@ -128,6 +135,7 @@ export default defineType({
                     { title: '1sp Website', value: '1spWeb' },
                     { title: 'MSM Website', value: 'msmWeb' },
                     { title: 'Studio CO2 Website', value: 'studioco2Web' },
+                    { title: 'Flizr Website', value: 'flizrWeb' },
                 ],
             },
             readOnly: true,

@@ -1,32 +1,20 @@
 "use client";
 
-import { useTransition } from "react";
-import { useRouter } from "next/navigation";
-import { disableDraftMode } from "@/app/actions";
-export function DisableDraftMode() {
-  const router = useRouter();
-  const [pending, start] = useTransition();
+import { useDraftModeEnvironment } from "next-sanity/hooks";
 
-  // Hide inside Presentation iframe
-  if (
-    typeof window !== "undefined" &&
-    (window !== window.parent || !!window.opener)
-  ) {
+export function DisableDraftMode() {
+  const environment = useDraftModeEnvironment();
+
+  if (environment !== "live" && environment !== "unknown") {
     return null;
   }
 
   return (
-    <button
-      type="button"
-      onClick={() =>
-        start(async () => {
-          await disableDraftMode();
-          router.refresh();
-        })
-      }
-      aria-busy={pending}
+    <a
+      href="/api/draft-mode/disable"
+      className="fixed bottom-4 right-4 bg-gray-50 px-4 py-2"
     >
-      {pending ? "Disabling…" : "Disable draft mode"}
-    </button>
+      Disable Draft Mode
+    </a>
   );
 }
