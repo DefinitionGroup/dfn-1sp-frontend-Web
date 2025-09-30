@@ -42,7 +42,9 @@ export default {
                     { title: '1sp Website', value: '1spWeb' },
                     { title: 'MSM Website', value: 'msmWeb' },
                     { title: 'Studio CO2 Website', value: 'studioco2Web' },
+                    { title: 'Flizr Website', value: 'flizrWeb' },
                 ],
+                layout: "radio",
             },
             readOnly: true,
             initialValue: (context: any) =>

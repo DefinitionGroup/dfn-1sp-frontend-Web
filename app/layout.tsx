@@ -1,5 +1,23 @@
+import localFont from "next/font/local";
 import type { Metadata } from "next";
 import "./globals.css";
+
+const aspekta = localFont({
+  src: [
+    { path: "./fonts/AspektaVF.woff2", style: "normal" },
+    { path: "./fonts/AspektaVF.ttf", style: "normal" },
+  ],
+  variable: "--font-aspekta",
+  display: "swap",
+  weight: "50 1000",
+});
+
+const nyghtserif = localFont({
+  src: [{ path: "./fonts/NyghtSerif-Regular.woff2", style: "normal" }],
+  variable: "--font-nyghtserif",
+  display: "swap",
+  weight: "400 700",
+});
 
 export const metadata: Metadata = {
   title: "Rotpunkt Küchen AI Image Generator",
@@ -11,8 +29,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // apply the generated font classnames on the HTML so server+client match
   return (
-    <html lang="en">
+    <html lang="en" className={`${aspekta.variable} ${nyghtserif.variable}`}>
       <body className="antialiased">{children}</body>
     </html>
   );

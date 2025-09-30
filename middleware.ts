@@ -7,6 +7,16 @@ export default function middleware(req: NextRequest) {
 
     const channel = "1spWeb";
 
+    // Don't apply locale-prefix redirects to API or TRPC routes or studio presentation routes.
+    // Visual editing calls the preview enable route at /api/draft-mode/enable and
+    // also uses the /studio/presentation endpoint; middleware must not rewrite those.
+    const localePrefixedApiOrTrpc = /^\/[a-z]{2}(?:-[A-Z]{2})?\/(api|trpc)(\/|$)/.test(pathname);
+    const isStudioPresentation = pathname === '/studio/presentation' || /^\/[a-z]{2}(?:-[A-Z]{2})?\/studio\/presentation(\/|$)/.test(pathname);
+    if (pathname.startsWith('/api') || pathname.startsWith('/trpc') || localePrefixedApiOrTrpc || isStudioPresentation) {
+        res.cookies.set("channel", channel, { path: "/" });
+        return res;
+    }
+
     const segments = pathname.split("/").filter(Boolean);
     const candidate = segments[0] || "";
     const hasLocale = /^[a-z]{2}(-[A-Z]{2})?$/.test(candidate);

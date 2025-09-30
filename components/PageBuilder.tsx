@@ -1,4 +1,3 @@
-// components/PageBuilder.tsx
 import React from "react";
 import type {
   ShowtimeGallery as ShowtimeGalleryType,

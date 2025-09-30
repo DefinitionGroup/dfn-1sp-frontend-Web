@@ -22,13 +22,15 @@ type Language = {
 const supportedLanguages: Language[] = [
   { id: "de", title: "German" },
   { id: "en", title: "English" },
+  { id: "pl", title: "Polish" },
 ];
 
 // Per-channel supported languages
 const CHANNEL_LANGUAGES: Record<string, Language[]> = {
-  '1spWeb': [supportedLanguages[1], supportedLanguages[0]], // EN, DE
+  '1spWeb': [supportedLanguages[1]], // EN only
   'msmWeb': [supportedLanguages[1], supportedLanguages[0]], // EN, DE
   'studioco2Web': [supportedLanguages[1]], // EN only
+  'flizrWeb': [supportedLanguages[1], supportedLanguages[0], supportedLanguages[2]], // EN, DE, PL
 };
 
 // Helper for initial value templates
@@ -187,7 +189,7 @@ export const structure: StructureResolver = (S) =>
       createChannelStructure(S, "1SP", "1spWeb", MdBusiness),
       createChannelStructure(S, "MSM", "msmWeb", MdBusiness),
       createChannelStructure(S, "Studio CO2", "studioco2Web", MdBusiness),
-
+      createChannelStructure(S, "Flizr", "flizrWeb", MdBusiness),
       S.divider(),
 
       // Hide these types from "all documents"
