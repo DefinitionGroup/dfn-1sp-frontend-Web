@@ -33,9 +33,20 @@ export function lerp(start: number, end: number, factor: number): number {
   return start + (end - start) * factor;
 }
 
-export default function LineMinimap() {
+export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
   const scrollY = useScrollY(MAX_HEIGHT);
   const { mouseX, onMouseMove, onMouseLeave } = useMouseX();
+
+  const handleNavClick = (id: string) => {
+    const element = document.getElementById(id);
+    element?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Calculate proportional positions for navPoints along the 50 lines
+  const navPointPositions = navPoints.map((_, i) => {
+    if (navPoints.length === 1) return 0;
+    return Math.round((i * (LINE_COUNT - 1)) / (navPoints.length - 1));
+  });
 
   return (
     <div className="fixed top-0 left-6 z-50 min-w-[200px] flex flex-col pointer-events-none justify-center h-[100vh]" style={{ width: `calc(100vw + ${MAX_HEIGHT}px)` }}>
@@ -47,16 +58,31 @@ export default function LineMinimap() {
         Scroll to Navigate
         </div>
         <div className="flex flex-col items-start" style={{ gap: LINE_GAP }}>
-          {[...Array(LINE_COUNT)].map((_, i) => (
-            <Line
-              key={i}
-              index={i}
-              scrollY={scrollY}
-              mouseX={mouseX}
-              active={isActive(i, LINE_COUNT)}
-            />
+          {[...Array(LINE_COUNT)].map((_, i) => {
+            const navPointIndex = navPointPositions.indexOf(i);
+            const isNavPoint = navPointIndex !== -1;
+            const navPointId = isNavPoint ? navPoints[navPointIndex] : undefined;
 
-          ))}
+            return (
+              <div key={i} className="relative">
+                <Line
+                  index={i}
+                  scrollY={scrollY}
+                  mouseX={mouseX}
+                  active={isActive(i, LINE_COUNT)}
+                />
+                {isNavPoint && (
+                  <NavPoint
+                    id={navPointId!}
+                    index={i}
+                    scrollY={scrollY}
+                    mouseX={mouseX}
+                    onClick={() => handleNavClick(navPointId!)}
+                  />
+                )}
+              </div>
+            );
+          })}
         </div>
         <Indicator y={scrollY} />
       </motion.div>
@@ -106,6 +132,58 @@ function Line({
         damping: 20,
       }}
     />
+  );
+}
+
+function NavPoint({
+  id,
+  mouseX,
+  scrollY,
+  index,
+  onClick,
+}: {
+  id: string;
+  mouseX: MotionValue<number>;
+  scrollY: MotionValue<number>;
+  index: number;
+  onClick: () => void;
+}) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const scaleX = useSpring(1, { damping: 45, stiffness: 600 });
+  const centerY = index * LINE_STEP + LINE_WIDTH / 2;
+
+  useProximity(scaleX, {
+    ref,
+    baseValue: 1,
+    mouseX,
+    scrollY,
+    centerY,
+  });
+
+  return (
+    <motion.div
+      ref={ref}
+      className="absolute left-0 bg-lime-500 hover:bg-lime-300 cursor-pointer pointer-events-auto flex items-center justify-start rounded-sm"
+      style={{
+        height: LINE_WIDTH,
+        width: LINE_HEIGHT_ACTIVE + 60, // Make it wider to accommodate text
+        scaleX,
+        top: 0, // Position at the same level as the line
+      }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{
+        opacity: { delay: index * 0.02, duration: 0.12 },
+        type: "spring",
+        stiffness: 200,
+        damping: 20,
+      }}
+      onClick={onClick}
+    >
+      <span className="text-white text-[8px] font-medium ml-2 whitespace-nowrap">
+        {id}
+      </span>
+    </motion.div>
   );
 }
 

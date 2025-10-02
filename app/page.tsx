@@ -40,13 +40,13 @@ export default function Home() {
       <section className="relative h-[85vh] overflow-hidden">
         <HamburgerGradientMenu />
 
-        <LineMinimap />
+        <LineMinimap navPoints={['hero-content', 'showtime-gallery', 'portfolio-grid', 'skills-combo', 'people-gallery', 'Step3']} />
 
 
         {/* Background Image with Overlay */}
         <HeaderImageVideoComp
           useVideo={true}
-          videoSrc="/video/cases/1SP Agency - 1SP Homepage-07.mp4"
+          videoSrc="/video/1sp_home_header_16x9.mp4"
           enableParallax={true}
 
         />
@@ -54,7 +54,7 @@ export default function Home() {
         <FrontNavOverlay />
         {/* Hero Content */}
 
-        <div className="relative z-10 container  mt-[30vh]  mx-auto p-8 md:p-0">
+        <div id="hero-content" className="relative z-10 container  mt-[30vh]  mx-auto p-8 md:p-0">
           <StaggeredSlideUp className=" max-w-full flex flex-col gap-8 md:gap-0">
             <h1 className="text-neutral-50 uppercase pb-2 text-base  font-bold  max-w-1/2">
               Welcome at 1SP
@@ -86,7 +86,7 @@ export default function Home() {
       </section>
 
       {/* SHOWTIME  GALLERY */}
-      <div className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta">
+      <div id="showtime-gallery" className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta">
 
         <div className="z-1 grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
@@ -139,7 +139,7 @@ export default function Home() {
       </div>
 
       {/* Portfolio Grid */}
-      <div className="z-4 grid gap-4 col-span-12 relative col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+      <div id="portfolio-grid" className="z-4 grid gap-4 col-span-12 relative col-start-1 container mx-auto row-start-1 grid-cols-12 ">
         <GridBackground delay={0.2} staggerDelay={0.06} />
         <div className="z-1 grid col-span-12 col-start-1 pt-32 row-start-1 grid-cols-12 ">
           <Badgemodule
@@ -187,7 +187,7 @@ export default function Home() {
       </div>
       {/* Skills Combo Section */}
       <div
-        id="Step1"
+        id="skills-combo"
         className="z-1 mx-auto  mt-8 min-h-[90vh] relative font-aspekta">
         <HeaderImageVideoComp2
           useVideo={true}
@@ -210,7 +210,7 @@ export default function Home() {
         </div>{" "}
       </div>
       {/* People Gallery Section */}
-      <div className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta gap-4  ">
+      <div id="people-gallery" className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta gap-4  ">
         {/*   */}
         <div className="z-1 flex flex-col col-span-2 pt-32 justify-start items-start  col-start-1 mx-auto row-start-1">
           <Badgemodule
