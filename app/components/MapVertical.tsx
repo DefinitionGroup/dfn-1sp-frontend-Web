@@ -69,8 +69,8 @@ export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
 
   return (
     <div
-      className="fixed top-0 left-6 z-50 min-w-[200px] flex flex-col  justify-center h-[100vh]"
-      style={{ width: `calc(100vw + ${MAX_HEIGHT}px)` }}
+      className="fixed top-0 left-6 z-50  w-[40px] flex flex-col  justify-center h-[100vh]"
+
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
