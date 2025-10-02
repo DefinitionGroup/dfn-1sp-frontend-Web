@@ -23,7 +23,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       : "/ci/1sp-fulllogotype.svg";
   return (
     <nav
-      className={`relative hidden md:grid  z-10 grid-cols-12 pt-5 mx-auto container ${className}`}>
+      className={`relative hidden md:grid  z-10 grid-cols-12 pt-5 mx-auto container ${className}`}
+    >
       <div className="w-[90px] h-[90px] col-start-1 col-span-1 pt-2">
         <Image
           src={imageLogo}
@@ -46,7 +47,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           duration: 0.5,
           delay: 0.4,
         }}
-        className="col-start-2 grid grid-cols-12 col-span-6">
+        className="col-start-2 grid grid-cols-12 col-span-6"
+      >
         <StaggeredSlideUp
           className="grid grid-cols-12 col-span-12 pb-2 flex-wrap items-center"
           delay={0.55}
@@ -54,7 +56,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           duration={0.8}
           distance={10}
           maskHeight="150%"
-          easing="spring">
+          easing="spring"
+        >
           <span className={`${textColor}  text-xxs leading-compress font-bold`}>
             <Link
               className="hover:text-lime-400"
@@ -64,12 +67,14 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 router.push("/", {
                   onTransitionReady: pageAnimation,
                 });
-              }}>
+              }}
+            >
               Home
             </Link>
           </span>
           <span
-            className={`${textColor} text-xxs leading-compress font-bold`}></span>
+            className={`${textColor} text-xxs leading-compress font-bold`}
+          ></span>
           <span className={`${textColor} text-xxs leading-compress font-bold`}>
             {" "}
             <Link
@@ -80,14 +85,17 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 router.push("/projects", {
                   onTransitionReady: pageAnimation,
                 });
-              }}>
+              }}
+            >
               Project
             </Link>
           </span>
           <span
-            className={`${textColor} text-xxs leading-compress font-bold`}></span>
+            className={`${textColor} text-xxs leading-compress font-bold`}
+          ></span>
           <span
-            className={`${textColor} text-xxs leading-compress font-bold hover:text-lime-500`}>
+            className={`${textColor} text-xxs leading-compress font-bold hover:text-lime-500`}
+          >
             {" "}
             <Link
               className="hover:text-lime-400"
@@ -97,7 +105,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 router.push("/whatwedo", {
                   onTransitionReady: pageAnimation,
                 });
-              }}>
+              }}
+            >
               What we do
             </Link>
           </span>
@@ -108,17 +117,21 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             delay={1}
             staggerDelay={0.02}
             duration={0.1}
-            distance={10}>
+            distance={10}
+          >
             <span
-              className={`${textColor} text-xxs leading-compress font-normal`}>
+              className={`${textColor} text-xxs leading-compress font-normal`}
+            >
               Marketing
             </span>{" "}
             <span
-              className={`${textColor} text-xxs leading-compress font-normal`}>
+              className={`${textColor} text-xxs leading-compress font-normal`}
+            >
               Social
             </span>{" "}
             <span
-              className={`${textColor} text-xxs leading-compress font-normal`}>
+              className={`${textColor} text-xxs leading-compress font-normal`}
+            >
               Design
             </span>{" "}
           </StaggeredSlideUp>
@@ -127,17 +140,21 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             delay={1.25}
             staggerDelay={0.02}
             duration={0.1}
-            distance={10}>
+            distance={10}
+          >
             <span
-              className={`${textColor} text-xxs leading-compress font-normal`}>
+              className={`${textColor} text-xxs leading-compress font-normal`}
+            >
               AR / VR
             </span>{" "}
             <span
-              className={`${textColor} text-xxs leading-compress font-normal`}>
+              className={`${textColor} text-xxs leading-compress font-normal`}
+            >
               POS
             </span>{" "}
             <span
-              className={`${textColor} text-xxs leading-compress font-normal`}>
+              className={`${textColor} text-xxs leading-compress font-normal`}
+            >
               Campaign
             </span>{" "}
           </StaggeredSlideUp>
@@ -146,30 +163,39 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             delay={1.425}
             staggerDelay={0.02}
             duration={0.1}
-            distance={10}>
+            distance={10}
+          >
             <span
-              className={`${textColor} text-xxs leading-compress font-normal`}>
-              EA GAMES
+              className={`${textColor} text-xxs leading-compress font-normal`}
+            >
+              <Link
+                className="hover:text-lime-400"
+                href={"/work/marshall"}
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push("/work/marshall", {
+                    onTransitionReady: pageAnimation,
+                  });
+                }}
+              >
+                MARSHALL
+              </Link>
             </span>{" "}
             <span
-              className={`${textColor} text-xxs leading-compress font-normal`}>
-              SAMSUNG
-            </span>{" "}
-            <span
-              className={`${textColor} text-xxs leading-compress font-normal`}>
-              MICROSOFT
-            </span>{" "}
-            <span
-              className={`${textColor} text-xxs leading-compress font-normal`}>
-              META
-            </span>{" "}
-            <span
-              className={`${textColor} text-xxs leading-compress font-normal`}>
-              MARSHALL
-            </span>{" "}
-            <span
-              className={`${textColor} text-xxs leading-compress font-normal`}>
-              BLIZZARD
+              className={`${textColor} text-xxs leading-compress font-normal`}
+            >
+              <Link
+                className="hover:text-lime-400"
+                href={"/work/meta"}
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push("/work/meta", {
+                    onTransitionReady: pageAnimation,
+                  });
+                }}
+              >
+                META
+              </Link>
             </span>{" "}
           </StaggeredSlideUp>
           <StaggeredSlideUp
@@ -177,17 +203,21 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             delay={1.75}
             staggerDelay={0.02}
             duration={0.1}
-            distance={10}>
+            distance={10}
+          >
             <span
-              className={`${textColor} text-xxs leading-compress font-normal`}>
+              className={`${textColor} text-xxs leading-compress font-normal`}
+            >
               Our Story
             </span>{" "}
             <span
-              className={`${textColor} text-xxs leading-compress font-normal`}>
+              className={`${textColor} text-xxs leading-compress font-normal`}
+            >
               Work with us
             </span>
             <span
-              className={`${textColor} text-xxs leading-compress font-normal`}>
+              className={`${textColor} text-xxs leading-compress font-normal`}
+            >
               What we do
             </span>{" "}
           </StaggeredSlideUp>

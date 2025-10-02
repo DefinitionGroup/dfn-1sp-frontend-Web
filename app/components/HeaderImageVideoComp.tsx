@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion, useScroll, useTransform, useInView } from "motion/react";
 import { useRef } from "react";
 import { url } from "inspector";
-import bg from '../../public/dot-background.png'
+import bg from "../../public/dot-background.png";
 interface HeaderImageVideoCompProps {
   useVideo?: boolean;
   imageSrc?: string;
@@ -14,6 +14,7 @@ interface HeaderImageVideoCompProps {
   className?: string;
   enableParallax?: boolean;
   opacity?: string;
+  enableVertical?: boolean;
 }
 
 const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
@@ -21,6 +22,7 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
   imageSrc = "/hero-bg-home2-34f136.png",
   videoSrc = "/video/atf.mp4",
   imageAlt = "Hero Background",
+  enableVertical = false,
   className = "",
   enableParallax = true,
   opacity = "opacity-45",
@@ -50,7 +52,8 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
         ease: [0.16, 1, 0.3, 1],
         opacity: { duration: 0.8 },
         scaleX: { duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.6 },
-      }}>
+      }}
+    >
       <motion.div
         className="absolute inset-0"
         initial={{ opacity: 0, scale: 1.1, filter: "blur(128px)" }}
@@ -61,14 +64,19 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
           opacity: { duration: 1.8 },
           filter: { duration: 1.0, ease: [0.16, 1, 0.3, 1] },
         }}
-        style={enableParallax ? { y } : {}}>
+        style={enableParallax ? { y } : {}}
+      >
         {useVideo ? (
           <video
             src={videoSrc}
             autoPlay
             loop
             muted
-            className={`object-cover w-full h-full ${opacity}`}
+            className={`${
+              enableVertical
+                ? "absolute right-0 top-0 w-1/2 h-full object-cover"
+                : `object-cover w-full h-full ${opacity}`
+            }`}
           />
         ) : (
           <Image
@@ -80,7 +88,11 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
           />
         )}
         <motion.div
-          className="absolute inset-0 " style={{  backgroundImage: `url(${bg.src})`, backgroundSize: '24px 24px',}}
+          className="absolute inset-0 "
+          style={{
+            backgroundImage: `url(${bg.src})`,
+            backgroundSize: "24px 24px",
+          }}
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 1 }}
           transition={{

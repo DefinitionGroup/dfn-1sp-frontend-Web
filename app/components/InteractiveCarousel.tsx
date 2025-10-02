@@ -27,22 +27,32 @@ const carouselItems: CarouselItem[] = [
     title: "Turning up the Noise on Amazon",
     subtitle: "Marshall",
     image: "/case-marshall.jpg",
-    description: "Expanding reach, increasing traffic, and driving deeper engagement through Amazon Stores globally.",
+    description:
+      "Expanding reach, increasing traffic, and driving deeper engagement through Amazon Stores globally.",
     category: "Gaming",
     logosrc: "/logos/Marshall_logo_black.svg",
     url: "https://www.marshallheadphones.com/",
     urltext: "Visit Website",
-    link: '/work/marshall'
-
-
+    link: "/work/marshall",
   },
   {
     id: 1,
-    title: "Gaming Campaign",
-    subtitle: "Epic Battle Royale",
-    image: "/s1.png",
-    description: "Immersive gaming experience with cutting-edge visuals",
+    title: "Zucked!",
+    subtitle: "AR/VR In Flight",
+    image: "/metaplaceholder.png",
+    description:
+      "Immersive gaming experience with cutting-edge visuals and Mark Zuckerberg",
     category: "Gaming",
+    logosrc: "/logos/Meta_Platforms_Inc._logo.svg",
+    link: "/work/meta",
+  },
+  {
+    id: 3,
+    title: "Interactive Web",
+    subtitle: "User Experience",
+    image: "/s2.png",
+    description: "Revolutionary web experiences that engage and convert",
+    category: "Web Design",
     logosrc: "/logos/Ubisoft_logo.svg",
   },
   {
@@ -54,15 +64,7 @@ const carouselItems: CarouselItem[] = [
     category: "Branding",
     logosrc: "/logos/Lufthansa_Logo_2018.svg",
   },
-  {
-    id: 3,
-    title: "Interactive Web",
-    subtitle: "User Experience",
-    image: "/s2.png",
-    description: "Revolutionary web experiences that engage and convert",
-    category: "Web Design",
-    logosrc: "/logos/Meta_Platforms_Inc._logo.svg",
-  },
+
   {
     id: 4,
     title: "Motion Graphics",
@@ -83,7 +85,7 @@ const carouselItems: CarouselItem[] = [
 ];
 
 export default function InteractiveCarousel() {
-      const router = useTransitionRouter();
+  const router = useTransitionRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
@@ -156,7 +158,8 @@ export default function InteractiveCarousel() {
           initial={{ opacity: 1, y: 50 }}
           whileInView={{ opacity: 1, y: 1 }}
           transition={{ duration: 0.8 }}
-          viewport={{ once: true }}></motion.div>
+          viewport={{ once: true }}
+        ></motion.div>
 
         <div className="relative h-[800px] flex items-start">
           {/* Main Carousel */}
@@ -180,7 +183,8 @@ export default function InteractiveCarousel() {
                 onDragEnd={handleDragEnd}
                 className="absolute inset-0 cursor-grab active:cursor-grabbing"
                 onMouseEnter={() => setIsAutoPlaying(false)}
-                onMouseLeave={() => setIsAutoPlaying(true)}>
+                onMouseLeave={() => setIsAutoPlaying(true)}
+              >
                 <div className="relative w-full h-full overflow-hidden bg-gradient-to-brshadow-2xl">
                   {/* Background Image */}
                   <motion.img
@@ -210,7 +214,8 @@ export default function InteractiveCarousel() {
                             staggerChildren: 0.4252,
                           },
                         },
-                      }}>
+                      }}
+                    >
                       <div>
                         <motion.div className="w-fit  px-3   text-black  flex  text-xs rounded-xs ">
                           <Image
@@ -235,7 +240,11 @@ export default function InteractiveCarousel() {
                         {carouselItems[currentIndex].description}
                       </motion.p>
                       <motion.p className="text-gray-100 text-sm max-w-2xl ">
-                        <Button2 variant="limesmall" href=  {carouselItems[currentIndex].link} text="View Case Study" />
+                        <Button2
+                          variant="limesmall"
+                          href={carouselItems[currentIndex].link}
+                          text="View Case Study"
+                        />
                       </motion.p>
                     </motion.div>
                   </div>
@@ -244,14 +253,16 @@ export default function InteractiveCarousel() {
                   <motion.div
                     className="absolute top-4 right-4"
                     whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}>
+                    whileTap={{ scale: 0.9 }}
+                  >
                     <button className="w-6  h-6 cursor-pointer bg-black/50 backdrop-blur-sm rounded-xs flex items-center justify-center text-lime-400 hover:bg-white/100  hover:text-black transition-colors">
                       <svg
                         width="11"
                         height="113"
                         viewBox="0 0 14 14"
                         fill="currentColor"
-                        xmlns="http://www.w3.org/2000/svg">
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
                         <path d="M14 1.00696V10.757C14 10.9061 13.9407 11.0492 13.8353 11.1547C13.7298 11.2602 13.5867 11.3195 13.4375 11.3195C13.2883 11.3195 13.1452 11.2602 13.0398 11.1547C12.9343 11.0492 12.875 10.9061 12.875 10.757V2.36446L1.83501 13.4045C1.72838 13.5038 1.58734 13.5579 1.44162 13.5553C1.29589 13.5528 1.15685 13.4937 1.05379 13.3907C0.950731 13.2876 0.891697 13.1486 0.889126 13.0028C0.886555 12.8571 0.940647 12.7161 1.04001 12.6095L12.08 1.56946H3.68751C3.53832 1.56946 3.39525 1.51019 3.28976 1.40471C3.18427 1.29922 3.12501 1.15614 3.12501 1.00696C3.12501 0.857774 3.18427 0.7147 3.28976 0.60921C3.39525 0.503721 3.53832 0.444458 3.68751 0.444458H13.4375C13.5867 0.444458 13.7298 0.503721 13.8353 0.60921C13.9407 0.7147 14 0.857774 14 1.00696Z" />
                       </svg>
                     </button>
@@ -266,12 +277,14 @@ export default function InteractiveCarousel() {
             className="absolute -left-12 top-1/2 transform -translate-y-1/2 w-12 h-12  bg-gray-300  backdrop-blur-sm rounded-xs flex items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={() => paginate(-1)}>
+            onClick={() => paginate(-1)}
+          >
             <svg
               className="w-12 h-12"
               fill="none"
               stroke="currentColor"
-              viewBox="0 0 24 24">
+              viewBox="0 0 24 24"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -285,12 +298,14 @@ export default function InteractiveCarousel() {
             className="absolute -right-12 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm rounded-xs flex items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={() => paginate(1)}>
+            onClick={() => paginate(1)}
+          >
             <svg
               className="w-12 h-12"
               fill="none"
               stroke="currentColor"
-              viewBox="0 0 24 24">
+              viewBox="0 0 24 24"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -336,7 +351,8 @@ export default function InteractiveCarousel() {
               onClick={() => {
                 setDirection(index > currentIndex ? 1 : -1);
                 setCurrentIndex(index);
-              }}>
+              }}
+            >
               <img
                 src={item.image}
                 alt={item.title}
