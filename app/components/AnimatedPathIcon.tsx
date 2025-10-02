@@ -4,7 +4,7 @@ import { motion, Variants } from "motion/react";
 
 export default function AnimatedPathIcon({
   delay = 0,
-  duration = 1.5,
+  duration = 3.5,
   strokeColor = "white",
   strokeWidth = 1,
 }: {
@@ -14,11 +14,11 @@ export default function AnimatedPathIcon({
   strokeWidth?: number;
 }) {
   const draw: Variants = {
-    hidden: { pathLength: 0, opacity: 0 },
+    hidden: { pathLength: 0, opacity: 1 },
     visible: (i: number) => {
       const customDelay = i * 0.5 + delay;
       return {
-        pathLength: 1.2,
+        pathLength: 1,
         opacity: 1,
         transition: {
           pathLength: {
@@ -27,7 +27,7 @@ export default function AnimatedPathIcon({
             duration,
             bounce: 0,
           },
-          opacity: { delay: customDelay, duration: 0.01 },
+          opacity: { delay: customDelay, duration: 5 },
         },
       };
     },
@@ -49,7 +49,6 @@ export default function AnimatedPathIcon({
         r="9.16895"
         stroke={strokeColor}
         strokeWidth={strokeWidth}
-        custom={1}
         stroke-linecap="round"
         variants={draw}
       />
@@ -61,7 +60,6 @@ export default function AnimatedPathIcon({
         stroke={strokeColor}
         strokeWidth={strokeWidth}
         stroke-linecap="round"
-        custom={2}
         variants={draw}
       />
       <motion.line
@@ -69,10 +67,10 @@ export default function AnimatedPathIcon({
         y1="0.550781"
         x2="13.2189"
         y2="0.550781"
+        custom={4}
         stroke={strokeColor}
         strokeWidth={strokeWidth}
         stroke-linecap="round"
-        variants={draw}
       />
     </motion.svg>
   );
