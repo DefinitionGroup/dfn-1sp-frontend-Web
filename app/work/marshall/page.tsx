@@ -1,6 +1,10 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
-import { useInView } from "motion/react";
+import { motion, AnimatePresence, PanInfo, useInView } from "motion/react";
+import Image from "next/image";
+import { AnimateNumber } from "motion-plus/react";
+import AnimateNumberinView from "@/app/components/AnimateNumberinView";
+import AnimatedPathIcon from "@/app/components/AnimatedPathIcon";
 import Badgemodule from "@/app/components/Badgemodule";
 import Button2 from "@/app/components/Button2";
 import ExpandableCards from "@/app/components/ExpandableCards";
@@ -41,23 +45,24 @@ export default function Home() {
   const collectPageIds = () => {
     // Wait for the DOM to be fully rendered
     setTimeout(() => {
-      const allElements = document.querySelectorAll('[id]');
+      const allElements = document.querySelectorAll("[id]");
       const ids: string[] = [];
 
       allElements.forEach((element) => {
         const id = element.id;
         // Filter out IDs that are likely from components or not main sections
         // Only include IDs that are likely to be main page sections
-        if (id &&
-            !id.startsWith('headlessui-') && // Exclude headless UI IDs
-            !id.startsWith('radix-') && // Exclude radix UI IDs
-            !id.startsWith('__') && // Exclude internal IDs
-            !id.startsWith('_') && // Exclude IDs starting with underscore
-            id !== '_R_' && // Exclude specific unwanted ID
-            id.length > 2 && // Exclude very short IDs
-            !/^\d+$/.test(id) && // Exclude numeric-only IDs
-            // Allow IDs with hyphens as they are common for section names
-            id !== 'root' // Exclude root element
+        if (
+          id &&
+          !id.startsWith("headlessui-") && // Exclude headless UI IDs
+          !id.startsWith("radix-") && // Exclude radix UI IDs
+          !id.startsWith("__") && // Exclude internal IDs
+          !id.startsWith("_") && // Exclude IDs starting with underscore
+          id !== "_R_" && // Exclude specific unwanted ID
+          id.length > 2 && // Exclude very short IDs
+          !/^\d+$/.test(id) && // Exclude numeric-only IDs
+          // Allow IDs with hyphens as they are common for section names
+          id !== "root" // Exclude root element
         ) {
           ids.push(id);
         }
@@ -65,31 +70,28 @@ export default function Home() {
 
       // Keep the DOM order instead of sorting alphabetically
       const uniqueIds = [...new Set(ids)]; // Remove duplicates while preserving order
-      console.log('Collected navPoints (DOM order):', uniqueIds); // Debug log
-      console.log('All found IDs:', ids); // Debug log
+      console.log("Collected navPoints (DOM order):", uniqueIds); // Debug log
+      console.log("All found IDs:", ids); // Debug log
       setNavPoints(uniqueIds);
     }, 500); // Increased delay to ensure DOM is ready
   };
 
   useEffect(() => {
-    console.log('useEffect running, collecting page IDs...');
+    console.log("useEffect running, collecting page IDs...");
     collectPageIds();
   }, []);
 
   return (
     <>
-      <section  className="relative h-[95vh] overflow-hidden">
+      <section className="relative h-[95vh] overflow-hidden">
         <HamburgerGradientMenu />
 
         <LineMinimap navPoints={navPoints} />
-
-
         {/* Background Image with Overlay */}
         <HeaderImageVideoComp
           useVideo={true}
           videoSrc="/video/atf.mp4"
           enableParallax={true}
-
         />
         {/* Navigation */}
         <FrontNavOverlay />
@@ -97,14 +99,15 @@ export default function Home() {
         <div id="Top" className=""></div>
         <div className="relative z-10 container  mt-[30vh]  mx-auto p-8 md:p-0">
           <StaggeredSlideUp className=" max-w-full flex flex-col gap-8 md:gap-0">
-      <h1 className="text-neutral-50  pb-2 text-9xl max-w-1/3">
-             Marshall
+            <h1 className="text-neutral-50  pb-2 text-9xl max-w-1/3">
+              Marshall
             </h1>{" "}
-      <h2 className="text-neutral-50  pb-2 text-5xl max-w-1/3">
-            Turning up the Noise on Amazon
+            <h2 className="text-neutral-50  pb-2 text-5xl max-w-1/3">
+              Turning up the Noise on Amazon
             </h2>{" "}
-      <h3 className="text-neutral-50  pb-2 text-3xl max-w-1/3">
-            Expanding reach, increasing traffic, and driving deeper engagement through Amazon Stores globally.
+            <h3 className="text-neutral-50  pb-2 text-3xl max-w-1/3">
+              Expanding reach, increasing traffic, and driving deeper engagement
+              through Amazon Stores globally.
             </h3>{" "}
           </StaggeredSlideUp>
         </div>
@@ -121,7 +124,10 @@ export default function Home() {
       </section>
 
       {/* ////////// id Intro */}
- <div id="Intro"s className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta">
+      <div
+        id="Intro"
+        className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta"
+      >
         <GridBackground />
         <div className="z-1 grid gap-8 col-span-12 py-16  col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <div className="z-1 col-span-16 col-start-1 ">
@@ -131,31 +137,33 @@ export default function Home() {
                 delay={0.59}
                 staggerDelay={0.03}
                 distance={100}
-                className=" max-w-2/4 ">
+                className=" max-w-2/4 py-32 "
+              >
                 {" "}
                 <h2 className="text-xl leading-none text-neutral-700 pb-3 font-aspekta font-medium">
-                 The Challenge
+                  The Challenge
                 </h2>
-                <h2 className="text-5xl leading-none text-neutral-700 pb-3 font-aspekta font-medium">
+                <h2 className="text-5xl leading-none text-neutral-700 font-aspekta font-medium">
                   Transform the User Experience
                 </h2>
-                <h2 className="text-5xl leading-none text-neutral-700  pb-3 font-aspekta font-medium">
+                <h2 className="text-5xl leading-none text-neutral-300  pb-3 font-aspekta font-medium">
                   and Sales Potential of Amazon Stores
                 </h2>
-
               </StaggeredSlideUp>
               {/* Description */}
-
-
             </div>
           </div>
         </div>
       </div>
 
-
       {/* //////////// Start Content */}
 
-       <div id="Intro" className="grid grid-cols-12 z-1 mx-auto bg-neutral-100 mt-8 min-h-[90vh] relative font-aspekta">
+      <div
+        id="Intro"
+        className="grid grid-cols-12 z-1 mx-auto bg-neutral-50 mt-8 min-h-[90vh] relative font-aspekta"
+      >
+        {" "}
+        <GridBackground />
         <div className="z-1 grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2 sticky top-0 "
@@ -169,21 +177,21 @@ export default function Home() {
               delay={0.1}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-7xl leading-compress text-gray-900 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
-              Music for the masses.
+                Music for our ears.
               </h2>
               <p className="text-lg text-gray-900 font-medium  max-w-2xs mx-auto">
-               Our goal was to bring the full Marshall product range, including Amps integration, to consumers across 9 regions.
-
+                Our goal was to bring the full Marshall product range, including
+                Amps integration, to consumers across 9 regions.
               </p>
             </StaggeredSlideUp>
-
           </div>
           <div className="col-span-2 col-start-3 mt-8 pr-8 text-gray-900 ">
             <CtaMiniComponent
               heading="Challenge:"
-              paragraph="This is where we get our creative spark from. And epochs of customer focus and talking to the public."
+              paragraph="The Starting Point. A thorough analysis and understanding of the existing Stores highlighted several key issues:"
               buttonText=""
               buttonVariant="limesmall"
               align="left"
@@ -192,34 +200,42 @@ export default function Home() {
           <div className="col-span-5 col-start-5 mt-8 ">
             <ListContainerComponent>
               <ListItemComponent size="small" fontWeight="normal" color="black">
-            The Stores were fragmented
+                The Stores were fragmented
               </ListItemComponent>
               <ListItemComponent size="small" fontWeight="normal" color="black">
-              The user experience wasn’t clear
+                The user experience wasn’t clear
               </ListItemComponent>
               <ListItemComponent size="small" fontWeight="normal" color="black">
-               They lacked educational content to introduce new customers to both Marshall’s heritage and our product line.
+                They lacked educational content to introduce new customers to
+                both Marshall’s heritage and our product line.
               </ListItemComponent>
             </ListContainerComponent>
-             <StaggeredSlideUp
+            <StaggeredSlideUp
               className="flex flex-col mt-8   items-start justify-start "
               delay={0.1}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-3xl leading-compress text-gray-900 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
-            Solution
+                Solution
               </h2>
               <p className="text-lg text-gray-900 font-medium   mx-auto">
- To maximize the potential of Stores, we rebuilt them to strike the right balance between educational, interactive, and engaging content — while also embedding strong purchase and cross-sell opportunities throughout.
+                To maximize the potential of Stores, we rebuilt them to strike
+                the right balance between educational, interactive, and engaging
+                content — while also embedding strong purchase and cross-sell
+                opportunities throughout.
               </p>
             </StaggeredSlideUp>
           </div>
         </div>
       </div>
 
-{/* ////////////// Results */}
-  <div id="Results" className="grid grid-cols-12 z-1 mx-auto min-h-[90vh] relative font-aspekta">
+      {/* ////////////// Approach */}
+      <div
+        id="Approach"
+        className="grid grid-cols-12 z-1 mx-auto min-h-[90vh] relative font-aspekta"
+      >
         <HeaderImageVideoComp2
           useVideo={false}
           imageSrc="/case-marshall.jpg"
@@ -228,8 +244,8 @@ export default function Home() {
 
         <div className="z-1 grid col-span-12 py-32 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
-            className="col-span-2"
-            text="Results"
+            className="col-span-2 sticky top-0"
+            text="Approach"
             subtitle="What we achieved"
             numberEl={"002"}
           />
@@ -240,47 +256,247 @@ export default function Home() {
               delay={0.0}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-9xl mb-2 text-gray-100 max-w-xl font-semibold tracking-tight leading-compress ">
-               Stores
+                Stores
               </h2>
-              <h2 className="text-5xl text-gray-100 max-w-xl font-semibold tracking-tight leading-compress mb-4 pb-8">
-              that work harder:
+              <h2 className="text-5xl text-gray-100 max-w-xl font-semibold tracking-tight leading-compress mb-4 ">
+                that work harder:
               </h2>
               <p className="text-xl text-gray-100  max-w-2xs mx-auto">
-               Building awareness, expanding consideration, and ultimately driving more sales.
+                Building awareness, expanding consideration, and ultimately
+                driving more sales.
               </p>
             </StaggeredSlideUp>
           </div>
-          <div className="col-span-2 col-start-3 mt-8 pr-8 text-gray-100 ">
-            <CtaMiniComponent
-              heading="We use Gaming Experience"
-              paragraph="This is where we get our creative spark from. And epochs of customer focus and talking to the public."
-              buttonText="Explore"
-              buttonVariant="limesmall"
-              align="left"
-            />
-          </div>
-          <div className="col-span-9 col-start-5 mt-8 ">
+          <div className="col-span-5 col-start-3 mt-8 border-t border-white pt-4">
             <ListContainerComponent>
-              <ListItemComponent size="medium" fontWeight="normal">
-                Our Store revamp has delivered strong results; expanding reach, increasing traffic, and driving deeper engagement through rich media and brand storytelling. This is reflected in higher visits, longer dwell time, and increased sales, particularly through organic channels.
-
+              <ListItemComponent size="small" fontWeight="normal">
+                Our Store revamp has delivered strong results; expanding reach,
+                increasing traffic, and driving deeper engagement through rich
+                media and brand storytelling. This is reflected in higher
+                visits, longer dwell time, and increased sales, particularly
+                through organic channels.
               </ListItemComponent>
-
+              <ListItemComponent size="small" fontWeight="normal">
+                While conversion rates are slightly down YoY, this aligns with
+                the broader, awareness-based nature of organic Store traffic and
+                reduced targeted paid media in EU5.
+              </ListItemComponent>
             </ListContainerComponent>
           </div>
         </div>
       </div>
+
+      {/* /////////// RESULTS */}
+      <div
+        id="Results"
+        className="grid grid-cols-12 z-1 mx-auto min-h-[90vh] relative font-aspekta"
+      >
+        <HeaderImageVideoComp2
+          useVideo={false}
+          opacity={0.6}
+          imageSrc="/headband_reactivation_2025_banner_plp_hero_desktop.avif"
+          enableParallax={false}
+        />
+
+        <div className="z-1 grid col-span-12 py-32 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+          <Badgemodule
+            className="col-span-2 sticky top-0"
+            text="Results"
+            subtitle="What we achieved"
+            numberEl={"003"}
+          />
+
+          <div className="col-span-10 col-start-3 ">
+            <StaggeredSlideUp
+              className="flex flex-col  items-start justify-start "
+              delay={0.0}
+              staggerDelay={0.1}
+              duration={0.5}
+              distance={80}
+            >
+              <h2 className="text-9xl mb-2 text-gray-100 max-w-xl font-semibold tracking-tight leading-compress ">
+                Results
+              </h2>
+
+              <p className="text-xl text-gray-100  max-w-2xs mx-auto">
+                Building awareness, expanding consideration, and ultimately
+                driving more sales.
+              </p>
+            </StaggeredSlideUp>
+          </div>
+
+          <div className="col-span-9 flex justify-between col-start-3 gap-4  ">
+            <div>
+              <motion.p
+                className="text-[8px] font-bold  self-end text-gray-100"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: {
+                    opacity: 1,
+                    y: -10,
+                    transition: { duration: 0.6, ease: "easeOut" },
+                  },
+                }}
+              >
+                <AnimateNumberinView
+                  number={21}
+                  format={{ minimumIntegerDigits: 2 }}
+                  suffix="%"
+                  className="text-8xl font-light tracking-tighter"
+                  delay={300}
+                />
+              </motion.p>
+              <StaggeredSlideUp
+                className="flex  items-center justify-center "
+                delay={0.0}
+                staggerDelay={0.1}
+                duration={0.5}
+                distance={80}
+              >
+                <AnimatedPathIcon
+                  delay={500}
+                  duration={1.5}
+                  strokeColor="white"
+                  strokeWidth={1}
+                />{" "}
+                <h2 className="text-l text-gray-100 font-semibold tracking-tight leading- ">
+                  Organic Sales
+                </h2>
+              </StaggeredSlideUp>
+            </div>
+            <div>
+              <motion.p
+                className="text-[8px] font-bold  self-end text-gray-100"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: {
+                    opacity: 1,
+                    y: -10,
+                    transition: { duration: 0.6, ease: "easeOut" },
+                  },
+                }}
+              >
+                <AnimateNumberinView
+                  number={21}
+                  format={{ minimumIntegerDigits: 2 }}
+                  suffix="%"
+                  className="text-8xl font-light tracking-tighter"
+                  delay={500}
+                />
+              </motion.p>
+              <StaggeredSlideUp
+                className="flex  items-center justify-center "
+                delay={0.0}
+                staggerDelay={0.1}
+                duration={0.5}
+                distance={80}
+              >
+                <AnimatedPathIcon
+                  delay={500}
+                  duration={1.5}
+                  strokeColor="white"
+                  strokeWidth={1}
+                />{" "}
+                <h2 className="text-l text-gray-100 font-semibold tracking-tight leading-compress  ">
+                  Dwell Time
+                </h2>
+              </StaggeredSlideUp>
+            </div>
+            <div>
+              <motion.p
+                className="text-[8px] font-bold  self-end text-gray-100"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: {
+                    opacity: 1,
+                    y: -10,
+                    transition: { duration: 0.6, ease: "easeOut" },
+                  },
+                }}
+              >
+                <AnimateNumberinView
+                  number={20}
+                  format={{ minimumIntegerDigits: 2 }}
+                  suffix="%"
+                  className="text-8xl font-light tracking-tighter"
+                  delay={700}
+                />
+              </motion.p>
+              <StaggeredSlideUp
+                className="flex  items-center justify-center "
+                delay={0.0}
+                staggerDelay={0.1}
+                duration={0.5}
+                distance={80}
+              >
+                <AnimatedPathIcon
+                  delay={500}
+                  duration={1.5}
+                  strokeColor="white"
+                  strokeWidth={1}
+                />{" "}
+                <h2 className="text-l text-gray-100 font-semibold tracking-tight leading-compress  ">
+                  Store Views
+                </h2>
+              </StaggeredSlideUp>
+            </div>
+
+            <div>
+              <motion.p
+                className="text-[8px] font-bold  self-end text-gray-100"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: {
+                    opacity: 1,
+                    y: -10,
+                    transition: { duration: 0.6, ease: "easeOut" },
+                  },
+                }}
+              >
+                <AnimateNumberinView
+                  number={36}
+                  format={{ minimumIntegerDigits: 2 }}
+                  suffix="%"
+                  className="text-8xl font-light tracking-tighter"
+                  delay={900}
+                />
+              </motion.p>
+              <StaggeredSlideUp
+                className="flex  items-center justify-center "
+                delay={0.0}
+                staggerDelay={0.1}
+                duration={0.5}
+                distance={80}
+              >
+                <AnimatedPathIcon
+                  delay={500}
+                  duration={1.5}
+                  strokeColor="white"
+                  strokeWidth={1}
+                />{" "}
+                <h2 className="text-l text-gray-100 font-semibold tracking-tight leading-compress  ">
+                  Home Page Sales
+                </h2>
+              </StaggeredSlideUp>
+            </div>
+          </div>
+        </div>
+      </div>
       {/* SHOWTIME  GALLERY */}
-      <div id="Level Up!" className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta">
-   <GridBackground delay={0.2} staggerDelay={0.06} />
+      <div
+        id="Level Up!"
+        className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta"
+      >
+        <GridBackground delay={0.2} staggerDelay={0.06} />
         <div className="z-1 grid  col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             text="Level Up!"
             className="col-span-2"
             subtitle="Client Stories"
-            numberEl={"003"}
+            numberEl={"004"}
           />
 
           <div className="col-span-10 col-start-3 ">
@@ -291,7 +507,8 @@ export default function Home() {
                 speed="fast"
                 cursorStyle={{ backgroundColor: "transparent" }}
                 variance={0.8}
-                backspace="word">
+                backspace="word"
+              >
                 Showtime!
               </Typewriter>
             </h2>
@@ -303,7 +520,8 @@ export default function Home() {
               easing="smooth"
               staggerDelay={0.1}
               duration={0.5}
-              distance={20}>
+              distance={20}
+            >
               <p className="text text-gray-500 leading-[1.12]  ">
                 Discover our hottest projects in
               </p>
@@ -320,18 +538,19 @@ export default function Home() {
      <CircularDashedGauge percentage={35} size={222} strokeWidth={1} />
      <CircularDashedGauge percentage={45} size={222} strokeWidth={1} />
             </div> */}
-
           </div>
         </div>
       </div>
 
-
-
       {/* People Gallery Section */}
-      <div id="People" className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta  ">
-      <GridBackground />
-            <div className="z-1 grid  col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
-          <Badgemodule  className="col-span-2 sticky top-0"
+      <div
+        id="People"
+        className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta  "
+      >
+        <GridBackground />
+        <div className="z-1 grid  col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+          <Badgemodule
+            className="col-span-2 sticky top-0"
             text="Action"
             subtitle="What we do"
             numberEl={"004"}
@@ -349,23 +568,22 @@ export default function Home() {
                 <h4 className="text-7xl  text-gray-900  tracking-tight font-aspekta">
                   Human Touch
                 </h4>
-
               </div>
             </div>
           </header>
 
           <div className="col-span-6 grid  grid-cols-12 col-start-4 gap-8  border-t pt-4  ">
             <header className="col-span-8 col-start-1  ">
-                 <div className="flex flex-col items-start justify-start w-full ">
-                  {/* Main Headline */}
+              <div className="flex flex-col items-start justify-start w-full ">
+                {/* Main Headline */}
 
-                  <h2 className="text-2xl text-neutral-900 font-aspekta">
-                    Igniting Creativity:
-                  </h2>
-                  <h4 className="text-2xl  text-neutral-900  font-aspekta">
-                    <span className="text-neutral-200">Unique People.</span>
-                  </h4>
-                </div>
+                <h2 className="text-2xl text-neutral-900 font-aspekta">
+                  Igniting Creativity:
+                </h2>
+                <h4 className="text-2xl  text-neutral-900  font-aspekta">
+                  <span className="text-neutral-200">Unique People.</span>
+                </h4>
+              </div>
               <h3 className="text text-neutral-500 mt-4  font-aspekta">
                 At 1sp, we are driven by a team of passionate individuals who
                 thrive on creativity and innovation, crafting unique marketing
@@ -381,14 +599,8 @@ export default function Home() {
       {/* Visual Background 2 Section */}
       <div
         id="News"
-        className="grid grid-cols-12 z-2 mx-auto bg-neutral-100 mt-8 min-h-[50vh] relative font-aspekta">
-        <HeaderImageVideoComp2
-          useVideo={true}
-          videoSrc="/video/cases/squareenix.mp4"
-          enableParallax={true}
-          opacity={0.1}
-        />
-
+        className="grid grid-cols-12 z-2 mx-auto bg-neutral-900 mt-8 min-h-[50vh] relative font-aspekta"
+      >
         <div className="z-1 grid gap-8 col-span-12 py-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2"
@@ -402,7 +614,8 @@ export default function Home() {
               delay={0.1}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-7xl leading-compress text-gray-100 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
                 News.
               </h2>
@@ -424,7 +637,8 @@ export default function Home() {
         <HeaderImageVideoComp2
           useVideo={false}
           imageSrc="/hr.png"
-          enableParallax={true} className="object-top"
+          enableParallax={true}
+          className="object-top"
         />
 
         <div className="z-1 grid col-span-12 py-24 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
@@ -434,7 +648,8 @@ export default function Home() {
               delay={0.0}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-7xl text-gray-100  font-nyghtserif font-semibold tracking-tight leading-compress pb-8">
                 Show&nbsp;Time
               </h2>
@@ -459,7 +674,8 @@ export default function Home() {
               <Button2
                 variant="limesmall"
                 text="Join us for a ride"
-                className="w-fit"></Button2>
+                className="w-fit"
+              ></Button2>
             </p>
           </div>
         </div>

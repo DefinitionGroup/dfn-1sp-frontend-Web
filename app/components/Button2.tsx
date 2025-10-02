@@ -86,33 +86,47 @@ function Button2({ text, className, href, variant = "default" }: Button2Props) {
             href={href}
             target="_blank"
             rel="noopener noreferrer nofollow"
-            className={topClass}>
+            className={topClass}
+          >
             {content(false)}
           </a>
           <a
             href={href}
             target="_blank"
             rel="noopener noreferrer nofollow"
-            className={bottomClass}>
+            className={bottomClass}
+          >
             {content(true)}
           </a>
         </>
       ) : (
         <>
-          <Link href={href || "#"} className={topClass}     onClick={(e) => {
-                e.preventDefault();
+          <Link
+            href={href || "#"}
+            className={topClass}
+            onClick={(e) => {
+              e.preventDefault();
+              if (href) {
                 router.push(href, {
                   onTransitionReady: pageAnimation,
                 });
-              }}>
+              }
+            }}
+          >
             {content(false)}
           </Link>
-          <Link href={href || "#"} className={bottomClass} onClick={(e) => {
-                e.preventDefault();
+          <Link
+            href={href || "#"}
+            className={bottomClass}
+            onClick={(e) => {
+              e.preventDefault();
+              if (href) {
                 router.push(href, {
                   onTransitionReady: pageAnimation,
                 });
-              }}>
+              }
+            }}
+          >
             {content(true)}
           </Link>
         </>

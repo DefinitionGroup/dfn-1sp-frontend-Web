@@ -23,7 +23,7 @@ function CtaMiniComponent({
   paragraph,
   buttonText,
   buttonVariant = "default",
-  url = "#",
+  url = "",
   align = "left",
   delay = 0.6,
   staggerDelay = 0.1,
@@ -57,6 +57,7 @@ function CtaMiniComponent({
         {heading}
       </h3>
       <p className={`text-xs mb-8 ${textAlignClass}`}>{paragraph}</p>
+      {url ? (
       <div className="text-xs  mb-8 min-w-[120px]  w-full  ">
         <Button2
           variant={buttonVariant}
@@ -65,6 +66,7 @@ function CtaMiniComponent({
           href={url}
         />
       </div>
+      ) : null}
     </StaggeredSlideUp>
   );
 }
