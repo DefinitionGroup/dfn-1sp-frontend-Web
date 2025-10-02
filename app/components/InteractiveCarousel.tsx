@@ -4,6 +4,8 @@ import { motion, AnimatePresence, PanInfo } from "motion/react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import StaggeredFadeIn from "./StaggeredFadeIn";
+import Link from "next/link";
+import { useTransitionRouter } from "next-view-transitions";
 import Button2 from "./Button2";
 interface CarouselItem {
   id: number;
@@ -14,9 +16,26 @@ interface CarouselItem {
   description: string;
   category: string;
   logosrc?: string;
+  url?: string;
+  urltext?: string;
+  link?: string;
 }
 
 const carouselItems: CarouselItem[] = [
+  {
+    id: 6,
+    title: "Turning up the Noise on Amazon",
+    subtitle: "Marshall",
+    image: "/case-marshall.jpg",
+    description: "Expanding reach, increasing traffic, and driving deeper engagement through Amazon Stores globally.",
+    category: "Gaming",
+    logosrc: "/logos/Marshall_logo_black.svg",
+    url: "https://www.marshallheadphones.com/",
+    urltext: "Visit Website",
+    link: '/work/marshall'
+
+
+  },
   {
     id: 1,
     title: "Gaming Campaign",
@@ -64,6 +83,7 @@ const carouselItems: CarouselItem[] = [
 ];
 
 export default function InteractiveCarousel() {
+      const router = useTransitionRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
@@ -138,9 +158,9 @@ export default function InteractiveCarousel() {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}></motion.div>
 
-        <div className="relative h-[600px] flex items-start">
+        <div className="relative h-[800px] flex items-start">
           {/* Main Carousel */}
-          <div className="relative w-full  rounded-sm h-full perspective-1000">
+          <div className="relative w-full  rounded-sm  overflow-hidden h-full perspective-1000">
             <AnimatePresence initial={false} custom={direction}>
               <motion.div
                 key={currentIndex}
@@ -211,11 +231,11 @@ export default function InteractiveCarousel() {
                       <motion.p className="text-xl text-gray-100 r">
                         {carouselItems[currentIndex].subtitle}
                       </motion.p>
-                      <motion.p className="text-gray-100 text-sm max-w-2xl ">
+                      <motion.p className="text-gray-100 text- max-w-lg ">
                         {carouselItems[currentIndex].description}
                       </motion.p>
                       <motion.p className="text-gray-100 text-sm max-w-2xl ">
-                        <Button2 variant="limesmall" text="View Case Study" />
+                        <Button2 variant="limesmall" href=  {carouselItems[currentIndex].link} text="View Case Study" />
                       </motion.p>
                     </motion.div>
                   </div>
@@ -282,11 +302,11 @@ export default function InteractiveCarousel() {
         </div>
 
         {/* Dots Indicator */}
-        <div className="flex justify-center mt-8 space-x-2">
+        <div className="flex justify-center mt-8 mx-auto space-x-2 bg-gray-100 h-8 items-center px-4 rounded-full w-fit">
           {carouselItems.map((_, index) => (
             <motion.button
               key={index}
-              className={`w-1 h-2 rounded-full  transition-all duration-300 ${
+              className={`w-1 h-2 rounded-full  transition-all hover:bg-black duration-300 cursor-pointer ${
                 index === currentIndex
                   ? "bg-lime-400 min-w-16 "
                   : "bg-gray-300 min-w-3"

@@ -39,7 +39,7 @@ export default function Badgemodule({
     <div className={` ${className}`}>
       <motion.div
         ref={ref}
-        className={`flex flex-col rounded-sm justify-between w-full  aspect-square bg-black items-start  ${className}`}
+        className={`flex flex-col rounded justify-between w-3/4 aspect-square bg-black items-start  ${className}`}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
         variants={{
@@ -53,8 +53,8 @@ export default function Badgemodule({
             },
           },
         }}>
-        <div className="flex-col">
-          <div className="flex px-4 py-4 items-start  border-white justify-between w-full ">
+        <div className="flex-col w-full  ">
+          <div className="flex px-4 py-4 items-start    border-white justify-between w-full ">
             <motion.div
               variants={{
                 hidden: { opacity: 0, scale: 0.8 },
@@ -69,16 +69,16 @@ export default function Badgemodule({
                 alt="1SP Logo"
                 width={60}
                 height={60}
-                className="w-8 h-8"
+                className="w-4 h-4"
               />
             </motion.div>
             <motion.p
-              className="text-xxs font-bold  self-end text-gray-100"
+              className="text-[8px] font-bold  self-end text-gray-100"
               variants={{
                 hidden: { opacity: 0, y: 20 },
                 visible: {
                   opacity: 1,
-                  y: 0,
+                  y: -10,
                   transition: { duration: 0.6, ease: "easeOut" },
                 },
               }}>
@@ -90,9 +90,9 @@ export default function Badgemodule({
             </motion.p>
           </div>
           <motion.p
-            className="text-5xl font-bold px-4  text-gray-200"
+            className="text-3xl font px-4  text-gray-200"
             variants={{
-              hidden: { opacity: 0, y: 20 },
+              hidden: { opacity: 0, y: 10 },
               visible: {
                 opacity: 1,
                 y: 0,
@@ -105,7 +105,7 @@ export default function Badgemodule({
         <motion.p
           className="text-xxs rounded-b-sm font-semibold mt-2 px-4 py-4  w-full bg-neutral-800 text-gray-200"
           variants={{
-            hidden: { opacity: 0, y: 20 },
+            hidden: { opacity: 0,  },
             visible: {
               opacity: 1,
               y: 0,

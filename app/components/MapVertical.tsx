@@ -11,11 +11,11 @@ import {
 } from "motion/react";
 import * as React from "react";
 import { clamp } from "../lib/clamp";
-export const LINE_GAP = 8;
+export const LINE_GAP = 6;
 export const LINE_WIDTH = 1;
 export const LINE_COUNT = 50;
-export const LINE_HEIGHT = 8;  // Now used as widtwh for horizontal bars
-export const LINE_HEIGHT_ACTIVE =12;  // Now used as width for active horizontal bars
+export const LINE_HEIGHT = 4;  // Now used as widtwh for horizontal bars
+export const LINE_HEIGHT_ACTIVE =10;  // Now used as width for active horizontal bars
 
 export const LINE_STEP = LINE_WIDTH + LINE_GAP;  // Now vertical step between bars
 export const MIN = 0;
@@ -27,7 +27,7 @@ export const SCROLL_SMOOTHING = 1;
 
 // Transformer constants
 export const DEFAULT_INTENSITY = 7;
-export const DISTANCE_LIMIT = 48;
+export const DISTANCE_LIMIT = 28;
 
 // Linear interpolation function for smooth transitions
 export function lerp(start: number, end: number, factor: number): number {
@@ -44,33 +44,34 @@ export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Auto-hide navPoints after 2 seconds
-  React.useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
+  // // Auto-hide navPoints after 2 seconds
+  // React.useEffect(() => {
+  //   let timeoutId: NodeJS.Timeout;
 
-    if (isHovered) {
-      timeoutId = setTimeout(() => {
-        setIsHovered(false);
-      }, 2000);
-    }
+  //   if (isHovered) {
+  //     timeoutId = setTimeout(() => {
+  //       setIsHovered(false);
+  //     }, 2000);
+  //   }
 
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, [isHovered]);
+  //   return () => {
+  //     if (timeoutId) {
+  //       clearTimeout(timeoutId);
+  //     }
+  //   };
+  // }, [isHovered]);
 
   // Calculate proportional positions for navPoints along the 50 lines
+  // Add space for an invisible navpoint at the end by using navPoints.length + 1
   const navPointPositions = navPoints.map((_, i) => {
-    if (navPoints.length === 1) return 0;
-    return Math.round((i * (LINE_COUNT - 1)) / (navPoints.length - 1));
+    const totalPositions = navPoints.length + 1; // Add 1 for invisible navpoint at end
+    if (totalPositions === 1) return 0;
+    return Math.round((i * (LINE_COUNT - 1)) / (totalPositions - 1));
   });
 
   return (
     <div
       className="fixed top-0 left-6 z-50  w-[40px] flex flex-col  justify-center h-[100vh]"
-
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -78,7 +79,7 @@ export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
         className="relative "
         onPointerMove={onMouseMove}
         onPointerLeave={onMouseLeave}
-      >  <div className="absolute bottom-[0px] left-[28px] text-white text-[7px] font-medium  -rotate-90 origin-bottom-left">
+      >  <div className="absolute -bottom-[40px] left-[12px] text-white text-[7px] font-medium leading-none  -rotate-90 origin-bottom-left">
         Scroll to Navigate
         </div>
         <div className="flex flex-col items-start" style={{ gap: LINE_GAP }}>
@@ -181,23 +182,17 @@ function NavPoint({
   const scaleX = useSpring(1, { damping: 45, stiffness: 600 });
   const centerY = index * LINE_STEP + LINE_WIDTH / 2;
 
-  useProximity(scaleX, {
-    ref,
-    baseValue: 1,
-    mouseX,
-    scrollY,
-    centerY,
-  });
+
 
   return (
     <motion.div
       ref={ref}
-      className="absolute left-6 bg-gray-700 hover:bg-gray-400 hover:text-gray-50 cursor-pointer pointer-events-auto flex p-1 items-center justify-start rounded-full"
+      className="absolute -top-2 z-50 left-4 bg-gray-900 text-gray-200 hover:bg-gray-200 hover:text-gray-800! font-normal cursor-pointer pointer-events-auto flex px-2 py-1 items-center justify-start rounded-xl"
       style={{
 
-        width: LINE_HEIGHT_ACTIVE + 93, // Make it wider to accommodate text
+        width: LINE_HEIGHT_ACTIVE + 64, // Make it wider to accommodate text
         scaleX,
-        top: 0, // Position at the same level as the line
+
       }}
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
@@ -211,7 +206,7 @@ function NavPoint({
       }}
       onClick={onClick}
     >
-      <span className="text-white text-[8px] font-bold ml-2 ">
+      <span className=" text-[8px] font-semibold tracking-wider ml-2 ">
         {id}
       </span>
     </motion.div>
@@ -397,7 +392,7 @@ export function isActive(index: number, count: number): boolean {
 export function Indicator({ y }: { y: MotionValue<number> }) {
   return (
     <motion.div
-      className="flex bg-lime-500 h-[1px] rounded-full items-center absolute w-[48px]! -left-2 -top-0"
+      className="flex bg-lime-500 h-[1px] rounded-full items-center absolute w-[32px]! -top-0"
       style={{ y }}
     >
       <svg
@@ -405,11 +400,12 @@ export function Indicator({ y }: { y: MotionValue<number> }) {
         height="7"
         viewBox="0 0 6 7"
         fill="none"
-        className="translate-x-3"
+        className="-translate-x-2 "
       >
         <path
           d="M6 3.54688L0.75 0.515786L0.75 6.57796L6 3.54688Z"
-          fill="var(--color-orange)"
+          fill="  var(--color-lime-500) "
+
         />
       </svg>
     </motion.div>

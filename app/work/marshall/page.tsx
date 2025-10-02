@@ -1,36 +1,36 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
 import { useInView } from "motion/react";
-import Badgemodule from "./components/Badgemodule";
-import Button2 from "./components/Button2";
-import ExpandableCards from "./components/ExpandableCards";
-import Footer from "./components/Footer";
-import FooterBottom from "./components/FooterBottom";
-import FrontNavOverlay from "./components/FrontNavOverlay2";
-import GridBackground from "./components/GridBackground";
-import HeaderImageVideoComp from "./components/HeaderImageVideoComp";
-import InteractiveCarousel from "./components/InteractiveCarousel";
-import { Nav } from "./components/Nav";
-import StaggeredSlideUp from "./components/StaggeredSlideUp";
-import TextHeadlineCombo from "./components/TextHeadlineCombo";
-import TextLayout from "./components/TextLayout";
-import TypewriterChangeContentExample from "./components/TyperwriterHeadline";
-import HeaderImageVideoComp2 from "./components/HeaderImageVideoComp2";
-import PeopleShowcaseHero from "./components/PeopleShowcaseHero";
+import Badgemodule from "@/app/components/Badgemodule";
+import Button2 from "@/app/components/Button2";
+import ExpandableCards from "@/app/components/ExpandableCards";
+import Footer from "@/app/components/Footer";
+import FooterBottom from "@/app/components/FooterBottom";
+import FrontNavOverlay from "@/app/components/FrontNavOverlay";
+import GridBackground from "@/app/components/GridBackground";
+import HeaderImageVideoComp from "@/app/components/HeaderImageVideoComp";
+import InteractiveCarousel from "@/app/components/InteractiveCarousel";
+import { Nav } from "@/app/components/Nav";
+import StaggeredSlideUp from "@/app/components/StaggeredSlideUp";
+import TextHeadlineCombo from "@/app/components/TextHeadlineCombo";
+import TextLayout from "@/app/components/TextLayout";
+import TypewriterChangeContentExample from "@/app/components/TyperwriterHeadline";
+import HeaderImageVideoComp2 from "@/app/components/HeaderImageVideoComp2";
+import PeopleShowcaseHero from "@/app/components/PeopleShowcaseHero";
 import { Typewriter } from "motion-plus/react";
-import TextReveal from "./components/CursortrailExample";
-import ScrollHighlight from "./components/ScrollHighlight";
-import ListContainerComponent from "./components/ListContainerComponent";
-import ListItemComponent from "./components/ListItemComponent";
-import CtaMiniComponent from "./components/CtaMiniComponent";
+import TextReveal from "@/app/components/CursortrailExample";
+import ScrollHighlight from "@/app/components/ScrollHighlight";
+import ListContainerComponent from "@/app/components/ListContainerComponent";
+import ListItemComponent from "@/app/components/ListItemComponent";
+import CtaMiniComponent from "@/app/components/CtaMiniComponent";
 import { ArrowRight } from "@phosphor-icons/react";
-import ArrowBig from "./components/arrowBig";
-import ExpandableCards2 from "./components/ExpandableCards2";
-import LogoCarousel from "./components/LogoCarousel";
-import WarpOverlay from "./components/overlayNav";
-import HamburgerGradientMenu from "./components/HamburgerGradientMenu";
-import LineMinimap from "./components/MapVertical";
-import CircularDashedGauge from "./components/dataPointerRadial";
+import ArrowBig from "@/app/components/arrowBig";
+import ExpandableCards2 from "@/app/components/ExpandableCards2";
+import LogoCarousel from "@/app/components/LogoCarousel";
+import WarpOverlay from "@/app/components/overlayNav";
+import HamburgerGradientMenu from "@/app/components/HamburgerGradientMenu";
+import LineMinimap from "@/app/components/MapVertical";
+import CircularDashedGauge from "@/app/components/dataPointerRadial";
 
 export default function Home() {
   const typewriterref = useRef(null);
@@ -87,7 +87,7 @@ export default function Home() {
         {/* Background Image with Overlay */}
         <HeaderImageVideoComp
           useVideo={true}
-          videoSrc="/video/1sp_home_header_16x9.mp4"
+          videoSrc="/video/atf.mp4"
           enableParallax={true}
 
         />
@@ -97,21 +97,15 @@ export default function Home() {
         <div id="Top" className=""></div>
         <div className="relative z-10 container  mt-[30vh]  mx-auto p-8 md:p-0">
           <StaggeredSlideUp className=" max-w-full flex flex-col gap-8 md:gap-0">
-            <h1 className="text-neutral-50 uppercase pb-2     max-w-1/2">
-              Welcome at 1SP
-            </h1>
-            <TypewriterChangeContentExample />
-
-            <p className="text-neutral-50 text mt-2 md:max-w-1/3">
-              We are group of several laser focused agencies. Each one with a
-              distinctive competetive edge.
-            </p>
-            <p className="text-neutral-50 text mt-4">
-              Together we are{" "}
-              <span className="bg-gradient-to-r font-bold from-lime-300 to-lime-500 bg-clip-text text-transparent">
-                one Superagency.
-              </span>
-            </p>
+      <h1 className="text-neutral-50  pb-2 text-9xl max-w-1/3">
+             Marshall
+            </h1>{" "}
+      <h2 className="text-neutral-50  pb-2 text-5xl max-w-1/3">
+            Turning up the Noise on Amazon
+            </h2>{" "}
+      <h3 className="text-neutral-50  pb-2 text-3xl max-w-1/3">
+            Expanding reach, increasing traffic, and driving deeper engagement through Amazon Stores globally.
+            </h3>{" "}
           </StaggeredSlideUp>
         </div>
         {/* Vertical Lines */}
@@ -126,6 +120,158 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ////////// id Intro */}
+ <div id="Intro"s className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta">
+        <GridBackground />
+        <div className="z-1 grid gap-8 col-span-12 py-16  col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+          <div className="z-1 col-span-16 col-start-1 ">
+            {/* Description and CTA Section */}
+            <div className="flex flex-col items-start gap-8 justify-center w-full">
+              <StaggeredSlideUp
+                delay={0.59}
+                staggerDelay={0.03}
+                distance={100}
+                className=" max-w-2/4 ">
+                {" "}
+                <h2 className="text-xl leading-none text-neutral-700 pb-3 font-aspekta font-medium">
+                 The Challenge
+                </h2>
+                <h2 className="text-5xl leading-none text-neutral-700 pb-3 font-aspekta font-medium">
+                  Transform the User Experience
+                </h2>
+                <h2 className="text-5xl leading-none text-neutral-700  pb-3 font-aspekta font-medium">
+                  and Sales Potential of Amazon Stores
+                </h2>
+
+              </StaggeredSlideUp>
+              {/* Description */}
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      {/* //////////// Start Content */}
+
+       <div id="Intro" className="grid grid-cols-12 z-1 mx-auto bg-neutral-100 mt-8 min-h-[90vh] relative font-aspekta">
+        <div className="z-1 grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+          <Badgemodule
+            className="col-span-2 sticky top-0 "
+            text="Intro"
+            subtitle="The Goal"
+            numberEl={"001"}
+          />
+          <div className="col-span-10 col-start-3  ">
+            <StaggeredSlideUp
+              className="flex flex-col  items-start justify-start "
+              delay={0.1}
+              staggerDelay={0.1}
+              duration={0.5}
+              distance={80}>
+              <h2 className="text-7xl leading-compress text-gray-900 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
+              Music for the masses.
+              </h2>
+              <p className="text-lg text-gray-900 font-medium  max-w-2xs mx-auto">
+               Our goal was to bring the full Marshall product range, including Amps integration, to consumers across 9 regions.
+
+              </p>
+            </StaggeredSlideUp>
+
+          </div>
+          <div className="col-span-2 col-start-3 mt-8 pr-8 text-gray-900 ">
+            <CtaMiniComponent
+              heading="Challenge:"
+              paragraph="This is where we get our creative spark from. And epochs of customer focus and talking to the public."
+              buttonText=""
+              buttonVariant="limesmall"
+              align="left"
+            />
+          </div>
+          <div className="col-span-5 col-start-5 mt-8 ">
+            <ListContainerComponent>
+              <ListItemComponent size="small" fontWeight="normal" color="black">
+            The Stores were fragmented
+              </ListItemComponent>
+              <ListItemComponent size="small" fontWeight="normal" color="black">
+              The user experience wasn’t clear
+              </ListItemComponent>
+              <ListItemComponent size="small" fontWeight="normal" color="black">
+               They lacked educational content to introduce new customers to both Marshall’s heritage and our product line.
+              </ListItemComponent>
+            </ListContainerComponent>
+             <StaggeredSlideUp
+              className="flex flex-col mt-8   items-start justify-start "
+              delay={0.1}
+              staggerDelay={0.1}
+              duration={0.5}
+              distance={80}>
+              <h2 className="text-3xl leading-compress text-gray-900 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
+            Solution
+              </h2>
+              <p className="text-lg text-gray-900 font-medium   mx-auto">
+ To maximize the potential of Stores, we rebuilt them to strike the right balance between educational, interactive, and engaging content — while also embedding strong purchase and cross-sell opportunities throughout.
+              </p>
+            </StaggeredSlideUp>
+          </div>
+        </div>
+      </div>
+
+{/* ////////////// Results */}
+  <div id="Results" className="grid grid-cols-12 z-1 mx-auto min-h-[90vh] relative font-aspekta">
+        <HeaderImageVideoComp2
+          useVideo={false}
+          imageSrc="/case-marshall.jpg"
+          enableParallax={false}
+        />
+
+        <div className="z-1 grid col-span-12 py-32 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+          <Badgemodule
+            className="col-span-2"
+            text="Results"
+            subtitle="What we achieved"
+            numberEl={"002"}
+          />
+
+          <div className="col-span-10 col-start-3 ">
+            <StaggeredSlideUp
+              className="flex flex-col  items-start justify-start "
+              delay={0.0}
+              staggerDelay={0.1}
+              duration={0.5}
+              distance={80}>
+              <h2 className="text-9xl mb-2 text-gray-100 max-w-xl font-semibold tracking-tight leading-compress ">
+               Stores
+              </h2>
+              <h2 className="text-5xl text-gray-100 max-w-xl font-semibold tracking-tight leading-compress mb-4 pb-8">
+              that work harder:
+              </h2>
+              <p className="text-xl text-gray-100  max-w-2xs mx-auto">
+               Building awareness, expanding consideration, and ultimately driving more sales.
+              </p>
+            </StaggeredSlideUp>
+          </div>
+          <div className="col-span-2 col-start-3 mt-8 pr-8 text-gray-100 ">
+            <CtaMiniComponent
+              heading="We use Gaming Experience"
+              paragraph="This is where we get our creative spark from. And epochs of customer focus and talking to the public."
+              buttonText="Explore"
+              buttonVariant="limesmall"
+              align="left"
+            />
+          </div>
+          <div className="col-span-9 col-start-5 mt-8 ">
+            <ListContainerComponent>
+              <ListItemComponent size="medium" fontWeight="normal">
+                Our Store revamp has delivered strong results; expanding reach, increasing traffic, and driving deeper engagement through rich media and brand storytelling. This is reflected in higher visits, longer dwell time, and increased sales, particularly through organic channels.
+
+              </ListItemComponent>
+
+            </ListContainerComponent>
+          </div>
+        </div>
+      </div>
       {/* SHOWTIME  GALLERY */}
       <div id="Level Up!" className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta">
    <GridBackground delay={0.2} staggerDelay={0.06} />
@@ -134,7 +280,7 @@ export default function Home() {
             text="Level Up!"
             className="col-span-2"
             subtitle="Client Stories"
-            numberEl={"001"}
+            numberEl={"003"}
           />
 
           <div className="col-span-10 col-start-3 ">
@@ -179,77 +325,8 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Portfolio Grid */}
-      <div id="Services" className="z-4 grid col-span-12 relative col-start-1 container mx-auto row-start-1 grid-cols-12 ">
-        <GridBackground delay={0.2} staggerDelay={0.06} />
-        <div className="z-1 grid col-span-12 col-start-1 pt-32 row-start-1 grid-cols-12 ">
-          <Badgemodule
-            className="col-span-2 sticky top-0"
-            text="Experts"
-            subtitle="Services"
-            numberEl={"002"}
-          />
-          <header className="col-span-85 col-start-5 row-start-1 border-t border-gray-500 ">
-            {/* Headlines */}
-            <div className="flex flex-col items-start justify-start w-full">
-              {/* Main Headline */}
-              <div className="flex-1 flex flex-col min-w-0">
-                <h2 className="text text-gray-900 font-bold font-aspekta">
-                  Super*
-                </h2>
-                <h4 className="text-7xl  text-gray-900  tracking-tight font-aspekta">
-                  Brrrroadside
-                </h4>
-                <h4 className=" mt-2 text-gray-700 font-medium leading-compress font-aspekta">
-                  One Strategy. Multiple Experts
-                </h4>
-              </div>
-            </div>
-          </header>
 
-          <div className="col-span-8 col-start-5  border-gray-500 pb-8 row-start-2 ">
-            <ListContainerComponent>
-              <ListItemComponent size="small" fontWeight="normal" color="gray-500" >
-                Full Service. From Start to End.
-              </ListItemComponent>
-              <ListItemComponent size="small" fontWeight="normal" color="gray-500" >
-                Connected by one vision. Perfoming your mission.
-              </ListItemComponent>
-              <ListItemComponent size="small" fontWeight="normal" color="gray-500" >
-                From longstanding veterans to fresh talents. The best of both
-                worlds.
-              </ListItemComponent>
-            </ListContainerComponent>
-          </div>
-          <div className="col-span-12 col-start-5  mt-8 mb-12 ">
-            <ExpandableCards />
-          </div>
-        </div>
-      </div>
-      {/* Skills Combo Section */}
-      <div
-        id="Skills"
-        className="z-1 mx-auto  min-h-[90vh] relative font-aspekta">
-        <HeaderImageVideoComp2
-          useVideo={true}
-          videoSrc="/video/14.mp4"
-          enableParallax={true}
-        />
-        <div className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta">
-          <div className="z-1 grid col-span-12 py-32  col-start-1 container mx-auto row-start-1 grid-cols-12 ">
-            <Badgemodule
-              className="col-span-2 sticky top-0"
-              text="Laser Focused"
-              subtitle="Our Services"
-              numberEl={"003"}
-            />
 
-            <div className="col-span-9 col-start-3">
-              <ScrollHighlight />
-            </div>
-          </div>
-        </div>{" "}
-      </div>
       {/* People Gallery Section */}
       <div id="People" className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta  ">
       <GridBackground />

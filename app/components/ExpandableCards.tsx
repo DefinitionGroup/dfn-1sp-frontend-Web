@@ -4,8 +4,10 @@ import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useOutsideClick } from "../hooks/use-outside-click";
 import StaggeredSlideUp from "./StaggeredSlideUp";
-
+import Link from "next/link";
+import { useTransitionRouter } from "next-view-transitions";
 export default function ExpandableCards() {
+    const router = useTransitionRouter();
   const [active, setActive] = useState<(typeof cards)[number] | boolean | null>(
     null
   );
@@ -37,9 +39,9 @@ export default function ExpandableCards() {
         {active && typeof active === "object" && (
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            animate={{ opacity:0.2 , transition: { type: "spring", stiffness: 20}, }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 h-full w-full z-10"
+            className="fixed inset-0 bg-black/50 h-full backdrop-blur-lg w-full z-10"
           />
         )}
       </AnimatePresence>
@@ -50,10 +52,30 @@ export default function ExpandableCards() {
               key={`button-${active.title}-${id}`}
               layout
               initial={{
+                opacity: 1,
+              }}
+              animate={{
+                opacity: 1,
+
+              }}
+              exit={{
+                opacity: 1,
+                transition: {
+                  duration: 0.05,
+                },
+              }}
+              className="flex border-red-500 border absolute top-2 right-2 lg:hidden items-center overflow-hidden  justify-around   rounded-full h-6 w-6"
+              onClick={() => setActive(null)}>
+              <CloseIcon />
+            </motion.button>
+            <motion.div
+              layoutId={`card-${active.title}-${id}`}
+                       initial={{
                 opacity: 0,
               }}
               animate={{
                 opacity: 1,
+
               }}
               exit={{
                 opacity: 0,
@@ -61,39 +83,34 @@ export default function ExpandableCards() {
                   duration: 0.05,
                 },
               }}
-              className="flex absolute top-2 right-2 lg:hidden items-center overflow-hidden  justify-around   rounded-full h-6 w-6"
-              onClick={() => setActive(null)}>
-              <CloseIcon />
-            </motion.button>
-            <motion.div
-              layoutId={`card-${active.title}-${id}`}
+              transition={{  type: "spring", visualDuration: 0.3, bounce: 0.2 }}
               ref={ref}
-              className="w-full max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col  bg-neutral-900 dark:bg-neutral-900  shadow-2xl overflow-hidden">
+              className="w-full max-w-[900px] min-h-[70vh]  relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col  bg-neutral-900 dark:bg-neutral-900  shadow-2xl overflow-hidden">
               <motion.div
                 className="w-full h-100   sm:rounded-t-xl opacity-80 object-cover object-top"
                 layoutId={`image-${active.title}-${id}`}>
                 <img
-                  width={200}
+                  width={100}
                   height={500}
                   src={active.src}
                   alt={active.title}
                   className="w-full h-full absolute min-h-[70vh] sm:rounded-t-xl opacity-50 object-cover object-top"
                 />
-              </motion.div>{" "}
-              <motion.img
+              </motion.div>
+              <div className="flex justify-between border-t absolute  items-start m-8 pt-8 z-10 ">
+
+                <div className="flex justify-between relative top-0 flex-col items-start   z-10 left-0">         <motion.img
                 layoutId={`logo-${active.title}-${id}`}
                 src={active.logo}
                 alt={active.title}
-                className="w-24 h-20 object-contain absolute top-10 left-8"
-              />
-              <div className="flex justify-between border-t border-neutral-100/50 items-start m-8 pt-8 z-10 ">
-                <div className="flex justify-between flex-col items-start   z-10 left-0">
+                className="w-24 h-20 object-contain "
+                />
                   <div className="">
                     <motion.p
                       layoutId={`description-${active.description}-${id}`}
-                      className="text-neutral-100 text-5xl  dark:text-neutral-400">
+                      className="text-neutral-100 text-5xl  dark:text-neutral-400 mb-8">
                       {active.description}
-                    </motion.p>{" "}
+                    </motion.p>
                     <motion.h3
                       layoutId={`title-${active.title}-${id}`}
                       className=" text-white text-xl max-w-2/3 dark:text-neutral-200">
@@ -102,22 +119,37 @@ export default function ExpandableCards() {
                   </div>
 
                   <motion.div
-                    layout
+                    transition={{ duration: 0.3 , delay: 0.5}}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="text-white text-sm md:text-sm lg:text-base mt-8  max-w-2/3 mb-2 md:h-fit pb-4 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]">
+                    className="text-white text-sm md:text-sm lg:text-base mt-8  max-w-1/2 mb-2 md:h-fit pb-8 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]">
                     {typeof active.content === "function"
                       ? active.content()
                       : active.content}
                   </motion.div>
                   <motion.a
-                    layoutId={`button-${active.title}-${id}`}
+                     transition={{ duration: 0.3 , delay: 0.7}}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                     href={active.ctaLink}
                     target="_blank"
-                    className="px-4 py-3 text-sm font-bold bg-lime-500 hover:bg-black transition-all duration-500 text-white">
+                    className="px-4 py-3 text-xs font-bold bg-lime-500 rounded-xs hover:bg-black transition-all duration-500 text-white">
                     {active.ctaText}
                   </motion.a>
+
+           <Link
+              className="hover:text-lime-400"
+              href={"/whatwedo"}
+              onClick={(e) => {
+                e.preventDefault();
+                router.push("/whatwedo", {
+                  onTransitionReady: pageAnimation,
+                });
+              }}>
+              Our Family
+            </Link>
                 </div>
               </div>
             </motion.div>
@@ -125,25 +157,25 @@ export default function ExpandableCards() {
         ) : null}
       </AnimatePresence>
       <ul className=" w-full ">
-        <StaggeredSlideUp className=" grid grid-cols-4  gap-4  mx-auto h-full min-h-full w-full ">
+        <StaggeredSlideUp className=" grid grid-cols-4  gap-1  mx-auto h-full min-h-full w-full ">
           {cards.map((card, index) => (
             <motion.div
               layoutId={`card-${card.title}-${id}`}
               key={`card-${card.title}-${id}`}
               onClick={() => setActive(card)}
-              className=" col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[250px] rounded-xs group/card overflow-hidden h-[200px]   cursor-pointer">
+              className=" col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[250px] rounded-xs group/card overflow-hidden h-[200px]  cursor-pointer">
               <motion.div
                 layoutId={`image-${card.title}-${id}`}
-                className="col-start-1 col-span-1 row-start-1 bg-black h-full min-h-full  rounded-xs overflow-hidden">
+                className="col-start-1 col-span-1 row-start-1 bg-black h-full min-h-full  overflow-hidden">
                 <img
                   width={1000}
                   height={1000}
                   src={card.src}
                   alt={card.title}
-                  className="w-full h-full object-cover group/card:hover:opacity-50 object-top opacity-50"
+                  className="w-full h-full object-cover group-hover/card:opacity-100 object-top opacity-50 transition-all"
                 />
               </motion.div>
-              <div className="col-start-1 border col-span-1 flex flex-col justify-end opacity-100 row-start-1 p-4 z-1">
+              <div className="col-start-1  col-span-1 flex flex-col justify-end opacity-100 row-start-1 p-4 z-1">
                 <motion.img
                   layoutId={`logo-${card.title}-${id}`}
                   src={card.logo}
@@ -199,7 +231,7 @@ export const CloseIcon = () => {
 
 const cards = [
   {
-    description: "MSM",
+    description: "MSM.digital",
     title: "Driving sales, reach, and connection for world-class brands",
     src: "/units/MSMDIGITAL/msm_cover-mage.jpg",
     logo: "/units/MSMDIGITAL/msm_digital_logo.svg",
@@ -332,3 +364,43 @@ With over 30 years of experience, we take ideas from concept to the point of sal
     },
   },
 ];
+
+const pageAnimation = () => {
+  document.documentElement.animate(
+    [
+      {
+        opacity: 1,
+        scale: 1,
+        transform: "translateY(0)",
+      },
+      {
+        opacity: 1,
+        scale: 0.9,
+        transform: "translateY(-100px)",
+      },
+    ],
+    {
+      duration: 1000,
+      easing: "cubic-bezier(0.76, 0, 0.24, 1)",
+      fill: "forwards",
+      pseudoElement: "::view-transition-old(root)",
+    }
+  );
+
+  document.documentElement.animate(
+    [
+      {
+        transform: "translateY(100%)",
+      },
+      {
+        transform: "translateY(0)",
+      },
+    ],
+    {
+      duration: 1000,
+      easing: "cubic-bezier(0.76, 0, 0.24, 1)",
+      fill: "forwards",
+      pseudoElement: "::view-transition-new(root)",
+    }
+  );
+};

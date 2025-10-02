@@ -63,7 +63,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
             src={imageSrc}
             alt={imageAlt}
             fill
-            className="object-cover"
+            className="object-cover object-top"
             priority
           />
         )}

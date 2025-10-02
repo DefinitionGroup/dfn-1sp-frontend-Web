@@ -12,9 +12,9 @@ export default function TypewriterChangeContentExample({
 "Passion.",
 "Gaming.",
 "Technology.",
-"The.",
-"Superagency.",
-"Consumer electronics.",
+"The Superagency.",
+"Consumer",
+"electronics.",
 "Gaming.",
 "Technology",
   ],
@@ -31,7 +31,7 @@ export default function TypewriterChangeContentExample({
         variance={2.8}
         speed={"normal"}
         backspace="character"
-        cursorBlinkDuration={0.16}
+        cursorBlinkDuration={0.36}
         cursorStyle={cursor}
         onComplete={() => {
           delay(() => setIndex(wrap(0, text.length, index + 1)), 1);
@@ -53,8 +53,8 @@ const container: React.CSSProperties = {
   flexDirection: "column",
   fontFamily: "var(--font-aspekta)",
   width: 900,
-  fontWeight: 700,
-  textTransform: "uppercase",
+  fontWeight: 500,
+
   lineHeight: 1,
   color: "var(--accent)",
 };
@@ -65,13 +65,13 @@ const label: React.CSSProperties = {
 
 const animatingText: React.CSSProperties = {
   fontSize: "calc(24px + 5vw)",
-  fontWeight: 600,
-  lineHeight: 0.75,
-  letterSpacing: "-0.25rem",
+  fontWeight: 400,
+  lineHeight: 1.25,
+  letterSpacing: "-0.145rem",
 };
 
 const cursor: React.CSSProperties = {
   background: "#66ff00",
-  width: 6,
+  width: 8, borderRadius: 4,marginLeft: 4,
   minHeight:"calc(24px + 3.5vw)",
 };

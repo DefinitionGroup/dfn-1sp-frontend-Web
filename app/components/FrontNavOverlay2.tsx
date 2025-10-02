@@ -13,7 +13,7 @@ interface FrontNavOverlayProps {
 
 const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   className = "",
-  color = "light", 
+  color = "light",
 }) => {
   const router = useTransitionRouter();
   const textColor = color === "dark" ? "text-neutral-800" : "text-neutral-50";

@@ -79,7 +79,7 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
           delay,
           staggerChildren: staggerDelay,
           delayChildren: delay,
-          duration: 0.3,
+          duration: 0.1,
           when: "beforeChildren" as const,
         },
       },
@@ -89,11 +89,11 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
 
   const memoizedItemVariants = React.useMemo(
     () => ({
-      hidden: { opacity: 0, y: distance, scale: 0.95 },
+      hidden: { opacity: 0, y: distance,  },
       visible: {
         opacity: 1,
         y: 0,
-        scale: 1,
+
         transition: { duration, ease: EASING_MAP[easing] },
       },
     }),

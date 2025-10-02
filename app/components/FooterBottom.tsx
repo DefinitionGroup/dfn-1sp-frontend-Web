@@ -91,7 +91,7 @@ const FooterBottom = () => {
                       Newsletter:
                     </span>
                     <input
-                      id="newsletter-email"
+
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}

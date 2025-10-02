@@ -50,23 +50,23 @@ export default function PeopleShowcaseHero() {
 
   return (
     <section
-      className="flex flex-col gap-8  items-start justify-start w-full mx-auto "
+      className="flex flex-col items-start justify-start w-full mx-auto "
       data-component="people-showcase-hero"
       aria-labelledby="people-showcase-title">
       {/* Main Content Section */}
 
       {/* Team Photos */}
       <div className="flex  sm:flex-row   items-center  justify-start w-full overflow-x-auto">
-        <StaggeredSlideUp className=" grid grid-cols-4 gap-4 w-full overflow-x-auto">
+        <StaggeredSlideUp className=" grid grid-cols-3 w-full overflow-x-auto">
           {teamMembers.map((member, index) => (
             <div
               key={member.name}
-              className="group relative border border-neutral-100 overflow-hidden bg-neutral-600   flex-shrink-0 rounded-xs transition-transform duration-300 hover:scale-[1.02] focus-within:scale-[1.02]"
+              className="group relative  border-neutral-100 overflow-hidden flex-shrink-0 rounded-xs transition-transform duration-300 focus-within:scale-[1.02]"
               data-member={member.name.toLowerCase()}>
               <video
                 src={member.image}
                 autoPlay muted loop
-                className="w-full h-full object-cover transition-all duration-300 group-hover:brightness-110"
+                className="w-full h-full object-cover transition-all duration-300 group-hover:brightness-110 group:hover:scale-[1.1] "
               />
               {/* Optional: Add hover overlay with name */}
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 p-4 overflow-hidden transition-colors duration-300"></div>

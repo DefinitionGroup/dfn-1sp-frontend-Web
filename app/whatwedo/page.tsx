@@ -57,7 +57,7 @@ export default function Home() {
                   that genuinely resonate with audiences.
                 </h2>
               </StaggeredSlideUp>
-              {/* Description */}
+
 
               {/* CTA Button */}
               <Button2
