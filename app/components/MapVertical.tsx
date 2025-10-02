@@ -7,6 +7,7 @@ import {
   useScroll,
   MotionValue,
   useMotionValue,
+  AnimatePresence,
 } from "motion/react";
 import * as React from "react";
 import { clamp } from "../lib/clamp";
@@ -36,11 +37,29 @@ export function lerp(start: number, end: number, factor: number): number {
 export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
   const scrollY = useScrollY(MAX_HEIGHT);
   const { mouseX, onMouseMove, onMouseLeave } = useMouseX();
+  const [isHovered, setIsHovered] = React.useState(false);
 
   const handleNavClick = (id: string) => {
     const element = document.getElementById(id);
     element?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  // Auto-hide navPoints after 2 seconds
+  React.useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    if (isHovered) {
+      timeoutId = setTimeout(() => {
+        setIsHovered(false);
+      }, 2000);
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [isHovered]);
 
   // Calculate proportional positions for navPoints along the 50 lines
   const navPointPositions = navPoints.map((_, i) => {
@@ -49,7 +68,12 @@ export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
   });
 
   return (
-    <div className="fixed top-0 left-6 z-50 min-w-[200px] flex flex-col pointer-events-none justify-center h-[100vh]" style={{ width: `calc(100vw + ${MAX_HEIGHT}px)` }}>
+    <div
+      className="fixed top-0 left-6 z-50 min-w-[200px] flex flex-col  justify-center h-[100vh]"
+      style={{ width: `calc(100vw + ${MAX_HEIGHT}px)` }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <motion.div
         className="relative "
         onPointerMove={onMouseMove}
@@ -71,15 +95,18 @@ export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
                   mouseX={mouseX}
                   active={isActive(i, LINE_COUNT)}
                 />
-                {isNavPoint && (
-                  <NavPoint
-                    id={navPointId!}
-                    index={i}
-                    scrollY={scrollY}
-                    mouseX={mouseX}
-                    onClick={() => handleNavClick(navPointId!)}
-                  />
-                )}
+                <AnimatePresence>
+                  {isNavPoint && isHovered && (
+                    <NavPoint
+                      id={navPointId!}
+                      index={i}
+                      navPointIndex={navPointIndex}
+                      scrollY={scrollY}
+                      mouseX={mouseX}
+                      onClick={() => handleNavClick(navPointId!)}
+                    />
+                  )}
+                </AnimatePresence>
               </div>
             );
           })}
@@ -140,12 +167,14 @@ function NavPoint({
   mouseX,
   scrollY,
   index,
+  navPointIndex,
   onClick,
 }: {
   id: string;
   mouseX: MotionValue<number>;
   scrollY: MotionValue<number>;
   index: number;
+  navPointIndex: number;
   onClick: () => void;
 }) {
   const ref = React.useRef<HTMLDivElement>(null);
@@ -163,24 +192,26 @@ function NavPoint({
   return (
     <motion.div
       ref={ref}
-      className="absolute left-0 bg-lime-500 hover:bg-lime-300 cursor-pointer pointer-events-auto flex items-center justify-start rounded-sm"
+      className="absolute left-6 bg-gray-700 hover:bg-gray-400 hover:text-gray-50 cursor-pointer pointer-events-auto flex p-1 items-center justify-start rounded-full"
       style={{
-        height: LINE_WIDTH,
-        width: LINE_HEIGHT_ACTIVE + 60, // Make it wider to accommodate text
+
+        width: LINE_HEIGHT_ACTIVE + 93, // Make it wider to accommodate text
         scaleX,
         top: 0, // Position at the same level as the line
       }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
       transition={{
-        opacity: { delay: index * 0.02, duration: 0.12 },
+        opacity: { delay: navPointIndex * 0.05, duration: 0.2 },
+        x: { delay: navPointIndex * 0.05, duration: 0.3, type: "spring", stiffness: 300, damping: 25 },
         type: "spring",
         stiffness: 200,
         damping: 20,
       }}
       onClick={onClick}
     >
-      <span className="text-white text-[8px] font-medium ml-2 whitespace-nowrap">
+      <span className="text-white text-[8px] font-bold ml-2 ">
         {id}
       </span>
     </motion.div>
