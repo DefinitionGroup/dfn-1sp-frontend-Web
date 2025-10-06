@@ -44,7 +44,7 @@ export default function ExpandableCards() {
               transition: { type: "spring", stiffness: 20 },
             }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 h-full backdrop-blur-lg w-full z-10"
+            className="fixed inset-0  bg-black/50 h-full backdrop-blur-lg w-full z-10"
           />
         )}
       </AnimatePresence>
@@ -67,19 +67,19 @@ export default function ExpandableCards() {
               }}
               transition={{ type: "spring", visualDuration: 0.3, bounce: 0.2 }}
               ref={ref}
-              className="w-full max-w-[900px] min-h-[70vh]  relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col  bg-neutral-900 dark:bg-neutral-900  shadow-2xl overflow-hidden"
+              className="w-full max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[50%] rounded-xl flex flex-col  bg-neutral-900 dark:bg-neutral-900  shadow-2xl overflow-hidden"
             >
               {" "}
               <motion.button
                 onClick={() => setActive(null)}
-                className="absolute top-2 right-2 z-50 cursor-pointer"
+                className="absolute top-4 right-4 z-50 cursor-pointer"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
                 <CloseIcon />
               </motion.button>
               <motion.div
-                className="w-full h-100   sm:rounded-t-xl opacity-80 object-cover object-top"
+                className="w-full  h-100   sm:rounded-t-xl opacity-80 object-cover object-top"
                 layoutId={`image-${active.title}-${id}`}
               >
                 <img
@@ -100,12 +100,6 @@ export default function ExpandableCards() {
                     className="w-24 h-20 object-contain "
                   />
                   <div className="">
-                    <motion.p
-                      layoutId={`description-${active.description}-${id}`}
-                      className="text-neutral-100 text-5xl  dark:text-neutral-400 mb-8"
-                    >
-                      {active.description}
-                    </motion.p>
                     <motion.h3
                       layoutId={`title-${active.title}-${id}`}
                       className=" text-white text-xl max-w-2/3 dark:text-neutral-200"
@@ -118,7 +112,7 @@ export default function ExpandableCards() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="text-white text-sm md:text-sm lg:text-base mt-8  max-w-1/2 mb-2 md:h-fit pb-8 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
+                    className="text-white text-sm md:text-sm lg:text-base mt-8  md:max-w-1/2 mb-2 md:h-fit pb-8 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
                   >
                     {typeof active.content === "function"
                       ? active.content()
@@ -148,7 +142,7 @@ export default function ExpandableCards() {
               layoutId={`card-${card.title}-${id}`}
               key={`card-${card.title}-${id}`}
               onClick={() => setActive(card)}
-              className=" col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[250px] rounded-xs group/card overflow-hidden h-[200px]  cursor-pointer"
+              className=" col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[250px] rounded-sm group/card overflow-hidden h-[200px]  cursor-pointer"
             >
               <motion.div
                 layoutId={`image-${card.title}-${id}`}
@@ -207,7 +201,7 @@ export const CloseIcon = () => {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="1"
       strokeLinecap="round"
       strokeLinejoin="round"
       className="h-6 w-6 text-white"
@@ -295,7 +289,7 @@ const cards = [
     description: "Renaissance",
     title: "Masterminding PR and marketing campaigns across every genre",
     src: "/units/RENAISSANCE/renaissance_cover-image.jpg",
-    logo: "/units/RENAISSANCE/renaissance_logo.svg",
+    logo: "/units/RENAISSANCE/renaissance-horz_logo.svg",
     ctaText: "Click to Renaissance",
     ctaLink: "https://renaissancepr.co.uk/",
     content: () => {

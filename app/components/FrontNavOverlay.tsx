@@ -59,10 +59,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           duration: 0.5,
           delay: 0.4,
         }}
-        className="col-start-2 grid grid-cols-12 col-span-6"
+        className="col-start-2 grid grid-cols-11 col-span-12  md:col-span-6"
       >
         <StaggeredSlideUp
-          className="grid grid-cols-12 col-span-12 pb-2 flex-wrap items-center"
+          className="grid grid-cols-12 col-span-12 pb-2  flex-wrap items-center"
           delay={0.55}
           staggerDelay={0.02}
           duration={0.8}
@@ -91,15 +91,15 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             {" "}
             <Link
               className="hover:text-lime-400"
-              href={"/projects"}
+              href={"/cases"}
               onClick={(e) => {
                 e.preventDefault();
-                router.push("/projects", {
+                router.push("/cases", {
                   onTransitionReady: pageAnimation,
                 });
               }}
             >
-              Project
+              Cases
             </Link>
           </span>
           <span

@@ -28,9 +28,9 @@ const variantStyles: Record<
     container: "h-15",
   },
   lime: {
-    top: "border-lime-500/30 bg-lime-400  p-4",
-    bottom: "border-neutral-800 bg-neutral-900 text-white ",
-    container: "h-15",
+    top: "border-lime-500/30 bg-lime-400  p-4 w-full",
+    bottom: "border-neutral-800 bg-neutral-900 text-white w-full ",
+    container: "h-12",
   },
   limesmall: {
     top: "border-lime-500/30 bg-lime-400 text-neutral-900 px-4 py-2 ",

@@ -89,7 +89,7 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
 
   const memoizedItemVariants = React.useMemo(
     () => ({
-      hidden: { opacity: 0, y: distance,  },
+      hidden: { opacity: 0, y: distance },
       visible: {
         opacity: 1,
         y: 0,
@@ -167,11 +167,13 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
           animate={shouldAnimate ? "visible" : "hidden"}
           style={
             debug ? { border: "2px dashed red", padding: "4px" } : undefined
-          }>
+          }
+        >
           <div className="relative overflow-hidden">
             <motion.div
               variants={memoizedItemVariants}
-              className="relative z-10">
+              className="relative z-10"
+            >
               {children}
             </motion.div>
             <motion.div
@@ -193,7 +195,8 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
       variants={memoizedContainerVariants}
       initial="hidden"
       animate={shouldAnimate ? "visible" : "hidden"}
-      style={debug ? { border: "2px dashed red", padding: "4px" } : undefined}>
+      style={debug ? { border: "2px dashed red", padding: "4px" } : undefined}
+    >
       {debug && (
         <div className="absolute top-0 right-0 bg-red-500 text-white text-xs p-1 z-50">
           InView: {isInView ? "Y" : "N"} | Triggered: {hasTriggered ? "Y" : "N"}

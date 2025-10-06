@@ -31,25 +31,26 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   const ref = useRef(null);
   const isInView = useInView(ref, {
     once: false,
-    amount: 0.4,
+    amount: 0.6,
   });
 
   return (
     <motion.div className={`absolute inset-0   mx-auto ${className}`}>
       <motion.div
         ref={ref}
-        initial={{ opacity: 1, scale: 0.9, width: "90%" }}
+        initial={{ opacity: 1, scale: 0.95, width: "95%" }}
         animate={
           isInView
             ? { opacity: 1, scale: 1, width: "100%" }
-            : { opacity: 1, scale: 0.9, width: "90%" }
+            : { opacity: 1, scale: 0.95, width: "98%" }
         }
         transition={{
           duration: 1.4,
           ease: [0.16, 1, 0.3, 1],
           opacity: { duration: 0.8 },
         }}
-        className="absolute mx-auto rounded-sm inset-0 overflow-hidden ">
+        className="absolute mx-auto rounded-sm inset-0 overflow-hidden "
+      >
         {useVideo ? (
           <video
             src={videoSrc}

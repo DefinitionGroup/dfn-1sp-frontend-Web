@@ -87,16 +87,16 @@ export default function Home() {
         <div id="Top" className=""></div>
         <div className="relative z-10 container  mt-[30vh]  mx-auto p-16 md:p-0">
           <StaggeredSlideUp className=" max-w-full flex flex-col md:gap-0">
-            <h1 className="text-neutral-50 uppercase pb-2     md:max-w-1/2">
+            <h1 className="text-neutral-50 uppercase pb-2 text-xs font-bold   md:max-w-1/3">
               Welcome at 1SP
             </h1>
             <TypewriterChangeContentExample />
 
-            <p className="text-neutral-50 text mt-2 md:max-w-1/3">
+            <p className="text-neutral-50 text-2xl mt-2 md:max-w-1/3">
               We are group of several laser focused agencies. Each one with a
               distinctive competetive edge.
             </p>
-            <p className="text-neutral-50 text mt-4">
+            <p className="text-neutral-50 text-ls mt-8">
               Together we are{" "}
               <span className="bg-gradient-to-r font-bold from-lime-300 to-lime-500 bg-clip-text text-transparent">
                 one Superagency.
@@ -186,7 +186,7 @@ export default function Home() {
               numberEl={"002"}
             />
 
-            <div className="col-span-9 col-start-2 mt-12 md:mt-0md:col-start-3">
+            <div className="col-span-9 col-start-2 mt-12 md:mt-0 md:col-start-3">
               <ScrollHighlight />
             </div>
           </div>
@@ -206,26 +206,37 @@ export default function Home() {
             subtitle="Services"
             numberEl={"003"}
           />
-          <header className="col-span-12 col-start-2 md:mt-0 mt-12 md:row-start-1 border-t border-gray-500 ">
+          <header className="col-span-11  md:col-span-4  col-start-2 md:col-start-3 md:mt-0 mt-12 md:row-start-1 border-t border-gray-500 ">
             {/* Headlines */}
-            <div className="flex flex-col items-start justify-start w-full">
+            <div className="flex flex-col items-start justify-start ">
               {/* Main Headline */}
-              <div className="flex-1 flex flex-col min-w-0">
-                <h2 className="text text-gray-900 font-bold font-aspekta">
-                  Super*
-                </h2>
-                <h4 className="text-7xl  text-gray-900  tracking-tight font-aspekta">
-                  Brrrroadside
-                </h4>
-                <h4 className=" mt-2 text-gray-700 font-medium leading-compress font-aspekta">
-                  One Strategy. Multiple Experts
-                </h4>
+              <div className="flex-1 flex flex-col min-w-0 w-full">
+                <StaggeredSlideUp
+                  className=""
+                  delay={0.0}
+                  debug={false}
+                  easing="smooth"
+                  staggerDelay={0.1}
+                  duration={0.5}
+                  distance={20}
+                >
+                  <h2 className="text text-gray-900 font-bold font-aspekta">
+                    Super*
+                  </h2>
+                  <h4 className="text-7xl  text-gray-900  tracking-tight font-aspekta">
+                    Brrrroadside
+                  </h4>
+                  <h4 className=" mt-2 text-gray-700 font-medium leading- font-aspekta">
+                    One Strategy. Multiple Experts
+                  </h4>
+                </StaggeredSlideUp>
               </div>
             </div>
           </header>
 
-          <div className="col-span-8 col-start-2 md:col-start-5  border-gray-500 pb-8 md:row-start-2 ">
+          <div className="col-span-11 md:col-span-8 col-start-2 md:col-start-3 mt-12 md:mt-0 border-gray-500 pb-8 md:row-start-2 ">
             <ListContainerComponent>
+              -
               <ListItemComponent
                 size="small"
                 fontWeight="normal"
@@ -250,7 +261,7 @@ export default function Home() {
               </ListItemComponent>
             </ListContainerComponent>
           </div>
-          <div className="col-span-12 md:col-start-5  mt-8 mb-12 ">
+          <div className="col-span-12 md:col-span-8 md:col-start-3  mt-8 mb-12 px-4 md:px-0">
             <ExpandableCards />
           </div>
         </div>
@@ -263,14 +274,14 @@ export default function Home() {
         <GridBackground />
         <div className="z-1 grid  col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
-            className="col-span-2 sticky top-0"
+            className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky top-0 "
             text="Action"
             subtitle="What we do"
             numberEl={"004"}
           />
         </div>
-        <div className="col-span-12 container  col-start-3 row-start-1 grid grid-cols-10 pt-32  ">
-          <header className="col-span-3 col-start-1  border-t p-4">
+        <div className="col-span-12 container  md:col-start-3 md:row-start-1 grid grid-cols-10 pt-32  ">
+          <header className="md:col-span-3 col-start-1  col-span-12 border-t p-4">
             {/* Headlines */}
             <div className="flex flex-col lg:gap-8 items-start justify-start w-full">
               {/* Main Headline */}
@@ -285,8 +296,8 @@ export default function Home() {
             </div>
           </header>
 
-          <div className="col-span-6 grid  grid-cols-12 col-start-4 gap-8  border-t pt-4  ">
-            <header className="col-span-8 col-start-1  ">
+          <div className="col-span-12 md:col-span-6 grid   grid-cols-12 md:col-start-4 gap-8  border-t pt-4  ">
+            <header className="col-span-12 md:col-span-8 col-start-2  ">
               <div className="flex flex-col items-start justify-start w-full ">
                 {/* Main Headline */}
 
@@ -304,7 +315,7 @@ export default function Home() {
               </h3>
             </header>{" "}
           </div>
-          <div className=" col-span-8  row-start-2 col-start-4 ">
+          <div className="col-span-12 grid-cols-12 col-start-1  md:col-span-8  md:row-start-2 md:col-start-4 ">
             <PeopleShowcaseHero />
           </div>
         </div>

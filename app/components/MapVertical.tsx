@@ -71,7 +71,7 @@ export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
 
   return (
     <div
-      className="fixed top-0 md:left-6 z-50  w-[40px] flex flex-col  justify-center h-[100vh]"
+      className="fixed top-0 md:left-6 z-50  w-[72px]  flex flex-col justify-center h-[100vh]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -84,7 +84,10 @@ export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
         <div className="absolute -bottom-[40px] left-[12px] text-white text-[7px] font-medium leading-none  -rotate-90 origin-bottom-left">
           Scroll to Navigate
         </div>
-        <div className="flex flex-col items-start" style={{ gap: LINE_GAP }}>
+        <div
+          className="flex flex-col items-start  transition-all duration-300 "
+          style={{ gap: LINE_GAP }}
+        >
           {[...Array(LINE_COUNT)].map((_, i) => {
             const navPointIndex = navPointPositions.indexOf(i);
             const isNavPoint = navPointIndex !== -1;

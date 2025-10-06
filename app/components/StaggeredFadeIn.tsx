@@ -12,6 +12,7 @@ interface StaggeredFadeInProps {
   triggerOnView?: boolean;
   viewThreshold?: number;
   once?: boolean;
+  animate?: "visible" | "hidden";
 }
 
 const StaggeredFadeIn: React.FC<StaggeredFadeInProps> = ({
@@ -25,6 +26,7 @@ const StaggeredFadeIn: React.FC<StaggeredFadeInProps> = ({
   triggerOnView = true,
   viewThreshold = 0.1,
   once = true,
+  animate,
 }) => {
   const ref = React.useRef(null);
   const isInView = useInView(ref, {
@@ -85,7 +87,15 @@ const StaggeredFadeIn: React.FC<StaggeredFadeInProps> = ({
       className={className}
       variants={containerVariants}
       initial="hidden"
-      animate={triggerOnView ? (isInView ? "visible" : "hidden") : "visible"}
+      animate={
+        animate !== undefined
+          ? animate
+          : triggerOnView
+            ? isInView
+              ? "visible"
+              : "hidden"
+            : "visible"
+      }
     >
       {childrenArray.map((child, index) => (
         <motion.div key={index} variants={itemVariants} className="w-full">

@@ -76,10 +76,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             {" "}
             <Link
               className="hover:text-lime-400"
-              href={"/projects"}
+              href={"/cases"}
               onClick={(e) => {
                 e.preventDefault();
-                router.push("/projects", {
+                router.push("/cases", {
                   onTransitionReady: pageAnimation,
                 });
               }}

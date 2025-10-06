@@ -10,12 +10,10 @@ export default function TypewriterChangeContentExample({
     "One.",
     "Shared.",
     "Passion.",
-    "Gaming.",
-    "Technology.",
     "The Superagency.",
     "Consumer",
-    "electronics.",
-    "Gaming.",
+    "Electronics",
+    "Gaming",
     "Technology",
   ],
 }: {
@@ -65,10 +63,13 @@ const label: React.CSSProperties = {
 };
 
 const animatingText: React.CSSProperties = {
-  fontSize: "calc(24px + 5vw)",
-  fontWeight: 400,
-  lineHeight: "calc(44px + 5vw)",
-  letterSpacing: "-0.145rem",
+  fontSize: "calc(24px + 4.5vw)",
+  fontWeight: 700,
+  lineHeight: "calc(48px + 3vw)",
+  letterSpacing: "-0.4rem",
+  textTransform: "uppercase",
+  color: "var(--text-primary)",
+  whiteSpace: "nowrap",
 };
 
 const cursor: React.CSSProperties = {

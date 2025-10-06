@@ -101,15 +101,13 @@ export default function Home() {
         <div className="relative z-10 container  mt-[30vh]  mx-auto p-8 md:p-0">
           <StaggeredSlideUp
             delay={1}
-            className=" max-w-full flex flex-col gap-8 md:gap-0"
+            className=" max-w-full flex flex-col  md:gap-0  md:max-w-1/3 border-l-2 border-white/50 pl-4"
           >
-            <h1 className="text-neutral-50  pb-2 text-9xl max-w-1/3">
-              Marshall
-            </h1>{" "}
-            <h2 className="text-neutral-50  pb-2 text-5xl max-w-1/3">
+            <h1 className="text-neutral-50  pb-2 text-7xl ">Marshall</h1>{" "}
+            <h2 className="text-neutral-50  pb-2 text-3xl ">
               Turning up the Noise on Amazon
             </h2>{" "}
-            <h3 className="text-neutral-50  pb-2 text-3xl max-w-1/3">
+            <h3 className="text-neutral-50  pb-2 text-2xl">
               Expanding reach, increasing traffic, and driving deeper engagement
               through Amazon Stores globally.
             </h3>{" "}
@@ -168,7 +166,7 @@ export default function Home() {
       >
         {" "}
         <GridBackground />
-        <div className="z-1 grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+        <div className="z-1 grid col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2 sticky top-0 "
             text="Intro"
@@ -183,7 +181,7 @@ export default function Home() {
               duration={0.5}
               distance={80}
             >
-              <h2 className="text-7xl leading-compress text-gray-900 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
+              <h2 className="text-7xl leading-compress text-gray-900 max-w-lg tracking-tight leading-tighter mb-8">
                 Music for our ears.
               </h2>
               <p className="text-lg text-gray-900 font-medium  max-w-2xs mx-auto">
@@ -221,10 +219,10 @@ export default function Home() {
               duration={0.5}
               distance={80}
             >
-              <h2 className="text-3xl leading-compress text-gray-900 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
+              <h2 className="text-2xl leading-compress text-gray-900 max-w-lg font-semibold tracking-tight leading-tighter mb-8">
                 Solution
               </h2>
-              <p className="text-lg text-gray-900 font-medium   mx-auto">
+              <p className="text text-gray-900   mx-auto">
                 To maximize the potential of Stores, we rebuilt them to strike
                 the right balance between educational, interactive, and engaging
                 content — while also embedding strong purchase and cross-sell
@@ -486,152 +484,6 @@ export default function Home() {
                 </h2>
               </StaggeredSlideUp>
             </div>
-          </div>
-        </div>
-      </div>
-      {/* SHOWTIME  GALLERY */}
-      <div
-        id="Level Up!"
-        className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta"
-      >
-        <GridBackground delay={0.2} staggerDelay={0.06} />
-        <div className="z-1 grid  col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
-          <Badgemodule
-            text="Level Up!"
-            className="col-span-2"
-            subtitle="Client Stories"
-            numberEl={"004"}
-          />
-
-          <div className="col-span-10 col-start-3 ">
-            <h2 className="text-7xl  text-gray-800 pr-2 mb-2">
-              <Typewriter
-                ref={typewriterref}
-                play={isInView}
-                speed="fast"
-                cursorStyle={{ backgroundColor: "transparent" }}
-                variance={0.8}
-                backspace="word"
-              >
-                Showtime!
-              </Typewriter>
-            </h2>
-
-            <StaggeredSlideUp
-              className="flex flex-col items-start font-normal justify-start "
-              delay={0.0}
-              debug={false}
-              easing="smooth"
-              staggerDelay={0.1}
-              duration={0.5}
-              distance={20}
-            >
-              <p className="text text-gray-500 leading-[1.12]  ">
-                Discover our hottest projects in
-              </p>
-              <p className="text text-gray-500 leading-snug">
-                marketing, gaming and interactive experiences.
-              </p>
-            </StaggeredSlideUp>
-          </div>
-          <div className="col-span-12 col-start-1 mt-8 ">
-            <InteractiveCarousel />
-            {/* <div className="flex container max-w-3xl justify-center gap-8 mx-auto  ">
-
-     <CircularDashedGauge percentage={75} size={222} strokeWidth={1} />
-     <CircularDashedGauge percentage={35} size={222} strokeWidth={1} />
-     <CircularDashedGauge percentage={45} size={222} strokeWidth={1} />
-            </div> */}
-          </div>
-        </div>
-      </div>
-
-      {/* People Gallery Section */}
-      <div
-        id="People"
-        className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta  "
-      >
-        <GridBackground />
-        <div className="z-1 grid  col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
-          <Badgemodule
-            className="col-span-2 sticky top-0"
-            text="Action"
-            subtitle="What we do"
-            numberEl={"004"}
-          />
-        </div>
-        <div className="col-span-12 container  col-start-3 row-start-1 grid grid-cols-10 pt-32  ">
-          <header className="col-span-3 col-start-1  border-t p-4">
-            {/* Headlines */}
-            <div className="flex flex-col lg:gap-8 items-start justify-start w-full">
-              {/* Main Headline */}
-              <div className="flex-1 flex flex-col min-w-0">
-                <h2 className="text text-gray-900 font-bold font-aspekta">
-                  Super*
-                </h2>
-                <h4 className="text-7xl  text-gray-900  tracking-tight font-aspekta">
-                  Human Touch
-                </h4>
-              </div>
-            </div>
-          </header>
-
-          <div className="col-span-6 grid  grid-cols-12 col-start-4 gap-8  border-t pt-4  ">
-            <header className="col-span-8 col-start-1  ">
-              <div className="flex flex-col items-start justify-start w-full ">
-                {/* Main Headline */}
-
-                <h2 className="text-2xl text-neutral-900 font-aspekta">
-                  Igniting Creativity:
-                </h2>
-                <h4 className="text-2xl  text-neutral-900  font-aspekta">
-                  <span className="text-neutral-200">Unique People.</span>
-                </h4>
-              </div>
-              <h3 className="text text-neutral-500 mt-4  font-aspekta">
-                At 1sp, we are driven by a team of passionate individuals who
-                thrive on creativity and innovation, crafting unique marketing
-                campaigns that resonate with audiences.
-              </h3>
-            </header>{" "}
-          </div>
-          <div className=" col-span-8  row-start-2 col-start-4 ">
-            <PeopleShowcaseHero />
-          </div>
-        </div>
-      </div>
-      {/* Visual Background 2 Section */}
-      <div
-        id="News"
-        className="grid grid-cols-12 z-2 mx-auto bg-neutral-900 mt-8 min-h-[50vh] relative font-aspekta"
-      >
-        <div className="z-1 grid gap-8 col-span-12 py-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
-          <Badgemodule
-            className="col-span-2"
-            text="Stories"
-            subtitle="Newsroom"
-            numberEl={"007"}
-          />
-          <div className="col-span-10 col-start-3  ">
-            <StaggeredSlideUp
-              className="flex flex-col  items-start justify-start "
-              delay={0.1}
-              staggerDelay={0.1}
-              duration={0.5}
-              distance={80}
-            >
-              <h2 className="text-7xl leading-compress text-gray-100 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
-                News.
-              </h2>
-              <p className="text text-gray-100 font-medium  max-w-2xs mx-auto">
-                Discover our latest projects in gaming, marketing, and
-                interactive experiences
-              </p>
-            </StaggeredSlideUp>
-          </div>
-
-          <div className="col-span-9 col-start-3 mt-8 ">
-            <ExpandableCards2 />
           </div>
         </div>
       </div>

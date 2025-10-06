@@ -47,11 +47,13 @@ const carouselItems: CarouselItem[] = [
     title: "Zucked!",
     subtitle: "AR/VR In Flight",
     image: "/metaplaceholder.png",
+    video: "/video/atf.mp4",
     description:
       "Immersive gaming experience with cutting-edge visuals and Mark Zuckerberg",
     category: "Gaming",
     logosrc: "/logos/Meta_Platforms_Inc._logo.svg",
     link: "/work/meta",
+    video: "/video/Zuckerberg_Inflight.mp4",
   },
   {
     id: 3,
@@ -88,6 +90,7 @@ const carouselItems: CarouselItem[] = [
     image: "/s1.png",
     description: "Next-generation AR solutions for marketing",
     category: "AR/VR",
+    logosrc: "/logos/Lufthansa_Logo_2018.svg",
   },
 ];
 
@@ -318,7 +321,7 @@ export default function InteractiveCarousel() {
 
           {/* Navigation Arrows */}
           <motion.button
-            className="absolute -left-12 top-1/2 transform -translate-y-1/2 w-12 h-12  bg-gray-300  backdrop-blur-sm rounded-xs flex items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
+            className="hidden md:show absolute -left-12 top-1/2 transform -translate-y-1/2 w-12 h-12  bg-gray-300  backdrop-blur-sm rounded-xs md:flex items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => paginate(-1)}
@@ -339,7 +342,7 @@ export default function InteractiveCarousel() {
           </motion.button>
 
           <motion.button
-            className="absolute -right-12 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm rounded-xs flex items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
+            className="hidden md:show  absolute -right-12 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm rounded-xs md:flex items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => paginate(1)}

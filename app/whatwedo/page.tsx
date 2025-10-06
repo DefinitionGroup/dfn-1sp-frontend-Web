@@ -45,7 +45,8 @@ export default function Home() {
                 delay={0.59}
                 staggerDelay={0.03}
                 distance={100}
-                className=" max-w-2/4 ">
+                className=" max-w-2/4 "
+              >
                 {" "}
                 <h2 className="text-5xl leading-none text-neutral-700 pb-3 font-aspekta font-medium">
                   At 1SP, our passionate team thrives on creativity
@@ -57,7 +58,6 @@ export default function Home() {
                   that genuinely resonate with audiences.
                 </h2>
               </StaggeredSlideUp>
-
 
               {/* CTA Button */}
               <Button2
@@ -92,7 +92,8 @@ export default function Home() {
               delay={0.0}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-9xl text-gray-100 max-w-xl font-semibold tracking-tight leading-compress mb-4 pb-8">
                 We tell your story.
               </h2>
@@ -205,7 +206,8 @@ export default function Home() {
       {/* Visual Background 2 Section */}
       <div
         id="Step3"
-        className="grid grid-cols-12 z-1 mx-auto  mt-8 min-h-[90vh] relative font-aspekta">
+        className="grid grid-cols-12 z-1 mx-auto  mt-8 min-h-[90vh] relative font-aspekta"
+      >
         <HeaderImageVideoComp2
           useVideo={true}
           videoSrc="/video/cases/squareenix.mp4"
@@ -226,7 +228,8 @@ export default function Home() {
               delay={0.1}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-9xl leading-compress text-gray-100 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
                 We tell your story.
               </h2>
@@ -275,7 +278,8 @@ export default function Home() {
               delay={0.1}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-7xl leading-compress text-gray-900 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
                 We tell your story.
               </h2>
