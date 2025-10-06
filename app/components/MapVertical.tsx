@@ -61,13 +61,7 @@ export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
   //   };
   // }, [isHovered]);
 
-  // Calculate proportional positions for navPoints along the 50 lines
-  // Add space for an invisible navpoint at the end by using navPoints.length + 1
-  const navPointPositions = navPoints.map((_, i) => {
-    const totalPositions = navPoints.length + 1; // Add 1 for invisible navpoint at end
-    if (totalPositions === 1) return 0;
-    return Math.round((i * (LINE_COUNT - 1)) / (totalPositions - 1));
-  });
+  // Navpoints are now positioned independently
 
   return (
     <div
@@ -89,12 +83,6 @@ export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
           style={{ gap: LINE_GAP }}
         >
           {[...Array(LINE_COUNT)].map((_, i) => {
-            const navPointIndex = navPointPositions.indexOf(i);
-            const isNavPoint = navPointIndex !== -1;
-            const navPointId = isNavPoint
-              ? navPoints[navPointIndex]
-              : undefined;
-
             return (
               <div key={i} className="relative">
                 <Line
@@ -103,21 +91,45 @@ export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
                   mouseX={mouseX}
                   active={isActive(i, LINE_COUNT)}
                 />
-                <AnimatePresence>
-                  {isNavPoint && isHovered && (
-                    <NavPoint
-                      id={navPointId!}
-                      index={i}
-                      navPointIndex={navPointIndex}
-                      scrollY={scrollY}
-                      mouseX={mouseX}
-                      onClick={() => handleNavClick(navPointId!)}
-                    />
-                  )}
-                </AnimatePresence>
               </div>
             );
           })}
+        </div>
+        {/* Independent navpoints with 16px spacing */}
+        <div className="absolute top-0 left-4 flex flex-col gap-2 z-50">
+          <AnimatePresence>
+            {isHovered &&
+              navPoints.map((navPointId, navPointIndex) => (
+                <motion.div
+                  key={navPointId}
+                  className="bg-gray-900 text-gray-200 hover:bg-gray-200 hover:text-gray-800 font-normal cursor-pointer pointer-events-auto flex px-2 py-1 items-center justify-start rounded-xl"
+                  style={{
+                    width: LINE_HEIGHT_ACTIVE + 64,
+                  }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{
+                    opacity: { delay: navPointIndex * 0.05, duration: 0.2 },
+                    x: {
+                      delay: navPointIndex * 0.05,
+                      duration: 0.3,
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 25,
+                    },
+                    type: "spring",
+                    stiffness: 200,
+                    damping: 20,
+                  }}
+                  onClick={() => handleNavClick(navPointId)}
+                >
+                  <span className="text-[8px] font-semibold tracking-wider ml-2">
+                    {navPointId}
+                  </span>
+                </motion.div>
+              ))}
+          </AnimatePresence>
         </div>
         <Indicator y={scrollY} />
       </motion.div>
@@ -167,58 +179,6 @@ function Line({
         damping: 20,
       }}
     />
-  );
-}
-
-function NavPoint({
-  id,
-  mouseX,
-  scrollY,
-  index,
-  navPointIndex,
-  onClick,
-}: {
-  id: string;
-  mouseX: MotionValue<number>;
-  scrollY: MotionValue<number>;
-  index: number;
-  navPointIndex: number;
-  onClick: () => void;
-}) {
-  const ref = React.useRef<HTMLDivElement>(null);
-  const scaleX = useSpring(1, { damping: 45, stiffness: 600 });
-  const centerY = index * LINE_STEP + LINE_WIDTH / 2;
-
-  return (
-    <motion.div
-      ref={ref}
-      className="absolute -top-2 z-50 left-4 bg-gray-900 text-gray-200 hover:bg-gray-200 hover:text-gray-800! font-normal cursor-pointer pointer-events-auto flex px-2 py-1 items-center justify-start rounded-xl"
-      style={{
-        width: LINE_HEIGHT_ACTIVE + 64, // Make it wider to accommodate text
-        scaleX,
-      }}
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      transition={{
-        opacity: { delay: navPointIndex * 0.05, duration: 0.2 },
-        x: {
-          delay: navPointIndex * 0.05,
-          duration: 0.3,
-          type: "spring",
-          stiffness: 300,
-          damping: 25,
-        },
-        type: "spring",
-        stiffness: 200,
-        damping: 20,
-      }}
-      onClick={onClick}
-    >
-      <span className=" text-[8px] font-semibold tracking-wider ml-2 ">
-        {id}
-      </span>
-    </motion.div>
   );
 }
 
