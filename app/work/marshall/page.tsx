@@ -92,13 +92,17 @@ export default function Home() {
           useVideo={true}
           videoSrc="/video/atf.mp4"
           enableParallax={true}
+          opacity="opacity-100"
         />
         {/* Navigation */}
         <FrontNavOverlay />
         {/* Hero Content */}
         <div id="Top" className=""></div>
         <div className="relative z-10 container  mt-[30vh]  mx-auto p-8 md:p-0">
-          <StaggeredSlideUp className=" max-w-full flex flex-col gap-8 md:gap-0">
+          <StaggeredSlideUp
+            delay={1}
+            className=" max-w-full flex flex-col gap-8 md:gap-0"
+          >
             <h1 className="text-neutral-50  pb-2 text-9xl max-w-1/3">
               Marshall
             </h1>{" "}
@@ -212,7 +216,7 @@ export default function Home() {
             </ListContainerComponent>
             <StaggeredSlideUp
               className="flex flex-col mt-8   items-start justify-start "
-              delay={0.1}
+              delay={0.7}
               staggerDelay={0.1}
               duration={0.5}
               distance={80}

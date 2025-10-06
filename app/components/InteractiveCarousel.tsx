@@ -27,6 +27,7 @@ const carouselItems: CarouselItem[] = [
     title: "Turning up the Noise on Amazon",
     subtitle: "Marshall",
     image: "/case-marshall.jpg",
+    video: "/video/atf.mp4",
     description:
       "Expanding reach, increasing traffic, and driving deeper engagement through Amazon Stores globally.",
     category: "Gaming",
@@ -187,14 +188,28 @@ export default function InteractiveCarousel() {
               >
                 <div className="relative w-full h-full overflow-hidden bg-gradient-to-brshadow-2xl">
                   {/* Background Image */}
-                  <motion.img
-                    src={carouselItems[currentIndex].image}
-                    alt={carouselItems[currentIndex].title}
-                    className="absolute inset-0 w-full h-full  object-cover"
-                    initial={{ scale: 1.3, opacity: 1 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 1.6 }}
-                  />
+                  <p>{carouselItems[currentIndex].video}</p>
+                  {carouselItems[currentIndex].video ? (
+                    <motion.video
+                      src={carouselItems[currentIndex].video}
+                      className="absolute  inset-0 w-full h-full overflow-hidden object-cover"
+                      initial={{ scale: 1.3, opacity: 1 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 1.6 }}
+                      loop
+                      autoPlay
+                      muted
+                    />
+                  ) : (
+                    <motion.img
+                      src={carouselItems[currentIndex].image}
+                      alt={carouselItems[currentIndex].title}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      initial={{ scale: 1.3, opacity: 1 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 1.6 }}
+                    />
+                  )}
 
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />

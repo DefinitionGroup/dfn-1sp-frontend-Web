@@ -41,23 +41,24 @@ export default function Home() {
   const collectPageIds = () => {
     // Wait for the DOM to be fully rendered
     setTimeout(() => {
-      const allElements = document.querySelectorAll('[id]');
+      const allElements = document.querySelectorAll("[id]");
       const ids: string[] = [];
 
       allElements.forEach((element) => {
         const id = element.id;
         // Filter out IDs that are likely from components or not main sections
         // Only include IDs that are likely to be main page sections
-        if (id &&
-            !id.startsWith('headlessui-') && // Exclude headless UI IDs
-            !id.startsWith('radix-') && // Exclude radix UI IDs
-            !id.startsWith('__') && // Exclude internal IDs
-            !id.startsWith('_') && // Exclude IDs starting with underscore
-            id !== '_R_' && // Exclude specific unwanted ID
-            id.length > 2 && // Exclude very short IDs
-            !/^\d+$/.test(id) && // Exclude numeric-only IDs
-            // Allow IDs with hyphens as they are common for section names
-            id !== 'root' // Exclude root element
+        if (
+          id &&
+          !id.startsWith("headlessui-") && // Exclude headless UI IDs
+          !id.startsWith("radix-") && // Exclude radix UI IDs
+          !id.startsWith("__") && // Exclude internal IDs
+          !id.startsWith("_") && // Exclude IDs starting with underscore
+          id !== "_R_" && // Exclude specific unwanted ID
+          id.length > 2 && // Exclude very short IDs
+          !/^\d+$/.test(id) && // Exclude numeric-only IDs
+          // Allow IDs with hyphens as they are common for section names
+          id !== "root" // Exclude root element
         ) {
           ids.push(id);
         }
@@ -65,31 +66,30 @@ export default function Home() {
 
       // Keep the DOM order instead of sorting alphabetically
       const uniqueIds = [...new Set(ids)]; // Remove duplicates while preserving order
-      console.log('Collected navPoints (DOM order):', uniqueIds); // Debug log
-      console.log('All found IDs:', ids); // Debug log
+      console.log("Collected navPoints (DOM order):", uniqueIds); // Debug log
+      console.log("All found IDs:", ids); // Debug log
       setNavPoints(uniqueIds);
     }, 500); // Increased delay to ensure DOM is ready
   };
 
   useEffect(() => {
-    console.log('useEffect running, collecting page IDs...');
+    console.log("useEffect running, collecting page IDs...");
     collectPageIds();
   }, []);
 
   return (
     <>
-      <section  className="relative h-[95vh] overflow-hidden">
+      <section className="relative h-[95vh] overflow-hidden">
         <HamburgerGradientMenu />
 
         <LineMinimap navPoints={navPoints} />
 
-
         {/* Background Image with Overlay */}
         <HeaderImageVideoComp
           useVideo={true}
+          opacity="opacity-100"
           videoSrc="/video/1sp_home_header_16x9.mp4"
           enableParallax={true}
-
         />
         {/* Navigation */}
         <FrontNavOverlay />
@@ -127,8 +127,11 @@ export default function Home() {
       </section>
 
       {/* SHOWTIME  GALLERY */}
-      <div id="Level Up!" className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta">
-   <GridBackground delay={0.2} staggerDelay={0.06} />
+      <div
+        id="Level Up!"
+        className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta"
+      >
+        <GridBackground delay={0.2} staggerDelay={0.06} />
         <div className="z-1 grid  col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             text="Level Up!"
@@ -145,7 +148,8 @@ export default function Home() {
                 speed="fast"
                 cursorStyle={{ backgroundColor: "transparent" }}
                 variance={0.8}
-                backspace="word">
+                backspace="word"
+              >
                 Showtime!
               </Typewriter>
             </h2>
@@ -157,7 +161,8 @@ export default function Home() {
               easing="smooth"
               staggerDelay={0.1}
               duration={0.5}
-              distance={20}>
+              distance={20}
+            >
               <p className="text text-gray-500 leading-[1.12]  ">
                 Discover our hottest projects in
               </p>
@@ -174,20 +179,48 @@ export default function Home() {
      <CircularDashedGauge percentage={35} size={222} strokeWidth={1} />
      <CircularDashedGauge percentage={45} size={222} strokeWidth={1} />
             </div> */}
-
           </div>
         </div>
       </div>
 
+      {/* Skills Combo Section */}
+      <div
+        id="Skills"
+        className="z-1 mx-auto  min-h-[90vh] relative font-aspekta"
+      >
+        <HeaderImageVideoComp2
+          useVideo={true}
+          videoSrc="/video/14.mp4"
+          enableParallax={true}
+        />
+        <div className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta">
+          <div className="z-1 grid col-span-12 py-32  col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+            <Badgemodule
+              className="col-span-2 sticky top-0"
+              text="Laser Focused"
+              subtitle="Our Services"
+              numberEl={"002"}
+            />
+
+            <div className="col-span-9 col-start-3">
+              <ScrollHighlight />
+            </div>
+          </div>
+        </div>{" "}
+      </div>
+
       {/* Portfolio Grid */}
-      <div id="Services" className="z-4 grid col-span-12 relative col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+      <div
+        id="Services"
+        className="z-4 grid col-span-12 relative col-start-1 container mx-auto row-start-1 grid-cols-12 "
+      >
         <GridBackground delay={0.2} staggerDelay={0.06} />
         <div className="z-1 grid col-span-12 col-start-1 pt-32 row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2 sticky top-0"
             text="Experts"
             subtitle="Services"
-            numberEl={"002"}
+            numberEl={"003"}
           />
           <header className="col-span-85 col-start-5 row-start-1 border-t border-gray-500 ">
             {/* Headlines */}
@@ -209,13 +242,25 @@ export default function Home() {
 
           <div className="col-span-8 col-start-5  border-gray-500 pb-8 row-start-2 ">
             <ListContainerComponent>
-              <ListItemComponent size="small" fontWeight="normal" color="gray-500" >
+              <ListItemComponent
+                size="small"
+                fontWeight="normal"
+                color="gray-500"
+              >
                 Full Service. From Start to End.
               </ListItemComponent>
-              <ListItemComponent size="small" fontWeight="normal" color="gray-500" >
+              <ListItemComponent
+                size="small"
+                fontWeight="normal"
+                color="gray-500"
+              >
                 Connected by one vision. Perfoming your mission.
               </ListItemComponent>
-              <ListItemComponent size="small" fontWeight="normal" color="gray-500" >
+              <ListItemComponent
+                size="small"
+                fontWeight="normal"
+                color="gray-500"
+              >
                 From longstanding veterans to fresh talents. The best of both
                 worlds.
               </ListItemComponent>
@@ -226,35 +271,15 @@ export default function Home() {
           </div>
         </div>
       </div>
-      {/* Skills Combo Section */}
-      <div
-        id="Skills"
-        className="z-1 mx-auto  min-h-[90vh] relative font-aspekta">
-        <HeaderImageVideoComp2
-          useVideo={true}
-          videoSrc="/video/14.mp4"
-          enableParallax={true}
-        />
-        <div className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta">
-          <div className="z-1 grid col-span-12 py-32  col-start-1 container mx-auto row-start-1 grid-cols-12 ">
-            <Badgemodule
-              className="col-span-2 sticky top-0"
-              text="Laser Focused"
-              subtitle="Our Services"
-              numberEl={"003"}
-            />
-
-            <div className="col-span-9 col-start-3">
-              <ScrollHighlight />
-            </div>
-          </div>
-        </div>{" "}
-      </div>
       {/* People Gallery Section */}
-      <div id="People" className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta  ">
-      <GridBackground />
-            <div className="z-1 grid  col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
-          <Badgemodule  className="col-span-2 sticky top-0"
+      <div
+        id="People"
+        className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta  "
+      >
+        <GridBackground />
+        <div className="z-1 grid  col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+          <Badgemodule
+            className="col-span-2 sticky top-0"
             text="Action"
             subtitle="What we do"
             numberEl={"004"}
@@ -272,23 +297,22 @@ export default function Home() {
                 <h4 className="text-7xl  text-gray-900  tracking-tight font-aspekta">
                   Human Touch
                 </h4>
-
               </div>
             </div>
           </header>
 
           <div className="col-span-6 grid  grid-cols-12 col-start-4 gap-8  border-t pt-4  ">
             <header className="col-span-8 col-start-1  ">
-                 <div className="flex flex-col items-start justify-start w-full ">
-                  {/* Main Headline */}
+              <div className="flex flex-col items-start justify-start w-full ">
+                {/* Main Headline */}
 
-                  <h2 className="text-2xl text-neutral-900 font-aspekta">
-                    Igniting Creativity:
-                  </h2>
-                  <h4 className="text-2xl  text-neutral-900  font-aspekta">
-                    <span className="text-neutral-200">Unique People.</span>
-                  </h4>
-                </div>
+                <h2 className="text-2xl text-neutral-900 font-aspekta">
+                  Igniting Creativity:
+                </h2>
+                <h4 className="text-2xl  text-neutral-900  font-aspekta">
+                  <span className="text-neutral-200">Unique People.</span>
+                </h4>
+              </div>
               <h3 className="text text-neutral-500 mt-4  font-aspekta">
                 At 1sp, we are driven by a team of passionate individuals who
                 thrive on creativity and innovation, crafting unique marketing
@@ -304,7 +328,8 @@ export default function Home() {
       {/* Visual Background 2 Section */}
       <div
         id="News"
-        className="grid grid-cols-12 z-2 mx-auto bg-neutral-100 mt-8 min-h-[50vh] relative font-aspekta">
+        className="grid grid-cols-12 z-2 mx-auto bg-neutral-100 mt-8 min-h-[50vh] relative font-aspekta"
+      >
         <HeaderImageVideoComp2
           useVideo={true}
           videoSrc="/video/cases/squareenix.mp4"
@@ -325,7 +350,8 @@ export default function Home() {
               delay={0.1}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-7xl leading-compress text-gray-100 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
                 News.
               </h2>
@@ -347,7 +373,8 @@ export default function Home() {
         <HeaderImageVideoComp2
           useVideo={false}
           imageSrc="/hr.png"
-          enableParallax={true} className="object-top"
+          enableParallax={true}
+          className="object-top"
         />
 
         <div className="z-1 grid col-span-12 py-24 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
@@ -357,7 +384,8 @@ export default function Home() {
               delay={0.0}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-7xl text-gray-100  font-nyghtserif font-semibold tracking-tight leading-compress pb-8">
                 Show&nbsp;Time
               </h2>
@@ -382,7 +410,8 @@ export default function Home() {
               <Button2
                 variant="limesmall"
                 text="Join us for a ride"
-                className="w-fit"></Button2>
+                className="w-fit"
+              ></Button2>
             </p>
           </div>
         </div>
