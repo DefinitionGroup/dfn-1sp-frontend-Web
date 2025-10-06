@@ -244,11 +244,11 @@ export default function InteractiveCarousel() {
                             height={44}
                           />
                         </motion.div>
-                        <motion.h3 className="text-7xl font-semibold  leading-compressed  pb-0">
+                        <motion.h3 className="text-3xl md:text-7xl font-semibold  leading-compressed  pb-0">
                           {carouselItems[currentIndex].title}
                         </motion.h3>
                       </div>
-                      <motion.p className="text-xl text-gray-100 r">
+                      <motion.p className="md:text-xl text-gray-100 r">
                         {carouselItems[currentIndex].subtitle}
                       </motion.p>
                       <motion.p className="text-gray-100 text- max-w-lg ">

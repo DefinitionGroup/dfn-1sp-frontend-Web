@@ -1,36 +1,26 @@
 "use client";
-import { useRef, useState, useEffect } from "react";
+import { Typewriter } from "motion-plus/react";
 import { useInView } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import Badgemodule from "./components/Badgemodule";
 import Button2 from "./components/Button2";
 import ExpandableCards from "./components/ExpandableCards";
+import ExpandableCards2 from "./components/ExpandableCards2";
 import Footer from "./components/Footer";
 import FooterBottom from "./components/FooterBottom";
 import FrontNavOverlay from "./components/FrontNavOverlay2";
 import GridBackground from "./components/GridBackground";
+import HamburgerGradientMenu from "./components/HamburgerGradientMenu";
 import HeaderImageVideoComp from "./components/HeaderImageVideoComp";
-import InteractiveCarousel from "./components/InteractiveCarousel";
-import { Nav } from "./components/Nav";
-import StaggeredSlideUp from "./components/StaggeredSlideUp";
-import TextHeadlineCombo from "./components/TextHeadlineCombo";
-import TextLayout from "./components/TextLayout";
-import TypewriterChangeContentExample from "./components/TyperwriterHeadline";
 import HeaderImageVideoComp2 from "./components/HeaderImageVideoComp2";
-import PeopleShowcaseHero from "./components/PeopleShowcaseHero";
-import { Typewriter } from "motion-plus/react";
-import TextReveal from "./components/CursortrailExample";
-import ScrollHighlight from "./components/ScrollHighlight";
+import InteractiveCarousel from "./components/InteractiveCarousel";
 import ListContainerComponent from "./components/ListContainerComponent";
 import ListItemComponent from "./components/ListItemComponent";
-import CtaMiniComponent from "./components/CtaMiniComponent";
-import { ArrowRight } from "@phosphor-icons/react";
-import ArrowBig from "./components/arrowBig";
-import ExpandableCards2 from "./components/ExpandableCards2";
-import LogoCarousel from "./components/LogoCarousel";
-import WarpOverlay from "./components/overlayNav";
-import HamburgerGradientMenu from "./components/HamburgerGradientMenu";
 import LineMinimap from "./components/MapVertical";
-import CircularDashedGauge from "./components/dataPointerRadial";
+import PeopleShowcaseHero from "./components/PeopleShowcaseHero";
+import ScrollHighlight from "./components/ScrollHighlight";
+import StaggeredSlideUp from "./components/StaggeredSlideUp";
+import TypewriterChangeContentExample from "./components/TyperwriterHeadline";
 
 export default function Home() {
   const typewriterref = useRef(null);
@@ -87,7 +77,7 @@ export default function Home() {
         {/* Background Image with Overlay */}
         <HeaderImageVideoComp
           useVideo={true}
-          opacity="opacity-100"
+          opacity="opacity-50"
           videoSrc="/video/1sp_home_header_16x9.mp4"
           enableParallax={true}
         />
@@ -95,9 +85,9 @@ export default function Home() {
         <FrontNavOverlay />
         {/* Hero Content */}
         <div id="Top" className=""></div>
-        <div className="relative z-10 container  mt-[30vh]  mx-auto p-8 md:p-0">
-          <StaggeredSlideUp className=" max-w-full flex flex-col gap-8 md:gap-0">
-            <h1 className="text-neutral-50 uppercase pb-2     max-w-1/2">
+        <div className="relative z-10 container  mt-[30vh]  mx-auto p-16 md:p-0">
+          <StaggeredSlideUp className=" max-w-full flex flex-col md:gap-0">
+            <h1 className="text-neutral-50 uppercase pb-2     md:max-w-1/2">
               Welcome at 1SP
             </h1>
             <TypewriterChangeContentExample />
@@ -129,19 +119,19 @@ export default function Home() {
       {/* SHOWTIME  GALLERY */}
       <div
         id="Level Up!"
-        className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta"
+        className="grid grid-cols-6 md:grid-cols-12 z-1 mx-auto container  relative font-aspekta"
       >
         <GridBackground delay={0.2} staggerDelay={0.06} />
         <div className="z-1 grid  col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             text="Level Up!"
-            className="col-span-2"
+            className="col-span-6 md:col-span-2 col-start-2 md:col-start-1"
             subtitle="Client Stories"
             numberEl={"001"}
           />
 
-          <div className="col-span-10 col-start-3 ">
-            <h2 className="text-7xl  text-gray-800 pr-2 mb-2">
+          <div className="col-span-6 md:col-span-10 col-start-2 md:col-start-3 ">
+            <h2 className="text-4xl md:text-7xl  text-gray-800 pr-2 md:mb-2">
               <Typewriter
                 ref={typewriterref}
                 play={isInView}
@@ -155,7 +145,7 @@ export default function Home() {
             </h2>
 
             <StaggeredSlideUp
-              className="flex flex-col items-start font-normal justify-start "
+              className="flex flex-col items-start font-normal  justify-start "
               delay={0.0}
               debug={false}
               easing="smooth"
@@ -171,14 +161,8 @@ export default function Home() {
               </p>
             </StaggeredSlideUp>
           </div>
-          <div className="col-span-12 col-start-1 mt-8 ">
+          <div className="col-span-12 col-start-1 mt-8 px-8 md:px-0">
             <InteractiveCarousel />
-            {/* <div className="flex container max-w-3xl justify-center gap-8 mx-auto  ">
-
-     <CircularDashedGauge percentage={75} size={222} strokeWidth={1} />
-     <CircularDashedGauge percentage={35} size={222} strokeWidth={1} />
-     <CircularDashedGauge percentage={45} size={222} strokeWidth={1} />
-            </div> */}
           </div>
         </div>
       </div>

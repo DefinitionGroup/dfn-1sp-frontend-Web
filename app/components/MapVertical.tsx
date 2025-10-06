@@ -14,12 +14,12 @@ import { clamp } from "../lib/clamp";
 export const LINE_GAP = 6;
 export const LINE_WIDTH = 1;
 export const LINE_COUNT = 50;
-export const LINE_HEIGHT = 4;  // Now used as widtwh for horizontal bars
-export const LINE_HEIGHT_ACTIVE =10;  // Now used as width for active horizontal bars
+export const LINE_HEIGHT = 4; // Now used as widtwh for horizontal bars
+export const LINE_HEIGHT_ACTIVE = 10; // Now used as width for active horizontal bars
 
-export const LINE_STEP = LINE_WIDTH + LINE_GAP;  // Now vertical step between bars
+export const LINE_STEP = LINE_WIDTH + LINE_GAP; // Now vertical step between bars
 export const MIN = 0;
-export const MAX_HEIGHT = LINE_COUNT * LINE_WIDTH + (LINE_COUNT - 1) * LINE_GAP;  // Total height of the vertical stack
+export const MAX_HEIGHT = LINE_COUNT * LINE_WIDTH + (LINE_COUNT - 1) * LINE_GAP; // Total height of the vertical stack
 
 // Controls scroll speed (higher = faster)
 // Set to 1 for no smoothing at all
@@ -41,7 +41,7 @@ export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
 
   const handleNavClick = (id: string) => {
     const element = document.getElementById(id);
-    element?.scrollIntoView({ behavior: 'smooth' });
+    element?.scrollIntoView({ behavior: "smooth" });
   };
 
   // // Auto-hide navPoints after 2 seconds
@@ -71,7 +71,7 @@ export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
 
   return (
     <div
-      className="fixed top-0 left-6 z-50  w-[40px] flex flex-col  justify-center h-[100vh]"
+      className="fixed top-0 md:left-6 z-50  w-[40px] flex flex-col  justify-center h-[100vh]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -79,14 +79,18 @@ export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
         className="relative "
         onPointerMove={onMouseMove}
         onPointerLeave={onMouseLeave}
-      >  <div className="absolute -bottom-[40px] left-[12px] text-white text-[7px] font-medium leading-none  -rotate-90 origin-bottom-left">
-        Scroll to Navigate
+      >
+        {" "}
+        <div className="absolute -bottom-[40px] left-[12px] text-white text-[7px] font-medium leading-none  -rotate-90 origin-bottom-left">
+          Scroll to Navigate
         </div>
         <div className="flex flex-col items-start" style={{ gap: LINE_GAP }}>
           {[...Array(LINE_COUNT)].map((_, i) => {
             const navPointIndex = navPointPositions.indexOf(i);
             const isNavPoint = navPointIndex !== -1;
-            const navPointId = isNavPoint ? navPoints[navPointIndex] : undefined;
+            const navPointId = isNavPoint
+              ? navPoints[navPointIndex]
+              : undefined;
 
             return (
               <div key={i} className="relative">
@@ -182,24 +186,26 @@ function NavPoint({
   const scaleX = useSpring(1, { damping: 45, stiffness: 600 });
   const centerY = index * LINE_STEP + LINE_WIDTH / 2;
 
-
-
   return (
     <motion.div
       ref={ref}
       className="absolute -top-2 z-50 left-4 bg-gray-900 text-gray-200 hover:bg-gray-200 hover:text-gray-800! font-normal cursor-pointer pointer-events-auto flex px-2 py-1 items-center justify-start rounded-xl"
       style={{
-
         width: LINE_HEIGHT_ACTIVE + 64, // Make it wider to accommodate text
         scaleX,
-
       }}
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
       transition={{
         opacity: { delay: navPointIndex * 0.05, duration: 0.2 },
-        x: { delay: navPointIndex * 0.05, duration: 0.3, type: "spring", stiffness: 300, damping: 25 },
+        x: {
+          delay: navPointIndex * 0.05,
+          duration: 0.3,
+          type: "spring",
+          stiffness: 300,
+          damping: 25,
+        },
         type: "spring",
         stiffness: 200,
         damping: 20,
@@ -299,7 +305,6 @@ export function useProximity(
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-
 export function useScrollY(max: number = MAX_HEIGHT) {
   const scrollY = useSpring(0, {
     stiffness: 500,
@@ -320,8 +325,8 @@ export function useScrollY(max: number = MAX_HEIGHT) {
       setTotalHeight(document.body.scrollHeight - window.innerHeight);
     };
     updateHeight();
-    window.addEventListener('resize', updateHeight);
-    return () => window.removeEventListener('resize', updateHeight);
+    window.addEventListener("resize", updateHeight);
+    return () => window.removeEventListener("resize", updateHeight);
   }, []);
 
   useMotionValueEvent(pageScrollY, "change", (latest) => {
@@ -405,7 +410,6 @@ export function Indicator({ y }: { y: MotionValue<number> }) {
         <path
           d="M6 3.54688L0.75 0.515786L0.75 6.57796L6 3.54688Z"
           fill="  var(--color-lime-500) "
-
         />
       </svg>
     </motion.div>

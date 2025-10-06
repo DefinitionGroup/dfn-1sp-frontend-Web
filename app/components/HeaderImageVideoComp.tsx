@@ -40,7 +40,7 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
 
   return (
     <motion.div
-      className={`absolute bg-black inset-0 ${className}`}
+      className={`absolute bg-black inset-0 overflow-hidden  ${className}`}
       initial={{ opacity: 0, scaleX: 0.9, y: 100 }}
       animate={{
         opacity: 1,

@@ -26,13 +26,25 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       className={`relative hidden md:grid  z-10 grid-cols-12 pt-5 mx-auto container ${className}`}
     >
       <div className="w-[90px] h-[90px] col-start-1 col-span-1 pt-2">
-        <Image
-          src={imageLogo}
-          alt="1SP Logo"
-          width={90}
-          height={90}
-          className="object-contain"
-        />
+        {" "}
+        <Link
+          className="hover:text-lime-400"
+          href={"/"}
+          onClick={(e) => {
+            e.preventDefault();
+            router.push("/", {
+              onTransitionReady: pageAnimation,
+            });
+          }}
+        >
+          <Image
+            src={imageLogo}
+            alt="1SP Logo"
+            width={90}
+            height={90}
+            className="object-contain"
+          />
+        </Link>
       </div>
       <motion.div
         initial={{

@@ -10,7 +10,7 @@ import {
 } from "motion/react";
 import Link from "next/link";
 import FrontNavOverlay from "./FrontNavOverlay";
-
+import Image from "next/image";
 /**
  * Menu items config
  */
@@ -23,6 +23,7 @@ interface HamburgerGradientMenuProps {
   items?: MenuItem[];
   buttonClassName?: string;
   panelClassName?: string;
+  color?: "light" | "dark"; // light = neutral-50 (default), dark = neutral-800
 }
 
 const DEFAULT_ITEMS: MenuItem[] = [
@@ -34,7 +35,8 @@ const DEFAULT_ITEMS: MenuItem[] = [
 
 export default function HamburgerGradientMenu({
   items = DEFAULT_ITEMS,
-  buttonClassName = "",
+  color = "light",
+  buttonClassName = "md:hidden",
   panelClassName = "",
 }: HamburgerGradientMenuProps) {
   const [open, setOpen] = useState(false);
@@ -72,7 +74,10 @@ export default function HamburgerGradientMenu({
       setTimeout(() => firstLinkRef.current?.focus(), 10);
     }
   }, [open]);
-
+  const imageLogo =
+    color === "dark"
+      ? "/ci/1sp-fulllogotype-blk.svg"
+      : "/ci/1sp-fulllogotype.svg";
   // Prevent body scroll when open
   useEffect(() => {
     if (open) {
@@ -93,7 +98,25 @@ export default function HamburgerGradientMenu({
         onClick={toggle}
         className={buttonClassName}
         ariaControls="gradient-menu-panel"
-      />
+      />{" "}
+      <Link
+        className="hover:text-lime-400"
+        href={"/"}
+        onClick={(e) => {
+          e.preventDefault();
+          router.push("/", {
+            onTransitionReady: pageAnimation,
+          });
+        }}
+      >
+        <Image
+          src={imageLogo}
+          alt="1SP Logo"
+          width={90}
+          height={90}
+          className="object-contain md:hidden absolute top-0 right-10 w-[90px] h-[90px] "
+        />
+      </Link>
       <AnimatePresence>
         {open && (
           <OverlayRoot
@@ -137,7 +160,8 @@ function OverlayRoot({
       transition={{ duration: 0.0135, ease: [0.59, 0, 0.35, 1] }}
       aria-modal="true"
       role="dialog"
-      aria-label="Main navigation overlay">
+      aria-label="Main navigation overlay"
+    >
       {/* Fullscreen animated gradient backdrop */}
       <FullscreenGradientBackdrop onClose={onClose} />
       <motion.div
@@ -149,7 +173,8 @@ function OverlayRoot({
         initial={{ y: 40, opacity: 0, scale: 0.975 }}
         animate={{ y: 0, opacity: 1, scale: 1 }}
         exit={{ y: 20, opacity: 0, scale: 0.98, transition: { duration: 0.1 } }}
-        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}>
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+      >
         <nav className="flex container mx-auto  justify-start gap-8 ">
           {items.map((item, idx) => (
             <motion.div
@@ -160,12 +185,14 @@ function OverlayRoot({
                 delay: 0.08 + idx * 0.05,
                 duration: 0.5,
                 ease: [0.25, 0.46, 0.45, 0.94],
-              }}>
+              }}
+            >
               <Link
                 href={item.href}
                 ref={idx === 0 ? firstLinkRef : undefined}
                 className="text-xl md:text-2xl font-medium tracking-tight text-neutral-50 hover:text-lime-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 rounded-sm transition-colors"
-                onClick={onClose}>
+                onClick={onClose}
+              >
                 {item.label}
               </Link>
             </motion.div>
@@ -178,7 +205,8 @@ function OverlayRoot({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 0.8, y: 0 }}
           whileHover={{ opacity: 1 }}
-          transition={{ delay: 0.25 }}>
+          transition={{ delay: 0.25 }}
+        >
           +
         </motion.button>
       </motion.div>
@@ -218,7 +246,8 @@ function FullscreenGradientBackdrop({ onClose }: { onClose: () => void }) {
     <div
       className="absolute inset-0 pointer-events-auto"
       aria-hidden="true"
-      onClick={onClose}>
+      onClick={onClose}
+    >
       {/* Dim layer */}
       <motion.div
         className="absolute inset-0 bg-neutral-950"
@@ -300,20 +329,21 @@ function HamburgerButton({
       aria-expanded={open}
       aria-controls={ariaControls}
       onClick={onClick}
-      className={`relative top-14 left-4 w-12 h-12 flex items-center justify-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 rounded-md ${className}`}>
+      className={`relative top-14 left-4 w-12 h-12 flex items-center justify-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 rounded-md ${className}`}
+    >
       <span className="sr-only">Menu</span>
       {[0, 1, 2].map((i) => (
         <motion.span
           key={i}
-          className="absolute h-[2px] w-6 bg-neutral-100 dark:bg-neutral-100 rounded-full"
+          className="absolute top-0  h-[1.5px] w-6 bg-neutral-100 dark:bg-neutral-100 rounded-full"
           initial={false}
           animate={
             open
               ? i === 0
                 ? { y: 0, rotate: 45 }
                 : i === 1
-                ? { opacity: 0 }
-                : { y: 0, rotate: -45 }
+                  ? { opacity: 0 }
+                  : { y: 0, rotate: -45 }
               : { y: (i - 1) * 6, rotate: 0, opacity: 1 }
           }
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}

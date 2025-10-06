@@ -6,17 +6,17 @@ import { useState } from "react";
 
 export default function TypewriterChangeContentExample({
   text = [
-"",
-"One.",
-"Shared.",
-"Passion.",
-"Gaming.",
-"Technology.",
-"The Superagency.",
-"Consumer",
-"electronics.",
-"Gaming.",
-"Technology",
+    "",
+    "One.",
+    "Shared.",
+    "Passion.",
+    "Gaming.",
+    "Technology.",
+    "The Superagency.",
+    "Consumer",
+    "electronics.",
+    "Gaming.",
+    "Technology",
   ],
 }: {
   text?: string[];
@@ -36,7 +36,8 @@ export default function TypewriterChangeContentExample({
         onComplete={() => {
           delay(() => setIndex(wrap(0, text.length, index + 1)), 1);
         }}
-        textStyle={animatingText}>
+        textStyle={animatingText}
+      >
         {text[index + 1]}
       </Typewriter>
     </h2>
@@ -66,12 +67,14 @@ const label: React.CSSProperties = {
 const animatingText: React.CSSProperties = {
   fontSize: "calc(24px + 5vw)",
   fontWeight: 400,
-  lineHeight: 1.25,
+  lineHeight: "calc(44px + 5vw)",
   letterSpacing: "-0.145rem",
 };
 
 const cursor: React.CSSProperties = {
   background: "#66ff00",
-  width: 8, borderRadius: 4,marginLeft: 4,
-  minHeight:"calc(24px + 3.5vw)",
+  width: 8,
+  borderRadius: 4,
+  marginLeft: 4,
+  minHeight: "calc(24px + 3.8vw)",
 };
