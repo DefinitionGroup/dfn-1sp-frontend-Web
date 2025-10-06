@@ -7,7 +7,7 @@ import StaggeredSlideUp from "./StaggeredSlideUp";
 import Link from "next/link";
 import { useTransitionRouter } from "next-view-transitions";
 export default function ExpandableCards() {
-    const router = useTransitionRouter();
+  const router = useTransitionRouter();
   const [active, setActive] = useState<(typeof cards)[number] | boolean | null>(
     null
   );
@@ -39,7 +39,10 @@ export default function ExpandableCards() {
         {active && typeof active === "object" && (
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity:0.2 , transition: { type: "spring", stiffness: 20}, }}
+            animate={{
+              opacity: 0.2,
+              transition: { type: "spring", stiffness: 20 },
+            }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/50 h-full backdrop-blur-lg w-full z-10"
           />
@@ -48,34 +51,13 @@ export default function ExpandableCards() {
       <AnimatePresence>
         {active && typeof active === "object" ? (
           <div className="fixed inset-0  grid place-items-center z-[100]">
-            <motion.button
-              key={`button-${active.title}-${id}`}
-              layout
-              initial={{
-                opacity: 1,
-              }}
-              animate={{
-                opacity: 1,
-
-              }}
-              exit={{
-                opacity: 1,
-                transition: {
-                  duration: 0.05,
-                },
-              }}
-              className="flex border-red-500 border absolute top-2 right-2 lg:hidden items-center overflow-hidden  justify-around   rounded-full h-6 w-6"
-              onClick={() => setActive(null)}>
-              <CloseIcon />
-            </motion.button>
             <motion.div
               layoutId={`card-${active.title}-${id}`}
-                       initial={{
+              initial={{
                 opacity: 0,
               }}
               animate={{
                 opacity: 1,
-
               }}
               exit={{
                 opacity: 0,
@@ -83,12 +65,23 @@ export default function ExpandableCards() {
                   duration: 0.05,
                 },
               }}
-              transition={{  type: "spring", visualDuration: 0.3, bounce: 0.2 }}
+              transition={{ type: "spring", visualDuration: 0.3, bounce: 0.2 }}
               ref={ref}
-              className="w-full max-w-[900px] min-h-[70vh]  relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col  bg-neutral-900 dark:bg-neutral-900  shadow-2xl overflow-hidden">
+              className="w-full max-w-[900px] min-h-[70vh]  relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col  bg-neutral-900 dark:bg-neutral-900  shadow-2xl overflow-hidden"
+            >
+              {" "}
+              <motion.button
+                onClick={() => setActive(null)}
+                className="absolute top-2 right-2 z-50 cursor-pointer"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <CloseIcon />
+              </motion.button>
               <motion.div
                 className="w-full h-100   sm:rounded-t-xl opacity-80 object-cover object-top"
-                layoutId={`image-${active.title}-${id}`}>
+                layoutId={`image-${active.title}-${id}`}
+              >
                 <img
                   width={100}
                   height={500}
@@ -97,59 +90,51 @@ export default function ExpandableCards() {
                   className="w-full h-full absolute min-h-[70vh] sm:rounded-t-xl opacity-50 object-cover object-top"
                 />
               </motion.div>
-              <div className="flex justify-between border-t absolute  items-start m-8 pt-8 z-10 ">
-
-                <div className="flex justify-between relative top-0 flex-col items-start   z-10 left-0">         <motion.img
-                layoutId={`logo-${active.title}-${id}`}
-                src={active.logo}
-                alt={active.title}
-                className="w-24 h-20 object-contain "
-                />
+              <div className="flex justify-between absolute  items-start m-8 pt-8 z-10 ">
+                <div className="flex justify-between relative top-0 flex-col items-start   z-10 left-0">
+                  {" "}
+                  <motion.img
+                    layoutId={`logo-${active.title}-${id}`}
+                    src={active.logo}
+                    alt={active.title}
+                    className="w-24 h-20 object-contain "
+                  />
                   <div className="">
                     <motion.p
                       layoutId={`description-${active.description}-${id}`}
-                      className="text-neutral-100 text-5xl  dark:text-neutral-400 mb-8">
+                      className="text-neutral-100 text-5xl  dark:text-neutral-400 mb-8"
+                    >
                       {active.description}
                     </motion.p>
                     <motion.h3
                       layoutId={`title-${active.title}-${id}`}
-                      className=" text-white text-xl max-w-2/3 dark:text-neutral-200">
+                      className=" text-white text-xl max-w-2/3 dark:text-neutral-200"
+                    >
                       {active.title}
                     </motion.h3>
                   </div>
-
                   <motion.div
-                    transition={{ duration: 0.3 , delay: 0.5}}
+                    transition={{ duration: 0.3, delay: 0.5 }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="text-white text-sm md:text-sm lg:text-base mt-8  max-w-1/2 mb-2 md:h-fit pb-8 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]">
+                    className="text-white text-sm md:text-sm lg:text-base mt-8  max-w-1/2 mb-2 md:h-fit pb-8 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
+                  >
                     {typeof active.content === "function"
                       ? active.content()
                       : active.content}
                   </motion.div>
                   <motion.a
-                     transition={{ duration: 0.3 , delay: 0.7}}
+                    transition={{ duration: 0.3, delay: 0.7 }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     href={active.ctaLink}
                     target="_blank"
-                    className="px-4 py-3 text-xs font-bold bg-lime-500 rounded-xs hover:bg-black transition-all duration-500 text-white">
+                    className="px-4 py-3 text-xs font-bold bg-lime-500 rounded-xs hover:bg-black transition-all duration-500 text-white"
+                  >
                     {active.ctaText}
                   </motion.a>
-
-           <Link
-              className="hover:text-lime-400"
-              href={"/whatwedo"}
-              onClick={(e) => {
-                e.preventDefault();
-                router.push("/whatwedo", {
-                  onTransitionReady: pageAnimation,
-                });
-              }}>
-              Our Family
-            </Link>
                 </div>
               </div>
             </motion.div>
@@ -157,16 +142,18 @@ export default function ExpandableCards() {
         ) : null}
       </AnimatePresence>
       <ul className=" w-full ">
-        <StaggeredSlideUp className=" grid grid-cols-4  gap-1  mx-auto h-full min-h-full w-full ">
+        <StaggeredSlideUp className=" grid grid-cols-2 md:grid-cols-4  gap-1  mx-auto h-full min-h-full w-full ">
           {cards.map((card, index) => (
             <motion.div
               layoutId={`card-${card.title}-${id}`}
               key={`card-${card.title}-${id}`}
               onClick={() => setActive(card)}
-              className=" col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[250px] rounded-xs group/card overflow-hidden h-[200px]  cursor-pointer">
+              className=" col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[250px] rounded-xs group/card overflow-hidden h-[200px]  cursor-pointer"
+            >
               <motion.div
                 layoutId={`image-${card.title}-${id}`}
-                className="col-start-1 col-span-1 row-start-1 bg-black h-full min-h-full  overflow-hidden">
+                className="col-start-1 col-span-1 row-start-1 bg-black h-full min-h-full  overflow-hidden"
+              >
                 <img
                   width={1000}
                   height={1000}
@@ -185,7 +172,8 @@ export default function ExpandableCards() {
 
                 <motion.h3
                   layoutId={`title-${card.title}-${id}`}
-                  className="font-medium mt-2  text-sm leading-snug tracking-tight text-neutral-100 dark:text-neutral-200 text-center md:text-left">
+                  className="font-medium mt-2  text-sm leading-snug tracking-tight text-neutral-100 dark:text-neutral-200 text-center md:text-left"
+                >
                   {card.title}
                 </motion.h3>
               </div>
@@ -200,6 +188,7 @@ export default function ExpandableCards() {
 export const CloseIcon = () => {
   return (
     <motion.svg
+      whileHover={{ rotate: 90 }}
       initial={{
         opacity: 0,
       }}
@@ -221,7 +210,8 @@ export const CloseIcon = () => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="h-4 w-4 text-black">
+      className="h-6 w-6 text-white"
+    >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M18 6l-12 12" />
       <path d="M6 6l12 12" />
@@ -240,7 +230,10 @@ const cards = [
     content: () => {
       return (
         <p>
- We help world-class brands boost sales with cutting-edge marketing. By harnessing PR, social media, online retail, tech innovation, and digital POS, we drive awareness, reach, sell-through, and lasting customer connections at every touchpoint.
+          We help world-class brands boost sales with cutting-edge marketing. By
+          harnessing PR, social media, online retail, tech innovation, and
+          digital POS, we drive awareness, reach, sell-through, and lasting
+          customer connections at every touchpoint.
         </p>
       );
     },
@@ -255,7 +248,9 @@ const cards = [
     content: () => {
       return (
         <p>
-          Whether its a full funnel product campaign, an interactive retail experience or a fun piece of theatre… we have the people, the skills and all the tools to make it happen all under one roof.
+          Whether its a full funnel product campaign, an interactive retail
+          experience or a fun piece of theatre… we have the people, the skills
+          and all the tools to make it happen all under one roof.
         </p>
       );
     },
@@ -270,7 +265,10 @@ const cards = [
     content: () => {
       return (
         <p>
-       We create tailored brand experiences that deliver results. With full-service solutions and innovations like video consulting and social selling, we help brands win at the point of sale — across Europe and beyond.
+          We create tailored brand experiences that deliver results. With
+          full-service solutions and innovations like video consulting and
+          social selling, we help brands win at the point of sale — across
+          Europe and beyond.
         </p>
       );
     },
@@ -286,7 +284,9 @@ const cards = [
     content: () => {
       return (
         <p>
-We empower leading creators to tell authentic stories. By partnering with global brands and focusing on communities, we spark engagement, build awareness, and drive sales through genuine connections.
+          We empower leading creators to tell authentic stories. By partnering
+          with global brands and focusing on communities, we spark engagement,
+          build awareness, and drive sales through genuine connections.
         </p>
       );
     },
@@ -301,7 +301,10 @@ We empower leading creators to tell authentic stories. By partnering with global
     content: () => {
       return (
         <p>
-From strategy and planning to audience insights and execution, Renaissance brings together expert talent across every discipline to craft PR and marketing campaigns that resonate and perform. We ensure your brand is always positioned to make the most of every opportunity.
+          From strategy and planning to audience insights and execution,
+          Renaissance brings together expert talent across every discipline to
+          craft PR and marketing campaigns that resonate and perform. We ensure
+          your brand is always positioned to make the most of every opportunity.
         </p>
       );
     },
@@ -316,14 +319,17 @@ From strategy and planning to audience insights and execution, Renaissance bring
     content: () => {
       return (
         <p>
-From complex 3D models and emotive renderings to animations, AR, and VR apps — every 1SP XR Studio project reflects the passion and expertise of our highly motivated team.
+          From complex 3D models and emotive renderings to animations, AR, and
+          VR apps — every 1SP XR Studio project reflects the passion and
+          expertise of our highly motivated team.
         </p>
       );
     },
   },
   {
     description: "promoPers",
-    title: "Combining  exceptional brand products with extraordinary personalities.",
+    title:
+      "Combining  exceptional brand products with extraordinary personalities.",
     src: "/units/PROMOPERS/promopers_cover-image.jpg",
     logo: "/units/PROMOPERS/promopers_logo.svg",
     ctaText: "PromoPers",
@@ -331,7 +337,11 @@ From complex 3D models and emotive renderings to animations, AR, and VR apps —
     content: () => {
       return (
         <p>
-Our mission is centered on your vision, values, and products — whether it’s new campaigns, sales promotions, or tailored personnel solutions. Trusted by long-standing clients for our transparency, proximity, and flexibility, we remain committed to driving your success.        </p>
+          Our mission is centered on your vision, values, and products — whether
+          it’s new campaigns, sales promotions, or tailored personnel solutions.
+          Trusted by long-standing clients for our transparency, proximity, and
+          flexibility, we remain committed to driving your success.{" "}
+        </p>
       );
     },
   },
@@ -345,13 +355,18 @@ Our mission is centered on your vision, values, and products — whether it’s 
     content: () => {
       return (
         <p>
-New Fluence enhances brand credibility and visibility by partnering with authentic content creators. We make your brand digitally visible, driving growth and success through simple, targeted, and effective promotion.  </p>
+          New Fluence enhances brand credibility and visibility by partnering
+          with authentic content creators. We make your brand digitally visible,
+          driving growth and success through simple, targeted, and effective
+          promotion.{" "}
+        </p>
       );
     },
   },
   {
     description: "Fijak",
-    title: "End-to-end expertise in design, production, logistics, and retail activation",
+    title:
+      "End-to-end expertise in design, production, logistics, and retail activation",
     src: "/units/FIJAK/fijak_cover-image.jpg",
     logo: "/units/FIJAK/fijak_logo.svg",
     ctaText: "",
@@ -359,7 +374,10 @@ New Fluence enhances brand credibility and visibility by partnering with authent
     content: () => {
       return (
         <p>
-With over 30 years of experience, we take ideas from concept to the point of sale — delivering seamless brand experiences that connect with customers. </p>
+          With over 30 years of experience, we take ideas from concept to the
+          point of sale — delivering seamless brand experiences that connect
+          with customers.{" "}
+        </p>
       );
     },
   },

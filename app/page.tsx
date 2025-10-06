@@ -180,13 +180,13 @@ export default function Home() {
         <div className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta">
           <div className="z-1 grid col-span-12 py-32  col-start-1 container mx-auto row-start-1 grid-cols-12 ">
             <Badgemodule
-              className="col-span-2 sticky top-0"
+              className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky top-0 "
               text="Laser Focused"
               subtitle="Our Services"
               numberEl={"002"}
             />
 
-            <div className="col-span-9 col-start-3">
+            <div className="col-span-9 col-start-2 mt-12 md:mt-0md:col-start-3">
               <ScrollHighlight />
             </div>
           </div>
@@ -201,12 +201,12 @@ export default function Home() {
         <GridBackground delay={0.2} staggerDelay={0.06} />
         <div className="z-1 grid col-span-12 col-start-1 pt-32 row-start-1 grid-cols-12 ">
           <Badgemodule
-            className="col-span-2 sticky top-0"
+            className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky top-0 "
             text="Experts"
             subtitle="Services"
             numberEl={"003"}
           />
-          <header className="col-span-85 col-start-5 row-start-1 border-t border-gray-500 ">
+          <header className="col-span-12 col-start-2 md:mt-0 mt-12 md:row-start-1 border-t border-gray-500 ">
             {/* Headlines */}
             <div className="flex flex-col items-start justify-start w-full">
               {/* Main Headline */}
@@ -224,7 +224,7 @@ export default function Home() {
             </div>
           </header>
 
-          <div className="col-span-8 col-start-5  border-gray-500 pb-8 row-start-2 ">
+          <div className="col-span-8 col-start-2 md:col-start-5  border-gray-500 pb-8 md:row-start-2 ">
             <ListContainerComponent>
               <ListItemComponent
                 size="small"
@@ -250,7 +250,7 @@ export default function Home() {
               </ListItemComponent>
             </ListContainerComponent>
           </div>
-          <div className="col-span-12 col-start-5  mt-8 mb-12 ">
+          <div className="col-span-12 md:col-start-5  mt-8 mb-12 ">
             <ExpandableCards />
           </div>
         </div>

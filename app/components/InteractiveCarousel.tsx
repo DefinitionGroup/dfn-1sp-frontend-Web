@@ -1,7 +1,13 @@
 "use client";
 
-import { motion, AnimatePresence, PanInfo } from "motion/react";
-import { useState, useEffect } from "react";
+import {
+  motion,
+  AnimatePresence,
+  PanInfo,
+  useMotionValue,
+  useTransform,
+} from "motion/react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import StaggeredFadeIn from "./StaggeredFadeIn";
 import Link from "next/link";
@@ -90,6 +96,10 @@ export default function InteractiveCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const dragX = useMotionValue(0);
+  const [isScrollable, setIsScrollable] = useState(false);
+  const stripRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isAutoPlaying) return;
@@ -101,6 +111,25 @@ export default function InteractiveCarousel() {
 
     return () => clearInterval(interval);
   }, [isAutoPlaying]);
+
+  useEffect(() => {
+    const checkScrollable = () => {
+      if (stripRef.current && containerRef.current) {
+        const isMobile = window.innerWidth < 768; // Mobile breakpoint
+        if (isMobile) {
+          const stripWidth = stripRef.current.scrollWidth;
+          const containerWidth = containerRef.current.clientWidth;
+          setIsScrollable(stripWidth > containerWidth);
+        } else {
+          setIsScrollable(false);
+        }
+      }
+    };
+
+    checkScrollable();
+    window.addEventListener("resize", checkScrollable);
+    return () => window.removeEventListener("resize", checkScrollable);
+  }, []);
 
   const slideVariants = {
     enter: (direction: number) => ({
@@ -153,7 +182,7 @@ export default function InteractiveCarousel() {
 
   return (
     <section className="  ">
-      <div className="container  mx-auto w-full ">
+      <div ref={containerRef} className="container  mx-auto w-full ">
         <motion.div
           className="text-center "
           initial={{ opacity: 1, y: 50 }}
@@ -352,7 +381,10 @@ export default function InteractiveCarousel() {
         </div>
 
         {/* Thumbnail Strip */}
-        <div className="flex justify-center mt-8 space-x-4 pt-4overflow-x-auto pb-4">
+        <div
+          ref={stripRef}
+          className={`flex justify-center mt-8 space-x-4 pt-4 pb-4 ${isScrollable ? "overflow-x-auto" : ""}`}
+        >
           {carouselItems.map((item, index) => (
             <motion.button
               key={item.id}
