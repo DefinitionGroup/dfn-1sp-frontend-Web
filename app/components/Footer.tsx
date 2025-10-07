@@ -26,10 +26,10 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
   const legal = ["Disclaimer", "Data Protection", "Terms of Use"];
 
   return (
-    <footer className={`bg-neutral-900 text-neutral-200 py-8 ${className}`}>
+    <footer className={`bg-violet-700 text-neutral-200 py-8 ${className}`}>
       <div className="container mx-auto px-4">
         {/* Top border line */}
-        <div className="w-full h-px bg-neutral-600 mb-8"></div>
+        <div className="w-full h-px bg-neutral-100 mb-8"></div>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 min-h-[163px]">
           {/* Company Name */}
           <div className="lg:col-span-3 flex flex-col gap-3">
@@ -49,7 +49,8 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
                 {services.left.map((service, index) => (
                   <p
                     key={index}
-                    className="text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer">
+                    className="text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer"
+                  >
                     {service}
                   </p>
                 ))}
@@ -58,7 +59,8 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
                 {services.right.map((service, index) => (
                   <p
                     key={index}
-                    className="text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer">
+                    className="text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer"
+                  >
                     {service}
                   </p>
                 ))}
@@ -73,7 +75,8 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
               {cases.map((caseItem, index) => (
                 <p
                   key={index}
-                  className="text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer">
+                  className="text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer"
+                >
                   {caseItem}
                 </p>
               ))}
@@ -87,7 +90,8 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
               {aboutUs.map((item, index) => (
                 <p
                   key={index}
-                  className="text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer">
+                  className="text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer"
+                >
                   {item}
                 </p>
               ))}
@@ -101,7 +105,8 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
               {legal.map((item, index) => (
                 <p
                   key={index}
-                  className="text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer">
+                  className="text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer"
+                >
                   {item}
                 </p>
               ))}

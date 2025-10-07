@@ -72,7 +72,7 @@ export default function ExpandableCards2() {
               className="w-full max-w-[900px] min-h-[70vh]  relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col  bg-neutral-900 dark:bg-neutral-900  shadow-2xl overflow-hidden"
             >
               <motion.div
-                className="w-full h-100   sm:rounded-t-xl opacity-80 object-cover object-top"
+                className="w-full h-1/2  sm:rounded-t-xl opacity-80 object-cover object-top"
                 layoutId={`image-${active.title}-${id}`}
               >
                 <img
@@ -80,14 +80,14 @@ export default function ExpandableCards2() {
                   height={500}
                   src={active.src}
                   alt={active.title}
-                  className="w-full h-100 absolute  sm:rounded-t-xl opacity-50 object-cover object-top"
+                  className="w-full h-1/2 absolute  sm:rounded-t-xl opacity-50 object-cover object-top"
                 />
               </motion.div>{" "}
               <motion.img
                 layoutId={`logo-${active.title}-${id}`}
                 src={active.logo}
                 alt={active.title}
-                className="w-24 h-20 object-contain absolute top-24 left-8"
+                className="w-24 h-20 object-contain  top-24 left-8"
               />
               <div className="flex justify-between   h-full border-neutral-100 items-start m-8 pt-8 z-10 ">
                 <div className="flex justify-between items-start   z-10 left-0">
@@ -139,36 +139,30 @@ export default function ExpandableCards2() {
               layoutId={`card-${card.title}-${id}`}
               key={`card-${card.title}-${id}`}
               onClick={() => setActive(card)}
-              className=" col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[240px] rounded-lg overflow-hidden hover:scale-105 transition duration-200 h-[100px] cursor-pointer"
+              className=" col-span-1 grid  grid-cols-1 grid-rows-2 row-span-1 min-h-[240px] rounded-lg overflow-hidden hover:scale-105 transition duration-200 h-[100px] cursor-pointer"
             >
               <motion.div
                 layoutId={`image-${card.title}-${id}`}
-                className="col-start-1 col-span-1 row-start-1 bg-black h-full  rounded-lg overflow-hidden"
+                className="col-start-1 col-span-1 row-start-1 row-span-1 bg-black  rounded-t-lg overflow-hidden"
               >
                 <img
                   width={1000}
                   height={1000}
                   src={card.src}
                   alt={card.title}
-                  className="w-full h-full object-cover  object-top opacity-25"
+                  className="w-full  object-cover  object-top opacity-100"
                 />
               </motion.div>
-              <div className="col-start-1 border col-span-1 opacity-100 row-start-1 p-8 z-1">
-                <motion.img
-                  layoutId={`logo-${card.title}-${id}`}
-                  src={card.logo}
-                  alt={card.title}
-                  className="w-7 h-7 mb-16 object-contain"
-                />
+              <div className="col-start-1 bg-gray-200 col-span-1 opacity-100 row-start-2 p-4 z-1">
                 <motion.p
                   layoutId={`description-${card.description}-${id}`}
-                  className="text-neutral-100 text-xl dark:text-neutral-400  md:text-left"
+                  className="text-violet-700 text-xl dark:text-neutral-400  md:text-left"
                 >
                   {card.description}
                 </motion.p>
                 <motion.h3
                   layoutId={`title-${card.title}-${id}`}
-                  className="font-medium text-sm text-neutral-100 dark:text-neutral-200 text-center md:text-left"
+                  className="font-medium text-sm text-neutral-700 dark:text-neutral-200 text-center md:text-left"
                 >
                   {card.title}
                 </motion.h3>
