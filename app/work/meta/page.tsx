@@ -273,7 +273,7 @@ export default function Home() {
               </p>
             </StaggeredSlideUp>
           </div>
-          <div className="col-span-5 col-start-3 mt-8 border-t border-white pt-4">
+          <div className="col-span-5 col-start-3 mt-8   border-white pt-4">
             <ListContainerComponent>
               <ListItemComponent size="small" fontWeight="normal">
                 Our Store revamp has delivered strong results; expanding reach,
@@ -558,7 +558,7 @@ export default function Home() {
           />
         </div>
         <div className="col-span-12 container  col-start-3 row-start-1 grid grid-cols-10 pt-32  ">
-          <header className="col-span-3 col-start-1  border-t p-4">
+          <header className="col-span-3 col-start-1    p-4">
             {/* Headlines */}
             <div className="flex flex-col lg:gap-8 items-start justify-start w-full">
               {/* Main Headline */}
@@ -573,7 +573,7 @@ export default function Home() {
             </div>
           </header>
 
-          <div className="col-span-6 grid  grid-cols-12 col-start-4 gap-8  border-t pt-4  ">
+          <div className="col-span-6 grid  grid-cols-12 col-start-4 gap-8    pt-4  ">
             <header className="col-span-8 col-start-1  ">
               <div className="flex flex-col items-start justify-start w-full ">
                 {/* Main Headline */}

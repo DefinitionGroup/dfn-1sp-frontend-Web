@@ -12,7 +12,7 @@ const FooterBottom = () => {
   };
 
   return (
-    <div className="bg-neutral-900 text-gray-400 border-t pb-8 border-gray-800">
+    <div className="bg-neutral-900 text-gray-400   pb-8 border-gray-800">
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="flex flex-col lg:flex-row justify-between items-start gap-8 lg:gap-24">
           {/* Social Media Icons */}

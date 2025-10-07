@@ -144,7 +144,7 @@ export default function Home() {
           />
         </div>
         <div className="col-span-12 container col-start-3 row-start-1 grid grid-cols-12 gap-4  pt-32  ">
-          <header className="col-span-3 col-start-1  border-t ">
+          <header className="col-span-3 col-start-1    ">
             {/* Headlines */}
             <div className="flex flex-col lg:gap-8 items-start justify-start w-full">
               {/* Main Headline */}
@@ -159,7 +159,7 @@ export default function Home() {
             </div>
           </header>
 
-          <div className="col-span-8 col-start-4  border-t pt-8  ">
+          <div className="col-span-8 col-start-4    pt-8  ">
             <ListContainerComponent>
               <ListItemComponent size="small" fontWeight="normal" color="black">
                 We are 350 Experts.

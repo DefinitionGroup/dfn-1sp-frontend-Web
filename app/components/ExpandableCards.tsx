@@ -136,13 +136,13 @@ export default function ExpandableCards() {
         ) : null}
       </AnimatePresence>
       <ul className=" w-full ">
-        <StaggeredSlideUp className=" grid grid-cols-2 md:grid-cols-4  gap-1  mx-auto h-full min-h-full w-full ">
+        <StaggeredSlideUp className=" grid grid-cols-2 md:grid-cols-4  gap-4  mx-auto h-full min-h-full w-full ">
           {cards.map((card, index) => (
             <motion.div
               layoutId={`card-${card.title}-${id}`}
               key={`card-${card.title}-${id}`}
               onClick={() => setActive(card)}
-              className=" col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[250px] rounded-xl group/card overflow-hidden h-[200px]  cursor-pointer"
+              className=" col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[250px] rounded-4xl group/card  h-[200px] overflow-clip cursor-pointer"
             >
               <motion.div
                 layoutId={`image-${card.title}-${id}`}

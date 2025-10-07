@@ -92,7 +92,7 @@ export default function Button({
         {/* Loading Spinner */}
         {isLoading && (
           <motion.div
-            className="w-3 h-3 border border-current border-t-transparent rounded-full inline-block mr-2"
+            className="w-3 h-3 border border-current  -transparent rounded-full inline-block mr-2"
             animate={{ rotate: 360 }}
             transition={{
               duration: 1,

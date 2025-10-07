@@ -113,7 +113,7 @@ export const TextHeadlineCombo: React.FC<TextHeadlineComboProps> = ({
         {eyebrow && (
           <motion.span
             {...baseMotion(0)}
-            className={`tracking-widest uppercase ${sizes.eyebrow} font-semibold text-violet-500/90`}
+            className={`tracking-widest uppercase ${sizes.eyebrow} font-semibold text-violet-700/90`}
           >
             {eyebrow}
           </motion.span>

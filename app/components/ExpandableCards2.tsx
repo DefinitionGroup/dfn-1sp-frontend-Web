@@ -89,7 +89,7 @@ export default function ExpandableCards2() {
                 alt={active.title}
                 className="w-24 h-20 object-contain absolute top-24 left-8"
               />
-              <div className="flex justify-between border-t h-full border-neutral-100 items-start m-8 pt-8 z-10 ">
+              <div className="flex justify-between   h-full border-neutral-100 items-start m-8 pt-8 z-10 ">
                 <div className="flex justify-between items-start   z-10 left-0">
                   <div className="">
                     <motion.p

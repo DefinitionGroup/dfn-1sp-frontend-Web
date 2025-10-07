@@ -166,7 +166,7 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.5, delay: baseDelay }}
-                className="uppercase tracking-widest text-xs font-bold text-violet-500"
+                className="uppercase tracking-widest text-xs font-bold text-violet-700"
               >
                 {eyebrow}
               </motion.span>

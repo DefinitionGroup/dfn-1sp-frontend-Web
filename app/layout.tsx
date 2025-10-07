@@ -15,6 +15,18 @@ const plecnik = localFont({
   weight: "50 1000",
 });
 
+const plecnikBold = localFont({
+  src: [
+    {
+      path: "./fonts/7760PlecnikBoldItalic.woff2",
+      style: "bold",
+    },
+  ],
+  variable: "--font-plecnikbold",
+  display: "swap",
+  weight: "50 1000",
+});
+
 const nyghtserif = localFont({
   src: [
     {

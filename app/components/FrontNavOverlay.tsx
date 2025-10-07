@@ -106,7 +106,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             className={`${textColor} text-xxs leading-compress font-bold`}
           ></span>
           <span
-            className={`${textColor} text-xxs leading-compress font-bold hover:text-violet-500`}
+            className={`${textColor} text-xxs leading-compress font-bold hover:text-violet-700`}
           >
             {" "}
             <Link

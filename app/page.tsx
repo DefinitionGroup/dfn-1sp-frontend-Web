@@ -20,12 +20,14 @@ import PeopleShowcaseHero from "./components/PeopleShowcaseHero";
 import ScrollHighlight from "./components/ScrollHighlight";
 import StaggeredSlideUp from "./components/StaggeredSlideUp";
 import TypewriterChangeContentExample from "./components/TyperwriterHeadline";
-
+import CaseGallery from "./components/CaseGallery";
 export default function Home() {
   const typewriterref = useRef(null);
   const isInView = useInView(typewriterref);
   const [navPoints, setNavPoints] = useState<string[]>([]);
+  const [activeFilter, setActiveFilter] = useState<string>("All");
 
+  const filters = ["All", "POS", "Marketing", "Social", "Design", "Web"];
   // Function to collect all IDs from the page
   const collectPageIds = () => {
     // Wait for the DOM to be fully rendered
@@ -68,7 +70,7 @@ export default function Home() {
 
   return (
     <>
-      <section className="relative h-[95vh] overflow-hidden">
+      <section className="relative min-h-[76vh] overflow-hidden">
         <HamburgerGradientMenu />
 
         <LineMinimap navPoints={navPoints} />
@@ -77,36 +79,35 @@ export default function Home() {
         <HeaderImageVideoComp
           useVideo={true}
           opacity="opacity-50"
-          videoSrc="/video/1sp_home_header_16x9.mp4"
+          videoSrc="/video/FLZR_header_video.mp4"
           enableParallax={true}
         />
         {/* Navigation */}
         <FrontNavOverlay />
         {/* Hero Content */}
         <div id="Top" className=""></div>
-        <div className="relative z-10 container  mt-[30vh]  mx-auto p-16 md:p-0">
-          <StaggeredSlideUp className=" max-w-full flex flex-col md:gap-0">
-            <h1 className="text-neutral-50 uppercase pb-2 text-xs font-bold   md:max-w-1/3">
-              Welcome at 1SP
+        <div className="relative z-10 container  mt-[30vh]  mx-auto p-16 md:p-8">
+          <StaggeredSlideUp className=" max-w-full flex flex-col md:gap-4">
+            <h1 className="text-neutral-50 uppercase pb-2 text-lg font-bold   md:max-w-1/3">
+              FLZZR — a 1SP division
             </h1>
             <TypewriterChangeContentExample />
 
-            <p className="text-neutral-50 text-2xl mt-2 md:max-w-1/3">
-              We are group of several laser focused agencies. Each one with a
-              distinctive competetive edge.
+            <p className="text-neutral-50 text-2xl mt-2 md:max-w-2/3">
+              We are your experts for PoS promotion and trade marketing with
+              over 20 years of experience! Networked throughout Europe, we stage
+              unforgettable brand experiences, precisely tailored to your target
+              groups.
             </p>
             <p className="text-neutral-50 text-ls mt-8">
               Together we are{" "}
-              <span className="bg-gradient-to-r font-bold from-violet-300 to-violet-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r font-bold from-violet-400 to-violet-600 bg-clip-text text-transparent">
                 one Superagency.
               </span>
             </p>
           </StaggeredSlideUp>
         </div>
-        {/* Vertical Lines */}
-        {/* <div className="absolute top-0 left-[1321px] w-px h-full bg-neutral-50/50" />
-        <div className="absolute top-0 left-[1033px] w-px h-full bg-neutral-50/50" /> */}
-        {/* Corner Text */}
+
         <div className="absolute bottom-[42px] left-[24px] text-white text-xxs font-medium  -rotate-90 origin-bottom-left">
           SUPER*
         </div>
@@ -115,7 +116,33 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SHOWTIME  GALLERY */}
+      <div
+        id="Cases"
+        className="grid grid-cols-12 z-1 mx-auto container  mb-16  relative font-plecnik"
+      >
+        <div className="z-1 grid gap-8 col-span-12 py-16 px-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+          <div className="z-1 col-span-12 col-start-1 ">
+            {/* Filter Buttons */}
+            <div className="flex flex-wrap gap-4 mb-8 justify-center md:justify-start">
+              {filters.map((filter) => (
+                <button
+                  key={filter}
+                  onClick={() => setActiveFilter(filter)}
+                  className={`px-6 py-2 rounded-full text-xs font-medium uppercase transition-all duration-100 ${
+                    activeFilter === filter
+                      ? "bg-violet-500 text-black "
+                      : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
+                  }`}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
+            <CaseGallery activeFilter={activeFilter} />
+          </div>
+        </div>
+      </div>
+      {/* SHOWTIME  GALLERY
       <div
         id="Level Up!"
         className="grid grid-cols-6 md:grid-cols-12 z-1 mx-auto container  relative font-plecnik"
@@ -129,7 +156,7 @@ export default function Home() {
           />
 
           <div className="col-span-6 md:col-span-10 col-start-2 md:col-start-3 ">
-            <h2 className="text-4xl md:text-7xl  text-gray-800 pr-2 md:mb-2">
+            <h2 className="text-4xl md:text-7xl  text-violet-700 pr-2 md:mb-2">
               <Typewriter
                 ref={typewriterref}
                 play={isInView}
@@ -163,33 +190,7 @@ export default function Home() {
             <InteractiveCarousel />
           </div>
         </div>
-      </div>
-
-      {/* Skills Combo Section */}
-      <div
-        id="Skills"
-        className="z-1 mx-auto  min-h-[90vh] relative font-plecnik"
-      >
-        <HeaderImageVideoComp2
-          useVideo={true}
-          videoSrc="/video/14.mp4"
-          enableParallax={true}
-        />
-        <div className="grid grid-cols-12 z-1 mx-auto relative container font-plecnik">
-          <div className="z-1 grid col-span-12 py-32  col-start-1 container mx-auto row-start-1 grid-cols-12 ">
-            <Badgemodule
-              className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky top-0 "
-              text="Laser Focused"
-              subtitle="Our Services"
-              numberEl={"002"}
-            />
-
-            <div className="col-span-9 col-start-2 mt-12 md:mt-0 md:col-start-3">
-              <ScrollHighlight />
-            </div>
-          </div>
-        </div>{" "}
-      </div>
+      </div> */}
 
       {/* Portfolio Grid */}
       <div
@@ -203,7 +204,7 @@ export default function Home() {
             subtitle="Services"
             numberEl={"003"}
           />
-          <header className="col-span-11  md:col-span-4  col-start-2 md:col-start-3 md:mt-0 mt-12 md:row-start-1 border-t border-gray-500 ">
+          <header className="col-span-11  md:col-span-4  col-start-2 md:col-start-3 md:mt-0 mt-12 md:row-start-1   border-gray-500 ">
             {/* Headlines */}
             <div className="flex flex-col items-start justify-start ">
               {/* Main Headline */}
@@ -220,7 +221,7 @@ export default function Home() {
                   <h2 className="text text-gray-900 font-bold font-plecnik">
                     Super*
                   </h2>
-                  <h4 className="text-7xl  text-gray-900  tracking-tight font-plecnik">
+                  <h4 className="text-7xl  text-violet-700  tracking-tight font-plecnik">
                     Brrrroadside
                   </h4>
                   <h4 className=" mt-2 text-gray-700 font-medium leading- font-plecnik">
@@ -277,7 +278,7 @@ export default function Home() {
           />
         </div>
         <div className="col-span-12 container  md:col-start-3 md:row-start-1 grid grid-cols-10 pt-32  ">
-          <header className="md:col-span-3 col-start-1  col-span-12 border-t p-4">
+          <header className="md:col-span-3 col-start-1  col-span-12   p-4">
             {/* Headlines */}
             <div className="flex flex-col lg:gap-8 items-start justify-start w-full">
               {/* Main Headline */}
@@ -292,7 +293,7 @@ export default function Home() {
             </div>
           </header>
 
-          <div className="col-span-12 md:col-span-6 grid   grid-cols-12 md:col-start-4 gap-8  border-t pt-4  ">
+          <div className="col-span-12 md:col-span-6 grid   grid-cols-12 md:col-start-4 gap-8    pt-4  ">
             <header className="col-span-12 md:col-span-8 col-start-2  ">
               <div className="flex flex-col items-start justify-start w-full ">
                 {/* Main Headline */}

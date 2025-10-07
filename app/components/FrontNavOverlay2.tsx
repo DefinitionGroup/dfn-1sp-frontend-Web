@@ -23,9 +23,9 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       : "/flizzr/Logo_FLZR_color_RGB_500.png";
   return (
     <nav
-      className={`hidden relative md:grid place-items-start bg-white backdrop-blur-3xl p-8 rounded-2xl overflow-hidden z-10 grid-cols-12 pt-5 mx-auto container ${className}`}
+      className={`hidden  m-auto inset-x-0  md:flex fixed place-items-start mx-auto top-8  bg-white/50 backdrop-blur-sm px-8 rounded-full overflow-hidden z-10 py-3  container max-w-4xl ${className}`}
     >
-      <div className="w-[90px]  col-start-1 col-span-1 pt-2">
+      <div className="flex-shrink-0 pt-2">
         <Image
           src={imageLogo}
           alt="1SP Logo"
@@ -47,7 +47,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           duration: 0.5,
           delay: 0.4,
         }}
-        className="col-start-2 flex col-span-10 "
+        className="flex-1 flex justify-end"
       >
         <StaggeredSlideUp
           className="flex gap-16 items-center"
@@ -60,7 +60,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         >
           <span className={`${textColor}  text-xs leading-compress font-bold`}>
             <Link
-              className="hover:text-violet-400"
+              className="hover:text-violet-600"
               href={"/"}
               onClick={(e) => {
                 e.preventDefault();
@@ -75,7 +75,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           <span className={`${textColor} text-xs leading-compress font-bold`}>
             {" "}
             <Link
-              className="hover:text-violet-400"
+              className="hover:text-violet-600"
               href={"/cases"}
               onClick={(e) => {
                 e.preventDefault();
@@ -88,10 +88,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             </Link>
           </span>
           <span
-            className={`${textColor} text-xs leading-compress font-bold hover:text-violet-500`}
+            className={`${textColor} text-xs leading-compress font-bold hover:text-violet-700`}
           >
             <Link
-              className="hover:text-violet-400"
+              className="hover:text-violet-600"
               href={"/whatwedo"}
               onClick={(e) => {
                 e.preventDefault();
@@ -104,10 +104,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             </Link>
           </span>
           <span
-            className={`${textColor} text-xs leading-compress font-bold hover:text-violet-500`}
+            className={`${textColor} text-xs leading-compress font-bold hover:text-violet-700`}
           >
             <Link
-              className="hover:text-violet-400"
+              className="hover:text-violet-600"
               href={"/whatwedo"}
               onClick={(e) => {
                 e.preventDefault();
@@ -120,10 +120,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             </Link>
           </span>
           <span
-            className={`${textColor} text-xs leading-compress font-bold hover:text-violet-500`}
+            className={`${textColor} text-xs leading-compress font-bold hover:text-violet-700`}
           >
             <Link
-              className="hover:text-violet-400"
+              className="hover:text-violet-600"
               href={"/whatwedo"}
               onClick={(e) => {
                 e.preventDefault();
@@ -137,6 +137,15 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           </span>{" "}
         </StaggeredSlideUp>
       </motion.div>{" "}
+      <div className="w-[90px] flex-shrink-0 pt-2">
+        <Image
+          src="/ci/1sp-fulllogotype-blk.svg"
+          alt="1SP Logo"
+          width={60}
+          height={60}
+          className="object-contain"
+        />
+      </div>
     </nav>
   );
 };

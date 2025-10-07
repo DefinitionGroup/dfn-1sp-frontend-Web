@@ -19,7 +19,7 @@ const variantStyles: Record<
 > = {
   default: {
     top: "border-white/20 text-white fill-white p-4",
-    bottom: "border-slate-100 bg-slate-100 text-slate-900 ",
+    bottom: "border-slate-100 bg-slate-100 text-slate-900  ",
     container: "h-15",
   },
   black: {
@@ -28,13 +28,13 @@ const variantStyles: Record<
     container: "h-15",
   },
   violet: {
-    top: "border-violet-500/30 bg-violet-400  p-4 w-full",
+    top: "border-violet-500/30 bg-violet-700  p-4 w-full",
     bottom: "border-neutral-800 bg-neutral-900 text-white w-full ",
     container: "h-12",
   },
   violetsmall: {
-    top: "border-violet-500/30 bg-violet-400 text-neutral-900 px-4 py-2 ",
-    bottom: "border-neutral-800 bg-neutral-800 text-white px-4 py-2 ",
+    top: "border-violet-500/30 bg-violet-700 text-neutral-100 px-4 py-2 ",
+    bottom: "border-neutral-100 bg-neutral-100 text-violet-700 px-4 py-2 ",
     container: "h-10",
   },
 };
@@ -48,9 +48,9 @@ function Button2({ text, className, href, variant = "default" }: Button2Props) {
     variant in variantStyles ? variant : "default";
 
   const baseTop =
-    "pointer-events-auto text-xxs absolute rounded-xs top-0 left-0 border justify-between font-bold flex w-fit hover:cursor-pointer tracking-wider group-hover/btn:-top-12 transition-all duration-250 ease-in-out";
+    "pointer-events-auto text-xxs absolute rounded-2xl top-0 left-0 border justify-between font-bold flex w-fit hover:cursor-pointer tracking-wider group-hover/btn:-top-12 transition-all duration-250 ease-in-out";
   const baseBottom =
-    "pointer-events-auto text-xxs border absolute rounded-xs font-bold left-0 flex justify-between top-[100%] w-fit group-hover/btn:top-0 transition-all duration-250 ease-in-out p-4 hover:cursor-pointer tracking-wider";
+    "pointer-events-auto text-xxs border absolute rounded-2xl font-bold left-0 flex justify-between top-[100%] w-fit group-hover/btn:top-0 transition-all duration-250 ease-in-out p-4 hover:cursor-pointer tracking-wider";
 
   const topClass = cn(baseTop, variantStyles[safeVariant].top, className);
   const bottomClass = cn(

@@ -237,6 +237,7 @@ export default function CaseGallery({
                   </motion.div>
                   {active.link && (
                     <motion.div
+                      className="mt-4 w-fit min-w-[250px] "
                       transition={{ duration: 0.3, delay: 0.7 }}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -265,18 +266,18 @@ export default function CaseGallery({
             amount: 0.2,
             margin: "0px 0px -100px 0px",
           }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto w-full min-h-full"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto w-full min-h-full"
         >
           {filteredItems.map((item, index) => (
             <motion.div
               layoutId={`card-${item.title}-${id}`}
               key={`card-${item.title}-${id}`}
               onClick={() => setActive(item)}
-              className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[400px] group/card overflow-hidden h-[300px] cursor-pointer"
+              className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[400px] group/card overflow-hidden max-h-[500px] cursor-pointer"
             >
               <motion.div
                 layoutId={`image-${item.title}-${id}`}
-                className="col-start-1 col-span-1  row-start-1 bg-black h-full min-h-full overflow-hidden rounded-xl"
+                className="col-start-1 col-span-1  row-start-1 bg-black h-full min-h-full overflow-hidden rounded-4xl"
               >
                 {item.video ? (
                   <video
@@ -284,7 +285,7 @@ export default function CaseGallery({
                     autoPlay
                     muted
                     loop
-                    className="w-full h-full object-cover min-h-[400px] group-hover/card:opacity-100 object-top opacity-80 transition-all"
+                    className="w-full object-cover grayscale h-[300px] group-hover/card:grayscale-0 group-hover/card:opacity-100 object-top opacity-50 duration-300 transition-all"
                   />
                 ) : (
                   <img
@@ -292,11 +293,11 @@ export default function CaseGallery({
                     height={1000}
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-full object-cover min-h-[400px] group-hover/card:opacity-100 object-top opacity-80 transition-all"
+                    className="w-full h-[300px] object-cover grayscale group-hover/card:grayscale-0 group-hover/card:opacity-100 object-top opacity-50 duration-300 transition-all"
                   />
                 )}
               </motion.div>
-              <div className="col-start-1 col-span-1 flex  justify-between opacity-100 row-start-2 p-2 mb-16 z-1">
+              <div className="col-start-1 col-span-1 flex  justify-between opacity-100 row-start-2 p-2 mt-4 mb-16 z-1">
                 <motion.img
                   layoutId={`logo-${item.title}-${id}`}
                   src={item.logosrc}

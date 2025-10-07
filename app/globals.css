@@ -7,13 +7,14 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-plecnik: var(--font-plecnik);
-
   --font-nyghtserif: var(--font-nyghtserif);
+
   /* Brand Colors - From Figma Design */
   --color-brand-violet: #afff40; /* Primary violet from button */
   --color-brand-orange: #ff8800; /* Orange accent */
   --color-brand-pink: #e5c0c0; /* Pink background */
   --leading-compress: 0.75; /* 85% for compressed leading */
+
   /* Brand Colors - Extended Palette */
   --color-brand-violet-50: oklch(0.98 0.02 120);
   --color-brand-violet-100: oklch(0.95 0.05 120);

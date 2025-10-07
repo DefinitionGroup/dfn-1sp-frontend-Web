@@ -5,17 +5,7 @@ import { Typewriter } from "motion-plus/react";
 import { useState } from "react";
 
 export default function TypewriterChangeContentExample({
-  text = [
-    "",
-    "One.",
-    "Shared.",
-    "Passion.",
-    "The Superagency.",
-    "Consumer",
-    "Electronics",
-    "Gaming",
-    "Technology",
-  ],
+  text = ["", "Your", "full service", "agency", "at the", "point of sale"],
 }: {
   text?: string[];
 }) {
@@ -73,7 +63,7 @@ const animatingText: React.CSSProperties = {
 };
 
 const cursor: React.CSSProperties = {
-  background: "#66ff00",
+  background: "#6600ff",
   width: 8,
   borderRadius: 4,
   marginLeft: 4,

@@ -39,7 +39,7 @@ export default function Badgemodule({
     <div className={` ${className}`}>
       <motion.div
         ref={ref}
-        className={`flex flex-col rounded justify-between w-3/4 aspect-square bg-gray-200 items-start  ${className}`}
+        className={`flex flex-col rounded-xl justify-between w-3/4 aspect-square bg-gray-100 items-start  ${className}`}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
         variants={{
@@ -94,7 +94,7 @@ export default function Badgemodule({
             </motion.p>
           </div>
           <motion.p
-            className="text-3xl font px-4  text-gray-900"
+            className="text-3xl font px-4  text-violet-700 "
             variants={{
               hidden: { opacity: 0, y: 10 },
               visible: {
@@ -108,7 +108,7 @@ export default function Badgemodule({
           </motion.p>
         </div>
         <motion.p
-          className="text-xxs rounded-b-sm font-semibold mt-2 px-4 py-4  w-full bg-gray-100 text-gray-600"
+          className="text-xxs rounded-b-xl font-semibold mt-2 px-4 py-4  w-full bg-gray-200 text-gray-600"
           variants={{
             hidden: { opacity: 0 },
             visible: {

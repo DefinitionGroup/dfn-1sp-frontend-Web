@@ -269,7 +269,7 @@ export default function Home() {
               </p>
             </StaggeredSlideUp>
           </div>
-          <div className="col-span-5 col-start-3 mt-8 border-t border-white pt-4">
+          <div className="col-span-5 col-start-3 mt-8   border-white pt-4">
             <ListContainerComponent>
               <ListItemComponent size="small" fontWeight="normal">
                 Our Store revamp has delivered strong results; expanding reach,

@@ -118,7 +118,7 @@ export default function CircularDashedGauge({
                 stroke="currentColor"
                 strokeWidth={strokeWidth}
                 strokeLinecap="round"
-                className="text-violet-500"
+                className="text-violet-700"
                 initial={{ opacity: 0.1 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: i * 0.01, duration: 0.2 }}
@@ -136,7 +136,7 @@ export default function CircularDashedGauge({
         ></text>
       </motion.svg>
 
-      <div className="absolute top-2 right-15 font-bold  text-violet-500 ">
+      <div className="absolute top-2 right-15 font-bold  text-violet-700 ">
         <AnimateNumber
           className="number  p-4 min-w-16 "
           format={{
