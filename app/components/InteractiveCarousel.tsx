@@ -47,7 +47,7 @@ const carouselItems: CarouselItem[] = [
     title: "Zucked!",
     subtitle: "AR/VR In Flight",
     image: "/metaplaceholder.png",
-    video: "/video/atf.mp4",
+
     description:
       "Immersive gaming experience with cutting-edge visuals and Mark Zuckerberg",
     category: "Gaming",
