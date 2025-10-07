@@ -125,7 +125,7 @@ export default function ExpandableCards() {
                     exit={{ opacity: 0 }}
                     href={active.ctaLink}
                     target="_blank"
-                    className="px-4 py-3 text-xs font-bold bg-lime-500 rounded-xs hover:bg-black transition-all duration-500 text-white"
+                    className="px-4 py-3 text-xs font-bold bg-violet-500 rounded-xs hover:bg-black transition-all duration-500 text-white"
                   >
                     {active.ctaText}
                   </motion.a>
@@ -142,7 +142,7 @@ export default function ExpandableCards() {
               layoutId={`card-${card.title}-${id}`}
               key={`card-${card.title}-${id}`}
               onClick={() => setActive(card)}
-              className=" col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[250px] rounded-sm group/card overflow-hidden h-[200px]  cursor-pointer"
+              className=" col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[250px] rounded-xl group/card overflow-hidden h-[200px]  cursor-pointer"
             >
               <motion.div
                 layoutId={`image-${card.title}-${id}`}

@@ -102,7 +102,7 @@ export default function PeopleShowcaseHero() {
                   className=" object-cover transition-all duration-300 group-hover:brightness-110 group:hover:scale-[0.45] "
                 />
                 {/* Hover overlay with additional data */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/90 to-black/95 opacity-0 group-hover:opacity-100 rounded-sm transition-opacity duration-300 flex flex-col justify-end p-4">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/90 to-black/95 opacity-0 group-hover:opacity-100 rounded-xl transition-opacity duration-300 flex flex-col justify-end p-4">
                   <StaggeredFadeIn
                     className="flex flex-col"
                     triggerOnView={false}
@@ -140,7 +140,7 @@ export default function PeopleShowcaseHero() {
                         href={member.profileUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-white/90 text-sm hover:text-lime-400 transition-colors flex items-center"
+                        className="text-white/90 text-sm hover:text-violet-400 transition-colors flex items-center"
                       >
                         <img
                           src="/LinkedinLogo.svg"

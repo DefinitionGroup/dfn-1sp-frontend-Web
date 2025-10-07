@@ -3,18 +3,14 @@ import localFont from "next/font/local";
 import { ViewTransitions } from "next-view-transitions";
 import "./globals.css";
 
-const aspekta = localFont({
+const plecnik = localFont({
   src: [
     {
-      path: "./fonts/AspektaVF.woff2",
-      style: "normal",
-    },
-    {
-      path: "./fonts/AspektaVF.ttf",
+      path: "./fonts/9893PlecnikMedItalic.woff2",
       style: "normal",
     },
   ],
-  variable: "--font-aspekta",
+  variable: "--font-plecnik",
   display: "swap",
   weight: "50 1000",
 });
@@ -43,7 +39,7 @@ export default function RootLayout({
   const diagnostic = process.env.NEXT_PUBLIC_DIAG === "1";
   return (
     <ViewTransitions>
-      <html lang="en" className={`${aspekta.variable} ${nyghtserif.variable}`}>
+      <html lang="en" className={`${plecnik.variable} ${nyghtserif.variable}`}>
         <body className={`antialiased ${diagnostic ? "dialog" : ""}`}>
           {children}
         </body>

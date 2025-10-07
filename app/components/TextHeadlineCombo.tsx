@@ -77,8 +77,8 @@ export const TextHeadlineCombo: React.FC<TextHeadlineComboProps> = ({
   animate = true,
   clamp,
   spacing = "normal",
-  gradientFrom = "from-lime-400",
-  gradientTo = "to-lime-500",
+  gradientFrom = "from-violet-400",
+  gradientTo = "to-violet-500",
   className = "",
 }) => {
   const sizes = sizeMap[size];
@@ -86,8 +86,8 @@ export const TextHeadlineCombo: React.FC<TextHeadlineComboProps> = ({
     align === "center"
       ? "mx-auto text-center"
       : align === "right"
-      ? "ml-auto text-right"
-      : "text-left";
+        ? "ml-auto text-right"
+        : "text-left";
 
   const easeCurve: [number, number, number, number] = [0.16, 1, 0.3, 1];
   const baseMotion = (d: number) => ({
@@ -107,23 +107,27 @@ export const TextHeadlineCombo: React.FC<TextHeadlineComboProps> = ({
     <div
       className={`relative ${
         bleed ? "w-full" : "max-w-6xl"
-      }${wrapperAlign} font-aspekta ${className}`}>
+      }${wrapperAlign} font-plecnik ${className}`}
+    >
       <div className={`flex flex-col ${sizes.gap} ${spacingMap[spacing]}`}>
         {eyebrow && (
           <motion.span
             {...baseMotion(0)}
-            className={`tracking-widest uppercase ${sizes.eyebrow} font-semibold text-lime-500/90`}>
+            className={`tracking-widest uppercase ${sizes.eyebrow} font-semibold text-violet-500/90`}
+          >
             {eyebrow}
           </motion.span>
         )}
         <motion.h1
           {...baseMotion(0.05)}
-          className={`font-semibold leading-compress tracking-tight text-foreground ${sizes.headline}`}>
+          className={`font-semibold leading-compress tracking-tight text-foreground ${sizes.headline}`}
+        >
           {typeof headline === "string" && highlight ? (
             <>
               {headline}{" "}
               <span
-                className={`bg-gradient-to-r ${gradientFrom} ${gradientTo} bg-clip-text text-transparent`}>
+                className={`bg-gradient-to-r ${gradientFrom} ${gradientTo} bg-clip-text text-transparent`}
+              >
                 {highlight}
               </span>
             </>
@@ -138,14 +142,16 @@ export const TextHeadlineCombo: React.FC<TextHeadlineComboProps> = ({
               sizes.subhead
             } font-medium leading-relaxed text-foreground/80 ${
               clamp ? `line-clamp-${clamp}` : ""
-            }`}>
+            }`}
+          >
             {subhead}
           </motion.p>
         )}
         {kicker && (
           <motion.div
             {...baseMotion(0.18)}
-            className={`text-foreground/60 ${sizes.kicker} font-medium tracking-wide`}>
+            className={`text-foreground/60 ${sizes.kicker} font-medium tracking-wide`}
+          >
             {kicker}
           </motion.div>
         )}

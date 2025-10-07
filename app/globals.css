@@ -6,25 +6,25 @@
 @theme extend {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-aspekta: var(--font-aspekta);
+  --font-plecnik: var(--font-plecnik);
 
   --font-nyghtserif: var(--font-nyghtserif);
   /* Brand Colors - From Figma Design */
-  --color-brand-lime: #afff40; /* Primary lime from button */
+  --color-brand-violet: #afff40; /* Primary violet from button */
   --color-brand-orange: #ff8800; /* Orange accent */
   --color-brand-pink: #e5c0c0; /* Pink background */
   --leading-compress: 0.75; /* 85% for compressed leading */
   /* Brand Colors - Extended Palette */
-  --color-brand-lime-50: oklch(0.98 0.02 120);
-  --color-brand-lime-100: oklch(0.95 0.05 120);
-  --color-brand-lime-200: oklch(0.9 0.1 120);
-  --color-brand-lime-300: oklch(0.85 0.15 120);
-  --color-brand-lime-400: oklch(0.78 0.2 120);
-  --color-brand-lime-500: oklch(0.72 0.25 120);
-  --color-brand-lime-600: oklch(0.65 0.22 120);
-  --color-brand-lime-700: oklch(0.55 0.18 120);
-  --color-brand-lime-800: oklch(0.45 0.15 120);
-  --color-brand-lime-900: oklch(0.35 0.12 120);
+  --color-brand-violet-50: oklch(0.98 0.02 120);
+  --color-brand-violet-100: oklch(0.95 0.05 120);
+  --color-brand-violet-200: oklch(0.9 0.1 120);
+  --color-brand-violet-300: oklch(0.85 0.15 120);
+  --color-brand-violet-400: oklch(0.78 0.2 120);
+  --color-brand-violet-500: oklch(0.72 0.25 120);
+  --color-brand-violet-600: oklch(0.65 0.22 120);
+  --color-brand-violet-700: oklch(0.55 0.18 120);
+  --color-brand-violet-800: oklch(0.45 0.15 120);
+  --color-brand-violet-900: oklch(0.35 0.12 120);
 
   /* Neutral Grays - From Figma Design */
   --color-neutral-50: #f4f4f4; /* Light background */
@@ -40,9 +40,9 @@
   --color-neutral-950: #000000; /* Pure black */
 
   /* Accent Colors */
-  --color-purple-400: oklch(0.7 0.2 300);
-  --color-purple-500: oklch(0.65 0.22 300);
-  --color-purple-600: oklch(0.6 0.24 300);
+  --color-violet-400: oklch(0.7 0.2 300);
+  --color-violet-500: oklch(0.65 0.22 300);
+  --color-violet-600: oklch(0.6 0.24 300);
   --color-blue-400: oklch(0.7 0.18 240);
   --color-blue-500: oklch(0.65 0.2 240);
   --color-blue-600: oklch(0.6 0.22 240);
@@ -70,7 +70,7 @@
   /* Line Heights - From Figma Design */
   --line-height-tight: 0.87; /* 87% for Mackay */
   --line-height-tighter: 0.9; /* 90% for headlines */
-  --line-height-snug: 0.98; /* 98% for Aspekta bold */
+  --line-height-snug: 0.98; /* 98% for plecnik bold */
   --line-height-normal: 1.09; /* 109% for body */
   --line-height-relaxed: 1.12; /* 112% for small text */
   --line-height-loose: 1.24; /* 124% for medium text */
@@ -176,15 +176,19 @@
 @layer base {
   body {
     @apply bg-background text-foreground;
-    font-family: var(--font-aspekta), system-ui, -apple-system, sans-serif;
+    font-family:
+      var(--font-plecnik),
+      system-ui,
+      -apple-system,
+      sans-serif;
   }
 
   /* Gradient Text Utilities */
-  .text-gradient-lime {
+  .text-gradient-violet {
     background: linear-gradient(
       135deg,
-      var(--color-brand-lime-400),
-      var(--color-brand-lime-600)
+      var(--color-brand-violet-400),
+      var(--color-brand-violet-600)
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -194,8 +198,8 @@
   .text-gradient-rainbow {
     background: linear-gradient(
       135deg,
-      var(--color-brand-lime-400),
-      var(--color-purple-500),
+      var(--color-brand-violet-400),
+      var(--color-violet-500),
       var(--color-blue-500)
     );
     -webkit-background-clip: text;
@@ -220,8 +224,8 @@
   }
 
   /* Focus styles */
-  .focus-lime {
-    @apply focus:outline-none focus:ring-2 focus:ring-brand-lime-500 focus:ring-offset-2;
+  .focus-violet {
+    @apply focus:outline-none focus:ring-2 focus:ring-brand-violet-500 focus:ring-offset-2;
   }
 }
 

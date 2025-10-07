@@ -50,7 +50,7 @@ const container: React.CSSProperties = {
   alignItems: "flex-start",
   gap: 0,
   flexDirection: "column",
-  fontFamily: "var(--font-aspekta)",
+  fontFamily: "var(--font-plecnik)",
   width: 900,
   fontWeight: 500,
 

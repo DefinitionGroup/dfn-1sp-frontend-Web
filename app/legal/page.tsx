@@ -3,7 +3,6 @@ import Button2 from "@/app/components/Button2";
 import Footer from "@/app/components/Footer";
 import FooterBottom from "@/app/components/FooterBottom";
 import FrontNavOverlay from "@/app/components/FrontNavOverlay";
-import GridBackground from "@/app/components/GridBackground";
 import StaggeredSlideUp from "@/app/components/StaggeredSlideUp";
 
 import { useInView } from "motion/react";
@@ -18,8 +17,7 @@ export default function Home() {
       <FrontNavOverlay color="dark" />
 
       {/* subline rightection */}
-      <div className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta">
-        <GridBackground />
+      <div className="grid grid-cols-12 z-1 mx-auto container  relative font-plecnik">
         <div className="z-1 grid gap-8 col-span-12 py-16  col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <div className="z-1 col-span-16 col-start-1 ">
             {/* Description and CTA Section */}
@@ -31,10 +29,10 @@ export default function Home() {
                 className=" max-w-2/4 "
               >
                 {" "}
-                <h2 className="text-7xl leading-none text-neutral-700 pb-3 font-aspekta ">
+                <h2 className="text-7xl leading-none text-neutral-700 pb-3 font-plecnik ">
                   At 1SP, our passionate team thrives on creativity
                 </h2>
-                <h2 className="text-7xl leading-none text-neutral-500  pb-3 font-aspekta ">
+                <h2 className="text-7xl leading-none text-neutral-500  pb-3 font-plecnik ">
                   but legally compliant digital experiences are also important.
                 </h2>
               </StaggeredSlideUp>
@@ -42,8 +40,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta">
-        <GridBackground />
+      <div className="grid grid-cols-12 z-1 mx-auto container  relative font-plecnik">
         <div className="z-1 grid gap-8 col-span-12 py-16  col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <div className="z-1 col-span-8 col-start-1 ">
             {/* Description and CTA Section */}

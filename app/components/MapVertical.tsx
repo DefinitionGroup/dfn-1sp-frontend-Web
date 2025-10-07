@@ -164,7 +164,7 @@ function Line({
   return (
     <motion.div
       ref={ref}
-      className={active ? "bg-lime-500" : "bg-neutral-200"}
+      className={active ? "bg-violet-500" : "bg-neutral-200"}
       style={{
         height: LINE_WIDTH,
         width: active ? LINE_HEIGHT_ACTIVE : LINE_HEIGHT,
@@ -360,7 +360,7 @@ export function isActive(index: number, count: number): boolean {
 export function Indicator({ y }: { y: MotionValue<number> }) {
   return (
     <motion.div
-      className="flex bg-lime-500 h-[1px] rounded-full items-center absolute w-[32px]! -top-0"
+      className="flex bg-violet-500 h-[1px] rounded-full items-center absolute w-[32px]! -top-0"
       style={{ y }}
     >
       <svg
@@ -372,7 +372,7 @@ export function Indicator({ y }: { y: MotionValue<number> }) {
       >
         <path
           d="M6 3.54688L0.75 0.515786L0.75 6.57796L6 3.54688Z"
-          fill="  var(--color-lime-500) "
+          fill="  var(--color-violet-500) "
         />
       </svg>
     </motion.div>

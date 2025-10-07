@@ -196,7 +196,7 @@ export default function InteractiveCarousel() {
 
         <div className="relative h-[800px] flex items-start">
           {/* Main Carousel */}
-          <div className="relative w-full  rounded-sm  overflow-hidden h-full perspective-1000">
+          <div className="relative w-full  rounded-xl  overflow-hidden h-full perspective-1000">
             <AnimatePresence initial={false} custom={direction}>
               <motion.div
                 key={currentIndex}
@@ -288,7 +288,7 @@ export default function InteractiveCarousel() {
                       </motion.p>
                       <motion.p className="text-gray-100 text-sm max-w-2xl ">
                         <Button2
-                          variant="limesmall"
+                          variant="violetsmall"
                           href={carouselItems[currentIndex].link}
                           text="View Case Study"
                         />
@@ -302,7 +302,7 @@ export default function InteractiveCarousel() {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                   >
-                    <button className="w-6  h-6 cursor-pointer bg-black/50 backdrop-blur-sm rounded-xs flex items-center justify-center text-lime-400 hover:bg-white/100  hover:text-black transition-colors">
+                    <button className="w-6  h-6 cursor-pointer bg-black/50 backdrop-blur-sm rounded-xs flex items-center justify-center text-violet-400 hover:bg-white/100  hover:text-black transition-colors">
                       <svg
                         width="11"
                         height="113"
@@ -370,7 +370,7 @@ export default function InteractiveCarousel() {
               key={index}
               className={`w-1 h-2 rounded-full  transition-all hover:bg-black duration-300 cursor-pointer ${
                 index === currentIndex
-                  ? "bg-lime-400 min-w-16 "
+                  ? "bg-violet-400 min-w-16 "
                   : "bg-gray-300 min-w-3"
               }`}
               whileHover={{ scale: 1.05 }}
@@ -391,9 +391,9 @@ export default function InteractiveCarousel() {
           {carouselItems.map((item, index) => (
             <motion.button
               key={item.id}
-              className={`flex-shrink-0 w-32 h-32  rounded-sm overflow-hidden outline-3 transition-colors ${
+              className={`flex-shrink-0 w-32 h-32  rounded-xl overflow-hidden outline-3 transition-colors ${
                 index === currentIndex
-                  ? "outline-lime-500"
+                  ? "outline-violet-500"
                   : "outline-transparent"
               }`}
               whileHover={{ scale: 1.05 }}

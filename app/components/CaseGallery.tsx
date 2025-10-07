@@ -243,7 +243,7 @@ export default function CaseGallery({
                       exit={{ opacity: 0 }}
                     >
                       <Button2
-                        variant="limesmall"
+                        variant="violetsmall"
                         href={active.link}
                         text="View Case Study"
                       />
@@ -276,7 +276,7 @@ export default function CaseGallery({
             >
               <motion.div
                 layoutId={`image-${item.title}-${id}`}
-                className="col-start-1 col-span-1  row-start-1 bg-black h-full min-h-full overflow-hidden rounded-sm"
+                className="col-start-1 col-span-1  row-start-1 bg-black h-full min-h-full overflow-hidden rounded-xl"
               >
                 {item.video ? (
                   <video

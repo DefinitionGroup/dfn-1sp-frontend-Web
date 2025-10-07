@@ -9,7 +9,6 @@ import ExpandableCards2 from "./components/ExpandableCards2";
 import Footer from "./components/Footer";
 import FooterBottom from "./components/FooterBottom";
 import FrontNavOverlay from "./components/FrontNavOverlay2";
-import GridBackground from "./components/GridBackground";
 import HamburgerGradientMenu from "./components/HamburgerGradientMenu";
 import HeaderImageVideoComp from "./components/HeaderImageVideoComp";
 import HeaderImageVideoComp2 from "./components/HeaderImageVideoComp2";
@@ -98,7 +97,7 @@ export default function Home() {
             </p>
             <p className="text-neutral-50 text-ls mt-8">
               Together we are{" "}
-              <span className="bg-gradient-to-r font-bold from-lime-300 to-lime-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r font-bold from-violet-300 to-violet-500 bg-clip-text text-transparent">
                 one Superagency.
               </span>
             </p>
@@ -119,9 +118,8 @@ export default function Home() {
       {/* SHOWTIME  GALLERY */}
       <div
         id="Level Up!"
-        className="grid grid-cols-6 md:grid-cols-12 z-1 mx-auto container  relative font-aspekta"
+        className="grid grid-cols-6 md:grid-cols-12 z-1 mx-auto container  relative font-plecnik"
       >
-        <GridBackground delay={0.2} staggerDelay={0.06} />
         <div className="z-1 grid  col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             text="Level Up!"
@@ -170,14 +168,14 @@ export default function Home() {
       {/* Skills Combo Section */}
       <div
         id="Skills"
-        className="z-1 mx-auto  min-h-[90vh] relative font-aspekta"
+        className="z-1 mx-auto  min-h-[90vh] relative font-plecnik"
       >
         <HeaderImageVideoComp2
           useVideo={true}
           videoSrc="/video/14.mp4"
           enableParallax={true}
         />
-        <div className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta">
+        <div className="grid grid-cols-12 z-1 mx-auto relative container font-plecnik">
           <div className="z-1 grid col-span-12 py-32  col-start-1 container mx-auto row-start-1 grid-cols-12 ">
             <Badgemodule
               className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky top-0 "
@@ -198,7 +196,6 @@ export default function Home() {
         id="Services"
         className="z-4 grid col-span-12 relative col-start-1 container mx-auto row-start-1 grid-cols-12 "
       >
-        <GridBackground delay={0.2} staggerDelay={0.06} />
         <div className="z-1 grid col-span-12 col-start-1 pt-32 row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky top-0 "
@@ -220,13 +217,13 @@ export default function Home() {
                   duration={0.5}
                   distance={20}
                 >
-                  <h2 className="text text-gray-900 font-bold font-aspekta">
+                  <h2 className="text text-gray-900 font-bold font-plecnik">
                     Super*
                   </h2>
-                  <h4 className="text-7xl  text-gray-900  tracking-tight font-aspekta">
+                  <h4 className="text-7xl  text-gray-900  tracking-tight font-plecnik">
                     Brrrroadside
                   </h4>
-                  <h4 className=" mt-2 text-gray-700 font-medium leading- font-aspekta">
+                  <h4 className=" mt-2 text-gray-700 font-medium leading- font-plecnik">
                     One Strategy. Multiple Experts
                   </h4>
                 </StaggeredSlideUp>
@@ -269,9 +266,8 @@ export default function Home() {
       {/* People Gallery Section */}
       <div
         id="People"
-        className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta  "
+        className="grid grid-cols-12 z-1 mx-auto relative container font-plecnik  "
       >
-        <GridBackground />
         <div className="z-1 grid  col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky top-0 "
@@ -286,10 +282,10 @@ export default function Home() {
             <div className="flex flex-col lg:gap-8 items-start justify-start w-full">
               {/* Main Headline */}
               <div className="flex-1 flex flex-col min-w-0">
-                <h2 className="text text-gray-900 font-bold font-aspekta">
+                <h2 className="text text-gray-900 font-bold font-plecnik">
                   Super*
                 </h2>
-                <h4 className="text-7xl  text-gray-900  tracking-tight font-aspekta">
+                <h4 className="text-7xl  text-gray-900  tracking-tight font-plecnik">
                   Human Touch
                 </h4>
               </div>
@@ -301,14 +297,14 @@ export default function Home() {
               <div className="flex flex-col items-start justify-start w-full ">
                 {/* Main Headline */}
 
-                <h2 className="text-2xl text-neutral-900 font-aspekta">
+                <h2 className="text-2xl text-neutral-900 font-plecnik">
                   Igniting Creativity:
                 </h2>
-                <h4 className="text-2xl  text-neutral-900  font-aspekta">
+                <h4 className="text-2xl  text-neutral-900  font-plecnik">
                   <span className="text-neutral-200">Unique People.</span>
                 </h4>
               </div>
-              <h3 className="text text-neutral-500 mt-4  font-aspekta">
+              <h3 className="text text-neutral-500 mt-4  font-plecnik">
                 At 1sp, we are driven by a team of passionate individuals who
                 thrive on creativity and innovation, crafting unique marketing
                 campaigns that resonate with audiences.
@@ -323,7 +319,7 @@ export default function Home() {
       {/* Visual Background 2 Section */}
       <div
         id="News"
-        className="grid grid-cols-12 z-2 mx-auto bg-neutral-100 mt-8 min-h-[50vh] relative font-aspekta"
+        className="grid grid-cols-12 z-2 mx-auto bg-neutral-100 mt-8 min-h-[50vh] relative font-plecnik"
       >
         <HeaderImageVideoComp2
           useVideo={true}
@@ -364,7 +360,7 @@ export default function Home() {
       </div>
 
       {/* We tell your Story */}
-      <div className="grid grid-cols-12 z-1 mx-auto  relative font-aspekta">
+      <div className="grid grid-cols-12 z-1 mx-auto  relative font-plecnik">
         <HeaderImageVideoComp2
           useVideo={false}
           imageSrc="/hr.png"
@@ -403,7 +399,7 @@ export default function Home() {
 
             <p className="mt-8 flex items-start justify-start gap-8">
               <Button2
-                variant="limesmall"
+                variant="violetsmall"
                 text="Join us for a ride"
                 className="w-fit"
               ></Button2>

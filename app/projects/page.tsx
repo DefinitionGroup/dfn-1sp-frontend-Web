@@ -16,7 +16,6 @@ import ExpandableCards from "@/app/components/ExpandableCards";
 import Footer from "@/app/components/Footer";
 import FooterBottom from "@/app/components/FooterBottom";
 import FrontNavOverlay from "@/app/components/FrontNavOverlay";
-import GridBackground from "@/app/components/GridBackground";
 import HeaderImageVideoComp from "@/app/components/HeaderImageVideoComp";
 import InteractiveCarousel from "@/app/components/InteractiveCarousel";
 import { Nav } from "@/app/components/Nav";
@@ -53,7 +52,7 @@ export default function Home() {
               We are group of several laser focused agencies. Each one with a
               distinctive competetive edge.
             </p>
-            <div className="flex items-center gap-4 border border-white/50 rounded-sm px-6 py-3 w-fit">
+            <div className="flex items-center gap-4 border border-white/50 rounded-xl px-6 py-3 w-fit">
               <Image
                 src="/msmlogo.svg"
                 alt="SquareEnix"
@@ -80,14 +79,13 @@ export default function Home() {
       </section>
 
       {/* subline rightection */}
-      <div className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta">
-        <GridBackground />
+      <div className="grid grid-cols-12 z-1 mx-auto container  relative font-plecnik">
         <div className="z-1 grid gap-8 col-span-12 py-16  col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <div className="z-1 col-span-3  col-start-10 ">
             {/* Description and CTA Section */}
             <div className="flex flex-col items-start gap-8 justify-center w-full">
               {/* Description */}
-              <p className="text-xs leading-normal text-neutral-800 font-aspekta font-normal">
+              <p className="text-xs leading-normal text-neutral-800 font-plecnik font-normal">
                 At 1SP, our passionate team thrives on creativity and
                 innovation, crafting outstanding marketing campaigns that
                 genuinely resonate with audiences.
@@ -95,7 +93,7 @@ export default function Home() {
 
               {/* CTA Button */}
               <Button2
-                variant="limesmall"
+                variant="violetsmall"
                 text="Contact us"
                 className="w-fit"
               />
@@ -105,7 +103,7 @@ export default function Home() {
       </div>
 
       {/* We tell your Story */}
-      <div className="grid grid-cols-12 z-1 mx-auto min-h-[90vh] relative font-aspekta">
+      <div className="grid grid-cols-12 z-1 mx-auto min-h-[90vh] relative font-plecnik">
         <HeaderImageVideoComp2
           useVideo={false}
           imageSrc="/s3.png"
@@ -126,7 +124,8 @@ export default function Home() {
               delay={0.0}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-9xl text-gray-100 max-w-xl font-semibold tracking-tight leading-compress mb-4 pb-8">
                 We tell your story.
               </h2>
@@ -141,7 +140,7 @@ export default function Home() {
               heading="We use Gaming Experience"
               paragraph="This is where we get our creative spark from. And epochs of customer focus and talking to the public."
               buttonText="Explore"
-              buttonVariant="limesmall"
+              buttonVariant="violetsmall"
               align="left"
             />
           </div>
@@ -162,8 +161,7 @@ export default function Home() {
       </div>
 
       {/* People Gallery Section */}
-      <div className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta gap-4  ">
-        <GridBackground />
+      <div className="grid grid-cols-12 z-1 mx-auto relative container font-plecnik gap-4  ">
         <div className="z-1 flex flex-col col-span-2 pt-32 justify-start items-start  col-start-1 mx-auto row-start-1">
           <Badgemodule
             text="Our Story"
@@ -176,7 +174,7 @@ export default function Home() {
             heading="Ideas."
             paragraph="At 1sp, our dedicated team is fueled by creativity and innovation, designing exceptional marketing campaigns that truly connect with audiences."
             buttonText="Get in touch"
-            buttonVariant="limesmall"
+            buttonVariant="violetsmall"
           />
         </div>
         <div className="col-span-12 container col-start-3 row-start-1 grid grid-cols-12 gap-4  pt-32  ">
@@ -185,10 +183,10 @@ export default function Home() {
             <div className="flex flex-col lg:gap-8 items-start justify-start w-full">
               {/* Main Headline */}
               <div className="flex-1 flex flex-col min-w-0">
-                <h2 className="text-xl text-neutral-900 font-bold font-aspekta">
+                <h2 className="text-xl text-neutral-900 font-bold font-plecnik">
                   Super*
                 </h2>
-                <h4 className="text-7xl  text-neutral-900 font-semibold leading-compress font-aspekta">
+                <h4 className="text-7xl  text-neutral-900 font-semibold leading-compress font-plecnik">
                   Human Touch
                 </h4>
               </div>
@@ -217,17 +215,17 @@ export default function Home() {
             <div className="flex flex-col lg:gap-8 items-start justify-start w-full">
               {/* Main Headline */}
               <div className="flex-1 flex flex-col min-w-0">
-                <h2 className="text-3xl text-neutral-900 f font-aspekta">
+                <h2 className="text-3xl text-neutral-900 f font-plecnik">
                   Igniting Creativity:{" "}
                 </h2>
-                <h4 className="text-3xl  text-neutral-900  font-aspekta">
+                <h4 className="text-3xl  text-neutral-900  font-plecnik">
                   <span className="text-neutral-200">Unique People.</span>
                 </h4>
               </div>
             </div>
           </header>
           <header className="col-span-6 col-start-4  ">
-            <h2 className="text-base text-neutral-900 font-aspekta">
+            <h2 className="text-base text-neutral-900 font-plecnik">
               At 1sp, we are driven by a team of passionate individuals who
               thrive on creativity and innovation, crafting unique marketing
               campaigns that resonate with audiences.
@@ -239,7 +237,8 @@ export default function Home() {
       {/* Visual Background 2 Section */}
       <div
         id="Step3"
-        className="grid grid-cols-12 z-1 mx-auto  mt-8 min-h-[90vh] relative font-aspekta">
+        className="grid grid-cols-12 z-1 mx-auto  mt-8 min-h-[90vh] relative font-plecnik"
+      >
         <HeaderImageVideoComp2
           useVideo={true}
           videoSrc="/video/cases/squareenix.mp4"
@@ -260,7 +259,8 @@ export default function Home() {
               delay={0.1}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-9xl leading-compress text-gray-100 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
                 We tell your story.
               </h2>
@@ -275,7 +275,7 @@ export default function Home() {
               heading="Our roots are gaming."
               paragraph="This is where we get our creative spark from. And epochs of customer focus and talking to the public."
               buttonText="Explore"
-              buttonVariant="limesmall"
+              buttonVariant="violetsmall"
               align="left"
             />
           </div>
@@ -295,7 +295,7 @@ export default function Home() {
         </div>
       </div>
       {/* Visual Background 2 Section */}
-      <div className="grid grid-cols-12 z-1 mx-auto bg-neutral-100 mt-8 min-h-[90vh] relative font-aspekta">
+      <div className="grid grid-cols-12 z-1 mx-auto bg-neutral-100 mt-8 min-h-[90vh] relative font-plecnik">
         <div className="z-1 grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2"
@@ -309,7 +309,8 @@ export default function Home() {
               delay={0.1}
               staggerDelay={0.1}
               duration={0.5}
-              distance={80}>
+              distance={80}
+            >
               <h2 className="text-7xl leading-compress text-gray-900 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
                 We tell your story.
               </h2>
@@ -324,7 +325,7 @@ export default function Home() {
               heading="Our roots are gaming."
               paragraph="This is where we get our creative spark from. And epochs of customer focus and talking to the public."
               buttonText="Explore"
-              buttonVariant="limesmall"
+              buttonVariant="violetsmall"
               align="left"
             />
           </div>
@@ -345,8 +346,7 @@ export default function Home() {
       </div>
       {/* Unified engagement O */}
 
-      <div className="grid grid-cols-12 z-1 gap-8  mx-auto  relative container font-aspekta">
-        <GridBackground />
+      <div className="grid grid-cols-12 z-1 gap-8  mx-auto  relative container font-plecnik">
         <div className="z-1 grid col-span-12  relative top-0 py-32 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2"
@@ -370,7 +370,6 @@ export default function Home() {
       </div>
       {/* Portfolio Grid */}
       <div className="z-1 grid gap-8 col-span-12 col-start-1 container mx-auto row-start-1 grid-cols-12 mb-32">
-        <GridBackground delay={0.2} staggerDelay={0.06} />
         <div className="z-1 grid col-span-12 gap-4 col-start-1 pt-32 row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2"

@@ -39,7 +39,7 @@ export default function Badgemodule({
     <div className={` ${className}`}>
       <motion.div
         ref={ref}
-        className={`flex flex-col rounded justify-between w-3/4 aspect-square bg-black items-start  ${className}`}
+        className={`flex flex-col rounded justify-between w-3/4 aspect-square bg-gray-200 items-start  ${className}`}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
         variants={{
@@ -52,9 +52,10 @@ export default function Badgemodule({
               delayChildren: 0.1,
             },
           },
-        }}>
+        }}
+      >
         <div className="flex-col w-full  ">
-          <div className="flex px-4 py-4 items-start    border-white justify-between w-full ">
+          <div className="flex px-4 py-4 items-start    justify-between w-full ">
             <motion.div
               variants={{
                 hidden: { opacity: 0, scale: 0.8 },
@@ -63,17 +64,18 @@ export default function Badgemodule({
                   scale: 1,
                   transition: { duration: 0.6, ease: "easeOut", delay: 0.3 },
                 },
-              }}>
+              }}
+            >
               <Image
-                src="/ci/1sp-outline.svg"
+                src="/flizzr/Logo_FLZR_color_RGB_500.png"
                 alt="1SP Logo"
                 width={60}
                 height={60}
-                className="w-4 h-4"
+                className="w-20 h-4 object-contain"
               />
             </motion.div>
             <motion.p
-              className="text-[8px] font-bold  self-end text-gray-100"
+              className="text-[8px] font-bold  self-end text-gray-800"
               variants={{
                 hidden: { opacity: 0, y: 20 },
                 visible: {
@@ -81,16 +83,18 @@ export default function Badgemodule({
                   y: -10,
                   transition: { duration: 0.6, ease: "easeOut" },
                 },
-              }}>
+              }}
+            >
               <AnimateNumber
                 format={{ minimumIntegerDigits: 3 }}
-                transition={{ duration: 1.5, ease: "easeOut" }}>
+                transition={{ duration: 1.5, ease: "easeOut" }}
+              >
                 {animateNumberValue}
               </AnimateNumber>
             </motion.p>
           </div>
           <motion.p
-            className="text-3xl font px-4  text-gray-200"
+            className="text-3xl font px-4  text-gray-900"
             variants={{
               hidden: { opacity: 0, y: 10 },
               visible: {
@@ -98,20 +102,22 @@ export default function Badgemodule({
                 y: 0,
                 transition: { duration: 0.6, ease: "easeOut" },
               },
-            }}>
+            }}
+          >
             {text}
           </motion.p>
         </div>
         <motion.p
-          className="text-xxs rounded-b-sm font-semibold mt-2 px-4 py-4  w-full bg-neutral-800 text-gray-200"
+          className="text-xxs rounded-b-sm font-semibold mt-2 px-4 py-4  w-full bg-gray-100 text-gray-600"
           variants={{
-            hidden: { opacity: 0,  },
+            hidden: { opacity: 0 },
             visible: {
               opacity: 1,
               y: 0,
               transition: { duration: 0.6, ease: "easeOut" },
             },
-          }}>
+          }}
+        >
           {subtitle}
         </motion.p>
       </motion.div>

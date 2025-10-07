@@ -102,7 +102,7 @@ export default function HamburgerGradientMenu({
         ariaControls="gradient-menu-panel"
       />
       <Link
-        className="hover:text-lime-400"
+        className="hover:text-violet-400"
         href={"/"}
         onClick={(e) => {
           e.preventDefault();
@@ -190,7 +190,7 @@ function OverlayRoot({
               <Link
                 href={item.href}
                 ref={idx === 0 ? firstLinkRef : undefined}
-                className="text-xl md:text-2xl font-medium tracking-tight text-neutral-50 hover:text-lime-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 rounded-sm transition-colors"
+                className="text-xl md:text-2xl font-medium tracking-tight text-neutral-50 hover:text-violet-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 rounded-xl transition-colors"
                 onClick={onClose}
               >
                 {item.label}
@@ -201,7 +201,7 @@ function OverlayRoot({
         <FrontNavOverlay />
         <motion.button
           onClick={onClose}
-          className="mt-6 text-7xl fixed top-0 font-extralight uppercase tracking-wide text-neutral-100 hover:text-white focus:outline-none hover:rotate-45 transition focus-visible:ring-2 focus-visible:ring-lime-400 rounded-sm"
+          className="mt-6 text-7xl fixed top-0 font-extralight uppercase tracking-wide text-neutral-100 hover:text-white focus:outline-none hover:rotate-45 transition focus-visible:ring-2 focus-visible:ring-violet-400 rounded-xl"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 0.8, y: 0 }}
           whileHover={{ opacity: 1 }}
@@ -329,7 +329,7 @@ function HamburgerButton({
       aria-expanded={open}
       aria-controls={ariaControls}
       onClick={onClick}
-      className={`relative top-14 left-4 w-12 h-12 flex items-center justify-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 rounded-md ${className}`}
+      className={`relative top-14 left-4 w-12 h-12 flex items-center justify-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 rounded-md ${className}`}
     >
       <span className="sr-only">Menu</span>
       {[0, 1, 2].map((i) => (

@@ -11,7 +11,6 @@ import ExpandableCards from "@/app/components/ExpandableCards";
 import Footer from "@/app/components/Footer";
 import FooterBottom from "@/app/components/FooterBottom";
 import FrontNavOverlay from "@/app/components/FrontNavOverlay";
-import GridBackground from "@/app/components/GridBackground";
 import HeaderImageVideoComp from "@/app/components/HeaderImageVideoComp";
 import InteractiveCarousel from "@/app/components/InteractiveCarousel";
 import { Nav } from "@/app/components/Nav";
@@ -132,9 +131,8 @@ export default function Home() {
       {/* ////////// id Intro */}
       <div
         id="Intro"
-        className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta"
+        className="grid grid-cols-12 z-1 mx-auto container  relative font-plecnik"
       >
-        <GridBackground />
         <div className="z-1 grid gap-8 col-span-12 py-16  col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <div className="z-1 col-span-16 col-start-1 ">
             {/* Description and CTA Section */}
@@ -146,13 +144,13 @@ export default function Home() {
                 className=" max-w-2/4 py-32 "
               >
                 {" "}
-                <h2 className="text-xl leading-none text-neutral-700 pb-3 font-aspekta font-medium">
+                <h2 className="text-xl leading-none text-neutral-700 pb-3 font-plecnik font-medium">
                   The Challenge
                 </h2>
-                <h2 className="text-5xl leading-none text-neutral-700 font-aspekta font-medium">
+                <h2 className="text-5xl leading-none text-neutral-700 font-plecnik font-medium">
                   Transform the User Experience
                 </h2>
-                <h2 className="text-5xl leading-none text-neutral-300  pb-3 font-aspekta font-medium">
+                <h2 className="text-5xl leading-none text-neutral-300  pb-3 font-plecnik font-medium">
                   and Sales Potential of Amazon Stores
                 </h2>
               </StaggeredSlideUp>
@@ -166,10 +164,9 @@ export default function Home() {
 
       <div
         id="Intro"
-        className="grid grid-cols-12 z-1 mx-auto bg-neutral-50 mt-8 min-h-[90vh] relative font-aspekta"
+        className="grid grid-cols-12 z-1 mx-auto bg-neutral-50 mt-8 min-h-[90vh] relative font-plecnik"
       >
         {" "}
-        <GridBackground />
         <div className="z-1 grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2 sticky top-0 "
@@ -199,7 +196,7 @@ export default function Home() {
               heading="Challenge:"
               paragraph="The Starting Point. A thorough analysis and understanding of the existing Stores highlighted several key issues:"
               buttonText=""
-              buttonVariant="limesmall"
+              buttonVariant="violetsmall"
               align="left"
             />
           </div>
@@ -240,7 +237,7 @@ export default function Home() {
       {/* ////////////// Approach */}
       <div
         id="Approach"
-        className="grid grid-cols-12 z-1 mx-auto min-h-[90vh] relative font-aspekta"
+        className="grid grid-cols-12 z-1 mx-auto min-h-[90vh] relative font-plecnik"
       >
         <HeaderImageVideoComp2
           useVideo={false}
@@ -298,7 +295,7 @@ export default function Home() {
       {/* /////////// RESULTS */}
       <div
         id="Results"
-        className="grid grid-cols-12 z-1 mx-auto min-h-[90vh] relative font-aspekta"
+        className="grid grid-cols-12 z-1 mx-auto min-h-[90vh] relative font-plecnik"
       >
         <HeaderImageVideoComp2
           useVideo={false}
@@ -494,9 +491,8 @@ export default function Home() {
       {/* SHOWTIME  GALLERY */}
       <div
         id="Level Up!"
-        className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta"
+        className="grid grid-cols-12 z-1 mx-auto container  relative font-plecnik"
       >
-        <GridBackground delay={0.2} staggerDelay={0.06} />
         <div className="z-1 grid  col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             text="Level Up!"
@@ -551,9 +547,8 @@ export default function Home() {
       {/* People Gallery Section */}
       <div
         id="People"
-        className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta  "
+        className="grid grid-cols-12 z-1 mx-auto relative container font-plecnik  "
       >
-        <GridBackground />
         <div className="z-1 grid  col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2 sticky top-0"
@@ -568,10 +563,10 @@ export default function Home() {
             <div className="flex flex-col lg:gap-8 items-start justify-start w-full">
               {/* Main Headline */}
               <div className="flex-1 flex flex-col min-w-0">
-                <h2 className="text text-gray-900 font-bold font-aspekta">
+                <h2 className="text text-gray-900 font-bold font-plecnik">
                   Super*
                 </h2>
-                <h4 className="text-7xl  text-gray-900  tracking-tight font-aspekta">
+                <h4 className="text-7xl  text-gray-900  tracking-tight font-plecnik">
                   Human Touch
                 </h4>
               </div>
@@ -583,14 +578,14 @@ export default function Home() {
               <div className="flex flex-col items-start justify-start w-full ">
                 {/* Main Headline */}
 
-                <h2 className="text-2xl text-neutral-900 font-aspekta">
+                <h2 className="text-2xl text-neutral-900 font-plecnik">
                   Igniting Creativity:
                 </h2>
-                <h4 className="text-2xl  text-neutral-900  font-aspekta">
+                <h4 className="text-2xl  text-neutral-900  font-plecnik">
                   <span className="text-neutral-200">Unique People.</span>
                 </h4>
               </div>
-              <h3 className="text text-neutral-500 mt-4  font-aspekta">
+              <h3 className="text text-neutral-500 mt-4  font-plecnik">
                 At 1sp, we are driven by a team of passionate individuals who
                 thrive on creativity and innovation, crafting unique marketing
                 campaigns that resonate with audiences.
@@ -605,7 +600,7 @@ export default function Home() {
       {/* Visual Background 2 Section */}
       <div
         id="News"
-        className="grid grid-cols-12 z-2 mx-auto bg-neutral-900 mt-8 min-h-[50vh] relative font-aspekta"
+        className="grid grid-cols-12 z-2 mx-auto bg-neutral-900 mt-8 min-h-[50vh] relative font-plecnik"
       >
         <div className="z-1 grid gap-8 col-span-12 py-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
@@ -639,7 +634,7 @@ export default function Home() {
       </div>
 
       {/* We tell your Story */}
-      <div className="grid grid-cols-12 z-1 mx-auto  relative font-aspekta">
+      <div className="grid grid-cols-12 z-1 mx-auto  relative font-plecnik">
         <HeaderImageVideoComp2
           useVideo={false}
           imageSrc="/hr.png"
@@ -678,7 +673,7 @@ export default function Home() {
 
             <p className="mt-8 flex items-start justify-start gap-8">
               <Button2
-                variant="limesmall"
+                variant="violetsmall"
                 text="Join us for a ride"
                 className="w-fit"
               ></Button2>

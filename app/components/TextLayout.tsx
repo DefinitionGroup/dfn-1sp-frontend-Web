@@ -117,15 +117,15 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
     align === "center"
       ? "text-center mx-auto"
       : align === "right"
-      ? "text-right ml-auto"
-      : "text-left";
+        ? "text-right ml-auto"
+        : "text-left";
 
   const containerAlign =
     align === "center"
       ? "items-center"
       : align === "right"
-      ? "items-end"
-      : "items-start";
+        ? "items-end"
+        : "items-start";
 
   const baseDelay = delay;
   const [statsInView, setStatsInView] = useState(false);
@@ -139,7 +139,8 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
     <div
       className={`relative w-full  ${
         padded ? "py-24 md:py-32" : ""
-      } ${className}`}>
+      } ${className}`}
+    >
       {showGrid && (
         <div className="pointer-events-none absolute inset-0 -z-10 grid grid-cols-12 divide-x divide-neutral-200/40 dark:divide-neutral-700/40 [mask:linear-gradient(to_bottom,transparent,black,_black,transparent)]">
           {Array.from({ length: 12 }).map((_, i) => (
@@ -152,18 +153,21 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
         <div
           className={`flex flex-col gap-10 ${
             split ? "lg:grid lg:grid-cols-12 lg:gap-16" : ""
-          }`}>
+          }`}
+        >
           <div
             className={`${
               split ? "lg:col-span-5" : ""
-            } flex flex-col ${containerAlign}`}>
+            } flex flex-col ${containerAlign}`}
+          >
             {eyebrow && (
               <motion.span
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.5, delay: baseDelay }}
-                className="uppercase tracking-widest text-xs font-bold text-lime-500">
+                className="uppercase tracking-widest text-xs font-bold text-violet-500"
+              >
                 {eyebrow}
               </motion.span>
             )}
@@ -176,11 +180,12 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
                 ease: "easeOut",
                 delay: baseDelay + 0.05,
               }}
-              className={`leading-[0.95] font-semibold text-5xl md:text-7xl tracking-tight ${alignment}`}>
+              className={`leading-[0.95] font-semibold text-5xl md:text-7xl tracking-tight ${alignment}`}
+            >
               {typeof title === "string" && highlight ? (
                 <>
                   {title}{" "}
-                  <span className="bg-gradient-to-r from-lime-400 to-lime-500 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-violet-400 to-violet-500 bg-clip-text text-transparent">
                     {highlight}
                   </span>
                 </>
@@ -194,7 +199,8 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.6, delay: baseDelay + 0.1 }}
-                className={`text-base pt-4 text-neutral-800 dark:text-neutral-400 max-w-1/2 ${alignment}`}>
+                className={`text-base pt-4 text-neutral-800 dark:text-neutral-400 max-w-1/2 ${alignment}`}
+              >
                 {subtitle}
               </motion.p>
             )}
@@ -203,14 +209,16 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
           <div
             className={`${
               split ? "lg:col-span-7" : ""
-            } flex flex-col gap-8 ${alignment}`}>
+            } flex flex-col gap-8 ${alignment}`}
+          >
             {lead && (
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.6, delay: baseDelay + 0.15 }}
-                className="text-xl md:text-3xl text-neutral-700 font-semibold dark:text-neutral-200 max-w-2xl leading-tight">
+                className="text-xl md:text-3xl text-neutral-700 font-semibold dark:text-neutral-200 max-w-2xl leading-tight"
+              >
                 {lead}
               </motion.p>
             )}
@@ -227,7 +235,8 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
                       duration: 0.55,
                       delay: baseDelay + 0.2 + i * 0.07,
                     }}
-                    className="text-base md:text-lg leading-relaxed text-neutral-600 dark:text-neutral-300">
+                    className="text-base md:text-lg leading-relaxed text-neutral-600 dark:text-neutral-300"
+                  >
                     {p}
                   </motion.p>
                 ))}
@@ -248,7 +257,8 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
                     },
                   },
                 }}
-                className="grid gap-3 sm:grid-cols-2 mt-2">
+                className="grid gap-3 sm:grid-cols-2 mt-2"
+              >
                 {bullets.map((b, i) => (
                   <motion.li
                     key={i}
@@ -256,8 +266,9 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
                       hidden: { opacity: 0, y: 10 },
                       visible: { opacity: 1, y: 0 },
                     }}
-                    className="flex items-start gap-2 text-sm md:text-base text-neutral-700 dark:text-neutral-200">
-                    <span className="mt-3 inline-block h-1 w-1 rounded-full bg-gradient-to-tr from-lime-400 to-lime-500" />
+                    className="flex items-start gap-2 text-sm md:text-base text-neutral-700 dark:text-neutral-200"
+                  >
+                    <span className="mt-3 inline-block h-1 w-1 rounded-full bg-gradient-to-tr from-violet-400 to-violet-500" />
                     <span>{b}</span>
                   </motion.li>
                 ))}
@@ -271,10 +282,11 @@ export const TextLayout: React.FC<TextLayoutProps> = ({
                 viewport={{ once: true, amount: 0.2 }}
                 onViewportEnter={() => setStatsInView(true)}
                 transition={{ duration: 0.6, delay: baseDelay + 0.3 }}
-                className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+                className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6"
+              >
                 {stats.map((s, i) => (
                   <div key={i} className="flex flex-col">
-                    <span className="text-2xl md:text-5xl font-semibold bg-gradient-to-r from-lime-400 to-lime-500 bg-clip-text text-transparent">
+                    <span className="text-2xl md:text-5xl font-semibold bg-gradient-to-r from-violet-400 to-violet-500 bg-clip-text text-transparent">
                       {typeof s.value === "number" ? (
                         <AnimatedNumber
                           value={s.value}

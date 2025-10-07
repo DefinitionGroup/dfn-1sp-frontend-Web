@@ -8,7 +8,7 @@ interface CtaMiniProps {
   heading: string;
   paragraph: string;
   buttonText: string;
-  buttonVariant?: "default" | "black" | "lime" | "limesmall";
+  buttonVariant?: "default" | "black" | "violet" | "violetsmall";
   url?: string;
   align?: "left" | "right" | "center";
   delay?: number;

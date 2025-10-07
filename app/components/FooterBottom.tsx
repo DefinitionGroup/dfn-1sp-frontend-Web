@@ -19,14 +19,16 @@ const FooterBottom = () => {
           <div className="flex gap-4 items-center">
             <a
               href="#"
-              className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
-              aria-label="Meta">
+              className="w-6 h-6 text-gray-400 hover:text-violet-400 transition-colors duration-200"
+              aria-label="Meta"
+            >
               <img src="/MetaLogo.svg" alt="Meta" className="w-full h-full" />
             </a>
             <a
               href="#"
-              className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
-              aria-label="Instagram">
+              className="w-6 h-6 text-gray-400 hover:text-violet-400 transition-colors duration-200"
+              aria-label="Instagram"
+            >
               <img
                 alt="Instagram"
                 src="/InstagramLogo.svg"
@@ -35,8 +37,9 @@ const FooterBottom = () => {
             </a>
             <a
               href="#"
-              className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
-              aria-label="TikTok">
+              className="w-6 h-6 text-gray-400 hover:text-violet-400 transition-colors duration-200"
+              aria-label="TikTok"
+            >
               <img
                 src="TiktokLogo.svg"
                 alt="TikTok"
@@ -45,8 +48,9 @@ const FooterBottom = () => {
             </a>
             <a
               href="#"
-              className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
-              aria-label="LinkedIn">
+              className="w-6 h-6 text-gray-400 hover:text-violet-400 transition-colors duration-200"
+              aria-label="LinkedIn"
+            >
               <img
                 src="/LinkedinLogo.svg"
                 alt="LinkedIn"
@@ -91,7 +95,6 @@ const FooterBottom = () => {
                       Newsletter:
                     </span>
                     <input
-
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -103,7 +106,8 @@ const FooterBottom = () => {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-transparent border border-gray-700 text-gray-400 text-[11px] py-3 px-3 hover:border-lime-400 hover:text-lime-400 transition-colors duration-200 focus:outline-none focus:border-lime-400 focus:text-lime-400">
+                  className="w-full bg-transparent border border-gray-700 text-gray-400 text-[11px] py-3 px-3 hover:border-violet-400 hover:text-violet-400 transition-colors duration-200 focus:outline-none focus:border-violet-400 focus:text-violet-400"
+                >
                   Subscribe
                 </button>
               </form>

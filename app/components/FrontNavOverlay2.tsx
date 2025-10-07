@@ -16,16 +16,16 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   color = "light",
 }) => {
   const router = useTransitionRouter();
-  const textColor = color === "dark" ? "text-neutral-800" : "text-neutral-50";
+  const textColor = color === "dark" ? "text-neutral-800" : "text-neutral-800";
   const imageLogo =
     color === "dark"
-      ? "/ci/1sp-fulllogotype-blk.svg"
-      : "/ci/1sp-fulllogotype.svg";
+      ? "/flizzr/Logo_FLZR_color_RGB_500.png"
+      : "/flizzr/Logo_FLZR_color_RGB_500.png";
   return (
     <nav
-      className={`hidden relative md:grid place-items-start z-10 grid-cols-12 pt-5 mx-auto container ${className}`}
+      className={`hidden relative md:grid place-items-start bg-white backdrop-blur-3xl p-8 rounded-2xl overflow-hidden z-10 grid-cols-12 pt-5 mx-auto container ${className}`}
     >
-      <div className="w-[90px] h-[90px] col-start-1 col-span-1 pt-2">
+      <div className="w-[90px]  col-start-1 col-span-1 pt-2">
         <Image
           src={imageLogo}
           alt="1SP Logo"
@@ -60,7 +60,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         >
           <span className={`${textColor}  text-xs leading-compress font-bold`}>
             <Link
-              className="hover:text-lime-400"
+              className="hover:text-violet-400"
               href={"/"}
               onClick={(e) => {
                 e.preventDefault();
@@ -75,7 +75,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           <span className={`${textColor} text-xs leading-compress font-bold`}>
             {" "}
             <Link
-              className="hover:text-lime-400"
+              className="hover:text-violet-400"
               href={"/cases"}
               onClick={(e) => {
                 e.preventDefault();
@@ -88,10 +88,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             </Link>
           </span>
           <span
-            className={`${textColor} text-xs leading-compress font-bold hover:text-lime-500`}
+            className={`${textColor} text-xs leading-compress font-bold hover:text-violet-500`}
           >
             <Link
-              className="hover:text-lime-400"
+              className="hover:text-violet-400"
               href={"/whatwedo"}
               onClick={(e) => {
                 e.preventDefault();
@@ -104,10 +104,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             </Link>
           </span>
           <span
-            className={`${textColor} text-xs leading-compress font-bold hover:text-lime-500`}
+            className={`${textColor} text-xs leading-compress font-bold hover:text-violet-500`}
           >
             <Link
-              className="hover:text-lime-400"
+              className="hover:text-violet-400"
               href={"/whatwedo"}
               onClick={(e) => {
                 e.preventDefault();
@@ -120,10 +120,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             </Link>
           </span>
           <span
-            className={`${textColor} text-xs leading-compress font-bold hover:text-lime-500`}
+            className={`${textColor} text-xs leading-compress font-bold hover:text-violet-500`}
           >
             <Link
-              className="hover:text-lime-400"
+              className="hover:text-violet-400"
               href={"/whatwedo"}
               onClick={(e) => {
                 e.preventDefault();

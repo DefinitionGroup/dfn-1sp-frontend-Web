@@ -9,7 +9,7 @@ interface Button2Props {
   text?: string;
   className?: string;
   href?: string;
-  variant?: "default" | "black" | "lime" | "limesmall";
+  variant?: "default" | "black" | "violet" | "violetsmall";
 }
 
 // Centralized variant styles
@@ -27,13 +27,13 @@ const variantStyles: Record<
     bottom: "border-neutral-900 bg-neutral-800 text-white ",
     container: "h-15",
   },
-  lime: {
-    top: "border-lime-500/30 bg-lime-400  p-4 w-full",
+  violet: {
+    top: "border-violet-500/30 bg-violet-400  p-4 w-full",
     bottom: "border-neutral-800 bg-neutral-900 text-white w-full ",
     container: "h-12",
   },
-  limesmall: {
-    top: "border-lime-500/30 bg-lime-400 text-neutral-900 px-4 py-2 ",
+  violetsmall: {
+    top: "border-violet-500/30 bg-violet-400 text-neutral-900 px-4 py-2 ",
     bottom: "border-neutral-800 bg-neutral-800 text-white px-4 py-2 ",
     container: "h-10",
   },

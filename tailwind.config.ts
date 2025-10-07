@@ -9,26 +9,26 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-aspekta)", "system-ui", "sans-serif"],
-        aspekta: ["var(--font-aspekta)", "system-ui", "sans-serif"],
-  nyghtserif: ["var(--font-nyghtserif)", "serif"],
+        sans: ["var(--font-plecnik)", "system-ui", "sans-serif"],
+        plecnik: ["var(--font-plecnik)", "system-ui", "sans-serif"],
+        nyghtserif: ["var(--font-nyghtserif)", "serif"],
       },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
         // Brand colors
         brand: {
-          lime: {
-            50: "var(--color-brand-lime-50)",
-            100: "var(--color-brand-lime-100)",
-            200: "var(--color-brand-lime-200)",
-            300: "var(--color-brand-lime-300)",
-            400: "var(--color-brand-lime-400)",
-            500: "var(--color-brand-lime-500)",
-            600: "var(--color-brand-lime-600)",
-            700: "var(--color-brand-lime-700)",
-            800: "var(--color-brand-lime-800)",
-            900: "var(--color-brand-lime-900)",
+          violet: {
+            50: "var(--color-brand-violet-50)",
+            100: "var(--color-brand-violet-100)",
+            200: "var(--color-brand-violet-200)",
+            300: "var(--color-brand-violet-300)",
+            400: "var(--color-brand-violet-400)",
+            500: "var(--color-brand-violet-500)",
+            600: "var(--color-brand-violet-600)",
+            700: "var(--color-brand-violet-700)",
+            800: "var(--color-brand-violet-800)",
+            900: "var(--color-brand-violet-900)",
           },
         },
         // Enhanced neutrals
@@ -46,10 +46,10 @@ const config: Config = {
           950: "var(--color-neutral-950)",
         },
         // Accent colors
-        purple: {
-          400: "var(--color-purple-400)",
-          500: "var(--color-purple-500)",
-          600: "var(--color-purple-600)",
+        violet: {
+          400: "var(--color-violet-400)",
+          500: "var(--color-violet-500)",
+          600: "var(--color-violet-600)",
         },
         blue: {
           400: "var(--color-blue-400)",
