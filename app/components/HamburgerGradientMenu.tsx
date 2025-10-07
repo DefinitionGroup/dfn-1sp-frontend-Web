@@ -9,6 +9,7 @@ import {
   useIsPresent,
 } from "motion/react";
 import Link from "next/link";
+import { useTransitionRouter } from "next-view-transitions";
 import FrontNavOverlay from "./FrontNavOverlay";
 import Image from "next/image";
 /**
@@ -42,6 +43,7 @@ export default function HamburgerGradientMenu({
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const firstLinkRef = useRef<HTMLAnchorElement | null>(null);
+  const router = useTransitionRouter();
 
   // Close on ESC
   useEffect(() => {
@@ -98,15 +100,13 @@ export default function HamburgerGradientMenu({
         onClick={toggle}
         className={buttonClassName}
         ariaControls="gradient-menu-panel"
-      />{" "}
+      />
       <Link
         className="hover:text-lime-400"
         href={"/"}
         onClick={(e) => {
           e.preventDefault();
-          router.push("/", {
-            onTransitionReady: pageAnimation,
-          });
+          router.push("/");
         }}
       >
         <Image
