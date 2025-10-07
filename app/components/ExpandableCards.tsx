@@ -363,8 +363,8 @@ const cards = [
       "End-to-end expertise in design, production, logistics, and retail activation",
     src: "/units/FIJAK/fijak_cover-image.jpg",
     logo: "/units/FIJAK/fijak_logo.svg",
-    ctaText: "",
-    ctaLink: "https://www.new-fluence.com/en/",
+    ctaText: "Go Fijak",
+    ctaLink: "https://fijak.de/",
     content: () => {
       return (
         <p>
