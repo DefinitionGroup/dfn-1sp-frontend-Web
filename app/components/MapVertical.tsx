@@ -233,7 +233,7 @@ export function useProximity(
     if (!initialValueRef.current) {
       initialValueRef.current = value.get();
     }
-  }, []);
+  }, [value]);
 
   useMotionValueEvent(mouseX, "change", (latest) => {
     const rect = ref.current!.getBoundingClientRect();

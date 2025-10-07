@@ -68,6 +68,8 @@ const teamMembers: TeamMember[] = [
 ];
 
 export default function PeopleShowcaseHero() {
+  const [hoveredMember, setHoveredMember] = useState<string | null>(null);
+
   const handleCTAClick = () => {
     window.open("https://msm.digital", "_blank", "noopener,noreferrer");
   };
@@ -84,15 +86,13 @@ export default function PeopleShowcaseHero() {
       <div className="flex  sm:flex-row   items-center  justify-start w-full overflow-x-auto">
         <StaggeredSlideUp className=" grid grid-cols-3 gap-1 w-full overflow-x-auto">
           {teamMembers.map((member, index) => {
-            const [isHovered, setIsHovered] = useState(false);
-
             return (
               <div
                 key={member.name}
                 className="group relative  border-neutral-100 overflow-hidden flex-shrink-0 rounded-xs transition-transform duration-300 focus-within:scale-[1.02]"
                 data-member={member.name.toLowerCase()}
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
+                onMouseEnter={() => setHoveredMember(member.name)}
+                onMouseLeave={() => setHoveredMember(null)}
               >
                 <video
                   src={member.image}
@@ -108,7 +108,9 @@ export default function PeopleShowcaseHero() {
                     triggerOnView={false}
                     delay={0}
                     staggerDelay={0.1}
-                    animate={isHovered ? "visible" : "hidden"}
+                    animate={
+                      hoveredMember === member.name ? "visible" : "hidden"
+                    }
                   >
                     {member.fullname && (
                       <h3 className="text-white font-semibold text-lg mb-2">

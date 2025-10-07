@@ -76,7 +76,8 @@ export default function WarpOverlay({
             originY: 0,
             transformPerspective: 500,
             willChange: "transform",
-          }}>
+          }}
+        >
           <header className="header">
             <h1 className="h2">Inbox</h1>
             <motion.button
@@ -85,7 +86,8 @@ export default function WarpOverlay({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               disabled={selectedEmails.length === 0}
-              aria-label="Delete">
+              aria-label="Delete"
+            >
               <DeleteIcon />
             </motion.button>
           </header>
@@ -153,7 +155,7 @@ function GradientOverlay({
     }
 
     playBreathingAnimation();
-  }, [isPresent]);
+  }, [isPresent, breathe]);
 
   const enterDuration = 0.75;
   const exitDuration = 0.5;
@@ -279,7 +281,8 @@ function ImmersiveOverlay({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        transition={transition}>
+        transition={transition}
+      >
         <motion.div
           className="modal-content"
           onClick={(e) => e.stopPropagation()}
@@ -291,7 +294,8 @@ function ImmersiveOverlay({
             transformPerspective: 1000,
             originX: 0.5,
             originY: 0,
-          }}>
+          }}
+        >
           <header>
             <h2 className="h3">
               {itemCount} {itemCount === 1 ? "item" : "items"}
@@ -330,7 +334,8 @@ function DeleteIcon() {
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
-      strokeLinejoin="round">
+      strokeLinejoin="round"
+    >
       <path d="M3 6h18" />
       <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
       <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
