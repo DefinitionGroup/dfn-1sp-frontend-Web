@@ -2,7 +2,7 @@
 import Button2 from "@/app/components/Button2";
 import Footer from "@/app/components/Footer";
 import FooterBottom from "@/app/components/FooterBottom";
-import FrontNavOverlay from "@/app/components/FrontNavOverlay";
+import FrontNavOverlay from "@/app/components/FrontNavOverlay2";
 import StaggeredSlideUp from "@/app/components/StaggeredSlideUp";
 
 import { useInView } from "motion/react";
