@@ -63,10 +63,10 @@ const label: React.CSSProperties = {
 };
 
 const animatingText: React.CSSProperties = {
-  fontSize: "calc(24px + 4.5vw)",
+  fontSize: "calc(32px + 4.5vw)",
   fontWeight: 700,
   lineHeight: "calc(48px + 3vw)",
-  letterSpacing: "-0.4rem",
+  letterSpacing: "calc(2px - 0.5vw)",
   textTransform: "uppercase",
   color: "var(--text-primary)",
   whiteSpace: "nowrap",

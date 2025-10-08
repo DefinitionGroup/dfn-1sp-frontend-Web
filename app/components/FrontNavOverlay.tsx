@@ -6,6 +6,7 @@ import StaggeredSlideUp from "./StaggeredSlideUp";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { useTransitionRouter } from "next-view-transitions";
+import Button2 from "./Button2";
 interface FrontNavOverlayProps {
   className?: string;
   color?: "light" | "dark"; // light = neutral-50 (default), dark = neutral-800
@@ -73,21 +74,29 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           <span className={`${textColor}  text-xxs leading-compress font-bold`}>
             <Link
               className="hover:text-lime-400"
-              href={"/"}
+              href={"/whatwedo"}
               onClick={(e) => {
                 e.preventDefault();
-                router.push("/", {
+                router.push("/whatwedo", {
                   onTransitionReady: pageAnimation,
                 });
               }}
             >
-              Home
+              Services
             </Link>
           </span>
           <span
             className={`${textColor} text-xxs leading-compress font-bold`}
           ></span>
-          <span className={`${textColor} text-xxs leading-compress font-bold`}>
+          <span
+            className={`${textColor} text-xxs leading-compress font-bold`}
+          ></span>
+          <span
+            className={`${textColor} text-xxs leading-compress font-bold`}
+          ></span>
+          <span
+            className={`${textColor} text-xxs leading-compress font-bold hover:text-lime-500`}
+          >
             {" "}
             <Link
               className="hover:text-lime-400"
@@ -101,25 +110,22 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             >
               Cases
             </Link>
-          </span>
-          <span
-            className={`${textColor} text-xxs leading-compress font-bold`}
-          ></span>
+          </span>{" "}
           <span
             className={`${textColor} text-xxs leading-compress font-bold hover:text-lime-500`}
           >
             {" "}
             <Link
               className="hover:text-lime-400"
-              href={"/whatwedo"}
+              href={"/cases"}
               onClick={(e) => {
                 e.preventDefault();
-                router.push("/whatwedo", {
+                router.push("/cases", {
                   onTransitionReady: pageAnimation,
                 });
               }}
             >
-              What we do
+              About us
             </Link>
           </span>
         </StaggeredSlideUp>
@@ -232,9 +238,12 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             >
               What we do
             </span>{" "}
-          </StaggeredSlideUp>
+          </StaggeredSlideUp>{" "}
         </div>{" "}
       </motion.div>{" "}
+      <div className="w-fit flex  w-fit  min-w-[120px]  justify-end col-start-12 col-span-1 pt-2">
+        <Button2 variant="limesmall" text="Contact us" />
+      </div>
     </nav>
   );
 };

@@ -108,10 +108,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           >
             <Link
               className="hover:text-lime-400"
-              href={"/whatwedo"}
+              href={"/our-family"}
               onClick={(e) => {
                 e.preventDefault();
-                router.push("/whatwedo", {
+                router.push("/our-family", {
                   onTransitionReady: pageAnimation,
                 });
               }}
