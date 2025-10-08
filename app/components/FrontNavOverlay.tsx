@@ -223,11 +223,18 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             duration={0.1}
             distance={10}
           >
-            <span
-              className={`${textColor} text-xxs leading-compress font-normal`}
+            <Link
+              className="hover:text-lime-400"
+              href={"/our-family"}
+              onClick={(e) => {
+                e.preventDefault();
+                router.push("/our-family", {
+                  onTransitionReady: pageAnimation,
+                });
+              }}
             >
-              Our Story
-            </span>{" "}
+              Our family
+            </Link>
             <span
               className={`${textColor} text-xxs leading-compress font-normal`}
             >
