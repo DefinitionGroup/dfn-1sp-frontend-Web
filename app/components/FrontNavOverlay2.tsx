@@ -22,22 +22,26 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       ? "/flizzr/Logo_FLZR_color_RGB_500.png"
       : "/flizzr/Logo_FLZR_color_RGB_500.png";
   return (
-    <nav
-      className={`hidden  m-auto inset-x-0  md:flex fixed place-items-start mx-auto top-8  bg-white/50 backdrop-blur-sm px-8 rounded-full overflow-hidden z-10 py-3  container max-w-4xl ${className}`}
+    <motion.nav
+      initial={{
+        opacity: 0,
+        width: 100,
+      }}
+      animate={{
+        opacity: 1,
+        width: "auto",
+      }}
+      transition={{
+        opacity: { duration: 0.3 },
+        width: { duration: 0.3, delay: 0.8 },
+      }}
+      className={`hidden m-auto inset-x-0 md:flex shadow-2xl fixed place-items-start mx-auto top-8 bg-gray-200/50 backdrop-blur-sm px-8 rounded-full overflow-hidden z-10 py-3 container max-w-4xl ${className}`}
     >
-      <div className="flex-shrink-0 pt-2">
-        <Image
-          src={imageLogo}
-          alt="1SP Logo"
-          width={90}
-          height={90}
-          className="object-contain"
-        />
-      </div>
       <motion.div
+        className="flex-shrink-0 pt-2"
         initial={{
           opacity: 0,
-          scaleX: 0,
+          scaleX: 1,
           y: 10,
           originX: 0,
           originY: 0,
@@ -45,7 +49,40 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         animate={{ opacity: 1, scaleX: 1, y: 0 }}
         transition={{
           duration: 0.5,
-          delay: 0.4,
+          delay: 1.4,
+        }}
+      >
+        <Link
+          className="hover:text-violet-600"
+          href={"/"}
+          onClick={(e) => {
+            e.preventDefault();
+            router.push("/", {
+              onTransitionReady: pageAnimation,
+            });
+          }}
+        >
+          <Image
+            src={imageLogo}
+            alt="1SP Logo"
+            width={90}
+            height={90}
+            className="object-contain"
+          />
+        </Link>
+      </motion.div>
+      <motion.div
+        initial={{
+          opacity: 0,
+          scaleX: 1,
+          y: 10,
+          originX: 0,
+          originY: 0,
+        }}
+        animate={{ opacity: 1, scaleX: 1, y: 0 }}
+        transition={{
+          duration: 0.5,
+          delay: 1.4,
         }}
         className="flex-1 flex justify-end"
       >
@@ -84,7 +121,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 });
               }}
             >
-              Cases
+              Projects
             </Link>
           </span>
           <span
@@ -116,28 +153,26 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 });
               }}
             >
-              Our Family
+              About us
             </Link>
           </span>
-          <span
-            className={`${textColor} text-xs leading-compress font-bold hover:text-violet-700`}
-          >
-            <Link
-              className="hover:text-violet-600"
-              href={"/whatwedo"}
-              onClick={(e) => {
-                e.preventDefault();
-                router.push("/whatwedo", {
-                  onTransitionReady: pageAnimation,
-                });
-              }}
-            >
-              Work with us
-            </Link>
-          </span>{" "}
         </StaggeredSlideUp>
       </motion.div>{" "}
-      <div className="w-[90px] flex-shrink-0 pt-2">
+      <motion.div
+        className="w-[90px] ml-12 flex-shrink-0 pt-2"
+        initial={{
+          opacity: 0,
+          scaleX: 1,
+          y: 10,
+          originX: 0,
+          originY: 0,
+        }}
+        animate={{ opacity: 1, scaleX: 1, y: 0 }}
+        transition={{
+          duration: 0.5,
+          delay: 1.4,
+        }}
+      >
         <Image
           src="/ci/1sp-fulllogotype-blk.svg"
           alt="1SP Logo"
@@ -145,11 +180,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           height={60}
           className="object-contain"
         />
-      </div>
-    </nav>
+      </motion.div>
+    </motion.nav>
   );
 };
-
 const pageAnimation = () => {
   document.documentElement.animate(
     [

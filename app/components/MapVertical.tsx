@@ -102,13 +102,13 @@ export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
               navPoints.map((navPointId, navPointIndex) => (
                 <motion.div
                   key={navPointId}
-                  className="bg-gray-900 text-gray-200 hover:bg-gray-200 hover:text-gray-800 font-normal cursor-pointer pointer-events-auto flex px-2 py-1 items-center justify-start rounded-xl"
+                  className="bg-violet-700 text-gray-200  hover:bg-gray-200 hover:text-gray-800 font-normal cursor-pointer pointer-events-auto flex px-2 py-1 items-center justify-start rounded-xs"
                   style={{
                     width: LINE_HEIGHT_ACTIVE + 64,
                   }}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
+                  initial={{ opacity: 0, x: -20, y: -10 }}
+                  animate={{ opacity: 1, x: 0, y: -10 }}
+                  exit={{ opacity: 0, x: -20, y: -10 }}
                   transition={{
                     opacity: { delay: navPointIndex * 0.05, duration: 0.2 },
                     x: {

@@ -15,11 +15,10 @@ const plecnik = localFont({
   weight: "50 1000",
 });
 
-const plecnikBold = localFont({
+const plecnikbold = localFont({
   src: [
     {
       path: "./fonts/7760PlecnikBoldItalic.woff2",
-      style: "bold",
     },
   ],
   variable: "--font-plecnikbold",
@@ -51,7 +50,10 @@ export default function RootLayout({
   const diagnostic = process.env.NEXT_PUBLIC_DIAG === "1";
   return (
     <ViewTransitions>
-      <html lang="en" className={`${plecnik.variable} ${nyghtserif.variable}`}>
+      <html
+        lang="en"
+        className={`${plecnik.variable} ${nyghtserif.variable} ${plecnikbold.variable}`}
+      >
         <body className={`antialiased ${diagnostic ? "dialog" : ""}`}>
           {children}
         </body>

@@ -34,10 +34,10 @@ const Footer: React.FC<FooterProps> = ({ className = "" }) => {
           {/* Company Name */}
           <div className="lg:col-span-3 flex flex-col gap-3">
             <h1 className="text-7xl font-medium tracking-tighter text-neutral-300">
-              1SP
+              FLZR
             </h1>
-            <h2 className="text-xl font-bold tracking-tight text-neutral-300">
-              Superagency
+            <h2 className="text-xl font-bold tracking-tight text-neutral-100">
+              Part of the Superagency
             </h2>
           </div>
 

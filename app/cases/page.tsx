@@ -6,7 +6,7 @@ import Button2 from "../components/Button2";
 import ExpandableCards from "../components/ExpandableCards";
 import Footer from "../components/Footer";
 import FooterBottom from "../components/FooterBottom";
-import FrontNavOverlay from "../components/FrontNavOverlay";
+import FrontNavOverlay from "../components/FrontNavOverlay2";
 import HeaderImageVideoComp from "../components/HeaderImageVideoComp";
 import InteractiveCarousel from "../components/InteractiveCarousel";
 import StaggeredSlideUp from "../components/StaggeredSlideUp";
@@ -85,7 +85,7 @@ export default function Home() {
           className="grid grid-cols-12 z-1 mx-auto container  relative font-plecnik"
         >
           <div className="z-1 grid  col-span-12 py-16  col-start-1 container mx-auto row-start-1 grid-cols-12 ">
-            <div className="z-1 col-span-16 col-start-1 mt-16">
+            <div className="z-1 col-span-16 col-start-1 mt-32">
               {/* Description and CTA Section */}
               <div className="flex flex-col items-start gap-8 justify-center w-full">
                 <StaggeredSlideUp

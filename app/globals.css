@@ -7,6 +7,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-plecnik: var(--font-plecnik);
+  --font-plecnikbold: var(--font-plecnikbold);
   --font-nyghtserif: var(--font-nyghtserif);
 
   /* Brand Colors - From Figma Design */

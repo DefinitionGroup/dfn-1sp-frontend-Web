@@ -92,13 +92,6 @@ export default function ExpandableCards() {
               </motion.div>
               <div className="flex justify-between absolute  items-start m-8 pt-8 z-10 ">
                 <div className="flex justify-between relative top-0 flex-col items-start   z-10 left-0">
-                  {" "}
-                  <motion.img
-                    layoutId={`logo-${active.title}-${id}`}
-                    src={active.logo}
-                    alt={active.title}
-                    className="w-24 h-20 object-contain "
-                  />
                   <div className="">
                     <motion.h3
                       layoutId={`title-${active.title}-${id}`}
@@ -157,13 +150,12 @@ export default function ExpandableCards() {
                 />
               </motion.div>
               <div className="col-start-1  col-span-1 flex flex-col justify-end opacity-100 row-start-1 p-4 z-1">
-                <motion.img
-                  layoutId={`logo-${card.title}-${id}`}
-                  src={card.logo}
-                  alt={card.title}
-                  className="w-28 h-14 object-contain  object-left"
-                />
-
+                <motion.h3
+                  layoutId={`description-${card.description}-${id}`}
+                  className="font-medium mt-2  text-xl leading-snug tracking-tight text-neutral-100 dark:text-neutral-200 text-center md:text-left"
+                >
+                  {card.description}
+                </motion.h3>
                 <motion.h3
                   layoutId={`title-${card.title}-${id}`}
                   className="font-medium mt-2  text-sm leading-snug tracking-tight text-neutral-100 dark:text-neutral-200 text-center md:text-left"
@@ -215,162 +207,65 @@ export const CloseIcon = () => {
 
 const cards = [
   {
-    description: "MSM.digital",
-    title: "Driving sales, reach, and connection for world-class brands",
-    src: "/units/MSMDIGITAL/msm_cover-mage.jpg",
-    logo: "/units/MSMDIGITAL/msm_digital_logo.svg",
-    ctaText: "Visit MSM",
-    ctaLink: "https://www.msm.digital",
-    content: () => {
-      return (
-        <p>
-          We help world-class brands boost sales with cutting-edge marketing. By
-          harnessing PR, social media, online retail, tech innovation, and
-          digital POS, we drive awareness, reach, sell-through, and lasting
-          customer connections at every touchpoint.
-        </p>
-      );
-    },
-  },
-  {
-    description: "StudioCO2",
-    title: "Sharp specialists in creative customer journeys",
-    src: "/units/STUDIOCO2/studio-co2_cover-image.jpg",
-    logo: "/units/STUDIOCO2/studio_co2_logo.svg",
-    ctaText: "Play @ StudioCo2",
-    ctaLink: "https://studioco2.",
-    content: () => {
-      return (
-        <p>
-          Whether its a full funnel product campaign, an interactive retail
-          experience or a fun piece of theatre… we have the people, the skills
-          and all the tools to make it happen all under one roof.
-        </p>
-      );
-    },
-  },
-  {
-    description: "Flzr",
-    title: "20+ years of driving success at the point of sale.",
-    src: "/units/FLZR/flzr_cover-image.jpg",
-    logo: "/units/FLZR/flzr_logo.svg",
-    ctaText: "Rush to Flzr",
-    ctaLink: "https://www.msm.digital",
-    content: () => {
-      return (
-        <p>
-          We create tailored brand experiences that deliver results. With
-          full-service solutions and innovations like video consulting and
-          social selling, we help brands win at the point of sale — across
-          Europe and beyond.
-        </p>
-      );
-    },
-  },
+    description: "Trainings",
+    title: "Our trainings for convincing customer communication",
+    src: "/flizzr/live-shopping.webp",
 
+    ctaText: "Trainings",
+    ctaLink: "https://www.msm.digital",
+    content: () => {
+      return <p>Our trainings for convincing customer communication</p>;
+    },
+  },
   {
-    description: "Insight",
-    title: "Connecting creators, brands, and fans through authentic influence",
-    src: "/units/INSIGHT/insight_cover-image.jpg",
-    logo: "/units/INSIGHT/insight_logo.svg",
-    ctaText: "Rush to Insight",
-    ctaLink: "https://www.ins.gg/en/",
+    description: "Business Intelligence",
+    title: "Use data, achieve goals",
+    src: "/flizzr/business-analyse.webp",
+
+    ctaText: "Business Intelligence",
+    ctaLink: "https://www.msm.digital",
+    content: () => {
+      return <p>Customized analysis tools and data visualization</p>;
+    },
+  },
+  {
+    description: "Sales Force",
+    title: "Unique shopping experiences for a new type of sales",
+    src: "/flizzr/sales-force-shared-sales-force.webp",
+
+    ctaText: "Sales Force",
+    ctaLink: "https://www.msm.digital",
     content: () => {
       return (
         <p>
-          We empower leading creators to tell authentic stories. By partnering
-          with global brands and focusing on communities, we spark engagement,
-          build awareness, and drive sales through genuine connections.
+          Our sales strategies seamlessly integrate traditional brick-and-mortar
+          shopping with modern digital experiences. Emphasizing personal
+          interaction at key touchpoints, our seasoned sales team brings their
+          expertise directly to stores, providing adaptable, sales-driven
+          support services across Germany and Europe. They consistently tailor
+          their approach to suit the brand and target audience, ensuring optimal
+          sales outcomes.
         </p>
       );
     },
   },
   {
-    description: "Renaissance",
-    title: "Masterminding PR and marketing campaigns across every genre",
-    src: "/units/RENAISSANCE/renaissance_cover-image.jpg",
-    logo: "/units/RENAISSANCE/renaissance-horz_logo.svg",
-    ctaText: "Click to Renaissance",
-    ctaLink: "https://renaissancepr.co.uk/",
+    description: "Go To Markets:",
+    title: "From the idea to the shelf: your product in Europe’s stores",
+    src: "/flizzr/go-to-market.webp",
+
+    ctaText: "Go To Markets:",
+    ctaLink: "https://www.msm.digital",
     content: () => {
       return (
         <p>
-          From strategy and planning to audience insights and execution,
-          Renaissance brings together expert talent across every discipline to
-          craft PR and marketing campaigns that resonate and perform. We ensure
-          your brand is always positioned to make the most of every opportunity.
-        </p>
-      );
-    },
-  },
-  {
-    description: "1SP XR Studio",
-    title: "Innovative 3D communication that inspires you and your customers",
-    src: "/units/1SPXRSTUDIOS/1sp-xr-studios_cover-image.jpg",
-    logo: "/units/1SPXRSTUDIOS/1sp-xr-studios_logo.svg",
-    ctaText: "Visit 1SP XR Studio",
-    ctaLink: "https://www.cad-laif.com/",
-    content: () => {
-      return (
-        <p>
-          From complex 3D models and emotive renderings to animations, AR, and
-          VR apps — every 1SP XR Studio project reflects the passion and
-          expertise of our highly motivated team.
-        </p>
-      );
-    },
-  },
-  {
-    description: "promoPers",
-    title:
-      "Combining  exceptional brand products with extraordinary personalities.",
-    src: "/units/PROMOPERS/promopers_cover-image.jpg",
-    logo: "/units/PROMOPERS/promopers_logo.svg",
-    ctaText: "PromoPers",
-    ctaLink: "https://promopers.com/en/",
-    content: () => {
-      return (
-        <p>
-          Our mission is centered on your vision, values, and products — whether
-          it’s new campaigns, sales promotions, or tailored personnel solutions.
-          Trusted by long-standing clients for our transparency, proximity, and
-          flexibility, we remain committed to driving your success.{" "}
-        </p>
-      );
-    },
-  },
-  {
-    description: "New Fluence",
-    title: "#1 solution for successful Influencer marketing",
-    src: "/units/NEWFLUENCE/new-fluence_cover-image.jpg",
-    logo: "/units/NEWFLUENCE/new-fluence_logo.svg",
-    ctaText: "Let NewFluence you ",
-    ctaLink: "https://www.new-fluence.com/en/",
-    content: () => {
-      return (
-        <p>
-          New Fluence enhances brand credibility and visibility by partnering
-          with authentic content creators. We make your brand digitally visible,
-          driving growth and success through simple, targeted, and effective
-          promotion.{" "}
-        </p>
-      );
-    },
-  },
-  {
-    description: "Fijak",
-    title:
-      "End-to-end expertise in design, production, logistics, and retail activation",
-    src: "/units/FIJAK/fijak_cover-image.jpg",
-    logo: "/units/FIJAK/fijak_logo.svg",
-    ctaText: "Go Fijak",
-    ctaLink: "https://fijak.de/",
-    content: () => {
-      return (
-        <p>
-          With over 30 years of experience, we take ideas from concept to the
-          point of sale — delivering seamless brand experiences that connect
-          with customers.{" "}
+          We support you in successfully establishing your product in
+          international retail chains and distributing it throughout the
+          European market, from key account sales to sales promotions and
+          training. Our expertise in consumer electronics and technology as well
+          as advanced AI technologies and customized retail marketing campaigns
+          ensure the optimal placement of your products. FLZR is the strong
+          partner at your side!
         </p>
       );
     },

@@ -40,11 +40,11 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
 
   return (
     <motion.div
-      className={`absolute bg-black inset-0 overflow-hidden  ${className}`}
-      initial={{ opacity: 0, scaleX: 0.9, y: 100 }}
+      className={`absolute bg-black inset-0 rounded-4xl mt-2 overflow-hidden  ${className}`}
+      initial={{ opacity: 0, scaleX: 0.85, y: 100 }}
       animate={{
         opacity: 1,
-        scaleX: 1,
+        scaleX: 0.95,
         y: 0,
       }}
       transition={{
@@ -87,7 +87,8 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
             priority
           />
         )}
-        <motion.div
+        {/* //////////////// DOT BACKGROUND //////////////// */}
+        {/* <motion.div
           className="absolute inset-0 "
           style={{
             backgroundImage: `url(${bg.src})`,
@@ -100,7 +101,7 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
             delay: 0.3,
             ease: [0.16, 1, 0.3, 1],
           }}
-        />
+        /> */}
       </motion.div>
     </motion.div>
   );

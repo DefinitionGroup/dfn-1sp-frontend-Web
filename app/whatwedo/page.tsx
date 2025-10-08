@@ -15,7 +15,7 @@ import Button2 from "@/app/components/Button2";
 import ExpandableCards from "@/app/components/ExpandableCards";
 import Footer from "@/app/components/Footer";
 import FooterBottom from "@/app/components/FooterBottom";
-import FrontNavOverlay from "@/app/components/FrontNavOverlay";
+import FrontNavOverlay from "@/app/components/FrontNavOverlay2";
 import HeaderImageVideoComp from "@/app/components/HeaderImageVideoComp";
 import InteractiveCarousel from "@/app/components/InteractiveCarousel";
 import { Nav } from "@/app/components/Nav";

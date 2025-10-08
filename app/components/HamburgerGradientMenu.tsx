@@ -10,7 +10,7 @@ import {
 } from "motion/react";
 import Link from "next/link";
 import { useTransitionRouter } from "next-view-transitions";
-import FrontNavOverlay from "./FrontNavOverlay";
+import FrontNavOverlay from "./FrontNavOverlay2";
 import Image from "next/image";
 /**
  * Menu items config
