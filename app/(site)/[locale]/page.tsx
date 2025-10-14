@@ -4,6 +4,8 @@ import { PageBuilder } from "@/components/PageBuilder";
 import { cookies } from "next/headers";
 import NotFound from "@/components/ui/not-found";
 
+export const revalidate = 60;
+
 export default async function Home({
   params,
 }: {
@@ -18,7 +20,6 @@ export default async function Home({
     query: HOME_PAGE_QUERY,
     params: { channel, language },
   });
-  //console.log("Home page data:", page);
   return (
     <div className="  min-h-screen">
       {page?.content1sp ? (
