@@ -1,5 +1,5 @@
 "use client";
-
+import Button2 from "./Button2";
 import React from "react";
 import Image from "next/image";
 import StaggeredSlideUp from "./StaggeredSlideUp";
@@ -137,6 +137,9 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           </span>{" "}
         </StaggeredSlideUp>
       </motion.div>{" "}
+      <div className="w-fit flex  w-fit  min-w-[120px]  justify-end col-start-12 col-span-1 pt-2">
+        <Button2 variant="limesmall" text="Contact us" />
+      </div>
     </nav>
   );
 };

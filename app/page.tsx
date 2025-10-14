@@ -8,7 +8,7 @@ import ExpandableCards from "./components/ExpandableCards";
 import ExpandableCards2 from "./components/ExpandableCards2";
 import Footer from "./components/Footer";
 import FooterBottom from "./components/FooterBottom";
-import FrontNavOverlay from "./components/FrontNavOverlay2";
+import FrontNavOverlay from "./components/FrontNavOverlay";
 import GridBackground from "./components/GridBackground";
 import HamburgerGradientMenu from "./components/HamburgerGradientMenu";
 import HeaderImageVideoComp from "./components/HeaderImageVideoComp";
