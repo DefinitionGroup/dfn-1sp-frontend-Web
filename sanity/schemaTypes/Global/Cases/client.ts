@@ -1,8 +1,8 @@
 import { defineType, defineField } from 'sanity'
 
 export default defineType({
-    name: 'caseStudy',
-    title: 'Case Study',
+    name: 'client',
+    title: 'Client',
     type: 'document',
     fields: [
         defineField({
@@ -11,12 +11,12 @@ export default defineType({
             type: 'string',
             readOnly: true,
             hidden: true,
-            initialValue: 'de',
+            initialValue: 'en',
             description: 'Managed by i18n tooling; do not edit manually.',
         }),
         {
-            name: 'title',
-            title: 'Title',
+            name: 'name',
+            title: 'Name',
             type: 'string',
             validation: (Rule) => Rule.required()
         },
@@ -25,7 +25,7 @@ export default defineType({
             title: 'Slug',
             type: 'slug',
             options: {
-                source: 'title',
+                source: 'name',
                 maxLength: 96,
                 slugify: (input: string) => {
                     const baseSlug = input
@@ -51,7 +51,7 @@ export default defineType({
                     const baseId = document?._id.replace(/^drafts\./, "");
 
                     const query = `*[
-                        _type == "caseStudy" && 
+                        _type == "client" && 
                         slug.current == $slug && 
                         language == $language && 
                         !(_id in [$draftId, $publishedId])
@@ -70,56 +70,62 @@ export default defineType({
             validation: (Rule) => Rule.required()
         },
         {
-            name: 'description',
-            title: 'Description',
-            type: 'text',
-            rows: 4
+            name: 'tagline',
+            title: 'Tagline',
+            type: 'string',
+            description: 'A brief tagline or description for the client'
         },
         {
-            name: 'mainImage',
-            title: 'Main Image',
-            type: 'cloudinary.asset'
+            name: 'logo',
+            title: 'Logo',
+            type: 'cloudinary.asset',
+            description: 'Client logo'
         },
         {
-            name: 'imageGallery',
-            title: 'Image Gallery',
-            type: 'array',
-            of: [
-                {
-                    type: 'object',
-                    fields: [
-                        {
-                            name: 'image',
-                            title: 'Image',
-                            type: 'cloudinary.asset'
-                        },
-                        {
-                            name: 'alt',
-                            title: 'Alt Text',
-                            type: 'string'
-                        },
-                        {
-                            name: 'caption',
-                            title: 'Caption',
-                            type: 'string'
-                        }
-                    ]
-                }
-            ]
+            name: 'coordinateLat',
+            title: 'Coordinate Latitude',
+            type: 'number',
+            description: 'Latitude coordinate for the client location',
+            validation: (Rule) => Rule.min(-90).max(90)
         },
         {
-            name: 'units',
-            title: 'Related Units',
+            name: 'coordinateLon',
+            title: 'Coordinate Longitude',
+            type: 'number',
+            description: 'Longitude coordinate for the client location',
+            validation: (Rule) => Rule.min(-180).max(180)
+        },
+        {
+            name: 'address',
+            title: 'Address',
+            type: 'string',
+            description: 'Full address of the client'
+        },
+        {
+            name: 'phone',
+            title: 'Phone',
+            type: 'string',
+            description: 'Contact phone number'
+        },
+        {
+            name: 'email',
+            title: 'Email',
+            type: 'string',
+            validation: (Rule) => Rule.email()
+        },
+        {
+            name: 'caseStudies',
+            title: 'Related Case Studies',
             type: 'array',
             of: [
                 {
                     type: 'reference',
-                    to: [{ type: 'unit' }],
+                    to: [{ type: 'caseStudy' }],
                     options: {
                         filter: ({ document }: { document: any }) => {
                             const currentLanguage = document?.language || 'de';
                             return {
-                                filter: '_type == "unit" && language == $language',
+                                filter: '_type == "caseStudy" && language == $language',
                                 params: { language: currentLanguage }
                             };
                         }
@@ -128,31 +134,24 @@ export default defineType({
             ]
         },
         {
-            name: 'client',
-            title: 'Related Client',
-            type: 'reference',
-            to: [{ type: 'client' }],
-            options: {
-                filter: ({ document }: { document: any }) => {
-                    const currentLanguage = document?.language || 'de';
-                    return {
-                        filter: '_type == "client" && language == $language',
-                        params: { language: currentLanguage }
-                    };
+            name: 'people',
+            title: 'Related People',
+            type: 'array',
+            of: [
+                {
+                    type: 'reference',
+                    to: [{ type: 'person' }],
+                    options: {
+                        filter: ({ document }: { document: any }) => {
+                            const currentLanguage = document?.language || 'de';
+                            return {
+                                filter: '_type == "person" && language == $language',
+                                params: { language: currentLanguage }
+                            };
+                        }
+                    }
                 }
-            }
-        },
-        {
-            name: 'publishedAt',
-            title: 'Published At',
-            type: 'datetime',
-            initialValue: () => new Date().toISOString()
-        },
-        {
-            name: 'isPublished',
-            title: 'Published',
-            type: 'boolean',
-            initialValue: true
+            ]
         },
         {
             name: 'channel',
@@ -170,26 +169,9 @@ export default defineType({
     ],
     preview: {
         select: {
-            title: 'title',
-            media: 'mainImage',
-            isPublished: 'isPublished'
-        },
-        prepare(selection) {
-            const { title, media, isPublished } = selection
-            return {
-                title,
-                subtitle: isPublished ? 'Published' : 'Draft',
-                media
-            }
+            title: 'name',
+            subtitle: 'tagline',
+            media: 'logo'
         }
-    },
-    orderings: [
-        {
-            title: 'Published Date, New',
-            name: 'publishedAtDesc',
-            by: [
-                { field: 'publishedAt', direction: 'desc' }
-            ]
-        }
-    ]
+    }
 })

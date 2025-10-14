@@ -1,8 +1,8 @@
 import { defineType, defineField } from 'sanity'
 
 export default defineType({
-    name: 'caseStudy',
-    title: 'Case Study',
+    name: 'person',
+    title: 'Person',
     type: 'document',
     fields: [
         defineField({
@@ -15,8 +15,8 @@ export default defineType({
             description: 'Managed by i18n tooling; do not edit manually.',
         }),
         {
-            name: 'title',
-            title: 'Title',
+            name: 'name',
+            title: 'Name',
             type: 'string',
             validation: (Rule) => Rule.required()
         },
@@ -25,7 +25,7 @@ export default defineType({
             title: 'Slug',
             type: 'slug',
             options: {
-                source: 'title',
+                source: 'name',
                 maxLength: 96,
                 slugify: (input: string) => {
                     const baseSlug = input
@@ -51,7 +51,7 @@ export default defineType({
                     const baseId = document?._id.replace(/^drafts\./, "");
 
                     const query = `*[
-                        _type == "caseStudy" && 
+                        _type == "person" && 
                         slug.current == $slug && 
                         language == $language && 
                         !(_id in [$draftId, $publishedId])
@@ -70,59 +70,68 @@ export default defineType({
             validation: (Rule) => Rule.required()
         },
         {
-            name: 'description',
-            title: 'Description',
-            type: 'text',
-            rows: 4
+            name: 'image',
+            title: 'Image',
+            type: 'cloudinary.asset',
+            description: 'Person profile image'
         },
         {
-            name: 'mainImage',
-            title: 'Main Image',
-            type: 'cloudinary.asset'
+            name: 'video',
+            title: 'Video',
+            type: 'cloudinary.asset',
+            description: 'Person profile video'
         },
         {
-            name: 'imageGallery',
-            title: 'Image Gallery',
+            name: 'tagline',
+            title: 'Tagline',
+            type: 'string',
+            description: 'A brief tagline or title for the person'
+        },
+        {
+            name: 'contactEmail',
+            title: 'Contact Email',
+            type: 'string',
+            validation: (Rule) => Rule.email()
+        },
+        {
+            name: 'content',
+            title: 'Free Text Content',
             type: 'array',
             of: [
                 {
-                    type: 'object',
-                    fields: [
-                        {
-                            name: 'image',
-                            title: 'Image',
-                            type: 'cloudinary.asset'
-                        },
-                        {
-                            name: 'alt',
-                            title: 'Alt Text',
-                            type: 'string'
-                        },
-                        {
-                            name: 'caption',
-                            title: 'Caption',
-                            type: 'string'
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            name: 'units',
-            title: 'Related Units',
-            type: 'array',
-            of: [
-                {
-                    type: 'reference',
-                    to: [{ type: 'unit' }],
-                    options: {
-                        filter: ({ document }: { document: any }) => {
-                            const currentLanguage = document?.language || 'de';
-                            return {
-                                filter: '_type == "unit" && language == $language',
-                                params: { language: currentLanguage }
-                            };
-                        }
+                    type: 'block',
+                    styles: [
+                        { title: 'Normal', value: 'normal' },
+                        { title: 'H1', value: 'h1' },
+                        { title: 'H2', value: 'h2' },
+                        { title: 'H3', value: 'h3' },
+                        { title: 'H4', value: 'h4' },
+                        { title: 'Quote', value: 'blockquote' }
+                    ],
+                    lists: [
+                        { title: 'Bullet', value: 'bullet' },
+                        { title: 'Numbered', value: 'number' }
+                    ],
+                    marks: {
+                        decorators: [
+                            { title: 'Strong', value: 'strong' },
+                            { title: 'Emphasis', value: 'em' },
+                            { title: 'Code', value: 'code' }
+                        ],
+                        annotations: [
+                            {
+                                name: 'link',
+                                type: 'object',
+                                title: 'Link',
+                                fields: [
+                                    {
+                                        name: 'href',
+                                        type: 'url',
+                                        title: 'URL'
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 }
             ]
@@ -143,18 +152,6 @@ export default defineType({
             }
         },
         {
-            name: 'publishedAt',
-            title: 'Published At',
-            type: 'datetime',
-            initialValue: () => new Date().toISOString()
-        },
-        {
-            name: 'isPublished',
-            title: 'Published',
-            type: 'boolean',
-            initialValue: true
-        },
-        {
             name: 'channel',
             title: 'Channel',
             type: 'array',
@@ -170,26 +167,9 @@ export default defineType({
     ],
     preview: {
         select: {
-            title: 'title',
-            media: 'mainImage',
-            isPublished: 'isPublished'
-        },
-        prepare(selection) {
-            const { title, media, isPublished } = selection
-            return {
-                title,
-                subtitle: isPublished ? 'Published' : 'Draft',
-                media
-            }
+            title: 'name',
+            subtitle: 'tagline',
+            media: 'image'
         }
-    },
-    orderings: [
-        {
-            title: 'Published Date, New',
-            name: 'publishedAtDesc',
-            by: [
-                { field: 'publishedAt', direction: 'desc' }
-            ]
-        }
-    ]
+    }
 })

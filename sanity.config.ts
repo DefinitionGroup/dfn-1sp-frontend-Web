@@ -339,7 +339,9 @@ export default defineConfig({
         "page",
         "menu",
         "caseStudy",
-        "unit"
+        "unit",
+        "client",
+        "person"
       ],
       weakReferences: true,
     }),

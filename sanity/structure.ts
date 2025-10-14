@@ -1,7 +1,6 @@
 import type {
   StructureResolver,
   ListItemBuilder,
-  ListBuilder,
 } from "sanity/structure";
 import {
   MdWeb,
@@ -10,7 +9,9 @@ import {
   MdCategory,
   MdTranslate,
   MdCases,
-  MdGroup,
+  MdPeople,
+  MdApps,
+  MdEmojiPeople
 } from "react-icons/md";
 
 // Define language type
@@ -27,10 +28,10 @@ const supportedLanguages: Language[] = [
 
 // Per-channel supported languages
 const CHANNEL_LANGUAGES: Record<string, Language[]> = {
-  '1spWeb': [supportedLanguages[1]], // EN only
-  'msmWeb': [supportedLanguages[1], supportedLanguages[0]], // EN, DE
-  'studioco2Web': [supportedLanguages[1]], // EN only
-  'flizrWeb': [supportedLanguages[1], supportedLanguages[0], supportedLanguages[2]], // EN, DE, PL
+  '1spWeb': [supportedLanguages[1]],
+  'msmWeb': [supportedLanguages[1], supportedLanguages[0]],
+  'studioco2Web': [supportedLanguages[1]],
+  'flizrWeb': [supportedLanguages[1], supportedLanguages[0], supportedLanguages[2]],
 };
 
 // Helper for initial value templates
@@ -140,38 +141,40 @@ export const structure: StructureResolver = (S) =>
                     .title("Case Studies by Language")
                     .items([
                       S.listItem()
-                        .title("German (DE)")
-                        .icon(MdTranslate)
-                        .child(
-                          S.documentTypeList("caseStudy")
-                            .title("German Case Studies")
-                            .filter('_type == "caseStudy" && language == "de"')
-                        ),
-                      S.listItem()
                         .title("English (EN)")
                         .icon(MdTranslate)
                         .child(
                           S.documentTypeList("caseStudy")
                             .title("English Case Studies")
                             .filter('_type == "caseStudy" && language == "en"')
+                            .initialValueTemplates([
+                              S.initialValueTemplateItem("caseStudy-en", {
+                                language: "en",
+                              }),
+                            ])
+                        ),
+                      S.listItem()
+                        .title("German (DE)")
+                        .icon(MdTranslate)
+                        .child(
+                          S.documentTypeList("caseStudy")
+                            .title("German Case Studies")
+                            .filter('_type == "caseStudy" && language == "de"')
+                            .initialValueTemplates([
+                              S.initialValueTemplateItem("caseStudy-de", {
+                                language: "de",
+                              }),
+                            ])
                         ),
                     ])
                 ),
               S.listItem()
                 .title("Units")
-                .icon(MdGroup)
+                .icon(MdApps)
                 .child(
                   S.list()
                     .title("Units by Language")
                     .items([
-                      S.listItem()
-                        .title("German (DE)")
-                        .icon(MdTranslate)
-                        .child(
-                          S.documentTypeList("unit")
-                            .title("German Units")
-                            .filter('_type == "unit" && language == "de"')
-                        ),
                       S.listItem()
                         .title("English (EN)")
                         .icon(MdTranslate)
@@ -179,6 +182,94 @@ export const structure: StructureResolver = (S) =>
                           S.documentTypeList("unit")
                             .title("English Units")
                             .filter('_type == "unit" && language == "en"')
+                            .initialValueTemplates([
+                              S.initialValueTemplateItem("unit-en", {
+                                language: "en",
+                              }),
+                            ])
+                        ),
+                      S.listItem()
+                        .title("German (DE)")
+                        .icon(MdTranslate)
+                        .child(
+                          S.documentTypeList("unit")
+                            .title("German Units")
+                            .filter('_type == "unit" && language == "de"')
+                            .initialValueTemplates([
+                              S.initialValueTemplateItem("unit-de", {
+                                language: "de",
+                              }),
+                            ])
+                        ),
+                    ])
+                ),
+              S.listItem()
+                .title("Clients")
+                .icon(MdPeople)
+                .child(
+                  S.list()
+                    .title("Clients by Language")
+                    .items([
+                      S.listItem()
+                        .title("English (EN)")
+                        .icon(MdTranslate)
+                        .child(
+                          S.documentTypeList("client")
+                            .title("English Clients")
+                            .filter('_type == "client" && language == "en"')
+                            .initialValueTemplates([
+                              S.initialValueTemplateItem("client-en", {
+                                language: "en",
+                              }),
+                            ])
+                        ),
+                      S.listItem()
+                        .title("German (DE)")
+                        .icon(MdTranslate)
+                        .child(
+                          S.documentTypeList("client")
+                            .title("German Clients")
+                            .filter('_type == "client" && language == "de"')
+                            .initialValueTemplates([
+                              S.initialValueTemplateItem("client-de", {
+                                language: "de",
+                              }),
+                            ])
+                        ),
+                    ])
+                ),
+              S.listItem()
+                .title("People")
+                .icon(MdEmojiPeople)
+                .child(
+                  S.list()
+                    .title("People by Language")
+                    .items([
+                      S.listItem()
+                        .title("English (EN)")
+                        .icon(MdTranslate)
+                        .child(
+                          S.documentTypeList("person")
+                            .title("English People")
+                            .filter('_type == "person" && language == "en"')
+                            .initialValueTemplates([
+                              S.initialValueTemplateItem("person-en", {
+                                language: "en",
+                              }),
+                            ])
+                        ),
+                      S.listItem()
+                        .title("German (DE)")
+                        .icon(MdTranslate)
+                        .child(
+                          S.documentTypeList("person")
+                            .title("German People")
+                            .filter('_type == "person" && language == "de"')
+                            .initialValueTemplates([
+                              S.initialValueTemplateItem("person-de", {
+                                language: "de",
+                              }),
+                            ])
                         ),
                     ])
                 ),
@@ -200,6 +291,8 @@ export const structure: StructureResolver = (S) =>
             "menu",
             "caseStudy",
             "unit",
+            "client",
+            "person",
           ].includes(listItem.getId?.() || "")
       ),
     ]);
