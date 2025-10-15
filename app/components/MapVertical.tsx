@@ -75,7 +75,7 @@ export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
         onPointerLeave={onMouseLeave}
       >
         {" "}
-        <div className="absolute -bottom-[40px] left-[12px] text-white text-[7px] font-medium leading-none  -rotate-90 origin-bottom-left">
+        <div className="absolute -bottom-[0px] left-[32px] text-white text-[8px] font-medium leading-none  -rotate-90 origin-bottom-left">
           Scroll to Navigate
         </div>
         <div

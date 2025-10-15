@@ -35,6 +35,7 @@ import WarpOverlay from "@/app/components/overlayNav";
 import HamburgerGradientMenu from "@/app/components/HamburgerGradientMenu";
 import LineMinimap from "@/app/components/MapVertical";
 import CircularDashedGauge from "@/app/components/dataPointerRadial";
+import FrontNavOverlayCases from "@/app/components/FrontNavOverlayCases";
 
 export default function Home() {
   const typewriterref = useRef(null);
@@ -95,7 +96,7 @@ export default function Home() {
           opacity="opacity-100"
         />
         {/* Navigation */}
-        <FrontNavOverlay />
+        <FrontNavOverlayCases />
         {/* Hero Content */}
         <div id="Top" className=""></div>
         <div className="relative z-10 container  mt-[30vh]  mx-auto p-8 md:p-0">

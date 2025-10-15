@@ -23,16 +23,27 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       : "/ci/1sp-fulllogotype.svg";
   return (
     <nav
-      className={`hidden relative md:grid place-items-start z-10 grid-cols-12 pt-5 mx-auto container ${className}`}
+      className={`hidden relative  md:grid place-items-start z-10 grid-cols-12 pt-5 mx-auto container ${className}`}
     >
-      <div className="w-[90px] h-[90px] col-start-1 col-span-1 pt-2">
-        <Image
-          src={imageLogo}
-          alt="1SP Logo"
-          width={90}
-          height={90}
-          className="object-contain"
-        />
+      <div className="w-[90px] h-[90px] col-start-1 col-span-1 ">
+        <Link
+          className="hover:text-lime-400"
+          href={"/"}
+          onClick={(e) => {
+            e.preventDefault();
+            router.push("/", {
+              onTransitionReady: pageAnimation,
+            });
+          }}
+        >
+          <Image
+            src={imageLogo}
+            alt="1SP Logo"
+            width={90}
+            height={90}
+            className="object-contain"
+          />
+        </Link>
       </div>
       <motion.div
         initial={{
@@ -47,7 +58,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           duration: 0.5,
           delay: 0.4,
         }}
-        className="col-start-2 flex col-span-10 "
+        className="col-start-3  pt-3 flex  col-span-9 "
       >
         <StaggeredSlideUp
           className="flex gap-16 items-center"

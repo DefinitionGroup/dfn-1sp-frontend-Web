@@ -14,6 +14,7 @@ import HamburgerGradientMenu from "./components/HamburgerGradientMenu";
 import HeaderImageVideoComp from "./components/HeaderImageVideoComp";
 import HeaderImageVideoComp2 from "./components/HeaderImageVideoComp2";
 import InteractiveCarousel from "./components/InteractiveCarousel";
+import InteractiveCarousel2 from "./components/InteractiveCarousel2";
 import ListContainerComponent from "./components/ListContainerComponent";
 import ListItemComponent from "./components/ListItemComponent";
 import LineMinimap from "./components/MapVertical";
@@ -21,6 +22,8 @@ import PeopleShowcaseHero from "./components/PeopleShowcaseHero";
 import ScrollHighlight from "./components/ScrollHighlight";
 import StaggeredSlideUp from "./components/StaggeredSlideUp";
 import TypewriterChangeContentExample from "./components/TyperwriterHeadline";
+import InteractiveCarousel3 from "./components/InteractiveCarousel3";
+import { Link } from "next-view-transitions";
 
 export default function Home() {
   const typewriterref = useRef(null);
@@ -163,6 +166,21 @@ export default function Home() {
           </div>
           <div className="col-span-12 col-start-1 mt-8 px-8 md:px-0">
             <InteractiveCarousel />
+            <div className="flex  w-fit min-w-64 justify-center mx-auto  mt-8 mb-16">
+              <Link href="/cases" className="w-fit min-w-48">
+                <Button2
+                  text="See all Cases "
+                  variant="lime"
+                  className="w-fit "
+                />
+              </Link>
+            </div>
+          </div>
+          <div className="col-span-12 col-start-1 mt-64 px-8 md:px-0">
+            <InteractiveCarousel2 />
+          </div>
+          <div className="col-span-12 col-start-1 mt-64 px-8 md:px-0">
+            <InteractiveCarousel3 />
           </div>
         </div>
       </div>

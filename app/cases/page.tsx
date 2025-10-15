@@ -1,24 +1,14 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
 import { useInView } from "motion/react";
-import Badgemodule from "../components/Badgemodule";
-import Button2 from "../components/Button2";
-import ExpandableCards from "../components/ExpandableCards";
+
 import Footer from "../components/Footer";
 import FooterBottom from "../components/FooterBottom";
-import FrontNavOverlay from "../components/FrontNavOverlay";
+import FrontNavOverlayCases from "../components/FrontNavOverlayCases";
 import GridBackground from "../components/GridBackground";
-import HeaderImageVideoComp from "../components/HeaderImageVideoComp";
-import InteractiveCarousel from "../components/InteractiveCarousel";
+
 import StaggeredSlideUp from "../components/StaggeredSlideUp";
-import TypewriterChangeContentExample from "../components/TyperwriterHeadline";
-import HeaderImageVideoComp2 from "../components/HeaderImageVideoComp2";
-import PeopleShowcaseHero from "../components/PeopleShowcaseHero";
-import { Typewriter } from "motion-plus/react";
-import ScrollHighlight from "../components/ScrollHighlight";
-import ListContainerComponent from "../components/ListContainerComponent";
-import ListItemComponent from "../components/ListItemComponent";
-import ExpandableCards2 from "../components/ExpandableCards2";
+
 import HamburgerGradientMenu from "../components/HamburgerGradientMenu";
 import LineMinimap from "../components/MapVertical";
 import CaseGallery from "../components/CaseGallery";
@@ -78,7 +68,7 @@ export default function Home() {
 
         <LineMinimap navPoints={navPoints} />
 
-        <FrontNavOverlay color="dark" />
+        <FrontNavOverlayCases color="dark" />
 
         {/* subline rightection */}
         <div
