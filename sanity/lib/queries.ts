@@ -15,41 +15,45 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current ==
 }`);
 
 export const NAVBAR_QUERY = defineQuery(`
-*[_type == "menu" && menuType == "navbar"][0]{
-  navbarLogo,
-  // projected direct URL (use secure_url when available)
-  "navbarLogoUrl": navbarLogo.secure_url,
-  navbarLogoAlt,
+*[_type == "menu" && menuType == "Navbar" && channel == $channel && language == $language][0]{
+  _id,
+  title,
+  menuType,
+  imageCloud,
+  "logoUrl": imageCloud.secure_url,
   menuItems[]{
     _key,
-    label,
-    linkType,
-    "slug": select(linkType == "internal" => page->slug.current),
-    externalUrl,
-    anchor,
-    openInNewTab
+    "slug": page->slug.current,
+    "title": page->title,
+    displayName
   }
 }
 `);
 
 export const FOOTER_QUERY = defineQuery(`
-*[_type == "menu" && menuType == "footer"][0]{
-  footerLogo,
-  // projected direct URL (use secure_url when available)
-  "footerLogoUrl": footerLogo.secure_url,
-  footerLogoAlt,
+*[_type == "menu" && menuType == "Footer" && channel == $channel && language == $language][0]{
+  _id,
+  title,
+  menuType,
+  imageCloud,
+  "logoUrl": imageCloud.secure_url,
   footerColumns[]{
+    _key,
     title,
     links[]{
-      label,
+      _key,
       linkType,
-      "slug": select(linkType == "internal" => page->slug.current),
+      "slug": page->slug.current,
+      "pageTitle": page->title,
       externalUrl,
-      anchor,
-      openInNewTab
+      displayName
     }
   },
-  footerCopyright,
-  footerNote
+  socialLinks[]{
+    _key,
+    platform,
+    url
+  },
+  copyright
 }
 `);

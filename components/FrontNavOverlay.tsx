@@ -6,15 +6,18 @@ import { motion } from "motion/react";
 import Link from "next/link";
 import { useTransitionRouter } from "next-view-transitions";
 import Button2 from "./ui/Button2";
+import { NavbarMenu } from "@/types/menu.types";
 
 interface FrontNavOverlayProps {
   className?: string;
   color?: "light" | "dark";
+  menuData?: NavbarMenu | null;
 }
 
 const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   className = "",
   color = "light",
+  menuData,
 }) => {
   const router = useTransitionRouter();
   const textColor = color === "dark" ? "text-neutral-800" : "text-neutral-50";
@@ -23,13 +26,16 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       ? "/ci/1sp-fulllogotype-blk.svg"
       : "/ci/1sp-fulllogotype.svg";
 
+  // Use Sanity logo if available, otherwise use default
+  const logoUrl = menuData?.logoUrl || imageLogo;
+
   return (
     <nav
-      className={`hidden relative md:grid place-items-start z-10 grid-cols-12 pt-5 mx-auto container ${className}`}
+      className={`hidden absolute top-0 left-0 right-0 md:grid place-items-start z-50 grid-cols-12 pt-5 mx-auto container ${className}`}
     >
       <div className="w-[90px] h-[90px] col-start-1 col-span-1 pt-2">
         <Image
-          src={imageLogo}
+          src={logoUrl}
           alt="1SP Logo"
           width={90}
           height={90}
@@ -52,68 +58,110 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           maskHeight="150%"
           easing="spring"
         >
-          <span className={`${textColor} text-xs leading-compress font-bold`}>
-            <Link
-              className="hover:text-lime-400"
-              href={"/"}
-              onClick={(e) => {
-                e.preventDefault();
-                router.push("/", { onTransitionReady: pageAnimation });
-              }}
-            >
-              Home
-            </Link>
-          </span>
-          <span className={`${textColor} text-xs leading-compress font-bold`}>
-            <Link
-              className="hover:text-lime-400"
-              href={"/cases"}
-              onClick={(e) => {
-                e.preventDefault();
-                router.push("/cases", { onTransitionReady: pageAnimation });
-              }}
-            >
-              Cases
-            </Link>
-          </span>
-          <span className={`${textColor} text-xs leading-compress font-bold`}>
-            <Link
-              className="hover:text-lime-400"
-              href={"/whatwedo"}
-              onClick={(e) => {
-                e.preventDefault();
-                router.push("/whatwedo", { onTransitionReady: pageAnimation });
-              }}
-            >
-              Services
-            </Link>
-          </span>
-          <span className={`${textColor} text-xs leading-compress font-bold`}>
-            <Link
-              className="hover:text-lime-400"
-              href={"/our-family"}
-              onClick={(e) => {
-                e.preventDefault();
-                router.push("/our-family", {
-                  onTransitionReady: pageAnimation,
-                });
-              }}
-            >
-              Our Family
-            </Link>
-          </span>
-          <span className={`${textColor} text-xs leading-compress font-bold`}>
-            <Link
-              className="hover:text-lime-400"
-              href={"/whatwedo"}
-              onClick={(e) => {
-                e.preventDefault();
-                router.push("/whatwedo", { onTransitionReady: pageAnimation });
-              }}
-            >
-              Work with us
-            </Link>
-          </span>
+          {menuData?.menuItems && menuData.menuItems.length > 0 ? (
+            // Render menu items from Sanity
+            menuData.menuItems.map((item) => (
+              <span
+                key={item._key}
+                className={`${textColor} text-xs leading-compress font-bold`}
+              >
+                <Link
+                  className="hover:text-lime-400"
+                  href={`/${item.slug}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push(`/${item.slug}`, {
+                      onTransitionReady: pageAnimation,
+                    });
+                  }}
+                >
+                  {item.displayName || item.title}
+                </Link>
+              </span>
+            ))
+          ) : (
+            // Fallback to default menu items if no Sanity data
+            <>
+              <span
+                className={`${textColor} text-xs leading-compress font-bold`}
+              >
+                <Link
+                  className="hover:text-lime-400"
+                  href={"/"}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push("/", { onTransitionReady: pageAnimation });
+                  }}
+                >
+                  Home
+                </Link>
+              </span>
+              <span
+                className={`${textColor} text-xs leading-compress font-bold`}
+              >
+                <Link
+                  className="hover:text-lime-400"
+                  href={"/cases"}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push("/cases", {
+                      onTransitionReady: pageAnimation,
+                    });
+                  }}
+                >
+                  Cases
+                </Link>
+              </span>
+              <span
+                className={`${textColor} text-xs leading-compress font-bold`}
+              >
+                <Link
+                  className="hover:text-lime-400"
+                  href={"/whatwedo"}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push("/whatwedo", {
+                      onTransitionReady: pageAnimation,
+                    });
+                  }}
+                >
+                  Services
+                </Link>
+              </span>
+              <span
+                className={`${textColor} text-xs leading-compress font-bold`}
+              >
+                <Link
+                  className="hover:text-lime-400"
+                  href={"/our-family"}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push("/our-family", {
+                      onTransitionReady: pageAnimation,
+                    });
+                  }}
+                >
+                  Our Family
+                </Link>
+              </span>
+              <span
+                className={`${textColor} text-xs leading-compress font-bold`}
+              >
+                <Link
+                  className="hover:text-lime-400"
+                  href={"/whatwedo"}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push("/whatwedo", {
+                      onTransitionReady: pageAnimation,
+                    });
+                  }}
+                >
+                  Work with us
+                </Link>
+              </span>
+            </>
+          )}
         </StaggeredSlideUp>
       </motion.div>
 

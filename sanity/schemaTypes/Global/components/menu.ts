@@ -88,6 +88,7 @@ export default {
                             title: "Page",
                             type: "reference",
                             to: [{ type: "page" }],
+                            validation: (Rule: any) => Rule.required(),
                             options: {
                                 // dynamically filter referenced pages by menu's language
                                 filter: ({ document }: { document?: { language?: string } }) => {
@@ -103,10 +104,24 @@ export default {
                         },
                         {
                             name: "displayName",
-                            title: "Display Name",
+                            title: "Display Name (Optional)",
                             type: "string",
+                            description: "Leave empty to use the page title",
                         },
                     ],
+                    preview: {
+                        select: {
+                            pageTitle: "page.title",
+                            displayName: "displayName",
+                            slug: "page.slug.current",
+                        },
+                        prepare({ pageTitle, displayName, slug }: { pageTitle?: string; displayName?: string; slug?: string }) {
+                            return {
+                                title: displayName || pageTitle || "Untitled",
+                                subtitle: slug ? `/${slug}` : "No page selected",
+                            };
+                        },
+                    },
                 },
             ],
             hidden: ({ parent }: { parent?: any }) => parent?.menuType !== "Navbar",
@@ -134,6 +149,7 @@ export default {
                             name: "title",
                             title: "Column Title",
                             type: "string",
+                            validation: (Rule: any) => Rule.required(),
                         },
                         {
                             name: "links",
@@ -143,15 +159,6 @@ export default {
                                 {
                                     type: "object",
                                     fields: [
-                                        {
-                                            name: "title",
-                                            title: "Title",
-                                            type: "string",
-                                            description: "Automatically matches link name",
-                                            hidden: ({ document }: { document?: any }) =>
-                                                !!document?.menuType,
-                                            initialValue: "Menu",
-                                        },
                                         {
                                             name: "linkType",
                                             title: "Link Type",
@@ -163,6 +170,8 @@ export default {
                                                 ],
                                                 layout: "radio",
                                             },
+                                            initialValue: "internal",
+                                            validation: (Rule: any) => Rule.required(),
                                         },
                                         {
                                             name: "page",
@@ -171,6 +180,14 @@ export default {
                                             to: [{ type: "page" }],
                                             hidden: ({ parent }: { parent?: any }) =>
                                                 parent?.linkType !== "internal",
+                                            validation: (Rule: any) =>
+                                                Rule.custom((page: any, context: any) => {
+                                                    const { parent } = context as any;
+                                                    if (parent?.linkType === "internal" && !page) {
+                                                        return "Page is required for internal links";
+                                                    }
+                                                    return true;
+                                                }),
                                             options: {
                                                 filter: ({ document }: { document?: { language?: string } }) => {
                                                     if (!document?.language) {
@@ -189,28 +206,46 @@ export default {
                                             type: "url",
                                             hidden: ({ parent }: { parent?: any }) =>
                                                 parent?.linkType !== "external",
+                                            validation: (Rule: any) =>
+                                                Rule.custom((url: any, context: any) => {
+                                                    const { parent } = context as any;
+                                                    if (parent?.linkType === "external" && !url) {
+                                                        return "URL is required for external links";
+                                                    }
+                                                    return true;
+                                                }),
                                         },
                                         {
                                             name: "displayName",
-                                            title: "Link Name",
+                                            title: "Link Text",
                                             type: "string",
+                                            validation: (Rule: any) => Rule.required(),
                                         },
                                     ],
                                     preview: {
                                         select: {
-                                            title: "displayName",
-                                            subtitle: "linkType",
+                                            displayName: "displayName",
+                                            linkType: "linkType",
+                                            slug: "page.slug.current",
+                                            externalUrl: "externalUrl",
                                         },
                                         prepare({
-                                            title,
-                                            subtitle,
+                                            displayName,
+                                            linkType,
+                                            slug,
+                                            externalUrl,
                                         }: {
-                                            title?: string;
-                                            subtitle?: string;
+                                            displayName?: string;
+                                            linkType?: string;
+                                            slug?: string;
+                                            externalUrl?: string;
                                         }) {
+                                            const destination = linkType === "external"
+                                                ? externalUrl
+                                                : slug ? `/${slug}` : "No page selected";
                                             return {
-                                                title: title || "Untitled link",
-                                                subtitle: subtitle ? `${subtitle} link` : "",
+                                                title: displayName || "Untitled link",
+                                                subtitle: `${linkType || "internal"} → ${destination}`,
                                             };
                                         },
                                     },
@@ -218,6 +253,19 @@ export default {
                             ],
                         },
                     ],
+                    preview: {
+                        select: {
+                            title: "title",
+                            links: "links",
+                        },
+                        prepare({ title, links }: { title?: string; links?: any[] }) {
+                            const linkCount = links?.length || 0;
+                            return {
+                                title: title || "Untitled Column",
+                                subtitle: `${linkCount} link${linkCount !== 1 ? 's' : ''}`,
+                            };
+                        },
+                    },
                 },
             ],
             hidden: ({ parent }: { parent?: any }) => parent?.menuType !== "Footer",
@@ -234,6 +282,7 @@ export default {
                     fields: [
                         {
                             name: "platform",
+                            title: "Platform",
                             type: "string",
                             options: {
                                 list: [
@@ -243,12 +292,17 @@ export default {
                                     { title: "GitHub", value: "GitHub" },
                                     { title: "YouTube", value: "YouTube" },
                                 ],
+                                layout: "dropdown",
                             },
+                            validation: (Rule: any) => Rule.required(),
                         },
                         {
                             name: "url",
                             title: "Profile URL",
                             type: "url",
+                            validation: (Rule: any) => Rule.required().uri({
+                                scheme: ['http', 'https']
+                            }),
                         },
                     ],
                     preview: {
@@ -266,8 +320,8 @@ export default {
                             };
 
                             return {
-                                title: platform,
-                                subtitle: url,
+                                title: platform || "Unknown platform",
+                                subtitle: url || "No URL",
                                 media: icons[platform || ""] ? React.createElement(icons[platform || ""]) : null,
                             };
                         },
