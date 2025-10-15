@@ -11,6 +11,9 @@ interface ListItemProps {
     | "gray-200"
     | "gray-300"
     | "gray-400"
+    | "gray-500"
+    | "gray-600"
+    | "gray-700"
     | "white"
     | "black";
   size?: "small" | "medium" | "large";
@@ -38,6 +41,9 @@ const textColorClasses: Record<NonNullable<ListItemProps["color"]>, string> = {
   "gray-200": "text-gray-200",
   "gray-300": "text-gray-300",
   "gray-400": "text-gray-400",
+  "gray-500": "text-gray-500",
+  "gray-600": "text-gray-600",
+  "gray-700": "text-gray-700",
   white: "text-white",
   black: "text-black",
 };
@@ -48,6 +54,9 @@ const lineColorClasses: Record<NonNullable<ListItemProps["color"]>, string> = {
   "gray-200": "bg-gray-200",
   "gray-300": "bg-gray-300",
   "gray-400": "bg-gray-400",
+  "gray-500": "bg-gray-500",
+  "gray-600": "bg-gray-600",
+  "gray-700": "bg-gray-700",
   white: "bg-white",
   black: "bg-black",
 };
@@ -67,7 +76,8 @@ function ListItemComponent({
           weightClasses[fontWeight],
           textColorClasses[color],
           className
-        )}>
+        )}
+      >
         {children}
       </p>
       <div className={cn("w-full h-px mt-4", lineColorClasses[color])} />

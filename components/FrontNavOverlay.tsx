@@ -1,11 +1,12 @@
 "use client";
-
 import React from "react";
 import Image from "next/image";
 import StaggeredSlideUp from "./StaggeredSlideUp";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { useTransitionRouter } from "next-view-transitions";
+import Button2 from "./ui/Button2";
+
 interface FrontNavOverlayProps {
   className?: string;
   color?: "light" | "dark";
@@ -21,9 +22,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
     color === "dark"
       ? "/ci/1sp-fulllogotype-blk.svg"
       : "/ci/1sp-fulllogotype.svg";
+
   return (
     <nav
-      className={`relative hidden md:grid  z-10 grid-cols-12 pt-5 mx-auto container ${className}`}
+      className={`hidden relative md:grid place-items-start z-10 grid-cols-12 pt-5 mx-auto container ${className}`}
     >
       <div className="w-[90px] h-[90px] col-start-1 col-span-1 pt-2">
         <Image
@@ -34,23 +36,15 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           className="object-contain"
         />
       </div>
+
       <motion.div
-        initial={{
-          opacity: 0,
-          scaleX: 0,
-          y: 10,
-          originX: 0,
-          originY: 0,
-        }}
+        initial={{ opacity: 0, scaleX: 0, y: 10, originX: 0, originY: 0 }}
         animate={{ opacity: 1, scaleX: 1, y: 0 }}
-        transition={{
-          duration: 0.5,
-          delay: 0.4,
-        }}
-        className="col-start-2 grid grid-cols-12 col-span-6"
+        transition={{ duration: 0.5, delay: 0.4 }}
+        className="col-start-2 flex col-span-9"
       >
         <StaggeredSlideUp
-          className="grid grid-cols-12 col-span-12 pb-2 flex-wrap items-center"
+          className="flex gap-16 items-center"
           delay={0.55}
           staggerDelay={0.02}
           duration={0.8}
@@ -58,169 +52,74 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           maskHeight="150%"
           easing="spring"
         >
-          <span className={`${textColor}  text-xxs leading-compress font-bold`}>
+          <span className={`${textColor} text-xs leading-compress font-bold`}>
             <Link
               className="hover:text-lime-400"
               href={"/"}
               onClick={(e) => {
                 e.preventDefault();
-                router.push("/", {
-                  onTransitionReady: pageAnimation,
-                });
+                router.push("/", { onTransitionReady: pageAnimation });
               }}
             >
               Home
             </Link>
           </span>
-          <span
-            className={`${textColor} text-xxs leading-compress font-bold`}
-          ></span>
-          <span className={`${textColor} text-xxs leading-compress font-bold`}>
-            {" "}
+          <span className={`${textColor} text-xs leading-compress font-bold`}>
             <Link
               className="hover:text-lime-400"
-              href={"/projects"}
+              href={"/cases"}
               onClick={(e) => {
                 e.preventDefault();
-                router.push("/projects", {
-                  onTransitionReady: pageAnimation,
-                });
+                router.push("/cases", { onTransitionReady: pageAnimation });
               }}
             >
-              Project
+              Cases
             </Link>
           </span>
-          <span
-            className={`${textColor} text-xxs leading-compress font-bold`}
-          ></span>
-          <span
-            className={`${textColor} text-xxs leading-compress font-bold hover:text-lime-500`}
-          >
-            {" "}
+          <span className={`${textColor} text-xs leading-compress font-bold`}>
             <Link
               className="hover:text-lime-400"
               href={"/whatwedo"}
               onClick={(e) => {
                 e.preventDefault();
-                router.push("/whatwedo", {
+                router.push("/whatwedo", { onTransitionReady: pageAnimation });
+              }}
+            >
+              Services
+            </Link>
+          </span>
+          <span className={`${textColor} text-xs leading-compress font-bold`}>
+            <Link
+              className="hover:text-lime-400"
+              href={"/our-family"}
+              onClick={(e) => {
+                e.preventDefault();
+                router.push("/our-family", {
                   onTransitionReady: pageAnimation,
                 });
               }}
             >
-              What we do
+              Our Family
+            </Link>
+          </span>
+          <span className={`${textColor} text-xs leading-compress font-bold`}>
+            <Link
+              className="hover:text-lime-400"
+              href={"/whatwedo"}
+              onClick={(e) => {
+                e.preventDefault();
+                router.push("/whatwedo", { onTransitionReady: pageAnimation });
+              }}
+            >
+              Work with us
             </Link>
           </span>
         </StaggeredSlideUp>
-        <div className="grid grid-cols-12 col-span-12 items-start">
-          <StaggeredSlideUp
-            className="col-start-1 col-span-1"
-            delay={1}
-            staggerDelay={0.02}
-            duration={0.1}
-            distance={10}
-          >
-            <span
-              className={`${textColor} text-xxs leading-compress font-normal`}
-            >
-              Marketing
-            </span>{" "}
-            <span
-              className={`${textColor} text-xxs leading-compress font-normal`}
-            >
-              Social
-            </span>{" "}
-            <span
-              className={`${textColor} text-xxs leading-compress font-normal`}
-            >
-              Design
-            </span>{" "}
-          </StaggeredSlideUp>
-          <StaggeredSlideUp
-            className="col-start-3 col-span-1"
-            delay={1.25}
-            staggerDelay={0.02}
-            duration={0.1}
-            distance={10}
-          >
-            <span
-              className={`${textColor} text-xxs leading-compress font-normal`}
-            >
-              AR / VR
-            </span>{" "}
-            <span
-              className={`${textColor} text-xxs leading-compress font-normal`}
-            >
-              POS
-            </span>{" "}
-            <span
-              className={`${textColor} text-xxs leading-compress font-normal`}
-            >
-              Campaign
-            </span>{" "}
-          </StaggeredSlideUp>
-          <StaggeredSlideUp
-            className="col-start-5 col-span-1"
-            delay={1.425}
-            staggerDelay={0.02}
-            duration={0.1}
-            distance={10}
-          >
-            <span
-              className={`${textColor} text-xxs leading-compress font-normal`}
-            >
-              EA GAMES
-            </span>{" "}
-            <span
-              className={`${textColor} text-xxs leading-compress font-normal`}
-            >
-              SAMSUNG
-            </span>{" "}
-            <span
-              className={`${textColor} text-xxs leading-compress font-normal`}
-            >
-              MICROSOFT
-            </span>{" "}
-            <span
-              className={`${textColor} text-xxs leading-compress font-normal`}
-            >
-              META
-            </span>{" "}
-            <span
-              className={`${textColor} text-xxs leading-compress font-normal`}
-            >
-              MARSHALL
-            </span>{" "}
-            <span
-              className={`${textColor} text-xxs leading-compress font-normal`}
-            >
-              BLIZZARD
-            </span>{" "}
-          </StaggeredSlideUp>
-          <StaggeredSlideUp
-            className="col-start-7 col-span-1"
-            delay={1.75}
-            staggerDelay={0.02}
-            duration={0.1}
-            distance={10}
-          >
-            <span
-              className={`${textColor} text-xxs leading-compress font-normal`}
-            >
-              Our Story
-            </span>{" "}
-            <span
-              className={`${textColor} text-xxs leading-compress font-normal`}
-            >
-              Work with us
-            </span>
-            <span
-              className={`${textColor} text-xxs leading-compress font-normal`}
-            >
-              What we do
-            </span>{" "}
-          </StaggeredSlideUp>
-        </div>{" "}
-      </motion.div>{" "}
+      </motion.div>
+
+      <div className="w-fit flex min-w-[120px] justify-end col-start-11 col-span-2 pt-2">
+        <Button2 variant="limesmall" text="Contact us" />
+      </div>
     </nav>
   );
 };
@@ -228,16 +127,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 const pageAnimation = () => {
   document.documentElement.animate(
     [
-      {
-        opacity: 1,
-        scale: 1,
-        transform: "translateY(0)",
-      },
-      {
-        opacity: 1,
-        scale: 0.9,
-        transform: "translateY(-100px)",
-      },
+      { opacity: 1, scale: 1, transform: "translateY(0)" },
+      { opacity: 1, scale: 0.9, transform: "translateY(-100px)" },
     ],
     {
       duration: 1000,
@@ -248,14 +139,7 @@ const pageAnimation = () => {
   );
 
   document.documentElement.animate(
-    [
-      {
-        transform: "translateY(100%)",
-      },
-      {
-        transform: "translateY(0)",
-      },
-    ],
+    [{ transform: "translateY(100%)" }, { transform: "translateY(0)" }],
     {
       duration: 1000,
       easing: "cubic-bezier(0.76, 0, 0.24, 1)",
@@ -264,4 +148,5 @@ const pageAnimation = () => {
     }
   );
 };
+
 export default FrontNavOverlay;

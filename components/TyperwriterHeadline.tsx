@@ -4,19 +4,17 @@ import { delay, wrap } from "motion";
 import { Typewriter } from "motion-plus/react";
 import { useState } from "react";
 
-export default function TypewriterChangeContentExample({
+export default function TypewriterRotator({
   text = [
-"",
-"One.",
-"Shared.",
-"Passion.",
-"Gaming.",
-"Technology.",
-"The.",
-"Superagency.",
-"Consumer electronics.",
-"Gaming.",
-"Technology",
+    "",
+    "One.",
+    "Shared.",
+    "Passion.",
+    "The Superagency.",
+    "Consumer",
+    "Electronics",
+    "Gaming",
+    "Technology",
   ],
 }: {
   text?: string[];
@@ -25,27 +23,24 @@ export default function TypewriterChangeContentExample({
 
   return (
     <h2 style={container}>
-      {/* <span style={label}>We boost:</span> */}
       <Typewriter
         as="div"
         variance={2.8}
-        speed={"normal"}
+        speed="normal"
         backspace="character"
-        cursorBlinkDuration={0.26}
+        cursorBlinkDuration={0.36}
         cursorStyle={cursor}
-        onComplete={() => {
-          delay(() => setIndex(wrap(0, text.length, index + 1)), 1);
-        }}
-        textStyle={animatingText}>
-        {text[index + 1]}
+        textStyle={animatingText}
+        onComplete={() =>
+          delay(() => setIndex(wrap(0, text.length, index + 1)), 1)
+        }
+      >
+        {text[(index + 1) % text.length]}
       </Typewriter>
     </h2>
   );
 }
 
-/**
- * ==============   Styles   ================
- */
 const container: React.CSSProperties = {
   display: "flex",
   alignItems: "flex-start",
@@ -53,25 +48,25 @@ const container: React.CSSProperties = {
   flexDirection: "column",
   fontFamily: "var(--font-aspekta)",
   width: 900,
-  fontWeight: 700,
-  textTransform: "uppercase",
+  fontWeight: 500,
   lineHeight: 1,
   color: "var(--accent)",
 };
 
-const label: React.CSSProperties = {
-  fontSize: 24,
-};
-
 const animatingText: React.CSSProperties = {
-  fontSize: 128,
-  fontWeight: 600,
-  lineHeight: 0.75,
-  letterSpacing: "-0.25rem",
+  fontSize: "calc(32px + 4.5vw)",
+  fontWeight: 700,
+  lineHeight: "calc(48px + 3vw)",
+  letterSpacing: "calc(2px - 0.5vw)",
+  textTransform: "uppercase",
+  color: "var(--text-primary)",
+  whiteSpace: "nowrap",
 };
 
 const cursor: React.CSSProperties = {
   background: "#66ff00",
-  width: 6,
-  minHeight: 108,
+  width: 8,
+  borderRadius: 4,
+  marginLeft: 4,
+  minHeight: "calc(24px + 3.8vw)",
 };

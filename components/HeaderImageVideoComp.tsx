@@ -57,7 +57,7 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
         initial={{ opacity: 0, scale: 1.1, filter: "blur(128px)" }}
         animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
         transition={{
-          duration: 1.2,
+          duration: 3.2,
           ease: [0.16, 1, 0.3, 1],
           opacity: { duration: 1.8 },
           filter: { duration: 1.0, ease: [0.16, 1, 0.3, 1] },

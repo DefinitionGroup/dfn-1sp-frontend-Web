@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence, PanInfo } from "motion/react";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import Button2 from "@/components/ui/Button2";
 import type {
@@ -14,11 +14,13 @@ interface UIItem {
   id: string;
   title: string;
   subtitle?: string;
-  image: string; // resolved URL
+  image: string;
+  video?: string;
   description?: string;
   category?: string;
-  logosrc?: string; // resolved URL
+  logosrc?: string;
   cta?: CTA;
+  linkHref?: string;
 }
 
 export default function InteractiveCarousel({
@@ -29,61 +31,76 @@ export default function InteractiveCarousel({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isScrollable, setIsScrollable] = useState(false);
+  const stripRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // Normalize input from Sanity → UI items
   const carouselItems: UIItem[] = useMemo(() => {
     const list = (items ?? []).map((it, i) => {
       const image = assetUrl((it as any)?.image) || "";
       const logosrc =
         assetUrl((it as any)?.logoSrc || (it as any)?.logo) || undefined;
+      const video = assetUrl((it as any)?.video) || undefined;
+      const linkHref = (it as any)?.linkHref || undefined;
       return {
         id: String((it as any)?.id ?? i),
         title: it.title || "",
         subtitle: it.subtitle || (it as any)?.category || "",
         image,
+        video,
         description: (it as any)?.description || "",
         category: (it as any)?.category || undefined,
         logosrc,
         cta: (it as any)?.cta,
+        linkHref,
       } as UIItem;
     });
-    // only keep entries that have an image URL
-    return list.filter((x) => !!x.image);
+    return list.filter((x) => !!x.image || !!x.video);
   }, [items]);
 
   useEffect(() => {
     if (!isAutoPlaying || !carouselItems.length) return;
-
     const interval = setInterval(() => {
       setDirection(1);
       setCurrentIndex((prev) => (prev + 1) % carouselItems.length);
     }, 6000);
-
     return () => clearInterval(interval);
   }, [isAutoPlaying, carouselItems.length]);
+
+  useEffect(() => {
+    const checkScrollable = () => {
+      if (stripRef.current && containerRef.current) {
+        const isMobile = window.innerWidth < 768;
+        if (isMobile) {
+          const stripWidth = stripRef.current.scrollWidth;
+          const containerWidth = containerRef.current.clientWidth;
+          setIsScrollable(stripWidth > containerWidth);
+        } else {
+          setIsScrollable(false);
+        }
+      }
+    };
+    checkScrollable();
+    window.addEventListener("resize", checkScrollable);
+    return () => window.removeEventListener("resize", checkScrollable);
+  }, []);
 
   if (!carouselItems.length) return null;
 
   const slideVariants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 1000 : -1000,
+    enter: (d: number) => ({
+      x: d > 0 ? 1000 : -1000,
       opacity: 0,
       scale: 1,
-      rotateY: direction > 0 ? 45 : -45,
+      rotateY: d > 0 ? 45 : -45,
     }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-      scale: 1,
-      rotateY: 0,
-    },
-    exit: (direction: number) => ({
+    center: { zIndex: 1, x: 0, opacity: 1, scale: 1, rotateY: 0 },
+    exit: (d: number) => ({
       zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
+      x: d < 0 ? 1000 : -1000,
       opacity: 0,
       scale: 0.1,
-      rotateY: direction < 0 ? 45 : -45,
+      rotateY: d < 0 ? 45 : -45,
     }),
   };
 
@@ -93,10 +110,13 @@ export default function InteractiveCarousel({
 
   const paginate = (newDirection: number) => {
     setDirection(newDirection);
-    setCurrentIndex((prev) => {
-      if (newDirection === 1) return (prev + 1) % carouselItems.length;
-      return prev === 0 ? carouselItems.length - 1 : prev - 1;
-    });
+    setCurrentIndex((prev) =>
+      newDirection === 1
+        ? (prev + 1) % carouselItems.length
+        : prev === 0
+          ? carouselItems.length - 1
+          : prev - 1
+    );
   };
 
   const handleDragEnd = (e: any, { offset, velocity }: PanInfo) => {
@@ -109,10 +129,9 @@ export default function InteractiveCarousel({
 
   return (
     <section>
-      <div className="container mx-auto w-full ">
-        <div className="relative h-[600px] flex items-start">
-          {/* Main Carousel */}
-          <div className="relative w-full rounded-sm h-full perspective-1000">
+      <div ref={containerRef} className="container mx-auto w-full ">
+        <div className="relative h-[800px] flex items-start">
+          <div className="relative w-full rounded-sm overflow-hidden h-full perspective-1000">
             <AnimatePresence initial={false} custom={direction}>
               <motion.div
                 key={currentIndex}
@@ -135,20 +154,30 @@ export default function InteractiveCarousel({
                 onMouseLeave={() => setIsAutoPlaying(true)}
               >
                 <div className="relative w-full h-full overflow-hidden bg-gradient-to-brshadow-2xl">
-                  {/* Background Image */}
-                  <motion.img
-                    src={active.image}
-                    alt={active.title}
-                    className="absolute inset-0 w-full h-full object-cover"
-                    initial={{ scale: 1.3, opacity: 1 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 1.6 }}
-                  />
+                  {active.video ? (
+                    <motion.video
+                      src={active.video}
+                      className="absolute inset-0 w-full h-full overflow-hidden object-cover"
+                      initial={{ scale: 1.3, opacity: 1 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 1.6 }}
+                      loop
+                      autoPlay
+                      muted
+                    />
+                  ) : (
+                    <motion.img
+                      src={active.image}
+                      alt={active.title}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      initial={{ scale: 1.3, opacity: 1 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 1.6 }}
+                    />
+                  )}
 
-                  {/* Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-                  {/* Content */}
                   <div className="absolute bottom-0 flex left-0 right-0 p-8 text-white">
                     <motion.div
                       initial="hidden"
@@ -175,30 +204,35 @@ export default function InteractiveCarousel({
                           </motion.div>
                         )}
                         {active.title && (
-                          <motion.h3 className="text-7xl font-semibold leading-compressed pb-0">
+                          <motion.h3 className="text-3xl md:text-7xl font-semibold leading-compressed pb-0">
                             {active.title}
                           </motion.h3>
                         )}
                       </div>
                       {active.subtitle && (
-                        <motion.p className="text-xl text-gray-100">
+                        <motion.p className="md:text-xl text-gray-100">
                           {active.subtitle}
                         </motion.p>
                       )}
                       {active.description && (
-                        <motion.p className="text-gray-100 text-sm max-w-2xl ">
+                        <motion.p className="text-gray-100 text-sm max-w-lg ">
                           {active.description}
                         </motion.p>
                       )}
-                      {active.cta?.text && (
-                        <motion.div className="text-gray-100 text-sm max-w-2xl ">
+                      <motion.div className="text-gray-100 text-sm max-w-2xl ">
+                        {active.cta ? (
                           <Button2 {...ctaToButtonProps(active.cta)} />
-                        </motion.div>
-                      )}
+                        ) : active.linkHref ? (
+                          <Button2
+                            variant="limesmall"
+                            href={active.linkHref}
+                            text="View Case Study"
+                          />
+                        ) : null}
+                      </motion.div>
                     </motion.div>
                   </div>
 
-                  {/* Interactive Elements */}
                   <motion.div
                     className="absolute top-4 right-4"
                     whileHover={{ scale: 1.1 }}
@@ -221,9 +255,8 @@ export default function InteractiveCarousel({
             </AnimatePresence>
           </div>
 
-          {/* Navigation Arrows */}
           <motion.button
-            className="absolute -left-12 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm rounded-xs flex items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
+            className="hidden md:flex absolute -left-12 top-1/2 -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm rounded-xs items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => paginate(-1)}
@@ -244,7 +277,7 @@ export default function InteractiveCarousel({
           </motion.button>
 
           <motion.button
-            className="absolute -right-12 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm rounded-xs flex items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
+            className="hidden md:flex absolute -right-12 top-1/2 -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm rounded-xs items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => paginate(1)}
@@ -265,12 +298,11 @@ export default function InteractiveCarousel({
           </motion.button>
         </div>
 
-        {/* Dots Indicator */}
-        <div className="flex justify-center mt-8 space-x-2">
+        <div className="flex justify-center mt-8 mx-auto space-x-2 bg-gray-100 h-8 items-center px-4 rounded-full w-fit">
           {carouselItems.map((_, index) => (
             <motion.button
               key={index}
-              className={`w-1 h-2 rounded-full transition-all duration-300 ${index === currentIndex ? "bg-lime-400 min-w-16" : "bg-gray-300 min-w-3"}`}
+              className={`w-1 h-2 rounded-full transition-all hover:bg-black duration-300 cursor-pointer ${index === currentIndex ? "bg-lime-400 min-w-16" : "bg-gray-300 min-w-3"}`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.8 }}
               onClick={() => {
@@ -281,8 +313,10 @@ export default function InteractiveCarousel({
           ))}
         </div>
 
-        {/* Thumbnail Strip */}
-        <div className="flex justify-center mt-8 space-x-4 pt-4 overflow-x-auto pb-4">
+        <div
+          ref={stripRef}
+          className={`flex justify-center mt-8 space-x-4 pt-4 pb-4 ${isScrollable ? "overflow-x-auto" : ""}`}
+        >
           {carouselItems.map((item, index) => (
             <motion.button
               key={item.id}

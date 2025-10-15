@@ -23,7 +23,7 @@ function CtaMiniComponent({
   paragraph,
   buttonText,
   buttonVariant = "default",
-  url = "#",
+  url = "",
   align = "left",
   delay = 0.6,
   staggerDelay = 0.1,
@@ -37,7 +37,6 @@ function CtaMiniComponent({
       : align === "right"
         ? "items-end"
         : "items-start";
-
   const textAlignClass =
     align === "center"
       ? "text-center"
@@ -54,19 +53,21 @@ function CtaMiniComponent({
       distance={distance}
     >
       <h3
-        className={`text-2xl leading-none mb-4 font-semibold ${textAlignClass}`}
+        className={`text-2xl leading-none mb-4 tracking-tight font-semibold ${textAlignClass}`}
       >
         {heading}
       </h3>
       <p className={`text-xs mb-8 ${textAlignClass}`}>{paragraph}</p>
-      <div className="text-xs  mb-8 min-w-[120px]  w-full  ">
-        <Button2
-          variant={buttonVariant}
-          className="w-full"
-          text={buttonText}
-          href={url}
-        />
-      </div>
+      {url ? (
+        <div className="text-xs mb-8 min-w-[120px] w-full">
+          <Button2
+            variant={buttonVariant}
+            className="w-full"
+            text={buttonText}
+            href={url}
+          />
+        </div>
+      ) : null}
     </StaggeredSlideUp>
   );
 }

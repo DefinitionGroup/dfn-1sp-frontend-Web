@@ -1,5 +1,5 @@
 "use client";
-
+import Button2 from "./ui/Button2";
 import React from "react";
 import Image from "next/image";
 import StaggeredSlideUp from "./StaggeredSlideUp";
@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useTransitionRouter } from "next-view-transitions";
 interface FrontNavOverlayProps {
   className?: string;
-  color?: "light" | "dark"; // light = neutral-50 (default), dark = neutral-800
+  color?: "light" | "dark";
 }
 
 const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
@@ -23,7 +23,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       : "/ci/1sp-fulllogotype.svg";
   return (
     <nav
-      className={`relative hidden md:grid place-items-start z-10 grid-cols-12 pt-5 mx-auto container ${className}`}
+      className={`hidden relative md:grid place-items-start z-10 grid-cols-12 pt-5 mx-auto container ${className}`}
     >
       <div className="w-[90px] h-[90px] col-start-1 col-span-1 pt-2">
         <Image
@@ -76,10 +76,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             {" "}
             <Link
               className="hover:text-lime-400"
-              href={"/projects"}
+              href={"/cases"}
               onClick={(e) => {
                 e.preventDefault();
-                router.push("/projects", {
+                router.push("/cases", {
                   onTransitionReady: pageAnimation,
                 });
               }}
@@ -108,10 +108,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           >
             <Link
               className="hover:text-lime-400"
-              href={"/whatwedo"}
+              href={"/our-family"}
               onClick={(e) => {
                 e.preventDefault();
-                router.push("/whatwedo", {
+                router.push("/our-family", {
                   onTransitionReady: pageAnimation,
                 });
               }}
@@ -137,6 +137,9 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           </span>{" "}
         </StaggeredSlideUp>
       </motion.div>{" "}
+      <div className="w-fit flex   min-w-[120px]  justify-end col-start-12 col-span-1 pt-2">
+        <Button2 variant="limesmall" text="Contact us" />
+      </div>
     </nav>
   );
 };

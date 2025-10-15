@@ -3,7 +3,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "motion/react";
 
-// Hoisted constant to avoid recreating object each render
 const EASING_MAP = {
   smooth: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
   spring: [0.16, 1, 0.3, 1] as [number, number, number, number],
@@ -20,11 +19,7 @@ interface StaggeredSlideUpProps {
   distance?: number;
   maskHeight?: string;
   easing?: "smooth" | "spring" | "ease-out" | "bounce";
-  viewport?: {
-    once?: boolean;
-    amount?: number;
-    margin?: string;
-  };
+  viewport?: { once?: boolean; amount?: number; margin?: string };
   threshold?: number;
   triggerOnce?: boolean;
   debug?: boolean;
@@ -55,20 +50,14 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
   useEffect(() => {
     if (isInView && !hasTriggered) {
       setHasTriggered(true);
-      if (debug) {
-        console.log("StaggeredSlideUp: Animation triggered via useInView");
-      }
     }
-  }, [isInView, hasTriggered, debug]);
+  }, [isInView, hasTriggered]);
 
   useEffect(() => {
     if (!triggerOnce && !isInView) {
       setHasTriggered(false);
-      if (debug) {
-        console.log("StaggeredSlideUp: Animation reset");
-      }
     }
-  }, [isInView, triggerOnce, debug]);
+  }, [isInView, triggerOnce]);
 
   const memoizedContainerVariants = React.useMemo(
     () => ({
@@ -79,7 +68,7 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
           delay,
           staggerChildren: staggerDelay,
           delayChildren: delay,
-          duration: 0.3,
+          duration: 0.1,
           when: "beforeChildren" as const,
         },
       },
@@ -89,11 +78,10 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
 
   const memoizedItemVariants = React.useMemo(
     () => ({
-      hidden: { opacity: 0, y: distance, scale: 0.95 },
+      hidden: { opacity: 0, y: distance },
       visible: {
         opacity: 1,
         y: 0,
-        scale: 1,
         transition: { duration, ease: EASING_MAP[easing] },
       },
     }),
@@ -126,14 +114,7 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
         entries.forEach((entry) => {
           if (entry.isIntersecting && entry.intersectionRatio >= threshold) {
             setHasTriggered(true);
-            if (debug) {
-              console.log(
-                "StaggeredSlideUp: Animation triggered via IntersectionObserver"
-              );
-            }
-            if (triggerOnce) {
-              observer.unobserve(currentRef);
-            }
+            if (triggerOnce) observer.unobserve(currentRef);
           }
         });
       },
@@ -144,19 +125,12 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
     );
 
     observer.observe(currentRef);
-
     return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
+      if (currentRef) observer.unobserve(currentRef);
     };
-  }, [threshold, viewport.margin, hasTriggered, triggerOnce, debug]);
+  }, [threshold, viewport.margin, hasTriggered, triggerOnce]);
 
   if (!Array.isArray(children) || children.length === 0) {
-    if (debug) {
-      console.warn("StaggeredSlideUp: No valid children provided");
-    }
-    // If a single child (ReactNode) was passed, still render container without map
     if (!Array.isArray(children) && children) {
       return (
         <motion.div
@@ -167,11 +141,13 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
           animate={shouldAnimate ? "visible" : "hidden"}
           style={
             debug ? { border: "2px dashed red", padding: "4px" } : undefined
-          }>
+          }
+        >
           <div className="relative overflow-hidden">
             <motion.div
               variants={memoizedItemVariants}
-              className="relative z-10">
+              className="relative z-10"
+            >
               {children}
             </motion.div>
             <motion.div
@@ -193,7 +169,8 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
       variants={memoizedContainerVariants}
       initial="hidden"
       animate={shouldAnimate ? "visible" : "hidden"}
-      style={debug ? { border: "2px dashed red", padding: "4px" } : undefined}>
+      style={debug ? { border: "2px dashed red", padding: "4px" } : undefined}
+    >
       {debug && (
         <div className="absolute top-0 right-0 bg-red-500 text-white text-xs p-1 z-50">
           InView: {isInView ? "Y" : "N"} | Triggered: {hasTriggered ? "Y" : "N"}
@@ -216,50 +193,3 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
 };
 
 export default StaggeredSlideUp;
-
-/*
-Example usage:
-<StaggeredSlideUp
-  delay={0.2}
-  staggerDelay={0.15}
-  duration={0.8}
-  distance={80}
-  maskHeight="150%"
-  easing="spring"
-  className="space-y-6"
-  threshold={0.1}
-  triggerOnce={true}
-  debug={false}
-  viewport={{
-    once: true,
-    amount: 0.2,
-    margin: "0px 0px -100px 0px"
-  }}
->
-  {[
-    <div key="1">First element to slide up</div>,
-    <div key="2">Second element to slide up</div>,
-    <div key="3">Third element to slide up</div>,
-  ]}
-</StaggeredSlideUp>
-
-// For better performance on pages with many animations:
-<StaggeredSlideUp
-  threshold={0.05}
-  triggerOnce={true}
-  viewport={{
-    margin: "0px 0px -50px 0px"
-  }}
->
-  {elements}
-</StaggeredSlideUp>
-
-// For debugging animation issues:
-<StaggeredSlideUp
-  debug={true}
-  threshold={0.1}
-  triggerOnce={false}
->
-  {elements}
-</StaggeredSlideUp>
-*/

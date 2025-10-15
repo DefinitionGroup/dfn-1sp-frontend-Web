@@ -61,14 +61,15 @@ const GridBackground: React.FC<GridBackgroundProps> = ({
   return (
     <motion.div
       ref={ref}
-      className={`z-0 grid col-span-12 col-start-1 row-start-1 grid-cols-12  divide-x border-x border-x-dashed border-neutral-100 divide-dotted divide-neutral-200 ${className}`}
+      className={`z-0 grid col-span-12 col-start-1 row-start-1 grid-cols-12  divide-x border-x  border-neutral-100 divide divide-neutral-200/50 ${className}`}
       variants={containerVariants}
       initial="hidden"
-      animate={isInView ? "visible" : "hidden"}>
+      animate={isInView ? "visible" : "hidden"}
+    >
       {Array.from({ length: columns }, (_, index) => (
         <motion.div
           key={index}
-          className="col-span-1 relative origin-top "
+          className="col-span-2 md:col-span-1 relative origin-top "
           variants={columnVariants}
         />
       ))}

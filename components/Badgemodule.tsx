@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence, PanInfo, useInView } from "motion/react";
+import { motion, useInView } from "motion/react";
 import { AnimateNumber } from "motion-plus/react";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
@@ -22,24 +22,20 @@ export default function Badgemodule({
 
   useEffect(() => {
     if (isInView) {
-      // Convert numberEl to number for animation
       const targetNumber =
         typeof numberEl === "string" ? parseInt(numberEl, 10) || 0 : numberEl;
-
-      // Delay the animation by 500ms
       const timeoutId = setTimeout(() => {
-        setAnimateNumberValue(targetNumber);
+        setAnimateNumberValue(targetNumber as number);
       }, 200);
-
-      // Cleanup timeout if component unmounts or dependencies change
       return () => clearTimeout(timeoutId);
     }
   }, [isInView, numberEl]);
+
   return (
-    <div className={` ${className}`}>
+    <div className={`${className}`}>
       <motion.div
         ref={ref}
-        className={`flex flex-col rounded-sm justify-between w-full  aspect-square bg-black items-start  ${className}`}
+        className={`flex flex-col rounded justify-between w-3/4 aspect-square bg-black items-start ${className}`}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
         variants={{
@@ -47,15 +43,12 @@ export default function Badgemodule({
           visible: {
             opacity: 1,
             scaleY: 1,
-            transition: {
-              staggerChildren: 0.2,
-              delayChildren: 0.1,
-            },
+            transition: { staggerChildren: 0.2, delayChildren: 0.1 },
           },
         }}
       >
-        <div className="flex-col">
-          <div className="flex px-4 py-4 items-start  border-white justify-between w-full ">
+        <div className="flex-col w-full">
+          <div className="flex px-4 py-4 items-start border-white justify-between w-full">
             <motion.div
               variants={{
                 hidden: { opacity: 0, scale: 0.8 },
@@ -71,16 +64,16 @@ export default function Badgemodule({
                 alt="1SP Logo"
                 width={60}
                 height={60}
-                className="w-8 h-8"
+                className="w-4 h-4"
               />
             </motion.div>
             <motion.div
-              className="text-xxs font-bold  self-end text-gray-100"
+              className="text-[8px] font-bold self-end text-gray-100"
               variants={{
                 hidden: { opacity: 0, y: 20 },
                 visible: {
                   opacity: 1,
-                  y: 0,
+                  y: -10,
                   transition: { duration: 0.6, ease: "easeOut" },
                 },
               }}
@@ -94,9 +87,9 @@ export default function Badgemodule({
             </motion.div>
           </div>
           <motion.p
-            className="text-5xl font-bold px-4  text-gray-200"
+            className="text-3xl font px-4 text-gray-200"
             variants={{
-              hidden: { opacity: 0, y: 20 },
+              hidden: { opacity: 0, y: 10 },
               visible: {
                 opacity: 1,
                 y: 0,
@@ -108,9 +101,9 @@ export default function Badgemodule({
           </motion.p>
         </div>
         <motion.p
-          className="text-xxs rounded-b-sm font-semibold mt-2 px-4 py-4  w-full bg-neutral-800 text-gray-200"
+          className="text-xxs rounded-b-sm font-semibold mt-2 px-4 py-4 w-full bg-neutral-800 text-gray-200"
           variants={{
-            hidden: { opacity: 0, y: 20 },
+            hidden: { opacity: 0 },
             visible: {
               opacity: 1,
               y: 0,

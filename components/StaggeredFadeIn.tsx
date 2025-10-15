@@ -1,14 +1,18 @@
 import React from "react";
-import { motion } from "motion/react";
+import { motion, useInView } from "motion/react";
 
 interface StaggeredFadeInProps {
-  children: React.ReactNode[];
+  children: React.ReactNode | React.ReactNode[];
   className?: string;
   delay?: number;
   staggerDelay?: number;
   duration?: number;
   direction?: "up" | "down" | "left" | "right" | "none";
   distance?: number;
+  triggerOnView?: boolean;
+  viewThreshold?: number;
+  once?: boolean;
+  animate?: "visible" | "hidden";
 }
 
 const StaggeredFadeIn: React.FC<StaggeredFadeInProps> = ({
@@ -19,7 +23,16 @@ const StaggeredFadeIn: React.FC<StaggeredFadeInProps> = ({
   duration = 0.6,
   direction = "up",
   distance = 20,
+  triggerOnView = true,
+  viewThreshold = 0.1,
+  once = true,
+  animate,
 }) => {
+  const ref = React.useRef(null);
+  const isInView = useInView(ref, {
+    amount: viewThreshold,
+    once: once,
+  });
   const getInitialPosition = () => {
     switch (direction) {
       case "up":
@@ -66,13 +79,25 @@ const StaggeredFadeIn: React.FC<StaggeredFadeInProps> = ({
     },
   };
 
+  const childrenArray = React.Children.toArray(children);
+
   return (
     <motion.div
+      ref={ref}
       className={className}
       variants={containerVariants}
       initial="hidden"
-      animate="visible">
-      {children.map((child, index) => (
+      animate={
+        animate !== undefined
+          ? animate
+          : triggerOnView
+            ? isInView
+              ? "visible"
+              : "hidden"
+            : "visible"
+      }
+    >
+      {childrenArray.map((child, index) => (
         <motion.div key={index} variants={itemVariants} className="w-full">
           {child}
         </motion.div>

@@ -7,8 +7,7 @@ const FooterBottom = () => {
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle newsletter signup logic here
-    console.log("Newsletter signup:", email);
+    //console.log("Newsletter signup:", email);
   };
 
   return (
@@ -20,13 +19,15 @@ const FooterBottom = () => {
             <a
               href="#"
               className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
-              aria-label="Meta">
+              aria-label="Meta"
+            >
               <img src="/MetaLogo.svg" alt="Meta" className="w-full h-full" />
             </a>
             <a
               href="#"
               className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
-              aria-label="Instagram">
+              aria-label="Instagram"
+            >
               <img
                 alt="Instagram"
                 src="/InstagramLogo.svg"
@@ -36,7 +37,8 @@ const FooterBottom = () => {
             <a
               href="#"
               className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
-              aria-label="TikTok">
+              aria-label="TikTok"
+            >
               <img
                 src="TiktokLogo.svg"
                 alt="TikTok"
@@ -46,7 +48,8 @@ const FooterBottom = () => {
             <a
               href="#"
               className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
-              aria-label="LinkedIn">
+              aria-label="LinkedIn"
+            >
               <img
                 src="/LinkedinLogo.svg"
                 alt="LinkedIn"
@@ -91,7 +94,6 @@ const FooterBottom = () => {
                       Newsletter:
                     </span>
                     <input
-                      id="newsletter-email"
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -103,7 +105,8 @@ const FooterBottom = () => {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-transparent border border-gray-700 text-gray-400 text-[11px] py-3 px-3 hover:border-lime-400 hover:text-lime-400 transition-colors duration-200 focus:outline-none focus:border-lime-400 focus:text-lime-400">
+                  className="w-full bg-transparent border border-gray-700 text-gray-400 text-[11px] py-3 px-3 hover:border-lime-400 hover:text-lime-400 transition-colors duration-200 focus:outline-none focus:border-lime-400 focus:text-lime-400"
+                >
                   Subscribe
                 </button>
               </form>
