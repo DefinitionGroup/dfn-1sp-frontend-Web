@@ -9,6 +9,7 @@ type SublineComponentData = {
   description?: string;
   showGridBackground?: boolean;
   additionalContent?: CTA[];
+  sectionTitle?: string;
 };
 
 export default function SublineComponent({
@@ -20,14 +21,32 @@ export default function SublineComponent({
     description,
     showGridBackground = true,
     additionalContent = [],
+    sectionTitle,
   } = data || {};
 
   const ctas = Array.isArray(additionalContent) ? additionalContent : [];
 
   if (!description && ctas.length === 0) return null;
 
+  // Generate section ID from description or default
+  const sectionId = sectionTitle
+    ? sectionTitle
+        .replace(/[^a-zA-Z0-9\s]/g, "")
+        .replace(/\s+/g, "-")
+        .toLowerCase()
+    : description
+      ? description
+          .substring(0, 30)
+          .replace(/[^a-zA-Z0-9\s]/g, "")
+          .replace(/\s+/g, "-")
+          .toLowerCase()
+      : "subline-section";
+
   return (
-    <section className="grid grid-cols-12 z-1 mx-auto container relative font-aspekta">
+    <section
+      id={sectionId}
+      className="grid grid-cols-12 z-1 mx-auto container relative font-aspekta"
+    >
       {showGridBackground && <GridBackground />}
 
       <div className="z-1 grid gap-8 col-span-12 py-4 col-start-1 container mx-auto row-start-1 grid-cols-12">

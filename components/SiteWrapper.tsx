@@ -3,6 +3,7 @@ import { NAVBAR_QUERY, FOOTER_QUERY } from "@/sanity/lib/queries";
 import FrontNavOverlay from "./FrontNavOverlay";
 import Footer from "./FooterNew";
 import { NavbarMenu, FooterMenu } from "@/types/menu.types";
+import PageWithMapVertical from "./PageWithMapVertical";
 
 interface SiteWrapperProps {
   children: React.ReactNode;
@@ -31,9 +32,11 @@ export default async function SiteWrapper({
 
   return (
     <>
-      <FrontNavOverlay menuData={navbarData as NavbarMenu} color={navColor} />
-      {children}
-      <Footer menuData={footerData as FooterMenu} />
+      <PageWithMapVertical>
+        <FrontNavOverlay menuData={navbarData as NavbarMenu} color={navColor} />
+        {children}
+        <Footer menuData={footerData as FooterMenu} />
+      </PageWithMapVertical>
     </>
   );
 }

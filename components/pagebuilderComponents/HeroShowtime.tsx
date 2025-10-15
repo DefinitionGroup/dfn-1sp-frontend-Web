@@ -14,7 +14,7 @@ export default function HeroShowtime({ data }: { data: HeroShowtimeType }) {
     useVideo = false,
     backgroundImage,
     backgroundVideo,
-    heading = "Show Time",
+    heading = "Show Time",
     subheading = "Your subheading here",
     paragraphs = [],
     additionalContent = [],
@@ -23,8 +23,19 @@ export default function HeroShowtime({ data }: { data: HeroShowtimeType }) {
   const imageUrl = assetUrl(backgroundImage) || "/hr.png";
   const videoUrl = assetUrl(backgroundVideo);
 
+  // Generate section ID from heading or use a default
+  const sectionId = heading
+    ? heading
+        .replace(/[^a-zA-Z0-9\s]/g, "")
+        .replace(/\s+/g, "-")
+        .toLowerCase()
+    : "hero-section";
+
   return (
-    <section className="grid grid-cols-12 z-1 mx-auto relative font-aspekta text-white">
+    <section
+      id={sectionId}
+      className="grid grid-cols-12 z-1 mx-auto relative font-aspekta text-white"
+    >
       {/* Background media wrapper */}
       <HeaderImageVideoComp2
         useVideo={!!useVideo && !!videoUrl}

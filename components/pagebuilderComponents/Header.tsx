@@ -60,8 +60,16 @@ export default function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   const leftMark = step.cornerLeftText ?? "SUPER*";
   const rightMark = step.cornerRightText ?? "/ 1SP";
 
+  // Generate section ID from eyebrow or default
+  const sectionId = eyebrow
+    ? eyebrow
+        .replace(/[^a-zA-Z0-9\s]/g, "")
+        .replace(/\s+/g, "-")
+        .toLowerCase()
+    : "header-section";
+
   return (
-    <section className="relative h-[85vh] overflow-hidden">
+    <section id={sectionId} className="relative h-[85vh] overflow-hidden">
       {/* Background media */}
       {mediaUrl && (
         <HeaderImageVideoComp2

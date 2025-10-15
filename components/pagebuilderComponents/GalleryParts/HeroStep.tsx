@@ -18,8 +18,22 @@ export default function HeroStep({ step }: { step: GalleryHeroStep }) {
     (step as any)?.content?.carousel?.items) ??
     []) as CarouselItem[];
 
+  // Generate section ID from badge text or typewriter text
+  const sectionId = step.badge?.text
+    ? step.badge.text
+        .replace(/[^a-zA-Z0-9\s]/g, "")
+        .replace(/\s+/g, "-")
+        .toLowerCase()
+    : step.typewriterText
+      ? step.typewriterText
+          .substring(0, 30)
+          .replace(/[^a-zA-Z0-9\s]/g, "")
+          .replace(/\s+/g, "-")
+          .toLowerCase()
+      : "gallery-hero";
+
   return (
-    <section className="relative overflow-hidden">
+    <section id={sectionId} className="relative overflow-hidden">
       {/* Optional background video */}
       {videoSrc && (
         <HeaderImageVideoComp2 useVideo videoSrc={videoSrc} enableParallax />
