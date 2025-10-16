@@ -4,7 +4,7 @@ import { useInView } from "motion/react";
 
 import Footer from "../components/Footer";
 import FooterBottom from "../components/FooterBottom";
-import FrontNavOverlayCases from "../components/FrontNavOverlayCases";
+import FrontNavOverlay from "../components/FrontNavOverlay";
 import GridBackground from "../components/GridBackground";
 
 import StaggeredSlideUp from "../components/StaggeredSlideUp";
@@ -68,7 +68,7 @@ export default function Home() {
 
         <LineMinimap navPoints={navPoints} />
 
-        <FrontNavOverlayCases color="dark" />
+        <FrontNavOverlay color="dark" />
 
         {/* subline rightection */}
         <div

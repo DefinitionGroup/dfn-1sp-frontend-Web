@@ -166,13 +166,28 @@ export default function Home() {
           </div>
           <div className="col-span-12 col-start-1 mt-8 px-8 md:px-0">
             <InteractiveCarousel />
-            <div className="flex  w-fit min-w-64 justify-center mx-auto  mt-8 mb-16">
-              <Link href="/cases" className="w-fit min-w-48">
-                <Button2
-                  text="See all Cases "
-                  variant="lime"
-                  className="w-fit "
-                />
+            <div className="flex-col   w-full min-w-64 justify-center mx-auto  mt-8 mb-16">
+              <StaggeredSlideUp
+                className="flex flex-col items-center font-normal  justify-center  "
+                delay={0.0}
+                debug={false}
+                easing="smooth"
+                staggerDelay={0.1}
+                duration={0.5}
+                distance={20}
+              >
+                <h3 className="text-2xl text-gray-700 text-center leading-[1.2]  ">
+                  Discover our hottest projects in
+                </h3>
+                <p className="text-2xl text-gray-500 leading-snug text-center">
+                  marketing, gaming and interactive experiences.
+                </p>
+              </StaggeredSlideUp>
+              <Link
+                href="/cases"
+                className="w-fit  min-w-40 mx-auto mt-8 block"
+              >
+                <Button2 text="See all Cases " variant="lime" />
               </Link>
             </div>
           </div>
