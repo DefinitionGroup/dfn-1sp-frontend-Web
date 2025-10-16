@@ -57,3 +57,61 @@ export const FOOTER_QUERY = defineQuery(`
   copyright
 }
 `);
+
+export const CASE_STUDIES_QUERY = defineQuery(`
+*[_type == "caseStudy" && channel match $channel && language == $language && isPublished == true] | order(publishedAt desc){
+  _id,
+  title,
+  subtitle,
+  slug,
+  description,
+  category,
+  mainImage,
+  mainVideo,
+  logoImage,
+  "mainImageUrl": mainImage.secure_url,
+  "mainVideoUrl": mainVideo.asset->url,
+  "logoImageUrl": logoImage.secure_url,
+  websiteUrl,
+  websiteUrlText,
+  publishedAt
+}
+`);
+
+export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
+*[_type == "caseStudy" && slug.current == $slug && channel match $channel && language == $language && isPublished == true][0]{
+  _id,
+  title,
+  subtitle,
+  slug,
+  description,
+  category,
+  mainImage,
+  mainVideo,
+  logoImage,
+  "mainImageUrl": mainImage.secure_url,
+  "mainVideoUrl": mainVideo.asset->url,
+  "logoImageUrl": logoImage.secure_url,
+  websiteUrl,
+  websiteUrlText,
+  imageGallery[]{
+    "imageUrl": image.secure_url,
+    alt,
+    caption
+  },
+  units[]->{
+    _id,
+    name,
+    slug,
+    tagline,
+    "logoUrl": logo.secure_url
+  },
+  client->{
+    _id,
+    name,
+    slug,
+    "logoUrl": logo.secure_url
+  },
+  publishedAt
+}
+`);

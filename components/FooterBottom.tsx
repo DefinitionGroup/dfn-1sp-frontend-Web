@@ -40,7 +40,7 @@ const FooterBottom = () => {
               aria-label="TikTok"
             >
               <img
-                src="TiktokLogo.svg"
+                src="/TiktokLogo.svg"
                 alt="TikTok"
                 className="w-full h-full"
               />

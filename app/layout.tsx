@@ -29,10 +29,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // apply the generated font classnames on the HTML so server+client match
   return (
-    <html lang="en" className={`${aspekta.variable} ${nyghtserif.variable}`}>
-      <body className="antialiased">{children}</body>
+    <html
+      lang="en"
+      className={`${aspekta.variable} ${nyghtserif.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="antialiased" suppressHydrationWarning>
+        {children}
+      </body>
     </html>
   );
 }

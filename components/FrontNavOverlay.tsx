@@ -12,12 +12,14 @@ interface FrontNavOverlayProps {
   className?: string;
   color?: "light" | "dark";
   menuData?: NavbarMenu | null;
+  locale?: string;
 }
 
 const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   className = "",
   color = "light",
   menuData,
+  locale = "en",
 }) => {
   const router = useTransitionRouter();
   const textColor = color === "dark" ? "text-neutral-800" : "text-neutral-50";
@@ -87,10 +89,12 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               >
                 <Link
                   className="hover:text-lime-400"
-                  href={"/"}
+                  href={`/${locale}`}
                   onClick={(e) => {
                     e.preventDefault();
-                    router.push("/", { onTransitionReady: pageAnimation });
+                    router.push(`/${locale}`, {
+                      onTransitionReady: pageAnimation,
+                    });
                   }}
                 >
                   Home
@@ -101,10 +105,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               >
                 <Link
                   className="hover:text-lime-400"
-                  href={"/cases"}
+                  href={`/${locale}/cases`}
                   onClick={(e) => {
                     e.preventDefault();
-                    router.push("/cases", {
+                    router.push(`/${locale}/cases`, {
                       onTransitionReady: pageAnimation,
                     });
                   }}
@@ -117,10 +121,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               >
                 <Link
                   className="hover:text-lime-400"
-                  href={"/whatwedo"}
+                  href={`/${locale}/whatwedo`}
                   onClick={(e) => {
                     e.preventDefault();
-                    router.push("/whatwedo", {
+                    router.push(`/${locale}/whatwedo`, {
                       onTransitionReady: pageAnimation,
                     });
                   }}
@@ -133,10 +137,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               >
                 <Link
                   className="hover:text-lime-400"
-                  href={"/our-family"}
+                  href={`/${locale}/our-family`}
                   onClick={(e) => {
                     e.preventDefault();
-                    router.push("/our-family", {
+                    router.push(`/${locale}/our-family`, {
                       onTransitionReady: pageAnimation,
                     });
                   }}
@@ -149,10 +153,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               >
                 <Link
                   className="hover:text-lime-400"
-                  href={"/whatwedo"}
+                  href={`/${locale}/whatwedo`}
                   onClick={(e) => {
                     e.preventDefault();
-                    router.push("/whatwedo", {
+                    router.push(`/${locale}/whatwedo`, {
                       onTransitionReady: pageAnimation,
                     });
                   }}

@@ -8,6 +8,6 @@ const isDevelopment = process.env.NODE_ENV === 'development'
 
 export const { sanityFetch, SanityLive } = defineLive({
   client,
-  serverToken: isDevelopment ? undefined : token,
-  browserToken: isDevelopment ? undefined : token,
+  serverToken: isDevelopment ? false : token,
+  browserToken: isDevelopment ? false : token,
 })

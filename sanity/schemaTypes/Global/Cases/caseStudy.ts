@@ -76,9 +76,55 @@ export default defineType({
             rows: 4
         },
         {
+            name: 'subtitle',
+            title: 'Subtitle',
+            type: 'string',
+            description: 'A short subtitle or tagline for the case study'
+        },
+        {
+            name: 'category',
+            title: 'Category',
+            type: 'array',
+            of: [{ type: 'string' }],
+            options: {
+                list: [
+                    { title: 'POS', value: 'POS' },
+                    { title: 'Marketing', value: 'Marketing' },
+                    { title: 'Social', value: 'Social' },
+                    { title: 'Design', value: 'Design' },
+                    { title: 'Web', value: 'Web' },
+                ],
+            },
+            validation: (Rule) => Rule.required().min(1)
+        },
+        {
             name: 'mainImage',
             title: 'Main Image',
             type: 'cloudinary.asset'
+        },
+        {
+            name: 'mainVideo',
+            title: 'Main Video',
+            type: 'cloudinary.asset',
+            description: 'Optional video to display instead of main image'
+        },
+        {
+            name: 'logoImage',
+            title: 'Logo Image',
+            type: 'cloudinary.asset',
+            description: 'Client logo to display on the card'
+        },
+        {
+            name: 'websiteUrl',
+            title: 'Website URL',
+            type: 'url',
+            description: 'External website URL'
+        },
+        {
+            name: 'websiteUrlText',
+            title: 'Website URL Text',
+            type: 'string',
+            description: 'Text for the website link button (e.g., "Visit Website")'
         },
         {
             name: 'imageGallery',
