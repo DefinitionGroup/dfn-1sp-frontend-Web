@@ -8,6 +8,20 @@ import type { CTA } from "@/types/sanity.types";
 import { assetUrl, ctaToButtonProps } from "@/utils/utils";
 import { client } from "@/sanity/lib/client";
 
+// Channel to carousel field mapping
+const CHANNEL_FIELD_MAP = {
+  "1spWeb": "connectedDataCarouselPromo1SP",
+  msmWeb: "connectedDataCarouselPromoMSM",
+  studioco2Web: "connectedDataCarouselPromoStudioCO2",
+} as const;
+
+// Channel display names
+const CHANNEL_NAMES = {
+  "1spWeb": "1SP",
+  msmWeb: "MSM",
+  studioco2Web: "Studio CO2",
+} as const;
+
 // Helper to get channel from cookies on client side
 function getChannelFromCookie(): "1spWeb" | "msmWeb" | "studioco2Web" {
   if (typeof document === "undefined") return "1spWeb";
@@ -74,16 +88,8 @@ export default function SmartCarousel({
   useEffect(() => {
     const fetchCaseStudies = async () => {
       try {
-        // Map channel to the corresponding boolean field
-        const channelFieldMap = {
-          "1spWeb": "connectedDataCarouselPromo1SP",
-          msmWeb: "connectedDataCarouselPromoMSM",
-          studioco2Web: "connectedDataCarouselPromoStudioCO2",
-        };
+        const carouselField = CHANNEL_FIELD_MAP[activeChannel];
 
-        const carouselField = channelFieldMap[activeChannel];
-
-        // Build the query string properly
         const query = `*[
           _type == "caseStudy" && 
           ${carouselField} == true &&
@@ -101,64 +107,9 @@ export default function SmartCarousel({
           slug
         }`;
 
-        console.log("SmartCarousel Query:", query);
-        console.log("SmartCarousel Params:", {
-          language,
-          activeChannel,
-          carouselField,
-        });
-
         const results = await client.fetch(query, {
           language,
         });
-
-        console.log("SmartCarousel Results:", results);
-
-        // Debug: Check if ANY case studies exist at all
-        const debugQuery = `*[_type == "caseStudy"] {
-          _id,
-          title,
-          language,
-          isPublished,
-          channel,
-          connectedDataCarouselPromo1SP,
-          connectedDataCarouselPromoMSM,
-          connectedDataCarouselPromoStudioCO2
-        }`;
-        const allCaseStudies = await client.fetch(debugQuery);
-        console.log("DEBUG - All case studies in system:", allCaseStudies);
-        console.log("DEBUG - Count:", allCaseStudies.length);
-
-        // More detailed debug for matching criteria
-        console.log(
-          "DEBUG - Case studies that match language:",
-          allCaseStudies.filter((cs: any) => cs.language === language)
-        );
-        console.log(
-          "DEBUG - Case studies that are published:",
-          allCaseStudies.filter((cs: any) => cs.isPublished === true)
-        );
-        console.log(
-          "DEBUG - Case studies with 1SP promo field TRUE:",
-          allCaseStudies.filter(
-            (cs: any) => cs.connectedDataCarouselPromo1SP === true
-          )
-        );
-        console.log(
-          "DEBUG - Details of promoted case studies:",
-          allCaseStudies
-            .filter((cs: any) => cs.connectedDataCarouselPromo1SP === true)
-            .map((cs: any) => ({
-              id: cs._id,
-              title: cs.title,
-              language: cs.language,
-              isPublished: cs.isPublished,
-            }))
-        );
-        console.log(
-          "DEBUG - Case studies with 1spWeb in channel:",
-          allCaseStudies.filter((cs: any) => cs.channel?.includes("1spWeb"))
-        );
 
         setCaseStudies(results);
       } catch (error) {
@@ -239,12 +190,7 @@ export default function SmartCarousel({
   }
 
   if (!carouselItems.length) {
-    const channelNameMap = {
-      "1spWeb": "1SP",
-      msmWeb: "MSM",
-      studioco2Web: "Studio CO2",
-    };
-    const channelName = channelNameMap[activeChannel];
+    const channelName = CHANNEL_NAMES[activeChannel];
 
     return (
       <section>

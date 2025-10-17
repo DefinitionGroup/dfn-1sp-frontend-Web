@@ -26,8 +26,6 @@ export default function HeroStep({ step }: { step: GalleryHeroStep }) {
   // Get additional content items
   const additionalContent = (step as any)?.additionalContent || [];
 
-  console.log(additionalContent);
-
   // Get language from URL params (locale), or step, or default to 'en'
   const language =
     (params?.locale as string) || (step as any)?.language || "en";
