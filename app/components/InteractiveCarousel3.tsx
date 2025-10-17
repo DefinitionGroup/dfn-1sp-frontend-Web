@@ -187,7 +187,7 @@ export default function InteractiveCarousel2() {
     <section className="  ">
       <div
         ref={containerRef}
-        className="container relative top-0 left-0 mx-auto w-full "
+        className="container relative pb-16 top-0 left-0 mx-auto w-full"
       >
         <div className="relative h-[600px] flex items-start">
           {/* Main Carousel */}

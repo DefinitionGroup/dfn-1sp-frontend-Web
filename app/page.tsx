@@ -24,6 +24,9 @@ import StaggeredSlideUp from "./components/StaggeredSlideUp";
 import TypewriterChangeContentExample from "./components/TyperwriterHeadline";
 import InteractiveCarousel3 from "./components/InteractiveCarousel3";
 import { Link } from "next-view-transitions";
+import IntertitleCTA from "./components/IntertitleCTA";
+import ArrowBig from "./components/arrowBig";
+import CtaMiniComponent from "./components/CtaMiniComponent";
 
 export default function Home() {
   const typewriterref = useRef(null);
@@ -166,36 +169,33 @@ export default function Home() {
           </div>
           <div className="col-span-12 col-start-1 mt-8 px-8 md:px-0">
             <InteractiveCarousel />
-            <div className="flex-col   w-full min-w-64 justify-center mx-auto  mt-8 mb-16">
-              <StaggeredSlideUp
-                className="flex flex-col items-center font-normal  justify-center  "
-                delay={0.0}
-                debug={false}
-                easing="smooth"
-                staggerDelay={0.1}
-                duration={0.5}
-                distance={20}
-              >
-                <h3 className="text-2xl text-gray-700 text-center leading-[1.2]  ">
-                  Discover our hottest projects in
-                </h3>
-                <p className="text-2xl text-gray-500 leading-snug text-center">
-                  marketing, gaming and interactive experiences.
-                </p>
-              </StaggeredSlideUp>
-              <Link
-                href="/cases"
-                className="w-fit  min-w-40 mx-auto mt-8 block"
-              >
-                <Button2 text="See all Cases " variant="lime" />
-              </Link>
-            </div>
+            <IntertitleCTA
+              title="Discover our hottest projects in"
+              subtitle="marketing, gaming and interactive experiences."
+              buttonText="See all Cases "
+              buttonVariant="lime"
+              href="/cases"
+            />
           </div>
           <div className="col-span-12 col-start-1 mt-64 px-8 md:px-0">
-            <InteractiveCarousel2 />
+            <InteractiveCarousel2 />{" "}
+            <IntertitleCTA
+              title="Discover our hottest projects in"
+              subtitle="marketing, gaming and interactive experiences."
+              buttonText="See all Cases "
+              buttonVariant="lime"
+              href="/cases"
+            />
           </div>
           <div className="col-span-12 col-start-1 mt-64 px-8 md:px-0">
-            <InteractiveCarousel3 />
+            <InteractiveCarousel3 />{" "}
+            <IntertitleCTA
+              title="Discover our hottest projects in"
+              subtitle="marketing, gaming and interactive experiences."
+              buttonText="See all Cases "
+              buttonVariant="lime"
+              href="/cases"
+            />
           </div>
         </div>
       </div>
@@ -212,12 +212,28 @@ export default function Home() {
         />
         <div className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta">
           <div className="z-1 grid col-span-12 py-32  col-start-1 container mx-auto row-start-1 grid-cols-12 ">
-            <Badgemodule
-              className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky top-0 "
-              text="Laser Focused"
-              subtitle="Our Services"
-              numberEl={"002"}
-            />
+            <div className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky top-0 flex-col ">
+              <Badgemodule
+                className=""
+                text="Laser Focused"
+                subtitle="Our Services"
+                numberEl={"002"}
+              />
+              <ArrowBig
+                animate={true}
+                size={48}
+                color="white"
+                className="my-12 fill-white text-white "
+              />
+              <CtaMiniComponent
+                className="max-w-1/2 text-white"
+                heading="Ideas."
+                paragraph="At 1sp, our dedicated team is fueled by creativity and innovation, designing exceptional marketing campaigns that truly connect with audiences."
+                buttonText="All Services"
+                buttonVariant="limesmall"
+                url="/whatwedo"
+              />
+            </div>
 
             <div className="col-span-9 col-start-2 mt-12 md:mt-0 md:col-start-3">
               <ScrollHighlight />

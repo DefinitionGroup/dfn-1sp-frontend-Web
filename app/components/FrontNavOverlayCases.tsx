@@ -49,59 +49,50 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
     <>
       <AnimatePresence>
         {showOverlay && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{
-              opacity: 0.2,
-              transition: { type: "spring", stiffness: 20 },
-            }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 h-full backdrop-blur-lg w-full z-10"
-          ></motion.div>
-        )}
-      </AnimatePresence>
-      <AnimatePresence>
-        {showOverlay && (
-          <div className="fixed inset-0 grid place-items-center z-[100]">
-            <motion.button
-              layout
-              initial={{
-                opacity: 1,
-              }}
-              animate={{
-                opacity: 1,
-              }}
-              exit={{
-                opacity: 1,
-                transition: {
-                  duration: 0.05,
-                },
-              }}
-              className="flex absolute top-2 right-2 lg:hidden items-center overflow-hidden justify-around rounded-full h-6 w-6 z-50"
-              onClick={() => setShowOverlay(false)}
-            >
-              <CloseIcon />
-            </motion.button>
+          <div className="fixed inset-0 grid place-items-center backdrop-blur-lg  z-[100] bg-black/20 ">
             <motion.div
               initial={{
                 opacity: 0,
+                scale: 0.9,
+                y: 50,
               }}
               animate={{
                 opacity: 1,
+                scale: 1,
               }}
               exit={{
                 opacity: 0,
-                transition: {
-                  duration: 0.05,
-                },
+                y: -50,
+                transition: { duration: 0.4, type: "spring", bounce: 0.06 },
               }}
-              transition={{ type: "spring", visualDuration: 0.3, bounce: 0.2 }}
+              transition={{
+                type: "spring",
+                visualDuration: 0.25,
+                bounce: 0.56,
+              }}
               ref={ref}
-              className="w-full max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col bg-neutral-100 dark:bg-neutral-900 shadow-2xl overflow-hidden"
+              className=""
             >
-              <div className="flex justify-center items-center h-full">
-                {/* Empty div as requested */}
-                <div>
+              <div className="flex justify-center items-center ">
+                <div className="relative w-full max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[85vh] rounded-xl flex flex-col bg-neutral-100 dark:bg-neutral-900 shadow-2xl overflow-hidden">
+                  <motion.button
+                    layout
+                    initial={{
+                      opacity: 1,
+                    }}
+                    animate={{
+                      opacity: 1,
+                    }}
+                    exit={{
+                      opacity: 1,
+                      transition: {
+                        duration: 0.05,
+                      },
+                    }}
+                    className="flex absolute top-2 right-2 items-center cursor-pointer justify-around rounded-full h-6 w-6 z-50  "
+                  >
+                    <CloseIcon onClick={() => setShowOverlay(false)} />
+                  </motion.button>
                   <CaseGalleryMenu />
                 </div>
               </div>
@@ -110,7 +101,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         )}
       </AnimatePresence>
       <nav
-        className={`hidden relative  md:grid place-items-start z-10 grid-cols-12 pt-5 mx-auto container ${className}`}
+        className={`hidden relative  md:flex gap-8  z-10  pt-5 items-start mx-auto container ${className}`}
       >
         <div className="w-[90px] h-[90px] col-start-1 col-span-1 ">
           <Link
@@ -145,7 +136,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             duration: 0.5,
             delay: 0.4,
           }}
-          className="col-start-3  pt-3 flex  col-span-9 row-start-1 "
+          className="col-start-2 flex-grow  pt-3 flex row-start-1 "
         >
           <StaggeredSlideUp
             className="flex gap-16 items-center"
@@ -234,17 +225,20 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               >
                 Work with us
               </Link>
-            </span>{" "}
+            </span>
           </StaggeredSlideUp>
         </motion.div>{" "}
-        <a
-          className={`w-fit flex row-start-1 justify-end col-start-10 col-span-1 border rounded-xs mt-2 p-2 ${textColor} text-xs font-bold cursor-pointer hover:text-lime-400`}
-          onClick={() => setShowOverlay(true)}
-        >
-          All Cases
-        </a>
-        <div className="w-fit flex  w-fit row-start-1 min-w-[120px]  justify-end col-start-12 col-span-1 pt-2">
-          <Button2 variant="limesmall" text="Contact us" />
+        <div className="min-w-[300px]  flex gap-8 items-center ">
+          {" "}
+          <a
+            className={`  border rounded-full  inline-block  mt-2 py-1 px-2 ${textColor} text-xxs font-bold  cursor-pointer hover:text-lime-400`}
+            onClick={() => setShowOverlay(true)}
+          >
+            All Cases
+          </a>
+          <div className="flex min-w-[120px]   items-end justify-end">
+            <Button2 variant="limesmall" text="Contact us" className="  mt-2" />
+          </div>{" "}
         </div>
       </nav>
     </>
@@ -292,10 +286,11 @@ const pageAnimation = () => {
 };
 export default FrontNavOverlay;
 
-const CloseIcon = () => {
+const CloseIcon = ({ onClick }: { onClick?: () => void }) => {
   return (
     <motion.svg
       whileHover={{ rotate: 90 }}
+      onClick={onClick}
       initial={{
         opacity: 0,
       }}
@@ -317,7 +312,7 @@ const CloseIcon = () => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="h-6 w-6 text-white"
+      className="h-6 w-6 text-black z-50 cursor-pointer"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M18 6l-12 12" />

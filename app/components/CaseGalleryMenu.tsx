@@ -8,6 +8,7 @@ import Link from "next/link";
 
 import { useTransitionRouter } from "next-view-transitions";
 import Button2 from "./Button2";
+import IntertitleCTA from "./IntertitleCTA";
 
 interface CaseItem {
   id: number;
@@ -138,24 +139,23 @@ export default function CaseGalleryMenu({
               transition: { type: "spring", stiffness: 20 },
             }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 h-full backdrop-blur-lg w-full z-10"
-          >
-            <motion.button
-              onClick={() => setActive(null)}
-              className="absolute top-4 right-4 z-20"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            ></motion.button>
-          </motion.div>
+            className="fixed inset-0 bg-black/80 h-full backdrop-blur-xs w-full z-10"
+          ></motion.div>
         )}
       </AnimatePresence>
-
+      <div className="px-8 ">
+        <IntertitleCTA
+          title={"Our Work"}
+          alignment="left"
+          subtitle={"Explore our projects"}
+        />
+      </div>
       <ul className="w-full  flex p-8 ">
-        <CloseIcon />
         <StaggeredSlideUp
-          staggerDelay={0.125}
-          distance={30}
-          duration={1.6}
+          staggerDelay={0.1}
+          easing="ease-out"
+          distance={10}
+          duration={0.6}
           viewport={{
             once: true,
             amount: 0.2,
@@ -168,11 +168,11 @@ export default function CaseGalleryMenu({
               layoutId={`card-${item.title}-${id}`}
               key={`card-${item.title}-${id}`}
               onClick={() => setActive(item)}
-              className="flex-col  w-[200px] min-h-[100px] group/card bg-gray-200 overflow-hidden h-[250px] cursor-pointer"
+              className="flex-col min-h-[120px] group/card rounded-xl overflow-clip bg-white overflow-hidden h-[250px] cursor-pointer"
             >
               <motion.div
                 layoutId={`image-${item.title}-${id}`}
-                className="col-start-1 h-1/2 col-span-1  row-start-1 bg-black  overflow-hidden rounded-t-sm"
+                className="col-start-1 h-1/2 col-span-1  row-start-1 bg-black  overflow-hidden "
               >
                 {item.video ? (
                   <video
@@ -202,7 +202,7 @@ export default function CaseGalleryMenu({
                   </motion.h3>
                   <motion.p
                     layoutId={`description-${item.description}-${id}`}
-                    className="text-neutral-900 font-medium text-xs dark:text-neutral-400"
+                    className="text-neutral-400 font-medium text-xs dark:text-neutral-400"
                   >
                     {item.subtitle}
                   </motion.p>
@@ -211,7 +211,7 @@ export default function CaseGalleryMenu({
                 <motion.a
                   layoutId={`link-${item.title}-${id}`}
                   href={`${item.link}`}
-                  className="text-gray-100 hover:text-lime-500 transition mt-2 absolute bottom-4 bg-gray-800 hover:bg-white px-4 py-0.5 rounded-full font-medium text-xs dark:text-blue-400"
+                  className="text-gray-700 hover:text-white transition mt-2 absolute bottom-4 border hover:bg-black px-2 py-0.5 rounded-full font-medium text-xs "
                 >
                   View Case
                 </motion.a>
@@ -223,37 +223,3 @@ export default function CaseGalleryMenu({
     </>
   );
 }
-
-export const CloseIcon = () => {
-  return (
-    <motion.svg
-      whileHover={{ rotate: 90 }}
-      initial={{
-        opacity: 0,
-      }}
-      animate={{
-        opacity: 1,
-      }}
-      exit={{
-        opacity: 0,
-        transition: {
-          duration: 0.05,
-        },
-      }}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="h-6 w-6 text-black absolute right-2 top-2 "
-    >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M18 6l-12 12" />
-      <path d="M6 6l12 12" />
-    </motion.svg>
-  );
-};
