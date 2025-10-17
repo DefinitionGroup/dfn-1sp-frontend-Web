@@ -8,15 +8,29 @@ import StaggeredSlideUp from "@/components/StaggeredSlideUp";
 import { useRef } from "react";
 import { assetUrl } from "@/utils/utils";
 import InteractiveCarousel from "../subComponents/InteractiveCarousel";
+import SmartCarousel from "../subComponents/SmartCarousel";
 import { useInView } from "motion/react";
+import { useParams } from "next/navigation";
+
 export default function HeroStep({ step }: { step: GalleryHeroStep }) {
   const typewriterref = useRef<HTMLSpanElement | null>(null);
   const isInView = useInView(typewriterref);
   const videoSrc = assetUrl(step.backgroundVideo);
+  const params = useParams();
 
+  // Legacy carousel field support
   const carouselItems = (((step as any)?.carousel?.items ||
     (step as any)?.content?.carousel?.items) ??
     []) as CarouselItem[];
+
+  // Get additional content items
+  const additionalContent = (step as any)?.additionalContent || [];
+
+  console.log(additionalContent);
+
+  // Get language from URL params (locale), or step, or default to 'en'
+  const language =
+    (params?.locale as string) || (step as any)?.language || "en";
 
   // Generate section ID from badge text or typewriter text
   const sectionId = step.badge?.text
@@ -88,11 +102,42 @@ export default function HeroStep({ step }: { step: GalleryHeroStep }) {
             )}
           </div>
         </div>
+
+        {/* Legacy carousel field - render if it has items */}
         {carouselItems.length > 0 && (
           <div className="col-span-12 col-start-1 mt-8 ">
             <InteractiveCarousel items={carouselItems} />
           </div>
         )}
+
+        {/* Additional content - render all items in the array */}
+        {additionalContent.length > 0 &&
+          additionalContent.map((content: any, idx: number) => {
+            const key = content._key || `additional-${idx}`;
+
+            if (content.contentType === "carousel" && content.carousel?.items) {
+              return (
+                <div key={key} className="col-span-12 col-start-1 mt-8">
+                  <InteractiveCarousel
+                    items={content.carousel.items as CarouselItem[]}
+                  />
+                </div>
+              );
+            } else if (
+              content.contentType === "smartCarousel" &&
+              content.smartCarousel?.maxItems
+            ) {
+              return (
+                <div key={key} className="col-span-12 col-start-1 mt-8">
+                  <SmartCarousel
+                    maxItems={content.smartCarousel.maxItems}
+                    language={language}
+                  />
+                </div>
+              );
+            }
+            return null;
+          })}
       </div>
     </section>
   );

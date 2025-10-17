@@ -1,5 +1,9 @@
 import { sanityFetch } from "@/sanity/lib/live";
-import { NAVBAR_QUERY, FOOTER_QUERY } from "@/sanity/lib/queries";
+import {
+  NAVBAR_QUERY,
+  FOOTER_QUERY,
+  HAS_CASE_STUDIES_QUERY,
+} from "@/sanity/lib/queries";
 import FrontNavOverlay from "./FrontNavOverlay";
 import Footer from "./FooterNew";
 import { NavbarMenu, FooterMenu } from "@/types/menu.types";
@@ -30,10 +34,21 @@ export default async function SiteWrapper({
     params: { channel, language },
   });
 
+  // Check if case studies exist for this channel and language
+  const { data: hasCaseStudies } = await sanityFetch({
+    query: HAS_CASE_STUDIES_QUERY,
+    params: { channel, language },
+  });
+  console.log("hasCaseStudies", hasCaseStudies);
   return (
     <>
       <PageWithMapVertical>
-        <FrontNavOverlay menuData={navbarData as NavbarMenu} color={navColor} />
+        <FrontNavOverlay
+          menuData={navbarData as NavbarMenu}
+          color={navColor}
+          locale={language}
+          hasCaseStudies={hasCaseStudies || false}
+        />
         {children}
         <Footer menuData={footerData as FooterMenu} />
       </PageWithMapVertical>

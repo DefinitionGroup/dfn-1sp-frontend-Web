@@ -10,6 +10,8 @@ import cardItem from "./1SP/Items/cardItem";
 import member from "./1SP/Items/member";
 
 import carousel from "./1SP/Objects/carousel";
+import smartCarousel from "./1SP/Objects/smartCarousel";
+import heroAdditionalContent from "./1SP/Objects/heroAdditionalContent";
 import slideUpContent from "./1SP/Objects/slideUpContent";
 import galleryStep from "./1SP/Objects/galleryStep";
 import cards from "./1SP/Objects/cards";
@@ -41,6 +43,8 @@ const oneSPItems = [
 ];
 const oneSPObjects = [
     carousel,
+    smartCarousel,
+    heroAdditionalContent,
     slideUpContent,
     galleryStep,
     cards,

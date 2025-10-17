@@ -115,3 +115,7 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
   publishedAt
 }
 `);
+
+export const HAS_CASE_STUDIES_QUERY = defineQuery(`
+count(*[_type == "caseStudy" && channel match $channel && language == $language && isPublished == true]) > 0
+`);

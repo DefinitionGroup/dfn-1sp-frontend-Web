@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { FooterMenu } from "@/types/menu.types";
+import Image from "next/image";
 
 interface FooterProps {
   className?: string;
@@ -180,7 +181,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
             <div className="flex gap-4 items-center">
               {menuData?.socialLinks && menuData.socialLinks.length > 0 ? (
                 menuData.socialLinks.map((social) => (
-                  <a
+                  <Link
                     key={social._key}
                     href={social.url}
                     target="_blank"
@@ -188,60 +189,70 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                     className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
                     aria-label={social.platform}
                   >
-                    <img
+                    <Image
                       src={getSocialIcon(social.platform)}
                       alt={social.platform}
+                      width={24}
+                      height={24}
                       className="w-full h-full"
                     />
-                  </a>
+                  </Link>
                 ))
               ) : (
                 // Fallback social links
                 <>
-                  <a
+                  <Link
                     href="#"
                     className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
                     aria-label="Meta"
                   >
-                    <img
+                    <Image
                       src="/MetaLogo.svg"
                       alt="Meta"
+                      width={24}
+                      height={24}
                       className="w-full h-full"
                     />
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="#"
                     className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
                     aria-label="Instagram"
                   >
-                    <img
-                      alt="Instagram"
+                    <Image
                       src="/InstagramLogo.svg"
+                      alt="Instagram"
+                      width={24}
+                      height={24}
                       className="w-full h-full"
                     />
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="#"
                     className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
                     aria-label="TikTok"
                   >
-                    <img
-                      src="TiktokLogo.svg"
+                    <Image
+                      src="/TiktokLogo.svg"
                       alt="TikTok"
+                      width={24}
+                      height={24}
                       className="w-full h-full"
                     />
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="#"
                     className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
                     aria-label="LinkedIn"
                   >
-                    <img
+                    <Image
                       src="/LinkedinLogo.svg"
                       alt="LinkedIn"
+                      width={24}
+                      height={24}
                       className="w-full h-full"
                     />
-                  </a>
+                  </Link>
                 </>
               )}
             </div>

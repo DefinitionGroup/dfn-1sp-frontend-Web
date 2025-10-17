@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Footer from "@/components/Footer";
 import FooterBottom from "@/components/FooterBottom";
-import FrontNavOverlay from "@/components/FrontNavOverlay";
+import FrontNavOverlay2 from "@/components/FrontNavOverlay2";
 import GridBackground from "@/components/GridBackground";
 import StaggeredSlideUp from "@/components/StaggeredSlideUp";
 import HamburgerGradientMenu from "@/components/HamburgerGradientMenu";
@@ -40,7 +40,7 @@ export default function CasesPageClient({
       <section className="relative overflow-hidden">
         <HamburgerGradientMenu />
 
-        <FrontNavOverlay color="dark" locale={locale} />
+        {/* <FrontNavOverlay2 color="dark" /> */}
 
         {/* Intro Section */}
         <div

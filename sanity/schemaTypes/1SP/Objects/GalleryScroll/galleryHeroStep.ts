@@ -37,7 +37,16 @@ export default defineType({
             name: 'carousel',
             title: 'Interactive Carousel',
             type: 'carousel',
-            group: 'media'
+            group: 'media',
+            description: 'Legacy field - use Additional Content instead'
+        }),
+        defineField({
+            name: 'additionalContent',
+            title: 'Additional Content',
+            type: 'array',
+            of: [{ type: 'heroAdditionalContent' }],
+            group: 'media',
+            description: 'Add carousels and other content blocks'
         }),
         defineField({
             name: 'grid',

@@ -213,6 +213,39 @@ export default defineType({
                 ],
             },
         },
+        {
+            name: 'connectedDataCarouselPromo1SP',
+            title: 'ConnectedDataCarousel Promo 1SP',
+            type: 'boolean',
+            description: 'Include this case study in the Smart Carousel for 1SP Website',
+            initialValue: false,
+            hidden: ({ document }: { document: any }) => {
+                const channels = document?.channel || [];
+                return !channels.includes('1spWeb');
+            }
+        },
+        {
+            name: 'connectedDataCarouselPromoMSM',
+            title: 'ConnectedDataCarousel Promo MSM',
+            type: 'boolean',
+            description: 'Include this case study in the Smart Carousel for MSM Website',
+            initialValue: false,
+            hidden: ({ document }: { document: any }) => {
+                const channels = document?.channel || [];
+                return !channels.includes('msmWeb');
+            }
+        },
+        {
+            name: 'connectedDataCarouselPromoStudioCO2',
+            title: 'ConnectedDataCarousel Promo Studio CO2',
+            type: 'boolean',
+            description: 'Include this case study in the Smart Carousel for Studio CO2 Website',
+            initialValue: false,
+            hidden: ({ document }: { document: any }) => {
+                const channels = document?.channel || [];
+                return !channels.includes('studioco2Web');
+            }
+        },
     ],
     preview: {
         select: {

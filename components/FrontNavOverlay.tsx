@@ -13,6 +13,7 @@ interface FrontNavOverlayProps {
   color?: "light" | "dark";
   menuData?: NavbarMenu | null;
   locale?: string;
+  hasCaseStudies?: boolean;
 }
 
 const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
@@ -20,6 +21,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   color = "light",
   menuData,
   locale = "en",
+  hasCaseStudies = false,
 }) => {
   const router = useTransitionRouter();
   const textColor = color === "dark" ? "text-neutral-800" : "text-neutral-50";
@@ -30,6 +32,22 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
   // Use Sanity logo if available, otherwise use default
   const logoUrl = menuData?.logoUrl || imageLogo;
+
+  // Detect if Sanity menu already contains a Cases link
+  const hasCasesLinkInMenu =
+    !!menuData?.menuItems &&
+    menuData.menuItems.some((item) => {
+      const slug = item.slug?.toLowerCase() || "";
+      const title = (item.displayName || item.title || "")
+        .toString()
+        .toLowerCase();
+      return (
+        slug.includes("cases") || title === "cases" || title.includes("cases")
+      );
+    });
+
+  // Ensure spacing between menu items even if the StaggeredSlideUp wrapper doesn't forward flex/gap classes
+  const itemClass = `${textColor} text-xs leading-compress font-bold mr-8 inline-block`;
 
   return (
     <nav
@@ -62,31 +80,54 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         >
           {menuData?.menuItems && menuData.menuItems.length > 0 ? (
             // Render menu items from Sanity
-            menuData.menuItems.map((item) => (
-              <span
-                key={item._key}
-                className={`${textColor} text-xs leading-compress font-bold`}
-              >
-                <Link
-                  className="hover:text-lime-400"
-                  href={`/${item.slug}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push(`/${item.slug}`, {
-                      onTransitionReady: pageAnimation,
-                    });
-                  }}
-                >
-                  {item.displayName || item.title}
-                </Link>
-              </span>
-            ))
+            <>
+              {menuData.menuItems
+                .filter((item) => {
+                  // Filter out cases link if no case studies exist
+                  const isCasesPage = item.slug?.includes("cases");
+                  if (isCasesPage && !hasCaseStudies) {
+                    return false;
+                  }
+                  return true;
+                })
+                .map((item) => (
+                  <span key={item._key} className={itemClass}>
+                    <Link
+                      className="hover:text-lime-400"
+                      href={`/${item.slug}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        router.push(`/${item.slug}`, {
+                          onTransitionReady: pageAnimation,
+                        });
+                      }}
+                    >
+                      {item.displayName || item.title}
+                    </Link>
+                  </span>
+                ))}
+              {/* Fallback plain Cases link if Sanity menu doesn't contain it but case studies exist */}
+              {hasCaseStudies && !hasCasesLinkInMenu && (
+                <span key="cases-fallback" className={itemClass}>
+                  <Link
+                    className="hover:text-lime-400"
+                    href={`/${locale}/cases`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push(`/${locale}/cases`, {
+                        onTransitionReady: pageAnimation,
+                      });
+                    }}
+                  >
+                    Cases
+                  </Link>
+                </span>
+              )}
+            </>
           ) : (
             // Fallback to default menu items if no Sanity data
             <>
-              <span
-                className={`${textColor} text-xs leading-compress font-bold`}
-              >
+              <span className={itemClass}>
                 <Link
                   className="hover:text-lime-400"
                   href={`/${locale}`}
@@ -100,25 +141,24 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                   Home
                 </Link>
               </span>
-              <span
-                className={`${textColor} text-xs leading-compress font-bold`}
-              >
-                <Link
-                  className="hover:text-lime-400"
-                  href={`/${locale}/cases`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push(`/${locale}/cases`, {
-                      onTransitionReady: pageAnimation,
-                    });
-                  }}
-                >
-                  Cases
-                </Link>
-              </span>
-              <span
-                className={`${textColor} text-xs leading-compress font-bold`}
-              >
+              {/* Only show Cases link if case studies exist */}
+              {hasCaseStudies && (
+                <span className={itemClass}>
+                  <Link
+                    className="hover:text-lime-400"
+                    href={`/${locale}/cases`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push(`/${locale}/cases`, {
+                        onTransitionReady: pageAnimation,
+                      });
+                    }}
+                  >
+                    Cases
+                  </Link>
+                </span>
+              )}
+              <span className={itemClass}>
                 <Link
                   className="hover:text-lime-400"
                   href={`/${locale}/whatwedo`}
@@ -132,9 +172,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                   Services
                 </Link>
               </span>
-              <span
-                className={`${textColor} text-xs leading-compress font-bold`}
-              >
+              <span className={itemClass}>
                 <Link
                   className="hover:text-lime-400"
                   href={`/${locale}/our-family`}
@@ -148,9 +186,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                   Our Family
                 </Link>
               </span>
-              <span
-                className={`${textColor} text-xs leading-compress font-bold`}
-              >
+              <span className={itemClass}>
                 <Link
                   className="hover:text-lime-400"
                   href={`/${locale}/whatwedo`}
