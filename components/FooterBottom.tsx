@@ -7,7 +7,7 @@ const FooterBottom = () => {
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    //console.log("Newsletter signup:", email);
+    // Handle newsletter signup
   };
 
   return (

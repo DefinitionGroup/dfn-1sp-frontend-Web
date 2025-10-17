@@ -39,7 +39,7 @@ export default async function SiteWrapper({
     query: HAS_CASE_STUDIES_QUERY,
     params: { channel, language },
   });
-  console.log("hasCaseStudies", hasCaseStudies);
+
   return (
     <>
       <PageWithMapVertical>

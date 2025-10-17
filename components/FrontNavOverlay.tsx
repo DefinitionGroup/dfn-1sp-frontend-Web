@@ -54,13 +54,24 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       className={`hidden absolute top-0 left-0 right-0 md:grid place-items-start z-50 grid-cols-12 pt-5 mx-auto container ${className}`}
     >
       <div className="w-[90px] h-[90px] col-start-1 col-span-1 pt-2">
-        <Image
-          src={logoUrl}
-          alt="1SP Logo"
-          width={90}
-          height={90}
-          className="object-contain"
-        />
+        <Link
+          href={`/${locale}`}
+          onClick={(e) => {
+            e.preventDefault();
+            router.push(`/${locale}`, {
+              onTransitionReady: pageAnimation,
+            });
+          }}
+          aria-label="Home"
+        >
+          <Image
+            src={logoUrl}
+            alt="1SP Logo"
+            width={90}
+            height={90}
+            className="object-contain"
+          />
+        </Link>
       </div>
 
       <motion.div

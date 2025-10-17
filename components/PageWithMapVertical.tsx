@@ -36,7 +36,6 @@ export default function PageWithMapVertical({
       });
 
       const uniqueIds = [...new Set(ids)];
-      //console.log("Collected navPoints (DOM order):", uniqueIds);
       setNavPoints(uniqueIds);
     }, 500);
   };

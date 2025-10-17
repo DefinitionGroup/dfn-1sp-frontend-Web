@@ -4,7 +4,7 @@ import { motion, AnimatePresence, PanInfo } from "motion/react";
 import { useState, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import Button2 from "@/components/ui/Button2";
-import type { CTA } from "@/types/sanity.types";
+import type { CTA, CloudinaryAsset } from "@/types/sanity.types";
 import { assetUrl, ctaToButtonProps } from "@/utils/utils";
 import { client } from "@/sanity/lib/client";
 
@@ -41,9 +41,9 @@ interface CaseStudy {
   subtitle?: string;
   description?: string;
   category?: string[];
-  mainImage?: any;
-  mainVideo?: any;
-  logoImage?: any;
+  mainImage?: CloudinaryAsset;
+  mainVideo?: CloudinaryAsset;
+  logoImage?: CloudinaryAsset;
   slug?: {
     current: string;
   };

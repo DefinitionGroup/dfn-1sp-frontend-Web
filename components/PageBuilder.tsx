@@ -13,7 +13,7 @@ type PageBuilderProps = { content: NonNullable<Page["content1sp"]> };
 
 export function PageBuilder({ content }: PageBuilderProps) {
   if (!Array.isArray(content) || content.length === 0) return null;
-  //console.log("PageBuilder content:", content);
+
   return (
     <>
       {content.map((block: any, i: number) => {

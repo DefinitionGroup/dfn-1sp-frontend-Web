@@ -15,7 +15,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Newsletter signup:", email);
+    // Handle newsletter signup - integrate with your newsletter service
   };
 
   // Social media icon mapping
