@@ -150,9 +150,9 @@ export default function Home() {
 
       <div
         id="Services"
-        className="grid grid-cols-12 z-1 mx-auto bg-neutral-100 mt-8 min-h-[90vh] relative font-aspekta"
+        className="grid grid-cols-12 z-50 mx-auto bg-neutral-100 mt-8 min-h-[90vh] relative font-aspekta"
       >
-        <div className="z-1 grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+        <div className="z-2 grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2"
             text="Services"
@@ -184,7 +184,7 @@ export default function Home() {
       {/* Visual Background 2 Section */}
       <div
         id="Cases"
-        className="grid grid-cols-12 z-1 mx-auto  mt-8 min-h-[90vh] relative font-aspekta"
+        className="grid grid-cols-12  mx-auto  mt-8 min-h-[90vh] relative font-aspekta"
       >
         <HeaderImageVideoComp2
           useVideo={true}
@@ -193,7 +193,7 @@ export default function Home() {
           opacity={0.1}
         />
 
-        <div className="z-1 grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+        <div className="grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2 sticky top-0"
             text="Results"

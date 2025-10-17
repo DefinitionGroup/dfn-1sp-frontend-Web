@@ -91,21 +91,8 @@ export default function ServiceGallery({
   return (
     <>
       <AnimatePresence>
-        {active && typeof active === "object" && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{
-              opacity: 0.2,
-              transition: { type: "spring", stiffness: 20 },
-            }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 h-full backdrop-blur-lg w-full z-10"
-          />
-        )}
-      </AnimatePresence>
-      <AnimatePresence>
         {active && typeof active === "object" ? (
-          <div className="fixed inset-0 grid place-items-center z-[100]">
+          <div className=" grid place-items-center fixed inset-0 bg-black/50 h-full backdrop-blur-lg w-full z-50">
             <motion.button
               key={`button-${active.title}-${id}`}
               layout
@@ -142,7 +129,7 @@ export default function ServiceGallery({
               }}
               transition={{ type: "spring", visualDuration: 0.3, bounce: 0.2 }}
               ref={ref}
-              className="w-full max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
+              className="w-full z-50 max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
             >
               <motion.div
                 className="w-full h-100 sm:rounded-t-xl opacity-80 object-cover object-top"
