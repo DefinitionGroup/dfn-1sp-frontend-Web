@@ -70,7 +70,14 @@ const PercentageDiagramHorizontal: React.FC<
           stroke-dasharray="1 4"
         />
       </motion.svg>
-
+      <motion.p
+        initial={{ opacity: 0, x: -indicatorPosition }}
+        animate={isInView ? { opacity: 1, x: indicatorPosition } : {}}
+        transition={{ delay: 1.4, type: "spring", stiffness: 100, damping: 10 }}
+        className="text-lime-500 text-xxs absolute top-2 left-12 "
+      >
+        {percent} <span className="text-white text-[7px] ">%</span>
+      </motion.p>
       {/* Vertical indicator - positioned at the end of active percentage */}
       <motion.svg
         className="absolute top-1/2 -translate-y-1/2"
@@ -83,6 +90,7 @@ const PercentageDiagramHorizontal: React.FC<
         animate={isInView ? { opacity: 1, x: indicatorPosition } : {}}
         transition={{ delay: 1.4, type: "spring", stiffness: 100, damping: 10 }}
       >
+        {" "}
         <line
           x1="11.8453"
           y1="0.0102539"
