@@ -2,8 +2,10 @@
 import { Typewriter } from "motion-plus/react";
 import { useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import ArrowBig from "./components/arrowBig";
 import Badgemodule from "./components/Badgemodule";
 import Button2 from "./components/Button2";
+import CtaMiniComponent from "./components/CtaMiniComponent";
 import ExpandableCards from "./components/ExpandableCards";
 import ExpandableCards2 from "./components/ExpandableCards2";
 import Footer from "./components/Footer";
@@ -15,6 +17,8 @@ import HeaderImageVideoComp from "./components/HeaderImageVideoComp";
 import HeaderImageVideoComp2 from "./components/HeaderImageVideoComp2";
 import InteractiveCarousel from "./components/InteractiveCarousel";
 import InteractiveCarousel2 from "./components/InteractiveCarousel2";
+import InteractiveCarousel3 from "./components/InteractiveCarousel3";
+import IntertitleCTA from "./components/IntertitleCTA";
 import ListContainerComponent from "./components/ListContainerComponent";
 import ListItemComponent from "./components/ListItemComponent";
 import LineMinimap from "./components/MapVertical";
@@ -22,11 +26,7 @@ import PeopleShowcaseHero from "./components/PeopleShowcaseHero";
 import ScrollHighlight from "./components/ScrollHighlight";
 import StaggeredSlideUp from "./components/StaggeredSlideUp";
 import TypewriterChangeContentExample from "./components/TyperwriterHeadline";
-import InteractiveCarousel3 from "./components/InteractiveCarousel3";
-import { Link } from "next-view-transitions";
-import IntertitleCTA from "./components/IntertitleCTA";
-import ArrowBig from "./components/arrowBig";
-import CtaMiniComponent from "./components/CtaMiniComponent";
+import PercentageDiagramHorizontal from "./components/percentageDiagramHorizontal";
 
 export default function Home() {
   const typewriterref = useRef(null);
@@ -97,7 +97,7 @@ export default function Home() {
               Welcome at 1SP
             </h1>
             <TypewriterChangeContentExample />
-
+            <PercentageDiagramHorizontal percent={55} />
             <p className="text-neutral-50 text-2xl mt-2 md:max-w-1/3">
               We are group of several laser focused agencies. Each one with a
               distinctive competetive edge.
