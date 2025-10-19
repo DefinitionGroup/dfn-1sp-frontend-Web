@@ -36,6 +36,8 @@ import HamburgerGradientMenu from "@/app/components/HamburgerGradientMenu";
 import LineMinimap from "@/app/components/MapVertical";
 import CircularDashedGauge from "@/app/components/dataPointerRadial";
 import FrontNavOverlayCases from "@/app/components/FrontNavOverlayCases";
+import PercentageDiagramHorizontal from "@/app/components/percentageDiagramHorizontal";
+import PercentagePosNegDiagram from "@/app/components/percentagePosNegDiagram";
 
 export default function Home() {
   const typewriterref = useRef(null);
@@ -299,7 +301,7 @@ export default function Home() {
       >
         <HeaderImageVideoComp2
           useVideo={false}
-          opacity={0.6}
+          opacity={0.7}
           imageSrc="/headband_reactivation_2025_banner_plp_hero_desktop.avif"
           enableParallax={false}
         />
@@ -331,10 +333,12 @@ export default function Home() {
             </StaggeredSlideUp>
           </div>
 
-          <div className="col-span-9 flex justify-between col-start-3 gap-4  ">
-            <div>
+          <div className="col-span-9 flex justify-between col-start-3 bg-neutral-900/90 backdrop-blur-lg gap-4 p-12 rounded-xl  ">
+            <div className="flex flex-col items-start border-b border-white/10 ">
+              <PercentageDiagramHorizontal percent={25} />
+
               <motion.p
-                className="text-[8px] font-bold  self-end text-gray-100"
+                className="text-[8px] font-bold  text-gray-100"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
                   visible: {
@@ -345,34 +349,30 @@ export default function Home() {
                 }}
               >
                 <AnimateNumberinView
-                  number={21}
+                  number={25}
                   format={{ minimumIntegerDigits: 2 }}
                   suffix="%"
-                  className="text-8xl font-light tracking-tighter"
+                  className="text-2xl font-light tracking-tighter"
                   delay={300}
                 />
               </motion.p>
               <StaggeredSlideUp
-                className="flex  items-center justify-center "
+                className=""
                 delay={0.0}
                 staggerDelay={0.1}
                 duration={0.5}
                 distance={80}
               >
-                <AnimatedPathIcon
-                  delay={500}
-                  duration={1.5}
-                  strokeColor="white"
-                  strokeWidth={1}
-                />{" "}
-                <h2 className="text-l text-gray-100 font-semibold tracking-tight leading- ">
+                <h2 className="text-sm text-gray-100 font-ligy tracking-tight  ">
                   Organic Sales
                 </h2>
               </StaggeredSlideUp>
             </div>
-            <div>
+            <div className="flex flex-col items-start border-b border-white/10 ">
+              {" "}
+              <PercentagePosNegDiagram value={-73} />
               <motion.p
-                className="text-[8px] font-bold  self-end text-gray-100"
+                className="text-[8px] font-bold  text-gray-100"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
                   visible: {
@@ -383,34 +383,30 @@ export default function Home() {
                 }}
               >
                 <AnimateNumberinView
-                  number={21}
+                  number={25}
                   format={{ minimumIntegerDigits: 2 }}
                   suffix="%"
-                  className="text-8xl font-light tracking-tighter"
-                  delay={500}
+                  className="text-2xl font-light tracking-tighter"
+                  delay={300}
                 />
               </motion.p>
               <StaggeredSlideUp
-                className="flex  items-center justify-center "
+                className=""
                 delay={0.0}
                 staggerDelay={0.1}
                 duration={0.5}
                 distance={80}
               >
-                <AnimatedPathIcon
-                  delay={500}
-                  duration={1.5}
-                  strokeColor="white"
-                  strokeWidth={1}
-                />{" "}
-                <h2 className="text-l text-gray-100 font-semibold tracking-tight leading-compress  ">
+                <h2 className="text-sm text-gray-100 font-ligy tracking-tight  ">
                   Dwell Time
                 </h2>
               </StaggeredSlideUp>
             </div>
-            <div>
+            <div className="flex flex-col items-start border-b border-white/10 ">
+              <PercentageDiagramHorizontal percent={25} />
+
               <motion.p
-                className="text-[8px] font-bold  self-end text-gray-100"
+                className="text-[8px] font-bold  text-gray-100"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
                   visible: {
@@ -421,35 +417,31 @@ export default function Home() {
                 }}
               >
                 <AnimateNumberinView
-                  number={20}
+                  number={25}
                   format={{ minimumIntegerDigits: 2 }}
                   suffix="%"
-                  className="text-8xl font-light tracking-tighter"
-                  delay={700}
+                  className="text-2xl font-light tracking-tighter"
+                  delay={300}
                 />
               </motion.p>
               <StaggeredSlideUp
-                className="flex  items-center justify-center "
+                className=""
                 delay={0.0}
                 staggerDelay={0.1}
                 duration={0.5}
                 distance={80}
               >
-                <AnimatedPathIcon
-                  delay={500}
-                  duration={1.5}
-                  strokeColor="white"
-                  strokeWidth={1}
-                />{" "}
-                <h2 className="text-l text-gray-100 font-semibold tracking-tight leading-compress  ">
-                  Store Views
+                <h2 className="text-sm text-gray-100 font-ligy tracking-tight  ">
+                  Organic Sales
                 </h2>
               </StaggeredSlideUp>
             </div>
 
-            <div>
+            <div className="flex flex-col items-start border-b border-white/10 ">
+              <PercentageDiagramHorizontal percent={25} />
+
               <motion.p
-                className="text-[8px] font-bold  self-end text-gray-100"
+                className="text-[8px] font-bold  text-gray-100"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
                   visible: {
@@ -460,28 +452,22 @@ export default function Home() {
                 }}
               >
                 <AnimateNumberinView
-                  number={36}
+                  number={25}
                   format={{ minimumIntegerDigits: 2 }}
                   suffix="%"
-                  className="text-8xl font-light tracking-tighter"
-                  delay={900}
+                  className="text-2xl font-light tracking-tighter"
+                  delay={300}
                 />
               </motion.p>
               <StaggeredSlideUp
-                className="flex  items-center justify-center "
+                className=""
                 delay={0.0}
                 staggerDelay={0.1}
                 duration={0.5}
                 distance={80}
               >
-                <AnimatedPathIcon
-                  delay={500}
-                  duration={1.5}
-                  strokeColor="white"
-                  strokeWidth={1}
-                />{" "}
-                <h2 className="text-l text-gray-100 font-semibold tracking-tight leading-compress  ">
-                  Home Page Sales
+                <h2 className="text-sm text-gray-100 font-ligy tracking-tight  ">
+                  Organic Sales
                 </h2>
               </StaggeredSlideUp>
             </div>

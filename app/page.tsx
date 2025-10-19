@@ -97,7 +97,7 @@ export default function Home() {
               Welcome at 1SP
             </h1>
             <TypewriterChangeContentExample />
-            <PercentageDiagramHorizontal percent={55} />
+
             <p className="text-neutral-50 text-2xl mt-2 md:max-w-1/3">
               We are group of several laser focused agencies. Each one with a
               distinctive competetive edge.

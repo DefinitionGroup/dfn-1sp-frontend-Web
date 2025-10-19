@@ -68,48 +68,16 @@ const StyleSheet = () => {
         }
 
         .number-section-post {
-            font-size:20px;
+            font-size:12px;
             opacity: 0.5;
             position: relative;
-            bottom: 15px;
+            bottom: 5px;
             align-self: flex-end;
             margin-left: 5px;
             letter-spacing: -0.02em;
         }
 
-        .switch {
-            display: flex;
-            gap: 10px;
-            padding: 6px;
-            border-radius: 100px;
-            background-color: rgba(255, 255, 255, 0.05);
-        }
 
-        .switch button {
-            position: relative;
-            padding: 8px 12px;
-            display: flex;
-        }
-
-        .switch button span {
-            z-index: 2;
-            position: relative;
-            color: var(--text);
-            will-change: opacity;
-            font-size: 13px;
-            line-height: 1;
-            font-variation-settings: "opsz" 20, "wght" 590;
-        }
-
-        .switch .selected {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #f5f5f5;
-            will-change: transform;
-        }
     `}</style>
   );
 };
