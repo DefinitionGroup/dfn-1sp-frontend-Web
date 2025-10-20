@@ -38,6 +38,7 @@ import CircularDashedGauge from "@/app/components/dataPointerRadial";
 import FrontNavOverlayCases from "@/app/components/FrontNavOverlayCases";
 import PercentageDiagramHorizontal from "@/app/components/percentageDiagramHorizontal";
 import PercentagePosNegDiagram from "@/app/components/percentagePosNegDiagram";
+import PercentageDiagramVertical from "@/app/components/percentageDiagramVertical";
 
 export default function Home() {
   const typewriterref = useRef(null);
@@ -335,7 +336,7 @@ export default function Home() {
 
           <div className="col-span-9 flex justify-between col-start-3 bg-neutral-900/90 backdrop-blur-lg gap-4 p-12 rounded-xl  ">
             <div className="flex flex-col items-start border-b border-white/10 ">
-              <PercentageDiagramHorizontal percent={25} />
+              <PercentageDiagramHorizontal percent={33} delay={0.2} />
 
               <motion.p
                 className="text-[8px] font-bold  text-gray-100"
@@ -403,7 +404,7 @@ export default function Home() {
               </StaggeredSlideUp>
             </div>
             <div className="flex flex-col items-start border-b border-white/10 ">
-              <PercentageDiagramHorizontal percent={25} />
+              <PercentagePosNegDiagram value={73} />
 
               <motion.p
                 className="text-[8px] font-bold  text-gray-100"
@@ -438,7 +439,7 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col items-start border-b border-white/10 ">
-              <PercentageDiagramHorizontal percent={25} />
+              <PercentageDiagramVertical percent={75} delay={1} />
 
               <motion.p
                 className="text-[8px] font-bold  text-gray-100"

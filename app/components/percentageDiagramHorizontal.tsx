@@ -3,11 +3,12 @@ import { useRef } from "react";
 
 interface PercentageDiagramHorizontalProps {
   percent: number;
+  delay?: number;
 }
 
 const PercentageDiagramHorizontal: React.FC<
   PercentageDiagramHorizontalProps
-> = ({ percent }) => {
+> = ({ percent, delay = 0 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true });
 
@@ -26,7 +27,7 @@ const PercentageDiagramHorizontal: React.FC<
         xmlns="http://www.w3.org/2000/svg"
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.5 }}
+        transition={{ delay: delay, duration: 0.5, ease: "easeOut" }}
       >
         <path
           opacity="0.5"
@@ -54,7 +55,7 @@ const PercentageDiagramHorizontal: React.FC<
         xmlns="http://www.w3.org/2000/svg"
         initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)" }}
         animate={isInView ? { opacity: 1, clipPath: activeClipPath } : {}}
-        transition={{ delay: 0.9, type: "spring", stiffness: 100, damping: 10 }}
+        transition={{ delay: 0.9 + delay, duration: 0.8, ease: "easeOut" }}
       >
         <path
           d="M19 0.779297H209C218.941 0.779297 227 8.83817 227 18.7793C227 28.7204 218.941 36.7793 209 36.7793H19C9.05887 36.7793 1 28.7204 1 18.7793C1 8.83817 9.05887 0.779297 19 0.779297Z"
@@ -71,10 +72,10 @@ const PercentageDiagramHorizontal: React.FC<
         />
       </motion.svg>
       <motion.p
-        initial={{ opacity: 0, x: -indicatorPosition }}
+        initial={{ opacity: 0, x: 0 }}
         animate={isInView ? { opacity: 1, x: indicatorPosition } : {}}
-        transition={{ delay: 1.4, type: "spring", stiffness: 100, damping: 10 }}
-        className="text-lime-500 text-xxs absolute top-2 left-12 "
+        transition={{ delay: 0.9 + delay, duration: 0.8, ease: "easeOut" }}
+        className="text-lime-500 text-xxs absolute top-2 left-6 "
       >
         {percent} <span className="text-white text-[7px] ">%</span>
       </motion.p>
@@ -86,9 +87,14 @@ const PercentageDiagramHorizontal: React.FC<
         viewBox="0 0 23 232"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        initial={{ opacity: 0, x: -indicatorPosition }}
-        animate={isInView ? { opacity: 1, x: indicatorPosition } : {}}
-        transition={{ delay: 1.4, type: "spring", stiffness: 100, damping: 10 }}
+        initial={{ opacity: 0, x: 2, scale: 0 }}
+        animate={isInView ? { scale: 1, opacity: 1, x: indicatorPosition } : {}}
+        transition={{
+          delay: 0.99 + delay,
+          opacity: { duration: 0.2, ease: "easeOut" },
+          x: { delay: 1 + delay, duration: 0.8, ease: "easeOut" },
+          scale: { delay: delay, duration: 0.3, ease: "easeOut" },
+        }}
       >
         {" "}
         <line
