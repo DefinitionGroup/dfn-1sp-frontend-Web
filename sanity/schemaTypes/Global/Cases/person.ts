@@ -1,3 +1,4 @@
+import React from 'react'
 import { defineType, defineField } from 'sanity'
 
 export default defineType({
@@ -81,17 +82,43 @@ export default defineType({
             type: 'cloudinary.asset',
             description: 'Person profile video'
         },
+        // new fields to match MemberItem (altText, fullname, position, profileUrl, email)
+        defineField({
+            name: 'altText',
+            title: 'Alt Text',
+            type: 'string',
+            description: 'Alt text / accessibility text for the person image (maps to altText in frontend)'
+        }),
+        defineField({
+            name: 'fullname',
+            title: 'Full Name',
+            type: 'string',
+            description: 'Full name of the person (maps to fullname in frontend)'
+        }),
+        defineField({
+            name: 'position',
+            title: 'Position',
+            type: 'string',
+            description: 'Role / position of the person (maps to position in frontend)'
+        }),
+        defineField({
+            name: 'profileUrl',
+            title: 'Profile URL',
+            type: 'url',
+            description: 'External profile link (e.g. LinkedIn) (maps to profileUrl in frontend)'
+        }),
+        defineField({
+            name: 'email',
+            title: 'Email',
+            type: 'string',
+            validation: (Rule) => Rule.email(),
+            description: 'Contact email (maps to email in frontend)'
+        }),
         {
             name: 'tagline',
             title: 'Tagline',
             type: 'string',
             description: 'A brief tagline or title for the person'
-        },
-        {
-            name: 'contactEmail',
-            title: 'Contact Email',
-            type: 'string',
-            validation: (Rule) => Rule.email()
         },
         {
             name: 'content',
@@ -166,10 +193,59 @@ export default defineType({
         },
     ],
     preview: {
+        // select raw fields (we'll inspect for common url locations)
         select: {
             title: 'name',
             subtitle: 'tagline',
-            media: 'image'
+            image: 'image',
+            video: 'video'
+        },
+        prepare(selection: { title?: string; subtitle?: string; image?: any; video?: any }) {
+            const { title, subtitle, image, video } = selection
+
+            // Helper to try common URL locations on cloudinary asset objects
+            const getUrl = (asset: any) => {
+                if (!asset) return undefined
+                // common direct url field
+                if (typeof asset === 'string') return asset
+                if (asset.url) return asset.url
+                if (asset.secure_url) return asset.secure_url
+                if (asset.secureUrl) return asset.secureUrl
+                if (asset.asset && (asset.asset.url || asset.asset.secure_url || asset.asset.secureUrl)) {
+                    return asset.asset.url || asset.asset.secure_url || asset.asset.secureUrl
+                }
+                // fallback: some custom cloudinary types include a public_id — try to construct,
+                // but avoid constructing if uncertain. Return undefined here.
+                return undefined
+            }
+
+            const imageUrl = getUrl(image)
+            const videoUrl = getUrl(video)
+
+            let media: any = undefined
+            if (imageUrl) {
+                media = React.createElement('img', {
+                    src: imageUrl,
+                    alt: title || 'person image',
+                    style: { width: '100%', height: '100%', objectFit: 'cover' }
+                })
+            } else if (videoUrl) {
+                // small muted video preview if no image available
+                media = React.createElement('video', {
+                    src: videoUrl,
+                    muted: true,
+                    autoPlay: true,
+                    loop: true,
+                    playsInline: true,
+                    style: { width: '100%', height: '100%', objectFit: 'cover' }
+                })
+            }
+
+            return {
+                title,
+                subtitle,
+                media
+            }
         }
     }
 })

@@ -3,14 +3,58 @@ import { defineQuery } from "next-sanity";
 export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slug && channel == $channel && language == $language][0]{
   ...,
   content[]{
-    ...
+    ...,
+    _type == 'showtimeGallery' => {
+      ...,
+      steps[]{
+        ...,
+        _type == 'galleryPeopleStep' => {
+          ...,
+          teamMembers[]->{
+            _id,
+            name,
+            image,
+            video,
+            altText,
+            fullname,
+            position,
+            email,
+            profileUrl,
+            tagline,
+            channel
+          }
+        }
+      }
+    }
   }
 }`);
 
 export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == "home" && channel == $channel && language == $language][0]{
   ...,
   content1sp[]{
-    ...
+    ...,
+    _type == 'showtimeGallery' => {
+      ...,
+      steps[]{
+        ...,
+        _type == 'galleryPeopleStep' => {
+          ...,
+          teamMembers[]->{
+            _id,
+            name,
+            image,
+            video,
+            altText,
+            fullname,
+            position,
+            email,
+            profileUrl,
+            tagline,
+            channel
+          }
+        }
+      }
+    }
   }
 }`);
 

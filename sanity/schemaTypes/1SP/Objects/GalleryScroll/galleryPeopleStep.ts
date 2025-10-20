@@ -37,7 +37,21 @@ export default defineType({
             title: 'Team Members',
             type: 'array',
             of: [
-                { type: 'member' },
+                {
+                    type: 'reference',
+                    to: [{ type: 'person' }],
+                    options: {
+                        filter: ({ document }: { document: any }) => {
+                            // Get the channel from the parent page/document
+                            // This assumes the channel is available in the document context
+                            const currentChannel = document?.channel || '1spWeb';
+                            return {
+                                filter: '_type == "person" && $channel in channel',
+                                params: { channel: currentChannel }
+                            };
+                        }
+                    }
+                }
             ],
             group: 'content'
         }),

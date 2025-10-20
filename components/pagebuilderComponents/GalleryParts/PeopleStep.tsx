@@ -6,16 +6,25 @@ import type { GalleryPeopleStep, CloudinaryAsset } from "@/types/sanity.types";
 import PeopleShowcaseHero from "../subComponents/PeopleShowcaseHero";
 
 type Member = {
+  _id?: string;
   name?: string;
+  image?: CloudinaryAsset | null;
+  video?: CloudinaryAsset | null;
   media?: CloudinaryAsset | null;
   altText?: string;
+  fullname?: string;
+  position?: string;
+  email?: string;
+  profileUrl?: string;
+  tagline?: string;
+  channel?: string[];
 };
 
 type PeopleHeader = {
   superText?: string;
   mainHeadline?: string;
-  creativityTitle?: string; // from schema
-  uniquePeopleText?: string; // from schema
+  creativityTitle?: string;
+  uniquePeopleText?: string;
 };
 
 export default function PeopleStep({
@@ -31,6 +40,13 @@ export default function PeopleStep({
 }) {
   const members = step.teamMembers ?? [];
   const header = step.header ?? {};
+
+  // Map person schema fields to MemberItem format expected by PeopleShowcaseHero
+  const mappedMembers = members.map((member) => ({
+    ...member,
+    // Use video if available, otherwise use image, or fallback to media
+    media: member.video || member.image || member.media,
+  }));
 
   return (
     <section className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta gap-4">
@@ -95,7 +111,7 @@ export default function PeopleStep({
 
         {/* People grid */}
         <div className="col-span-8 row-start-2 col-start-3">
-          <PeopleShowcaseHero members={members} />
+          <PeopleShowcaseHero members={mappedMembers} />
         </div>
       </div>
     </section>
