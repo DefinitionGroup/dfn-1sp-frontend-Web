@@ -5,9 +5,6 @@ import AnimateNumberinView from "@/components/AnimateNumberinView";
 import AnimatedPathIcon from "@/components/AnimatedPathIcon";
 import Badgemodule from "@/components/Badgemodule";
 import Button2 from "@/components/ui/Button2";
-import Footer from "@/components/Footer";
-import FooterBottom from "@/components/FooterBottom";
-import FrontNavOverlay from "@/components/FrontNavOverlay";
 import GridBackground from "@/components/GridBackground";
 import HeaderImageVideoComp from "@/components/HeaderImageVideoComp";
 import HeaderImageVideoComp2 from "@/components/HeaderImageVideoComp2";
@@ -85,7 +82,7 @@ export default function CaseStudyPageClient({
         )}
 
         {/* Navigation */}
-        <FrontNavOverlay locale={locale} />
+        {/* <FrontNavOverlay locale={locale} /> */}
 
         {/* Hero Content */}
         <div id="Top" className=""></div>
@@ -303,7 +300,7 @@ export default function CaseStudyPageClient({
           {/* Sample metrics - you can customize these based on your needs */}
           <div className="col-span-9 flex justify-between col-start-3 gap-4  ">
             <div>
-              <motion.p
+              <motion.div
                 className="text-[8px] font-bold  self-end text-gray-100"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
@@ -321,7 +318,7 @@ export default function CaseStudyPageClient({
                   className="text-8xl font-light tracking-tighter"
                   delay={300}
                 />
-              </motion.p>
+              </motion.div>
               <StaggeredSlideUp
                 className="flex  items-center justify-center "
                 delay={0.0}
@@ -380,14 +377,14 @@ export default function CaseStudyPageClient({
             <p>Be heard – as we listen.</p>
             <p className="">With the best clients and colleagues.</p>
 
-            <p className="mt-8 flex items-start justify-start gap-8">
+            <div className="mt-8 flex items-start justify-start gap-8">
               <Button2
                 variant="limesmall"
                 text="Join us for a ride"
                 href={`/${locale}/contact`}
                 className="w-fit"
               />
-            </p>
+            </div>
           </div>
         </div>
       </div>

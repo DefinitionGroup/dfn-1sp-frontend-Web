@@ -1,8 +1,5 @@
 "use client";
 import { useState } from "react";
-import Footer from "@/components/Footer";
-import FooterBottom from "@/components/FooterBottom";
-import FrontNavOverlay2 from "@/components/FrontNavOverlay2";
 import GridBackground from "@/components/GridBackground";
 import StaggeredSlideUp from "@/components/StaggeredSlideUp";
 import HamburgerGradientMenu from "@/components/HamburgerGradientMenu";

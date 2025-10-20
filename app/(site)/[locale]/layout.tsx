@@ -1,4 +1,3 @@
-// app/(site)/[locale]/layout.tsx
 import type { Metadata } from "next";
 import { draftMode } from "next/headers";
 import { VisualEditing } from "next-sanity/visual-editing";

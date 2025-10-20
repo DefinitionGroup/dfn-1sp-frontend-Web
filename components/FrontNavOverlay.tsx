@@ -51,34 +51,37 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
   return (
     <nav
-      className={`hidden absolute top-0 left-0 right-0 md:grid place-items-start z-50 grid-cols-12 pt-5 mx-auto container ${className}`}
+      className={`hidden absolute top-0 left-0 right-0 md:grid items-center z-50 grid-cols-12 gap-4 py-5 container mx-auto ${className}`}
     >
-      <div className="w-[90px] h-[90px] col-start-1 col-span-1 pt-2">
-        <Link
-          href={`/${locale}`}
-          onClick={(e) => {
-            e.preventDefault();
-            router.push(`/${locale}`, {
-              onTransitionReady: pageAnimation,
-            });
-          }}
-          aria-label="Home"
-        >
-          <Image
-            src={logoUrl}
-            alt="1SP Logo"
-            width={90}
-            height={90}
-            className="object-contain"
-          />
-        </Link>
+      <div className="col-span-1 flex items-center justify-center">
+        <div className=" flex items-center justify-center">
+          <Link
+            href={`/${locale}`}
+            onClick={(e) => {
+              e.preventDefault();
+              router.push(`/${locale}`, {
+                onTransitionReady: pageAnimation,
+              });
+            }}
+            aria-label="Home"
+            className="flex items-center justify-center"
+          >
+            <Image
+              src={logoUrl}
+              alt="1SP Logo"
+              width={90}
+              height={90}
+              className="object-contain"
+            />
+          </Link>
+        </div>
       </div>
 
       <motion.div
         initial={{ opacity: 0, scaleX: 0, y: 10, originX: 0, originY: 0 }}
         animate={{ opacity: 1, scaleX: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
-        className="col-start-2 flex col-span-9"
+        className="col-span-9 flex items-center"
       >
         <StaggeredSlideUp
           className="flex gap-16 items-center"
@@ -216,7 +219,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         </StaggeredSlideUp>
       </motion.div>
 
-      <div className="w-fit flex min-w-[120px] justify-end col-start-11 col-span-2 pt-2">
+      <div className="col-span-2 flex justify-end items-center">
         <Button2 variant="limesmall" text="Contact us" />
       </div>
     </nav>
