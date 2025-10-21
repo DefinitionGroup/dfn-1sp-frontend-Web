@@ -94,9 +94,9 @@ const PercentagePosNegDiagram: React.FC<PercentagePosNegDiagramProps> = ({
       {isPositive && (
         <motion.svg
           className="absolute"
-          style={{ top: barY - 4, left: centerX }}
+          style={{ top: barY - 5, left: centerX + 7 }}
           width={barLength}
-          height="9"
+          height="10"
           viewBox="0 0 130 9"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -114,7 +114,7 @@ const PercentagePosNegDiagram: React.FC<PercentagePosNegDiagramProps> = ({
             x2="130"
             y2="5"
             stroke="#84cc16"
-            stroke-width="8"
+            stroke-width="122"
             stroke-dasharray="1 4"
           />
         </motion.svg>
@@ -144,7 +144,7 @@ const PercentagePosNegDiagram: React.FC<PercentagePosNegDiagramProps> = ({
             x2="120"
             y2="4"
             stroke="white"
-            stroke-width="8"
+            stroke-width="122"
             stroke-dasharray="1 4"
           />
         </motion.svg>
@@ -166,12 +166,12 @@ const PercentagePosNegDiagram: React.FC<PercentagePosNegDiagramProps> = ({
       >
         <svg
           width="27"
-          height="180"
+          height="200"
           viewBox="0 0 27 80"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <line x1="8.20874" y1="0" x2="8.20874" y2="120" stroke="#84cc16" />
+          <line x1="8.20874" y1="-10" x2="8.20874" y2="120" stroke="#84cc16" />
           <text x="0" y="130" fill="#84cc16" font-family="Arial" font-size="9">
             {displayValue} %
           </text>

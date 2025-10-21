@@ -75,7 +75,7 @@ const PercentageDiagramHorizontal: React.FC<
         initial={{ opacity: 0, x: 0 }}
         animate={isInView ? { opacity: 1, x: indicatorPosition } : {}}
         transition={{ delay: 0.9 + delay, duration: 0.8, ease: "easeOut" }}
-        className="text-lime-500 text-xxs absolute top-2 left-6 "
+        className="text-lime-500 text-xxs absolute top-14 left-6 "
       >
         {percent} <span className="text-white text-[7px] ">%</span>
       </motion.p>
@@ -87,7 +87,7 @@ const PercentageDiagramHorizontal: React.FC<
         viewBox="0 0 23 232"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        initial={{ opacity: 0, x: 2, scale: 0 }}
+        initial={{ opacity: 0, x: 2, scale:1 }}
         animate={isInView ? { scale: 1, opacity: 1, x: indicatorPosition } : {}}
         transition={{
           delay: 0.99 + delay,
@@ -99,7 +99,7 @@ const PercentageDiagramHorizontal: React.FC<
         {" "}
         <line
           x1="11.8453"
-          y1="0.0102539"
+          y1="55"
           x2="11.8453"
           y2="169.142"
           stroke="#84cc16"
@@ -108,17 +108,11 @@ const PercentageDiagramHorizontal: React.FC<
           x1="11.8453"
           y1="184.317"
           x2="11.8453"
-          y2="231.439"
+          y2="210"
           stroke="#84cc16"
         />
-        <path
-          d="M19.8554 16.9685H17.7654V16.1325H19.8554V14.0425H20.6914V16.1325H22.7814V16.9685H20.6914V19.0585H19.8554V16.9685Z"
-          fill="#84cc16"
-        />
-        <path
-          d="M0.765381 16.9023H4.02138V17.7383H0.765381V16.9023Z"
-          fill="white"
-        />
+     
+     
         <path
           d="M12.1488 173.308L7.81868 180.808L16.4789 180.808L12.1488 173.308Z"
           fill="#84cc16"

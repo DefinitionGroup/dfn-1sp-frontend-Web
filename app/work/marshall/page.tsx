@@ -1,44 +1,24 @@
 "use client";
-import { useRef, useState, useEffect } from "react";
-import { motion, AnimatePresence, PanInfo, useInView } from "motion/react";
-import Image from "next/image";
-import { AnimateNumber } from "motion-plus/react";
 import AnimateNumberinView from "@/app/components/AnimateNumberinView";
-import AnimatedPathIcon from "@/app/components/AnimatedPathIcon";
 import Badgemodule from "@/app/components/Badgemodule";
 import Button2 from "@/app/components/Button2";
-import ExpandableCards from "@/app/components/ExpandableCards";
+import CtaMiniComponent from "@/app/components/CtaMiniComponent";
 import Footer from "@/app/components/Footer";
 import FooterBottom from "@/app/components/FooterBottom";
-import FrontNavOverlay from "@/app/components/FrontNavOverlay";
+import FrontNavOverlayCases from "@/app/components/FrontNavOverlayCases";
 import GridBackground from "@/app/components/GridBackground";
+import HamburgerGradientMenu from "@/app/components/HamburgerGradientMenu";
 import HeaderImageVideoComp from "@/app/components/HeaderImageVideoComp";
-import InteractiveCarousel from "@/app/components/InteractiveCarousel";
-import { Nav } from "@/app/components/Nav";
-import StaggeredSlideUp from "@/app/components/StaggeredSlideUp";
-import TextHeadlineCombo from "@/app/components/TextHeadlineCombo";
-import TextLayout from "@/app/components/TextLayout";
-import TypewriterChangeContentExample from "@/app/components/TyperwriterHeadline";
 import HeaderImageVideoComp2 from "@/app/components/HeaderImageVideoComp2";
-import PeopleShowcaseHero from "@/app/components/PeopleShowcaseHero";
-import { Typewriter } from "motion-plus/react";
-import TextReveal from "@/app/components/CursortrailExample";
-import ScrollHighlight from "@/app/components/ScrollHighlight";
 import ListContainerComponent from "@/app/components/ListContainerComponent";
 import ListItemComponent from "@/app/components/ListItemComponent";
-import CtaMiniComponent from "@/app/components/CtaMiniComponent";
-import { ArrowRight } from "@phosphor-icons/react";
-import ArrowBig from "@/app/components/arrowBig";
-import ExpandableCards2 from "@/app/components/ExpandableCards2";
-import LogoCarousel from "@/app/components/LogoCarousel";
-import WarpOverlay from "@/app/components/overlayNav";
-import HamburgerGradientMenu from "@/app/components/HamburgerGradientMenu";
 import LineMinimap from "@/app/components/MapVertical";
-import CircularDashedGauge from "@/app/components/dataPointerRadial";
-import FrontNavOverlayCases from "@/app/components/FrontNavOverlayCases";
 import PercentageDiagramHorizontal from "@/app/components/percentageDiagramHorizontal";
-import PercentagePosNegDiagram from "@/app/components/percentagePosNegDiagram";
 import PercentageDiagramVertical from "@/app/components/percentageDiagramVertical";
+import PercentagePosNegDiagram from "@/app/components/percentagePosNegDiagram";
+import StaggeredSlideUp from "@/app/components/StaggeredSlideUp";
+import { motion, useInView } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const typewriterref = useRef(null);
@@ -334,12 +314,12 @@ export default function Home() {
             </StaggeredSlideUp>
           </div>
 
-          <div className="col-span-9 flex justify-between col-start-3 bg-neutral-900/90 backdrop-blur-lg gap-4 p-12 rounded-xl  ">
+          <div className="col-span-12 flex justify-between col-start-1 bg-neutral-900/60 backdrop-blur-lg gap-4 p-12 rounded-xl  ">
             <div className="flex flex-col items-start border-b border-white/10 ">
-              <PercentageDiagramHorizontal percent={33} delay={0.2} />
+              <PercentageDiagramVertical percent={12} delay={0.3} />
 
               <motion.p
-                className="text-[8px] font-bold  text-gray-100"
+                className="text-[8px] font-bold mt-12 text-gray-100"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
                   visible: {
@@ -350,10 +330,10 @@ export default function Home() {
                 }}
               >
                 <AnimateNumberinView
-                  number={25}
+                  number={23}
                   format={{ minimumIntegerDigits: 2 }}
                   suffix="%"
-                  className="text-2xl font-light tracking-tighter"
+                  className="text-4xl font-bold "
                   delay={300}
                 />
               </motion.p>
@@ -371,9 +351,9 @@ export default function Home() {
             </div>
             <div className="flex flex-col items-start border-b border-white/10 ">
               {" "}
-              <PercentagePosNegDiagram value={-73} />
+              <PercentageDiagramHorizontal percent={35} delay={0.4} />
               <motion.p
-                className="text-[8px] font-bold  text-gray-100"
+                className="text-[8px] font-bold mt-12 text-gray-100"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
                   visible: {
@@ -387,7 +367,7 @@ export default function Home() {
                   number={25}
                   format={{ minimumIntegerDigits: 2 }}
                   suffix="%"
-                  className="text-2xl font-light tracking-tighter"
+                  className="text-4xl font-bold tracking-tighter"
                   delay={300}
                 />
               </motion.p>
@@ -404,10 +384,10 @@ export default function Home() {
               </StaggeredSlideUp>
             </div>
             <div className="flex flex-col items-start border-b border-white/10 ">
-              <PercentagePosNegDiagram value={73} />
+              <PercentagePosNegDiagram value={-73}  />
 
               <motion.p
-                className="text-[8px] font-bold  text-gray-100"
+                className="text-[8px] font-bold mt-12 text-gray-100"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
                   visible: {
@@ -421,7 +401,7 @@ export default function Home() {
                   number={25}
                   format={{ minimumIntegerDigits: 2 }}
                   suffix="%"
-                  className="text-2xl font-light tracking-tighter"
+                  className="text-4xl font-bold tracking-tighter"
                   delay={300}
                 />
               </motion.p>
@@ -439,10 +419,10 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col items-start border-b border-white/10 ">
-              <PercentageDiagramVertical percent={75} delay={1} />
+              <PercentageDiagramVertical percent={55} delay={2} />
 
               <motion.p
-                className="text-[8px] font-bold  text-gray-100"
+                className="text-[8px] font-bold mt-12 text-gray-100"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
                   visible: {
@@ -456,7 +436,7 @@ export default function Home() {
                   number={25}
                   format={{ minimumIntegerDigits: 2 }}
                   suffix="%"
-                  className="text-2xl font-light tracking-tighter"
+                  className="text-4xl font-bold tracking-tighter"
                   delay={300}
                 />
               </motion.p>

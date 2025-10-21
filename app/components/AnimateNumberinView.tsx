@@ -62,14 +62,14 @@ const StyleSheet = () => {
 
         .number {
             font-size:128px;
-            letter-spacing: -0.04em;
+            letter-spacing: -0.014rem;
             font-weight: 300;
             font-variation-settings: "opsz" 30, "wght" 530;
         }
 
         .number-section-post {
             font-size:12px;
-            opacity: 0.5;
+            opacity: 1;color: var(--color-lime-500);
             position: relative;
             bottom: 5px;
             align-self: flex-end;
