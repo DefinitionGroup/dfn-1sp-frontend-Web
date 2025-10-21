@@ -60,12 +60,13 @@ const PercentageDiagramVertical: React.FC<PercentageDiagramVerticalProps> = ({
         height="171"
         viewBox="0 0 208 171"
       >
-        <path
+        <motion.path
           opacity="0.5"
           d="M0.342773 168.839C13.3428 173.839 50.1998 167.413 94.9998 133.813C151 91.813 165 33.813 197 10.813"
           stroke="white"
           stroke-dasharray="1 3"
-    
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
           transition={transition}
         />
         <path
