@@ -121,7 +121,35 @@ export default function Home() {
           / 1SP
         </div>
       </section>
+<div
+          id="Intro"
+          className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta"
+        >
+          <GridBackground />
+          <div className="z-1 grid  col-span-12 py-16  col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+            <div className="z-1 col-span-16 col-start-1 mt-16">
+              {/* Description and CTA Section */}
+              <div className="flex flex-col items-start gap-8 justify-center w-full">
+                <StaggeredSlideUp
+                  delay={0.19}
+                  staggerDelay={0.03}
+                  distance={100}
+                  className=" max-w-3/4 "
+                >
+                  {" "}
+                  <h2 className="text-5xl leading-none tracking-tight  text-neutral-700 pb-3 font-aspekta font-medium">
+                    It's that One Shared Passion that binds us together as agencies, our deep understanding of your modern customer and what makes them 'tik' and our thirst for the new.
+                  </h2>
+                  <h2 className="text-5xl leading-none text-neutral-400  pb-3 font-aspekta font-">
+                 We have built this superagency by choosing the skills and services that make sense, build relationships and ultimately increase your sales.
+                  </h2>
+                </StaggeredSlideUp>
 
+             
+              </div>
+            </div>
+          </div>
+        </div>
       {/* Portfolio Grid */}
       <div
         id="Services"
@@ -132,8 +160,8 @@ export default function Home() {
           <Badgemodule
             className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky top-0 "
             text="Experts"
-            subtitle="Services"
-            numberEl={"003"}
+            subtitle="Meet the family"
+            numberEl={"001"}
           />
 
           <div className="col-span-12 md:col-span-8 md:col-start-3 mb-12 px-4 md:px-0">

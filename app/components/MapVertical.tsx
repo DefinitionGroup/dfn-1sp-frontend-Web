@@ -65,7 +65,7 @@ export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
 
   return (
     <div
-      className="fixed top-0 md:left-6 z-50  w-[72px]  flex flex-col justify-center h-[100vh]"
+      className="fixed top-0 md:left-6 z-100  w-[72px]  flex flex-col justify-center h-[100vh]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -75,7 +75,7 @@ export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
         onPointerLeave={onMouseLeave}
       >
         {" "}
-        <div className="absolute -bottom-[0px] left-[32px] text-white text-[8px] font-medium leading-none  -rotate-90 origin-bottom-left">
+        <div className="absolute bottom-[4px] left-[32px] text-neutral-400 text-[9px] font-medium leading-none  -rotate-90 origin-bottom-left">
           Scroll to Navigate
         </div>
         <div

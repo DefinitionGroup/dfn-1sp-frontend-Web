@@ -15,9 +15,8 @@ import GridBackground from "./components/GridBackground";
 import HamburgerGradientMenu from "./components/HamburgerGradientMenu";
 import HeaderImageVideoComp from "./components/HeaderImageVideoComp";
 import HeaderImageVideoComp2 from "./components/HeaderImageVideoComp2";
-import InteractiveCarousel from "./components/InteractiveCarousel";
 import InteractiveCarousel2 from "./components/InteractiveCarousel2";
-import InteractiveCarousel3 from "./components/InteractiveCarousel3";
+
 import IntertitleCTA from "./components/IntertitleCTA";
 import ListContainerComponent from "./components/ListContainerComponent";
 import ListItemComponent from "./components/ListItemComponent";
@@ -26,7 +25,6 @@ import PeopleShowcaseHero from "./components/PeopleShowcaseHero";
 import ScrollHighlight from "./components/ScrollHighlight";
 import StaggeredSlideUp from "./components/StaggeredSlideUp";
 import TypewriterChangeContentExample from "./components/TyperwriterHeadline";
-import PercentageDiagramHorizontal from "./components/percentageDiagramHorizontal";
 
 export default function Home() {
   const typewriterref = useRef(null);
@@ -167,16 +165,7 @@ export default function Home() {
               </p>
             </StaggeredSlideUp>
           </div>
-          <div className="col-span-12 col-start-1 mt-8 px-8 md:px-0">
-            <InteractiveCarousel />
-            <IntertitleCTA
-              title="Discover our hottest projects in"
-              subtitle="marketing, gaming and interactive experiences."
-              buttonText="See all Cases "
-              buttonVariant="lime"
-              href="/cases"
-            />
-          </div>
+      
           <div className="col-span-12 col-start-1 mt-64 px-8 md:px-0">
             <InteractiveCarousel2 />{" "}
             <IntertitleCTA
@@ -187,16 +176,7 @@ export default function Home() {
               href="/cases"
             />
           </div>
-          <div className="col-span-12 col-start-1 mt-64 px-8 md:px-0">
-            <InteractiveCarousel3 />{" "}
-            <IntertitleCTA
-              title="Discover our hottest projects in"
-              subtitle="marketing, gaming and interactive experiences."
-              buttonText="See all Cases "
-              buttonVariant="lime"
-              href="/cases"
-            />
-          </div>
+        
         </div>
       </div>
 

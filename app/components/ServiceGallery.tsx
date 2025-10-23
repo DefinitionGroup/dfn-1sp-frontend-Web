@@ -22,24 +22,7 @@ interface ServiceItem {
   link?: string;
 }
 
-const serviceItems: ServiceItem[] = [
-  {
-    id: 1,
-    title: "Technology",
-    subtitle: "A strong foundation",
-    image: "/service/services_logos_technology.svg",
-    description: "Revolutionary web experiences that engage and convert",
-    category: "Web",
-  },
-  {
-    id: 2,
-    title: "Sales",
-    subtitle: "Vibrant crafted campaigns",
-    image: "/service/services_logos_sales.svg",
-    description: "Complete brand transformation with interactive elements",
-    category: "Design",
-  },
-  {
+const serviceItems: ServiceItem[] = [  {
     id: 3,
     title: "Awareness",
     subtitle: "Dynamic brand storytelling",
@@ -47,6 +30,23 @@ const serviceItems: ServiceItem[] = [
     description: "Stunning motion graphics for digital campaigns",
     category: "Design",
   },
+  
+  {
+    id: 2,
+    title: "Sales",
+    subtitle: "Vibrant crafted campaigns",
+    image: "/service/services_logos_sales.svg",
+    description: "Complete brand transformation with interactive elements",
+    category: "Design",
+  },{
+    id: 1,
+    title: "Technology",
+    subtitle: "A strong foundation",
+    image: "/service/services_logos_technology.svg",
+    description: "Revolutionary web experiences that engage and convert",
+    category: "Web",
+  },
+
 ];
 
 interface ServiceGalleryProps {
@@ -141,7 +141,7 @@ export default function ServiceGallery({
                     autoPlay
                     muted
                     loop
-                    className="w-full h-full absolute min-h-[70vh] sm:rounded-t-xl opacity-50 object-cover object-top"
+                    className="w-full h-full absolute min-h-[90vh] sm:rounded-t-xl opacity-50 object-cover object-top"
                   />
                 ) : (
                   <img
@@ -149,7 +149,7 @@ export default function ServiceGallery({
                     height={500}
                     src={active.image}
                     alt={active.title}
-                    className="w-full h-full absolute min-h-[70vh] sm:rounded-t-xl invert opacity-50 object-cover object-top"
+                    className="w-full h-full absolute min-h-[90vh] sm:rounded-t-xl invert opacity-50 object-cover object-top"
                   />
                 )}
               </motion.div>
@@ -250,13 +250,13 @@ export default function ServiceGallery({
                 <div className="flex flex-col items-start">
                   <motion.h3
                     layoutId={`title-${item.title}-${id}`}
-                    className="font-medium text-lg leading-snug tracking-tight text-neutral-600 dark:text-neutral-200 text-left"
+                    className="font-medium text-xl leading-snug tracking-tight text-neutral-700 dark:text-neutral-200 text-left"
                   >
                     {item.title}
                   </motion.h3>
                   <motion.p
                     layoutId={`description-${item.description}-${id}`}
-                    className="text-neutral-400 font-bold text-sm dark:text-neutral-400"
+                    className="text-neutral-500 font-semibold text-sm dark:text-neutral-400"
                   >
                     {item.subtitle}
                   </motion.p>

@@ -95,7 +95,7 @@ export default function Home() {
         <div className="z-1 grid col-span-12 py-32 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2 sticky top-0"
-            text="MISSION"
+            text="Mission"
             subtitle="What we do"
             numberEl={"001"}
           />
@@ -108,11 +108,11 @@ export default function Home() {
               duration={0.5}
               distance={80}
             >
-              <h2 className="text-9xl text-gray-100 max-w-xl font-semibold tracking-tighter leading-compress mb-4 pb-8">
+              <h2 className="text-7xl text-gray-100 max-w-xl font-semibold tracking-tighter leading-compress mb-4 ">
                 We tell your story.
               </h2>
-              <p className="text-2xl text-gray-100  font-bold  leading-none max-w-2xs mx-auto">
-                ONE SHARED PASSION: CREATING EPIC EXPERIENCES THAT CAPTIVATE.
+              <p className="text-2xl text-gray-100  font-semibold leading-none max-w-xs mx-auto">
+                One shared passion: Creating epic experiences that captivate.
               </p>
             </StaggeredSlideUp>
           </div>
@@ -167,10 +167,13 @@ export default function Home() {
               duration={0.5}
               distance={80}
             >
-              <h2 className="text-7xl leading-compress text-gray-900 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
-                We tell your story.
+              <h2 className="text-7xl leading-compress text-neutral-700 max-w-2xl font-semibold tracking-tight leading-tighter mb-4">
+                Excellence: 
               </h2>
-              <p className="text-lg text-gray-900 font-medium  max-w-2xs mx-auto">
+              <h2 className="text-5xl leading-compress text-neutral-700 max-w-2xl font-semibold tracking-tight leading-tighter mb-4">
+               in thinking, creativity, and execution.
+              </h2>
+              <p className="text-lg text-neutral-700 font-medium  max-w-xs mx-auto">
                 To drive brand awareness, make meaningful connections, and
                 increase sales for our clients.
               </p>
@@ -208,8 +211,8 @@ export default function Home() {
               duration={0.5}
               distance={80}
             >
-              <h2 className="text-9xl leading-compress text-gray-100 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
-                We tell your story.
+              <h2 className="text-7xl leading-none text-gray-100 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
+                Our work speaks volumes.
               </h2>
               <p className="text-lg text-gray-100 font-medium  max-w-2xs mx-auto">
                 Discover our latest projects in gaming, marketing, and
@@ -218,7 +221,7 @@ export default function Home() {
             </StaggeredSlideUp>
           </div>
           <div className="col-span-12  col-start-3">
-            <CaseGallery />
+            <CaseGallery variant="light"/>
           </div>
         </div>
       </div>

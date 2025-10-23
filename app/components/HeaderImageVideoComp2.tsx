@@ -45,7 +45,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
             : { opacity: 1, scale: 0.95, width: "98%" }
         }
         transition={{
-          duration: 1.4,
+          duration: 0.7,
           ease: [0.16, 1, 0.3, 1],
           opacity: { duration: 0.8 },
         }}

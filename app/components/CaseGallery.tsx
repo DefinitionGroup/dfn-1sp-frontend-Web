@@ -89,10 +89,12 @@ const caseItems: CaseItem[] = [
 
 interface CaseGalleryProps {
   activeFilter?: string;
+  variant?: "light";
 }
 
 export default function CaseGallery({
   activeFilter = "All",
+  variant,
 }: CaseGalleryProps) {
   const router = useTransitionRouter();
   const [active, setActive] = useState<
@@ -302,12 +304,12 @@ export default function CaseGallery({
                   layoutId={`logo-${item.title}-${id}`}
                   src={item.logosrc}
                   alt={item.title}
-                  className="w-24 h-8 object-contain object-left mb-4"
+                  className={`w-24 h-8 object-contain object-left mb-4  ${variant !== "light" ? "" : "invert"}`}
                 />
                 <div className="flex flex-col items-end">
                   <motion.h3
                     layoutId={`title-${item.title}-${id}`}
-                    className="font-medium text-lg leading-snug tracking-tight text-neutral-600 dark:text-neutral-200 text-left"
+                    className={`font-medium text-lg leading-snug tracking-tight ${variant !== "light" ? "" : "invert"} text-neutral-600 dark:text-neutral-200 text-left`}
                   >
                     {item.title}
                   </motion.h3>
