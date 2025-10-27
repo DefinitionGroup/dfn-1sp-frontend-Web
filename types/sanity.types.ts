@@ -278,6 +278,7 @@ export interface CaseStudy {
     publishedAt?: string;
     isPublished?: boolean;
     channel?: string[];
+    services?: Reference<Services>[];
     /* other fields... */
 }
 
@@ -286,6 +287,7 @@ export interface Unit {
     language?: string;
     name?: string;
     slug?: { current?: string };
+    services?: Reference<Services>[];
     /* other fields... */
 }
 
@@ -337,4 +339,26 @@ export interface OneSPHeader {
     // decoration
     cornerLeftText?: string;
     cornerRightText?: string;
+}
+
+/* Service Management Types */
+export interface Services {
+    _id?: SanityID;
+    _type?: "services";
+    language?: string;
+    name?: string;
+    taglabel?: string;
+    serviceicon?: CloudinaryAsset;
+    unitsrel?: Reference<Unit>[];
+    servicegrouprel?: Reference<ServiceGroup>[];
+}
+
+export interface ServiceGroup {
+    _id?: SanityID;
+    _type?: "serviceGroup";
+    language?: string;
+    name?: string;
+    taglabel?: string;
+    servicegroupicon?: CloudinaryAsset;
+    services?: Reference<Services>[];
 }

@@ -6,6 +6,6 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: process.env.NODE_ENV === 'production',
+  useCdn: false, // Disable CDN for write operations
   stega: { studioUrl: '/studio' },
 })

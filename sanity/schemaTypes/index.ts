@@ -10,6 +10,8 @@ import link from './Global/Objects/link'
 import cta from './Global/Objects/cta'
 import paragraph from './Global/Objects/paragraph'
 import size from './Global/Objects/size'
+import services from './Global/Objects/services'
+import serviceGroup from './Global/Objects/serviceGroup'
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [page, menu, caseStudy, unitCase, client, person, ...OneSPschemaTypes, link, cta, paragraph, size],
+  types: [page, menu, caseStudy, unitCase, client, person, ...OneSPschemaTypes, link, cta, paragraph, size, services, serviceGroup],
 }

@@ -273,6 +273,76 @@ export const structure: StructureResolver = (S) =>
                         ),
                     ])
                 ),
+              S.listItem()
+                .title("Services")
+                .icon(MdApps)
+                .child(
+                  S.list()
+                    .title("Services by Language")
+                    .items([
+                      S.listItem()
+                        .title("English (EN)")
+                        .icon(MdTranslate)
+                        .child(
+                          S.documentTypeList("services")
+                            .title("English Services")
+                            .filter('_type == "services" && language == "en"')
+                            .initialValueTemplates([
+                              S.initialValueTemplateItem("services-en", {
+                                language: "en",
+                              }),
+                            ])
+                        ),
+                      S.listItem()
+                        .title("German (DE)")
+                        .icon(MdTranslate)
+                        .child(
+                          S.documentTypeList("services")
+                            .title("German Services")
+                            .filter('_type == "services" && language == "de"')
+                            .initialValueTemplates([
+                              S.initialValueTemplateItem("services-de", {
+                                language: "de",
+                              }),
+                            ])
+                        ),
+                    ])
+                ),
+              S.listItem()
+                .title("Service Groups")
+                .icon(MdCategory)
+                .child(
+                  S.list()
+                    .title("Service Groups by Language")
+                    .items([
+                      S.listItem()
+                        .title("English (EN)")
+                        .icon(MdTranslate)
+                        .child(
+                          S.documentTypeList("serviceGroup")
+                            .title("English Service Groups")
+                            .filter('_type == "serviceGroup" && language == "en"')
+                            .initialValueTemplates([
+                              S.initialValueTemplateItem("serviceGroup-en", {
+                                language: "en",
+                              }),
+                            ])
+                        ),
+                      S.listItem()
+                        .title("German (DE)")
+                        .icon(MdTranslate)
+                        .child(
+                          S.documentTypeList("serviceGroup")
+                            .title("German Service Groups")
+                            .filter('_type == "serviceGroup" && language == "de"')
+                            .initialValueTemplates([
+                              S.initialValueTemplateItem("serviceGroup-de", {
+                                language: "de",
+                              }),
+                            ])
+                        ),
+                    ])
+                ),
             ])
         ),
 
@@ -293,6 +363,8 @@ export const structure: StructureResolver = (S) =>
             "unit",
             "client",
             "person",
+            "services",
+            "serviceGroup",
           ].includes(listItem.getId?.() || "")
       ),
     ]);

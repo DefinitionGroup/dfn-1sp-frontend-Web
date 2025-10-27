@@ -246,6 +246,18 @@ export default defineType({
                 return !channels.includes('studioco2Web');
             }
         },
+        defineField({
+            name: 'services',
+            title: 'Services',
+            type: 'array',
+            of: [
+                {
+                    type: 'reference',
+                    to: [{ type: 'services' }],
+                },
+            ],
+            description: 'Services related to this case study. Changes here will automatically sync with the Services.',
+        }),
     ],
     preview: {
         select: {

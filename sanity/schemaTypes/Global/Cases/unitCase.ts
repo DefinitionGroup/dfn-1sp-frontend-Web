@@ -112,7 +112,19 @@ export default defineType({
             title: 'Is Active',
             type: 'boolean',
             initialValue: true
-        }
+        },
+        defineField({
+            name: 'services',
+            title: 'Services',
+            type: 'array',
+            of: [
+                {
+                    type: 'reference',
+                    to: [{ type: 'services' }],
+                },
+            ],
+            description: 'Services related to this unit. Changes here will automatically sync with the Services.',
+        })
     ],
     preview: {
         select: {

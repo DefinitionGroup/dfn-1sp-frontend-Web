@@ -10,6 +10,7 @@ import { structureTool } from 'sanity/structure'
 import { documentInternationalization } from "@sanity/document-internationalization";
 import { cloudinarySchemaPlugin } from "sanity-plugin-cloudinary";
 import { presentationTool } from 'sanity/presentation'
+import { syncServiceGroupRelationships } from './sanity/lib/syncRelationships'
 
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
 import { apiVersion, dataset, projectId } from './sanity/env'
@@ -328,6 +329,18 @@ export default defineConfig({
       ...menuTemplates,
     ],
   },
+  document: {
+    actions: (prev, context) => {
+      const { schemaType } = context
+
+      // Add our custom sync action for services, serviceGroup, unit, and caseStudy documents
+      if (schemaType === 'services' || schemaType === 'serviceGroup' || schemaType === 'unit' || schemaType === 'caseStudy') {
+        return [...prev, syncServiceGroupRelationships]
+      }
+
+      return prev
+    },
+  },
   plugins: [
     documentInternationalization({
       supportedLanguages: [
@@ -341,7 +354,9 @@ export default defineConfig({
         "caseStudy",
         "unit",
         "client",
-        "person"
+        "person",
+        "services",
+        "serviceGroup"
       ],
       weakReferences: true,
     }),
