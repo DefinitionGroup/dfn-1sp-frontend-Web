@@ -261,12 +261,16 @@ export interface Menu {
         links?: Array<{
             title?: string;
             linkType?: "internal" | "external";
+            slug?: string;
+            pageTitle?: string;
             page?: Reference<Page>;
             externalUrl?: string;
             displayName?: string;
         }>;
     }>;
     socialProfiles?: Array<{ platform?: string; url?: string }>;
+    // Some queries project `socialLinks` instead of `socialProfiles` — accept both
+    socialLinks?: Array<{ _key?: string; platform?: string; url?: string }>;
     copyright?: string;
 }
 

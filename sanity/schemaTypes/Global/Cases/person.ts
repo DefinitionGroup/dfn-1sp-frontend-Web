@@ -5,6 +5,13 @@ export default defineType({
     name: 'person',
     title: 'Person',
     type: 'document',
+    groups: [
+        { name: 'general', title: 'General' },
+        { name: 'media', title: 'Media' },
+        { name: 'contact', title: 'Contact' },
+        { name: 'content', title: 'Content' },
+        { name: 'settings', title: 'Settings' },
+    ],
     fields: [
         defineField({
             name: 'language',
@@ -14,12 +21,14 @@ export default defineType({
             hidden: true,
             initialValue: 'de',
             description: 'Managed by i18n tooling; do not edit manually.',
+            group: 'settings'
         }),
         {
             name: 'name',
             title: 'Name',
             type: 'string',
-            validation: (Rule) => Rule.required()
+            validation: (Rule) => Rule.required(),
+            group: 'general'
         },
         {
             name: 'slug',
@@ -68,57 +77,66 @@ export default defineType({
                     return !existingDoc;
                 },
             },
-            validation: (Rule) => Rule.required()
+            validation: (Rule) => Rule.required(),
+            group: 'general'
         },
         {
             name: 'image',
             title: 'Image',
             type: 'cloudinary.asset',
-            description: 'Person profile image'
+            description: 'Person profile image',
+            group: 'media'
         },
         {
             name: 'video',
             title: 'Video',
             type: 'cloudinary.asset',
-            description: 'Person profile video'
+            description: 'Person profile video',
+            group: 'media'
         },
         // new fields to match MemberItem (altText, fullname, position, profileUrl, email)
         defineField({
             name: 'altText',
             title: 'Alt Text',
             type: 'string',
-            description: 'Alt text / accessibility text for the person image (maps to altText in frontend)'
+            description: 'Alt text / accessibility text for the person image (maps to altText in frontend)',
+            group: 'media'
         }),
         defineField({
             name: 'fullname',
             title: 'Full Name',
             type: 'string',
-            description: 'Full name of the person (maps to fullname in frontend)'
+            description: 'Full name of the person (maps to fullname in frontend)',
+            group: 'general'
         }),
         defineField({
             name: 'position',
             title: 'Position',
             type: 'string',
-            description: 'Role / position of the person (maps to position in frontend)'
+            description: 'Role / position of the person (maps to position in frontend)',
+            group: 'general'
         }),
         defineField({
             name: 'profileUrl',
             title: 'Profile URL',
             type: 'url',
-            description: 'External profile link (e.g. LinkedIn) (maps to profileUrl in frontend)'
+            description: 'External profile link (e.g. LinkedIn) (maps to profileUrl in frontend)',
+            group: 'contact'
         }),
         defineField({
             name: 'email',
             title: 'Email',
             type: 'string',
             validation: (Rule) => Rule.email(),
-            description: 'Contact email (maps to email in frontend)'
+            description: 'Contact email (maps to email in frontend)',
+            group: 'contact'
         }),
         {
             name: 'tagline',
             title: 'Tagline',
             type: 'string',
-            description: 'A brief tagline or title for the person'
+            description: 'A brief tagline or title for the person',
+            group: 'general'
         },
         {
             name: 'content',
@@ -161,7 +179,8 @@ export default defineType({
                         ]
                     }
                 }
-            ]
+            ],
+            group: 'content'
         },
         {
             name: 'client',
@@ -176,7 +195,8 @@ export default defineType({
                         params: { language: currentLanguage }
                     };
                 }
-            }
+            },
+            group: 'general'
         },
         {
             name: 'channel',
@@ -190,6 +210,7 @@ export default defineType({
                     { title: 'Studio CO2 Website', value: 'studioco2Web' },
                 ],
             },
+            group: 'settings'
         },
     ],
     preview: {

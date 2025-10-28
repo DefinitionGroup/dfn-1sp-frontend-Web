@@ -4,6 +4,16 @@ export default defineType({
     name: 'client',
     title: 'Client',
     type: 'document',
+
+    // Groups for organizing fields in the editor
+    groups: [
+        { name: 'general', title: 'General' },
+        { name: 'contact', title: 'Contact' },
+        { name: 'location', title: 'Location' },
+        { name: 'relations', title: 'Relations' },
+        { name: 'settings', title: 'Settings' },
+    ],
+
     fields: [
         defineField({
             name: 'language',
@@ -13,12 +23,14 @@ export default defineType({
             hidden: true,
             initialValue: 'en',
             description: 'Managed by i18n tooling; do not edit manually.',
+            group: 'settings',
         }),
         {
             name: 'name',
             title: 'Name',
             type: 'string',
-            validation: (Rule) => Rule.required()
+            validation: (Rule) => Rule.required(),
+            group: 'general',
         },
         {
             name: 'slug',
@@ -67,51 +79,59 @@ export default defineType({
                     return !existingDoc;
                 },
             },
-            validation: (Rule) => Rule.required()
+            validation: (Rule) => Rule.required(),
+            group: 'general',
         },
         {
             name: 'tagline',
             title: 'Tagline',
             type: 'string',
-            description: 'A brief tagline or description for the client'
+            description: 'A brief tagline or description for the client',
+            group: 'general',
         },
         {
             name: 'logo',
             title: 'Logo',
             type: 'cloudinary.asset',
-            description: 'Client logo'
+            description: 'Client logo',
+            group: 'general',
         },
         {
             name: 'coordinateLat',
             title: 'Coordinate Latitude',
             type: 'number',
             description: 'Latitude coordinate for the client location',
-            validation: (Rule) => Rule.min(-90).max(90)
+            validation: (Rule) => Rule.min(-90).max(90),
+            group: 'location',
         },
         {
             name: 'coordinateLon',
             title: 'Coordinate Longitude',
             type: 'number',
             description: 'Longitude coordinate for the client location',
-            validation: (Rule) => Rule.min(-180).max(180)
+            validation: (Rule) => Rule.min(-180).max(180),
+            group: 'location',
         },
         {
             name: 'address',
             title: 'Address',
             type: 'string',
-            description: 'Full address of the client'
+            description: 'Full address of the client',
+            group: 'location',
         },
         {
             name: 'phone',
             title: 'Phone',
             type: 'string',
-            description: 'Contact phone number'
+            description: 'Contact phone number',
+            group: 'contact',
         },
         {
             name: 'email',
             title: 'Email',
             type: 'string',
-            validation: (Rule) => Rule.email()
+            validation: (Rule) => Rule.email(),
+            group: 'contact',
         },
         {
             name: 'caseStudies',
@@ -131,7 +151,8 @@ export default defineType({
                         }
                     }
                 }
-            ]
+            ],
+            group: 'relations',
         },
         {
             name: 'people',
@@ -151,7 +172,8 @@ export default defineType({
                         }
                     }
                 }
-            ]
+            ],
+            group: 'relations',
         },
         {
             name: 'channel',
@@ -165,6 +187,7 @@ export default defineType({
                     { title: 'Studio CO2 Website', value: 'studioco2Web' },
                 ],
             },
+            group: 'settings',
         },
     ],
     preview: {

@@ -56,7 +56,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                     {column.title}
                   </h3>
                   <div className="space-y-2">
-                    {column.links.map((link) => (
+                    {column.links?.map((link) => (
                       <Link
                         key={link._key}
                         href={
@@ -180,24 +180,26 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
             {/* Social Media Icons */}
             <div className="flex gap-4 items-center">
               {menuData?.socialLinks && menuData.socialLinks.length > 0 ? (
-                menuData.socialLinks.map((social) => (
-                  <Link
-                    key={social._key}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
-                    aria-label={social.platform}
-                  >
-                    <Image
-                      src={getSocialIcon(social.platform)}
-                      alt={social.platform}
-                      width={24}
-                      height={24}
-                      className="w-full h-full"
-                    />
-                  </Link>
-                ))
+                menuData.socialLinks
+                  .filter((s) => !!s?.url)
+                  .map((social) => (
+                    <Link
+                      key={social._key}
+                      href={social.url || "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
+                      aria-label={social.platform || "social"}
+                    >
+                      <Image
+                        src={getSocialIcon(social.platform || "")}
+                        alt={social.platform || "social"}
+                        width={24}
+                        height={24}
+                        className="w-full h-full"
+                      />
+                    </Link>
+                  ))
               ) : (
                 // Fallback social links
                 <>

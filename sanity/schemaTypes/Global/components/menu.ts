@@ -14,6 +14,14 @@ export default {
     title: 'Menu',
     type: 'document',
 
+    // Editor groups (tabs)
+    groups: [
+        { name: 'general', title: 'General' },
+        { name: 'navbar', title: 'Navbar' },
+        { name: 'footer', title: 'Footer' },
+        { name: 'social', title: 'Social' },
+    ],
+
     i18n: {
         base: "de",
         languages: [
@@ -30,6 +38,7 @@ export default {
             type: 'string',
             readOnly: true,
             hidden: true,
+            group: 'general',
             initialValue: (context: any) =>
                 context?.document?.__inferMetadata?.params?.language || 'de',
         },
@@ -37,6 +46,7 @@ export default {
             name: 'channel',
             title: 'Channel',
             type: 'string',
+            group: 'general',
             options: {
                 list: [
                     { title: '1sp Website', value: '1spWeb' },
@@ -57,12 +67,14 @@ export default {
             description: "Automatically matches menu type",
             hidden: ({ document }: { document?: any }) => !!document?.menuType,
             initialValue: "Menu",
+            group: 'general',
         },
 
         {
             name: "menuType",
             title: "Menu Type",
             type: "string",
+            group: 'general',
             options: {
                 list: [
                     { title: "Navbar", value: "Navbar" },
@@ -78,6 +90,7 @@ export default {
             name: "menuItems",
             title: "Navigation Items",
             type: "array",
+            group: 'navbar',
             of: [
                 {
                     type: "object",
@@ -133,6 +146,7 @@ export default {
             title: "Logo",
             type: "cloudinary.asset",
             description: "Main logo (used in both header and footer)",
+            group: 'general',
         },
 
         /* Footer Fields */
@@ -140,6 +154,7 @@ export default {
             name: "footerColumns",
             title: "Footer Columns",
             type: "array",
+            group: 'footer',
             of: [
                 {
                     type: "object",
@@ -276,6 +291,7 @@ export default {
             title: "Social Media Links",
             icon: IoShareSocialOutline,
             type: "array",
+            group: 'social',
             of: [
                 {
                     type: "object",
@@ -335,6 +351,7 @@ export default {
             name: "copyright",
             title: "Copyright Text",
             type: "string",
+            group: 'footer',
             hidden: ({ parent }: { parent?: any }) => parent?.menuType !== "Footer",
         },
 
@@ -344,6 +361,7 @@ export default {
             type: "string",
             readOnly: true,
             hidden: true,
+            group: 'general',
             validation: (Rule: any) =>
                 Rule.custom(async (value: any, context: any) => {
                     const { document, getClient } = context;

@@ -4,6 +4,13 @@ export default defineType({
     name: 'unit',
     title: 'Unit',
     type: 'document',
+    groups: [
+        { name: 'general', title: 'General' },
+        { name: 'contact', title: 'Contact' },
+        { name: 'location', title: 'Location' },
+        { name: 'relations', title: 'Relations' },
+        { name: 'settings', title: 'Settings' },
+    ],
     fields: [
         defineField({
             name: 'language',
@@ -13,17 +20,20 @@ export default defineType({
             hidden: true,
             initialValue: 'de',
             description: 'Managed by i18n tooling; do not edit manually.',
+            group: 'settings',
         }),
         {
             name: 'name',
             title: 'Name',
             type: 'string',
-            validation: (Rule) => Rule.required()
+            validation: (Rule) => Rule.required(),
+            group: 'general',
         },
         {
             name: 'slug',
             title: 'Slug',
             type: 'slug',
+            group: 'general',
             options: {
                 source: 'name',
                 maxLength: 96,
@@ -73,24 +83,79 @@ export default defineType({
             name: 'tagline',
             title: 'Tagline/Motto',
             type: 'string',
-            description: 'e.g., "Together. One Superagency"'
+            description: 'e.g., "Together. One Superagency"',
+            group: 'general',
         },
         {
             name: "logo",
             title: "Unit Logo",
             type: "cloudinary.asset",
             description: "Upload the unit's logo",
+            group: 'general',
         },
         {
             name: 'description',
             title: 'Description',
             type: 'text',
-            rows: 4
+            rows: 4,
+            group: 'general',
         },
+
+        // Location fields
+        {
+            name: 'coordinateLat',
+            title: 'Coordinate LAT',
+            type: 'number',
+            description: 'Latitude (decimal). Range: -90 to 90.',
+            validation: (Rule) => Rule.min(-90).max(90),
+            group: 'location',
+        },
+        {
+            name: 'coordinateLon',
+            title: 'Coordinate LON',
+            type: 'number',
+            description: 'Longitude (decimal). Range: -180 to 180.',
+            validation: (Rule) => Rule.min(-180).max(180),
+            group: 'location',
+        },
+
+        // Contact group
+        {
+            name: 'address',
+            title: 'Address',
+            type: 'object',
+            group: 'contact',
+            fields: [
+                { name: 'street', title: 'Street', type: 'string' },
+                { name: 'postalCode', title: 'Postal Code', type: 'string' },
+                { name: 'city', title: 'City', type: 'string' },
+                { name: 'country', title: 'Country', type: 'string' },
+            ],
+            options: { collapsible: true, collapsed: false }
+        },
+        {
+            name: 'phone',
+            title: 'Phone',
+            type: 'string',
+            description: 'Contact phone number',
+            validation: (Rule) =>
+                Rule.min(4).max(30), // keep simple; adjust to your preferred pattern
+            group: 'contact',
+        },
+        {
+            name: 'email',
+            title: 'Email',
+            type: 'string',
+            description: 'Contact email address',
+            validation: (Rule) => Rule.email(),
+            group: 'contact',
+        },
+
         {
             name: 'caseStudies',
             title: 'Related Case Studies',
             type: 'array',
+            group: 'relations',
             of: [
                 {
                     type: 'reference',
@@ -111,7 +176,8 @@ export default defineType({
             name: 'isActive',
             title: 'Is Active',
             type: 'boolean',
-            initialValue: true
+            initialValue: true,
+            group: 'settings',
         },
         defineField({
             name: 'services',
@@ -124,6 +190,7 @@ export default defineType({
                 },
             ],
             description: 'Services related to this unit. Changes here will automatically sync with the Services.',
+            group: 'relations',
         })
     ],
     preview: {

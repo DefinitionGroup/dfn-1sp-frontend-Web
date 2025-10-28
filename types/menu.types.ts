@@ -1,20 +1,20 @@
 // Menu types for Sanity data
 export interface MenuItem {
     _key: string;
-    slug: string;
-    title: string;
+    slug?: string;
+    title?: string;
     displayName?: string;
 }
 
 export interface NavbarMenu {
-    _id: string;
-    title: string;
+    _id?: string;
+    title?: string;
     menuType: "Navbar";
     imageCloud?: {
-        secure_url: string;
+        secure_url?: string;
     };
     logoUrl?: string;
-    menuItems: MenuItem[];
+    menuItems?: MenuItem[];
 }
 
 export interface FooterLink {
@@ -23,30 +23,30 @@ export interface FooterLink {
     slug?: string;
     pageTitle?: string;
     externalUrl?: string;
-    displayName: string;
+    displayName?: string;
 }
 
 export interface FooterColumn {
-    _key: string;
-    title: string;
-    links: FooterLink[];
+    _key?: string;
+    title?: string;
+    links?: FooterLink[];
 }
 
 export interface SocialLink {
-    _key: string;
-    platform: "Facebook" | "Instagram" | "X" | "GitHub" | "YouTube";
-    url: string;
+    _key?: string;
+    platform?: "Facebook" | "Instagram" | "X" | "GitHub" | "YouTube" | string;
+    url?: string;
 }
 
 export interface FooterMenu {
-    _id: string;
-    title: string;
+    _id?: string;
+    title?: string;
     menuType: "Footer";
     imageCloud?: {
-        secure_url: string;
+        secure_url?: string;
     };
     logoUrl?: string;
-    footerColumns: FooterColumn[];
+    footerColumns?: FooterColumn[];
     socialLinks?: SocialLink[];
     copyright?: string;
 }

@@ -4,6 +4,12 @@ export default defineType({
     name: 'caseStudy',
     title: 'Case Study',
     type: 'document',
+    groups: [
+        { name: 'content', title: 'Content' },
+        { name: 'media', title: 'Media' },
+        { name: 'relations', title: 'Relations' },
+        { name: 'settings', title: 'Settings' },
+    ],
     fields: [
         defineField({
             name: 'language',
@@ -13,17 +19,20 @@ export default defineType({
             hidden: true,
             initialValue: 'de',
             description: 'Managed by i18n tooling; do not edit manually.',
+            group: 'settings'
         }),
         {
             name: 'title',
             title: 'Title',
             type: 'string',
-            validation: (Rule) => Rule.required()
+            validation: (Rule) => Rule.required(),
+            group: 'content'
         },
         {
             name: 'slug',
             title: 'Slug',
             type: 'slug',
+            group: 'content',
             options: {
                 source: 'title',
                 maxLength: 96,
@@ -73,13 +82,15 @@ export default defineType({
             name: 'description',
             title: 'Description',
             type: 'text',
-            rows: 4
+            rows: 4,
+            group: 'content'
         },
         {
             name: 'subtitle',
             title: 'Subtitle',
             type: 'string',
-            description: 'A short subtitle or tagline for the case study'
+            description: 'A short subtitle or tagline for the case study',
+            group: 'content'
         },
         {
             name: 'category',
@@ -95,36 +106,42 @@ export default defineType({
                     { title: 'Web', value: 'Web' },
                 ],
             },
-            validation: (Rule) => Rule.required().min(1)
+            validation: (Rule) => Rule.required().min(1),
+            group: 'content'
         },
         {
             name: 'mainImage',
             title: 'Main Image',
-            type: 'cloudinary.asset'
+            type: 'cloudinary.asset',
+            group: 'media'
         },
         {
             name: 'mainVideo',
             title: 'Main Video',
             type: 'cloudinary.asset',
-            description: 'Optional video to display instead of main image'
+            description: 'Optional video to display instead of main image',
+            group: 'media'
         },
         {
             name: 'logoImage',
             title: 'Logo Image',
             type: 'cloudinary.asset',
-            description: 'Client logo to display on the card'
+            description: 'Client logo to display on the card',
+            group: 'media'
         },
         {
             name: 'websiteUrl',
             title: 'Website URL',
             type: 'url',
-            description: 'External website URL'
+            description: 'External website URL',
+            group: 'content'
         },
         {
             name: 'websiteUrlText',
             title: 'Website URL Text',
             type: 'string',
-            description: 'Text for the website link button (e.g., "Visit Website")'
+            description: 'Text for the website link button (e.g., "Visit Website")',
+            group: 'content'
         },
         {
             name: 'imageGallery',
@@ -137,21 +154,25 @@ export default defineType({
                         {
                             name: 'image',
                             title: 'Image',
-                            type: 'cloudinary.asset'
+                            type: 'cloudinary.asset',
+                            group: 'media'
                         },
                         {
                             name: 'alt',
                             title: 'Alt Text',
-                            type: 'string'
+                            type: 'string',
+                            group: 'media'
                         },
                         {
                             name: 'caption',
                             title: 'Caption',
-                            type: 'string'
+                            type: 'string',
+                            group: 'media'
                         }
                     ]
                 }
-            ]
+            ],
+            group: 'media'
         },
         {
             name: 'units',
@@ -171,7 +192,8 @@ export default defineType({
                         }
                     }
                 }
-            ]
+            ],
+            group: 'relations'
         },
         {
             name: 'client',
@@ -186,19 +208,22 @@ export default defineType({
                         params: { language: currentLanguage }
                     };
                 }
-            }
+            },
+            group: 'relations'
         },
         {
             name: 'publishedAt',
             title: 'Published At',
             type: 'datetime',
-            initialValue: () => new Date().toISOString()
+            initialValue: () => new Date().toISOString(),
+            group: 'settings'
         },
         {
             name: 'isPublished',
             title: 'Published',
             type: 'boolean',
-            initialValue: true
+            initialValue: true,
+            group: 'settings'
         },
         {
             name: 'channel',
@@ -212,6 +237,7 @@ export default defineType({
                     { title: 'Studio CO2 Website', value: 'studioco2Web' },
                 ],
             },
+            group: 'settings'
         },
         {
             name: 'connectedDataCarouselPromo1SP',
@@ -222,7 +248,8 @@ export default defineType({
             hidden: ({ document }: { document: any }) => {
                 const channels = document?.channel || [];
                 return !channels.includes('1spWeb');
-            }
+            },
+            group: 'settings'
         },
         {
             name: 'connectedDataCarouselPromoMSM',
@@ -233,7 +260,8 @@ export default defineType({
             hidden: ({ document }: { document: any }) => {
                 const channels = document?.channel || [];
                 return !channels.includes('msmWeb');
-            }
+            },
+            group: 'settings'
         },
         {
             name: 'connectedDataCarouselPromoStudioCO2',
@@ -244,7 +272,8 @@ export default defineType({
             hidden: ({ document }: { document: any }) => {
                 const channels = document?.channel || [];
                 return !channels.includes('studioco2Web');
-            }
+            },
+            group: 'settings'
         },
         defineField({
             name: 'services',
@@ -257,6 +286,7 @@ export default defineType({
                 },
             ],
             description: 'Services related to this case study. Changes here will automatically sync with the Services.',
+            group: 'relations'
         }),
     ],
     preview: {
