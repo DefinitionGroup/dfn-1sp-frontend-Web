@@ -21,22 +21,18 @@ export default function AnimateNumberinView({
   suffix = "",
   transition = { duration: 1.5, ease: "easeOut" },
 }: AnimateNumberinViewProps) {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
   const [animateNumberValue, setAnimateNumberValue] = useState(0);
 
   useEffect(() => {
     if (isInView) {
-      // Convert number to number for animation
       const targetNumber =
         typeof number === "string" ? parseInt(number, 10) || 0 : number;
-
-      // Delay the animation
-      const timeoutId = setTimeout(() => {
-        setAnimateNumberValue(targetNumber);
-      }, delay);
-
-      // Cleanup timeout if component unmounts or dependencies change
+      const timeoutId = setTimeout(
+        () => setAnimateNumberValue(targetNumber),
+        delay
+      );
       return () => clearTimeout(timeoutId);
     }
   }, [isInView, number, delay]);
@@ -45,70 +41,38 @@ export default function AnimateNumberinView({
     <div ref={ref} className={className}>
       <AnimateNumber format={format} transition={transition} suffix={suffix}>
         {animateNumberValue}
-      </AnimateNumber>{" "}
+      </AnimateNumber>
       <StyleSheet />
     </div>
   );
 }
+
 const StyleSheet = () => {
   return (
     <style>{`
         .price-switcher {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 20px;
         }
 
         .number {
-            font-size:128px;
-            letter-spacing: -0.04em;
-            font-weight: 300;
-            font-variation-settings: "opsz" 30, "wght" 530;
+          font-size: 128px;
+          letter-spacing: -0.014rem; /* match Plaintext */
+          font-weight: 300;
+          font-variation-settings: "opsz" 30, "wght" 530;
         }
 
         .number-section-post {
-            font-size:20px;
-            opacity: 0.5;
-            position: relative;
-            bottom: 15px;
-            align-self: flex-end;
-            margin-left: 5px;
-            letter-spacing: -0.02em;
-        }
-
-        .switch {
-            display: flex;
-            gap: 10px;
-            padding: 6px;
-            border-radius: 100px;
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .switch button {
-            position: relative;
-            padding: 8px 12px;
-            display: flex;
-        }
-
-        .switch button span {
-            z-index: 2;
-            position: relative;
-            color: var(--text);
-            will-change: opacity;
-            font-size: 13px;
-            line-height: 1;
-            font-variation-settings: "opsz" 20, "wght" 590;
-        }
-
-        .switch .selected {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #f5f5f5;
-            will-change: transform;
+          font-size: 12px; /* match Plaintext */
+          opacity: 1; /* match Plaintext */
+          color: var(--color-lime-500); /* match Plaintext */
+          position: relative;
+          bottom: 5px; /* match Plaintext */
+          align-self: flex-end;
+          margin-left: 5px;
+          letter-spacing: -0.02em;
         }
     `}</style>
   );

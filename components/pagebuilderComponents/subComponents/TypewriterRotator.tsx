@@ -26,21 +26,24 @@ export default function TypewriterRotator({
       <Typewriter
         as="div"
         variance={2.8}
-        speed="normal"
+        speed={"normal"}
         backspace="character"
         cursorBlinkDuration={0.36}
         cursorStyle={cursor}
         textStyle={animatingText}
-        onComplete={() =>
-          delay(() => setIndex(wrap(0, text.length, index + 1)), 1)
-        }
+        onComplete={() => {
+          delay(() => setIndex(wrap(0, text.length, index + 1)), 1);
+        }}
       >
-        {text[(index + 1) % text.length]}
+        {text[index + 1]}
       </Typewriter>
     </h2>
   );
 }
 
+/**
+ * ==============   Styles   ================
+ */
 const container: React.CSSProperties = {
   display: "flex",
   alignItems: "flex-start",
@@ -54,10 +57,10 @@ const container: React.CSSProperties = {
 };
 
 const animatingText: React.CSSProperties = {
-  fontSize: "calc(32px + 4.5vw)",
+  fontSize: "calc(32px + 4vw)",
   fontWeight: 700,
   lineHeight: "calc(48px + 3vw)",
-  letterSpacing: "calc(2px - 0.5vw)",
+  letterSpacing: "calc(2px - 0.15vw)",
   textTransform: "uppercase",
   color: "var(--text-primary)",
   whiteSpace: "nowrap",

@@ -5,6 +5,8 @@ import StaggeredSlideUp from "./StaggeredSlideUp";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { useTransitionRouter } from "next-view-transitions";
+import { usePathname } from "next/navigation";
+import CaseGalleryMenu from "./CaseGalleryMenu";
 import Button2 from "./ui/Button2";
 import { NavbarMenu } from "@/types/menu.types";
 
@@ -24,14 +26,38 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   hasCaseStudies = false,
 }) => {
   const router = useTransitionRouter();
-  const textColor = color === "dark" ? "text-neutral-800" : "text-neutral-50";
+  const pathname = usePathname() || "";
+  const [showOverlay, setShowOverlay] = React.useState(false);
+
+  // Match case detail pages: /cases/[slug] or /locale/cases/[slug]
+  const isCaseDetailRoute = React.useMemo(() => {
+    if (!pathname) return false;
+    return /^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?cases\/[^/]+/.test(pathname);
+  }, [pathname]);
+
+  // Match any /cases route (including main /cases)
+  const isAnyCasesRoute = React.useMemo(() => {
+    if (!pathname) return false;
+    return /^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?cases(?:\/|$)/.test(pathname);
+  }, [pathname]);
+
+  // Decide effective color
+  const effectiveColor = React.useMemo(() => {
+    if (isCaseDetailRoute) return "light";
+    if (isAnyCasesRoute) return "dark";
+    return color;
+  }, [isCaseDetailRoute, isAnyCasesRoute, color]);
+
+  const effectiveTextColor =
+    effectiveColor === "dark" ? "text-neutral-800" : "text-neutral-50";
+
+  const textColor = effectiveTextColor;
   const imageLogo =
-    color === "dark"
+    effectiveColor === "dark"
       ? "/ci/1sp-fulllogotype-blk.svg"
       : "/ci/1sp-fulllogotype.svg";
 
-  // Use Sanity logo if available, otherwise use default
-  const logoUrl = menuData?.logoUrl || imageLogo;
+  const logoUrl = imageLogo;
 
   // Detect if Sanity menu already contains a Cases link
   const hasCasesLinkInMenu =
@@ -46,12 +72,11 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       );
     });
 
-  // Ensure spacing between menu items even if the StaggeredSlideUp wrapper doesn't forward flex/gap classes
   const itemClass = `${textColor} text-xs leading-compress font-bold mr-8 inline-block`;
 
   return (
     <nav
-      className={`hidden absolute top-0 left-0 right-0 md:grid items-center z-50 grid-cols-12 gap-4 py-5 container mx-auto ${className}`}
+      className={`hidden absolute top-0 left-0 right-0 md:grid items-center z-50 grid-cols-12 gap-4 py-5 container mx-auto ${textColor} ${className}`}
     >
       <div className="col-span-1 flex items-center justify-center">
         <div className=" flex items-center justify-center">
@@ -93,11 +118,9 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           easing="spring"
         >
           {menuData?.menuItems && menuData.menuItems.length > 0 ? (
-            // Render menu items from Sanity
             <>
               {menuData.menuItems
                 .filter((item) => {
-                  // Filter out cases link if no case studies exist
                   const isCasesPage = item.slug?.includes("cases");
                   if (isCasesPage && !hasCaseStudies) {
                     return false;
@@ -120,7 +143,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                     </Link>
                   </span>
                 ))}
-              {/* Fallback plain Cases link if Sanity menu doesn't contain it but case studies exist */}
+
               {hasCaseStudies && !hasCasesLinkInMenu && (
                 <span key="cases-fallback" className={itemClass}>
                   <Link
@@ -139,7 +162,6 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               )}
             </>
           ) : (
-            // Fallback to default menu items if no Sanity data
             <>
               <span className={itemClass}>
                 <Link
@@ -155,7 +177,6 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                   Home
                 </Link>
               </span>
-              {/* Only show Cases link if case studies exist */}
               {hasCaseStudies && (
                 <span className={itemClass}>
                   <Link
@@ -219,9 +240,66 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         </StaggeredSlideUp>
       </motion.div>
 
-      <div className="col-span-2 flex justify-end items-center">
+      <div className="col-span-2 flex justify-end items-center gap-4">
+        {/* All Cases button only on case detail pages */}
+        {isCaseDetailRoute && (
+          <div className="flex items-center">
+            <button
+              type="button"
+              className={`border rounded-full inline-block mt-2 py-1 px-2 ${textColor} text-xxs font-bold cursor-pointer hover:text-lime-400`}
+              onClick={() => setShowOverlay(true)}
+            >
+              All Cases
+            </button>
+          </div>
+        )}
         <Button2 variant="limesmall" text="Contact us" />
       </div>
+
+      {/* Cases overlay */}
+      {showOverlay && (
+        <div className="fixed inset-0 grid place-items-center backdrop-blur-lg z-[100] bg-black/20">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 50 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{
+              opacity: 0,
+              y: -50,
+              transition: { duration: 0.4, type: "spring", bounce: 0.06 },
+            }}
+            transition={{ type: "spring", visualDuration: 0.25, bounce: 0.56 }}
+          >
+            <div className="flex justify-center items-center">
+              <div className="relative w-full max-w-[900px] min-h-[70vh] h-full md:h-fit md:max-h-[85vh] rounded-xl flex flex-col bg-neutral-100 dark:bg-neutral-900 shadow-2xl overflow-hidden">
+                <button
+                  aria-label="Close overlay"
+                  className="absolute top-2 right-2 z-50 p-2"
+                  onClick={() => setShowOverlay(false)}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-6 w-6 text-black"
+                  >
+                    <path d="M18 6l-12 12" />
+                    <path d="M6 6l12 12" />
+                  </svg>
+                </button>
+                <div>
+                  <CaseGalleryMenu />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </nav>
   );
 };
