@@ -11,10 +11,14 @@ interface CaseStudy {
   subtitle?: string;
   slug: { current: string };
   description?: string;
-  category: string[];
+  services?: { _id: string; name: string }[];
   mainImageUrl?: string;
   mainVideoUrl?: string;
-  logoImageUrl?: string;
+  client?: {
+    _id: string;
+    name: string;
+    logoUrl?: string;
+  };
   websiteUrl?: string;
   websiteUrlText?: string;
 }
@@ -30,7 +34,16 @@ export default function CasesPageClient({
 }: CasesPageClientProps) {
   const [activeFilter, setActiveFilter] = useState<string>("All");
 
-  const filters = ["All", "POS", "Marketing", "Social", "Design", "Web"];
+  // Extract unique service names from case studies
+  const uniqueServices = Array.from(
+    new Set(
+      caseStudies
+        .flatMap((study) => study.services || [])
+        .map((service) => service.name)
+    )
+  ).sort();
+
+  const filters = ["All", ...uniqueServices];
 
   return (
     <>

@@ -8,6 +8,7 @@ export default defineType({
         { name: 'content', title: 'Content' },
         { name: 'media', title: 'Media' },
         { name: 'relations', title: 'Relations' },
+        { name: 'composable', title: 'Composable Items' },
         { name: 'settings', title: 'Settings' },
     ],
     fields: [
@@ -93,23 +94,6 @@ export default defineType({
             group: 'content'
         },
         {
-            name: 'category',
-            title: 'Category',
-            type: 'array',
-            of: [{ type: 'string' }],
-            options: {
-                list: [
-                    { title: 'POS', value: 'POS' },
-                    { title: 'Marketing', value: 'Marketing' },
-                    { title: 'Social', value: 'Social' },
-                    { title: 'Design', value: 'Design' },
-                    { title: 'Web', value: 'Web' },
-                ],
-            },
-            validation: (Rule) => Rule.required().min(1),
-            group: 'content'
-        },
-        {
             name: 'mainImage',
             title: 'Main Image',
             type: 'cloudinary.asset',
@@ -120,13 +104,6 @@ export default defineType({
             title: 'Main Video',
             type: 'cloudinary.asset',
             description: 'Optional video to display instead of main image',
-            group: 'media'
-        },
-        {
-            name: 'logoImage',
-            title: 'Logo Image',
-            type: 'cloudinary.asset',
-            description: 'Client logo to display on the card',
             group: 'media'
         },
         {
@@ -144,8 +121,87 @@ export default defineType({
             group: 'content'
         },
         {
+            name: 'mediaGallery',
+            title: 'Media Gallery',
+            type: 'array',
+            of: [
+                {
+                    type: 'object',
+                    fields: [
+                        {
+                            name: 'mediaType',
+                            title: 'Media Type',
+                            type: 'string',
+                            options: {
+                                list: [
+                                    { title: 'Image', value: 'image' },
+                                    { title: 'Video', value: 'video' }
+                                ]
+                            },
+                            validation: (Rule) => Rule.required()
+                        },
+                        {
+                            name: 'image',
+                            title: 'Image',
+                            type: 'cloudinary.asset',
+                            hidden: ({ parent }: { parent: any }) => parent?.mediaType !== 'image',
+                            validation: (Rule) => Rule.custom((image, context: any) => {
+                                const parent = context.parent;
+                                if (parent?.mediaType === 'image' && !image) {
+                                    return 'Image is required when media type is Image';
+                                }
+                                return true;
+                            })
+                        },
+                        {
+                            name: 'video',
+                            title: 'Video',
+                            type: 'cloudinary.asset',
+                            hidden: ({ parent }: { parent: any }) => parent?.mediaType !== 'video',
+                            validation: (Rule) => Rule.custom((video, context: any) => {
+                                const parent = context.parent;
+                                if (parent?.mediaType === 'video' && !video) {
+                                    return 'Video is required when media type is Video';
+                                }
+                                return true;
+                            })
+                        },
+                        {
+                            name: 'alt',
+                            title: 'Alt Text / Description',
+                            type: 'string',
+                            description: 'Alternative text for images or description for videos'
+                        },
+                        {
+                            name: 'caption',
+                            title: 'Caption',
+                            type: 'string'
+                        }
+                    ],
+                    preview: {
+                        select: {
+                            mediaType: 'mediaType',
+                            image: 'image',
+                            video: 'video',
+                            alt: 'alt'
+                        },
+                        prepare({ mediaType, image, video, alt }) {
+                            return {
+                                title: alt || 'Untitled',
+                                subtitle: mediaType === 'image' ? 'Image' : 'Video',
+                                media: image || video
+                            }
+                        }
+                    }
+                }
+            ],
+            validation: (Rule) => Rule.max(4).warning('Maximum 4 media items recommended'),
+            description: 'Upload up to 4 media items (images or videos) for use in the case study page',
+            group: 'media'
+        },
+        {
             name: 'imageGallery',
-            title: 'Image Gallery',
+            title: 'Image Gallery (Legacy)',
             type: 'array',
             of: [
                 {
@@ -172,6 +228,7 @@ export default defineType({
                     ]
                 }
             ],
+            hidden: true,
             group: 'media'
         },
         {
@@ -288,19 +345,84 @@ export default defineType({
             description: 'Services related to this case study. Changes here will automatically sync with the Services.',
             group: 'relations'
         }),
+        defineField({
+            name: 'challenges',
+            title: 'Challenges',
+            type: 'array',
+            of: [{ type: 'string' }],
+            description: 'List of challenges faced in this case study',
+            group: 'composable'
+        }),
+        defineField({
+            name: 'solution',
+            title: 'Solution',
+            type: 'text',
+            description: 'Description of the solution provided',
+            rows: 6,
+            group: 'composable'
+        }),
+        defineField({
+            name: 'approachToSolution',
+            title: 'Approach to Solution',
+            type: 'text',
+            description: 'Detailed approach taken to solve the problem',
+            rows: 6,
+            group: 'composable'
+        }),
+        defineField({
+            name: 'metrics',
+            title: 'Metrics',
+            type: 'array',
+            of: [
+                {
+                    type: 'object',
+                    fields: [
+                        {
+                            name: 'label',
+                            title: 'Label',
+                            type: 'string',
+                            description: 'Metric label (e.g., "Dwell Time")',
+                            validation: (Rule) => Rule.required()
+                        },
+                        {
+                            name: 'value',
+                            title: 'Value',
+                            type: 'number',
+                            description: 'Metric value (e.g., 20 for 20%)',
+                            validation: (Rule) => Rule.required()
+                        }
+                    ],
+                    preview: {
+                        select: {
+                            label: 'label',
+                            value: 'value'
+                        },
+                        prepare({ label, value }) {
+                            return {
+                                title: `${label}: ${value}%`
+                            }
+                        }
+                    }
+                }
+            ],
+            description: 'Key metrics and performance indicators',
+            group: 'composable'
+        }),
     ],
     preview: {
         select: {
             title: 'title',
+            subtitle: 'subtitle',
             media: 'mainImage',
+            clientLogo: 'client.logo',
             isPublished: 'isPublished'
         },
         prepare(selection) {
-            const { title, media, isPublished } = selection
+            const { title, subtitle, media, clientLogo, isPublished } = selection
             return {
                 title,
-                subtitle: isPublished ? 'Published' : 'Draft',
-                media
+                subtitle: subtitle || (isPublished ? 'Published' : 'Draft'),
+                media: clientLogo || media
             }
         }
     },

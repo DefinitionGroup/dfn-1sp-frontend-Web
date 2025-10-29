@@ -109,13 +109,20 @@ export const CASE_STUDIES_QUERY = defineQuery(`
   subtitle,
   slug,
   description,
-  category,
+  services[]->{
+    _id,
+    name
+  },
   mainImage,
   mainVideo,
-  logoImage,
   "mainImageUrl": mainImage.secure_url,
   "mainVideoUrl": mainVideo.asset->url,
-  "logoImageUrl": logoImage.secure_url,
+  client->{
+    _id,
+    name,
+    logo,
+    "logoUrl": logo.secure_url
+  },
   websiteUrl,
   websiteUrlText,
   publishedAt
@@ -129,15 +136,23 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
   subtitle,
   slug,
   description,
-  category,
+  services[]->{
+    _id,
+    name
+  },
   mainImage,
   mainVideo,
-  logoImage,
   "mainImageUrl": mainImage.secure_url,
   "mainVideoUrl": mainVideo.asset->url,
-  "logoImageUrl": logoImage.secure_url,
   websiteUrl,
   websiteUrlText,
+  mediaGallery[]{
+    mediaType,
+    "imageUrl": image.secure_url,
+    "videoUrl": video.asset->url,
+    alt,
+    caption
+  },
   imageGallery[]{
     "imageUrl": image.secure_url,
     alt,
@@ -154,7 +169,15 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
     _id,
     name,
     slug,
+    logo,
     "logoUrl": logo.secure_url
+  },
+  challenges,
+  solution,
+  approachToSolution,
+  metrics[]{
+    label,
+    value
   },
   publishedAt
 }

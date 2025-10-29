@@ -11,11 +11,15 @@ import { useOutsideClick } from "@/app/hooks/use-outside-click";
 interface FrontNavOverlayProps {
   className?: string;
   color?: "light" | "dark";
+  caseStudies?: any[];
+  locale?: string;
 }
 
 const FrontNavOverlayCases: React.FC<FrontNavOverlayProps> = ({
   className = "",
   color = "light",
+  caseStudies = [],
+  locale = "en",
 }) => {
   const router = useTransitionRouter();
   const [showOverlay, setShowOverlay] = useState(false);
@@ -74,7 +78,7 @@ const FrontNavOverlayCases: React.FC<FrontNavOverlayProps> = ({
                   >
                     <CloseIcon onClick={() => setShowOverlay(false)} />
                   </motion.button>
-                  <CaseGalleryMenu />
+                  <CaseGalleryMenu caseStudies={caseStudies} locale={locale} />
                 </div>
               </div>
             </motion.div>

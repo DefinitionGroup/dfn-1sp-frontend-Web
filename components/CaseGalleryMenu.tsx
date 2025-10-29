@@ -9,113 +9,56 @@ import { useTransitionRouter } from "next-view-transitions";
 import Button2 from "./ui/Button2";
 import IntertitleCTA from "./IntertitleCTA";
 
-interface CaseItem {
-  id: number;
+interface CaseStudy {
+  _id: string;
   title: string;
-  subtitle: string;
-  image: string;
-  video?: string;
-  description: string;
-  category: string;
-  logosrc?: string;
-  url?: string;
-  urltext?: string;
-  link?: string;
+  subtitle?: string;
+  slug: { current: string };
+  description?: string;
+  services?: { _id: string; name: string }[];
+  mainImageUrl?: string;
+  mainVideoUrl?: string;
+  client?: {
+    _id: string;
+    name: string;
+    logoUrl?: string;
+  };
+  websiteUrl?: string;
+  websiteUrlText?: string;
 }
 
-const caseItems: CaseItem[] = [
-  {
-    id: 6,
-    title: "Turning up the Noise on Amazon",
-    subtitle: "Marshall",
-    image: "/case-marshall.jpg",
-    video: "/video/atf.mp4",
-    description:
-      "Expanding reach, increasing traffic, and driving deeper engagement through Amazon Stores globally.",
-    category: "Marketing",
-    logosrc: "/logos/Marshall_logo_black.svg",
-    url: "https://www.marshallheadphones.com/",
-    urltext: "Visit Website",
-    link: "/work/marshall",
-  },
-  {
-    id: 1,
-    title: "Zucked!",
-    subtitle: "AR/VR In Flight",
-    image: "/metaplaceholder.png",
-    description:
-      "Immersive gaming experience with cutting-edge visuals and Mark Zuckerberg",
-    category: "Social",
-    logosrc: "/logos/Meta_Platforms_Inc._logo.svg",
-    link: "/work/meta",
-    video: "/video/Zuckerberg_Inflight.mp4",
-  },
-  {
-    id: 3,
-    title: "Interactive Web",
-    subtitle: "User Experience",
-    image: "/s2.png",
-    description: "Revolutionary web experiences that engage and convert",
-    category: "Web",
-    logosrc: "/logos/Ubisoft_logo.svg",
-  },
-  {
-    id: 2,
-    title: "Brand Identity",
-    subtitle: "Visual Storytelling",
-    image: "/s4.jpg",
-    description: "Complete brand transformation with interactive elements",
-    category: "Design",
-    logosrc: "/logos/Lufthansa_Logo_2018.svg",
-  },
-  {
-    id: 4,
-    title: "Motion Graphics",
-    subtitle: "Dynamic Content",
-    image: "/s3.png",
-    description: "Stunning motion graphics for digital campaigns",
-    category: "Design",
-    logosrc: "/logos/Microsoft-logo_black.svg",
-  },
-  {
-    id: 5,
-    title: "AR Experience",
-    subtitle: "Augmented Reality",
-    image: "/s1.png",
-    description: "Next-generation AR solutions for marketing",
-    category: "POS",
-    logosrc: "/logos/Lufthansa_Logo_2018.svg",
-  },
-];
-
 interface CaseGalleryProps {
+  caseStudies?: CaseStudy[];
   activeFilter?: string;
+  locale?: string;
 }
 
 export default function CaseGalleryMenu({
+  caseStudies = [],
   activeFilter = "All",
+  locale = "en",
 }: CaseGalleryProps) {
   const router = useTransitionRouter();
-  const [active, setActive] = useState<
-    (typeof caseItems)[number] | boolean | null
-  >(null);
+  const [active, setActive] = useState<CaseStudy | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   const id = useId();
 
-  // Filter items based on active filter
+  // Filter items based on active filter - using services
   const filteredItems =
     activeFilter === "All"
-      ? caseItems
-      : caseItems.filter((item) => item.category === activeFilter);
+      ? caseStudies
+      : caseStudies.filter((item) =>
+          item.services?.some((service) => service.name === activeFilter)
+        );
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
-        setActive(false);
+        setActive(null);
       }
     }
 
-    if (active && typeof active === "object") {
+    if (active) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -127,10 +70,14 @@ export default function CaseGalleryMenu({
 
   useOutsideClick(ref, () => setActive(null));
 
+  const handleViewCase = (slug: string) => {
+    router.push(`/${locale}/cases/${slug}`);
+  };
+
   return (
     <>
       <AnimatePresence>
-        {active && typeof active === "object" && (
+        {active && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{
@@ -165,29 +112,29 @@ export default function CaseGalleryMenu({
           {filteredItems.map((item, index) => (
             <motion.div
               layoutId={`card-${item.title}-${id}`}
-              key={`card-${item.title}-${id}`}
+              key={`card-${item._id}-${id}`}
               onClick={() => setActive(item)}
-              className="flex-col min-h-[120px] group/card rounded-xl overflow-clip bg-white overflow-hidden h-[250px] cursor-pointer"
+              className="flex-col min-h-[120px] group/card rounded-xl bg-white overflow-hidden h-[250px] cursor-pointer"
             >
               <motion.div
                 layoutId={`image-${item.title}-${id}`}
-                className="col-start-1 h-1/2 col-span-1  row-start-1 bg-black  overflow-hidden "
+                className="col-start-1 h-1/2 col-span-1 row-start-1 bg-black overflow-hidden"
               >
-                {item.video ? (
+                {item.mainVideoUrl ? (
                   <video
-                    src={item.video}
+                    src={item.mainVideoUrl}
                     autoPlay
                     muted
                     loop
-                    className="w-full object-cover group-hover/card:opacity-100 object-top opacity-80 transition-all h-full "
+                    className="w-full object-cover group-hover/card:opacity-100 object-top opacity-80 transition-all h-full"
                   />
                 ) : (
                   <img
                     width={1000}
                     height={1000}
-                    src={item.image}
+                    src={item.mainImageUrl || "/placeholder.jpg"}
                     alt={item.title}
-                    className="w-full  object-cover  group-hover/card:opacity-100 object-top opacity-80 transition-all"
+                    className="w-full object-cover group-hover/card:opacity-100 object-top opacity-80 transition-all"
                   />
                 )}
               </motion.div>
@@ -203,17 +150,19 @@ export default function CaseGalleryMenu({
                     layoutId={`description-${item.description}-${id}`}
                     className="text-neutral-400 font-medium text-xs dark:text-neutral-400"
                   >
-                    {item.subtitle}
+                    {item.subtitle || item.client?.name}
                   </motion.p>
-                  {/* Set link to case */}
                 </div>
-                <motion.a
+                <motion.button
                   layoutId={`link-${item.title}-${id}`}
-                  href={`${item.link}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleViewCase(item.slug.current);
+                  }}
                   className="text-gray-700 hover:text-white transition mt-2 absolute bottom-4 border hover:bg-black px-2 py-0.5 rounded-full font-medium text-xs "
                 >
                   View Case
-                </motion.a>
+                </motion.button>
               </div>
             </motion.div>
           ))}

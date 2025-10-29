@@ -13,10 +13,14 @@ interface CaseStudy {
   subtitle?: string;
   slug: { current: string };
   description?: string;
-  category: string[];
+  services?: { _id: string; name: string }[];
   mainImageUrl?: string;
   mainVideoUrl?: string;
-  logoImageUrl?: string;
+  client?: {
+    _id: string;
+    name: string;
+    logoUrl?: string;
+  };
   websiteUrl?: string;
   websiteUrlText?: string;
 }
@@ -39,11 +43,13 @@ export default function CaseGalleryComponent({
   const ref = useRef<HTMLDivElement>(null);
   const id = useId();
 
-  // Filter items based on active filter (identical logic to Plaintext)
+  // Filter items based on active filter - using services instead of categories
   const filteredItems =
     activeFilter === "All"
       ? caseStudies
-      : caseStudies.filter((item) => item.category?.includes(activeFilter));
+      : caseStudies.filter((item) =>
+          item.services?.some((service) => service.name === activeFilter)
+        );
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -131,10 +137,10 @@ export default function CaseGalleryComponent({
 
               <div className="flex justify-between absolute items-start m-8 pt-8 z-10">
                 <div className="flex justify-between relative top-0 flex-col items-start z-10 left-0">
-                  {active.logoImageUrl && (
+                  {active.client?.logoUrl && (
                     <motion.img
                       layoutId={`logo-${active.title}-${id}`}
-                      src={active.logoImageUrl}
+                      src={active.client.logoUrl}
                       alt={active.title}
                       className={`w-24 h-20 object-contain ${variant === "light" ? "invert" : ""}`}
                     />
@@ -222,10 +228,10 @@ export default function CaseGalleryComponent({
               </motion.div>
 
               <div className="col-start-1 col-span-1 flex justify-between opacity-100 row-start-2 p-2 mb-16 z-1">
-                {item.logoImageUrl && (
+                {item.client?.logoUrl && (
                   <motion.img
                     layoutId={`logo-${item.title}-${id}`}
-                    src={item.logoImageUrl}
+                    src={item.client.logoUrl}
                     alt={item.title}
                     className={`w-24 h-8 object-contain object-left mb-4 ${variant === "light" ? "invert" : ""}`}
                   />

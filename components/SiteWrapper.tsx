@@ -3,6 +3,7 @@ import {
   NAVBAR_QUERY,
   FOOTER_QUERY,
   HAS_CASE_STUDIES_QUERY,
+  CASE_STUDIES_QUERY,
 } from "@/sanity/lib/queries";
 import FrontNavOverlay from "./FrontNavOverlay";
 import Footer from "./FooterNew";
@@ -40,6 +41,12 @@ export default async function SiteWrapper({
     params: { channel, language },
   });
 
+  // Fetch case studies for the navigation overlay
+  const { data: caseStudies } = await sanityFetch({
+    query: CASE_STUDIES_QUERY,
+    params: { channel, language },
+  });
+
   return (
     <>
       <PageWithMapVertical>
@@ -48,6 +55,7 @@ export default async function SiteWrapper({
           color={navColor}
           locale={language}
           hasCaseStudies={hasCaseStudies || false}
+          caseStudies={caseStudies || []}
         />
         {children}
         <Footer menuData={footerData as FooterMenu} />

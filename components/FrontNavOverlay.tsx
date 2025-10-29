@@ -16,6 +16,7 @@ interface FrontNavOverlayProps {
   menuData?: NavbarMenu | null;
   locale?: string;
   hasCaseStudies?: boolean;
+  caseStudies?: any[];
 }
 
 const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
@@ -24,6 +25,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   menuData,
   locale = "en",
   hasCaseStudies = false,
+  caseStudies = [],
 }) => {
   const router = useTransitionRouter();
   const pathname = usePathname() || "";
@@ -293,7 +295,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                   </svg>
                 </button>
                 <div>
-                  <CaseGalleryMenu />
+                  <CaseGalleryMenu caseStudies={caseStudies} locale={locale} />
                 </div>
               </div>
             </div>
