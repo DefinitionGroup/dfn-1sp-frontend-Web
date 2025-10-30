@@ -1,26 +1,21 @@
 "use client";
 import { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "motion/react";
-import AnimateNumberinView from "@/components/AnimateNumberinView";
-import AnimatedPathIcon from "@/components/AnimatedPathIcon";
-import Badgemodule from "@/components/Badgemodule";
+import AnimateNumberinView from "@/components/ui/AnimateNumberinView";
+import Badgemodule from "@/components/ui/Badgemodule";
 import Button2 from "@/components/ui/Button2";
-import GridBackground from "@/components/GridBackground";
-import HeaderImageVideoComp from "@/components/HeaderImageVideoComp";
-import HeaderImageVideoComp2 from "@/components/HeaderImageVideoComp2";
-import StaggeredSlideUp from "@/components/StaggeredSlideUp";
-import HamburgerGradientMenu from "@/components/HamburgerGradientMenu";
-import ListContainerComponent from "@/components/ListContainerComponent";
-import ListItemComponent from "@/components/ListItemComponent";
-import CtaMiniComponent from "@/components/CtaMiniComponent";
-import LineMinimap from "@/components/MapVertical";
-import FrontNavOverlayCases from "@/components/FrontNavOverlayCases";
-import Footer from "@/components/Footer";
-import FooterBottom from "@/components/FooterBottom";
-import PercentageDiagramVertical from "@/components/percentageDiagramVertical";
-import PercentageDiagramHorizontal from "@/components/percentageDiagramHorizontal";
-import PercentagePosNegDiagram from "@/components/percentagePosNegDiagram";
-
+import GridBackground from "@/components/ui/GridBackground";
+import HeaderImageVideoComp from "@/components/data/Fragments/data-HeaderImageVideoComp";
+import HeaderImageVideoComp2 from "@/components/data/Fragments/data-HeaderImageVideoComp2";
+import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
+import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
+import ListContainerComponent from "@/components/ui/ListContainerComponent";
+import ListItemComponent from "@/components/ui/ListItemComponent";
+import LineMinimap from "@/components/ui/MapVertical";
+import PercentageDiagramVertical from "@/components/ui/percentageDiagramVertical";
+import PercentageDiagramHorizontal from "@/components/ui/percentageDiagramHorizontal";
+import PercentagePosNegDiagram from "@/components/ui/percentagePosNegDiagram";
+import CtaMiniComponent from "@/components/data/Fragments/data-CtaMiniComponent";
 interface CaseStudyData {
   _id: string;
   title: string;
@@ -371,47 +366,44 @@ export default function CaseStudyPageClient({
               duration={0.5}
               distance={80}
             >
-              {caseStudy.approachToSolution ? (
-                <>
-                  <h2 className="text-9xl mb-2 text-gray-100 max-w-xl font-semibold tracking-tight leading-compress">
-                    Approach
-                  </h2>
-                  <p className="text-xl text-gray-100 max-w-2xs mx-auto">
-                    {caseStudy.approachToSolution}
-                  </p>
-                </>
-              ) : (
-                <>
-                  <h2 className="text-9xl mb-2 text-gray-100 max-w-xl font-semibold tracking-tight leading-compress">
-                    Stores
-                  </h2>
-                  <h2 className="text-5xl text-gray-100 max-w-xl font-semibold tracking-tight leading-compress mb-4">
-                    that work harder:
-                  </h2>
-                  <p className="text-xl text-gray-100 max-w-2xs mx-auto">
-                    Building awareness, expanding consideration, and ultimately
-                    driving more sales.
-                  </p>
-                </>
-              )}
+              <h2 className="text-9xl mb-2 text-gray-100 max-w-xl font-semibold tracking-tight leading-compress">
+                Stores
+              </h2>
+              <h2 className="text-5xl text-gray-100 max-w-xl font-semibold tracking-tight leading-compress mb-4">
+                that work harder:
+              </h2>
+              <p className="text-xl text-gray-100 max-w-2xs mx-auto">
+                Building awareness, expanding consideration, and ultimately
+                driving more sales.
+              </p>
             </StaggeredSlideUp>
           </div>
-          <div className="col-span-5 col-start-3 mt-8 border-t border-white pt-4">
-            <ListContainerComponent>
-              <ListItemComponent size="small" fontWeight="normal">
-                Our Store revamp has delivered strong results; expanding reach,
-                increasing traffic, and driving deeper engagement through rich
-                media and brand storytelling. This is reflected in higher
-                visits, longer dwell time, and increased sales, particularly
-                through organic channels.
-              </ListItemComponent>
-              <ListItemComponent size="small" fontWeight="normal">
-                While conversion rates are slightly down YoY, this aligns with
-                the broader, awareness-based nature of organic Store traffic and
-                reduced targeted paid media in EU5.
-              </ListItemComponent>
-            </ListContainerComponent>
-          </div>
+          {caseStudy.approachToSolution ? (
+            <div className="col-span-5 col-start-3 mt-8 border-t border-white pt-4">
+              <ListContainerComponent>
+                <ListItemComponent size="small" fontWeight="normal">
+                  {caseStudy.approachToSolution}
+                </ListItemComponent>
+              </ListContainerComponent>
+            </div>
+          ) : (
+            <div className="col-span-5 col-start-3 mt-8 border-t border-white pt-4">
+              <ListContainerComponent>
+                <ListItemComponent size="small" fontWeight="normal">
+                  Our Store revamp has delivered strong results; expanding
+                  reach, increasing traffic, and driving deeper engagement
+                  through rich media and brand storytelling. This is reflected
+                  in higher visits, longer dwell time, and increased sales,
+                  particularly through organic channels.
+                </ListItemComponent>
+                <ListItemComponent size="small" fontWeight="normal">
+                  While conversion rates are slightly down YoY, this aligns with
+                  the broader, awareness-based nature of organic Store traffic
+                  and reduced targeted paid media in EU5.
+                </ListItemComponent>
+              </ListContainerComponent>
+            </div>
+          )}
         </div>
       </div>
 

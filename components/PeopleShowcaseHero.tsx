@@ -1,6 +1,6 @@
 import React from "react";
 import Button2 from "./ui/Button2";
-import StaggeredSlideUp from "./StaggeredSlideUp";
+import StaggeredSlideUp from "./ui/StaggeredSlideUp";
 // Image imports from Figma assets
 const torstenImage = "/video/people/Torsten.mp4";
 const steveImage = "/video/people/Steve.mp4";

@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
-import GridBackground from "@/components/GridBackground";
-import StaggeredSlideUp from "@/components/StaggeredSlideUp";
-import HamburgerGradientMenu from "@/components/HamburgerGradientMenu";
-import CaseGalleryComponent from "@/components/pagebuilderComponents/CaseGalleryComponent";
+import GridBackground from "@/components/ui/GridBackground";
+import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
+import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
+import CaseGalleryComponent from "@/components/data/data-CaseGallery";
 
 interface CaseStudy {
   _id: string;

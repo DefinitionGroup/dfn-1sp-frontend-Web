@@ -5,10 +5,10 @@ import {
   HAS_CASE_STUDIES_QUERY,
   CASE_STUDIES_QUERY,
 } from "@/sanity/lib/queries";
-import FrontNavOverlay from "./FrontNavOverlay";
-import Footer from "./FooterNew";
+import FrontNavOverlay from "./menu/FrontNavOverlay";
+import Footer from "./menu/FooterNew";
 import { NavbarMenu, FooterMenu } from "@/types/menu.types";
-import PageWithMapVertical from "./PageWithMapVertical";
+import PageWithMapVertical from "./ui/PageWithMapVertical";
 
 interface SiteWrapperProps {
   children: React.ReactNode;
