@@ -229,7 +229,7 @@ export default function CaseStudyPageClient({
         </div>
       </div>
 
-      {/* Content Section (matches Plain's second Intro block) */}
+      {/* Content Section  */}
       <div
         id="Content"
         className="grid grid-cols-12 z-1 mx-auto bg-neutral-50 mt-8 min-h-[90vh] relative font-aspekta"

@@ -2,6 +2,7 @@ import showtimeGallery from "./1SP/Components/showtimeGallery";
 import heroShowtime from "./1SP/Components/heroShowtime";
 import sublineComponent from "./1SP/Components/sublineComponent";
 import Header from "./1SP/Components/Header";
+import contentSection from "./1SP/Components/contentSection";
 
 import badgeModule from "./1SP/Items/badgeModule";
 import carouselItem from "./1SP/Items/carouselItem";
@@ -31,7 +32,8 @@ const oneSPComponents = [
     showtimeGallery,
     heroShowtime,
     sublineComponent,
-    Header
+    Header,
+    contentSection
 ];
 const oneSPItems = [
     badgeModule,
