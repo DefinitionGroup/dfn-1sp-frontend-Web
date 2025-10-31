@@ -1,0 +1,85 @@
+import { defineType, defineField } from 'sanity'
+import { ArrowRightIcon } from '@sanity/icons'
+
+export default defineType({
+    name: 'ctaMiniComponent',
+    title: 'CTA mini Component',
+    type: 'object',
+    fields: [
+        defineField({
+            name: 'heading',
+            title: 'Heading',
+            type: 'string',
+            validation: (Rule) => Rule.required().min(1).max(80),
+        }),
+        defineField({
+            name: 'paragraph',
+            title: 'Paragraph',
+            type: 'string',
+        }),
+        defineField({
+            name: 'buttonText',
+            title: 'Button Text',
+            type: 'string',
+            validation: (Rule) => Rule.required().min(1).max(80),
+        }),
+        defineField({
+            name: 'link',
+            title: 'Link',
+            type: 'link', // your existing link type (internal/external)
+            validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+            name: 'variant',
+            title: 'Variant',
+            type: 'string',
+            description: 'Maps directly to Button2 variants',
+            initialValue: 'default',
+            options: {
+                list: [
+                    { title: 'Default', value: 'default' },
+                    { title: 'Black', value: 'black' },
+                    { title: 'Lime', value: 'lime' },
+                    { title: 'Lime (Small)', value: 'limesmall' },
+                ],
+                layout: 'radio',
+            },
+        }),
+        defineField({
+            name: 'alignment',
+            title: 'Alignment',
+            type: 'string',
+            description: 'Maps directly to CtaMiniComponent alignment',
+            initialValue: 'default',
+            options: {
+                list: [
+                    { title: 'Left', value: 'left' },
+                    { title: 'Right', value: 'right' },
+                    { title: 'Center', value: 'center' },
+                ],
+                layout: 'radio',
+            },
+        }),
+    ],
+    preview: {
+        select: {
+            heading: 'heading',
+            buttonText: 'buttonText',
+            linkType: 'link.linkType',
+            pageTitle: 'link.page.title',
+            url: 'link.externalUrl',
+            variant: 'variant',
+        },
+        prepare({ heading, buttonText, linkType, pageTitle, url, variant }) {
+            const dest = linkType === 'internal' ? (pageTitle ?? 'Page') : (url ?? 'URL')
+            const title = heading ?? 'CTA mini'
+            const subtitleParts = [buttonText, dest, variant].filter(Boolean)
+            const subtitle = subtitleParts.join(' • ')
+            return {
+                title,
+                subtitle,
+                media: ArrowRightIcon,
+            }
+        },
+    },
+})
