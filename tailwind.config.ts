@@ -68,9 +68,6 @@ const config: Config = {
         "4xl": "var(--font-size-4xl)",
         "5xl": "var(--font-size-5xl)",
         "6xl": "var(--font-size-6xl)",
-        "7xl": "var(--font-size-7xl)",
-        "8xl": "var(--font-size-8xl)",
-        "9xl": "var(--font-size-9xl)",
       },
       spacing: {
         xs: "var(--spacing-xs)",
