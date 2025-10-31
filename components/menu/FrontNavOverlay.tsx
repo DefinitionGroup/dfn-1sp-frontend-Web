@@ -298,18 +298,16 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         </StaggeredSlideUp>
       </motion.div>
 
-      <div className="col-span-2 flex justify-end items-center gap-4">
+      <div className="col-span-2 flex justify-center items-center gap-4">
         {/* All Cases button only on case detail pages */}
         {isCaseDetailRoute && (
-          <div className="flex items-center">
-            <button
-              type="button"
-              className={`border rounded-full inline-block mt-2 py-1 px-2 ${textColor} text-xxs font-bold cursor-pointer hover:text-lime-400`}
-              onClick={() => setShowOverlay(true)}
-            >
-              All Cases
-            </button>
-          </div>
+          <button
+            type="button"
+            className={`border rounded-full min-w-[80px] inline-block py-1 px-2 ${textColor} text-xxs font-bold cursor-pointer hover:text-lime-400`}
+            onClick={() => setShowOverlay(true)}
+          >
+            All Cases
+          </button>
         )}
         <Button2 variant="limesmall" text="Contact us" />
       </div>

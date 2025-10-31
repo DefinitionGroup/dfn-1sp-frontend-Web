@@ -94,7 +94,8 @@ export default function LogoCarousel({
       className={`relative w-full overflow-hidden ${className}`}
       style={{
         height,
-      }}>
+      }}
+    >
       {isEmpty ? (
         <div className="text-xxs text-neutral-500">No logos configured.</div>
       ) : (
@@ -103,6 +104,7 @@ export default function LogoCarousel({
           style={{
             gap: `${gapRem}rem`,
             height,
+            willChange: isHovered && pauseOnHover ? "auto" : "transform",
           }}
           animate={
             isHovered && pauseOnHover
@@ -118,14 +120,16 @@ export default function LogoCarousel({
           }}
           onHoverStart={() => setIsHovered(true)}
           onHoverEnd={() => setIsHovered(false)}
-          aria-label="Client & partner logos scrolling continuously">
+          aria-label="Client & partner logos scrolling continuously"
+        >
           {sequence.map(({ alt, src, key }) => (
             <motion.li
               key={key}
               className="flex items-center justify-center shrink-0"
               style={{ height }}
               whileHover={{ scale: 1.1 }}
-              transition={{ type: "spring", stiffness: 300 }}>
+              transition={{ type: "spring", stiffness: 300 }}
+            >
               <Image
                 src={src}
                 alt={alt}

@@ -1,15 +1,64 @@
 import React from "react";
+import dynamic from "next/dynamic";
 import type {
   ShowtimeGallery as ShowtimeGalleryType,
   OneSPHeader as OneSPHeaderType,
 } from "@/types/sanity.types";
 import type { Page } from "@/types/sanity.types";
-import ShowtimeGallery from "./pagebuilder/pg-ShowtimeGallery";
-import HeroShowtime from "./pagebuilder/pg-HeroShowtime";
 import { HeroShowtime as HeroShowtimeType } from "@/types/sanity.types";
-import SublineComponent from "./pagebuilder/pg-SublineComponent";
-import OneSPHeaderStep from "./pagebuilder/pg-Header";
-import ContentSection from "./pagebuilder/pg-ContentSection";
+import ErrorBoundary from "./ErrorBoundary";
+
+// Dynamically import heavy components to reduce initial bundle size
+const ShowtimeGallery = dynamic(
+  () => import("./pagebuilder/pg-ShowtimeGallery"),
+  {
+    loading: () => (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: true,
+  }
+);
+
+const HeroShowtime = dynamic(() => import("./pagebuilder/pg-HeroShowtime"), {
+  loading: () => (
+    <div className="w-full h-64 flex items-center justify-center">
+      <div className="text-gray-400">Loading...</div>
+    </div>
+  ),
+  ssr: true,
+});
+
+const SublineComponent = dynamic(
+  () => import("./pagebuilder/pg-SublineComponent"),
+  {
+    loading: () => null,
+    ssr: true,
+  }
+);
+
+const OneSPHeaderStep = dynamic(() => import("./pagebuilder/pg-Header"), {
+  loading: () => (
+    <div className="w-full h-32 flex items-center justify-center">
+      <div className="text-gray-400">Loading...</div>
+    </div>
+  ),
+  ssr: true,
+});
+
+const ContentSection = dynamic(
+  () => import("./pagebuilder/pg-ContentSection"),
+  {
+    loading: () => (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: true,
+  }
+);
+
 type PageBuilderProps = { content: NonNullable<Page["content1sp"]> };
 
 export function PageBuilder({ content }: PageBuilderProps) {
@@ -20,41 +69,41 @@ export function PageBuilder({ content }: PageBuilderProps) {
       {content.map((block: any, i: number) => {
         if (!block?._type) return null;
 
+        const key = block._key ?? `${block._type}-${i}`;
+
         switch (block._type) {
           case "showtimeGallery":
             return (
-              <ShowtimeGallery
-                key={block._key ?? `showtimeGallery-${i}`}
-                data={block as ShowtimeGalleryType}
-              />
+              <ErrorBoundary key={`error-${key}`}>
+                <ShowtimeGallery
+                  key={key}
+                  data={block as ShowtimeGalleryType}
+                />
+              </ErrorBoundary>
             );
           case "heroShowTime":
             return (
-              <HeroShowtime
-                key={block._key ?? `heroShowtime-${i}`}
-                data={block as HeroShowtimeType}
-              />
+              <ErrorBoundary key={`error-${key}`}>
+                <HeroShowtime key={key} data={block as HeroShowtimeType} />
+              </ErrorBoundary>
             );
           case "sublineComponent":
             return (
-              <SublineComponent
-                key={block._key ?? `subline-${i}`}
-                data={block}
-              />
+              <ErrorBoundary key={`error-${key}`}>
+                <SublineComponent key={key} data={block} />
+              </ErrorBoundary>
             );
           case "oneSPHeader":
             return (
-              <OneSPHeaderStep
-                key={block._key ?? `oneSPHeader-${i}`}
-                step={block as OneSPHeaderType}
-              />
+              <ErrorBoundary key={`error-${key}`}>
+                <OneSPHeaderStep key={key} step={block as OneSPHeaderType} />
+              </ErrorBoundary>
             );
           case "contentSection":
             return (
-              <ContentSection
-                key={block._key ?? `contentSection-${i}`}
-                data={block}
-              />
+              <ErrorBoundary key={`error-${key}`}>
+                <ContentSection key={key} data={block} />
+              </ErrorBoundary>
             );
 
           default:

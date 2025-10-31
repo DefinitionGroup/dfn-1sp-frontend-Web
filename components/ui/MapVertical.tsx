@@ -41,6 +41,7 @@ export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
   const [isHovered, setIsHovered] = React.useState(false);
 
   const handleNavClick = (id: string) => {
+    if (typeof window === "undefined") return;
     const element = document.getElementById(id);
     element?.scrollIntoView({ behavior: "smooth" });
   };
@@ -143,6 +144,7 @@ function Line({
         height: LINE_WIDTH,
         width: active ? LINE_HEIGHT_ACTIVE : LINE_HEIGHT,
         scaleX,
+        willChange: "transform",
       }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -251,6 +253,7 @@ export function useScrollY(max: number = MAX_HEIGHT) {
 
   React.useEffect(() => {
     const updateHeight = () => {
+      if (typeof window === "undefined") return;
       setTotalHeight(document.body.scrollHeight - window.innerHeight);
     };
     updateHeight();

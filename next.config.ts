@@ -12,10 +12,11 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "**",
       },
-
     ],
-
+    formats: ["image/avif", "image/webp"],
   },
+  reactStrictMode: true,
+  poweredByHeader: false,
 };
 
 export default nextConfig;

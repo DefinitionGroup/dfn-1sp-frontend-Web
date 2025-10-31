@@ -454,7 +454,7 @@ export default function CaseStudyPageClient({
                   className="flex flex-col items-start border-b border-white/10 flex-1"
                 >
                   {getDiagramComponent(index, metric.value, 0.3 + index * 0.1)}
-                  <motion.p
+                  <motion.div
                     className="text-[8px] font-bold mt-12 text-gray-100"
                     variants={{
                       hidden: { opacity: 0, y: 20 },
@@ -472,7 +472,7 @@ export default function CaseStudyPageClient({
                       className="text-4xl font-bold tracking-tighter"
                       delay={300}
                     />
-                  </motion.p>
+                  </motion.div>
                   <StaggeredSlideUp
                     className=""
                     delay={0.0}

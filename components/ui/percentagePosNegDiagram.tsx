@@ -71,7 +71,7 @@ const PercentagePosNegDiagram: React.FC<PercentagePosNegDiagramProps> = ({
           x2="258"
           y2={barY}
           stroke="white"
-          stroke-dasharray="1 4"
+          strokeDasharray="1 4"
         />
         <line
           x1="1"
@@ -79,7 +79,7 @@ const PercentagePosNegDiagram: React.FC<PercentagePosNegDiagramProps> = ({
           x2="120"
           y2={barY}
           stroke="white"
-          stroke-dasharray="1 8"
+          strokeDasharray="1 8"
         />
         <circle
           opacity="0.3"
@@ -114,8 +114,8 @@ const PercentagePosNegDiagram: React.FC<PercentagePosNegDiagramProps> = ({
             x2="130"
             y2="5"
             stroke="#84cc16"
-            stroke-width="122"
-            stroke-dasharray="1 4"
+            strokeWidth="122"
+            strokeDasharray="1 4"
           />
         </motion.svg>
       )}
@@ -144,8 +144,8 @@ const PercentagePosNegDiagram: React.FC<PercentagePosNegDiagramProps> = ({
             x2="120"
             y2="4"
             stroke="white"
-            stroke-width="122"
-            stroke-dasharray="1 4"
+            strokeWidth="122"
+            strokeDasharray="1 4"
           />
         </motion.svg>
       )}
@@ -172,7 +172,7 @@ const PercentagePosNegDiagram: React.FC<PercentagePosNegDiagramProps> = ({
           xmlns="http://www.w3.org/2000/svg"
         >
           <line x1="8.20874" y1="-10" x2="8.20874" y2="120" stroke="#84cc16" />
-          <text x="0" y="130" fill="#84cc16" font-family="Arial" font-size="9">
+          <text x="0" y="130" fill="#84cc16" fontFamily="Arial" fontSize="9">
             {displayValue} %
           </text>
         </svg>
