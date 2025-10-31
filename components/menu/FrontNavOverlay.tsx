@@ -105,9 +105,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             href={`/${locale}`}
             onClick={(e) => {
               e.preventDefault();
-              router.push(`/${locale}`, {
-                onTransitionReady: pageAnimation,
-              });
+              router.push(`/${locale}`);
             }}
             aria-label="Home"
             className="flex items-center justify-center"
@@ -159,9 +157,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                       href={`/${item.slug}`}
                       onClick={(e) => {
                         e.preventDefault();
-                        router.push(`/${item.slug}`, {
-                          onTransitionReady: pageAnimation,
-                        });
+                        router.push(`/${item.slug}`);
                       }}
                     >
                       {item.displayName || item.title}
@@ -176,9 +172,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                     href={`/${locale}/cases`}
                     onClick={(e) => {
                       e.preventDefault();
-                      router.push(`/${locale}/cases`, {
-                        onTransitionReady: pageAnimation,
-                      });
+                      router.push(`/${locale}/cases`);
                     }}
                   >
                     Cases
@@ -193,9 +187,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                     href={`/${locale}/services`}
                     onClick={(e) => {
                       e.preventDefault();
-                      router.push(`/${locale}/services`, {
-                        onTransitionReady: pageAnimation,
-                      });
+                      router.push(`/${locale}/services`);
                     }}
                   >
                     Services
@@ -211,9 +203,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                   href={`/${locale}`}
                   onClick={(e) => {
                     e.preventDefault();
-                    router.push(`/${locale}`, {
-                      onTransitionReady: pageAnimation,
-                    });
+                    router.push(`/${locale}`);
                   }}
                 >
                   Home
@@ -226,9 +216,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                     href={`/${locale}/cases`}
                     onClick={(e) => {
                       e.preventDefault();
-                      router.push(`/${locale}/cases`, {
-                        onTransitionReady: pageAnimation,
-                      });
+                      router.push(`/${locale}/cases`);
                     }}
                   >
                     Cases
@@ -242,9 +230,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                     href={`/${locale}/services`}
                     onClick={(e) => {
                       e.preventDefault();
-                      router.push(`/${locale}/services`, {
-                        onTransitionReady: pageAnimation,
-                      });
+                      router.push(`/${locale}/services`);
                     }}
                   >
                     Services
@@ -257,9 +243,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                   href={`/${locale}/whatwedo`}
                   onClick={(e) => {
                     e.preventDefault();
-                    router.push(`/${locale}/whatwedo`, {
-                      onTransitionReady: pageAnimation,
-                    });
+                    router.push(`/${locale}/whatwedo`);
                   }}
                 >
                   Services
@@ -271,9 +255,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                   href={`/${locale}/our-family`}
                   onClick={(e) => {
                     e.preventDefault();
-                    router.push(`/${locale}/our-family`, {
-                      onTransitionReady: pageAnimation,
-                    });
+                    router.push(`/${locale}/our-family`);
                   }}
                 >
                   Our Family
@@ -285,9 +267,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                   href={`/${locale}/whatwedo`}
                   onClick={(e) => {
                     e.preventDefault();
-                    router.push(`/${locale}/whatwedo`, {
-                      onTransitionReady: pageAnimation,
-                    });
+                    router.push(`/${locale}/whatwedo`);
                   }}
                 >
                   Work with us
@@ -357,31 +337,6 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         </div>
       )}
     </nav>
-  );
-};
-
-const pageAnimation = () => {
-  document.documentElement.animate(
-    [
-      { opacity: 1, scale: 1, transform: "translateY(0)" },
-      { opacity: 1, scale: 0.9, transform: "translateY(-100px)" },
-    ],
-    {
-      duration: 1000,
-      easing: "cubic-bezier(0.76, 0, 0.24, 1)",
-      fill: "forwards",
-      pseudoElement: "::view-transition-old(root)",
-    }
-  );
-
-  document.documentElement.animate(
-    [{ transform: "translateY(100%)" }, { transform: "translateY(0)" }],
-    {
-      duration: 1000,
-      easing: "cubic-bezier(0.76, 0, 0.24, 1)",
-      fill: "forwards",
-      pseudoElement: "::view-transition-new(root)",
-    }
   );
 };
 

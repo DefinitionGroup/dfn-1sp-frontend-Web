@@ -103,7 +103,7 @@ function Button2({ text, className, href, variant = "default" }: Button2Props) {
             onClick={(e) => {
               e.preventDefault();
               if (href) {
-                router.push(href, { onTransitionReady: pageAnimation });
+                router.push(href);
               }
             }}
           >
@@ -115,7 +115,7 @@ function Button2({ text, className, href, variant = "default" }: Button2Props) {
             onClick={(e) => {
               e.preventDefault();
               if (href) {
-                router.push(href, { onTransitionReady: pageAnimation });
+                router.push(href);
               }
             }}
           >
@@ -126,30 +126,5 @@ function Button2({ text, className, href, variant = "default" }: Button2Props) {
     </div>
   );
 }
-
-const pageAnimation = () => {
-  document.documentElement.animate(
-    [
-      { opacity: 1, scale: 1, transform: "translateY(0)" },
-      { opacity: 1, scale: 0.9, transform: "translateY(-100px)" },
-    ],
-    {
-      duration: 1000,
-      easing: "cubic-bezier(0.76, 0, 0.24, 1)",
-      fill: "forwards",
-      pseudoElement: "::view-transition-old(root)",
-    }
-  );
-
-  document.documentElement.animate(
-    [{ transform: "translateY(100%)" }, { transform: "translateY(0)" }],
-    {
-      duration: 1000,
-      easing: "cubic-bezier(0.76, 0, 0.24, 1)",
-      fill: "forwards",
-      pseudoElement: "::view-transition-new(root)",
-    }
-  );
-};
 
 export default Button2;
