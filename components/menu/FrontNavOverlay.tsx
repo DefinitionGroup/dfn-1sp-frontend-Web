@@ -17,6 +17,8 @@ interface FrontNavOverlayProps {
   locale?: string;
   hasCaseStudies?: boolean;
   caseStudies?: any[];
+  hasServices?: boolean;
+  services?: any[];
 }
 
 const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
@@ -26,6 +28,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   locale = "en",
   hasCaseStudies = false,
   caseStudies = [],
+  hasServices = false,
+  services = [],
 }) => {
   const router = useTransitionRouter();
   const pathname = usePathname() || "";
@@ -71,6 +75,21 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         .toLowerCase();
       return (
         slug.includes("cases") || title === "cases" || title.includes("cases")
+      );
+    });
+
+  // Detect if Sanity menu already contains a Services link
+  const hasServicesLinkInMenu =
+    !!menuData?.menuItems &&
+    menuData.menuItems.some((item) => {
+      const slug = item.slug?.toLowerCase() || "";
+      const title = (item.displayName || item.title || "")
+        .toString()
+        .toLowerCase();
+      return (
+        slug.includes("services") ||
+        title === "services" ||
+        title.includes("services")
       );
     });
 
@@ -124,7 +143,11 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               {menuData.menuItems
                 .filter((item) => {
                   const isCasesPage = item.slug?.includes("cases");
+                  const isServicesPage = item.slug?.includes("services");
                   if (isCasesPage && !hasCaseStudies) {
+                    return false;
+                  }
+                  if (isServicesPage && !hasServices) {
                     return false;
                   }
                   return true;
@@ -162,6 +185,23 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                   </Link>
                 </span>
               )}
+
+              {hasServices && !hasServicesLinkInMenu && (
+                <span key="services-fallback" className={itemClass}>
+                  <Link
+                    className="hover:text-lime-400"
+                    href={`/${locale}/services`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push(`/${locale}/services`, {
+                        onTransitionReady: pageAnimation,
+                      });
+                    }}
+                  >
+                    Services
+                  </Link>
+                </span>
+              )}
             </>
           ) : (
             <>
@@ -192,6 +232,22 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                     }}
                   >
                     Cases
+                  </Link>
+                </span>
+              )}
+              {hasServices && (
+                <span className={itemClass}>
+                  <Link
+                    className="hover:text-lime-400"
+                    href={`/${locale}/services`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push(`/${locale}/services`, {
+                        onTransitionReady: pageAnimation,
+                      });
+                    }}
+                  >
+                    Services
                   </Link>
                 </span>
               )}

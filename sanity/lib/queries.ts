@@ -186,3 +186,27 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
 export const HAS_CASE_STUDIES_QUERY = defineQuery(`
 count(*[_type == "caseStudy" && channel match $channel && language == $language && isPublished == true]) > 0
 `);
+
+export const SERVICES_QUERY = defineQuery(`
+*[_type == "services" && language == $language] | order(name asc){
+  _id,
+  name,
+  taglabel,
+  "iconUrl": serviceicon.asset.secure_url,
+  serviceicon,
+  servicegrouprel[]->{
+    _id,
+    name,
+    taglabel
+  },
+  unitsrel[]->{
+    _id,
+    name,
+    slug
+  }
+}
+`);
+
+export const HAS_SERVICES_QUERY = defineQuery(`
+count(*[_type == "services" && language == $language]) > 0
+`);

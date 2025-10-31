@@ -7,76 +7,49 @@ import { useTransitionRouter } from "next-view-transitions";
 import { useOutsideClick } from "@/app/hooks/use-outside-click";
 import Button2 from "../ui/Button2";
 import Image from "next/image";
-interface ServiceItem {
-  id: number;
-  title: string;
-  subtitle: string;
-  image: string;
-  video?: string;
-  description: string;
-  category: string;
-  logosrc?: string;
-  url?: string;
-  urltext?: string;
-  link?: string;
+
+interface Service {
+  _id: string;
+  name: string;
+  taglabel?: string;
+  iconUrl?: string;
+  serviceicon?: any;
+  servicegrouprel?: { _id: string; name: string; taglabel?: string }[];
+  unitsrel?: { _id: string; name: string; slug: { current: string } }[];
 }
-
-const serviceItems: ServiceItem[] = [
-  {
-    id: 3,
-    title: "Awareness",
-    subtitle: "Dynamic brand storytelling",
-    image: "/service/services_logos_awareness.svg",
-    description: "Stunning motion graphics for digital campaigns",
-    category: "Design",
-  },
-
-  {
-    id: 2,
-    title: "Sales",
-    subtitle: "Vibrant crafted campaigns",
-    image: "/service/services_logos_sales.svg",
-    description: "Complete brand transformation with interactive elements",
-    category: "Design",
-  },
-  {
-    id: 1,
-    title: "Technology",
-    subtitle: "A strong foundation",
-    image: "/service/services_logos_technology.svg",
-    description: "Revolutionary web experiences that engage and convert",
-    category: "Web",
-  },
-];
 
 interface ServiceGalleryProps {
+  services: Service[];
   activeFilter?: string;
+  locale?: string;
 }
 
-export default function ServiceGallery({
+export default function ServiceGalleryComponent({
+  services = [],
   activeFilter = "All",
+  locale = "en",
 }: ServiceGalleryProps) {
   const router = useTransitionRouter();
-  const [active, setActive] = useState<
-    (typeof serviceItems)[number] | boolean | null
-  >(null);
+  const [active, setActive] = useState<Service | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   const id = useId();
 
-  // Filter items based on active filter
+  // Filter items based on active filter - using service groups
   const filteredItems =
     activeFilter === "All"
-      ? serviceItems
-      : serviceItems.filter((item) => item.category === activeFilter);
+      ? services
+      : services.filter((item) =>
+          item.servicegrouprel?.some((group) => group.name === activeFilter)
+        );
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
-        setActive(false);
+        setActive(null);
       }
     }
 
-    if (active && typeof active === "object") {
+    if (active) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -91,10 +64,10 @@ export default function ServiceGallery({
   return (
     <>
       <AnimatePresence>
-        {active && typeof active === "object" ? (
+        {active ? (
           <div className=" grid place-items-center fixed inset-0 bg-black/50 h-full backdrop-blur-lg w-full z-50">
             <motion.button
-              key={`button-${active.title}-${id}`}
+              key={`button-${active.name}-${id}`}
               layout
               initial={{
                 opacity: 1,
@@ -114,7 +87,7 @@ export default function ServiceGallery({
               <CloseIcon />
             </motion.button>
             <motion.div
-              layoutId={`card-${active.title}-${id}`}
+              layoutId={`card-${active.name}-${id}`}
               initial={{
                 opacity: 0,
               }}
@@ -133,72 +106,68 @@ export default function ServiceGallery({
             >
               <motion.div
                 className="w-full h-100 sm:rounded-t-xl opacity-80 object-cover object-top"
-                layoutId={`image-${active.title}-${id}`}
+                layoutId={`image-${active.name}-${id}`}
               >
-                {active.video ? (
-                  <video
-                    src={active.video}
-                    autoPlay
-                    muted
-                    loop
-                    className="w-full h-full absolute min-h-[90vh] sm:rounded-t-xl opacity-50 object-cover object-top"
-                  />
-                ) : (
+                {active.iconUrl ? (
                   <img
                     width={100}
                     height={500}
-                    src={active.image}
-                    alt={active.title}
+                    src={active.iconUrl}
+                    alt={active.name}
                     className="w-full h-full absolute min-h-[90vh] sm:rounded-t-xl invert opacity-50 object-cover object-top"
                   />
+                ) : (
+                  <div className="w-full h-full absolute min-h-[90vh] sm:rounded-t-xl bg-neutral-800 opacity-50" />
                 )}
               </motion.div>
               <div className="flex justify-between absolute items-start m-8 pt-8 z-10 ">
                 <div className="flex justify-between relative top-0 flex-col items-start z-10 left-0">
-                  <motion.img
-                    layoutId={`logo-${active.title}-${id}`}
-                    src={active.image}
-                    alt={active.title}
-                    className="w-24 h-20 object-contain "
-                  />
-                  <div className="">
-                    <motion.p
-                      layoutId={`description-${active.description}-${id}`}
-                      className="text-neutral-100 text-5xl dark:text-neutral-400 mb-8"
-                    >
-                      {active.description}
-                    </motion.p>
-                    <motion.h3
-                      layoutId={`title-${active.title}-${id}`}
-                      className="text-white text-xl max-w-2/3 dark:text-neutral-200"
-                    >
-                      {active.title}
-                    </motion.h3>
-                  </div>
-                  <motion.div
-                    transition={{ duration: 0.3, delay: 0.5 }}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="text-white text-sm md:text-sm lg:text-base mt-8 max-w-1/2 mb-2 md:h-fit pb-8 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
-                  >
-                    {active.description}
-                  </motion.div>
-                  {active.link && (
-                    <motion.div
-                      transition={{ duration: 0.3, delay: 0.7 }}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="min-w-[150px]"
-                    >
-                      <Button2
-                        variant="limesmall"
-                        href={active.link}
-                        text="Learn More"
-                      />
-                    </motion.div>
+                  {active.iconUrl && (
+                    <motion.img
+                      layoutId={`logo-${active.name}-${id}`}
+                      src={active.iconUrl}
+                      alt={active.name}
+                      className="w-24 h-20 object-contain "
+                    />
                   )}
+                  <div className="">
+                    <motion.h3
+                      layoutId={`title-${active.name}-${id}`}
+                      className="text-white text-5xl max-w-2/3 dark:text-neutral-200 mb-4"
+                    >
+                      {active.name}
+                    </motion.h3>
+                    {active.taglabel && (
+                      <motion.p
+                        layoutId={`description-${active.taglabel}-${id}`}
+                        className="text-neutral-100 text-xl dark:text-neutral-400 mb-8"
+                      >
+                        {active.taglabel}
+                      </motion.p>
+                    )}
+                  </div>
+                  {active.servicegrouprel &&
+                    active.servicegrouprel.length > 0 && (
+                      <motion.div
+                        transition={{ duration: 0.3, delay: 0.5 }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="text-white text-sm md:text-sm lg:text-base mt-8 max-w-1/2 mb-2 md:h-fit pb-8 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
+                      >
+                        <div className="text-sm text-neutral-300 mb-2">
+                          Service Groups:
+                        </div>
+                        {active.servicegrouprel.map((group) => (
+                          <span
+                            key={group._id}
+                            className="px-3 py-1 bg-neutral-700 rounded-full text-xs"
+                          >
+                            {group.name}
+                          </span>
+                        ))}
+                      </motion.div>
+                    )}
                 </div>
               </div>
             </motion.div>
@@ -217,49 +186,45 @@ export default function ServiceGallery({
           }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto w-full min-h-full"
         >
-          {filteredItems.map((item, index) => (
+          {filteredItems.map((item) => (
             <motion.div
-              layoutId={`card-${item.title}-${id}`}
-              key={`card-${item.title}-${id}`}
+              layoutId={`card-${item.name}-${id}`}
+              key={`card-${item.name}-${id}`}
               onClick={() => setActive(item)}
               className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[400px] group/card overflow-hidden h-[300px] cursor-pointer"
             >
               <motion.div
-                layoutId={`image-${item.title}-${id}`}
+                layoutId={`image-${item.name}-${id}`}
                 className="col-start-1 col-span-1  row-start-1 bg-black h-full min-h-full overflow-hidden rounded-sm"
               >
-                {item.video ? (
-                  <video
-                    src={item.video}
-                    autoPlay
-                    muted
-                    loop
-                    className="w-full h-full object-cover min-h-[400px] group-hover/card:opacity-100 object-top opacity-80 transition-all"
-                  />
-                ) : (
+                {item.iconUrl ? (
                   <Image
                     width={1000}
                     height={1000}
-                    src={item.image}
-                    alt={item.title}
+                    src={item.iconUrl}
+                    alt={item.name}
                     className="w-full h-full object-cover min-h-[400px] group-hover/card:opacity-100 object-top opacity-80 transition-all"
                   />
+                ) : (
+                  <div className="w-full h-full bg-neutral-800 opacity-80 group-hover/card:opacity-100 transition-all" />
                 )}
               </motion.div>
               <div className="col-start-1 col-span-1 flex  justify-between opacity-100 row-start-2 p-2 mb-16 z-1">
                 <div className="flex flex-col items-start">
                   <motion.h3
-                    layoutId={`title-${item.title}-${id}`}
+                    layoutId={`title-${item.name}-${id}`}
                     className="font-medium text-xl leading-snug tracking-tight text-neutral-700 dark:text-neutral-200 text-left"
                   >
-                    {item.title}
+                    {item.name}
                   </motion.h3>
-                  <motion.p
-                    layoutId={`description-${item.description}-${id}`}
-                    className="text-neutral-500 font-semibold text-sm dark:text-neutral-400"
-                  >
-                    {item.subtitle}
-                  </motion.p>
+                  {item.taglabel && (
+                    <motion.p
+                      layoutId={`description-${item.taglabel}-${id}`}
+                      className="text-neutral-500 font-semibold text-sm dark:text-neutral-400"
+                    >
+                      {item.taglabel}
+                    </motion.p>
+                  )}
                 </div>
               </div>
             </motion.div>
