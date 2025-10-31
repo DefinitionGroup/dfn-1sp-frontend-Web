@@ -76,6 +76,12 @@ export default function CaseStudyPageClient({
 
   // === Added navPoints collection to drive LineMinimap (matches Plain) ===
   const [navPoints, setNavPoints] = useState<string[]>([]);
+
+  // Ensure body overflow is reset when component mounts (fixes scroll lock issue from gallery navigation)
+  useEffect(() => {
+    document.body.style.overflow = "auto";
+  }, []);
+
   useEffect(() => {
     const collectPageIds = () => {
       setTimeout(() => {

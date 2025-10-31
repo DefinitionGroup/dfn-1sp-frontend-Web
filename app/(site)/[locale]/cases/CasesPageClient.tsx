@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import GridBackground from "@/components/ui/GridBackground";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
@@ -33,6 +33,11 @@ export default function CasesPageClient({
   locale,
 }: CasesPageClientProps) {
   const [activeFilter, setActiveFilter] = useState<string>("All");
+
+  // Ensure body overflow is reset when component mounts (in case user navigates back)
+  useEffect(() => {
+    document.body.style.overflow = "auto";
+  }, []);
 
   // Extract unique service names from case studies
   const uniqueServices = Array.from(

@@ -60,13 +60,24 @@ export default function CaseGalleryComponent({
     document.body.style.overflow = active ? "hidden" : "auto";
 
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      // Always reset overflow when component unmounts or active changes
+      document.body.style.overflow = "auto";
+    };
   }, [active]);
 
   useOutsideClick(ref, () => setActive(null));
 
   const handleViewCaseStudy = (slug: string) => {
-    router.push(`/${locale}/cases/${slug}`);
+    // Reset body overflow before navigation to prevent scroll lock on next page
+    document.body.style.overflow = "auto";
+    // Close the modal
+    setActive(null);
+    // Navigate after a brief delay to ensure cleanup happens
+    setTimeout(() => {
+      router.push(`/${locale}/cases/${slug}`);
+    }, 50);
   };
 
   return (
