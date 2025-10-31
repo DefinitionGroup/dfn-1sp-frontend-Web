@@ -99,7 +99,8 @@ export default defineType({
                 { type: 'showtimeGallery' },
                 { type: 'heroShowTime' },
                 { type: 'sublineComponent' },
-                { type: 'oneSPHeader' }
+                { type: 'oneSPHeader' },
+                { type: 'contentSection' }
             ],
             hidden: ({ parent }: any) => parent?.channel !== '1spWeb',
         }),

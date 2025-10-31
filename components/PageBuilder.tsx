@@ -4,11 +4,12 @@ import type {
   OneSPHeader as OneSPHeaderType,
 } from "@/types/sanity.types";
 import type { Page } from "@/types/sanity.types";
-import ShowtimeGallery from "./pagebuilderComponents/showtimeGallery";
-import HeroShowtime from "./pagebuilderComponents/HeroShowtime";
+import ShowtimeGallery from "./pagebuilder/pg-ShowtimeGallery";
+import HeroShowtime from "./pagebuilder/pg-HeroShowtime";
 import { HeroShowtime as HeroShowtimeType } from "@/types/sanity.types";
-import SublineComponent from "./pagebuilderComponents/SublineComponent";
-import OneSPHeaderStep from "./pagebuilderComponents/Header";
+import SublineComponent from "./pagebuilder/pg-SublineComponent";
+import OneSPHeaderStep from "./pagebuilder/pg-Header";
+import ContentSection from "./pagebuilder/pg-ContentSection";
 type PageBuilderProps = { content: NonNullable<Page["content1sp"]> };
 
 export function PageBuilder({ content }: PageBuilderProps) {
@@ -46,6 +47,13 @@ export function PageBuilder({ content }: PageBuilderProps) {
               <OneSPHeaderStep
                 key={block._key ?? `oneSPHeader-${i}`}
                 step={block as OneSPHeaderType}
+              />
+            );
+          case "contentSection":
+            return (
+              <ContentSection
+                key={block._key ?? `contentSection-${i}`}
+                data={block}
               />
             );
 

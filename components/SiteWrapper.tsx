@@ -4,11 +4,13 @@ import {
   FOOTER_QUERY,
   HAS_CASE_STUDIES_QUERY,
   CASE_STUDIES_QUERY,
+  HAS_SERVICES_QUERY,
+  SERVICES_QUERY,
 } from "@/sanity/lib/queries";
-import FrontNavOverlay from "./FrontNavOverlay";
-import Footer from "./FooterNew";
+import FrontNavOverlay from "./menu/FrontNavOverlay";
+import Footer from "./menu/FooterNew";
 import { NavbarMenu, FooterMenu } from "@/types/menu.types";
-import PageWithMapVertical from "./PageWithMapVertical";
+import PageWithMapVertical from "./ui/PageWithMapVertical";
 
 interface SiteWrapperProps {
   children: React.ReactNode;
@@ -47,6 +49,18 @@ export default async function SiteWrapper({
     params: { channel, language },
   });
 
+  // Check if services exist for this language
+  const { data: hasServices } = await sanityFetch({
+    query: HAS_SERVICES_QUERY,
+    params: { language },
+  });
+
+  // Fetch services for the navigation overlay
+  const { data: services } = await sanityFetch({
+    query: SERVICES_QUERY,
+    params: { language },
+  });
+
   return (
     <>
       <PageWithMapVertical>
@@ -56,6 +70,8 @@ export default async function SiteWrapper({
           locale={language}
           hasCaseStudies={hasCaseStudies || false}
           caseStudies={caseStudies || []}
+          hasServices={hasServices || false}
+          services={services || []}
         />
         {children}
         <Footer menuData={footerData as FooterMenu} />
