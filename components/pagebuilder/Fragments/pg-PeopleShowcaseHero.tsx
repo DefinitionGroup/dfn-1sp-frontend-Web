@@ -4,7 +4,8 @@ import type { CloudinaryAsset } from "@/types/sanity.types";
 import { assetUrl } from "@/utils/utils";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import StaggeredFadeIn from "@/components/ui/StaggeredFadeIn";
-
+import Image from "next/image";
+import Link from "next/link";
 export interface MemberItem {
   name?: string;
   media?: (CloudinaryAsset & { resource_type?: string }) | null;
@@ -64,7 +65,7 @@ export default function PeopleShowcaseHero({
               >
                 {isVideo ? (
                   <video
-                    src={src}
+                    src={src ?? ""}
                     autoPlay
                     muted
                     loop
@@ -72,9 +73,11 @@ export default function PeopleShowcaseHero({
                     className="object-cover transition-all duration-300 group-hover:brightness-110 group-hover:scale-[0.45]"
                   />
                 ) : (
-                  <img
-                    src={src}
+                  <Image
+                    src={src ?? ""}
                     alt={label}
+                    width={400}
+                    height={400}
                     className="object-cover transition-all duration-300 group-hover:brightness-110 group-hover:scale-[0.45]"
                   />
                 )}
@@ -115,19 +118,21 @@ export default function PeopleShowcaseHero({
                       </p>
                     )}
                     {member.profileUrl && (
-                      <a
+                      <Link
                         href={member.profileUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-white/90 text-sm hover:text-lime-400 transition-colors flex items-center"
                       >
-                        <img
+                        <Image
                           src="/LinkedinLogo.svg"
                           alt="LinkedIn"
+                          width={16}
+                          height={16}
                           className="w-4 h-4 mr-2"
                         />
                         LinkedIn Profile
-                      </a>
+                      </Link>
                     )}
                   </StaggeredFadeIn>
                 </div>

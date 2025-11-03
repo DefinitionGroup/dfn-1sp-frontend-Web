@@ -1,6 +1,6 @@
 import React from "react";
 import { defineField, defineType } from "sanity";
-
+import Image from "next/image";
 // Renders a Cloudinary thumbnail in Studio previews
 const PreviewMedia: React.FC<{ src?: string; alt?: string }> = ({
   src,
@@ -8,9 +8,11 @@ const PreviewMedia: React.FC<{ src?: string; alt?: string }> = ({
 }) => {
   if (!src) return null;
   return (
-    <img
+    <Image
       src={src}
       alt={alt || ""}
+      width={100}
+      height={100}
       style={{ width: "100%", height: "100%", objectFit: "cover" }}
     />
   );

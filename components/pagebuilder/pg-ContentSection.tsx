@@ -5,7 +5,7 @@ import StaggeredFadeIn from "@/components/ui/StaggeredFadeIn";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
-
+import Link from "next/link";
 type ContentSectionData = {
   title?: string;
   introHeading?: string;
@@ -123,14 +123,14 @@ export default function ContentSection({ data }: { data: ContentSectionData }) {
         const target = value?.blank ? "_blank" : undefined;
         const rel = value?.blank ? "noopener noreferrer" : undefined;
         return (
-          <a
+          <Link
             href={value?.href}
             target={target}
             rel={rel}
             className="text-blue-600 hover:text-blue-800 underline transition-colors"
           >
             {children}
-          </a>
+          </Link>
         );
       },
     },

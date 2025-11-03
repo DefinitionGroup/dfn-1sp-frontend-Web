@@ -5,8 +5,8 @@ import { AnimatePresence, motion } from "motion/react";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import type { CardItem, CloudinaryAsset } from "@/types/sanity.types";
 import { assetUrl } from "@/utils/utils";
-import { useOutsideClick } from "@/app/hooks/use-outside-click";
-
+import { useOutsideClick } from "@/hooks/use-outside-click";
+import Image from "next/image";
 export interface ExpandableCardsProps {
   items?: CardItem[];
   variant?: "default" | "compact";
@@ -167,7 +167,7 @@ export default function ExpandableCards({
                 className="w-full h-100 sm:rounded-t-xl opacity-80 object-cover object-top"
                 layoutId={`image-${active.title}-${id}`}
               >
-                <img
+                <Image
                   width={100}
                   height={500}
                   src={active.src}
@@ -243,7 +243,7 @@ export default function ExpandableCards({
                 layoutId={`image-${card.title}-${id}`}
                 className="col-start-1 col-span-1 row-start-1 bg-black h-full min-h-full overflow-hidden"
               >
-                <img
+                <Image
                   width={1000}
                   height={1000}
                   src={card.src}

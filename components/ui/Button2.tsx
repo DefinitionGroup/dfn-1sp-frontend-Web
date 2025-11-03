@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { cn } from "@/app/lib/utils";
+import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "@phosphor-icons/react";
 import { useTransitionRouter } from "next-view-transitions";
 
@@ -78,22 +78,22 @@ function Button2({ text, className, href, variant = "default" }: Button2Props) {
     <div className={containerClass}>
       {isExternal ? (
         <>
-          <a
+          <Link
             href={href}
             target="_blank"
             rel="noopener noreferrer nofollow"
             className={topClass}
           >
             {content(false)}
-          </a>
-          <a
+          </Link>
+          <Link
             href={href}
             target="_blank"
             rel="noopener noreferrer nofollow"
             className={bottomClass}
           >
             {content(true)}
-          </a>
+          </Link>
         </>
       ) : (
         <>

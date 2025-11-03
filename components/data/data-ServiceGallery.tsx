@@ -4,7 +4,7 @@ import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
 import { useTransitionRouter } from "next-view-transitions";
-import { useOutsideClick } from "@/app/hooks/use-outside-click";
+import { useOutsideClick } from "@/hooks/use-outside-click";
 import Button2 from "../ui/Button2";
 import Image from "next/image";
 
@@ -109,7 +109,7 @@ export default function ServiceGalleryComponent({
                 layoutId={`image-${active.name}-${id}`}
               >
                 {active.iconUrl ? (
-                  <img
+                  <Image
                     width={100}
                     height={500}
                     src={active.iconUrl}

@@ -1,6 +1,6 @@
 import React from "react";
 import { defineType, defineField, defineArrayMember } from "sanity";
-
+import Image from "next/image";
 type MediaParent = { useVideo?: boolean };
 
 // Preview component to render Cloudinary image/video in Studio
@@ -18,7 +18,9 @@ const PreviewMedia: React.FC<{
   if (resourceType === "video") {
     return <video src={src} muted playsInline style={style} />;
   }
-  return <img src={src} alt={alt || ""} style={style} />;
+  return (
+    <Image width={400} height={400} src={src} alt={alt || ""} style={style} />
+  );
 };
 
 export default defineType({

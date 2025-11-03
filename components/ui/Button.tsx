@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import { ReactNode, ButtonHTMLAttributes } from "react";
-
+import Image from "next/image";
 const arrowIcon = "/8dfaedadc761d9f7c3e2635e641b6f6c8227ece8.svg";
 
 interface ButtonProps
@@ -76,7 +76,8 @@ export default function Button({
         stiffness: 300,
         damping: 30,
       }}
-      {...props}>
+      {...props}
+    >
       {/* Content */}
       <motion.span
         className="flex-1 text-left"
@@ -85,7 +86,8 @@ export default function Button({
           loading: { opacity: 0.7, x: isLoading ? 10 : 0 },
         }}
         animate={isLoading ? "loading" : "initial"}
-        transition={{ duration: 0.2 }}>
+        transition={{ duration: 0.2 }}
+      >
         {/* Loading Spinner */}
         {isLoading && (
           <motion.div
@@ -106,10 +108,12 @@ export default function Button({
         <motion.div
           className="w-[13px] h-[13px] ml-8 flex-shrink-0"
           whileHover={{ x: 2 }}
-          transition={{ duration: 0.2 }}>
-          <img
+          transition={{ duration: 0.2 }}
+        >
+          <Image
             src={arrowIcon}
             alt=""
+            fill
             className="w-full h-full object-contain"
           />
         </motion.div>

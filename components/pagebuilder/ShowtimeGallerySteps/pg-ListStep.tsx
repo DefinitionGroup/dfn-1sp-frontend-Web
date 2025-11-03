@@ -203,7 +203,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
     : "col-span-6 col-start-7";
 
   return (
-    <section className="relative">
+    <section className="relative my-4">
       {/* Optional background media */}
       {mediaUrl && (
         <HeaderImageVideoComp2

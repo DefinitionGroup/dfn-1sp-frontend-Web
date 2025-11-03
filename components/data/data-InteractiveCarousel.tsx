@@ -456,7 +456,7 @@ export default function SmartCarousel({
             {carouselItems.map((item, index) => (
               <motion.button
                 key={item.id}
-                className={`flex-shrink-0 w-22 h-18 rounded-sm overflow-hidden outline-3 transition-colors ${index === currentIndex ? "outline-lime-500" : "outline-transparent"}`}
+                className={`relative flex-shrink-0 w-22 h-18 rounded-sm overflow-hidden outline-3 transition-colors ${index === currentIndex ? "outline-lime-500" : "outline-transparent"}`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => {
@@ -464,10 +464,11 @@ export default function SmartCarousel({
                   setCurrentIndex(index);
                 }}
               >
-                <img
+                <Image
                   src={item.image}
                   alt={item.title}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
                 />
               </motion.button>
             ))}
