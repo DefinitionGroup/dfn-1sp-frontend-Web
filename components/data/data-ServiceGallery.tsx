@@ -109,7 +109,7 @@ export default function ServiceGalleryComponent({
                 layoutId={`image-${active.name}-${id}`}
               >
                 {active.iconUrl ? (
-                  <img
+                  <Image
                     width={100}
                     height={500}
                     src={active.iconUrl}

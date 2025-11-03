@@ -78,22 +78,22 @@ function Button2({ text, className, href, variant = "default" }: Button2Props) {
     <div className={containerClass}>
       {isExternal ? (
         <>
-          <a
+          <Link
             href={href}
             target="_blank"
             rel="noopener noreferrer nofollow"
             className={topClass}
           >
             {content(false)}
-          </a>
-          <a
+          </Link>
+          <Link
             href={href}
             target="_blank"
             rel="noopener noreferrer nofollow"
             className={bottomClass}
           >
             {content(true)}
-          </a>
+          </Link>
         </>
       ) : (
         <>

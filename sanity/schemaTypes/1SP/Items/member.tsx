@@ -1,6 +1,6 @@
 import React from "react";
 import { defineType, defineField } from "sanity";
-
+import Image from "next/image";
 // Render Cloudinary media (image/video) in Studio preview
 const PreviewMedia: React.FC<{
   src?: string;
@@ -16,7 +16,9 @@ const PreviewMedia: React.FC<{
   if (resourceType === "video") {
     return <video src={src} muted playsInline style={style} />;
   }
-  return <img src={src} alt={alt || ""} style={style} />;
+  return (
+    <Image width={400} height={400} src={src} alt={alt || ""} style={style} />
+  );
 };
 
 export default defineType({

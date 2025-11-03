@@ -3,11 +3,10 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
-import Link from "next/link";
 import { useOutsideClick } from "@/app/hooks/use-outside-click";
 import { useTransitionRouter } from "next-view-transitions";
-import Button2 from "../ui/Button2";
 import IntertitleCTA from "./Fragments/data-IntertitleCTA";
+import Image from "next/image";
 interface CaseStudy {
   _id: string;
   title: string;
@@ -128,7 +127,7 @@ export default function CaseGalleryMenu({
                     className="w-full object-cover group-hover/card:opacity-100 object-top opacity-80 transition-all h-full"
                   />
                 ) : (
-                  <img
+                  <Image
                     width={1000}
                     height={1000}
                     src={item.mainImageUrl || "/placeholder.jpg"}

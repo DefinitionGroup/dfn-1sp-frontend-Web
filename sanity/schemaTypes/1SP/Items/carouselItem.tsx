@@ -1,6 +1,6 @@
 import React from "react";
 import { defineType, defineField } from "sanity";
-
+import Image from "next/image";
 // Small helper to render Cloudinary thumbnails in the Studio preview
 const PreviewMedia: React.FC<{ src?: string; alt?: string }> = ({
   src,
@@ -8,9 +8,11 @@ const PreviewMedia: React.FC<{ src?: string; alt?: string }> = ({
 }) => {
   if (!src) return null;
   return (
-    <img
+    <Image
       src={src}
       alt={alt || ""}
+      width={100}
+      height={100}
       style={{ width: "100%", height: "100%", objectFit: "cover" }}
     />
   );
@@ -56,7 +58,7 @@ export default defineType({
       return {
         title: title || "Untitled Item",
         subtitle: sub,
-        // Sanity allows a React node for `media`. We render a simple <img />
+        // Sanity allows a React node for `media`. We render a simple <Image />
         media: src ? <PreviewMedia src={src} alt={title} /> : undefined,
       };
     },

@@ -6,7 +6,7 @@ import { useOutsideClick } from "@/app/hooks/use-outside-click";
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
 import { useTransitionRouter } from "next-view-transitions";
 import Button2 from "../ui/Button2";
-
+import Image from "next/image";
 interface CaseStudy {
   _id: string;
   title: string;
@@ -136,7 +136,7 @@ export default function CaseGalleryComponent({
                     className="w-full h-full absolute min-h-[70vh] sm:rounded-t-xl opacity-50 object-cover object-top"
                   />
                 ) : (
-                  <img
+                  <Image
                     width={100}
                     height={500}
                     src={active.mainImageUrl || "/placeholder.jpg"}
@@ -228,7 +228,7 @@ export default function CaseGalleryComponent({
                     className="w-full h-full object-cover min-h-[400px] group-hover/card:opacity-100 object-top opacity-80 transition-all"
                   />
                 ) : (
-                  <img
+                  <Image
                     width={1000}
                     height={1000}
                     src={item.mainImageUrl || "/placeholder.png"}
