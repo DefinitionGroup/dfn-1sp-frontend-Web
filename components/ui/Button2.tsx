@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { cn } from "@/app/lib/utils";
+import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "@phosphor-icons/react";
 import { useTransitionRouter } from "next-view-transitions";
 
