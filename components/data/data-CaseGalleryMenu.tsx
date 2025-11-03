@@ -3,7 +3,7 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
-import { useOutsideClick } from "@/app/hooks/use-outside-click";
+import { useOutsideClick } from "@/hooks/use-outside-click";
 import { useTransitionRouter } from "next-view-transitions";
 import IntertitleCTA from "./Fragments/data-IntertitleCTA";
 import Image from "next/image";

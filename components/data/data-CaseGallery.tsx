@@ -2,7 +2,7 @@
 
 import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { useOutsideClick } from "@/app/hooks/use-outside-click";
+import { useOutsideClick } from "@/hooks/use-outside-click";
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
 import { useTransitionRouter } from "next-view-transitions";
 import Button2 from "../ui/Button2";

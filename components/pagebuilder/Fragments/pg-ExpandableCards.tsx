@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import type { CardItem, CloudinaryAsset } from "@/types/sanity.types";
 import { assetUrl } from "@/utils/utils";
-import { useOutsideClick } from "@/app/hooks/use-outside-click";
+import { useOutsideClick } from "@/hooks/use-outside-click";
 import Image from "next/image";
 export interface ExpandableCardsProps {
   items?: CardItem[];
