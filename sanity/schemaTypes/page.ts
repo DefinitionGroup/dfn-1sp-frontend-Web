@@ -78,6 +78,31 @@ export default defineType({
             validation: (Rule: any) => Rule.required(),
         }),
         defineField({
+            name: 'isHomepage',
+            title: 'Homepage',
+            type: 'boolean',
+            initialValue: false,
+            description: 'Mark this page as the homepage for this language and channel. Only one homepage per language+channel is allowed.',
+            validation: (Rule: any) =>
+                Rule.custom(async (value: boolean, context: any) => {
+                    if (!value) return true;
+                    const { document, getClient } = context;
+                    const language = document?.language || 'de';
+                    const channel = document?.channel || '1spWeb';
+                    const baseId = (document?._id || '').replace(/^drafts\./, '');
+                    const client = getClient({ apiVersion: '2024-10-01' });
+                    const query = `count(*[_type == "page" && isHomepage == true && language == $language && channel == $channel && !(_id in [$draftId, $publishedId])])`;
+                    const params = {
+                        language,
+                        channel,
+                        draftId: `drafts.${baseId}`,
+                        publishedId: baseId,
+                    };
+                    const count = await client.fetch(query, params);
+                    return count === 0 || 'Another homepage already exists for this language + channel.';
+                }),
+        }),
+        defineField({
             name: 'metadata',
             title: 'Metadata',
             type: 'object',
@@ -147,11 +172,17 @@ export default defineType({
     ],
 
     preview: {
-        select: { title: 'title', channel: 'channel' },
-        prepare({ title, channel }: any) {
+        select: { title: 'title', channel: 'channel', isHomepage: 'isHomepage' },
+        prepare({ title, channel, isHomepage }: any) {
+            const channelLabel = channel === '1spWeb' ? '1SP Website'
+                : channel === 'msmWeb' ? 'MSM Website'
+                    : channel === 'studioco2Web' ? 'Studio CO2 Website'
+                        : channel === 'flizrWeb' ? 'Flizr Website'
+                            : channel || '';
+            const suffix = isHomepage ? ' • 🏠 Homepage' : '';
             return {
                 title: title || 'Untitled Page',
-                subtitle: channel || '',
+                subtitle: `${channelLabel}${suffix}`,
             }
         },
     },
