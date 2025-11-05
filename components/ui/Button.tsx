@@ -2,8 +2,7 @@
 
 import { motion } from "motion/react";
 import { ReactNode, ButtonHTMLAttributes } from "react";
-import Image from "next/image";
-const arrowIcon = "/8dfaedadc761d9f7c3e2635e641b6f6c8227ece8.svg";
+import { ArrowRightIcon } from "@phosphor-icons/react";
 
 interface ButtonProps
   extends Omit<
@@ -51,7 +50,7 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const baseClasses =
-    "relative inline-flex items-center justify-between font-['Aspekta_Variable'] font-normal leading-[1.45] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#f4f4f4] focus:ring-offset-2 focus:ring-offset-[#121212] disabled:opacity-50 disabled:cursor-not-allowed";
+    "relative inline-flex items-center justify-between font-bold leading-[1.45] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#f4f4f4] focus:ring-offset-2 focus:ring-offset-[#121212] disabled:opacity-50 disabled:cursor-not-allowed";
 
   const combinedClasses = `${baseClasses} ${buttonVariants[variant]} ${
     buttonSizes[size]
@@ -103,19 +102,14 @@ export default function Button({
         {children}
       </motion.span>
 
-      {/* Arrow Icon */}
+      {/* Arrow Icon (Phosphor) */}
       {showArrow && !isLoading && (
         <motion.div
-          className="w-[13px] h-[13px] ml-8 flex-shrink-0"
+          className="ml-8 flex-shrink-0"
           whileHover={{ x: 2 }}
           transition={{ duration: 0.2 }}
         >
-          <Image
-            src={arrowIcon}
-            alt=""
-            fill
-            className="w-full h-full object-contain"
-          />
+          <ArrowRightIcon size={13} weight="bold" color="currentColor" />
         </motion.div>
       )}
     </motion.button>
