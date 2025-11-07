@@ -124,113 +124,12 @@ export default defineType({
             name: 'mediaGallery',
             title: 'Media Gallery',
             type: 'array',
-            of: [
-                {
-                    type: 'object',
-                    fields: [
-                        {
-                            name: 'mediaType',
-                            title: 'Media Type',
-                            type: 'string',
-                            options: {
-                                list: [
-                                    { title: 'Image', value: 'image' },
-                                    { title: 'Video', value: 'video' }
-                                ]
-                            },
-                            validation: (Rule) => Rule.required()
-                        },
-                        {
-                            name: 'image',
-                            title: 'Image',
-                            type: 'cloudinary.asset',
-                            hidden: ({ parent }: { parent: any }) => parent?.mediaType !== 'image',
-                            validation: (Rule) => Rule.custom((image, context: any) => {
-                                const parent = context.parent;
-                                if (parent?.mediaType === 'image' && !image) {
-                                    return 'Image is required when media type is Image';
-                                }
-                                return true;
-                            })
-                        },
-                        {
-                            name: 'video',
-                            title: 'Video',
-                            type: 'cloudinary.asset',
-                            hidden: ({ parent }: { parent: any }) => parent?.mediaType !== 'video',
-                            validation: (Rule) => Rule.custom((video, context: any) => {
-                                const parent = context.parent;
-                                if (parent?.mediaType === 'video' && !video) {
-                                    return 'Video is required when media type is Video';
-                                }
-                                return true;
-                            })
-                        },
-                        {
-                            name: 'alt',
-                            title: 'Alt Text / Description',
-                            type: 'string',
-                            description: 'Alternative text for images or description for videos'
-                        },
-                        {
-                            name: 'caption',
-                            title: 'Caption',
-                            type: 'string'
-                        }
-                    ],
-                    preview: {
-                        select: {
-                            mediaType: 'mediaType',
-                            image: 'image',
-                            video: 'video',
-                            alt: 'alt'
-                        },
-                        prepare({ mediaType, image, video, alt }) {
-                            return {
-                                title: alt || 'Untitled',
-                                subtitle: mediaType === 'image' ? 'Image' : 'Video',
-                                media: image || video
-                            }
-                        }
-                    }
-                }
-            ],
+            of: [{ type: 'mediaGalleryItem' }],
             validation: (Rule) => Rule.max(4).warning('Maximum 4 media items recommended'),
             description: 'Upload up to 4 media items (images or videos) for use in the case study page',
             group: 'media'
         },
-        {
-            name: 'imageGallery',
-            title: 'Image Gallery (Legacy)',
-            type: 'array',
-            of: [
-                {
-                    type: 'object',
-                    fields: [
-                        {
-                            name: 'image',
-                            title: 'Image',
-                            type: 'cloudinary.asset',
-                            group: 'media'
-                        },
-                        {
-                            name: 'alt',
-                            title: 'Alt Text',
-                            type: 'string',
-                            group: 'media'
-                        },
-                        {
-                            name: 'caption',
-                            title: 'Caption',
-                            type: 'string',
-                            group: 'media'
-                        }
-                    ]
-                }
-            ],
-            hidden: true,
-            group: 'media'
-        },
+
         {
             name: 'units',
             title: 'Related Units',

@@ -12,6 +12,9 @@ import paragraph from './Global/Objects/paragraph'
 import size from './Global/Objects/size'
 import services from './Global/Objects/services'
 import serviceGroup from './Global/Objects/serviceGroup'
+import cloudinaryImage from './Global/Objects/cloudinaryImage'
+import mediaGalleryItem from './Global/Objects/mediaGalleryItem'
+import imageGalleryItem from './Global/Objects/imageGalleryItem'
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [page, menu, caseStudy, unitCase, client, person, ...OneSPschemaTypes, link, cta, paragraph, size, services, serviceGroup],
+  types: [page, menu, caseStudy, unitCase, client, person, ...OneSPschemaTypes, link, cta, paragraph, size, services, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem],
 }
