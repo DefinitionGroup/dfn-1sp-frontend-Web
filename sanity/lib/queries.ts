@@ -29,7 +29,7 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
   }
 }`);
 
-export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == "home" && channel == $channel && language == $language][0]{
+export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == true && channel == $channel && language == $language][0]{
   ...,
   content1sp[]{
     ...,
