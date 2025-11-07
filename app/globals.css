@@ -176,7 +176,11 @@
 @layer base {
   body {
     @apply bg-background text-foreground;
-    font-family: var(--font-aspekta), system-ui, -apple-system, sans-serif;
+    font-family:
+      var(--font-aspekta),
+      system-ui,
+      -apple-system,
+      sans-serif;
   }
 
   /* Gradient Text Utilities */
@@ -248,9 +252,18 @@
   animation: none !important;
 }
 
+/* View Transitions - Fast and reliable */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+}
+
 ::view-transition-old(root) {
   z-index: 1;
-  animation: none !important;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
 }
 
 @keyframes logo-marquee {
