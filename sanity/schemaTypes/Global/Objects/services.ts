@@ -40,6 +40,15 @@ export default defineType({
                 {
                     type: 'reference',
                     to: [{ type: 'unit' }],
+                    options: {
+                        filter: ({ document }: { document: any }) => {
+                            const currentLanguage = document?.language || 'de';
+                            return {
+                                filter: '_type == "unit" && language == $language',
+                                params: { language: currentLanguage }
+                            };
+                        }
+                    }
                 },
             ],
             description: 'Units related to this service',
@@ -52,6 +61,15 @@ export default defineType({
                 {
                     type: 'reference',
                     to: [{ type: 'serviceGroup' }],
+                    options: {
+                        filter: ({ document }: { document: any }) => {
+                            const currentLanguage = document?.language || 'de';
+                            return {
+                                filter: '_type == "serviceGroup" && language == $language',
+                                params: { language: currentLanguage }
+                            };
+                        }
+                    }
                 },
             ],
             description: 'Service groups this service belongs to. Use the "Save & Sync Relationships" action to automatically update bidirectional references.',

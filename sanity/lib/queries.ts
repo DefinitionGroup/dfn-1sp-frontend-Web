@@ -176,6 +176,7 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
   solution,
   approachToSolution,
   metrics[]{
+    type,
     label,
     value
   },

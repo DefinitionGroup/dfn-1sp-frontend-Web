@@ -187,6 +187,15 @@ export default defineType({
                 {
                     type: 'reference',
                     to: [{ type: 'services' }],
+                    options: {
+                        filter: ({ document }: { document: any }) => {
+                            const currentLanguage = document?.language || 'de';
+                            return {
+                                filter: '_type == "services" && language == $language',
+                                params: { language: currentLanguage }
+                            };
+                        }
+                    }
                 },
             ],
             description: 'Services related to this unit. Changes here will automatically sync with the Services.',

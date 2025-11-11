@@ -41,6 +41,15 @@ export default defineType({
                 {
                     type: 'reference',
                     to: [{ type: 'services' }],
+                    options: {
+                        filter: ({ document }: { document: any }) => {
+                            const currentLanguage = document?.language || 'de';
+                            return {
+                                filter: '_type == "services" && language == $language',
+                                params: { language: currentLanguage }
+                            };
+                        }
+                    }
                 },
             ],
             description: 'Services that belong to this group. Use the "Save & Sync Relationships" action to automatically update bidirectional references.',

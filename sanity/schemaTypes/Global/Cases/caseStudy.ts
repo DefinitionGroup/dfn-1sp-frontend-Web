@@ -1,4 +1,7 @@
 import { defineType, defineField } from 'sanity'
+import { LuChartBarDecreasing } from 'react-icons/lu'
+import { GiNetworkBars } from 'react-icons/gi'
+import { CgLoadbarAlt } from 'react-icons/cg'
 
 export default defineType({
     name: 'caseStudy',
@@ -239,6 +242,15 @@ export default defineType({
                 {
                     type: 'reference',
                     to: [{ type: 'services' }],
+                    options: {
+                        filter: ({ document }: { document: any }) => {
+                            const currentLanguage = document?.language || 'de';
+                            return {
+                                filter: '_type == "services" && language == $language',
+                                params: { language: currentLanguage }
+                            };
+                        }
+                    }
                 },
             ],
             description: 'Services related to this case study. Changes here will automatically sync with the Services.',
@@ -275,36 +287,102 @@ export default defineType({
             of: [
                 {
                     type: 'object',
+                    name: 'metric',
+                    title: 'Metric',
+                    icon: GiNetworkBars,
                     fields: [
+                        {
+                            name: 'type',
+                            title: 'Metric Type',
+                            type: 'string',
+                            options: {
+                                list: [
+                                    {
+                                        title: 'Vertical Bar',
+                                        value: 'vertical',
+                                        icon: GiNetworkBars
+                                    },
+                                    {
+                                        title: 'Horizontal Bar',
+                                        value: 'horizontal',
+                                        icon: LuChartBarDecreasing
+                                    },
+                                    {
+                                        title: 'Positive/Negative',
+                                        value: 'posNeg',
+                                        icon: CgLoadbarAlt
+                                    }
+                                ],
+                                layout: 'radio'
+                            },
+                            initialValue: 'vertical',
+                            validation: (Rule) => Rule.required(),
+                            description: 'Choose the visualization type for this metric'
+                        },
                         {
                             name: 'label',
                             title: 'Label',
                             type: 'string',
-                            description: 'Metric label (e.g., "Dwell Time")',
+                            description: 'Metric label (e.g., "Dwell Time", "Conversion Rate")',
                             validation: (Rule) => Rule.required()
                         },
                         {
                             name: 'value',
                             title: 'Value',
                             type: 'number',
-                            description: 'Metric value (e.g., 20 for 20%)',
-                            validation: (Rule) => Rule.required()
+                            description: 'Metric value (e.g., 20 for 20%, -15 for -15%)',
+                            validation: (Rule) => Rule.required().custom((value, context: any) => {
+                                const parent = context.parent;
+                                const type = parent?.type;
+
+                                // Only posNeg type can have negative values
+                                if (type !== 'posNeg' && typeof value === 'number' && value < 0) {
+                                    return 'Only Positive/Negative type can have negative values. Choose "Positive/Negative" type or use a positive value.';
+                                }
+
+                                return true;
+                            })
                         }
                     ],
                     preview: {
                         select: {
+                            type: 'type',
                             label: 'label',
                             value: 'value'
                         },
-                        prepare({ label, value }) {
+                        prepare({ type, label, value }) {
+                            // Choose icon based on type using react-icons
+                            let icon;
+                            let typeLabel;
+
+                            switch (type) {
+                                case 'vertical':
+                                    icon = GiNetworkBars;
+                                    typeLabel = 'Vertical';
+                                    break;
+                                case 'horizontal':
+                                    icon = LuChartBarDecreasing;
+                                    typeLabel = 'Horizontal';
+                                    break;
+                                case 'posNeg':
+                                    icon = CgLoadbarAlt;
+                                    typeLabel = 'Pos/Neg';
+                                    break;
+                                default:
+                                    icon = GiNetworkBars;
+                                    typeLabel = 'Unknown';
+                            }
+
                             return {
-                                title: `${label}: ${value}%`
+                                title: `${label}: ${value}%`,
+                                subtitle: typeLabel,
+                                media: icon
                             }
                         }
                     }
                 }
             ],
-            description: 'Key metrics and performance indicators',
+            description: 'Key metrics and performance indicators. You can add multiple metrics of any type.',
             group: 'composable'
         }),
     ],
