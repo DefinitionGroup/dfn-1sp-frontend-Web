@@ -170,7 +170,9 @@ export default defineType({
                         }
                     }
                 }
-            ]
+            ],
+            description: 'Case studies that involve this unit. This field is automatically synced when case studies reference this unit.',
+
         },
         {
             name: 'isActive',
@@ -198,7 +200,7 @@ export default defineType({
                     }
                 },
             ],
-            description: 'Services related to this unit. Changes here will automatically sync with the Services.',
+            description: 'Services related to this unit. Use "Save & Sync Relationships" to automatically update the services with this unit reference.',
             group: 'relations',
         })
     ],

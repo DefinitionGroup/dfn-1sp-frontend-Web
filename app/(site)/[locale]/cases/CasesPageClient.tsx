@@ -120,6 +120,7 @@ export default function CasesPageClient({
               caseStudies={caseStudies}
               activeFilter={activeFilter}
               locale={locale}
+              filterAllText={t.casesList.filterAll}
             />
           </div>
         </div>

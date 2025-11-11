@@ -152,6 +152,7 @@ export default defineType({
                     }
                 }
             ],
+            description: 'Units related to this case study. Use "Save & Sync Relationships" to automatically update the units with this case study reference.',
             group: 'relations'
         },
         {
@@ -168,6 +169,15 @@ export default defineType({
                     };
                 }
             },
+            description: 'Client for this case study. Use "Save & Sync Relationships" to automatically update the client with this case study reference.',
+            group: 'relations'
+        },
+        {
+            name: 'people',
+            title: 'Related People',
+            type: 'array',
+            of: [{ type: 'personReference' }],
+            description: 'People involved in this case study. Mark one as primary contact. Use "Save & Sync Relationships" to automatically sync relationships.',
             group: 'relations'
         },
         {
@@ -253,7 +263,7 @@ export default defineType({
                     }
                 },
             ],
-            description: 'Services related to this case study. Changes here will automatically sync with the Services.',
+            description: 'Services related to this case study. Use "Save & Sync Relationships" to automatically update the services with this case study reference.',
             group: 'relations'
         }),
         defineField({

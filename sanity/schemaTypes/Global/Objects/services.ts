@@ -51,7 +51,7 @@ export default defineType({
                     }
                 },
             ],
-            description: 'Units related to this service',
+            description: 'Units related to this service. Use "Save & Sync Relationships" to automatically update bidirectional references.',
         }),
         defineField({
             name: 'servicegrouprel',
@@ -73,6 +73,28 @@ export default defineType({
                 },
             ],
             description: 'Service groups this service belongs to. Use the "Save & Sync Relationships" action to automatically update bidirectional references.',
+        }),
+        defineField({
+            name: 'caseStudies',
+            title: 'Related Case Studies',
+            type: 'array',
+            of: [
+                {
+                    type: 'reference',
+                    to: [{ type: 'caseStudy' }],
+                    options: {
+                        filter: ({ document }: { document: any }) => {
+                            const currentLanguage = document?.language || 'de';
+                            return {
+                                filter: '_type == "caseStudy" && language == $language',
+                                params: { language: currentLanguage }
+                            };
+                        }
+                    }
+                },
+            ],
+            description: 'Case studies that use this service. This field is automatically synced when case studies reference this service.',
+
         }),
     ],
     preview: {

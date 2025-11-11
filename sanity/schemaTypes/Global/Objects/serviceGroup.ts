@@ -52,7 +52,7 @@ export default defineType({
                     }
                 },
             ],
-            description: 'Services that belong to this group. Use the "Save & Sync Relationships" action to automatically update bidirectional references.',
+            description: 'Services that belong to this group. Use "Save & Sync Relationships" to automatically update bidirectional references.',
         }),
     ],
     preview: {
