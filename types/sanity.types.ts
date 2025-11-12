@@ -70,6 +70,7 @@ export interface GalleryBase {
     badge?: BadgeModule;
     headline?: string;
     type?: string;
+    navPointName?: string;
 }
 
 export interface GalleryHeroStep extends GalleryBase {
@@ -218,6 +219,7 @@ export interface HeroShowtime {
     backgroundImage?: CloudinaryAsset;
     backgroundVideo?: CloudinaryAsset;
     useVideo?: boolean;
+    navPointName?: string;
 }
 
 /** Subline component */
@@ -225,6 +227,21 @@ export interface SublineComponent {
     description?: string;
     showGridBackground?: boolean;
     additionalContent?: CTA[];
+    sectionTitle?: string;
+    navPointName?: string;
+}
+
+/** Content Section component */
+export interface ContentSection {
+    title?: string;
+    introHeading?: string;
+    introSubheading?: string;
+    content?: any[]; // PortableText blocks
+    contentSize?: string;
+    columnSpan?: string;
+    showGridBackground?: boolean;
+    paddingY?: string;
+    navPointName?: string;
 }
 
 /* Documents */
@@ -343,6 +360,9 @@ export interface OneSPHeader {
     // decoration
     cornerLeftText?: string;
     cornerRightText?: string;
+
+    // navigation
+    navPointName?: string;
 }
 
 /* Service Management Types */

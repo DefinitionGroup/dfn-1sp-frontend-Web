@@ -10,8 +10,16 @@ export default defineType({
         { name: "badge", title: "Badge" },
         { name: "content", title: "Content", default: true },
         { name: "media", title: "Media" },
+        { name: "navigation", title: "Navigation" },
     ],
     fields: [
+        defineField({
+            name: "navPointName",
+            title: "Navigation Point Name",
+            type: "string",
+            description: "Optional custom name to display in the vertical navigation minimap.",
+            group: "navigation",
+        }),
         defineField({
             name: "badge",
             title: "Badge",

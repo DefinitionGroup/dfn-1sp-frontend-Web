@@ -15,6 +15,7 @@ export default function OverviewStep({ step }: { step: GalleryOverview }) {
     align = "left",
     size = "xl",
     grid,
+    navPointName,
   } = step || {};
 
   if (![eyebrow, headline, highlight, subhead, kicker].some(Boolean))
@@ -24,8 +25,26 @@ export default function OverviewStep({ step }: { step: GalleryOverview }) {
   const delay = grid?.customAnimation ? grid?.delay : undefined;
   const staggerDelay = grid?.customAnimation ? grid?.staggerDelay : undefined;
 
+  // Generate section ID from headline
+  const sectionId = headline
+    ? headline
+        .substring(0, 30)
+        .replace(/[^a-zA-Z0-9\s]/g, "")
+        .replace(/\s+/g, "-")
+        .toLowerCase()
+    : "gallery-overview";
+
+  // Store the navPointName in a data attribute if provided
+  const navPointDataAttr = navPointName
+    ? { "data-navpoint-name": navPointName }
+    : {};
+
   return (
-    <section className="bg-neutral-50 relative">
+    <section
+      id={sectionId}
+      {...navPointDataAttr}
+      className="bg-neutral-50 relative"
+    >
       <div className="grid grid-cols-12 z-1 gap-8 mx-auto relative container font-aspekta">
         {showGrid && (
           <GridBackground delay={delay} staggerDelay={staggerDelay} />
