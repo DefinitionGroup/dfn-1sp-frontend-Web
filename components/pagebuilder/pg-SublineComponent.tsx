@@ -10,6 +10,7 @@ type SublineComponentData = {
   showGridBackground?: boolean;
   additionalContent?: CTA[];
   sectionTitle?: string;
+  navPointName?: string;
 };
 
 export default function SublineComponent({
@@ -22,6 +23,7 @@ export default function SublineComponent({
     showGridBackground = true,
     additionalContent = [],
     sectionTitle,
+    navPointName,
   } = data || {};
 
   const ctas = Array.isArray(additionalContent) ? additionalContent : [];
@@ -42,9 +44,15 @@ export default function SublineComponent({
           .toLowerCase()
       : "subline-section";
 
+  // Store the navPointName in a data attribute if provided
+  const navPointDataAttr = navPointName
+    ? { "data-navpoint-name": navPointName }
+    : {};
+
   return (
     <section
       id={sectionId}
+      {...navPointDataAttr}
       className="grid grid-cols-12 z-1 mx-auto container relative font-aspekta"
     >
       {showGridBackground && <GridBackground />}

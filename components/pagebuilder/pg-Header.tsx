@@ -56,6 +56,7 @@ export default function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   const words = Array.isArray(step.rotatingText) ? step.rotatingText : [];
   const lines = Array.isArray(step.paragraphs) ? step.paragraphs : [];
   const highlight = step.highlight;
+  const navPointName = step.navPointName;
 
   const leftMark = step.cornerLeftText ?? "SUPER*";
   const rightMark = step.cornerRightText ?? "/ 1SP";
@@ -68,8 +69,17 @@ export default function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
         .toLowerCase()
     : "header-section";
 
+  // Store the navPointName in a data attribute if provided
+  const navPointDataAttr = navPointName
+    ? { "data-navpoint-name": navPointName }
+    : {};
+
   return (
-    <section id={sectionId} className="relative h-[85vh] overflow-hidden">
+    <section
+      id={sectionId}
+      {...navPointDataAttr}
+      className="relative h-[85vh] overflow-hidden"
+    >
       {/* Background media */}
       {mediaUrl && (
         <HeaderImageVideoComp2

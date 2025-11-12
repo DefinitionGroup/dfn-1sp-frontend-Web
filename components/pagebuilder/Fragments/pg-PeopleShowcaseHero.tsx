@@ -29,7 +29,9 @@ export default function PeopleShowcaseHero({
 }) {
   const [hoveredMember, setHoveredMember] = useState<string | null>(null);
 
-  if (!members || members.length === 0) return null;
+  if (!members || members.length === 0) {
+    return null;
+  }
 
   return (
     <section
@@ -41,16 +43,23 @@ export default function PeopleShowcaseHero({
         <StaggeredSlideUp className="grid grid-cols-3 gap-1 w-full overflow-x-auto">
           {members.map((member, index) => {
             const src = assetUrl(member.media as any);
+
+            // Skip rendering if no valid source URL
+            if (!src) {
+              return null;
+            }
+
             const isVideo =
               isVideoUrl(src) ||
               (member.media as any)?.resource_type === "video";
+
             const key = (member.name || member.fullname || "member") + index;
             const label =
               member.altText || member.fullname || member.name || "";
             return (
               <div
                 key={key}
-                className="group relative border-neutral-100 overflow-hidden flex-shrink-0 rounded-xs transition-transform duration-300 focus-within:scale-[1.02]"
+                className="group relative border-neutral-100 overflow-hidden flex-shrink-0 rounded-xs transition-transform duration-300 focus-within:scale-[1.02] aspect-square"
                 data-member={(
                   member.name ||
                   member.fullname ||
@@ -70,14 +79,14 @@ export default function PeopleShowcaseHero({
                     muted
                     loop
                     playsInline
-                    className="object-cover transition-all duration-300 group-hover:brightness-110 group-hover:scale-[0.45]"
+                    className="w-full h-full object-cover transition-all duration-300 group-hover:brightness-110 group-hover:scale-[0.45]"
                   />
                 ) : (
                   <Image
-                    src={src ?? ""}
+                    src={src}
                     alt={label}
-                    width={400}
-                    height={400}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
                     className="object-cover transition-all duration-300 group-hover:brightness-110 group-hover:scale-[0.45]"
                   />
                 )}
