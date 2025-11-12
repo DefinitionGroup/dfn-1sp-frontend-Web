@@ -2,7 +2,7 @@ import { defineQuery } from "next-sanity";
 
 export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slug && channel == $channel && language == $language][0]{
   ...,
-  content[]{
+  content1sp[]{
     ...,
     _type == 'showtimeGallery' => {
       ...,
@@ -13,8 +13,18 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
           teamMembers[]->{
             _id,
             name,
-            image,
-            video,
+            image{
+              ...,
+              secure_url,
+              resource_type,
+              public_id
+            },
+            video{
+              ...,
+              secure_url,
+              resource_type,
+              public_id
+            },
             altText,
             fullname,
             position,
@@ -42,8 +52,18 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
           teamMembers[]->{
             _id,
             name,
-            image,
-            video,
+            image{
+              ...,
+              secure_url,
+              resource_type,
+              public_id
+            },
+            video{
+              ...,
+              secure_url,
+              resource_type,
+              public_id
+            },
             altText,
             fullname,
             position,

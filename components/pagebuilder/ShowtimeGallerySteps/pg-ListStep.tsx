@@ -202,8 +202,27 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
     ? "col-span-8 col-start-5"
     : "col-span-6 col-start-7";
 
+  // Generate section ID from badge text or header text
+  const sectionId = step.badge?.text
+    ? step.badge.text
+        .replace(/[^a-zA-Z0-9\s]/g, "")
+        .replace(/\s+/g, "-")
+        .toLowerCase()
+    : header.mainHeadline
+      ? header.mainHeadline
+          .substring(0, 30)
+          .replace(/[^a-zA-Z0-9\s]/g, "")
+          .replace(/\s+/g, "-")
+          .toLowerCase()
+      : "gallery-list";
+
+  // Store the navPointName in a data attribute if provided
+  const navPointDataAttr = step.navPointName
+    ? { "data-navpoint-name": step.navPointName }
+    : {};
+
   return (
-    <section className="relative my-4">
+    <section id={sectionId} {...navPointDataAttr} className="relative my-4">
       {/* Optional background media */}
       {mediaUrl && (
         <HeaderImageVideoComp2

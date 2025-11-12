@@ -47,8 +47,31 @@ export default function PeopleStep({
     media: member.video || member.image || member.media,
   }));
 
+  // Generate section ID from badge text or header text
+  const sectionId = step.badge?.text
+    ? step.badge.text
+        .replace(/[^a-zA-Z0-9\s]/g, "")
+        .replace(/\s+/g, "-")
+        .toLowerCase()
+    : header.mainHeadline
+      ? header.mainHeadline
+          .substring(0, 30)
+          .replace(/[^a-zA-Z0-9\s]/g, "")
+          .replace(/\s+/g, "-")
+          .toLowerCase()
+      : "gallery-people";
+
+  // Store the navPointName in a data attribute if provided
+  const navPointDataAttr = step.navPointName
+    ? { "data-navpoint-name": step.navPointName }
+    : {};
+
   return (
-    <section className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta gap-4">
+    <section
+      id={sectionId}
+      {...navPointDataAttr}
+      className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta gap-4"
+    >
       {/* Badge */}
       {step.badge && (
         <div className="z-1 flex flex-col col-span-2 pt-32 justify-start items-start col-start-1 mx-auto row-start-1">

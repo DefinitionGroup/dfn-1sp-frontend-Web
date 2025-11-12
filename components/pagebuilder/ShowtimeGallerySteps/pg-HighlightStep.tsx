@@ -39,8 +39,25 @@ export default function HighlightStep({
     )
     .filter((i) => i.name);
 
+  // Generate section ID from badge text
+  const sectionId = step.badge?.text
+    ? step.badge.text
+        .replace(/[^a-zA-Z0-9\s]/g, "")
+        .replace(/\s+/g, "-")
+        .toLowerCase()
+    : "gallery-highlight";
+
+  // Store the navPointName in a data attribute if provided
+  const navPointDataAttr = step.navPointName
+    ? { "data-navpoint-name": step.navPointName }
+    : {};
+
   return (
-    <section className="z-1 mx-auto mt-8 min-h-[60vh] relative font-aspekta">
+    <section
+      id={sectionId}
+      {...navPointDataAttr}
+      className="z-1 mx-auto mt-8 min-h-[60vh] relative font-aspekta"
+    >
       {video && (
         <HeaderImageVideoComp2 useVideo videoSrc={video} enableParallax />
       )}

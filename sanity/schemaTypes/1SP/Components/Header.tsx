@@ -15,8 +15,18 @@ export default defineType({
     { name: "media", title: "Media" },
     { name: "content", title: "Content", default: true },
     { name: "decoration", title: "Decoration" },
+    { name: "navigation", title: "Navigation" },
   ],
   fields: [
+    // NAVIGATION
+    defineField({
+      name: "navPointName",
+      title: "Navigation Point Name",
+      type: "string",
+      description:
+        "Optional custom name to display in the vertical navigation minimap.",
+      group: "navigation",
+    }),
     // MEDIA
     defineField({
       name: "media",

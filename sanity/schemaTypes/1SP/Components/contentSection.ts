@@ -9,8 +9,16 @@ export default defineType({
     groups: [
         { name: "content", title: "Content", default: true },
         { name: "layout", title: "Layout & Style" },
+        { name: "navigation", title: "Navigation" },
     ],
     fields: [
+        defineField({
+            name: "navPointName",
+            title: "Navigation Point Name",
+            type: "string",
+            description: "Optional custom name to display in the vertical navigation minimap. If empty, uses the section title or auto-generated ID.",
+            group: "navigation",
+        }),
         defineField({
             name: "title",
             title: "Section Title",

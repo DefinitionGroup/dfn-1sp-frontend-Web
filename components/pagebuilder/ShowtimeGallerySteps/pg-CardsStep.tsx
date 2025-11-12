@@ -55,8 +55,31 @@ export default function CardsStep({ step }: CardsStepProps) {
 
   const cards = pickCardItems(step);
 
+  // Generate section ID from badge text or title
+  const sectionId = step.badge?.text
+    ? step.badge.text
+        .replace(/[^a-zA-Z0-9\s]/g, "")
+        .replace(/\s+/g, "-")
+        .toLowerCase()
+    : title
+      ? title
+          .substring(0, 30)
+          .replace(/[^a-zA-Z0-9\s]/g, "")
+          .replace(/\s+/g, "-")
+          .toLowerCase()
+      : "gallery-cards";
+
+  // Store the navPointName in a data attribute if provided
+  const navPointDataAttr = step.navPointName
+    ? { "data-navpoint-name": step.navPointName }
+    : {};
+
   return (
-    <section className="grid grid-cols-12 z-2 mx-auto bg-neutral-100 mt-8 min-h-[50vh] relative font-aspekta">
+    <section
+      id={sectionId}
+      {...navPointDataAttr}
+      className="grid grid-cols-12 z-2 mx-auto bg-neutral-100 mt-8 min-h-[50vh] relative font-aspekta"
+    >
       {/* Background video */}
       {videoSrc && (
         <HeaderImageVideoComp2

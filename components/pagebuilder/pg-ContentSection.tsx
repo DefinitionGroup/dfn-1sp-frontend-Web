@@ -15,6 +15,7 @@ type ContentSectionData = {
   columnSpan?: string;
   showGridBackground?: boolean;
   paddingY?: string;
+  navPointName?: string;
 };
 
 export default function ContentSection({ data }: { data: ContentSectionData }) {
@@ -27,6 +28,7 @@ export default function ContentSection({ data }: { data: ContentSectionData }) {
     columnSpan = "8",
     showGridBackground = true,
     paddingY = "16",
+    navPointName,
   } = data || {};
 
   if (!content || content.length === 0) return null;
@@ -44,6 +46,11 @@ export default function ContentSection({ data }: { data: ContentSectionData }) {
           .replace(/\s+/g, "-")
           .toLowerCase()
       : "content-section";
+
+  // Store the navPointName in a data attribute if provided
+  const navPointDataAttr = navPointName
+    ? { "data-navpoint-name": navPointName }
+    : {};
 
   const getContentClass = (size?: string) => {
     switch (size) {
@@ -178,6 +185,7 @@ export default function ContentSection({ data }: { data: ContentSectionData }) {
       {/* Main Content Section */}
       <section
         id={sectionId}
+        {...navPointDataAttr}
         className="grid grid-cols-12 z-1 mx-auto container relative font-aspekta"
       >
         {showGridBackground && <GridBackground />}

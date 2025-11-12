@@ -44,8 +44,17 @@ export default function HeroStep({ step }: { step: GalleryHeroStep }) {
           .toLowerCase()
       : "gallery-hero";
 
+  // Store the navPointName in a data attribute if provided
+  const navPointDataAttr = step.navPointName
+    ? { "data-navpoint-name": step.navPointName }
+    : {};
+
   return (
-    <section id={sectionId} className="relative overflow-hidden">
+    <section
+      id={sectionId}
+      {...navPointDataAttr}
+      className="relative overflow-hidden"
+    >
       {/* Optional background video */}
       {videoSrc && (
         <HeaderImageVideoComp2 useVideo videoSrc={videoSrc} enableParallax />

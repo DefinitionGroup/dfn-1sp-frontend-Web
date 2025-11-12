@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import LineMinimap from "./MapVertical";
+import LineMinimap, { NavPoint } from "./MapVertical";
 interface PageWithMapVerticalProps {
   children: React.ReactNode;
 }
@@ -9,16 +9,20 @@ interface PageWithMapVerticalProps {
 export default function PageWithMapVertical({
   children,
 }: PageWithMapVerticalProps) {
-  const [navPoints, setNavPoints] = useState<string[]>([]);
+  const [navPoints, setNavPoints] = useState<NavPoint[]>([]);
 
-  // Collect section IDs from DOM, filtering out framework/internal IDs.
+  // Collect section IDs and custom nav names from DOM
   const collectPageIds = () => {
     setTimeout(() => {
       const allElements = document.querySelectorAll("[id]");
-      const ids: string[] = [];
+      const points: NavPoint[] = [];
 
       allElements.forEach((element) => {
         const id = element.id;
+
+        // Check if element is inside a footer
+        const isInFooter = element.closest("footer") !== null;
+
         if (
           id &&
           !id.startsWith("headlessui-") &&
@@ -28,14 +32,20 @@ export default function PageWithMapVertical({
           id !== "_R_" &&
           id.length > 2 &&
           !/^\d+$/.test(id) &&
-          id !== "root"
+          !/^\d+-\d+$/.test(id) && // Exclude timestamp-like IDs (e.g., 1762951177499-0)
+          id !== "root" &&
+          !isInFooter // Exclude footer elements
         ) {
-          ids.push(id);
+          // Check for custom navpoint name in data attribute
+          const customName = element.getAttribute("data-navpoint-name");
+          points.push({
+            id: id,
+            name: customName || id,
+          });
         }
       });
 
-      const uniqueIds = [...new Set(ids)];
-      setNavPoints(uniqueIds);
+      setNavPoints(points);
     }, 500);
   };
 
