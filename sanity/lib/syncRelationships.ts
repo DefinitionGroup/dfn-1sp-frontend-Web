@@ -4,8 +4,10 @@ import { DocumentActionComponent, DocumentActionDescription } from 'sanity'
 export const syncServiceGroupRelationships: DocumentActionComponent = (props) => {
     const { draft, published, type } = props
 
-    // Only apply to services, serviceGroup, unit, and caseStudy documents
-    if (type !== 'services' && type !== 'serviceGroup' && type !== 'unit' && type !== 'caseStudy') {
+    // Apply to documents that have bidirectional relationships
+    const supportedTypes = ['services', 'serviceGroup', 'unit', 'caseStudy', 'client', 'person']
+
+    if (!supportedTypes.includes(type)) {
         return null
     }
 

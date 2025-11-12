@@ -30,6 +30,7 @@ interface CaseGalleryComponentProps {
   activeFilter?: string;
   locale?: string;
   variant?: "light";
+  filterAllText?: string; // Add this to pass the translated "All" text
 }
 
 export default function CaseGalleryComponent({
@@ -37,6 +38,7 @@ export default function CaseGalleryComponent({
   activeFilter = "All",
   locale = "en",
   variant,
+  filterAllText = "All", // Default to "All" if not provided
 }: CaseGalleryComponentProps) {
   const router = useTransitionRouter();
   const [active, setActive] = useState<CaseStudy | null>(null);
@@ -44,8 +46,9 @@ export default function CaseGalleryComponent({
   const id = useId();
 
   // Filter items based on active filter - using services instead of categories
+  // Compare with the translated "All" text instead of hardcoded "All"
   const filteredItems =
-    activeFilter === "All"
+    activeFilter === filterAllText
       ? caseStudies
       : caseStudies.filter((item) =>
           item.services?.some((service) => service.name === activeFilter)
@@ -213,11 +216,11 @@ export default function CaseGalleryComponent({
               layoutId={`card-${item.title}-${id}`}
               key={`card-${item.title}-${id}`}
               onClick={() => setActive(item)}
-              className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[400px] group/card overflow-hidden h-[300px] cursor-pointer"
+              className="col-span-1 relative group/card overflow-hidden min-h-[400px] h-[400px] cursor-pointer rounded-sm"
             >
               <motion.div
                 layoutId={`image-${item.title}-${id}`}
-                className="col-start-1 col-span-1 row-start-1 bg-black h-full min-h-full overflow-hidden rounded-sm"
+                className="absolute inset-0 bg-black h-full w-full overflow-hidden rounded-sm"
               >
                 {item.mainVideoUrl ? (
                   <video
@@ -225,7 +228,7 @@ export default function CaseGalleryComponent({
                     autoPlay
                     muted
                     loop
-                    className="w-full h-full object-cover min-h-[400px] group-hover/card:opacity-100 object-top opacity-80 transition-all"
+                    className="w-full h-full object-cover group-hover/card:opacity-100 object-top opacity-80 transition-all"
                   />
                 ) : (
                   <Image
@@ -233,31 +236,31 @@ export default function CaseGalleryComponent({
                     height={1000}
                     src={item.mainImageUrl || "/placeholder.png"}
                     alt={item.title}
-                    className="w-full h-full object-cover min-h-[400px] group-hover/card:opacity-100 object-top opacity-80 transition-all"
+                    className="w-full h-full object-cover group-hover/card:opacity-100 object-top opacity-80 transition-all"
                   />
                 )}
               </motion.div>
 
-              <div className="col-start-1 col-span-1 flex justify-between opacity-100 row-start-2 p-2 mb-16 z-1">
+              <div className="absolute bottom-0 left-0 right-0 flex justify-between items-end p-4 z-10">
                 {item.client?.logoUrl && (
                   <motion.img
                     layoutId={`logo-${item.title}-${id}`}
                     src={item.client.logoUrl}
                     alt={item.title}
-                    className={`w-24 h-8 object-contain object-left mb-4 ${variant === "light" ? "invert" : ""}`}
+                    className={`w-24 h-8 object-contain object-left ${variant === "light" ? "invert" : ""}`}
                   />
                 )}
 
                 <div className="flex flex-col items-end">
                   <motion.h3
                     layoutId={`title-${item.title}-${id}`}
-                    className={`font-medium text-lg leading-snug tracking-tight ${variant === "light" ? "invert" : ""} text-neutral-600 dark:text-neutral-200 text-left`}
+                    className={`font-medium text-lg leading-snug tracking-tight ${variant === "light" ? "text-black" : "text-white"} text-right`}
                   >
                     {item.title}
                   </motion.h3>
                   <motion.p
                     layoutId={`description-${item.description}-${id}`}
-                    className="text-neutral-400 font-bold text-sm dark:text-neutral-400"
+                    className="text-neutral-400 font-bold text-sm text-right"
                   >
                     {item.subtitle}
                   </motion.p>

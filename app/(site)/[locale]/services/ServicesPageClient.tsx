@@ -11,6 +11,7 @@ import LineMinimap from "@/components/ui/MapVertical";
 import ListContainerComponent from "@/components/ui/ListContainerComponent";
 import ListItemComponent from "@/components/ui/ListItemComponent";
 import CtaMiniComponent from "@/components/data/Fragments/data-CtaMiniComponent";
+import { getTranslations } from "@/lib/translations";
 
 interface Service {
   _id: string;
@@ -54,8 +55,13 @@ export default function ServicesPageClient({
   const typewriterref = useRef(null);
   const isInView = useInView(typewriterref);
 
+  // Get translations for the current locale
+  const t = getTranslations(locale);
+
   const [navPoints, setNavPoints] = useState<string[]>([]);
-  const [activeFilter, setActiveFilter] = useState<string>("All");
+  const [activeFilter, setActiveFilter] = useState<string>(
+    t.services.filterAll
+  );
 
   // Function to collect all IDs from the page
   const collectPageIds = () => {
@@ -99,7 +105,7 @@ export default function ServicesPageClient({
     )
   ).sort();
 
-  const filters = ["All", ...uniqueServiceGroups];
+  const filters = [t.services.filterAll, ...uniqueServiceGroups];
 
   return (
     <>
@@ -107,7 +113,7 @@ export default function ServicesPageClient({
 
       {/* We tell your Story */}
       <div
-        id="top"
+        id={t.ids.top}
         className="grid grid-cols-12 z-1 mx-auto min-h-[66vh] relative font-aspekta"
       >
         <HeaderImageVideoComp2
@@ -119,8 +125,8 @@ export default function ServicesPageClient({
         <div className="z-1 grid col-span-12 py-32 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2 sticky top-0"
-            text="Mission"
-            subtitle="What we do"
+            text={t.services.mission}
+            subtitle={t.services.missionSubtitle}
             numberEl={"001"}
           />
 
@@ -133,18 +139,18 @@ export default function ServicesPageClient({
               distance={80}
             >
               <h2 className="text-7xl text-gray-100 max-w-xl font-semibold tracking-tighter leading-compress mb-4 ">
-                We tell your story.
+                {t.services.title}
               </h2>
               <p className="text-2xl text-gray-100  font-semibold leading-none max-w-xs mx-auto">
-                One shared passion: Creating epic experiences that captivate.
+                {t.services.subtitle}
               </p>
             </StaggeredSlideUp>
           </div>
           <div className="col-span-2 col-start-3 mt-8 pr-8 text-gray-100 ">
             <CtaMiniComponent
-              heading="We use Gaming Experience"
-              paragraph="This is where we get our creative spark from. And epochs of customer focus and talking to the public."
-              buttonText="Our Story"
+              heading={t.services.ctaHeading}
+              paragraph={t.services.ctaDescription}
+              buttonText={t.services.ctaButton}
               buttonVariant="limesmall"
               align="left"
               url="/contact"
@@ -154,19 +160,13 @@ export default function ServicesPageClient({
             {/* Content section */}
             <ListContainerComponent>
               <ListItemComponent size="medium" fontWeight="normal">
-                For Consumer Electronics, Gaming & Technology
+                {t.services.listItem1}
               </ListItemComponent>
               <ListItemComponent size="medium" fontWeight="normal">
-                We're a Superagency of like-minded and complimentary agencies
-                all across Europe. The 'fit' matters… that one shared passion
-                for the same things. It's what makes us so unique.
+                {t.services.listItem2}
               </ListItemComponent>
               <ListItemComponent size="medium" fontWeight="normal">
-                The loyal partnerships we have earned from our clients comes
-                from our positive approach and amazing collection of experts
-                across the group. With such a strong background in the Consumer
-                Electronics, Gaming & Technology industries, we also bring
-                gamification to everything we do.
+                {t.services.listItem3}
               </ListItemComponent>
             </ListContainerComponent>
           </div>
@@ -174,14 +174,14 @@ export default function ServicesPageClient({
       </div>
 
       <div
-        id="Services"
+        id={t.ids.services}
         className="grid grid-cols-12 z-50 mx-auto bg-neutral-100 mt-8 min-h-[90vh] relative font-aspekta"
       >
         <div className="z-2 grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2"
-            text="Services"
-            subtitle="What we do"
+            text={t.services.servicesTitle}
+            subtitle={t.services.servicesSubtitle}
             numberEl={"002"}
           />
           <div className="col-span-10 col-start-3  ">
@@ -193,14 +193,13 @@ export default function ServicesPageClient({
               distance={80}
             >
               <h2 className="text-7xl leading-compress text-neutral-700 max-w-2xl font-semibold tracking-tight leading-tighter mb-4">
-                Excellence:
+                {t.services.excellence}
               </h2>
               <h2 className="text-5xl leading-compress text-neutral-700 max-w-2xl font-semibold tracking-tight leading-tighter mb-4">
-                in thinking, creativity, and execution.
+                {t.services.excellenceSubtitle}
               </h2>
               <p className="text-lg text-neutral-700 font-medium  max-w-xs mx-auto">
-                To drive brand awareness, make meaningful connections, and
-                increase sales for our clients.
+                {t.services.excellenceDescription}
               </p>
             </StaggeredSlideUp>
           </div>
@@ -232,7 +231,7 @@ export default function ServicesPageClient({
 
       {/* Visual Background 2 Section */}
       <div
-        id="Cases"
+        id={t.ids.cases}
         className="grid grid-cols-12  mx-auto  mt-8 min-h-[90vh] relative font-aspekta"
       >
         <HeaderImageVideoComp2
@@ -245,8 +244,8 @@ export default function ServicesPageClient({
         <div className="grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <Badgemodule
             className="col-span-2 sticky top-0"
-            text="Results"
-            subtitle="Cases"
+            text={t.services.resultsTitle}
+            subtitle={t.services.resultsSubtitle}
             numberEl={"003"}
           />
           <div className="col-span-10 col-start-3  ">
@@ -258,11 +257,10 @@ export default function ServicesPageClient({
               distance={80}
             >
               <h2 className="text-7xl leading-none text-gray-100 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
-                Our work speaks volumes.
+                {t.services.casesTitle}
               </h2>
               <p className="text-lg text-gray-100 font-medium  max-w-2xs mx-auto">
-                Discover our latest projects in gaming, marketing, and
-                interactive experiences
+                {t.services.casesDescription}
               </p>
             </StaggeredSlideUp>
           </div>

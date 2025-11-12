@@ -333,8 +333,8 @@ export default defineConfig({
     actions: (prev, context) => {
       const { schemaType } = context
 
-      // Add our custom sync action for services, serviceGroup, unit, and caseStudy documents
-      if (schemaType === 'services' || schemaType === 'serviceGroup' || schemaType === 'unit' || schemaType === 'caseStudy') {
+      // Add our custom sync action for documents with bidirectional relationships
+      if (schemaType === 'services' || schemaType === 'serviceGroup' || schemaType === 'unit' || schemaType === 'caseStudy' || schemaType === 'client' || schemaType === 'person') {
         return [...prev, syncServiceGroupRelationships]
       }
 

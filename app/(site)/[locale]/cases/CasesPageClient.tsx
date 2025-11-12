@@ -4,6 +4,7 @@ import GridBackground from "@/components/ui/GridBackground";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 import CaseGalleryComponent from "@/components/data/data-CaseGallery";
+import { getTranslations } from "@/lib/translations";
 
 interface CaseStudy {
   _id: string;
@@ -32,7 +33,12 @@ export default function CasesPageClient({
   caseStudies,
   locale,
 }: CasesPageClientProps) {
-  const [activeFilter, setActiveFilter] = useState<string>("All");
+  // Get translations for the current locale
+  const t = getTranslations(locale);
+
+  const [activeFilter, setActiveFilter] = useState<string>(
+    t.casesList.filterAll
+  );
 
   // Ensure body overflow is reset when component mounts (in case user navigates back)
   useEffect(() => {
@@ -48,7 +54,7 @@ export default function CasesPageClient({
     )
   ).sort();
 
-  const filters = ["All", ...uniqueServices];
+  const filters = [t.casesList.filterAll, ...uniqueServices];
 
   return (
     <>
@@ -59,7 +65,7 @@ export default function CasesPageClient({
 
         {/* Intro Section */}
         <div
-          id="Intro"
+          id={t.ids.intro}
           className="grid grid-cols-12 z-1 mx-auto container  relative font-aspekta"
         >
           <GridBackground />
@@ -74,11 +80,10 @@ export default function CasesPageClient({
                   className=" max-w-2/4 "
                 >
                   <h2 className="text-5xl leading-none text-neutral-700 pb-3 font-aspekta font-medium">
-                    At 1SP, our passionate team thrives on creativity.
+                    {t.casesList.title}
                   </h2>
                   <h2 className="text-5xl leading-none text-neutral-400  pb-3 font-aspekta font-">
-                    Here is the proof. We deliver exceptional digital products
-                    and experiences that make a difference.
+                    {t.casesList.subtitle}
                   </h2>
                 </StaggeredSlideUp>
               </div>
@@ -89,7 +94,7 @@ export default function CasesPageClient({
 
       {/* Cases Section */}
       <div
-        id="Cases"
+        id={t.ids.cases}
         className="grid grid-cols-12 z-1 mx-auto container  mb-16  relative font-aspekta"
       >
         <GridBackground />
@@ -115,6 +120,7 @@ export default function CasesPageClient({
               caseStudies={caseStudies}
               activeFilter={activeFilter}
               locale={locale}
+              filterAllText={t.casesList.filterAll}
             />
           </div>
         </div>

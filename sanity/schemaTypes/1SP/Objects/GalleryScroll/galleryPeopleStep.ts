@@ -42,12 +42,15 @@ export default defineType({
                     to: [{ type: 'person' }],
                     options: {
                         filter: ({ document }: { document: any }) => {
-                            // Get the channel from the parent page/document
-                            // This assumes the channel is available in the document context
+                            // Get both language and channel from the parent page/document
+                            const currentLanguage = document?.language || 'de';
                             const currentChannel = document?.channel || '1spWeb';
                             return {
-                                filter: '_type == "person" && $channel in channel',
-                                params: { channel: currentChannel }
+                                filter: '_type == "person" && language == $language && $channel in channel',
+                                params: {
+                                    language: currentLanguage,
+                                    channel: currentChannel
+                                }
                             };
                         }
                     }

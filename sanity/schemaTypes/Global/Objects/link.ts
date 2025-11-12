@@ -27,6 +27,15 @@ export default defineType({
       type: "reference",
       to: [{ type: "page" }],
       hidden: (ctx) => (ctx.parent as LinkParent)?.linkType !== "internal",
+      options: {
+        filter: (({ document }: { document?: { language?: string } }) => {
+          const currentLanguage = document?.language || 'de';
+          return {
+            filter: '_type == "page" && language == $language',
+            params: { language: currentLanguage }
+          };
+        }) as unknown as string,
+      },
       validation: (Rule) =>
         Rule.custom((val, ctx) => {
           const t = (ctx.parent as LinkParent)?.linkType;
