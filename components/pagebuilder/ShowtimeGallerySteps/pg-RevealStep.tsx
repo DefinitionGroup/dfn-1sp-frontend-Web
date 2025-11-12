@@ -18,6 +18,7 @@ export type GalleryRevealStep = {
   }>;
   media?: CloudinaryAsset;
   grid?: { delay?: number; staggerDelay?: number };
+  navPointName?: string;
 };
 
 export default function RevealStep({ step }: { step: GalleryRevealStep }) {
@@ -34,8 +35,25 @@ export default function RevealStep({ step }: { step: GalleryRevealStep }) {
     !!mediaUrl &&
     (/\/video\//.test(mediaUrl) || /\.(mp4|webm|ogg)$/i.test(mediaUrl));
 
+  // Generate section ID from badge text
+  const sectionId = step?.badge?.text
+    ? step.badge.text
+        .replace(/[^a-zA-Z0-9\s]/g, "")
+        .replace(/\s+/g, "-")
+        .toLowerCase()
+    : "gallery-reveal";
+
+  // Store the navPointName in a data attribute if provided
+  const navPointDataAttr = step?.navPointName
+    ? { "data-navpoint-name": step.navPointName }
+    : {};
+
   return (
-    <section className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta">
+    <section
+      id={sectionId}
+      {...navPointDataAttr}
+      className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta"
+    >
       {mediaUrl && (
         <HeaderImageVideoComp2
           useVideo={isVideo}

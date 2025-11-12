@@ -11,7 +11,7 @@ import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 import ListContainerComponent from "@/components/ui/ListContainerComponent";
 import ListItemComponent from "@/components/ui/ListItemComponent";
-import LineMinimap from "@/components/ui/MapVertical";
+import LineMinimap, { NavPoint } from "@/components/ui/MapVertical";
 import PercentageDiagramVertical from "@/components/ui/percentageDiagramVertical";
 import PercentageDiagramHorizontal from "@/components/ui/percentageDiagramHorizontal";
 import PercentagePosNegDiagram from "@/components/ui/percentagePosNegDiagram";
@@ -80,7 +80,7 @@ export default function CaseStudyPageClient({
   const t = getTranslations(locale);
 
   // === Added navPoints collection to drive LineMinimap (matches Plain) ===
-  const [navPoints, setNavPoints] = useState<string[]>([]);
+  const [navPoints, setNavPoints] = useState<NavPoint[]>([]);
 
   // Ensure body overflow is reset when component mounts (fixes scroll lock issue from gallery navigation)
   useEffect(() => {
@@ -91,9 +91,13 @@ export default function CaseStudyPageClient({
     const collectPageIds = () => {
       setTimeout(() => {
         const all = document.querySelectorAll<HTMLElement>("[id]");
-        const ids: string[] = [];
+        const points: NavPoint[] = [];
         all.forEach((el) => {
           const id = el.id;
+
+          // Check if element is inside a footer
+          const isInFooter = el.closest("footer") !== null;
+
           if (
             id &&
             !id.startsWith("headlessui-") &&
@@ -103,12 +107,19 @@ export default function CaseStudyPageClient({
             id !== "_R_" &&
             id.length > 2 &&
             !/^\d+$/.test(id) &&
-            id !== "root"
+            !/^\d+-\d+$/.test(id) &&
+            id !== "root" &&
+            !isInFooter
           ) {
-            ids.push(id);
+            // Check for custom navpoint name in data attribute
+            const customName = el.getAttribute("data-navpoint-name");
+            points.push({
+              id: id,
+              name: customName || id,
+            });
           }
         });
-        setNavPoints([...new Set(ids)]);
+        setNavPoints(points);
       }, 500);
     };
     collectPageIds();

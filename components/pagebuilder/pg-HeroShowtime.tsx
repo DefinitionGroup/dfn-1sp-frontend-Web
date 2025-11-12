@@ -18,6 +18,7 @@ export default function HeroShowtime({ data }: { data: HeroShowtimeType }) {
     subheading = "Your subheading here",
     paragraphs = [],
     additionalContent = [],
+    navPointName,
   } = (data || {}) as HeroShowtimeType;
 
   const imageUrl = assetUrl(backgroundImage) || "/hr.png";
@@ -31,9 +32,15 @@ export default function HeroShowtime({ data }: { data: HeroShowtimeType }) {
         .toLowerCase()
     : "hero-section";
 
+  // Store the navPointName in a data attribute if provided
+  const navPointDataAttr = navPointName
+    ? { "data-navpoint-name": navPointName }
+    : {};
+
   return (
     <section
       id={sectionId}
+      {...navPointDataAttr}
       className="grid grid-cols-12 z-1 mx-auto relative font-aspekta text-white"
     >
       {/* Background media wrapper */}

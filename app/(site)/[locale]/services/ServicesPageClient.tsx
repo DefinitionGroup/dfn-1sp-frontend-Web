@@ -7,7 +7,7 @@ import Badgemodule from "@/components/ui/Badgemodule";
 import HeaderImageVideoComp2 from "@/components/data/Fragments/data-HeaderImageVideoComp2";
 import ServiceGalleryComponent from "@/components/data/data-ServiceGallery";
 import CaseGalleryComponent from "@/components/data/data-CaseGallery";
-import LineMinimap from "@/components/ui/MapVertical";
+import LineMinimap, { NavPoint } from "@/components/ui/MapVertical";
 import ListContainerComponent from "@/components/ui/ListContainerComponent";
 import ListItemComponent from "@/components/ui/ListItemComponent";
 import CtaMiniComponent from "@/components/data/Fragments/data-CtaMiniComponent";
@@ -58,7 +58,7 @@ export default function ServicesPageClient({
   // Get translations for the current locale
   const t = getTranslations(locale);
 
-  const [navPoints, setNavPoints] = useState<string[]>([]);
+  const [navPoints, setNavPoints] = useState<NavPoint[]>([]);
   const [activeFilter, setActiveFilter] = useState<string>(
     t.services.filterAll
   );
@@ -67,10 +67,14 @@ export default function ServicesPageClient({
   const collectPageIds = () => {
     setTimeout(() => {
       const allElements = document.querySelectorAll("[id]");
-      const ids: string[] = [];
+      const points: NavPoint[] = [];
 
       allElements.forEach((element) => {
         const id = element.id;
+
+        // Check if element is inside a footer
+        const isInFooter = element.closest("footer") !== null;
+
         if (
           id &&
           !id.startsWith("headlessui-") &&
@@ -80,14 +84,20 @@ export default function ServicesPageClient({
           id !== "_R_" &&
           id.length > 2 &&
           !/^\d+$/.test(id) &&
-          id !== "root"
+          !/^\d+-\d+$/.test(id) && // Exclude timestamp-like IDs (e.g., 1762951177499-0)
+          id !== "root" &&
+          !isInFooter // Exclude footer elements
         ) {
-          ids.push(id);
+          // Check for custom navpoint name in data attribute
+          const customName = element.getAttribute("data-navpoint-name");
+          points.push({
+            id: id,
+            name: customName || id,
+          });
         }
       });
 
-      const uniqueIds = [...new Set(ids)];
-      setNavPoints(uniqueIds);
+      setNavPoints(points);
     }, 500);
   };
 

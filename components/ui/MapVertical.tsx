@@ -35,10 +35,27 @@ export function lerp(start: number, end: number, factor: number): number {
   return start + (end - start) * factor;
 }
 
-export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
+// Type for navigation point with ID and optional custom name
+export interface NavPoint {
+  id: string;
+  name?: string;
+}
+
+export default function LineMinimap({
+  navPoints,
+}: {
+  navPoints: string[] | NavPoint[];
+}) {
   const scrollY = useScrollY(MAX_HEIGHT);
   const { mouseX, onMouseMove, onMouseLeave } = useMouseX();
   const [isHovered, setIsHovered] = React.useState(false);
+
+  // Normalize navPoints to always be NavPoint objects
+  const normalizedNavPoints: NavPoint[] = React.useMemo(() => {
+    return navPoints.map((point) =>
+      typeof point === "string" ? { id: point, name: point } : point
+    );
+  }, [navPoints]);
 
   const handleNavClick = (id: string) => {
     if (typeof window === "undefined") return;
@@ -81,9 +98,9 @@ export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
         <div className="absolute top-0 left-4 flex flex-col gap-2 z-50">
           <AnimatePresence>
             {isHovered &&
-              navPoints.map((navPointId, navPointIndex) => (
+              normalizedNavPoints.map((navPoint, navPointIndex) => (
                 <motion.div
-                  key={navPointId}
+                  key={navPoint.id}
                   className="bg-gray-900 text-gray-200 hover:bg-gray-200 hover:text-gray-800 font-normal cursor-pointer pointer-events-auto flex px-2 py-1 items-center justify-start rounded-xl"
                   style={{ width: LINE_HEIGHT_ACTIVE + 64 }}
                   initial={{ opacity: 0, x: -20 }}
@@ -102,10 +119,10 @@ export default function LineMinimap({ navPoints }: { navPoints: string[] }) {
                     stiffness: 200,
                     damping: 20,
                   }}
-                  onClick={() => handleNavClick(navPointId)}
+                  onClick={() => handleNavClick(navPoint.id)}
                 >
                   <span className="text-[8px] font-semibold tracking-wider ml-2">
-                    {navPointId}
+                    {navPoint.name || navPoint.id}
                   </span>
                 </motion.div>
               ))}
