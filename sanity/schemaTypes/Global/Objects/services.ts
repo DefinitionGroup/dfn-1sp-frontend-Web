@@ -1,9 +1,23 @@
 import { defineType, defineField } from 'sanity'
 
+const languageFilter = (docField: string) => ({ document }: { document: any }) => {
+    const currentLanguage = document?.language || 'de'
+    return {
+        filter: `_type == "${docField}" && language == $language`,
+        params: { language: currentLanguage },
+    }
+}
+
 export default defineType({
     name: 'services',
     title: 'Services',
     type: 'document',
+    // Define groups and assign fields to them below
+    groups: [
+        { name: 'meta', title: 'Metadata' },
+        { name: 'content', title: 'Content' },
+        { name: 'relations', title: 'Relations' },
+    ],
     fields: [
         defineField({
             name: 'language',
@@ -13,12 +27,14 @@ export default defineType({
             hidden: true,
             initialValue: 'de',
             description: 'Managed by i18n tooling; do not edit manually.',
+            group: 'meta',
         }),
         defineField({
             name: 'name',
             title: 'Service Name',
             type: 'string',
             validation: (Rule) => Rule.required().min(1).max(100),
+            group: 'content',
         }),
         defineField({
             name: 'taglabel',
@@ -26,11 +42,13 @@ export default defineType({
             type: 'string',
             description: 'Short tag or label for the service',
             validation: (Rule) => Rule.max(50),
+            group: 'content',
         }),
         defineField({
             name: 'serviceicon',
             title: 'Service Icon',
             type: 'cloudinaryImage',
+            group: 'content',
         }),
         defineField({
             name: 'unitsrel',
@@ -41,17 +59,13 @@ export default defineType({
                     type: 'reference',
                     to: [{ type: 'unit' }],
                     options: {
-                        filter: ({ document }: { document: any }) => {
-                            const currentLanguage = document?.language || 'de';
-                            return {
-                                filter: '_type == "unit" && language == $language',
-                                params: { language: currentLanguage }
-                            };
-                        }
-                    }
+                        filter: languageFilter('unit'),
+                    },
                 },
             ],
-            description: 'Units related to this service. Use "Save & Sync Relationships" to automatically update bidirectional references.',
+            description:
+                'Units related to this service. Use "Save & Sync Relationships" to automatically update bidirectional references.',
+            group: 'relations',
         }),
         defineField({
             name: 'servicegrouprel',
@@ -62,17 +76,13 @@ export default defineType({
                     type: 'reference',
                     to: [{ type: 'serviceGroup' }],
                     options: {
-                        filter: ({ document }: { document: any }) => {
-                            const currentLanguage = document?.language || 'de';
-                            return {
-                                filter: '_type == "serviceGroup" && language == $language',
-                                params: { language: currentLanguage }
-                            };
-                        }
-                    }
+                        filter: languageFilter('serviceGroup'),
+                    },
                 },
             ],
-            description: 'Service groups this service belongs to. Use the "Save & Sync Relationships" action to automatically update bidirectional references.',
+            description:
+                'Service groups this service belongs to. Use the "Save & Sync Relationships" action to automatically update bidirectional references.',
+            group: 'relations',
         }),
         defineField({
             name: 'caseStudies',
@@ -83,18 +93,13 @@ export default defineType({
                     type: 'reference',
                     to: [{ type: 'caseStudy' }],
                     options: {
-                        filter: ({ document }: { document: any }) => {
-                            const currentLanguage = document?.language || 'de';
-                            return {
-                                filter: '_type == "caseStudy" && language == $language',
-                                params: { language: currentLanguage }
-                            };
-                        }
-                    }
+                        filter: languageFilter('caseStudy'),
+                    },
                 },
             ],
-            description: 'Case studies that use this service. This field is automatically synced when case studies reference this service.',
-
+            description:
+                'Case studies that use this service. This field is automatically synced when case studies reference this service.',
+            group: 'relations',
         }),
     ],
     preview: {

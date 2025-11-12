@@ -5,6 +5,14 @@ export default defineType({
     title: 'Page',
     type: 'document',
 
+    // Define groups to organize fields in the Studio
+    groups: [
+        { name: 'basic', title: 'Basic', default: true },
+        { name: 'settings', title: 'Settings' },
+        { name: 'content', title: 'Content' },
+        { name: 'seo', title: 'SEO' },
+    ],
+
     fields: [
         defineField({
             name: 'language',
@@ -12,23 +20,24 @@ export default defineType({
             type: 'string',
             readOnly: true,
             hidden: true,
+            group: 'settings',
             initialValue: (context: any) =>
                 context?.document?.__inferMetadata?.params?.language || 'de',
             description: 'Managed by i18n tooling; do not edit manually.',
         }),
 
-
-
         defineField({
             name: 'title',
             title: 'Title',
             type: 'string',
+            group: 'basic',
         }),
 
         defineField({
             name: 'slug',
             title: 'Slug',
             type: 'slug',
+            group: 'basic',
             options: {
                 source: 'title',
                 maxLength: 96,
@@ -81,6 +90,7 @@ export default defineType({
             name: 'isHomepage',
             title: 'Homepage',
             type: 'boolean',
+            group: 'settings',
             initialValue: false,
             description: 'Mark this page as the homepage for this language and channel. Only one homepage per language+channel is allowed.',
             validation: (Rule: any) =>
@@ -105,14 +115,8 @@ export default defineType({
         defineField({
             name: 'metadata',
             title: 'Metadata',
-            type: 'object',
-            options: { collapsible: true, collapsed: true },
-            fields: [
-                defineField({ name: 'title', title: 'Meta Title', type: 'string' }),
-                defineField({ name: 'description', title: 'Meta Description', type: 'text' }),
-                defineField({ name: 'image', title: 'Meta Image', type: 'image' }),
-                defineField({ name: 'keywords', title: 'Meta Keywords', type: 'array', of: [{ type: 'string' }] })
-            ]
+            type: 'metadata',
+            group: 'seo',
         }),
 
         // channel-specific content arrays (hidden when not matching channel)
@@ -120,6 +124,7 @@ export default defineType({
             name: 'content1sp',
             title: 'Content 1SP',
             type: 'array',
+            group: 'content',
             of: [
                 { type: 'showtimeGallery' },
                 { type: 'heroShowTime' },
@@ -134,6 +139,7 @@ export default defineType({
             name: 'contentMSM',
             title: 'Content MSM',
             type: 'array',
+            group: 'content',
             of: [{ type: 'block' }],
             hidden: ({ parent }: any) => parent?.channel !== 'msmWeb',
         }),
@@ -142,6 +148,7 @@ export default defineType({
             name: 'contentStudioCO2',
             title: 'Content StudioCO2',
             type: 'array',
+            group: 'content',
             of: [{ type: 'block' }],
             hidden: ({ parent }: any) => parent?.channel !== 'studioco2Web',
         }),
@@ -149,6 +156,7 @@ export default defineType({
             name: 'contentStudioFlizr',
             title: 'Content StudioFlizr',
             type: 'array',
+            group: 'content',
             of: [{ type: 'block' }],
             hidden: ({ parent }: any) => parent?.channel !== 'flizrWeb',
         }),
@@ -156,6 +164,7 @@ export default defineType({
             name: 'channel',
             title: 'Channel',
             type: 'string',
+            group: 'settings',
             options: {
                 list: [
                     { title: '1sp Website', value: '1spWeb' },
