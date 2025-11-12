@@ -2,19 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from 'next-sanity'
 import { apiVersion, dataset, projectId } from '@/sanity/env'
 
-/**
- * API Route for syncing bidirectional relationships in Sanity
- * 
- * Supports syncing for:
- * - services ↔ serviceGroup
- * - services ↔ units
- * - caseStudy → services, units, client, people
- * - client ↔ caseStudies, people
- * - person ↔ clients
- * 
- * Handles both legacy direct references and new personReference objects
- */
-
 // Create a client with write permissions for API routes
 const writeClient = createClient({
     projectId,

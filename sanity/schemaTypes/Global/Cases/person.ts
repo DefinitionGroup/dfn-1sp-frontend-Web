@@ -8,6 +8,7 @@ export default defineType({
     groups: [
         { name: 'general', title: 'General' },
         { name: 'media', title: 'Media' },
+        { name: 'relations', title: 'Relations' },
         { name: 'contact', title: 'Contact' },
         { name: 'content', title: 'Content' },
         { name: 'settings', title: 'Settings' },
@@ -202,7 +203,7 @@ export default defineType({
                 }
             ],
             description: 'Clients this person is associated with. Use "Save & Sync Relationships" to automatically update the client with this person reference.',
-            group: 'general'
+            group: 'relations'
         },
         {
             name: 'channel',
