@@ -16,6 +16,7 @@ import PercentageDiagramVertical from "@/components/ui/percentageDiagramVertical
 import PercentageDiagramHorizontal from "@/components/ui/percentageDiagramHorizontal";
 import PercentagePosNegDiagram from "@/components/ui/percentagePosNegDiagram";
 import CtaMiniComponent from "@/components/data/Fragments/data-CtaMiniComponent";
+import { getTranslations } from "@/lib/translations";
 interface CaseStudyData {
   _id: string;
   title: string;
@@ -56,8 +57,9 @@ interface CaseStudyData {
   solution?: string;
   approachToSolution?: string;
   metrics?: Array<{
+    type: "vertical" | "horizontal" | "posNeg";
     label: string;
-    value: number; // can be negative
+    value: number;
   }>;
   publishedAt?: string;
 }
@@ -73,6 +75,9 @@ export default function CaseStudyPageClient({
 }: CaseStudyPageClientProps) {
   const typewriterref = useRef(null);
   const isInView = useInView(typewriterref);
+
+  // Get translations for the current locale
+  const t = getTranslations(locale);
 
   // === Added navPoints collection to drive LineMinimap (matches Plain) ===
   const [navPoints, setNavPoints] = useState<string[]>([]);
@@ -130,23 +135,41 @@ export default function CaseStudyPageClient({
           : mediaItems[1].videoUrl) || heroImage
       : heroImage;
 
-  // Get the diagram component based on index for variety
-  const getDiagramComponent = (index: number, value: number, delay: number) => {
-    const components = [
-      <PercentageDiagramVertical
-        key={index}
-        percent={Math.max(0, value)}
-        delay={delay}
-      />,
-      <PercentageDiagramHorizontal
-        key={index}
-        percent={Math.max(0, value)}
-        delay={delay}
-      />,
-      <PercentagePosNegDiagram key={index} value={value} />,
-    ];
-    // Cycle through components
-    return components[index % components.length];
+  // Get the diagram component based on the metric type
+  const getDiagramComponent = (
+    type: "vertical" | "horizontal" | "posNeg",
+    value: number,
+    delay: number,
+    index: number
+  ) => {
+    switch (type) {
+      case "vertical":
+        return (
+          <PercentageDiagramVertical
+            key={index}
+            percent={Math.max(0, value)}
+            delay={delay}
+          />
+        );
+      case "horizontal":
+        return (
+          <PercentageDiagramHorizontal
+            key={index}
+            percent={Math.max(0, value)}
+            delay={delay}
+          />
+        );
+      case "posNeg":
+        return <PercentagePosNegDiagram key={index} value={value} />;
+      default:
+        return (
+          <PercentageDiagramVertical
+            key={index}
+            percent={Math.max(0, value)}
+            delay={delay}
+          />
+        );
+    }
   };
 
   return (
@@ -174,7 +197,7 @@ export default function CaseStudyPageClient({
         )}
 
         {/* Hero Content */}
-        <div id="Top" className="" />
+        <div id={t.ids.top} className="" />
         <div className="relative z-10 container mt-[30vh] mx-auto p-8 md:p-0">
           <StaggeredSlideUp
             delay={1}
@@ -205,7 +228,7 @@ export default function CaseStudyPageClient({
 
       {/* Intro Section */}
       <div
-        id="Intro"
+        id={t.ids.intro}
         className="grid grid-cols-12 z-1 mx-auto container relative font-aspekta"
       >
         <GridBackground />
@@ -219,7 +242,7 @@ export default function CaseStudyPageClient({
                 className="max-w-2/4 py-32"
               >
                 <h2 className="text-xl leading-none text-neutral-700 pb-3 font-aspekta font-medium">
-                  The Challenge
+                  {t.caseStudy.theChallenge}
                 </h2>
                 <h2 className="text-5xl leading-none text-neutral-700 font-aspekta font-medium">
                   {caseStudy.title}
@@ -237,15 +260,15 @@ export default function CaseStudyPageClient({
 
       {/* Content Section  */}
       <div
-        id="Content"
+        id={t.ids.content}
         className="grid grid-cols-12 z-1 mx-auto bg-neutral-50 mt-8 min-h-[90vh] relative font-aspekta"
       >
         <GridBackground />
         <div className="z-1 grid col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12">
           <Badgemodule
             className="col-span-2 sticky top-0"
-            text="Intro"
-            subtitle="The Goal"
+            text={t.badges.intro}
+            subtitle={t.badges.theGoal}
             numberEl={"001"}
           />
 
@@ -276,13 +299,13 @@ export default function CaseStudyPageClient({
                 <CtaMiniComponent
                   heading={
                     caseStudy.challenges && caseStudy.challenges.length > 0
-                      ? "Challenge:"
-                      : "Services:"
+                      ? t.caseStudy.challenge
+                      : t.caseStudy.services
                   }
                   paragraph={
                     caseStudy.challenges && caseStudy.challenges.length > 0
-                      ? "The Starting Point. A thorough analysis and understanding highlighted several key issues:"
-                      : `This case study covers ${caseStudy.services?.map((s) => s.name).join(", ")}`
+                      ? t.caseStudy.challengeDescription
+                      : `${t.caseStudy.servicesDescription} ${caseStudy.services?.map((s) => s.name).join(", ")}`
                   }
                   buttonText=""
                   buttonVariant="limesmall"
@@ -322,7 +345,7 @@ export default function CaseStudyPageClient({
                     distance={80}
                   >
                     <h2 className="text-2xl leading-compress text-gray-900 max-w-lg font-semibold tracking-tight leading-tighter mb-8">
-                      Solution
+                      {t.caseStudy.solution}
                     </h2>
                     <p className="text text-gray-900 mx-auto">
                       {caseStudy.solution}
@@ -337,7 +360,7 @@ export default function CaseStudyPageClient({
 
       {/* Approach Section (with image) */}
       <div
-        id="Approach"
+        id={t.ids.approach}
         className="grid grid-cols-12 z-1 mx-auto min-h-[90vh] relative font-aspekta"
       >
         {mediaItems.length > 0 &&
@@ -359,8 +382,8 @@ export default function CaseStudyPageClient({
         <div className="z-1 grid col-span-12 py-32 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12">
           <Badgemodule
             className="col-span-2 sticky top-0"
-            text="Approach"
-            subtitle="What we achieved"
+            text={t.caseStudy.approach}
+            subtitle={t.caseStudy.approachSubtitle}
             numberEl={"002"}
           />
 
@@ -379,8 +402,7 @@ export default function CaseStudyPageClient({
                 that work harder:
               </h2>
               <p className="text-xl text-gray-100 max-w-2xs mx-auto">
-                Building awareness, expanding consideration, and ultimately
-                driving more sales.
+                {t.caseStudy.approachDescription}
               </p>
             </StaggeredSlideUp>
           </div>
@@ -415,7 +437,7 @@ export default function CaseStudyPageClient({
 
       {/* Results Section */}
       <div
-        id="Results"
+        id={t.ids.results}
         className="grid grid-cols-12 z-1 mx-auto min-h-[90vh] relative font-aspekta"
       >
         <HeaderImageVideoComp2
@@ -428,8 +450,8 @@ export default function CaseStudyPageClient({
         <div className="z-1 grid col-span-12 py-32 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12">
           <Badgemodule
             className="col-span-2 sticky top-0"
-            text="Results"
-            subtitle="What we achieved"
+            text={t.caseStudy.results}
+            subtitle={t.caseStudy.resultsSubtitle}
             numberEl={"003"}
           />
 
@@ -442,11 +464,10 @@ export default function CaseStudyPageClient({
               distance={80}
             >
               <h2 className="text-9xl mb-2 text-gray-100 max-w-xl font-semibold tracking-tight leading-compress">
-                Results
+                {t.caseStudy.results}
               </h2>
               <p className="text-xl text-gray-100 max-w-2xs mx-auto">
-                Building awareness, expanding consideration, and ultimately
-                driving more sales.
+                {t.caseStudy.resultsDescription}
               </p>
             </StaggeredSlideUp>
           </div>
@@ -459,7 +480,12 @@ export default function CaseStudyPageClient({
                   key={index}
                   className="flex flex-col items-start border-b border-white/10 flex-1"
                 >
-                  {getDiagramComponent(index, metric.value, 0.3 + index * 0.1)}
+                  {getDiagramComponent(
+                    metric.type,
+                    metric.value,
+                    0.3 + index * 0.1,
+                    index
+                  )}
                   <motion.div
                     className="text-[8px] font-bold mt-12 text-gray-100"
                     variants={{
@@ -516,27 +542,24 @@ export default function CaseStudyPageClient({
               distance={80}
             >
               <h2 className="text-7xl text-gray-100 font-nyghtserif font-semibold tracking-tight leading-compress pb-8">
-                Show&nbsp;Time
+                {t.caseStudy.showTime}
               </h2>
               <p className="text-xl text-gray-100 max-w-2xs mx-auto">
-                Turn & Burn around Ideas, Deadlines, Campaigns.
+                {t.caseStudy.showTimeDescription}
               </p>
             </StaggeredSlideUp>
           </div>
 
           <div className="col-span-9 col-start-4 text-white">
-            <p>Touch the hearts and minds of audiences.</p>
-            <p>
-              Use the newest tools. Bring in your ideas. Work with top tier
-              clients.
-            </p>
+            <p>{t.caseStudy.ctaText}</p>
+            <p>{t.caseStudy.ctaDescription}</p>
             <p>Be heard – as we listen.</p>
             <p className="">With the best clients and colleagues.</p>
 
             <div className="mt-8 flex items-start justify-start gap-8">
               <Button2
                 variant="limesmall"
-                text="Join us for a ride"
+                text={t.caseStudy.ctaButton}
                 href={`/${locale}/contact`}
                 className="w-fit"
               />

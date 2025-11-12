@@ -15,6 +15,10 @@ import serviceGroup from './Global/Objects/serviceGroup'
 import cloudinaryImage from './Global/Objects/cloudinaryImage'
 import mediaGalleryItem from './Global/Objects/mediaGalleryItem'
 import imageGalleryItem from './Global/Objects/imageGalleryItem'
+import personReference from './Global/Objects/personReference'
+import clientReference from './Global/Objects/clientReference'
+import metadata from './Global/Objects/metadata'
+
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [page, menu, caseStudy, unitCase, client, person, ...OneSPschemaTypes, link, cta, paragraph, size, services, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem],
+  types: [page, menu, caseStudy, unitCase, client, person, ...OneSPschemaTypes, link, cta, paragraph, size, services, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata],
 }

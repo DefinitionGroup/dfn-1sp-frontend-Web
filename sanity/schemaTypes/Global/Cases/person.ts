@@ -8,6 +8,7 @@ export default defineType({
     groups: [
         { name: 'general', title: 'General' },
         { name: 'media', title: 'Media' },
+        { name: 'relations', title: 'Relations' },
         { name: 'contact', title: 'Contact' },
         { name: 'content', title: 'Content' },
         { name: 'settings', title: 'Settings' },
@@ -184,19 +185,25 @@ export default defineType({
         },
         {
             name: 'client',
-            title: 'Related Client',
-            type: 'reference',
-            to: [{ type: 'client' }],
-            options: {
-                filter: ({ document }: { document: any }) => {
-                    const currentLanguage = document?.language || 'de';
-                    return {
-                        filter: '_type == "client" && language == $language',
-                        params: { language: currentLanguage }
-                    };
+            title: 'Related Clients',
+            type: 'array',
+            of: [
+                {
+                    type: 'reference',
+                    to: [{ type: 'client' }],
+                    options: {
+                        filter: ({ document }: { document: any }) => {
+                            const currentLanguage = document?.language || 'de';
+                            return {
+                                filter: '_type == "client" && language == $language',
+                                params: { language: currentLanguage }
+                            };
+                        }
+                    }
                 }
-            },
-            group: 'general'
+            ],
+            description: 'Clients this person is associated with. Use "Save & Sync Relationships" to automatically update the client with this person reference.',
+            group: 'relations'
         },
         {
             name: 'channel',

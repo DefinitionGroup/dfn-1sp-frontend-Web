@@ -152,27 +152,15 @@ export default defineType({
                     }
                 }
             ],
+            description: 'Case studies for this client. Use "Save & Sync Relationships" to automatically update the case studies with this client reference.',
             group: 'relations',
         },
         {
             name: 'people',
             title: 'Related People',
             type: 'array',
-            of: [
-                {
-                    type: 'reference',
-                    to: [{ type: 'person' }],
-                    options: {
-                        filter: ({ document }: { document: any }) => {
-                            const currentLanguage = document?.language || 'de';
-                            return {
-                                filter: '_type == "person" && language == $language',
-                                params: { language: currentLanguage }
-                            };
-                        }
-                    }
-                }
-            ],
+            of: [{ type: 'personReference' }],
+            description: 'People associated with this client. Mark one as primary contact. Use "Save & Sync Relationships" to automatically update the people with this client reference.',
             group: 'relations',
         },
         {
