@@ -1,7 +1,9 @@
 "use client";
-import type { SmartCarousel } from "@/types/sanity.types";
 import SmartCarouselData from "../data/data-InteractiveCarousel";
 import { useParams } from "next/navigation";
+interface SmartCarousel {
+  maxItems: number;
+}
 
 type Props = { data: SmartCarousel } | SmartCarousel;
 
