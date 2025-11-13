@@ -183,6 +183,51 @@ const SmartPeople = dynamic(() => import("./data/data-SmartPeople"), {
   ssr: true,
 });
 
+const CasesIntro = dynamic(() => import("./pagebuilder/pg-CasesIntro"), {
+  loading: () => (
+    <div className="w-full h-64 flex items-center justify-center">
+      <div className="text-gray-400">Loading...</div>
+    </div>
+  ),
+  ssr: true,
+});
+
+const CasesGalleryFiltered = dynamic(
+  () => import("./pagebuilder/pg-CasesGalleryFiltered"),
+  {
+    loading: () => (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: true,
+  }
+);
+
+const ServicesGalleryFiltered = dynamic(
+  () => import("./pagebuilder/pg-ServicesGalleryFiltered"),
+  {
+    loading: () => (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: true,
+  }
+);
+
+const ServicesHeroWithBadge = dynamic(
+  () => import("./pagebuilder/pg-ServicesHeroWithBadge"),
+  {
+    loading: () => (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: true,
+  }
+);
+
 type PageBuilderProps = { content: NonNullable<Page["content1sp"]> };
 
 export function PageBuilder({ content }: PageBuilderProps) {
@@ -312,6 +357,30 @@ export function PageBuilder({ content }: PageBuilderProps) {
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <SmartPeople key={key} {...(block as any)} />
+              </ErrorBoundary>
+            );
+          case "casesIntro":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <CasesIntro key={key} {...block} />
+              </ErrorBoundary>
+            );
+          case "casesGalleryFiltered":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <CasesGalleryFiltered key={key} {...block} />
+              </ErrorBoundary>
+            );
+          case "servicesGalleryFiltered":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <ServicesGalleryFiltered key={key} {...block} />
+              </ErrorBoundary>
+            );
+          case "servicesHeroWithBadge":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <ServicesHeroWithBadge key={key} {...block} />
               </ErrorBoundary>
             );
 

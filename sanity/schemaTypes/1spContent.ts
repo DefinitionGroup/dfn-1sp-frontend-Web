@@ -3,6 +3,10 @@ import heroShowtime from "./1SP/Components/heroShowtime";
 import sublineComponent from "./1SP/Components/sublineComponent";
 import Header from "./1SP/Components/Header";
 import contentSection from "./1SP/Components/contentSection";
+import casesIntro from "./1SP/Components/casesIntro";
+import casesGalleryFiltered from "./1SP/Components/casesGalleryFiltered";
+import servicesGalleryFiltered from "./1SP/Components/servicesGalleryFiltered";
+import servicesHeroWithBadge from "./1SP/Components/servicesHeroWithBadge";
 
 import badgeModule from "./1SP/Items/badgeModule";
 import carouselItem from "./1SP/Items/carouselItem";
@@ -40,6 +44,10 @@ const oneSPComponents = [
     sublineComponent,
     Header,
     contentSection,
+    casesIntro,
+    casesGalleryFiltered,
+    servicesGalleryFiltered,
+    servicesHeroWithBadge,
     // Individual gallery steps now available as standalone components
     galleryHeroStep,
     galleryCardsStep,

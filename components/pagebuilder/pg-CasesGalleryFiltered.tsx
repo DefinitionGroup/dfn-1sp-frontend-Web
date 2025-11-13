@@ -1,0 +1,143 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
+import { client } from "@/sanity/lib/client";
+import { CASE_STUDIES_QUERY } from "@/sanity/lib/queries";
+import GridBackground from "@/components/ui/GridBackground";
+import CaseGalleryComponent from "@/components/data/data-CaseGallery";
+import { getTranslations } from "@/lib/translations";
+
+interface CaseStudy {
+  _id: string;
+  title: string;
+  subtitle?: string;
+  slug: { current: string };
+  description?: string;
+  services?: { _id: string; name: string }[];
+  mainImageUrl?: string;
+  mainVideoUrl?: string;
+  client?: {
+    _id: string;
+    name: string;
+    logoUrl?: string;
+  };
+  websiteUrl?: string;
+  websiteUrlText?: string;
+}
+
+interface CasesGalleryFilteredProps {
+  showGridBackground?: boolean;
+  showFilters?: boolean;
+  paddingY?: string;
+  marginBottom?: string;
+  navPointName?: string;
+}
+
+export default function CasesGalleryFiltered({
+  showGridBackground = true,
+  showFilters = true,
+  paddingY = "16",
+  marginBottom = "16",
+  navPointName,
+}: CasesGalleryFilteredProps) {
+  const params = useParams();
+  const locale = (params?.locale as string) || "en";
+  const t = getTranslations(locale);
+
+  const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
+  const [activeFilter, setActiveFilter] = useState<string>(
+    t.casesList.filterAll
+  );
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch case studies
+  useEffect(() => {
+    const fetchCaseStudies = async () => {
+      try {
+        setIsLoading(true);
+        // Get channel from cookie or default
+        const channel =
+          document.cookie
+            .split("; ")
+            .find((row) => row.startsWith("channel="))
+            ?.split("=")[1] || "1spWeb";
+
+        const data = await client.fetch(CASE_STUDIES_QUERY, {
+          channel,
+          language: locale,
+        });
+
+        setCaseStudies(data || []);
+      } catch (error) {
+        console.error("Error fetching case studies:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCaseStudies();
+  }, [locale]);
+
+  // Extract unique service names from case studies
+  const uniqueServices = Array.from(
+    new Set(
+      caseStudies
+        .flatMap((study) => study.services || [])
+        .map((service) => service.name)
+    )
+  ).sort();
+
+  const filters = [t.casesList.filterAll, ...uniqueServices];
+  const sectionId = t.ids.cases;
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-12 z-1 mx-auto container relative">
+        <div className="col-span-12 py-16 text-center">
+          <div className="text-gray-400">Loading cases...</div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      id={sectionId}
+      data-navpoint-name={navPointName}
+      className={`grid grid-cols-12 z-1 mx-auto container mb-${marginBottom} relative font-aspekta`}
+    >
+      {showGridBackground && <GridBackground />}
+      <div
+        className={`z-1 grid gap-8 col-span-12 py-${paddingY} col-start-1 container mx-auto row-start-1 grid-cols-12`}
+      >
+        <div className="z-1 col-span-12 col-start-1">
+          {/* Filter Buttons */}
+          {showFilters && filters.length > 1 && (
+            <div className="flex flex-wrap gap-4 mb-8 justify-center md:justify-start">
+              {filters.map((filter) => (
+                <button
+                  key={filter}
+                  onClick={() => setActiveFilter(filter)}
+                  className={`px-6 py-2 rounded-full text-xs font-medium uppercase transition-all duration-100 ${
+                    activeFilter === filter
+                      ? "bg-lime-500 text-black"
+                      : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
+                  }`}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
+          )}
+          <CaseGalleryComponent
+            caseStudies={caseStudies}
+            activeFilter={activeFilter}
+            locale={locale}
+            filterAllText={t.casesList.filterAll}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}

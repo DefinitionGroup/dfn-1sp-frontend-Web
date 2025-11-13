@@ -164,36 +164,6 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                     </Link>
                   </span>
                 ))}
-
-              {hasCaseStudies && !hasCasesLinkInMenu && (
-                <span key="cases-fallback" className={itemClass}>
-                  <Link
-                    className="hover:text-lime-400"
-                    href={`/${locale}/cases`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      router.push(`/${locale}/cases`);
-                    }}
-                  >
-                    Cases
-                  </Link>
-                </span>
-              )}
-
-              {hasServices && !hasServicesLinkInMenu && (
-                <span key="services-fallback" className={itemClass}>
-                  <Link
-                    className="hover:text-lime-400"
-                    href={`/${locale}/services`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      router.push(`/${locale}/services`);
-                    }}
-                  >
-                    Services
-                  </Link>
-                </span>
-              )}
             </>
           ) : (
             <>
@@ -209,34 +179,6 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                   Home
                 </Link>
               </span>
-              {hasCaseStudies && (
-                <span className={itemClass}>
-                  <Link
-                    className="hover:text-lime-400"
-                    href={`/${locale}/cases`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      router.push(`/${locale}/cases`);
-                    }}
-                  >
-                    Cases
-                  </Link>
-                </span>
-              )}
-              {hasServices && (
-                <span className={itemClass}>
-                  <Link
-                    className="hover:text-lime-400"
-                    href={`/${locale}/services`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      router.push(`/${locale}/services`);
-                    }}
-                  >
-                    Services
-                  </Link>
-                </span>
-              )}
               <span className={itemClass}>
                 <Link
                   className="hover:text-lime-400"

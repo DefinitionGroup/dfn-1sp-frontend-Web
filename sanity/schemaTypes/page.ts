@@ -131,6 +131,10 @@ export default defineType({
                 { type: 'sublineComponent' },
                 { type: 'oneSPHeader' },
                 { type: 'contentSection' },
+                { type: 'casesIntro' },
+                { type: 'casesGalleryFiltered' },
+                { type: 'servicesGalleryFiltered' },
+                { type: 'servicesHeroWithBadge' },
                 // Individual gallery steps now available as standalone components
                 { type: 'galleryHeroStep' },
                 { type: 'galleryCardsStep' },
