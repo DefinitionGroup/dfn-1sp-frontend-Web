@@ -91,6 +91,9 @@ export default function CasesGalleryFiltered({
   const filters = [t.casesList.filterAll, ...uniqueServices];
   const sectionId = t.ids.cases;
 
+  const paddingClass = `py-${paddingY}`;
+  const marginClass = `mb-${marginBottom}`;
+
   if (isLoading) {
     return (
       <div className="grid grid-cols-12 z-1 mx-auto container relative">
@@ -105,11 +108,11 @@ export default function CasesGalleryFiltered({
     <div
       id={sectionId}
       data-navpoint-name={navPointName}
-      className={`grid grid-cols-12 z-1 mx-auto container mb-${marginBottom} relative font-aspekta`}
+      className={`grid grid-cols-12 z-1 mx-auto container ${marginClass} relative font-aspekta`}
     >
       {showGridBackground && <GridBackground />}
       <div
-        className={`z-1 grid gap-8 col-span-12 py-${paddingY} col-start-1 container mx-auto row-start-1 grid-cols-12`}
+        className={`z-1 grid gap-8 col-span-12 ${paddingClass} col-start-1 container mx-auto row-start-1 grid-cols-12`}
       >
         <div className="z-1 col-span-12 col-start-1">
           {/* Filter Buttons */}

@@ -306,3 +306,23 @@ export const SMART_PEOPLE_QUERY = defineQuery(`
   smartPeoplePromo1SP
 }
 `);
+
+// Helper function to generate interactive carousel query with dynamic field
+export const getInteractiveCarouselQuery = (carouselField: string) => `
+*[
+  _type == "caseStudy" && 
+  ${carouselField} == true &&
+  isPublished == true &&
+  language == $language
+] | order(publishedAt desc) [0...$maxItems] {
+  _id,
+  title,
+  subtitle,
+  description,
+  services[]->{ _id, name },
+  mainImage,
+  mainVideo,
+  client->{ _id, name, logo },
+  slug
+}
+`;
