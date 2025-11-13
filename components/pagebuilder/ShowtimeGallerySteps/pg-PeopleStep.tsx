@@ -40,6 +40,10 @@ export default function PeopleStep({
   const members = step.teamMembers ?? [];
   const header = step.header ?? {};
 
+  console.log("PeopleStep - step data:", step);
+  console.log("PeopleStep - teamMembers:", members);
+  console.log("PeopleStep - members length:", members.length);
+
   // Map person schema fields to MemberItem format expected by PeopleShowcaseHero
   const mappedMembers = members.map((member) => ({
     ...member,

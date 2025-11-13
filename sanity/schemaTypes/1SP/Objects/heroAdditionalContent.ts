@@ -12,7 +12,8 @@ export default defineType({
             options: {
                 list: [
                     { title: 'Interactive Carousel', value: 'carousel' },
-                    { title: 'Smart Carousel', value: 'smartCarousel' }
+                    { title: 'Smart Carousel', value: 'smartCarousel' },
+                    { title: 'Smart People', value: 'smartPeople' }
                 ]
             },
             validation: (Rule) => Rule.required()
@@ -42,15 +43,29 @@ export default defineType({
                 }
                 return true;
             })
+        }),
+        defineField({
+            name: 'smartPeople',
+            title: 'Smart People',
+            type: 'smartPeople',
+            hidden: ({ parent }) => parent?.contentType !== 'smartPeople',
+            validation: (Rule) => Rule.custom((value, context) => {
+                const parent = context.parent as any;
+                if (parent?.contentType === 'smartPeople' && !value) {
+                    return 'Smart People is required when this content type is selected';
+                }
+                return true;
+            })
         })
     ],
     preview: {
         select: {
             contentType: 'contentType',
             carouselItemsCount: 'carousel.items',
-            smartCarouselMax: 'smartCarousel.maxItems'
+            smartCarouselMax: 'smartCarousel.maxItems',
+            smartPeopleMax: 'smartPeople.maxItems'
         },
-        prepare({ contentType, carouselItemsCount, smartCarouselMax }) {
+        prepare({ contentType, carouselItemsCount, smartCarouselMax, smartPeopleMax }) {
             if (contentType === 'carousel') {
                 const count = Array.isArray(carouselItemsCount) ? carouselItemsCount.length : 0;
                 return {
@@ -61,6 +76,11 @@ export default defineType({
                 return {
                     title: 'Smart Carousel',
                     subtitle: `Max ${smartCarouselMax || 5} items (Auto-populated)`
+                };
+            } else if (contentType === 'smartPeople') {
+                return {
+                    title: 'Smart People',
+                    subtitle: `Max ${smartPeopleMax || 6} people (Auto-populated)`
                 };
             }
             return {

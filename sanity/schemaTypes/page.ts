@@ -130,7 +130,19 @@ export default defineType({
                 { type: 'heroShowTime' },
                 { type: 'sublineComponent' },
                 { type: 'oneSPHeader' },
-                { type: 'contentSection' }
+                { type: 'contentSection' },
+                // Individual gallery steps now available as standalone components
+                { type: 'galleryHeroStep' },
+                { type: 'galleryCardsStep' },
+                { type: 'galleryListStep' },
+                { type: 'galleryPeopleStep' },
+                { type: 'galleryScrollHighlightStep' },
+                { type: 'galleryRevealStep' },
+                { type: 'galleryOverview' },
+                // Carousel and smart components
+                { type: 'carousel' },
+                { type: 'smartCarousel' },
+                { type: 'smartPeople' }
             ],
             hidden: ({ parent }: any) => parent?.channel !== '1spWeb',
         }),

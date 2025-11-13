@@ -9,6 +9,7 @@ import { useRef } from "react";
 import { assetUrl } from "@/utils/utils";
 import InteractiveCarousel from "../Fragments/pg-InteractiveCarousel";
 import SmartCarousel from "../../data/data-InteractiveCarousel";
+import SmartPeople from "../../data/data-SmartPeople";
 import { useInView } from "motion/react";
 import { useParams } from "next/navigation";
 
@@ -138,6 +139,18 @@ export default function HeroStep({ step }: { step: GalleryHeroStep }) {
                 <div key={key} className="col-span-12 col-start-1 mt-8">
                   <SmartCarousel
                     maxItems={content.smartCarousel.maxItems}
+                    language={language}
+                  />
+                </div>
+              );
+            } else if (
+              content.contentType === "smartPeople" &&
+              content.smartPeople?.maxItems
+            ) {
+              return (
+                <div key={key} className="col-span-12 col-start-1 mt-8">
+                  <SmartPeople
+                    maxItems={content.smartPeople.maxItems}
                     language={language}
                   />
                 </div>
