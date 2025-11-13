@@ -219,6 +219,18 @@ export default defineType({
             },
             group: 'settings'
         },
+        defineField({
+            name: 'smartPeoplePromo1SP',
+            title: 'Smart People Promo 1SP',
+            type: 'boolean',
+            description: 'Include this person in the Smart People component for 1SP Website',
+            initialValue: false,
+            hidden: ({ document }: { document: any }) => {
+                const channels = document?.channel || [];
+                return !channels.includes('1spWeb');
+            },
+            group: 'settings'
+        }),
     ],
     preview: {
         // select raw fields (we'll inspect for common url locations)

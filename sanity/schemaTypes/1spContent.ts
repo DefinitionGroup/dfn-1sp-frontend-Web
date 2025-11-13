@@ -3,6 +3,10 @@ import heroShowtime from "./1SP/Components/heroShowtime";
 import sublineComponent from "./1SP/Components/sublineComponent";
 import Header from "./1SP/Components/Header";
 import contentSection from "./1SP/Components/contentSection";
+import casesIntro from "./1SP/Components/casesIntro";
+import casesGalleryFiltered from "./1SP/Components/casesGalleryFiltered";
+import servicesGalleryFiltered from "./1SP/Components/servicesGalleryFiltered";
+import servicesHeroWithBadge from "./1SP/Components/servicesHeroWithBadge";
 
 import badgeModule from "./1SP/Items/badgeModule";
 import carouselItem from "./1SP/Items/carouselItem";
@@ -12,11 +16,17 @@ import member from "./1SP/Items/member";
 
 import carousel from "./1SP/Objects/carousel";
 import smartCarousel from "./1SP/Objects/smartCarousel";
+import smartPeople from "./1SP/Objects/smartPeople";
 import heroAdditionalContent from "./1SP/Objects/heroAdditionalContent";
 import slideUpContent from "./1SP/Objects/slideUpContent";
 import galleryStep from "./1SP/Objects/galleryStep";
 import cards from "./1SP/Objects/cards";
 import CtaMiniComponent from "./1SP/Objects/CtaMiniComponent";
+import listItem from "./1SP/Objects/listItem";
+import listStepHeader from "./1SP/Objects/listStepHeader";
+import staggeredHeader from "./1SP/Objects/staggeredHeader";
+import cardsStepContent from "./1SP/Objects/cardsStepContent";
+import peopleStepHeader from "./1SP/Objects/peopleStepHeader";
 
 import galleryCardsStep from "./1SP/Objects/GalleryScroll/galleryCardsStep";
 import galleryHeroStep from "./1SP/Objects/GalleryScroll/galleryHeroStep";
@@ -33,7 +43,23 @@ const oneSPComponents = [
     heroShowtime,
     sublineComponent,
     Header,
-    contentSection
+    contentSection,
+    casesIntro,
+    casesGalleryFiltered,
+    servicesGalleryFiltered,
+    servicesHeroWithBadge,
+    // Individual gallery steps now available as standalone components
+    galleryHeroStep,
+    galleryCardsStep,
+    galleryListStep,
+    galleryPeopleStep,
+    galleryScrollHighlightStep,
+    GalleryRevealStep,
+    GalleryOverviewStep,
+    // Carousel and smart components as standalone
+    carousel,
+    smartCarousel,
+    smartPeople
 ];
 const oneSPItems = [
     badgeModule,
@@ -44,30 +70,26 @@ const oneSPItems = [
     grid
 ];
 const oneSPObjects = [
-    carousel,
-    smartCarousel,
     heroAdditionalContent,
     slideUpContent,
     galleryStep,
     cards,
     CtaMiniComponent,
-    CTASplitHeader
-
+    CTASplitHeader,
+    listItem,
+    listStepHeader,
+    staggeredHeader,
+    cardsStepContent,
+    peopleStepHeader
 ];
 
 const galleryScrollObjects = [
-    galleryCardsStep,
-    galleryHeroStep,
-    galleryListStep,
-    galleryPeopleStep,
-    galleryScrollHighlightStep,
-    GalleryRevealStep,
-    GalleryOverviewStep
+    // Gallery scroll objects now moved to oneSPComponents for standalone use
 ];
 
 export const OneSPschemaTypes = [
     ...oneSPComponents,
     ...oneSPItems,
     ...oneSPObjects,
-    ...galleryScrollObjects
+    // galleryScrollObjects removed to prevent duplication
 ]
