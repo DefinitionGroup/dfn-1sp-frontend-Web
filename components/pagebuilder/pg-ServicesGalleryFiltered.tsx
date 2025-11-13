@@ -74,10 +74,13 @@ export default function ServicesGalleryFiltered({
   const filters = [t.services.filterAll, ...uniqueServiceGroups];
   const sectionId = t.ids.services;
 
+  const bgColorClass = `bg-${backgroundColor}`;
+  const paddingClass = `py-${paddingY}`;
+
   if (isLoading) {
     return (
       <div
-        className={`grid grid-cols-12 z-50 mx-auto bg-${backgroundColor} relative`}
+        className={`grid grid-cols-12 z-50 mx-auto ${bgColorClass} relative`}
       >
         <div className="col-span-12 py-16 text-center">
           <div className="text-gray-400">Loading services...</div>
@@ -90,10 +93,10 @@ export default function ServicesGalleryFiltered({
     <div
       id={sectionId}
       data-navpoint-name={navPointName}
-      className={`grid grid-cols-12 z-50 mx-auto bg-${backgroundColor} min-h-[90vh] relative font-aspekta`}
+      className={`grid grid-cols-12 z-50 mx-auto ${bgColorClass} min-h-[90vh] relative font-aspekta`}
     >
       <div
-        className={`z-2 grid gap-8 col-span-12 py-${paddingY} col-start-1 container mx-auto row-start-1 grid-cols-12`}
+        className={`z-2 grid gap-8 col-span-12 ${paddingClass} col-start-1 container mx-auto row-start-1 grid-cols-12`}
       >
         <div className="col-span-12 col-start-3">
           {/* Filter Buttons */}
