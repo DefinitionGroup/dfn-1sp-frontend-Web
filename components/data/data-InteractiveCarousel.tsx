@@ -7,6 +7,7 @@ import Button2 from "@/components/ui/Button2";
 import type { CTA, CloudinaryAsset } from "@/types/sanity.types";
 import { assetUrl } from "@/utils/utils";
 import { client } from "@/sanity/lib/client";
+import { getInteractiveCarouselQuery } from "@/sanity/lib/queries";
 
 // Channel to carousel field mapping
 const CHANNEL_FIELD_MAP = {
@@ -100,23 +101,12 @@ export default function SmartCarousel({
         const effectiveChannel =
           channel || (mounted ? getChannelFromCookie() : null) || "1spWeb";
         const carouselField = CHANNEL_FIELD_MAP[effectiveChannel];
-        const query = `*[
-          _type == "caseStudy" && 
-          ${carouselField} == true &&
-          isPublished == true &&
-          language == $language
-        ] | order(publishedAt desc) [0...${maxItems}] {
-          _id,
-          title,
-          subtitle,
-          description,
-          services[]->{ _id, name },
-          mainImage,
-          mainVideo,
-          client->{ _id, name, logo },
-          slug
-        }`;
-        const results = await client.fetch(query, { language });
+
+        const query = getInteractiveCarouselQuery(carouselField);
+        const results = await client.fetch(query, {
+          language,
+          maxItems: maxItems - 1,
+        });
         setCaseStudies(results);
       } catch (error) {
         console.error("Error fetching case studies:", error);
@@ -128,30 +118,36 @@ export default function SmartCarousel({
   }, [maxItems, language, channel, mounted]);
 
   const carouselItems: UIItem[] = useMemo(() => {
-    const list = caseStudies.map((cs) => {
-      const image = assetUrl(cs.mainImage) || "";
-      const logosrc = assetUrl(cs.client?.logo) || undefined;
-      const video = assetUrl(cs.mainVideo) || undefined;
-      const linkHref = cs.slug?.current
-        ? `/${language}/cases/${cs.slug.current}`
-        : undefined;
-      return {
-        id: cs._id,
-        title: cs.title || "",
-        subtitle:
-          cs.subtitle ||
-          (cs.services ? cs.services.map((s) => s.name).join(", ") : ""),
-        image,
-        video,
-        description: cs.description || "",
-        category: cs.services
-          ? cs.services.map((s) => s.name).join(", ")
-          : undefined,
-        logosrc,
-        linkHref,
-      } as UIItem;
-    });
-    return list.filter((x) => !!x.image || !!x.video);
+    const list = caseStudies
+      .map((cs) => {
+        const image = assetUrl(cs.mainImage);
+        const logosrc = assetUrl(cs.client?.logo);
+        const video = assetUrl(cs.mainVideo);
+        const linkHref = cs.slug?.current
+          ? `/${language}/cases/${cs.slug.current}`
+          : undefined;
+
+        // Skip items without valid image or video
+        if (!image && !video) return null;
+
+        return {
+          id: cs._id,
+          title: cs.title || "",
+          subtitle:
+            cs.subtitle ||
+            (cs.services ? cs.services.map((s) => s.name).join(", ") : ""),
+          image: image || "",
+          video: video || undefined,
+          description: cs.description || "",
+          category: cs.services
+            ? cs.services.map((s) => s.name).join(", ")
+            : undefined,
+          logosrc: logosrc || undefined,
+          linkHref,
+        } as UIItem;
+      })
+      .filter((x): x is UIItem => x !== null);
+    return list;
   }, [caseStudies, language]);
 
   useEffect(() => {
@@ -294,7 +290,7 @@ export default function SmartCarousel({
                       autoPlay
                       muted
                     />
-                  ) : (
+                  ) : active.image ? (
                     <motion.img
                       src={active.image}
                       alt={active.title}
@@ -303,7 +299,7 @@ export default function SmartCarousel({
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ duration: 1.6 }}
                     />
-                  )}
+                  ) : null}
 
                   {/* Overlay (match Plaintext: gradient from top) */}
                   <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/0 to-transparent" />
@@ -464,12 +460,14 @@ export default function SmartCarousel({
                   setCurrentIndex(index);
                 }}
               >
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  className="object-cover"
-                />
+                {item.image && (
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    className="object-cover"
+                  />
+                )}
               </motion.button>
             ))}
           </div>

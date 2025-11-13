@@ -35,6 +35,32 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
           }
         }
       }
+    },
+    _type == 'galleryPeopleStep' => {
+      ...,
+      teamMembers[]->{
+        _id,
+        name,
+        image{
+          ...,
+          secure_url,
+          resource_type,
+          public_id
+        },
+        video{
+          ...,
+          secure_url,
+          resource_type,
+          public_id
+        },
+        altText,
+        fullname,
+        position,
+        email,
+        profileUrl,
+        tagline,
+        channel
+      }
     }
   }
 }`);
@@ -73,6 +99,32 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
             channel
           }
         }
+      }
+    },
+    _type == 'galleryPeopleStep' => {
+      ...,
+      teamMembers[]->{
+        _id,
+        name,
+        image{
+          ...,
+          secure_url,
+          resource_type,
+          public_id
+        },
+        video{
+          ...,
+          secure_url,
+          resource_type,
+          public_id
+        },
+        altText,
+        fullname,
+        position,
+        email,
+        profileUrl,
+        tagline,
+        channel
       }
     }
   }
@@ -231,3 +283,46 @@ export const SERVICES_QUERY = defineQuery(`
 export const HAS_SERVICES_QUERY = defineQuery(`
 count(*[_type == "services" && language == $language]) > 0
 `);
+
+export const SMART_PEOPLE_QUERY = defineQuery(`
+*[
+  _type == "person" && 
+  smartPeoplePromo1SP == true &&
+  $channel in channel
+] | order(_createdAt desc) [0...$maxItems] {
+  _id,
+  name,
+  slug,
+  image,
+  video,
+  altText,
+  fullname,
+  position,
+  email,
+  profileUrl,
+  tagline,
+  channel,
+  language,
+  smartPeoplePromo1SP
+}
+`);
+
+// Helper function to generate interactive carousel query with dynamic field
+export const getInteractiveCarouselQuery = (carouselField: string) => `
+*[
+  _type == "caseStudy" && 
+  ${carouselField} == true &&
+  isPublished == true &&
+  language == $language
+] | order(publishedAt desc) [0...$maxItems] {
+  _id,
+  title,
+  subtitle,
+  description,
+  services[]->{ _id, name },
+  mainImage,
+  mainVideo,
+  client->{ _id, name, logo },
+  slug
+}
+`;

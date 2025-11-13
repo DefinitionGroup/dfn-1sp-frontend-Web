@@ -30,12 +30,8 @@ export default defineType({
         defineField({
             name: 'content',
             title: 'Content',
-            type: 'object',
-            group: 'content',
-            fields: [
-                { name: 'headline', title: 'Headline', type: 'string' },
-                { name: 'description', title: 'Description', type: 'text' }
-            ]
+            type: 'cardsStepContent',
+            group: 'content'
         }),
         defineField({
             name: 'expandableCards',

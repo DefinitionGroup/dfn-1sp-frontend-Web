@@ -34,6 +34,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   const router = useTransitionRouter();
   const pathname = usePathname() || "";
   const [showOverlay, setShowOverlay] = React.useState(false);
+  const navRef = React.useRef<HTMLElement>(null);
 
   // Match case detail pages: /cases/[slug] or /locale/cases/[slug]
   const isCaseDetailRoute = React.useMemo(() => {
@@ -47,22 +48,171 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
     return /^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?cases(?:\/|$)/.test(pathname);
   }, [pathname]);
 
-  // Decide effective color
+  // Decide effective color based on route
   const effectiveColor = React.useMemo(() => {
     if (isCaseDetailRoute) return "light";
     if (isAnyCasesRoute) return "dark";
     return color;
   }, [isCaseDetailRoute, isAnyCasesRoute, color]);
 
-  const effectiveTextColor =
-    effectiveColor === "dark" ? "text-neutral-800" : "text-neutral-50";
+  const [detectedTheme, setDetectedTheme] = React.useState<"light" | "dark">(
+    effectiveColor
+  );
 
-  const textColor = effectiveTextColor;
+  // Detect background brightness and set theme
+  React.useEffect(() => {
+    let animationFrameId: number | null = null;
+    let lastDetectedTheme: "light" | "dark" | null = null;
+
+    const detectBackground = () => {
+      if (!navRef.current) return null;
+
+      const nav = navRef.current;
+      const rect = nav.getBoundingClientRect();
+
+      // Sample multiple points to get better detection
+      const points = [
+        { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }, // center
+        { x: rect.left + rect.width * 0.25, y: rect.top + rect.height / 2 }, // left
+        { x: rect.left + rect.width * 0.75, y: rect.top + rect.height / 2 }, // right
+      ];
+
+      let whiteBackgroundCount = 0;
+      let samplesCount = 0;
+
+      // Hide nav temporarily to sample background
+      const originalVisibility = nav.style.visibility;
+      const originalPointerEvents = nav.style.pointerEvents;
+      nav.style.visibility = "hidden";
+      nav.style.pointerEvents = "none";
+
+      for (const point of points) {
+        const elementBehind = document.elementFromPoint(point.x, point.y);
+        if (elementBehind) {
+          let currentElement: HTMLElement | null = elementBehind as HTMLElement;
+
+          // Walk up the DOM tree to find the first non-transparent background
+          let depth = 0;
+          while (
+            currentElement &&
+            currentElement !== document.documentElement &&
+            depth < 10
+          ) {
+            const computedStyle = window.getComputedStyle(currentElement);
+            const bgColor = computedStyle.backgroundColor;
+
+            // Check if background is not transparent
+            const rgbMatch = bgColor.match(
+              /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/
+            );
+            if (rgbMatch) {
+              const alpha = rgbMatch[4] ? parseFloat(rgbMatch[4]) : 1;
+              if (alpha > 0.1) {
+                const r = parseInt(rgbMatch[1]);
+                const g = parseInt(rgbMatch[2]);
+                const b = parseInt(rgbMatch[3]);
+
+                samplesCount++;
+
+                // Check if it's white or very close to white (RGB values all above 240)
+                if (r >= 240 && g >= 240 && b >= 240) {
+                  whiteBackgroundCount++;
+                }
+                break;
+              }
+            }
+            currentElement = currentElement.parentElement;
+            depth++;
+          }
+
+          // If we reached the end without finding a background, assume white
+          if (
+            depth >= 10 ||
+            !currentElement ||
+            currentElement === document.documentElement
+          ) {
+            whiteBackgroundCount++;
+            samplesCount++;
+          }
+        }
+      }
+
+      nav.style.visibility = originalVisibility;
+      nav.style.pointerEvents = originalPointerEvents;
+
+      if (samplesCount > 0) {
+        // If most samples are white, use dark text; otherwise use light text
+        const newTheme =
+          whiteBackgroundCount > samplesCount / 2 ? "dark" : "light";
+
+        // Only update if theme changed
+        if (newTheme !== lastDetectedTheme) {
+          lastDetectedTheme = newTheme;
+          setDetectedTheme(newTheme);
+          console.log(
+            `🎨 Navbar theme: ${whiteBackgroundCount}/${samplesCount} white samples → ${newTheme} text`
+          );
+        }
+
+        return newTheme;
+      } else {
+        // Fallback to effectiveColor
+        if (effectiveColor !== lastDetectedTheme) {
+          lastDetectedTheme = effectiveColor;
+          setDetectedTheme(effectiveColor);
+          console.log(`🎨 Navbar using fallback theme: ${effectiveColor}`);
+        }
+        return effectiveColor;
+      }
+    };
+
+    // Continuous monitoring loop
+    const monitorBackground = () => {
+      detectBackground();
+      animationFrameId = requestAnimationFrame(monitorBackground);
+    };
+
+    // Wait for page animations to settle before initial detection
+    const initialTimer = setTimeout(() => {
+      // Use effectiveColor initially to avoid flickering
+      setDetectedTheme(effectiveColor);
+    }, 100);
+
+    // Delay monitoring start to let animations complete (most animations are < 1s)
+    const monitorTimer = setTimeout(() => {
+      detectBackground();
+      // Start continuous monitoring after animations settle
+      animationFrameId = requestAnimationFrame(monitorBackground);
+    }, 1200);
+
+    // Periodic revalidation every 2 seconds to catch lazy-loaded content
+    const revalidationInterval = setInterval(() => {
+      detectBackground();
+    }, 5000);
+
+    // Also detect on scroll and resize as fallback
+    const handleScroll = () => detectBackground();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+
+    return () => {
+      clearTimeout(initialTimer);
+      clearTimeout(monitorTimer);
+      clearInterval(revalidationInterval);
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+      }
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, [effectiveColor, pathname]);
+
+  const textColor =
+    detectedTheme === "dark" ? "text-neutral-800" : "text-neutral-50";
   const imageLogo =
-    effectiveColor === "dark"
+    detectedTheme === "dark"
       ? "/ci/1sp-fulllogotype-blk.svg"
       : "/ci/1sp-fulllogotype.svg";
-
   const logoUrl = imageLogo;
 
   // Detect if Sanity menu already contains a Cases link
@@ -93,10 +243,11 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       );
     });
 
-  const itemClass = `${textColor} text-xs leading-compress font-bold mr-8 inline-block`;
+  const itemClass = `text-xs leading-compress font-bold mr-8 inline-block transition-colors duration-300`;
 
   return (
     <nav
+      ref={navRef}
       className={`hidden absolute top-0 left-0 right-0 md:grid items-center z-50 grid-cols-12 gap-4 py-5 container mx-auto ${textColor} ${className}`}
     >
       <div className="col-span-1 flex items-center justify-center">
@@ -115,7 +266,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               alt="1SP Logo"
               width={90}
               height={90}
-              className="object-contain"
+              className="object-contain transition-all duration-300"
             />
           </Link>
         </div>
@@ -153,7 +304,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 .map((item) => (
                   <span key={item._key} className={itemClass}>
                     <Link
-                      className="hover:text-lime-400"
+                      className="hover:text-lime-400 transition-colors"
                       href={`/${item.slug}`}
                       onClick={(e) => {
                         e.preventDefault();
@@ -164,42 +315,12 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                     </Link>
                   </span>
                 ))}
-
-              {hasCaseStudies && !hasCasesLinkInMenu && (
-                <span key="cases-fallback" className={itemClass}>
-                  <Link
-                    className="hover:text-lime-400"
-                    href={`/${locale}/cases`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      router.push(`/${locale}/cases`);
-                    }}
-                  >
-                    Cases
-                  </Link>
-                </span>
-              )}
-
-              {hasServices && !hasServicesLinkInMenu && (
-                <span key="services-fallback" className={itemClass}>
-                  <Link
-                    className="hover:text-lime-400"
-                    href={`/${locale}/services`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      router.push(`/${locale}/services`);
-                    }}
-                  >
-                    Services
-                  </Link>
-                </span>
-              )}
             </>
           ) : (
             <>
               <span className={itemClass}>
                 <Link
-                  className="hover:text-lime-400"
+                  className="hover:text-lime-400 transition-colors"
                   href={`/${locale}`}
                   onClick={(e) => {
                     e.preventDefault();
@@ -209,37 +330,9 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                   Home
                 </Link>
               </span>
-              {hasCaseStudies && (
-                <span className={itemClass}>
-                  <Link
-                    className="hover:text-lime-400"
-                    href={`/${locale}/cases`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      router.push(`/${locale}/cases`);
-                    }}
-                  >
-                    Cases
-                  </Link>
-                </span>
-              )}
-              {hasServices && (
-                <span className={itemClass}>
-                  <Link
-                    className="hover:text-lime-400"
-                    href={`/${locale}/services`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      router.push(`/${locale}/services`);
-                    }}
-                  >
-                    Services
-                  </Link>
-                </span>
-              )}
               <span className={itemClass}>
                 <Link
-                  className="hover:text-lime-400"
+                  className="hover:text-lime-400 transition-colors"
                   href={`/${locale}/whatwedo`}
                   onClick={(e) => {
                     e.preventDefault();
@@ -251,7 +344,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               </span>
               <span className={itemClass}>
                 <Link
-                  className="hover:text-lime-400"
+                  className="hover:text-lime-400 transition-colors"
                   href={`/${locale}/our-family`}
                   onClick={(e) => {
                     e.preventDefault();
@@ -263,7 +356,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               </span>
               <span className={itemClass}>
                 <Link
-                  className="hover:text-lime-400"
+                  className="hover:text-lime-400 transition-colors"
                   href={`/${locale}/whatwedo`}
                   onClick={(e) => {
                     e.preventDefault();
@@ -283,7 +376,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         {isCaseDetailRoute && (
           <button
             type="button"
-            className={`border rounded-full min-w-[80px] inline-block py-1 px-2 ${textColor} text-xxs font-bold cursor-pointer hover:text-lime-400`}
+            className={`border rounded-full min-w-[80px] inline-block py-1 px-2 text-xxs font-bold cursor-pointer hover:text-lime-400 hover:border-lime-400 transition-colors`}
             onClick={() => setShowOverlay(true)}
           >
             All Cases

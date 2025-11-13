@@ -3,6 +3,14 @@ import dynamic from "next/dynamic";
 import type {
   ShowtimeGallery as ShowtimeGalleryType,
   OneSPHeader as OneSPHeaderType,
+  GalleryHeroStep as GalleryHeroStepType,
+  GalleryCardsStep as GalleryCardsStepType,
+  GalleryListStep as GalleryListStepType,
+  GalleryPeopleStep as GalleryPeopleStepType,
+  GalleryScrollHighlightStep as GalleryScrollHighlightStepType,
+  GalleryRevealStep as GalleryRevealStepType,
+  GalleryOverview as GalleryOverviewType,
+  Carousel as CarouselType,
 } from "@/types/sanity.types";
 import type { Page } from "@/types/sanity.types";
 import { HeroShowtime as HeroShowtimeType } from "@/types/sanity.types";
@@ -59,6 +67,167 @@ const ContentSection = dynamic(
   }
 );
 
+// Gallery step components - now available as standalone components
+const GalleryHeroStep = dynamic(
+  () => import("./pagebuilder/pg-GalleryHeroStep"),
+  {
+    loading: () => (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: true,
+  }
+);
+
+const GalleryCardsStep = dynamic(
+  () => import("./pagebuilder/pg-GalleryCardsStep"),
+  {
+    loading: () => (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: true,
+  }
+);
+
+const GalleryListStep = dynamic(
+  () => import("./pagebuilder/pg-GalleryListStep"),
+  {
+    loading: () => (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: true,
+  }
+);
+
+const GalleryPeopleStep = dynamic(
+  () => import("./pagebuilder/pg-GalleryPeopleStep"),
+  {
+    loading: () => (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: true,
+  }
+);
+
+const GalleryHighlightStep = dynamic(
+  () => import("./pagebuilder/pg-GalleryHighlightStep"),
+  {
+    loading: () => (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: true,
+  }
+);
+
+const GalleryRevealStep = dynamic(
+  () => import("./pagebuilder/pg-GalleryRevealStep"),
+  {
+    loading: () => (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: true,
+  }
+);
+
+const GalleryOverviewStep = dynamic(
+  () => import("./pagebuilder/pg-GalleryOverviewStep"),
+  {
+    loading: () => (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: true,
+  }
+);
+
+// Carousel and smart components
+const InteractiveCarousel = dynamic(
+  () => import("./pagebuilder/pg-InteractiveCarousel"),
+  {
+    loading: () => (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: true,
+  }
+);
+
+const SmartCarousel = dynamic(() => import("./pagebuilder/pg-SmartCarousel"), {
+  loading: () => (
+    <div className="w-full h-64 flex items-center justify-center">
+      <div className="text-gray-400">Loading...</div>
+    </div>
+  ),
+  ssr: true,
+});
+
+const SmartPeople = dynamic(() => import("./data/data-SmartPeople"), {
+  loading: () => (
+    <div className="w-full h-64 flex items-center justify-center">
+      <div className="text-gray-400">Loading...</div>
+    </div>
+  ),
+  ssr: true,
+});
+
+const CasesIntro = dynamic(() => import("./pagebuilder/pg-CasesIntro"), {
+  loading: () => (
+    <div className="w-full h-64 flex items-center justify-center">
+      <div className="text-gray-400">Loading...</div>
+    </div>
+  ),
+  ssr: true,
+});
+
+const CasesGalleryFiltered = dynamic(
+  () => import("./pagebuilder/pg-CasesGalleryFiltered"),
+  {
+    loading: () => (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: true,
+  }
+);
+
+const ServicesGalleryFiltered = dynamic(
+  () => import("./pagebuilder/pg-ServicesGalleryFiltered"),
+  {
+    loading: () => (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: true,
+  }
+);
+
+const ServicesHeroWithBadge = dynamic(
+  () => import("./pagebuilder/pg-ServicesHeroWithBadge"),
+  {
+    loading: () => (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: true,
+  }
+);
+
 type PageBuilderProps = { content: NonNullable<Page["content1sp"]> };
 
 export function PageBuilder({ content }: PageBuilderProps) {
@@ -103,6 +272,115 @@ export function PageBuilder({ content }: PageBuilderProps) {
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <ContentSection key={key} data={block} />
+              </ErrorBoundary>
+            );
+
+          // Individual gallery steps - now available as standalone components
+          case "galleryHeroStep":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <GalleryHeroStep
+                  key={key}
+                  data={block as GalleryHeroStepType}
+                />
+              </ErrorBoundary>
+            );
+          case "galleryCardsStep":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <GalleryCardsStep
+                  key={key}
+                  data={block as GalleryCardsStepType}
+                />
+              </ErrorBoundary>
+            );
+          case "galleryListStep":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <GalleryListStep
+                  key={key}
+                  data={block as GalleryListStepType}
+                />
+              </ErrorBoundary>
+            );
+          case "galleryPeopleStep":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <GalleryPeopleStep
+                  key={key}
+                  data={block as GalleryPeopleStepType}
+                />
+              </ErrorBoundary>
+            );
+          case "galleryScrollHighlightStep":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <GalleryHighlightStep
+                  key={key}
+                  data={block as GalleryScrollHighlightStepType}
+                />
+              </ErrorBoundary>
+            );
+          case "galleryRevealStep":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <GalleryRevealStep
+                  key={key}
+                  data={block as GalleryRevealStepType}
+                />
+              </ErrorBoundary>
+            );
+          case "galleryOverview":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <GalleryOverviewStep
+                  key={key}
+                  data={block as GalleryOverviewType}
+                />
+              </ErrorBoundary>
+            );
+
+          // Carousel and smart components
+          case "carousel":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <InteractiveCarousel key={key} data={block as CarouselType} />
+              </ErrorBoundary>
+            );
+          case "smartCarousel":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <SmartCarousel key={key} data={block as any} />
+              </ErrorBoundary>
+            );
+          case "smartPeople":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <SmartPeople key={key} {...(block as any)} />
+              </ErrorBoundary>
+            );
+          case "casesIntro":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <CasesIntro key={key} {...block} />
+              </ErrorBoundary>
+            );
+          case "casesGalleryFiltered":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <CasesGalleryFiltered key={key} {...block} />
+              </ErrorBoundary>
+            );
+          case "servicesGalleryFiltered":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <ServicesGalleryFiltered key={key} {...block} />
+              </ErrorBoundary>
+            );
+          case "servicesHeroWithBadge":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <ServicesHeroWithBadge key={key} {...block} />
               </ErrorBoundary>
             );
 

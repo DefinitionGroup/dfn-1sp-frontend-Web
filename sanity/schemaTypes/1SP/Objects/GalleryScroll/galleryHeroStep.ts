@@ -41,21 +41,15 @@ export default defineType({
             description: 'Description lines that appear below the typewriter',
             group: 'content'
         }),
-        defineField({
-            name: 'carousel',
-            title: 'Interactive Carousel',
-            type: 'carousel',
-            group: 'media',
-            description: 'Legacy field - use Additional Content instead'
-        }),
-        defineField({
-            name: 'additionalContent',
-            title: 'Additional Content',
-            type: 'array',
-            of: [{ type: 'heroAdditionalContent' }],
-            group: 'media',
-            description: 'Add carousels and other content blocks'
-        }),
+
+        // defineField({
+        //     name: 'additionalContent',
+        //     title: 'Additional Content',
+        //     type: 'array',
+        //     of: [{ type: 'heroAdditionalContent' }],
+        //     group: 'media',
+        //     description: 'Add carousels and other content blocks'
+        // }),
         defineField({
             name: 'grid',
             title: 'Grid Element',

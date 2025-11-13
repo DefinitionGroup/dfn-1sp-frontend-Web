@@ -24,14 +24,8 @@ export default defineType({
         defineField({
             name: 'header',
             title: 'Header Section',
-            type: 'object',
-            group: 'content',
-            fields: [
-                { name: 'superText', title: 'Super Text', type: 'string' },
-                { name: 'mainHeadline', title: 'Main Headline', type: 'string' },
-                { name: 'creativityTitle', title: 'Creativity Title', type: 'string' },
-                { name: 'uniquePeopleText', title: 'Unique People Text', type: 'string' }
-            ]
+            type: 'peopleStepHeader',
+            group: 'content'
         }),
         defineField({
             name: 'description',
