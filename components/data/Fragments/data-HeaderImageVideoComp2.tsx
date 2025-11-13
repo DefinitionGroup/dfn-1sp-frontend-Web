@@ -59,15 +59,16 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
             muted
             className="object-cover w-full h-full overflow-hidden "
           />
-        ) : (
+        ) : imageSrc ? (
           <Image
             src={imageSrc}
             alt={imageAlt}
             fill
             className="object-cover object-top"
             priority
+            unoptimized={imageSrc.includes("cloudinary")}
           />
-        )}
+        ) : null}
         <motion.div
           className="absolute inset-0 bg-black"
           initial={{ opacity: 0 }}

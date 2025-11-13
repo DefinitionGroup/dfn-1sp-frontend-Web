@@ -1,7 +1,8 @@
 import { sanityFetch } from "@/sanity/lib/live";
-import { CASE_STUDIES_QUERY } from "@/sanity/lib/queries";
+import { PAGE_QUERY } from "@/sanity/lib/queries";
 import { cookies } from "next/headers";
-import CasesPageClient from "./CasesPageClient";
+import { PageBuilder } from "@/components/PageBuilder";
+import NotFound from "@/components/ui/not-found";
 
 export const revalidate = 60;
 
@@ -15,10 +16,18 @@ export default async function CasesPage({
   const { locale } = await params;
   const language = locale || "en";
 
-  const { data: caseStudies } = await sanityFetch({
-    query: CASE_STUDIES_QUERY,
-    params: { channel, language },
+  const { data: page } = await sanityFetch({
+    query: PAGE_QUERY,
+    params: { slug: "cases", channel, language },
   });
 
-  return <CasesPageClient caseStudies={caseStudies || []} locale={locale} />;
+  return (
+    <div className="min-h-screen">
+      {page?.content1sp ? (
+        <PageBuilder content={page.content1sp} />
+      ) : (
+        <NotFound />
+      )}
+    </div>
+  );
 }
