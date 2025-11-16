@@ -11,6 +11,7 @@ import type {
   ParagraphLine,
   FontSize,
 } from "@/types/sanity.types";
+import { withDebugBadge } from "@/components/dev/withDebugBadge";
 
 /** --- helpers --- */
 function isVideoUrl(url?: string) {
@@ -48,7 +49,7 @@ function highlightInline(text: string, highlight?: string) {
 }
 
 /** --- component --- */
-export default function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
+function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   const mediaUrl = assetUrl(step.media as CloudinaryAsset | undefined);
   const useVideo = isVideoUrl(mediaUrl);
 
@@ -141,3 +142,5 @@ export default function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     </section>
   );
 }
+
+export default withDebugBadge(OneSPHeaderStep, "pg-Header");

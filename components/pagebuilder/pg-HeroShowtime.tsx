@@ -8,8 +8,9 @@ import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import Button2 from "../ui/Button2";
 
 import { assetUrl, resolveLink, ctaToButtonProps } from "@/utils/utils";
+import { withDebugBadge } from "@/components/dev/withDebugBadge";
 
-export default function HeroShowtime({ data }: { data: HeroShowtimeType }) {
+function HeroShowtime({ data }: { data: HeroShowtimeType }) {
   const {
     useVideo = false,
     backgroundImage,
@@ -108,3 +109,5 @@ export default function HeroShowtime({ data }: { data: HeroShowtimeType }) {
     </section>
   );
 }
+
+export default withDebugBadge(HeroShowtime, "pg-HeroShowtime");

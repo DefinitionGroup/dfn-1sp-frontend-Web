@@ -4,6 +4,7 @@ import type {
   ShowtimeGallery as ShowtimeGalleryType,
   GalleryStep,
 } from "@/types/sanity.types";
+import { withDebugBadge } from "@/components/dev/withDebugBadge";
 
 import HeroStep from "./ShowtimeGallerySteps/pg-HeroStep";
 import CardsStep from "./ShowtimeGallerySteps/pg-CardsStep";
@@ -44,7 +45,7 @@ function kindFrom(
   return map[step._type as keyof typeof map];
 }
 
-export default function ShowtimeGallery(props: Props) {
+function ShowtimeGallery(props: Props) {
   const gallery: ShowtimeGalleryType =
     "steps" in props ? (props as ShowtimeGalleryType) : (props as any).data;
 
@@ -82,3 +83,5 @@ export default function ShowtimeGallery(props: Props) {
     </>
   );
 }
+
+export default withDebugBadge(ShowtimeGallery, "pg-ShowtimeGallery");

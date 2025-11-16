@@ -6,6 +6,7 @@ import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import Link from "next/link";
+import { withDebugBadge } from "@/components/dev/withDebugBadge";
 type ContentSectionData = {
   title?: string;
   introHeading?: string;
@@ -18,7 +19,7 @@ type ContentSectionData = {
   navPointName?: string;
 };
 
-export default function ContentSection({ data }: { data: ContentSectionData }) {
+function ContentSection({ data }: { data: ContentSectionData }) {
   const {
     title,
     introHeading,
@@ -215,3 +216,5 @@ export default function ContentSection({ data }: { data: ContentSectionData }) {
     </>
   );
 }
+
+export default withDebugBadge(ContentSection, "pg-ContentSection");
