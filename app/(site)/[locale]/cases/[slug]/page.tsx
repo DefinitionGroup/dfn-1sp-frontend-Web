@@ -3,6 +3,7 @@ import { CASE_STUDY_BY_SLUG_QUERY } from "@/sanity/lib/queries";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import CaseStudyPageClient from "./CaseStudyPageClient";
+import SiteWrapper from "@/components/SiteWrapper";
 
 export const revalidate = 60;
 
@@ -26,5 +27,9 @@ export default async function CaseStudyPage({
     notFound();
   }
 
-  return <CaseStudyPageClient caseStudy={caseStudy} locale={locale} />;
+  return (
+    <SiteWrapper channel={channel} language={language} navColor="light">
+      <CaseStudyPageClient caseStudy={caseStudy} locale={locale} />
+    </SiteWrapper>
+  );
 }

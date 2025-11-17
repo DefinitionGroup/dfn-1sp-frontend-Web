@@ -3,6 +3,7 @@ import { PAGE_QUERY } from "@/sanity/lib/queries";
 import { cookies } from "next/headers";
 import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
+import SiteWrapper from "@/components/SiteWrapper";
 
 export const revalidate = 60;
 
@@ -21,13 +22,17 @@ export default async function ServicesPage({
     params: { slug: "services", channel, language },
   });
 
+  const navbarVariant = page?.navbarVariant || "light";
+
   return (
-    <div className="min-h-screen">
-      {page?.content1sp ? (
-        <PageBuilder content={page.content1sp} />
-      ) : (
-        <NotFound />
-      )}
-    </div>
+    <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
+      <div className="min-h-screen">
+        {page?.content1sp ? (
+          <PageBuilder content={page.content1sp} />
+        ) : (
+          <NotFound />
+        )}
+      </div>
+    </SiteWrapper>
   );
 }

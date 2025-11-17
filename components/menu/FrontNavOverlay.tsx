@@ -48,164 +48,23 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
     return /^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?cases(?:\/|$)/.test(pathname);
   }, [pathname]);
 
-  // Decide effective color based on route
+  // Decide effective color: prefer explicit `color` prop (page setting),
+  // otherwise fall back to route-based defaults for legacy pages
   const effectiveColor = React.useMemo(() => {
+    if (color) return color;
     if (isCaseDetailRoute) return "light";
     if (isAnyCasesRoute) return "dark";
-    return color;
+    return "light";
   }, [isCaseDetailRoute, isAnyCasesRoute, color]);
 
   const [detectedTheme, setDetectedTheme] = React.useState<"light" | "dark">(
     effectiveColor
   );
 
-  // Detect background brightness and set theme
+  // Keep detectedTheme in sync with effectiveColor prop
   React.useEffect(() => {
-    let animationFrameId: number | null = null;
-    let lastDetectedTheme: "light" | "dark" | null = null;
-
-    const detectBackground = () => {
-      if (!navRef.current) return null;
-
-      const nav = navRef.current;
-      const rect = nav.getBoundingClientRect();
-
-      // Sample multiple points to get better detection
-      const points = [
-        { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }, // center
-        { x: rect.left + rect.width * 0.25, y: rect.top + rect.height / 2 }, // left
-        { x: rect.left + rect.width * 0.75, y: rect.top + rect.height / 2 }, // right
-      ];
-
-      let whiteBackgroundCount = 0;
-      let samplesCount = 0;
-
-      // Hide nav temporarily to sample background
-      const originalVisibility = nav.style.visibility;
-      const originalPointerEvents = nav.style.pointerEvents;
-      nav.style.visibility = "hidden";
-      nav.style.pointerEvents = "none";
-
-      for (const point of points) {
-        const elementBehind = document.elementFromPoint(point.x, point.y);
-        if (elementBehind) {
-          let currentElement: HTMLElement | null = elementBehind as HTMLElement;
-
-          // Walk up the DOM tree to find the first non-transparent background
-          let depth = 0;
-          while (
-            currentElement &&
-            currentElement !== document.documentElement &&
-            depth < 10
-          ) {
-            const computedStyle = window.getComputedStyle(currentElement);
-            const bgColor = computedStyle.backgroundColor;
-
-            // Check if background is not transparent
-            const rgbMatch = bgColor.match(
-              /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/
-            );
-            if (rgbMatch) {
-              const alpha = rgbMatch[4] ? parseFloat(rgbMatch[4]) : 1;
-              if (alpha > 0.1) {
-                const r = parseInt(rgbMatch[1]);
-                const g = parseInt(rgbMatch[2]);
-                const b = parseInt(rgbMatch[3]);
-
-                samplesCount++;
-
-                // Check if it's white or very close to white (RGB values all above 240)
-                if (r >= 240 && g >= 240 && b >= 240) {
-                  whiteBackgroundCount++;
-                }
-                break;
-              }
-            }
-            currentElement = currentElement.parentElement;
-            depth++;
-          }
-
-          // If we reached the end without finding a background, assume white
-          if (
-            depth >= 10 ||
-            !currentElement ||
-            currentElement === document.documentElement
-          ) {
-            whiteBackgroundCount++;
-            samplesCount++;
-          }
-        }
-      }
-
-      nav.style.visibility = originalVisibility;
-      nav.style.pointerEvents = originalPointerEvents;
-
-      if (samplesCount > 0) {
-        // If most samples are white, use dark text; otherwise use light text
-        const newTheme =
-          whiteBackgroundCount > samplesCount / 2 ? "dark" : "light";
-
-        // Only update if theme changed
-        if (newTheme !== lastDetectedTheme) {
-          lastDetectedTheme = newTheme;
-          setDetectedTheme(newTheme);
-          console.log(
-            `🎨 Navbar theme: ${whiteBackgroundCount}/${samplesCount} white samples → ${newTheme} text`
-          );
-        }
-
-        return newTheme;
-      } else {
-        // Fallback to effectiveColor
-        if (effectiveColor !== lastDetectedTheme) {
-          lastDetectedTheme = effectiveColor;
-          setDetectedTheme(effectiveColor);
-          console.log(`🎨 Navbar using fallback theme: ${effectiveColor}`);
-        }
-        return effectiveColor;
-      }
-    };
-
-    // Continuous monitoring loop
-    const monitorBackground = () => {
-      detectBackground();
-      animationFrameId = requestAnimationFrame(monitorBackground);
-    };
-
-    // Wait for page animations to settle before initial detection
-    const initialTimer = setTimeout(() => {
-      // Use effectiveColor initially to avoid flickering
-      setDetectedTheme(effectiveColor);
-    }, 100);
-
-    // Delay monitoring start to let animations complete (most animations are < 1s)
-    const monitorTimer = setTimeout(() => {
-      detectBackground();
-      // Start continuous monitoring after animations settle
-      animationFrameId = requestAnimationFrame(monitorBackground);
-    }, 1200);
-
-    // Periodic revalidation every 2 seconds to catch lazy-loaded content
-    const revalidationInterval = setInterval(() => {
-      detectBackground();
-    }, 5000);
-
-    // Also detect on scroll and resize as fallback
-    const handleScroll = () => detectBackground();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll);
-
-    return () => {
-      clearTimeout(initialTimer);
-      clearTimeout(monitorTimer);
-      clearInterval(revalidationInterval);
-      if (animationFrameId !== null) {
-        cancelAnimationFrame(animationFrameId);
-      }
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
-    };
-  }, [effectiveColor, pathname]);
+    setDetectedTheme(effectiveColor);
+  }, [effectiveColor]);
 
   const textColor =
     detectedTheme === "dark" ? "text-neutral-800" : "text-neutral-50";

@@ -3,6 +3,7 @@ import { sanityFetch } from "@/sanity/lib/live";
 import { PAGE_QUERY } from "@/sanity/lib/queries";
 import NotFound from "@/components/ui/not-found";
 import { cookies } from "next/headers";
+import SiteWrapper from "@/components/SiteWrapper";
 
 export default async function Page({
   params,
@@ -19,13 +20,18 @@ export default async function Page({
     query: PAGE_QUERY,
     params: { slug, channel, language },
   });
+
+  const navbarVariant = page?.navbarVariant || "light";
+
   return (
-    <div className=" min-h-screen">
-      {page?.content1sp ? (
-        <PageBuilder content={page.content1sp} />
-      ) : (
-        <NotFound />
-      )}
-    </div>
+    <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
+      <div className=" min-h-screen">
+        {page?.content1sp ? (
+          <PageBuilder content={page.content1sp} />
+        ) : (
+          <NotFound />
+        )}
+      </div>
+    </SiteWrapper>
   );
 }
