@@ -25,7 +25,9 @@ function ScrollHighlightItem({
       initial={false}
       animate={{
         opacity: isHighlighted ? 1 : 0.4,
-        scale: isHighlighted ? 1.012 : 1,
+        scale: isHighlighted ? 1.1 : 1,
+        x: isHighlighted ?30 : 0,
+      
       }}
       transition={{ type: "spring", stiffness: 100 }}
       onViewportEnter={() => onHighlight(index)}
@@ -36,8 +38,8 @@ function ScrollHighlightItem({
         <motion.p
           className="skill-description"
           layout
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 24 ,x:0}}
+          animate={{ opacity: 1, y: 0, x: 0 }}
           transition={{ type: "spring", stiffness: 100 }}
         >
           {skill.text}
@@ -82,7 +84,7 @@ function Stylesheet() {
           text-align: center;
           position: sticky;
           top: 120px;
-          text-transform: uppercase;
+          text-transform: none;
           height: fit-content;
         }
         .skills-list {
@@ -92,24 +94,24 @@ function Stylesheet() {
           margin: 0; color: white;
           display: flex;
           flex-direction: column;
-          gap: 20px;
+          gap:80px;
         }
         .skill-item {
           padding: 4rem 0;margin-bottom:2rem;
           will-change: opacity;
           font-size: clamp(1rem, 4vw, 3rem);
-          font-weight: 300;
+          font-weight: 300;   max-width: min(22ch, 44vw);
           margin: 0;
           padding: 0;
           line-height: 0.9;
-          text-transform: uppercase;
+          text-transform: none;
           display: flex;
           flex-direction: column;
         }
         .skill-name { white-space: wrap; }
         .skill-description {
           font-size: 1.5rem;
-          min-height: 9.5rem;
+        
           font-weight: 400;
           line-height: 1.3;
           margin-top:1.75rem;

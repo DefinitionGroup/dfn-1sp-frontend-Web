@@ -16,12 +16,9 @@ export function withDebugBadge<T extends React.ComponentType<any>>(
   const Wrapped: React.FC<P> = (props: P) => {
     const label = name || (Component.displayName || (Component as any).name || "Component");
     return (
-      <>
       <DebugBadge name={label} badgeClassName={options.badgeClassName}>
-        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-        
-      </DebugBadge>{React.createElement(Component as any, props)}
-      </>
+        {React.createElement(Component as any, props)}
+      </DebugBadge>
     );
   };
   Wrapped.displayName = `withDebugBadge(${name || (Component as any).displayName || (Component as any).name || "Component"})`;

@@ -24,10 +24,13 @@ export default function DebugBadge({
   className = "",
   badgeClassName = "bg-black/60 text-emerald-200 border-emerald-500/60",
 }: DebugBadgeProps) {
-  // Only render in dev unless explicitly disabled via env
+  // Only render in dev when the flag is explicitly enabled
   const isDev = process.env.NODE_ENV === "development";
-  const toggle = process.env.NEXT_PUBLIC_DEBUG_BADGES ?? "true";
-  const enabled = isDev && toggle !== "false";
+  const rawToggle = (process.env.NEXT_PUBLIC_DEBUG_BADGES ?? "")
+    .trim()
+    .toLowerCase();
+  const truthyValues = new Set(["1", "true", "on", "yes"]);
+  const enabled = isDev && truthyValues.has(rawToggle);
 
   if (!enabled) return <>{children}</>;
 
