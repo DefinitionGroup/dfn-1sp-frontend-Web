@@ -6,6 +6,7 @@ import unitCase from './Global/Cases/unitCase'
 import client from './Global/Cases/client'
 import person from './Global/Cases/person'
 import { OneSPschemaTypes } from './1spContent'
+import { CaseStudySchemaTypes } from './caseStudyContent'
 import link from './Global/Objects/link'
 import cta from './Global/Objects/cta'
 import paragraph from './Global/Objects/paragraph'
@@ -20,5 +21,5 @@ import clientReference from './Global/Objects/clientReference'
 import metadata from './Global/Objects/metadata'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [page, menu, caseStudy, unitCase, client, person, ...OneSPschemaTypes, link, cta, paragraph, size, services, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata],
+  types: [page, menu, caseStudy, unitCase, client, person, ...OneSPschemaTypes, ...CaseStudySchemaTypes, link, cta, paragraph, size, services, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata],
 }
