@@ -17,52 +17,7 @@ import PercentageDiagramHorizontal from "@/components/ui/percentageDiagramHorizo
 import PercentagePosNegDiagram from "@/components/ui/percentagePosNegDiagram";
 import CtaMiniComponent from "@/components/data/Fragments/data-CtaMiniComponent";
 import { getTranslations } from "@/lib/translations";
-interface CaseStudyData {
-  _id: string;
-  title: string;
-  subtitle?: string;
-  slug: { current: string };
-  description?: string;
-  services?: { _id: string; name: string }[];
-  mainImageUrl?: string;
-  mainVideoUrl?: string;
-  websiteUrl?: string;
-  websiteUrlText?: string;
-  mediaGallery?: Array<{
-    mediaType: "image" | "video";
-    imageUrl?: string;
-    videoUrl?: string;
-    alt?: string;
-    caption?: string;
-  }>;
-  imageGallery?: Array<{
-    imageUrl: string;
-    alt?: string;
-    caption?: string;
-  }>;
-  units?: Array<{
-    _id: string;
-    name: string;
-    slug: { current: string };
-    tagline?: string;
-    logoUrl?: string;
-  }>;
-  client?: {
-    _id: string;
-    name: string;
-    slug: { current: string };
-    logoUrl?: string;
-  };
-  challenges?: string[];
-  solution?: string;
-  approachToSolution?: string;
-  metrics?: Array<{
-    type: "vertical" | "horizontal" | "posNeg";
-    label: string;
-    value: number;
-  }>;
-  publishedAt?: string;
-}
+import type { CaseStudyData } from "@/types/sanity.types";
 
 interface CaseStudyPageClientProps {
   caseStudy: CaseStudyData;
@@ -76,9 +31,21 @@ export default function CaseStudyPageClient({
   const typewriterref = useRef(null);
   const isInView = useInView(typewriterref);
 
+  // Normalize main image / video URLs (Cloudinary asset objects may be returned)
+  const mainVideoUrl =
+    (caseStudy.mainVideo &&
+      (caseStudy.mainVideo.secure_url || caseStudy.mainVideo.url)) ||
+    (caseStudy.mainVideoUrl as string | undefined) ||
+    null;
+
+  const mainImageUrl =
+    (caseStudy.mainImage &&
+      (caseStudy.mainImage.secure_url || caseStudy.mainImage.url)) ||
+    (caseStudy.mainImageUrl as string | undefined) ||
+    "/placeholder.jpg";
+
   // Get translations for the current locale
   const t = getTranslations(locale);
-
   // === Added navPoints collection to drive LineMinimap (matches Plain) ===
   const [navPoints, setNavPoints] = useState<NavPoint[]>([]);
 
@@ -126,7 +93,7 @@ export default function CaseStudyPageClient({
   }, []);
 
   // Helper: choose a safe image for sections
-  const heroImage = caseStudy.mainImageUrl || "/placeholder.jpg";
+  const heroImage = mainImageUrl;
 
   // Get media items with fallback to imageGallery
   const mediaItems =
@@ -191,10 +158,10 @@ export default function CaseStudyPageClient({
         <LineMinimap navPoints={navPoints} />
 
         {/* Background Image with Overlay */}
-        {caseStudy.mainVideoUrl ? (
+        {mainVideoUrl ? (
           <HeaderImageVideoComp
             useVideo={true}
-            videoSrc={caseStudy.mainVideoUrl}
+            videoSrc={mainVideoUrl}
             enableParallax={true}
             opacity="opacity-100"
           />
