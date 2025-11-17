@@ -285,17 +285,17 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                 <div className="flex flex-col items-start justify-start w-full">
                   <div className="flex-1 flex flex-col min-w-0">
                     {header?.superText && (
-                      <h2 className="text-xl text-neutral-900 font-bold font-aspekta">
+                      <h4 className=" text-neutral-900 font-bold font-aspekta">
                         {header.superText}
-                      </h2>
-                    )}
-                    {header?.mainHeadline && (
-                      <h4 className="text-7xl text-neutral-900 font-semibold leading-compress font-aspekta">
-                        {header.mainHeadline}
                       </h4>
                     )}
+                    {header?.mainHeadline && (
+                        <h2 className="text-7xl  text-gray-900  tracking-tight font-aspekta">
+                        {header.mainHeadline}
+                      </h2>
+                    )}
                     {header?.subHeadline && (
-                      <h4 className="text-xl mt-2 text-neutral-900 font-semibold leading-compress font-aspekta">
+                     <h4 className=" mt-2 text-gray-700 font-medium leading- font-aspekta">
                         {header.subHeadline}
                       </h4>
                     )}
@@ -303,6 +303,25 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                 </div>
               </header>
             )}
+
+
+               {/* Right list column */}
+        {Array.isArray(listItems) && listItems.length > 0 && (
+             <div className="col-span-11 md:col-span-8 col-start-2 md:col-start-3 mt-12 md:mt-0 border-gray-500 pb-8 md:row-start-2 ">
+            <ListContainerComponent>
+              {listItems.map((it, i) => (
+                <ListItemComponent
+                  key={(it as any)?._key || i}
+                  size={(it?.size as any) || "small"}
+                  fontWeight={(it?.fontWeight as any) || "normal"}
+                  color={(it?.color as any) || "black"}
+                >
+                  {it?.text}
+                </ListItemComponent>
+              ))}
+            </ListContainerComponent>
+          </div>
+        )}
 
         {/* Left column when ctaMini is present */}
         {hasCtaMini && (
@@ -325,23 +344,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
           </div>
         )}
 
-        {/* Right list column */}
-        {Array.isArray(listItems) && listItems.length > 0 && (
-          <div className={`${listColClass} mt-8`}>
-            <ListContainerComponent>
-              {listItems.map((it, i) => (
-                <ListItemComponent
-                  key={(it as any)?._key || i}
-                  size={(it?.size as any) || "small"}
-                  fontWeight={(it?.fontWeight as any) || "normal"}
-                  color={(it?.color as any) || "black"}
-                >
-                  {it?.text}
-                </ListItemComponent>
-              ))}
-            </ListContainerComponent>
-          </div>
-        )}
+     
 
         {/* Inject any ctaSplitHeader blocks as full-width rows */}
         {Array.isArray(ctaSplit) &&
