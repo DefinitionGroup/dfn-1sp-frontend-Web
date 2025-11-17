@@ -228,6 +228,15 @@ const ServicesHeroWithBadge = dynamic(
   }
 );
 
+const IntertitleCTA = dynamic(() => import("./pagebuilder/pg-IntertitleCTA"), {
+  loading: () => (
+    <div className="w-full h-32 flex items-center justify-center">
+      <div className="text-gray-400">Loading...</div>
+    </div>
+  ),
+  ssr: true,
+});
+
 type PageBuilderProps = { content: NonNullable<Page["content1sp"]> };
 
 export function PageBuilder({ content }: PageBuilderProps) {
@@ -381,6 +390,12 @@ export function PageBuilder({ content }: PageBuilderProps) {
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <ServicesHeroWithBadge key={key} {...block} />
+              </ErrorBoundary>
+            );
+          case "intertitleCTA":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <IntertitleCTA key={key} {...block} />
               </ErrorBoundary>
             );
 

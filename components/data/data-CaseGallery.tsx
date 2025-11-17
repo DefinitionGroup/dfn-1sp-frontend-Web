@@ -232,28 +232,38 @@ export default function CaseGalleryComponent({
                 )}
               </motion.div>
 
-      <div className="col-start-1 col-span-1 flex justify-between opacity-100 row-start-2 p-2 mb-16 z-1">
-        {item.client?.logoUrl ? (
-
-        <motion.img
-          layoutId={`logo-${item.title}-${id}`}
-          src={item.client?.logoUrl }
-          alt={item.title}
-          className={`w-24 h-8 object-contain object-left mb-4 ${variant !== "light" ? "" : "invert"}`}
-        />) : null}
-        <div className="flex flex-col items-end">
+              <div
+                className={`col-start-1 col-span-1 flex ${
+                  item.client?.logoUrl ? "justify-between" : "justify-end"
+                } opacity-100 row-start-2 p-2 mb-16 z-1`}
+              >
+                {item.client?.logoUrl ? (
+                  <motion.img
+                    layoutId={`logo-${item.title}-${id}`}
+                    src={item.client?.logoUrl}
+                    alt={item.title}
+                    className={`w-24 h-8 object-contain object-left mb-4 ${
+                      variant !== "light" ? "" : "invert"
+                    }`}
+                  />
+                ) : null}
+                <div className="flex flex-col items-end">
                   <motion.h3
                     layoutId={`title-${item.title}-${id}`}
-                    className={`font-medium text-lg leading-snug tracking-tight ${variant !== "light" ? "" : "invert"} text-neutral-600 dark:text-neutral-200 text-left`}
+                    className={`font-medium text-lg leading-snug tracking-tight ${
+                      variant !== "light" ? "" : "invert"
+                    } text-neutral-600 dark:text-neutral-200 text-left`}
                   >
                     {item.title}
                   </motion.h3>
-                  <motion.p
-                    layoutId={`description-${item.description}-${id}`}
-                    className="text-neutral-400 font-bold text-sm dark:text-neutral-400"
-                  >
-                    {item.subtitle}
-                  </motion.p>
+                  {item.services && item.services.length > 0 && (
+                    <motion.p
+                      layoutId={`description-${item.description}-${id}`}
+                      className="text-neutral-400 font-bold text-sm dark:text-neutral-400"
+                    >
+                      {item.services.map((s) => s.name).join(", ")}
+                    </motion.p>
+                  )}
                 </div>
               </div>
             </motion.div>

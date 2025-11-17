@@ -47,10 +47,15 @@ function CasesGalleryFiltered({
   const t = getTranslations(locale);
 
   const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
-  const [activeFilter, setActiveFilter] = useState<string>(
-    t.casesList.filterAll
-  );
+  const [activeFilter, setActiveFilter] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
+  const [filterAllText, setFilterAllText] = useState<string>("");
+
+  // Set the "All" filter text once translations are loaded
+  useEffect(() => {
+    setFilterAllText(t.casesList.filterAll);
+    setActiveFilter(t.casesList.filterAll);
+  }, [t.casesList.filterAll]);
 
   // Fetch case studies
   useEffect(() => {
@@ -89,7 +94,7 @@ function CasesGalleryFiltered({
     )
   ).sort();
 
-  const filters = [t.casesList.filterAll, ...uniqueServices];
+  const filters = [filterAllText, ...uniqueServices].filter(Boolean);
   const sectionId = t.ids.cases;
 
   const paddingClass = `py-${paddingY}`;
@@ -138,7 +143,7 @@ function CasesGalleryFiltered({
             caseStudies={caseStudies}
             activeFilter={activeFilter}
             locale={locale}
-            filterAllText={t.casesList.filterAll}
+            filterAllText={filterAllText}
           />
         </div>
       </div>
