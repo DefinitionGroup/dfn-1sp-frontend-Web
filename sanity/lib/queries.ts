@@ -218,18 +218,6 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
   "mainVideoUrl": mainVideo.asset->url,
   websiteUrl,
   websiteUrlText,
-  mediaGallery[]{
-    mediaType,
-    "imageUrl": image.secure_url,
-    "videoUrl": video.asset->url,
-    alt,
-    caption
-  },
-  imageGallery[]{
-    "imageUrl": image.secure_url,
-    alt,
-    caption
-  },
   units[]->{
     _id,
     name,
@@ -241,16 +229,40 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
     _id,
     name,
     slug,
-    logo,
     "logoUrl": logo.secure_url
   },
-  challenges,
-  solution,
-  approachToSolution,
-  metrics[]{
-    type,
-    label,
-    value
+  casesPageBuilder[]{
+    _type,
+    _key,
+    title,
+    headline,
+    description,
+    navPointName,
+    showGridBackground,
+    paddingY,
+    badgeText,
+    badgeSubtitle,
+    badgeNumber,
+    contentType,
+    challenges,
+    services[]->{_id, name},
+    ctaHeading,
+    ctaParagraph,
+    solution,
+    backgroundColor,
+    mainHeadline,
+    subHeadline,
+    approachDetails,
+    mediaType,
+    backgroundImage,
+    backgroundVideo,
+    enableParallax,
+    backgroundOpacity,
+    metrics[]{
+      type,
+      label,
+      value
+    }
   },
   publishedAt
 }
