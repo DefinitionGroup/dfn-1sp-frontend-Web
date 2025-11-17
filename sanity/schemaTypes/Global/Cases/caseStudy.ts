@@ -11,7 +11,7 @@ export default defineType({
         { name: 'content', title: 'Content' },
         { name: 'media', title: 'Media' },
         { name: 'relations', title: 'Relations' },
-        { name: 'composable', title: 'Composable Items' },
+        { name: 'pageBuilder', title: 'Page Builder' },
         { name: 'settings', title: 'Settings' },
     ],
     fields: [
@@ -123,15 +123,15 @@ export default defineType({
             description: 'Text for the website link button (e.g., "Visit Website")',
             group: 'content'
         },
-        {
-            name: 'mediaGallery',
-            title: 'Media Gallery',
-            type: 'array',
-            of: [{ type: 'mediaGalleryItem' }],
-            validation: (Rule) => Rule.max(4).warning('Maximum 4 media items recommended'),
-            description: 'Upload up to 4 media items (images or videos) for use in the case study page',
-            group: 'media'
-        },
+        // {
+        //     name: 'mediaGallery',
+        //     title: 'Media Gallery',
+        //     type: 'array',
+        //     of: [{ type: 'mediaGalleryItem' }],
+        //     validation: (Rule) => Rule.max(4).warning('Maximum 4 media items recommended'),
+        //     description: 'Upload up to 4 media items (images or videos) for use in the case study page',
+        //     group: 'media'
+        // },
 
         {
             name: 'units',
@@ -267,134 +267,22 @@ export default defineType({
             group: 'relations'
         }),
         defineField({
-            name: 'challenges',
-            title: 'Challenges',
-            type: 'array',
-            of: [{ type: 'string' }],
-            description: 'List of challenges faced in this case study',
-            group: 'composable'
-        }),
-        defineField({
-            name: 'solution',
-            title: 'Solution',
-            type: 'text',
-            description: 'Description of the solution provided',
-            rows: 6,
-            group: 'composable'
-        }),
-        defineField({
-            name: 'approachToSolution',
-            title: 'Approach to Solution',
-            type: 'text',
-            description: 'Detailed approach taken to solve the problem',
-            rows: 6,
-            group: 'composable'
-        }),
-        defineField({
-            name: 'metrics',
-            title: 'Metrics',
+            name: 'casesPageBuilder',
+            title: 'Cases Page Builder',
             type: 'array',
             of: [
-                {
-                    type: 'object',
-                    name: 'metric',
-                    title: 'Metric',
-                    icon: GiNetworkBars,
-                    fields: [
-                        {
-                            name: 'type',
-                            title: 'Metric Type',
-                            type: 'string',
-                            options: {
-                                list: [
-                                    {
-                                        title: 'Vertical Bar',
-                                        value: 'vertical',
-                                        icon: GiNetworkBars
-                                    },
-                                    {
-                                        title: 'Horizontal Bar',
-                                        value: 'horizontal',
-                                        icon: LuChartBarDecreasing
-                                    },
-                                    {
-                                        title: 'Positive/Negative',
-                                        value: 'posNeg',
-                                        icon: CgLoadbarAlt
-                                    }
-                                ],
-                                layout: 'radio'
-                            },
-                            initialValue: 'vertical',
-                            validation: (Rule) => Rule.required(),
-                            description: 'Choose the visualization type for this metric'
-                        },
-                        {
-                            name: 'label',
-                            title: 'Label',
-                            type: 'string',
-                            description: 'Metric label (e.g., "Dwell Time", "Conversion Rate")',
-                            validation: (Rule) => Rule.required()
-                        },
-                        {
-                            name: 'value',
-                            title: 'Value',
-                            type: 'number',
-                            description: 'Metric value (e.g., 20 for 20%, -15 for -15%)',
-                            validation: (Rule) => Rule.required().custom((value, context: any) => {
-                                const parent = context.parent;
-                                const type = parent?.type;
-
-                                // Only posNeg type can have negative values
-                                if (type !== 'posNeg' && typeof value === 'number' && value < 0) {
-                                    return 'Only Positive/Negative type can have negative values. Choose "Positive/Negative" type or use a positive value.';
-                                }
-
-                                return true;
-                            })
-                        }
-                    ],
-                    preview: {
-                        select: {
-                            type: 'type',
-                            label: 'label',
-                            value: 'value'
-                        },
-                        prepare({ type, label, value }) {
-                            // Choose icon based on type using react-icons
-                            let icon;
-                            let typeLabel;
-
-                            switch (type) {
-                                case 'vertical':
-                                    icon = GiNetworkBars;
-                                    typeLabel = 'Vertical';
-                                    break;
-                                case 'horizontal':
-                                    icon = LuChartBarDecreasing;
-                                    typeLabel = 'Horizontal';
-                                    break;
-                                case 'posNeg':
-                                    icon = CgLoadbarAlt;
-                                    typeLabel = 'Pos/Neg';
-                                    break;
-                                default:
-                                    icon = GiNetworkBars;
-                                    typeLabel = 'Unknown';
-                            }
-
-                            return {
-                                title: `${label}: ${value}%`,
-                                subtitle: typeLabel,
-                                media: icon
-                            }
-                        }
-                    }
-                }
+                { type: 'headlineChallenge' },
+                { type: 'challengeAndSolution' },
+                { type: 'approachSection' },
+                { type: 'resultsMetrics' },
             ],
-            description: 'Key metrics and performance indicators. You can add multiple metrics of any type.',
-            group: 'composable'
+            description: 'Build your case study page using modular components',
+            group: 'pageBuilder'
         }),
+
+
+
+
     ],
     preview: {
         select: {

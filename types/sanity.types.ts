@@ -400,18 +400,6 @@ export interface CaseStudyData {
     mainVideoUrl?: string;
     websiteUrl?: string;
     websiteUrlText?: string;
-    mediaGallery?: Array<{
-        mediaType: "image" | "video";
-        imageUrl?: string;
-        videoUrl?: string;
-        alt?: string;
-        caption?: string;
-    }>;
-    imageGallery?: Array<{
-        imageUrl: string;
-        alt?: string;
-        caption?: string;
-    }>;
     units?: Array<{
         _id: string;
         name: string;
@@ -425,13 +413,80 @@ export interface CaseStudyData {
         slug: { current: string };
         logoUrl?: string;
     };
+    casesPageBuilder?: Array<
+        | HeadlineChallengeComponent
+        | ChallengeAndSolutionComponent
+        | ApproachSectionComponent
+        | ResultsMetricsComponent
+    >;
+    publishedAt?: string;
+}
+
+export interface HeadlineChallengeComponent {
+    _type: "headlineChallenge";
+    _key: string;
+    headline?: string;
+    title: string;
+    description?: string;
+    navPointName?: string;
+    showGridBackground?: boolean;
+    paddingY?: string;
+}
+
+export interface ChallengeAndSolutionComponent {
+    _type: "challengeAndSolution";
+    _key: string;
+    title: string;
+    description?: string;
+    badgeText?: string;
+    badgeSubtitle?: string;
+    badgeNumber?: string;
+    contentType?: "challenges" | "services";
     challenges?: string[];
+    services?: { _id: string; name: string }[];
+    ctaHeading?: string;
+    ctaParagraph?: string;
     solution?: string;
-    approachToSolution?: string;
+    navPointName?: string;
+    showGridBackground?: boolean;
+    backgroundColor?: string;
+    paddingY?: string;
+}
+
+export interface ApproachSectionComponent {
+    _type: "approachSection";
+    _key: string;
+    mainHeadline: string;
+    subHeadline?: string;
+    description?: string;
+    approachDetails?: string[];
+    badgeText?: string;
+    badgeSubtitle?: string;
+    badgeNumber?: string;
+    mediaType?: "image" | "video";
+    backgroundImage?: CloudinaryAsset;
+    backgroundVideo?: CloudinaryAsset;
+    enableParallax?: boolean;
+    navPointName?: string;
+    paddingY?: string;
+}
+
+export interface ResultsMetricsComponent {
+    _type: "resultsMetrics";
+    _key: string;
+    title: string;
+    description?: string;
+    badgeText?: string;
+    badgeSubtitle?: string;
+    badgeNumber?: string;
     metrics?: Array<{
         type: "vertical" | "horizontal" | "posNeg";
         label: string;
         value: number;
     }>;
-    publishedAt?: string;
+    backgroundImage?: CloudinaryAsset;
+    backgroundOpacity?: number;
+    enableParallax?: boolean;
+    navPointName?: string;
+    paddingY?: string;
 }
