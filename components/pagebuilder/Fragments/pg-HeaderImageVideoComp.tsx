@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform, useInView } from "motion/react";
 import { useRef } from "react";
 import { url } from "inspector";
 import bg from "@/public/dot-background.png";
+import { withDebugBadge } from "@/components/dev/withDebugBadge";
 interface HeaderImageVideoCompProps {
   useVideo?: boolean;
   imageSrc?: string;
@@ -100,4 +101,6 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
   );
 };
 
-export default HeaderImageVideoComp;
+export default withDebugBadge(HeaderImageVideoComp, "fragment-HeaderImageVideoComp", {
+  badgeClassName: "bg-black/60 text-red-200 border-red-500/60",
+});

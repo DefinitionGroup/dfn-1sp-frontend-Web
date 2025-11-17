@@ -7,6 +7,7 @@ type DebugBadgeProps = {
   position?: "top-left" | "top-right" | "bottom-left" | "bottom-right";
   children: React.ReactNode;
   className?: string;
+  badgeClassName?: string;
 };
 
 const positionClasses: Record<NonNullable<DebugBadgeProps["position"]>, string> = {
@@ -21,6 +22,7 @@ export default function DebugBadge({
   position = "top-left",
   children,
   className = "",
+  badgeClassName = "bg-black/60 text-emerald-200 border-emerald-500/60",
 }: DebugBadgeProps) {
   // Only render in dev unless explicitly disabled via env
   const isDev = process.env.NODE_ENV === "development";
@@ -34,8 +36,8 @@ export default function DebugBadge({
       {/* Badge */}
       <div
         className={[
-          "pointer-events-none select-none",
           "absolute z-[60]",
+          badgeClassName,
           positionClasses[position],
           // Visuals
           "text-[10px] leading-none font-medium tracking-wide",

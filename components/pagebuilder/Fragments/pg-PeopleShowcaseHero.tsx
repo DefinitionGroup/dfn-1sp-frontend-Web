@@ -6,6 +6,7 @@ import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import StaggeredFadeIn from "@/components/ui/StaggeredFadeIn";
 import Image from "next/image";
 import Link from "next/link";
+import { withDebugBadge } from "@/components/dev/withDebugBadge";
 export interface MemberItem {
   name?: string;
   media?: (CloudinaryAsset & { resource_type?: string }) | null;
@@ -22,7 +23,7 @@ function isVideoUrl(url?: string) {
   return lowered.endsWith(".mp4") || lowered.includes("/video/");
 }
 
-export default function PeopleShowcaseHero({
+function PeopleShowcaseHero({
   members,
 }: {
   members?: MemberItem[];
@@ -153,3 +154,7 @@ export default function PeopleShowcaseHero({
     </section>
   );
 }
+
+export default withDebugBadge(PeopleShowcaseHero, "fragment-PeopleShowcaseHero", {
+  badgeClassName: "bg-black/60 text-red-200 border-red-500/60",
+});

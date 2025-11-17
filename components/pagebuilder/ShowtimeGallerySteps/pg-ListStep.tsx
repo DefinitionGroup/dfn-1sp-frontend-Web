@@ -222,7 +222,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
     : {};
 
   return (
-    <section id={sectionId} {...navPointDataAttr} className="relative my-4">
+    <section id={sectionId} {...navPointDataAttr} className="relative my-32">
       {/* Optional background media */}
       {mediaUrl && (
         <HeaderImageVideoComp2
