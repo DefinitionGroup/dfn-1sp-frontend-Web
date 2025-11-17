@@ -386,3 +386,52 @@ export interface ServiceGroup {
     servicegroupicon?: CloudinaryAsset;
     services?: Reference<Services>[];
 }
+
+export interface CaseStudyData {
+    _id: string;
+    title: string;
+    subtitle?: string;
+    slug: { current: string };
+    description?: string;
+    services?: { _id: string; name: string }[];
+    mainImage?: CloudinaryAsset;
+    mainVideo?: CloudinaryAsset;
+    mainImageUrl?: string;
+    mainVideoUrl?: string;
+    websiteUrl?: string;
+    websiteUrlText?: string;
+    mediaGallery?: Array<{
+        mediaType: "image" | "video";
+        imageUrl?: string;
+        videoUrl?: string;
+        alt?: string;
+        caption?: string;
+    }>;
+    imageGallery?: Array<{
+        imageUrl: string;
+        alt?: string;
+        caption?: string;
+    }>;
+    units?: Array<{
+        _id: string;
+        name: string;
+        slug: { current: string };
+        tagline?: string;
+        logoUrl?: string;
+    }>;
+    client?: {
+        _id: string;
+        name: string;
+        slug: { current: string };
+        logoUrl?: string;
+    };
+    challenges?: string[];
+    solution?: string;
+    approachToSolution?: string;
+    metrics?: Array<{
+        type: "vertical" | "horizontal" | "posNeg";
+        label: string;
+        value: number;
+    }>;
+    publishedAt?: string;
+}
