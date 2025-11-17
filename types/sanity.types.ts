@@ -259,6 +259,7 @@ export interface Page {
         keywords?: string[];
     };
     channel?: "1spWeb" | "msmWeb" | "studioco2Web" | string;
+    navbarVariant?: "light" | "dark";
 
     // channel-specific content (kept generic)
     content1sp?: Array<any | ShowtimeGallery | HeroShowtime | SublineComponent | OneSPHeader>;

@@ -118,6 +118,21 @@ export default defineType({
             type: 'metadata',
             group: 'seo',
         }),
+        defineField({
+            name: 'navbarVariant',
+            title: 'Navbar Variant',
+            type: 'string',
+            group: 'settings',
+            initialValue: 'light',
+            description: 'Choose the navbar color scheme for this page',
+            options: {
+                list: [
+                    { title: 'Light (white text)', value: 'light' },
+                    { title: 'Dark (dark text)', value: 'dark' },
+                ],
+                layout: 'radio',
+            },
+        }),
 
         // channel-specific content arrays (hidden when not matching channel)
         defineField({
