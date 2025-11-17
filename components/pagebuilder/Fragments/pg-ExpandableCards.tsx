@@ -7,6 +7,7 @@ import type { CardItem, CloudinaryAsset } from "@/types/sanity.types";
 import { assetUrl } from "@/utils/utils";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import Image from "next/image";
+import { withDebugBadge } from "@/components/dev/withDebugBadge";
 export interface ExpandableCardsProps {
   items?: CardItem[];
   variant?: "default" | "compact";
@@ -83,7 +84,7 @@ export const CloseIcon = () => (
   </motion.svg>
 );
 
-export default function ExpandableCards({
+function ExpandableCards({
   items,
   variant = "default",
   columns = 4,
@@ -276,3 +277,7 @@ export default function ExpandableCards({
     </>
   );
 }
+
+export default withDebugBadge(ExpandableCards, "fragment-ExpandableCards", {
+  badgeClassName: "bg-black/60 text-red-200 border-red-500/60",
+});

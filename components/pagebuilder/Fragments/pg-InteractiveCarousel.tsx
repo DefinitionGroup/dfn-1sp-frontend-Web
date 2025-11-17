@@ -9,6 +9,7 @@ import type {
   CTA,
 } from "@/types/sanity.types";
 import { assetUrl, ctaToButtonProps } from "@/utils/utils";
+import { withDebugBadge } from "@/components/dev/withDebugBadge";
 
 interface UIItem {
   id: string;
@@ -23,7 +24,7 @@ interface UIItem {
   linkHref?: string;
 }
 
-export default function InteractiveCarousel({
+function InteractiveCarousel({
   items,
 }: {
   items?: SanityCarouselItem[];
@@ -359,3 +360,7 @@ export default function InteractiveCarousel({
     </section>
   );
 }
+
+export default withDebugBadge(InteractiveCarousel, "fragment-InteractiveCarousel", {
+  badgeClassName: "bg-black/60 text-red-200 border-red-500/60",
+});

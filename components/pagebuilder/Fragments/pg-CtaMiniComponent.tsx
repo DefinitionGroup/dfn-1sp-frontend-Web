@@ -3,6 +3,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import Button2 from "@/components/ui/Button2";
+import { withDebugBadge } from "@/components/dev/withDebugBadge";
 
 interface CtaMiniProps {
   heading: string;
@@ -72,4 +73,6 @@ function CtaMiniComponent({
   );
 }
 
-export default CtaMiniComponent;
+export default withDebugBadge(CtaMiniComponent, "fragment-CtaMiniComponent", {
+  badgeClassName: "bg-black/60 text-red-200 border-red-500/60",
+});

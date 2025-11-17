@@ -3,6 +3,7 @@ import React from "react";
 import Badgemodule from "@/components/ui/Badgemodule";
 import type { GalleryPeopleStep, CloudinaryAsset } from "@/types/sanity.types";
 import PeopleShowcaseHero from "../Fragments/pg-PeopleShowcaseHero";
+import GridBackground from "@/components/ui/GridBackground";
 
 type Member = {
   _id?: string;
@@ -74,15 +75,16 @@ export default function PeopleStep({
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta gap-4"
-    >
+    className="z-4 grid col-span-12 relative col-start-1 container mx-auto row-start-1 grid-cols-12 ">
       {/* Badge */}
+       <GridBackground />
       {step.badge && (
-        <div className="z-1 flex flex-col col-span-2 pt-32 justify-start items-start col-start-1 mx-auto row-start-1">
+        <div className="z-1 grid col-span-12 col-start-1 pt-32 row-start-1 grid-cols-12 ">
           <Badgemodule
             text={step.badge.text ?? ""}
             subtitle={step.badge.subtitle ?? ""}
-            numberEl={step.badge.numberEl ?? ""}
+            numberEl={step.badge.numberEl ?? ""}         
+            className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky top-0 "
           />
         </div>
       )}

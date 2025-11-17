@@ -1,13 +1,14 @@
 "use client";
 import SmartCarouselData from "../data/data-InteractiveCarousel";
 import { useParams } from "next/navigation";
+import { withDebugBadge } from "@/components/dev/withDebugBadge";
 interface SmartCarousel {
   maxItems: number;
 }
 
 type Props = { data: SmartCarousel } | SmartCarousel;
 
-export default function SmartCarouselWrapper(props: Props) {
+function SmartCarouselWrapper(props: Props) {
   const smartCarousel: SmartCarousel =
     "maxItems" in props ? props : (props as any).data;
   const params = useParams();
@@ -19,3 +20,5 @@ export default function SmartCarouselWrapper(props: Props) {
     <SmartCarouselData maxItems={smartCarousel.maxItems} language={language} />
   );
 }
+
+export default withDebugBadge(SmartCarouselWrapper, "pg-SmartCarousel");

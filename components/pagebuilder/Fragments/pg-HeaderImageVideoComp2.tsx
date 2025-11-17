@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform, useInView } from "motion/react";
 import { useRef } from "react";
+import { withDebugBadge } from "@/components/dev/withDebugBadge";
 
 interface HeaderImageVideoCompProps {
   useVideo?: boolean;
@@ -83,4 +84,6 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   );
 };
 
-export default HeaderImageVideoComp2;
+export default withDebugBadge(HeaderImageVideoComp2, "fragment-HeaderImageVideoComp2", {
+  badgeClassName: "bg-black/60 text-red-200 border-red-500/60",
+});

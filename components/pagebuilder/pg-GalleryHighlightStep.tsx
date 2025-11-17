@@ -1,10 +1,11 @@
 "use client";
 import type { GalleryScrollHighlightStep } from "@/types/sanity.types";
 import HighlightStep from "./ShowtimeGallerySteps/pg-HighlightStep";
+import { withDebugBadge } from "@/components/dev/withDebugBadge";
 
 type Props = { data: GalleryScrollHighlightStep } | GalleryScrollHighlightStep;
 
-export default function GalleryHighlightStepWrapper(props: Props) {
+function GalleryHighlightStepWrapper(props: Props) {
   const step: GalleryScrollHighlightStep =
     "scrollHighlightContent" in props || "badge" in props
       ? props
@@ -14,3 +15,8 @@ export default function GalleryHighlightStepWrapper(props: Props) {
 
   return <HighlightStep step={step as any} />;
 }
+
+export default withDebugBadge(
+  GalleryHighlightStepWrapper,
+  "pg-GalleryHighlightStep"
+);

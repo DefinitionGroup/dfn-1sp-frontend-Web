@@ -6,6 +6,7 @@ import { client } from "@/sanity/lib/client";
 import { SERVICES_QUERY } from "@/sanity/lib/queries";
 import ServiceGalleryComponent from "@/components/data/data-ServiceGallery";
 import { getTranslations } from "@/lib/translations";
+import { withDebugBadge } from "@/components/dev/withDebugBadge";
 
 interface Service {
   _id: string;
@@ -25,7 +26,7 @@ interface ServicesGalleryFilteredProps {
   navPointName?: string;
 }
 
-export default function ServicesGalleryFiltered({
+function ServicesGalleryFiltered({
   showGridBackground = false,
   showFilters = true,
   backgroundColor = "neutral-100",
@@ -127,3 +128,8 @@ export default function ServicesGalleryFiltered({
     </div>
   );
 }
+
+export default withDebugBadge(
+  ServicesGalleryFiltered,
+  "pg-ServicesGalleryFiltered"
+);

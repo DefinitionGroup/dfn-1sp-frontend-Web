@@ -1,10 +1,11 @@
 "use client";
 import type { GalleryCardsStep } from "@/types/sanity.types";
 import CardsStep from "./ShowtimeGallerySteps/pg-CardsStep";
+import { withDebugBadge } from "@/components/dev/withDebugBadge";
 
 type Props = { data: GalleryCardsStep } | GalleryCardsStep;
 
-export default function GalleryCardsStepWrapper(props: Props) {
+function GalleryCardsStepWrapper(props: Props) {
   const step: GalleryCardsStep =
     "expandableCards" in props || "badge" in props
       ? props
@@ -14,3 +15,5 @@ export default function GalleryCardsStepWrapper(props: Props) {
 
   return <CardsStep step={step as any} />;
 }
+
+export default withDebugBadge(GalleryCardsStepWrapper, "pg-GalleryCardsStep");
