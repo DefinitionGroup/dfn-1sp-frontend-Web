@@ -45,6 +45,14 @@ export default defineType({
             group: 'content',
         }),
         defineField({
+            name: 'introText',
+            title: 'Introduction Text',
+            type: 'string',
+            description: 'Short introduction text for the service',
+            validation: (Rule) => Rule.max(150),
+            group: 'content',
+        }),
+        defineField({
             name: 'serviceicon',
             title: 'Service Icon',
             type: 'cloudinaryImage',
