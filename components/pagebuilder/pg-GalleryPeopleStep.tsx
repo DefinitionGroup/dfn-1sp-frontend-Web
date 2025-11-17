@@ -1,10 +1,11 @@
 "use client";
 import type { GalleryPeopleStep } from "@/types/sanity.types";
 import PeopleStep from "./ShowtimeGallerySteps/pg-PeopleStep";
+import { withDebugBadge } from "@/components/dev/withDebugBadge";
 
 type Props = { data: GalleryPeopleStep } | GalleryPeopleStep;
 
-export default function GalleryPeopleStepWrapper(props: Props) {
+function GalleryPeopleStepWrapper(props: Props) {
   const step: GalleryPeopleStep =
     "teamMembers" in props || "badge" in props ? props : (props as any).data;
 
@@ -12,3 +13,8 @@ export default function GalleryPeopleStepWrapper(props: Props) {
 
   return <PeopleStep step={step as any} />;
 }
+
+export default withDebugBadge(
+  GalleryPeopleStepWrapper,
+  "pg-GalleryPeopleStep"
+);

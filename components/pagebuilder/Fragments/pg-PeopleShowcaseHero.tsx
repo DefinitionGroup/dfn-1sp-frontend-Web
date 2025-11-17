@@ -6,6 +6,7 @@ import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import StaggeredFadeIn from "@/components/ui/StaggeredFadeIn";
 import Image from "next/image";
 import Link from "next/link";
+import { withDebugBadge } from "@/components/dev/withDebugBadge";
 export interface MemberItem {
   name?: string;
   media?: (CloudinaryAsset & { resource_type?: string }) | null;
@@ -22,7 +23,7 @@ function isVideoUrl(url?: string) {
   return lowered.endsWith(".mp4") || lowered.includes("/video/");
 }
 
-export default function PeopleShowcaseHero({
+function PeopleShowcaseHero({
   members,
 }: {
   members?: MemberItem[];
@@ -79,7 +80,7 @@ export default function PeopleShowcaseHero({
                     muted
                     loop
                     playsInline
-                    className="w-full h-full object-cover transition-all duration-300 group-hover:brightness-110 group-hover:scale-[0.45]"
+                    className="w-full h-full object-cover transition-all duration-300 group-hover:brightness-110 "
                   />
                 ) : (
                   <Image
@@ -87,7 +88,7 @@ export default function PeopleShowcaseHero({
                     alt={label}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
-                    className="object-cover transition-all duration-300 group-hover:brightness-110 group-hover:scale-[0.45]"
+                    className="object-cover transition-all duration-300 group-hover:brightness-110 "
                   />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/90 to-black/95 opacity-0 group-hover:opacity-100 rounded-sm transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -153,3 +154,7 @@ export default function PeopleShowcaseHero({
     </section>
   );
 }
+
+export default withDebugBadge(PeopleShowcaseHero, "fragment-PeopleShowcaseHero", {
+  badgeClassName: "bg-black/60 text-red-200 border-red-500/60",
+});

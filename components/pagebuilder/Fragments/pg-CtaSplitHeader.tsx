@@ -4,7 +4,9 @@ import React from "react";
 import type { CtaSplitHeader as CtaSplitHeaderType } from "@/types/sanity.types";
 import { resolveLink } from "@/utils/utils";
 import CtaMiniComponent from "./pg-CtaMiniComponent";
-export default function CtaSplitHeader({ data }: { data: CtaSplitHeaderType }) {
+import { withDebugBadge } from "@/components/dev/withDebugBadge";
+
+function CtaSplitHeader({ data }: { data: CtaSplitHeaderType }) {
   const cta = data?.cta;
   const href = cta?.link ? resolveLink(cta.link) : undefined;
 
@@ -56,3 +58,7 @@ export default function CtaSplitHeader({ data }: { data: CtaSplitHeaderType }) {
     </section>
   );
 }
+
+export default withDebugBadge(CtaSplitHeader, "fragment-CtaSplitHeader", {
+  badgeClassName: "bg-black/60 text-red-200 border-red-500/60",
+});

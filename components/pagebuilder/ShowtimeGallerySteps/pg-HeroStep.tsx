@@ -61,23 +61,23 @@ export default function HeroStep({ step }: { step: GalleryHeroStep }) {
         <HeaderImageVideoComp2 useVideo videoSrc={videoSrc} enableParallax />
       )}
 
-      <div className="grid grid-cols-12 z-1 mx-auto container relative font-aspekta">
+      <div className="grid grid-cols-6 md:grid-cols-12 z-1 mx-auto container  relative font-aspekta">
         {/* Background grid (optional visual helper) */}
-        <GridBackground />
+      <GridBackground delay={0.2} staggerDelay={0.06} />
 
-        <div className="z-1 grid gap-8 col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+        <div className="z-1 grid  col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           {step.badge && (
             <Badgemodule
               text={step.badge.text ?? ""}
               subtitle={step.badge.subtitle ?? ""}
               numberEl={step.badge.numberEl ?? ""}
-              className={step.badge.colSpan || "col-span-2"}
+                className="col-span-6 md:col-span-2 col-start-2 md:col-start-1"
             />
           )}
 
           <div className="col-span-10 col-start-3 ">
             {step.typewriterText && (
-              <h2 className="text-7xl font-bold tracking-tighter pr-2 mb-4">
+              <h2 className="text-7xl font-regular tracking-tighter pr-2 mb-4">
                 <Typewriter
                   ref={typewriterref}
                   play={isInView}

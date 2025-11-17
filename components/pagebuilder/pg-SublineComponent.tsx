@@ -4,6 +4,7 @@ import GridBackground from "@/components/ui/GridBackground";
 import type { CTA } from "@/types/sanity.types";
 import { ctaToButtonProps } from "@/utils/utils";
 import Button2 from "../ui/Button2";
+import { withDebugBadge } from "@/components/dev/withDebugBadge";
 
 type SublineComponentData = {
   description?: string;
@@ -13,7 +14,7 @@ type SublineComponentData = {
   navPointName?: string;
 };
 
-export default function SublineComponent({
+function SublineComponent({
   data,
 }: {
   data: SublineComponentData;
@@ -90,3 +91,5 @@ export default function SublineComponent({
     </section>
   );
 }
+
+export default withDebugBadge(SublineComponent, "pg-SublineComponent");

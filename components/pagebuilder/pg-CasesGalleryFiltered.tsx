@@ -7,6 +7,7 @@ import { CASE_STUDIES_QUERY } from "@/sanity/lib/queries";
 import GridBackground from "@/components/ui/GridBackground";
 import CaseGalleryComponent from "@/components/data/data-CaseGallery";
 import { getTranslations } from "@/lib/translations";
+import { withDebugBadge } from "@/components/dev/withDebugBadge";
 
 interface CaseStudy {
   _id: string;
@@ -34,7 +35,7 @@ interface CasesGalleryFilteredProps {
   navPointName?: string;
 }
 
-export default function CasesGalleryFiltered({
+function CasesGalleryFiltered({
   showGridBackground = true,
   showFilters = true,
   paddingY = "16",
@@ -149,3 +150,5 @@ export default function CasesGalleryFiltered({
     </div>
   );
 }
+
+export default withDebugBadge(CasesGalleryFiltered, "pg-CasesGalleryFiltered");

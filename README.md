@@ -1,5 +1,15 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Debug badges in development
+
+Component-level debug badges are hidden by default. To enable them locally, add the following to `.env.local` and restart your dev server:
+
+```bash
+NEXT_PUBLIC_DEBUG_BADGES=true
+```
+
+Any other value (or omitting the variable) keeps the badges hidden.
+
 ## Getting Started
 
 First, run the development server:
