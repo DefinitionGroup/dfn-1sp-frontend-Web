@@ -232,14 +232,16 @@ export default function CaseGalleryComponent({
                 )}
               </motion.div>
 
-              <div className="col-start-1 col-span-1 flex justify-between opacity-100 row-start-2 p-2 mb-16 z-1">
-                <motion.img
-                  layoutId={`logo-${item.title}-${id}`}
-                  src={item.client?.logoUrl || "/msmlogo.svg"}
-                  alt={item.title}
-                  className={`w-24 h-8 object-contain object-left mb-4 ${variant !== "light" ? "" : "invert"}`}
-                />
-                <div className="flex flex-col items-end">
+      <div className="col-start-1 col-span-1 flex justify-between opacity-100 row-start-2 p-2 mb-16 z-1">
+        {item.client?.logoUrl ? (
+
+        <motion.img
+          layoutId={`logo-${item.title}-${id}`}
+          src={item.client?.logoUrl }
+          alt={item.title}
+          className={`w-24 h-8 object-contain object-left mb-4 ${variant !== "light" ? "" : "invert"}`}
+        />) : null}
+        <div className="flex flex-col items-end">
                   <motion.h3
                     layoutId={`title-${item.title}-${id}`}
                     className={`font-medium text-lg leading-snug tracking-tight ${variant !== "light" ? "" : "invert"} text-neutral-600 dark:text-neutral-200 text-left`}
