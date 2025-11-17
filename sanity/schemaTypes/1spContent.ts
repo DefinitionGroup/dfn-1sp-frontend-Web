@@ -7,6 +7,7 @@ import casesIntro from "./1SP/Components/casesIntro";
 import casesGalleryFiltered from "./1SP/Components/casesGalleryFiltered";
 import servicesGalleryFiltered from "./1SP/Components/servicesGalleryFiltered";
 import servicesHeroWithBadge from "./1SP/Components/servicesHeroWithBadge";
+import intertitleCTA from "./1SP/Components/intertitleCTA";
 
 import badgeModule from "./1SP/Items/badgeModule";
 import carouselItem from "./1SP/Items/carouselItem";
@@ -48,6 +49,7 @@ const oneSPComponents = [
     casesGalleryFiltered,
     servicesGalleryFiltered,
     servicesHeroWithBadge,
+    intertitleCTA,
     // Individual gallery steps now available as standalone components
     galleryHeroStep,
     galleryCardsStep,

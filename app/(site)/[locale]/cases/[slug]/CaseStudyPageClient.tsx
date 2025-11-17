@@ -115,6 +115,21 @@ export default function CaseStudyPageClient({
                 {caseStudy.description}
               </h3>
             )}
+            {/* Display Unit Logos if available */}
+            {caseStudy.units && caseStudy.units.length > 0 && (
+              <div className="flex flex-wrap gap-4 mb-4">
+                {caseStudy.units.map((unit) =>
+                  unit.logoUrl ? (
+                    <img
+                      key={unit._id}
+                      src={unit.logoUrl}
+                      alt={unit.name}
+                      className="h-12 w-auto object-contain"
+                    />
+                  ) : null
+                )}
+              </div>
+            )}
           </StaggeredSlideUp>
         </div>
 

@@ -135,6 +135,7 @@ export default defineType({
                 { type: 'casesGalleryFiltered' },
                 { type: 'servicesGalleryFiltered' },
                 { type: 'servicesHeroWithBadge' },
+                { type: 'intertitleCTA' },
                 // Individual gallery steps now available as standalone components
                 { type: 'galleryHeroStep' },
                 { type: 'galleryCardsStep' },
