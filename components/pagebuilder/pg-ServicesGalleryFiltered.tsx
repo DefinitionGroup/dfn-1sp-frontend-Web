@@ -122,6 +122,7 @@ function ServicesGalleryFiltered({
             services={services}
             activeFilter={activeFilter}
             locale={locale}
+            filterAllText={t.services.filterAll}
           />
         </div>
       </div>

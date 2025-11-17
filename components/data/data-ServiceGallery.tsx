@@ -22,12 +22,14 @@ interface ServiceGalleryProps {
   services: Service[];
   activeFilter?: string;
   locale?: string;
+  filterAllText?: string;
 }
 
 export default function ServiceGalleryComponent({
   services = [],
   activeFilter = "All",
   locale = "en",
+  filterAllText = "All",
 }: ServiceGalleryProps) {
   const router = useTransitionRouter();
   const [active, setActive] = useState<Service | null>(null);
@@ -36,7 +38,7 @@ export default function ServiceGalleryComponent({
 
   // Filter items based on active filter - using service groups
   const filteredItems =
-    activeFilter === "All"
+    activeFilter === filterAllText
       ? services
       : services.filter((item) =>
           item.servicegrouprel?.some((group) => group.name === activeFilter)
@@ -176,6 +178,7 @@ export default function ServiceGalleryComponent({
       </AnimatePresence>
       <ul className="w-full">
         <StaggeredSlideUp
+          key={activeFilter}
           staggerDelay={0.125}
           distance={30}
           duration={1.6}

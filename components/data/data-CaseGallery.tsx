@@ -196,6 +196,7 @@ export default function CaseGalleryComponent({
 
       <ul className="w-full">
         <StaggeredSlideUp
+          key={activeFilter}
           staggerDelay={0.125}
           distance={30}
           duration={1.6}
