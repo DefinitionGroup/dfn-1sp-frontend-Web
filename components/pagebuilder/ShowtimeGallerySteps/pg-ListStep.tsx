@@ -222,7 +222,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
     : {};
 
   return (
-    <section id={sectionId} {...navPointDataAttr} className="relative my-32">
+    <section id={sectionId} {...navPointDataAttr} className="z-4 grid col-span-12 relative col-start-1 container mx-auto row-start-1 grid-cols-12 ">
       {/* Optional background media */}
       {mediaUrl && (
         <HeaderImageVideoComp2
@@ -235,11 +235,11 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
       <GridBackground delay={delay} staggerDelay={staggerDelay} />
 
-      <div className="z-1 grid gap-4 col-span-12 relative col-start-1 container mx-auto row-start-1 grid-cols-12">
+        <div className="z-1 grid col-span-12 col-start-1 pt-32 row-start-1 grid-cols-12 ">
         {/* Badge */}
         {step.badge && (
           <Badgemodule
-            className={step.badge.colSpan || "col-span-2"}
+           className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky top-0 "
             text={step.badge.text ?? ""}
             subtitle={step.badge.subtitle ?? ""}
             numberEl={step.badge.numberEl ?? ""}

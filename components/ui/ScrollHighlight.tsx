@@ -74,7 +74,7 @@ function Stylesheet() {
     <style>{`
         .containerElement { display: flex; }
         .container h3.containerED1 {
-          font-size: 227px;
+          font-size:28px;
           line-height: 1;
           font-weight: 500;
           margin: 0;
@@ -95,9 +95,9 @@ function Stylesheet() {
           gap: 20px;
         }
         .skill-item {
-          padding: 4rem 0;
+          padding: 4rem 0;margin-bottom:2rem;
           will-change: opacity;
-          font-size: clamp(2rem, 8vw, 6rem);
+          font-size: clamp(1rem, 4vw, 3rem);
           font-weight: 300;
           margin: 0;
           padding: 0;
@@ -106,16 +106,16 @@ function Stylesheet() {
           display: flex;
           flex-direction: column;
         }
-        .skill-name { white-space: nowrap; }
+        .skill-name { white-space: wrap; }
         .skill-description {
-          font-size: 1.3rem;
+          font-size: 1.5rem;
           min-height: 9.5rem;
           font-weight: 400;
           line-height: 1.3;
-          margin-top: 0.75rem;
+          margin-top:1.75rem;
           text-transform: none;
           opacity: 0.85;
-          max-width: min(50ch, 90vw);
+          max-width: min(44ch, 90vw);
           white-space: normal;
           overflow-wrap: break-word;
           word-break: break-word;
