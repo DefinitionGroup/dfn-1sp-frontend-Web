@@ -491,3 +491,14 @@ export interface ResultsMetricsComponent {
     navPointName?: string;
     paddingY?: string;
 }
+
+export interface Service {
+    _id: string;
+    name: string;
+    taglabel?: string;
+    iconUrl?: string;
+    serviceicon?: any;
+    serviceBackground?: any;
+    servicegrouprel?: { _id: string; name: string; taglabel?: string }[];
+    unitsrel?: { _id: string; name: string; slug: { current: string } }[];
+}
