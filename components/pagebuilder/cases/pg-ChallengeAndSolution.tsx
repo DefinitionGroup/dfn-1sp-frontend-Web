@@ -9,6 +9,8 @@ import ListItemComponent from "@/components/ui/ListItemComponent";
 import CtaMiniComponent from "@/components/pagebuilder/Fragments/pg-CtaMiniComponent";
 import { getTranslations } from "@/lib/translations";
 import { useParams } from "next/navigation";
+import { resolveLink } from "@/utils/utils";
+import type { CTA } from "@/types/sanity.types";
 
 interface Service {
   _id: string;
@@ -26,6 +28,7 @@ interface ChallengeAndSolutionProps {
   services?: Service[];
   ctaHeading?: string;
   ctaParagraph?: string;
+  ctaButton?: CTA;
   solution?: string;
   showGridBackground?: boolean;
   backgroundColor?: string;
@@ -44,6 +47,7 @@ export default function ChallengeAndSolution({
   services = [],
   ctaHeading,
   ctaParagraph,
+  ctaButton,
   solution,
   showGridBackground = true,
   backgroundColor = "bg-neutral-50",
@@ -116,8 +120,11 @@ export default function ChallengeAndSolution({
                       ? t.caseStudy.challengeDescription
                       : `${t.caseStudy.servicesDescription} ${services?.map((s) => s.name).join(", ")}`)
                   }
-                  buttonText=""
-                  buttonVariant="limesmall"
+                  buttonText={ctaButton?.text || ""}
+                  buttonVariant={(ctaButton?.variant as any) || "limesmall"}
+                  url={
+                    ctaButton?.link ? resolveLink(ctaButton.link) : undefined
+                  }
                   align="left"
                 />
               </div>

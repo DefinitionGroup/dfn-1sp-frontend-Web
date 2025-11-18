@@ -15,7 +15,7 @@ interface CaseStudy {
   subtitle?: string;
   slug: { current: string };
   description?: string;
-  services?: { _id: string; name: string }[];
+  services?: { _id: string; name: string; taglabel?: string }[];
   mainImageUrl?: string;
   mainVideoUrl?: string;
   client?: {
@@ -85,17 +85,35 @@ function CasesGalleryFiltered({
     fetchCaseStudies();
   }, [locale]);
 
-  // Extract unique service names from case studies
-  const uniqueServices = Array.from(
-    new Set(
-      caseStudies
-        .flatMap((study) => study.services || [])
-        .map((service) => service.name)
-    )
-  ).sort();
+  // Extract unique services with both name and taglabel
+  const serviceMap = new Map<string, { name: string; taglabel: string }>();
+  caseStudies
+    .flatMap((study) => study.services || [])
+    .forEach((service) => {
+      const taglabel = service.taglabel || service.name;
+      if (!serviceMap.has(taglabel)) {
+        serviceMap.set(taglabel, {
+          name: service.name,
+          taglabel: taglabel,
+        });
+      }
+    });
 
-  const filters = [filterAllText, ...uniqueServices].filter(Boolean);
+  const uniqueServices = Array.from(serviceMap.values()).sort((a, b) =>
+    a.taglabel.localeCompare(b.taglabel)
+  );
+
+  const filters = [
+    filterAllText,
+    ...uniqueServices.map((s) => s.taglabel),
+  ].filter(Boolean);
   const sectionId = t.ids.cases;
+
+  // Get the actual service name for the active filter
+  const activeServiceName =
+    activeFilter === filterAllText
+      ? filterAllText
+      : serviceMap.get(activeFilter)?.name || activeFilter;
 
   const paddingClass = `py-${paddingY}`;
   const marginClass = `mb-${marginBottom}`;
@@ -141,7 +159,7 @@ function CasesGalleryFiltered({
           )}
           <CaseGalleryComponent
             caseStudies={caseStudies}
-            activeFilter={activeFilter}
+            activeFilter={activeServiceName}
             locale={locale}
             filterAllText={filterAllText}
           />

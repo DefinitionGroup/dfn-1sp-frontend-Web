@@ -4,10 +4,34 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
   ...,
   content1sp[]{
     ...,
+    cta{
+      ...,
+      link{
+        ...,
+        page->{slug}
+      }
+    },
     _type == 'showtimeGallery' => {
       ...,
       steps[]{
         ...,
+        ctaMini{
+          _type,
+          heading,
+          paragraph,
+          buttonText,
+          variant,
+          alignment,
+          link{
+            _type,
+            linkType,
+            externalUrl,
+            page->{
+              _id,
+              slug
+            }
+          }
+        },
         _type == 'galleryPeopleStep' => {
           ...,
           teamMembers[]->{
@@ -109,10 +133,34 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
   ...,
   content1sp[]{
     ...,
+    cta{
+      ...,
+      link{
+        ...,
+        page->{slug}
+      }
+    },
     _type == 'showtimeGallery' => {
       ...,
       steps[]{
         ...,
+        ctaMini{
+          _type,
+          heading,
+          paragraph,
+          buttonText,
+          variant,
+          alignment,
+          link{
+            _type,
+            linkType,
+            externalUrl,
+            page->{
+              _id,
+              slug
+            }
+          }
+        },
         _type == 'galleryPeopleStep' => {
           ...,
           teamMembers[]->{
@@ -263,9 +311,11 @@ export const CASE_STUDIES_QUERY = defineQuery(`
   description,
   services[]->{
     _id,
-    name
+    name,
+    taglabel
   },
   mainImage,
+  isVerticalVideo,
   mainVideo,
   "mainImageUrl": mainImage.secure_url,
   "mainVideoUrl": mainVideo.asset->url,
@@ -294,6 +344,7 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
   },
   mainImage,
   mainVideo,
+  isVerticalVideo,
   "mainImageUrl": mainImage.secure_url,
   "mainVideoUrl": mainVideo.asset->url,
   websiteUrl,
@@ -330,6 +381,13 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
     services[]->{_id, name},
     ctaHeading,
     ctaParagraph,
+    ctaButton{
+      ...,
+      link{
+        ...,
+        page->{slug}
+      }
+    },
     solution,
     backgroundColor,
     mainHeadline,

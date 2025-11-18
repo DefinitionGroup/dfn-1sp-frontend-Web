@@ -103,6 +103,13 @@ export default defineType({
             group: 'media'
         },
         {
+            name: 'isVerticalVideo',
+            title: 'Is Vertical Video',
+            type: 'boolean',
+            description: 'Indicates if the main video is vertical',
+            group: 'media'
+        },
+        {
             name: 'mainVideo',
             title: 'Main Video',
             type: 'cloudinary.asset',

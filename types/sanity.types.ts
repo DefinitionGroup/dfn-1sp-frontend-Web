@@ -396,6 +396,7 @@ export interface CaseStudyData {
     description?: string;
     services?: { _id: string; name: string }[];
     mainImage?: CloudinaryAsset;
+    isVerticalVideo?: boolean;
     mainVideo?: CloudinaryAsset;
     mainImageUrl?: string;
     mainVideoUrl?: string;
