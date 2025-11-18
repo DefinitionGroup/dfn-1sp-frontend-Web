@@ -121,7 +121,7 @@ function transformUnitsToCards(
   if (!Array.isArray(units)) return [];
 
   // Sort units based on sortBy parameter
-  let sortedUnits = [...units];
+  const sortedUnits = [...units];
   if (sortBy === "name-asc") {
     sortedUnits.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
   } else if (sortBy === "name-desc") {
