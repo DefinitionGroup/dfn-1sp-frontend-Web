@@ -223,7 +223,9 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
     name,
     slug,
     tagline,
-    "logoUrl": logo.secure_url
+    "logoUrl": logo.secure_url,
+    backgroundImage,
+    cta
   },
   client->{
     _id,
@@ -280,6 +282,7 @@ export const SERVICES_QUERY = defineQuery(`
   "iconUrl": serviceicon.asset.secure_url,
   serviceicon,
   serviceBackground,
+  serviceDescription,
   servicegrouprel[]->{
     _id,
     name,
@@ -288,7 +291,11 @@ export const SERVICES_QUERY = defineQuery(`
   unitsrel[]->{
     _id,
     name,
-    slug
+    slug,
+    tagline,
+    "logoUrl": logo.secure_url,
+    backgroundImage,
+    cta
   }
 }
 `);

@@ -6,6 +6,7 @@ export default defineType({
     type: 'document',
     groups: [
         { name: 'general', title: 'General' },
+        { name: 'media', title: 'Media' },
         { name: 'contact', title: 'Contact' },
         { name: 'location', title: 'Location' },
         { name: 'relations', title: 'Relations' },
@@ -91,8 +92,23 @@ export default defineType({
             title: "Unit Logo",
             type: "cloudinary.asset",
             description: "Upload the unit's logo",
+            group: 'media',
+        },
+        {
+            name: "backgroundImage",
+            title: "Unit Background Image",
+            type: "cloudinary.asset",
+            description: "Upload the unit's background image",
+            group: 'media',
+        },
+        {
+            name: 'cta',
+            title: 'Call to Action (CTA)',
+            type: 'cta',
             group: 'general',
         },
+
+
         {
             name: 'description',
             title: 'Description',

@@ -62,7 +62,6 @@ export default function ServiceGalleryComponent({
     active?.serviceicon?.asset.url ||
     active?.iconUrl;
 
-  console.log("Active Service:", active);
   return (
     <>
       <AnimatePresence>
@@ -142,9 +141,17 @@ export default function ServiceGalleryComponent({
                     {active.taglabel && (
                       <motion.p
                         layoutId={`description-${active.taglabel}-${id}`}
-                        className="text-neutral-100 text-xl dark:text-neutral-400 mb-8"
+                        className="text-neutral-100 text-xl dark:text-neutral-400 mb-4"
                       >
                         {active.taglabel}
+                      </motion.p>
+                    )}
+                    {active.serviceDescription && (
+                      <motion.p
+                        layoutId={`Servicedescription-${active.serviceDescription}-${id}`}
+                        className="text-neutral-100 text-md dark:text-neutral-400 "
+                      >
+                        {active.serviceDescription}
                       </motion.p>
                     )}
                   </div>
