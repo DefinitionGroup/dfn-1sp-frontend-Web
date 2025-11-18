@@ -54,6 +54,13 @@ export default defineType({
             group: 'content',
         }),
         defineField({
+            name: 'serviceDescription',
+            title: 'Service Description',
+            type: 'text',
+            description: 'Description for the service',
+            group: 'content',
+        }),
+        defineField({
             name: 'serviceicon',
             title: 'Service Icon',
             type: 'cloudinaryImage',

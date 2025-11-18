@@ -499,6 +499,7 @@ export interface Service {
     iconUrl?: string;
     serviceicon?: any;
     serviceBackground?: any;
+    serviceDescription?: string;
     servicegrouprel?: { _id: string; name: string; taglabel?: string }[];
     unitsrel?: { _id: string; name: string; slug: { current: string } }[];
 }
