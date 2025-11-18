@@ -297,7 +297,8 @@ export default defineType({
             return {
                 title,
                 subtitle: subtitle || (isPublished ? 'Published' : 'Draft'),
-                media: clientLogo || media
+                media: clientLogo || media,
+                badges: isPublished ? [] : [{ label: 'Unpublished', color: 'red' }]
             }
         }
     },
