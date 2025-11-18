@@ -33,14 +33,7 @@ function CtaMiniComponent({
   distance = 22,
   className,
 }: CtaMiniProps) {
-  const params = useParams();
-  const locale = (params?.locale as string) || "en";
-
-  // Fix URL to include locale if it's an internal link starting with /
-  const finalUrl =
-    url && url.startsWith("/") && !url.startsWith(`/${locale}`)
-      ? `/${locale}${url}`
-      : url;
+  const finalUrl = url || "#";
 
   const alignClass =
     align === "center"
@@ -69,7 +62,7 @@ function CtaMiniComponent({
         {heading}
       </h3>
       <p className={`text-xs mb-8 ${textAlignClass}`}>{paragraph}</p>
-      {buttonText && finalUrl ? (
+      {buttonText && finalUrl && finalUrl !== "#" ? (
         <div className="text-xs mb-8 min-w-[120px] w-full">
           <Button2
             variant={buttonVariant}
@@ -78,7 +71,13 @@ function CtaMiniComponent({
             href={finalUrl}
           />
         </div>
-      ) : null}
+      ) : (
+        <div className="text-xs mb-8 text-red-500">
+          {!buttonText && "Missing buttonText"}
+          {!finalUrl && "Missing URL"}
+          {finalUrl === "#" && "URL is #"}
+        </div>
+      )}
     </StaggeredSlideUp>
   );
 }

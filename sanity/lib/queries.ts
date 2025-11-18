@@ -15,6 +15,23 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
       ...,
       steps[]{
         ...,
+        ctaMini{
+          _type,
+          heading,
+          paragraph,
+          buttonText,
+          variant,
+          alignment,
+          link{
+            _type,
+            linkType,
+            externalUrl,
+            page->{
+              _id,
+              slug
+            }
+          }
+        },
         _type == 'galleryPeopleStep' => {
           ...,
           teamMembers[]->{
@@ -127,6 +144,23 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
       ...,
       steps[]{
         ...,
+        ctaMini{
+          _type,
+          heading,
+          paragraph,
+          buttonText,
+          variant,
+          alignment,
+          link{
+            _type,
+            linkType,
+            externalUrl,
+            page->{
+              _id,
+              slug
+            }
+          }
+        },
         _type == 'galleryPeopleStep' => {
           ...,
           teamMembers[]->{
@@ -281,6 +315,7 @@ export const CASE_STUDIES_QUERY = defineQuery(`
     taglabel
   },
   mainImage,
+  isVerticalVideo,
   mainVideo,
   "mainImageUrl": mainImage.secure_url,
   "mainVideoUrl": mainVideo.asset->url,
@@ -309,6 +344,7 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
   },
   mainImage,
   mainVideo,
+  isVerticalVideo,
   "mainImageUrl": mainImage.secure_url,
   "mainVideoUrl": mainVideo.asset->url,
   websiteUrl,
