@@ -22,6 +22,7 @@ import heroAdditionalContent from "./1SP/Objects/heroAdditionalContent";
 import slideUpContent from "./1SP/Objects/slideUpContent";
 import galleryStep from "./1SP/Objects/galleryStep";
 import cards from "./1SP/Objects/cards";
+import unitCards from "./1SP/Objects/unitCards";
 import CtaMiniComponent from "./1SP/Objects/CtaMiniComponent";
 import listItem from "./1SP/Objects/listItem";
 import listStepHeader from "./1SP/Objects/listStepHeader";
@@ -76,6 +77,7 @@ const oneSPObjects = [
     slideUpContent,
     galleryStep,
     cards,
+    unitCards,
     CtaMiniComponent,
     CTASplitHeader,
     listItem,

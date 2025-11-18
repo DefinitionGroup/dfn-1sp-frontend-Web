@@ -33,6 +33,26 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
             tagline,
             channel
           }
+        },
+        _type == 'galleryListStep' => {
+          ...,
+          additionalContent[]{
+            ...,
+            _type == 'unitCards' => {
+              ...,
+              units[]->{
+                _id,
+                _type,
+                name,
+                slug,
+                logo,
+                backgroundImage,
+                description,
+                tagline,
+                cta
+              }
+            }
+          }
         }
       }
     },
@@ -60,6 +80,26 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
         profileUrl,
         tagline,
         channel
+      }
+    },
+    _type == 'galleryListStep' => {
+      ...,
+      additionalContent[]{
+        ...,
+        _type == 'unitCards' => {
+          ...,
+          units[]->{
+            _id,
+            _type,
+            name,
+            slug,
+            logo,
+            backgroundImage,
+            description,
+            tagline,
+            cta
+          }
+        }
       }
     }
   }
@@ -98,6 +138,26 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
             tagline,
             channel
           }
+        },
+        _type == 'galleryListStep' => {
+          ...,
+          additionalContent[]{
+            ...,
+            _type == 'unitCards' => {
+              ...,
+              units[]->{
+                _id,
+                _type,
+                name,
+                slug,
+                logo,
+                backgroundImage,
+                description,
+                tagline,
+                cta
+              }
+            }
+          }
         }
       }
     },
@@ -125,6 +185,26 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
         profileUrl,
         tagline,
         channel
+      }
+    },
+    _type == 'galleryListStep' => {
+      ...,
+      additionalContent[]{
+        ...,
+        _type == 'unitCards' => {
+          ...,
+          units[]->{
+            _id,
+            _type,
+            name,
+            slug,
+            logo,
+            backgroundImage,
+            description,
+            tagline,
+            cta
+          }
+        }
       }
     }
   }
