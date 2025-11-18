@@ -87,7 +87,6 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   const navPointDataAttr = navPointName
     ? { "data-navpoint-name": navPointName }
     : {};
-  console.log(step);
   const anyContainsHighlight =
     !!highlight &&
     lines.some((ln) => {

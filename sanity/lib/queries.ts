@@ -4,6 +4,13 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
   ...,
   content1sp[]{
     ...,
+    cta{
+      ...,
+      link{
+        ...,
+        page->{slug}
+      }
+    },
     _type == 'showtimeGallery' => {
       ...,
       steps[]{
@@ -109,6 +116,13 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
   ...,
   content1sp[]{
     ...,
+    cta{
+      ...,
+      link{
+        ...,
+        page->{slug}
+      }
+    },
     _type == 'showtimeGallery' => {
       ...,
       steps[]{
@@ -263,7 +277,8 @@ export const CASE_STUDIES_QUERY = defineQuery(`
   description,
   services[]->{
     _id,
-    name
+    name,
+    taglabel
   },
   mainImage,
   mainVideo,
@@ -330,6 +345,13 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
     services[]->{_id, name},
     ctaHeading,
     ctaParagraph,
+    ctaButton{
+      ...,
+      link{
+        ...,
+        page->{slug}
+      }
+    },
     solution,
     backgroundColor,
     mainHeadline,

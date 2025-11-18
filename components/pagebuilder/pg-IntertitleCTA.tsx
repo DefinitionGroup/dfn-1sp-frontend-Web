@@ -4,6 +4,7 @@ import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import Button2 from "@/components/ui/Button2";
 import { Link } from "next-view-transitions";
 import { resolveLink } from "@/utils/utils";
+import { useParams } from "next/navigation";
 import type { CTA } from "@/types/sanity.types";
 
 interface StaggeredSlideUpProps {
@@ -35,6 +36,8 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   alignment = "center",
   navPointName,
 }) => {
+  const params = useParams();
+  const locale = (params?.locale as string) || "en";
   const isLeftAligned = alignment === "left";
 
   const defaultStaggeredProps: StaggeredSlideUpProps = {
@@ -53,7 +56,15 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   const buttonContainerClass = `w-fit min-w-40 ${isLeftAligned ? "self-start" : "mx-auto"} mt-8 block`;
 
   // Resolve CTA link and props
-  const buttonHref = cta?.link ? resolveLink(cta.link) : undefined;
+  let buttonHref = cta?.link ? resolveLink(cta.link) : undefined;
+  // Fix URL to include locale if it's an internal link
+  if (
+    buttonHref &&
+    buttonHref.startsWith("/") &&
+    !buttonHref.startsWith(`/${locale}`)
+  ) {
+    buttonHref = `/${locale}${buttonHref}`;
+  }
   const buttonText = cta?.text;
   const buttonVariant =
     (cta?.variant as "default" | "black" | "lime" | "limesmall") || "lime";

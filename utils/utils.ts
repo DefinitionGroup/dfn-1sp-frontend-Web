@@ -6,8 +6,8 @@ import type { CTA, Link } from "@/types/sanity.types";
 export const resolveLink = (link?: Link) => {
     if (!link) return "#";
     if (link.linkType === "internal") {
-        // TODO: swap with your actual internal route builder
-        const slug = (link.page as any)?.slug?.current || (link.page as any)?._ref || "";
+        // Handle expanded page reference with slug
+        const slug = (link.page as any)?.slug?.current || "";
         return slug ? `/${slug}` : "#";
     }
     return link.externalUrl || "#";
