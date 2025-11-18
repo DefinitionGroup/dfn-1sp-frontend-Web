@@ -5,18 +5,8 @@ import { AnimatePresence, motion } from "motion/react";
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
 import { useTransitionRouter } from "next-view-transitions";
 import { useOutsideClick } from "@/hooks/use-outside-click";
-import Button2 from "../ui/Button2";
 import Image from "next/image";
-
-interface Service {
-  _id: string;
-  name: string;
-  taglabel?: string;
-  iconUrl?: string;
-  serviceicon?: any;
-  servicegrouprel?: { _id: string; name: string; taglabel?: string }[];
-  unitsrel?: { _id: string; name: string; slug: { current: string } }[];
-}
+import { Service } from "@/types/sanity.types";
 
 interface ServiceGalleryProps {
   services: Service[];
@@ -63,6 +53,16 @@ export default function ServiceGalleryComponent({
 
   useOutsideClick(ref, () => setActive(null));
 
+  const activeBg =
+    active?.serviceBackground?.asset.secure_url ||
+    active?.serviceBackground?.asset.url ||
+    active?.iconUrl;
+  const activeIcon =
+    active?.serviceicon?.asset.secure_url ||
+    active?.serviceicon?.asset.url ||
+    active?.iconUrl;
+
+  console.log("Active Service:", active);
   return (
     <>
       <AnimatePresence>
@@ -107,27 +107,27 @@ export default function ServiceGalleryComponent({
               className="w-full z-50 max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
             >
               <motion.div
-                className="w-full h-100 sm:rounded-t-xl opacity-80 object-cover object-top"
+                className="w-full sm:rounded-t-xl relative overflow-hidden h-full"
                 layoutId={`image-${active.name}-${id}`}
               >
-                {active.iconUrl ? (
+                {activeBg ? (
                   <Image
-                    width={100}
-                    height={500}
-                    src={active.iconUrl}
+                    width={1000}
+                    height={400}
+                    src={activeBg}
                     alt={active.name}
-                    className="w-full h-full absolute min-h-[90vh] sm:rounded-t-xl invert opacity-50 object-cover object-top"
+                    className="w-full h-full sm:rounded-t-xl  opacity-50 object-cover object-top"
                   />
                 ) : (
-                  <div className="w-full h-full absolute min-h-[90vh] sm:rounded-t-xl bg-neutral-800 opacity-50" />
+                  <div className="w-full h-full sm:rounded-t-xl bg-neutral-800 opacity-50" />
                 )}
               </motion.div>
               <div className="flex justify-between absolute items-start m-8 pt-8 z-10 ">
                 <div className="flex justify-between relative top-0 flex-col items-start z-10 left-0">
-                  {active.iconUrl && (
+                  {activeIcon && (
                     <motion.img
                       layoutId={`logo-${active.name}-${id}`}
-                      src={active.iconUrl}
+                      src={activeIcon}
                       alt={active.name}
                       className="w-24 h-20 object-contain "
                     />
@@ -189,49 +189,70 @@ export default function ServiceGalleryComponent({
           }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto w-full min-h-full"
         >
-          {filteredItems.map((item) => (
-            <motion.div
-              layoutId={`card-${item.name}-${id}`}
-              key={`card-${item.name}-${id}`}
-              onClick={() => setActive(item)}
-              className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[400px] group/card overflow-hidden h-[300px] cursor-pointer"
-            >
+          {filteredItems.map((item) => {
+            const bg =
+              item.serviceBackground?.asset.secure_url ||
+              item.serviceBackground?.asset.url ||
+              item.iconUrl;
+            const icon =
+              item.serviceicon?.asset.secure_url ||
+              item.serviceicon?.asset.url ||
+              item.iconUrl;
+
+            return (
               <motion.div
-                layoutId={`image-${item.name}-${id}`}
-                className="col-start-1 col-span-1  row-start-1 bg-black h-full min-h-full overflow-hidden rounded-sm"
+                layoutId={`card-${item.name}-${id}`}
+                key={`card-${item.name}-${id}`}
+                onClick={() => setActive(item)}
+                className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[400px] group/card overflow-hidden h-[300px] cursor-pointer"
               >
-                {item.iconUrl ? (
-                  <Image
-                    width={1000}
-                    height={1000}
-                    src={item.iconUrl}
-                    alt={item.name}
-                    className="w-full h-full object-cover min-h-[400px] group-hover/card:opacity-100 object-top opacity-80 transition-all"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-neutral-800 opacity-80 group-hover/card:opacity-100 transition-all" />
-                )}
-              </motion.div>
-              <div className="col-start-1 col-span-1 flex  justify-between opacity-100 row-start-2 p-2 mb-16 z-1">
-                <div className="flex flex-col items-start">
-                  <motion.h3
-                    layoutId={`title-${item.name}-${id}`}
-                    className="font-medium text-xl leading-snug tracking-tight text-neutral-700 dark:text-neutral-200 text-left"
-                  >
-                    {item.name}
-                  </motion.h3>
-                  {item.taglabel && (
-                    <motion.p
-                      layoutId={`description-${item.taglabel}-${id}`}
-                      className="text-neutral-500 font-semibold text-sm dark:text-neutral-400"
-                    >
-                      {item.taglabel}
-                    </motion.p>
+                <motion.div
+                  layoutId={`image-${item.name}-${id}`}
+                  className="col-start-1 col-span-1  row-start-1 bg-black h-full min-h-full overflow-hidden rounded-sm"
+                >
+                  {bg ? (
+                    <Image
+                      width={1000}
+                      height={600}
+                      src={bg}
+                      alt={item.name}
+                      className="w-full h-full object-cover min-h-[200px]  group-hover/card:opacity-100 object-top opacity-80 transition-all"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-neutral-800 opacity-80 min-h-[200px] group-hover/card:opacity-100 transition-all" />
                   )}
+                </motion.div>
+                <div className="w-full flex  justify-between opacity-100  p-2 mb-16 z-1">
+                  <div className="flex  justify-between items-center gap-4 w-full">
+                    {icon && (
+                      <motion.img
+                        layoutId={`logo-${item.name}-${id}`}
+                        src={icon}
+                        alt={item.name}
+                        className="w-10 h-10 object-contain mb-2"
+                      />
+                    )}
+                    <div className="flex flex-col items-end">
+                      <motion.h3
+                        layoutId={`title-${item.name}-${id}`}
+                        className="font-medium text-xl leading-snug tracking-tight text-neutral-700 dark:text-neutral-200 text-right"
+                      >
+                        {item.name}
+                      </motion.h3>
+                      {item.taglabel && (
+                        <motion.p
+                          layoutId={`description-${item.taglabel}-${id}`}
+                          className="text-neutral-500 font-semibold text-sm dark:text-neutral-400"
+                        >
+                          {item.taglabel}
+                        </motion.p>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </StaggeredSlideUp>
       </ul>
     </>
