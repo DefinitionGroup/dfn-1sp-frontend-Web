@@ -141,6 +141,7 @@ export default defineType({
             type: 'array',
             group: 'content',
             of: [
+                { type: 'headlineChallenge', title: 'Headline Component' },
                 { type: 'showtimeGallery' },
                 { type: 'heroShowTime' },
                 { type: 'sublineComponent' },
@@ -162,7 +163,8 @@ export default defineType({
                 // Carousel and smart components
                 { type: 'carousel' },
                 { type: 'smartCarousel' },
-                { type: 'smartPeople' }
+                { type: 'smartPeople' },
+                { type: 'smartUnitsGallery' }
             ],
             hidden: ({ parent }: any) => parent?.channel !== '1spWeb',
         }),

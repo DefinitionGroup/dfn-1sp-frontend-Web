@@ -407,6 +407,25 @@ export const SMART_PEOPLE_QUERY = defineQuery(`
 }
 `);
 
+export const SMART_UNITS_QUERY = defineQuery(`
+*[
+  _type == "unit" && 
+  isActive == true &&
+  language == $language
+] | order(_createdAt desc) [0...$maxItems] {
+  _id,
+  _type,
+  name,
+  slug,
+  logo,
+  backgroundImage,
+  description,
+  tagline,
+  cta,
+  _createdAt
+}
+`);
+
 // Helper function to generate interactive carousel query with dynamic field
 export const getInteractiveCarouselQuery = (carouselField: string) => `
 *[

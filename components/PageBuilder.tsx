@@ -15,6 +15,7 @@ import type {
 import type { Page } from "@/types/sanity.types";
 import { HeroShowtime as HeroShowtimeType } from "@/types/sanity.types";
 import ErrorBoundary from "./ErrorBoundary";
+import HeadlineChallenge from "./pagebuilder/cases/pg-HeadlineChallenge";
 
 // Dynamically import heavy components to reduce initial bundle size
 const ShowtimeGallery = dynamic(
@@ -182,6 +183,18 @@ const SmartPeople = dynamic(() => import("./data/data-SmartPeople"), {
   ),
   ssr: true,
 });
+
+const SmartUnitsGallery = dynamic(
+  () => import("./data/data-UnitsExpandableCards"),
+  {
+    loading: () => (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: true,
+  }
+);
 
 const CasesIntro = dynamic(() => import("./pagebuilder/pg-CasesIntro"), {
   loading: () => (
@@ -368,6 +381,12 @@ export function PageBuilder({ content }: PageBuilderProps) {
                 <SmartPeople key={key} {...(block as any)} />
               </ErrorBoundary>
             );
+          case "smartUnitsGallery":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <SmartUnitsGallery key={key} {...(block as any)} />
+              </ErrorBoundary>
+            );
           case "casesIntro":
             return (
               <ErrorBoundary key={`error-${key}`}>
@@ -396,6 +415,12 @@ export function PageBuilder({ content }: PageBuilderProps) {
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <IntertitleCTA key={key} {...block} />
+              </ErrorBoundary>
+            );
+          case "headlineChallenge":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <HeadlineChallenge key={key} {...block} />
               </ErrorBoundary>
             );
 

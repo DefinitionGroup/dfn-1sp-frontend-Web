@@ -18,6 +18,7 @@ import member from "./1SP/Items/member";
 import carousel from "./1SP/Objects/carousel";
 import smartCarousel from "./1SP/Objects/smartCarousel";
 import smartPeople from "./1SP/Objects/smartPeople";
+import smartUnitsGallery from "./1SP/Objects/smartUnitsGallery";
 import heroAdditionalContent from "./1SP/Objects/heroAdditionalContent";
 import slideUpContent from "./1SP/Objects/slideUpContent";
 import galleryStep from "./1SP/Objects/galleryStep";
@@ -62,7 +63,8 @@ const oneSPComponents = [
     // Carousel and smart components as standalone
     carousel,
     smartCarousel,
-    smartPeople
+    smartPeople,
+    smartUnitsGallery
 ];
 const oneSPItems = [
     badgeModule,
