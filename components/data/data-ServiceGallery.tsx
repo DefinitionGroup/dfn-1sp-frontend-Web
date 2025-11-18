@@ -80,7 +80,7 @@ export default function ServiceGalleryComponent({
               exit={{
                 opacity: 1,
                 transition: {
-                  duration: 0.05,
+                  duration: 0.025,
                 },
               }}
               className="flex absolute top-2 right-2 lg:hidden items-center overflow-hidden justify-around rounded-full h-6 w-6 z-50"
