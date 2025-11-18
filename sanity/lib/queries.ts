@@ -279,6 +279,7 @@ export const SERVICES_QUERY = defineQuery(`
   taglabel,
   "iconUrl": serviceicon.asset.secure_url,
   serviceicon,
+  serviceBackground,
   servicegrouprel[]->{
     _id,
     name,

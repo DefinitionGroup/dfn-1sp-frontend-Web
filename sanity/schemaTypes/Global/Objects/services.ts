@@ -16,6 +16,7 @@ export default defineType({
     groups: [
         { name: 'meta', title: 'Metadata' },
         { name: 'content', title: 'Content' },
+        { name: 'media', title: 'Media' },
         { name: 'relations', title: 'Relations' },
     ],
     fields: [
@@ -56,7 +57,13 @@ export default defineType({
             name: 'serviceicon',
             title: 'Service Icon',
             type: 'cloudinaryImage',
-            group: 'content',
+            group: 'media',
+        }),
+        defineField({
+            name: 'serviceBackground',
+            title: 'Service Background Image',
+            type: 'cloudinaryImage',
+            group: 'media',
         }),
         defineField({
             name: 'unitsrel',
