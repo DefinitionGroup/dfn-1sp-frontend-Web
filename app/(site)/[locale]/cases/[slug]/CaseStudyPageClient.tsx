@@ -97,34 +97,35 @@ export default function CaseStudyPageClient({
           />
         )}
 
+
         {/* Hero Content */}
         <div id={t.ids.top} className="" />
         <div className="relative z-10 container mt-[30vh] mx-auto p-8 md:p-0">
           <StaggeredSlideUp
             delay={1}
-            className="max-w-full flex flex-col md:max-w-2/3 border-l-2 border-white/50 pl-4 gap-4"
-          >
-            <h1 className="text-neutral-50 pb-2 text-7xl">{caseStudy.title}</h1>
-            {caseStudy.subtitle && (
-              <h2 className="text-neutral-50 pb-2 text-3xl">
+            className="max-w-full flex flex-col md:max-w-2/3   pl-4 gap-4"
+          >  {caseStudy.subtitle && (
+              <h2 className="text-neutral-50  text-xs font-bold bg-lime-500 rounded-full inline-block p-1 px-4">
                 {caseStudy.subtitle}
               </h2>
             )}
+            <h1 className="text-neutral-50 md:w-2/3 pb-2 text-7xl">{caseStudy.title}</h1>
+          
             {caseStudy.description && (
-              <h3 className="text-neutral-50 pb-2 text-xl">
+              <h3 className="text-neutral-50 md:w-1/2  pb-2 text-xl">
                 {caseStudy.description}
               </h3>
             )}
             {/* Display Unit Logos if available */}
             {caseStudy.units && caseStudy.units.length > 0 && (
-              <div className="flex flex-wrap gap-4 mb-4">
+              <div className="flex flex-wrap gap-4 mb-4 border-t-2 w-fit py-4 border-white/50">
                 {caseStudy.units.map((unit) =>
                   unit.logoUrl ? (
                     <img
                       key={unit._id}
                       src={unit.logoUrl}
                       alt={unit.name}
-                      className="h-12 w-auto object-contain"
+                      className="h-5 w-auto object-contain"
                     />
                   ) : null
                 )}
