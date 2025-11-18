@@ -105,7 +105,7 @@ export default function SmartCarousel({
         const query = getInteractiveCarouselQuery(carouselField);
         const results = await client.fetch(query, {
           language,
-          maxItems: maxItems - 1,
+          maxItems,
         });
         setCaseStudies(results);
       } catch (error) {

@@ -66,8 +66,30 @@ function pickLegacyCards(step: GalleryListStep): CardItem[] {
 
 type AC = NonNullable<GalleryListStep["additionalContent"]>[number];
 
+type UnitReference = {
+  _id: string;
+  _type: string;
+  name?: string;
+  slug?: { current: string };
+  logo?: CloudinaryAsset;
+  backgroundImage?: CloudinaryAsset;
+  description?: string;
+  tagline?: string;
+  cta?: CTA;
+};
+
+type UnitCardsBlock = {
+  _type?: "unitCards";
+  units?: UnitReference[];
+  sortBy?: "manual" | "name-asc" | "name-desc" | "recent";
+};
+
 function isCardsBlock(x: AC): x is { _type?: "cards"; items?: CardItem[] } {
   return !!x && (x as any)._type === "cards";
+}
+
+function isUnitCardsBlock(x: any): x is UnitCardsBlock {
+  return !!x && (x as any)._type === "unitCards";
 }
 
 function isCta(x: AC): x is CTA & { _type?: "cta" } {
@@ -92,6 +114,35 @@ function isCtaSplitHeader(
   return !!x && (x as any)._type === "ctaSplitHeader";
 }
 
+function transformUnitsToCards(
+  units: UnitReference[],
+  sortBy?: string
+): CardItem[] {
+  if (!Array.isArray(units)) return [];
+
+  // Sort units based on sortBy parameter
+  const sortedUnits = [...units];
+  if (sortBy === "name-asc") {
+    sortedUnits.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+  } else if (sortBy === "name-desc") {
+    sortedUnits.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
+  }
+  // "manual" and "recent" keep the order from Sanity
+
+  return sortedUnits.map(
+    (unit) =>
+      ({
+        _type: "cardItem" as const,
+        title: unit.name || "",
+        description: unit.tagline || unit.description || "",
+        src: unit.backgroundImage || unit.logo,
+        logo: unit.logo,
+        content: unit.description || "",
+        ctaButton: unit.cta || undefined,
+      }) as CardItem
+  );
+}
+
 function splitAdditionalContent(
   additional?: GalleryListStep["additionalContent"]
 ) {
@@ -107,6 +158,12 @@ function splitAdditionalContent(
     if (isCardsBlock(item)) {
       const items = (item as any)?.items;
       if (Array.isArray(items)) out.cards.push(...items);
+    } else if (isUnitCardsBlock(item)) {
+      const unitCards = transformUnitsToCards(
+        (item as any)?.units || [],
+        (item as any)?.sortBy
+      );
+      if (unitCards.length > 0) out.cards.push(...unitCards);
     } else if (isCtaMini(item)) {
       out.ctaMini.push({ ...(item as any), _type: "ctaMiniComponent" });
     } else if (isCtaSplitHeader(item)) {
@@ -222,7 +279,11 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
     : {};
 
   return (
-    <section id={sectionId} {...navPointDataAttr} className="z-4 grid col-span-12 relative col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+    <section
+      id={sectionId}
+      {...navPointDataAttr}
+      className="z-4 grid col-span-12 relative col-start-1 container mx-auto row-start-1 grid-cols-12 "
+    >
       {/* Optional background media */}
       {mediaUrl && (
         <HeaderImageVideoComp2
@@ -235,11 +296,11 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
       <GridBackground delay={delay} staggerDelay={staggerDelay} />
 
-        <div className="z-1 grid col-span-12 col-start-1 pt-32 row-start-1 grid-cols-12 ">
+      <div className="z-1 grid col-span-12 col-start-1 pt-32 row-start-1 grid-cols-12 ">
         {/* Badge */}
         {step.badge && (
           <Badgemodule
-           className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky top-0 "
+            className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky top-0 "
             text={step.badge.text ?? ""}
             subtitle={step.badge.subtitle ?? ""}
             numberEl={step.badge.numberEl ?? ""}
@@ -290,12 +351,12 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                       </h4>
                     )}
                     {header?.mainHeadline && (
-                        <h2 className="text-7xl  text-gray-900  tracking-tight font-aspekta">
+                      <h2 className="text-7xl  text-gray-900  tracking-tight font-aspekta">
                         {header.mainHeadline}
                       </h2>
                     )}
                     {header?.subHeadline && (
-                     <h4 className=" mt-2 text-gray-700 font-medium leading- font-aspekta">
+                      <h4 className=" mt-2 text-gray-700 font-medium leading- font-aspekta">
                         {header.subHeadline}
                       </h4>
                     )}
@@ -304,10 +365,9 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
               </header>
             )}
 
-
-               {/* Right list column */}
+        {/* Right list column */}
         {Array.isArray(listItems) && listItems.length > 0 && (
-             <div className="col-span-11 md:col-span-8 col-start-2 md:col-start-3 mt-12 md:mt-0 border-gray-500 pb-8 md:row-start-2 ">
+          <div className="col-span-11 md:col-span-8 col-start-2 md:col-start-3 mt-12 md:mt-0 border-gray-500 pb-8 md:row-start-2 ">
             <ListContainerComponent>
               {listItems.map((it, i) => (
                 <ListItemComponent
@@ -343,8 +403,6 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
             })}
           </div>
         )}
-
-     
 
         {/* Inject any ctaSplitHeader blocks as full-width rows */}
         {Array.isArray(ctaSplit) &&
