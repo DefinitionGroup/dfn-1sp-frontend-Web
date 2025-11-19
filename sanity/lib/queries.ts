@@ -277,25 +277,30 @@ export const NAVBAR_QUERY = defineQuery(`
 export const FOOTER_QUERY = defineQuery(`
 *[_type == "menu" && menuType == "Footer" && channel == $channel && language == $language][0]{
   _id,
-  title,
-  menuType,
   imageCloud,
-  "logoUrl": imageCloud.secure_url,
+  addressTitle,
+  locations[]{
+    _key,
+    name,
+    address
+  },
   footerColumns[]{
     _key,
     title,
     links[]{
       _key,
       linkType,
+      isCaseLink,
       "slug": page->slug.current,
-      "pageTitle": page->title,
+      "case": case->{ "slug": slug },
       externalUrl,
       displayName
     }
   },
   socialLinks[]{
     _key,
-    platform,
+    icon,
+    name,
     url
   },
   copyright
