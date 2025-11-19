@@ -53,7 +53,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   };
 
   const titleClass = `text-2xl text-gray-700 ${isLeftAligned ? "text-left" : "text-center"} leading-[1.2]`;
-  const subtitleClass = `text-2xl text-gray-500 leading-snug ${isLeftAligned ? "text-left" : "text-center"}`;
+  const subtitleClass = `text-2xl text-gray-400 leading-snug ${isLeftAligned ? "text-left" : "text-center"}`;
   const buttonContainerClass = `w-fit min-w-40 ${isLeftAligned ? "self-start" : "mx-auto"} mt-8 block`;
 
   // Resolve CTA link and props
