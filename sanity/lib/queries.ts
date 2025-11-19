@@ -406,7 +406,8 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
     metrics[]{
       type,
       label,
-      value
+      value,
+      suffix
     }
   },
   publishedAt
