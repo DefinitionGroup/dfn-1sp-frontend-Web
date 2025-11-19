@@ -181,6 +181,7 @@
       system-ui,
       -apple-system,
       sans-serif;
+    view-transition-name: root;
   }
 
   /* Gradient Text Utilities */
@@ -237,33 +238,89 @@
 .dialog * {
   outline: 1px dotted red;
 }
+
+/* View transition choreography */
+:root {
+  --vt-duration: 420ms;
+  --vt-ease: cubic-bezier(0.33, 1, 0.68, 1);
+}
+
 ::view-transition-group(root) {
   z-index: auto !important;
+  animation-duration: var(--vt-duration);
+  animation-timing-function: var(--vt-ease);
 }
 
 ::view-transition-image-pair(root) {
   isolation: isolate;
-  will-change: transform, opacity, scale;
+  will-change: transform, opacity;
   z-index: 1;
-}
-
-::view-transition-new(root) {
-  z-index: 2;
-  animation: none !important;
-}
-
-/* View Transitions - Fast and reliable */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 0.3s;
 }
 
 ::view-transition-old(root) {
   z-index: 1;
+  animation: vt-slide-out var(--vt-duration) var(--vt-ease) both;
+  backface-visibility: hidden;
 }
 
 ::view-transition-new(root) {
   z-index: 2;
+  animation: vt-slide-in var(--vt-duration) var(--vt-ease) both;
+  backface-visibility: hidden;
+}
+
+@keyframes vt-slide-out {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -6%, 0) scale(0.98);
+  }
+}
+
+@keyframes vt-slide-in {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 12%, 0) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root) {
+    animation-duration: 1ms !important;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes loadingBar {
+  0% {
+    width: 0%;
+  }
+  50% {
+    width: 70%;
+  }
+  100% {
+    width: 100%;
+  }
 }
 
 @keyframes logo-marquee {
@@ -280,6 +337,7 @@
     animation: logo-marquee var(--marquee-duration, 220s) linear infinite;
     width: max-content;
   }
+
   .logo-carousel-mask {
     mask-image: linear-gradient(
       to right,

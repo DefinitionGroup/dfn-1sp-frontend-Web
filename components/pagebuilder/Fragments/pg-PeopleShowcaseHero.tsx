@@ -5,7 +5,7 @@ import { assetUrl } from "@/utils/utils";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import StaggeredFadeIn from "@/components/ui/StaggeredFadeIn";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
 export interface MemberItem {
   name?: string;

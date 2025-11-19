@@ -1,7 +1,8 @@
 import localFont from "next/font/local";
 import type { Metadata } from "next";
 import "./globals.css";
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ViewTransitions } from 'next-view-transitions'
 const aspekta = localFont({
   src: [
     { path: "./fonts/AspektaVF.woff2", style: "normal" },
@@ -30,14 +31,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${aspekta.variable} ${nyghtserif.variable}`}
-      suppressHydrationWarning
-    >
-      <body className="antialiased" suppressHydrationWarning>
-        {children}      <SpeedInsights />
-      </body>
-    </html>
+    <ViewTransitions>
+      <html
+        lang="en"
+        className={`${aspekta.variable} ${nyghtserif.variable}`}
+        suppressHydrationWarning
+      >
+        <body className="antialiased" suppressHydrationWarning>
+          {children} <SpeedInsights />
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }

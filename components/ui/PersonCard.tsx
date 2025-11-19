@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { assetUrl } from "@/utils/utils";
 import StaggeredFadeIn from "@/components/ui/StaggeredFadeIn";
 
