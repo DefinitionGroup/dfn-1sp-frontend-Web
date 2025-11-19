@@ -149,6 +149,7 @@ export default defineType({
                 { type: 'contentSection' },
                 { type: 'casesIntro' },
                 { type: 'casesGalleryFiltered' },
+                { type: 'casesGalleryFilteredWithPagination' },
                 { type: 'servicesGalleryFiltered' },
                 { type: 'servicesHeroWithBadge' },
                 { type: 'intertitleCTA' },

@@ -91,12 +91,23 @@ export default defineType({
                                         title: "Positive/Negative",
                                         value: "posNeg",
                                     },
+                                    {
+                                        title: "Animated Number",
+                                        value: "animatedNumber",
+                                    },
                                 ],
                                 layout: "radio",
                             },
                             initialValue: "vertical",
                             validation: (Rule) => Rule.required(),
                             description: "Choose the visualization type for this metric",
+                        },
+                        {
+                            name: "suffix",
+                            title: "Suffix",
+                            type: "string",
+                            description: "Suffix for the number (e.g., '%', '+', 'k')",
+                            hidden: ({ parent }: any) => parent?.type !== "animatedNumber",
                         },
                         {
                             name: "label",
@@ -117,10 +128,11 @@ export default defineType({
 
                                     if (
                                         type !== "posNeg" &&
+                                        type !== "animatedNumber" &&
                                         typeof value === "number" &&
                                         value < 0
                                     ) {
-                                        return 'Only Positive/Negative type can have negative values. Choose "Positive/Negative" type or use a positive value.';
+                                        return 'Only Positive/Negative and Animated Number types can have negative values.';
                                     }
 
                                     return true;
@@ -149,6 +161,10 @@ export default defineType({
                                 case "posNeg":
                                     icon = CgLoadbarAlt;
                                     typeLabel = "Pos/Neg";
+                                    break;
+                                case "animatedNumber":
+                                    icon = FiTrendingUp;
+                                    typeLabel = "Animated";
                                     break;
                                 default:
                                     icon = GiNetworkBars;

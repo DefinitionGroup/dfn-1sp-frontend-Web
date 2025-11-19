@@ -5,6 +5,7 @@ import Header from "./1SP/Components/Header";
 import contentSection from "./1SP/Components/contentSection";
 import casesIntro from "./1SP/Components/casesIntro";
 import casesGalleryFiltered from "./1SP/Components/casesGalleryFiltered";
+import casesGalleryFilteredWithPagination from "./1SP/Components/casesGalleryFilteredWithPagination";
 import servicesGalleryFiltered from "./1SP/Components/servicesGalleryFiltered";
 import servicesHeroWithBadge from "./1SP/Components/servicesHeroWithBadge";
 import intertitleCTA from "./1SP/Components/intertitleCTA";
@@ -49,6 +50,7 @@ const oneSPComponents = [
     contentSection,
     casesIntro,
     casesGalleryFiltered,
+    casesGalleryFilteredWithPagination,
     servicesGalleryFiltered,
     servicesHeroWithBadge,
     intertitleCTA,
