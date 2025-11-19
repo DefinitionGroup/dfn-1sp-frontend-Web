@@ -87,7 +87,7 @@ export default function PeopleStep({
       )}
 
       {/* Header + description + people */}
-      <div className="col-span-12 container col-start-3 row-start-1 grid grid-cols-10 pt-32">
+      <div className="col-span-12 container col-start-3  row-start-1 grid grid-cols-10 pt-32">
         {/* Left header block */}
         <header className="col-span-2 col-start-1 border-t p-4">
           <div className="flex flex-col lg:gap-8 items-start justify-start w-full">

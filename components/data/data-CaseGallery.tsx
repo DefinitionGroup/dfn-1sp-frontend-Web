@@ -253,18 +253,22 @@ export default function CaseGalleryComponent({
                     layoutId={`title-${item.title}-${id}`}
                     className={`font-medium text-lg leading-snug tracking-tight ${
                       variant !== "light" ? "" : "invert"
-                    } text-neutral-600 dark:text-neutral-200 text-left`}
+                    } text-neutral-600 dark:text-neutral-200 text-right`}
                   >
                     {item.title}
                   </motion.h3>
                   {item.services && item.services.length > 0 && (
                     <motion.p
                       layoutId={`description-${item.description}-${id}`}
-                      className="text-neutral-400 font-bold text-sm dark:text-neutral-400"
+                      className="text-neutral-500 text-right text-sm dark:text-neutral-600"
                     >
                       {item.services.map((s) => s.name).join(", ")}
                     </motion.p>
+
+                    
                   )}
+
+                 
                 </div>
               </div>
             </motion.div>

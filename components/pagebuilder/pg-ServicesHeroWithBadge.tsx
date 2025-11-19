@@ -116,11 +116,11 @@ function ServicesHeroWithBadge({
             duration={0.5}
             distance={80}
           >
-            <h2 className="text-7xl text-gray-100 max-w-xl font-semibold tracking-tighter leading-compress mb-4">
+            <h2 className="text-7xl text-gray-100 max-w-xl  tracking-tighter leading-compress mb-4">
               {title}
             </h2>
             {subtitle && (
-              <p className="text-2xl text-gray-100 font-semibold leading-none max-w-xs mx-auto">
+              <p className="text-2xl text-gray-100  leading-none max-w-xs mx-auto">
                 {subtitle}
               </p>
             )}
@@ -147,12 +147,12 @@ function ServicesHeroWithBadge({
 
         {/* List Items */}
         {listItems && listItems.length > 0 && (
-          <div className="col-span-9 col-start-5 mt-8">
+          <div className="col-span-5 col-start-5 mt-8">
             <ListContainerComponent>
               {listItems.map((item, index) => (
                 <ListItemComponent
                   key={index}
-                  size={(item.size as any) || "medium"}
+                  size={(item.size as any) || "small"}
                   fontWeight={(item.fontWeight as any) || "normal"}
                   color={item.color as any}
                 >

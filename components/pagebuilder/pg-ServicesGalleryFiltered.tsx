@@ -97,9 +97,9 @@ function ServicesGalleryFiltered({
       className={`grid grid-cols-12 z-50 mx-auto ${bgColorClass} min-h-[90vh] relative font-aspekta`}
     >
       <div
-        className={`z-2 grid gap-8 col-span-12 ${paddingClass} col-start-1 container mx-auto row-start-1 grid-cols-12`}
+        className={`z-2 grid gap-8  col-span-12 ${paddingClass} col-start-1 container mx-auto row-start-1 grid-cols-12`}
       >
-        <div className="col-span-12 col-start-3">
+        <div className="col-span-12 col-start-1">
           {/* Filter Buttons */}
           {showFilters && filters.length > 1 && (
             <div className="flex flex-wrap gap-4 mb-8 justify-center md:justify-start">

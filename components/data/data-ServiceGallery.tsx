@@ -115,7 +115,7 @@ export default function ServiceGalleryComponent({
                     height={400}
                     src={activeBg}
                     alt={active.name}
-                    className="w-full h-full sm:rounded-t-xl  opacity-50 object-cover object-top"
+                    className="w-full min-h-[1000px] object-cover border border-lime-500 sm:rounded-t-xl  opacity-50 object-cover object-top"
                   />
                 ) : (
                   <div className="w-full h-full sm:rounded-t-xl bg-neutral-800 opacity-50" />
@@ -128,7 +128,7 @@ export default function ServiceGalleryComponent({
                       layoutId={`logo-${active.name}-${id}`}
                       src={activeIcon}
                       alt={active.name}
-                      className="w-24 h-20 object-contain "
+                      className="w-5 h-5 mb-12  object-contain "
                     />
                   )}
                   <div className="">
@@ -149,7 +149,7 @@ export default function ServiceGalleryComponent({
                     {active.serviceDescription && (
                       <motion.p
                         layoutId={`Servicedescription-${active.serviceDescription}-${id}`}
-                        className="text-neutral-100 text-md dark:text-neutral-400 "
+                        className="text-neutral-100 text-xl md:max-w-1/2 dark:text-neutral-400 "
                       >
                         {active.serviceDescription}
                       </motion.p>
@@ -229,16 +229,16 @@ export default function ServiceGalleryComponent({
                     <div className="w-full h-full bg-neutral-800 opacity-80 min-h-[200px] group-hover/card:opacity-100 transition-all" />
                   )}
                 </motion.div>
-                <div className="w-full flex  justify-between opacity-100  p-2 mb-16 z-1">
-                  <div className="flex  justify-between items-center gap-4 w-full">
-                    {icon && (
+                <div className="w-full flex  justify-between opacity-100 mb-16 z-1">
+                  <div className="flex  justify-end items-center gap-4 w-full">
+                    {/* {icon && (
                       <motion.img
                         layoutId={`logo-${item.name}-${id}`}
                         src={icon}
                         alt={item.name}
                         className="w-10 h-10 object-contain mb-2"
                       />
-                    )}
+                    )} */}
                     <div className="flex flex-col items-end">
                       <motion.h3
                         layoutId={`title-${item.name}-${id}`}
@@ -249,7 +249,7 @@ export default function ServiceGalleryComponent({
                       {item.taglabel && (
                         <motion.p
                           layoutId={`description-${item.taglabel}-${id}`}
-                          className="text-neutral-500 font-semibold text-sm dark:text-neutral-400"
+                          className="text-neutral-500  text-sm dark:text-neutral-400"
                         >
                           {item.taglabel}
                         </motion.p>
