@@ -41,10 +41,6 @@ export default function PeopleStep({
   const members = step.teamMembers ?? [];
   const header = step.header ?? {};
 
-  console.log("PeopleStep - step data:", step);
-  console.log("PeopleStep - teamMembers:", members);
-  console.log("PeopleStep - members length:", members.length);
-
   // Map person schema fields to MemberItem format expected by PeopleShowcaseHero
   const mappedMembers = members.map((member) => ({
     ...member,
@@ -75,15 +71,16 @@ export default function PeopleStep({
     <section
       id={sectionId}
       {...navPointDataAttr}
-    className="z-4 grid col-span-12 relative col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+      className="z-4 grid col-span-12 relative col-start-1 container mx-auto row-start-1 grid-cols-12 "
+    >
       {/* Badge */}
-       <GridBackground />
+      <GridBackground />
       {step.badge && (
         <div className="z-1 grid col-span-12 col-start-1 pt-32 row-start-1 grid-cols-12 ">
           <Badgemodule
             text={step.badge.text ?? ""}
             subtitle={step.badge.subtitle ?? ""}
-            numberEl={step.badge.numberEl ?? ""}         
+            numberEl={step.badge.numberEl ?? ""}
             className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky top-0 "
           />
         </div>

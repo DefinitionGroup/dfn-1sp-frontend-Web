@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import Button2 from "@/components/ui/Button2";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
+import { useParams } from "next/navigation";
 
 interface CtaMiniProps {
   heading: string;
@@ -32,6 +33,8 @@ function CtaMiniComponent({
   distance = 22,
   className,
 }: CtaMiniProps) {
+  const finalUrl = url || "#";
+
   const alignClass =
     align === "center"
       ? "items-center"
@@ -59,16 +62,22 @@ function CtaMiniComponent({
         {heading}
       </h3>
       <p className={`text-xs mb-8 ${textAlignClass}`}>{paragraph}</p>
-      {url ? (
+      {buttonText && finalUrl && finalUrl !== "#" ? (
         <div className="text-xs mb-8 min-w-[120px] w-full">
           <Button2
             variant={buttonVariant}
             className="w-full"
             text={buttonText}
-            href={url}
+            href={finalUrl}
           />
         </div>
-      ) : null}
+      ) : (
+        <div className="text-xs mb-8 text-red-500">
+          {!buttonText && "Missing buttonText"}
+          {!finalUrl && "Missing URL"}
+          {finalUrl === "#" && "URL is #"}
+        </div>
+      )}
     </StaggeredSlideUp>
   );
 }

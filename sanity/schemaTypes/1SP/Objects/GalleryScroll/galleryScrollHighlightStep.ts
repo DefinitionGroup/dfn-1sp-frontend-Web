@@ -10,6 +10,7 @@ export default defineType({
         { name: 'badge', title: 'Badge' },
         { name: 'content', title: 'Content', default: true },
         { name: 'media', title: 'Media' },
+        { name: 'cta', title: 'CTA' },
         { name: 'navigation', title: 'Navigation' }
     ],
     fields: [
@@ -33,6 +34,21 @@ export default defineType({
             type: 'slideUpContent',
             description: 'Content that will be highlighted as user scrolls',
             group: 'content'
+        }),
+        defineField({
+            name: 'useCTAMini',
+            title: 'Use CTA Mini Component',
+            type: 'boolean',
+            description: 'Enable to add a CTA mini component below the highlighted content',
+            group: 'cta'
+        }),
+        defineField({
+            name: 'ctaMini',
+            title: 'CTA Mini Component',
+            type: 'ctaMiniComponent',
+            description: 'Optional CTA mini component to display below the highlighted content',
+            group: 'cta',
+            hidden: ({ parent }) => !parent?.useCTAMini
         })
     ],
     preview: {

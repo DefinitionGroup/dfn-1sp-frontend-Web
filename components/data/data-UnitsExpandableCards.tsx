@@ -79,7 +79,6 @@ export default async function UnitsExpandableCards({
       </div>
     );
   }
-  console.log(units);
   const cards = transformUnitsToCards(units);
 
   return (

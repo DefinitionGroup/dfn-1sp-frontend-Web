@@ -87,6 +87,7 @@ export default function CaseStudyPageClient({
             videoSrc={mainVideoUrl}
             enableParallax={true}
             opacity="opacity-100"
+            enableVertical={caseStudy.isVerticalVideo}
           />
         ) : (
           <HeaderImageVideoComp

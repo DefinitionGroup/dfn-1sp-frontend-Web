@@ -10,6 +10,7 @@ export default defineType({
         { name: "content", title: "Content", default: true },
         { name: "layout", title: "Layout & Style" },
         { name: "navigation", title: "Navigation" },
+        { name: "cta", title: "CTA" },
     ],
     fields: [
         defineField({
@@ -105,21 +106,6 @@ export default defineType({
             group: "content",
         }),
         defineField({
-            name: "ctaHeading",
-            title: "CTA Heading",
-            type: "string",
-            description: "Heading for the CTA mini component (e.g., 'Challenge', 'Services')",
-            group: "content",
-        }),
-        defineField({
-            name: "ctaParagraph",
-            title: "CTA Paragraph",
-            type: "text",
-            description: "Paragraph text for the CTA mini component",
-            rows: 3,
-            group: "content",
-        }),
-        defineField({
             name: "solution",
             title: "Solution",
             type: "text",
@@ -127,6 +113,29 @@ export default defineType({
             rows: 6,
             group: "content",
         }),
+        defineField({
+            name: "ctaHeading",
+            title: "CTA Heading",
+            type: "string",
+            description: "Heading for the CTA mini component (e.g., 'Challenge', 'Services')",
+            group: "cta",
+        }),
+        defineField({
+            name: "ctaParagraph",
+            title: "CTA Paragraph",
+            type: "text",
+            description: "Paragraph text for the CTA mini component",
+            rows: 3,
+            group: "cta",
+        }),
+        defineField({
+            name: "ctaButton",
+            title: "CTA Button",
+            type: "cta",
+            description: "CTA button",
+            group: "cta",
+        }),
+
         defineField({
             name: "showGridBackground",
             title: "Show Grid Background",
