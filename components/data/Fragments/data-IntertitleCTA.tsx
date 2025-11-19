@@ -32,7 +32,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   buttonVariant = "lime",
   href,
   staggeredProps = {},
-  containerClassName = "flex-col w-full min-w-64 justify-center mx-auto mt-8 mb-16",
+  containerClassName = "flex-col w-full min-w-64 justify-center mx-auto ",
   alignment = "center",
   showButton = true,
 }) => {

@@ -6,6 +6,7 @@ import { Link } from "next-view-transitions";
 import { resolveLink } from "@/utils/utils";
 import { useParams } from "next/navigation";
 import type { CTA } from "@/types/sanity.types";
+import GridBackground from "@/components/ui/GridBackground";
 
 interface StaggeredSlideUpProps {
   className?: string;
@@ -32,7 +33,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   subtitle,
   cta,
   staggeredProps = {},
-  containerClassName = "flex-col w-full min-w-64 justify-center mx-auto mt-8 mb-16",
+  containerClassName = "flex-col w-full min-w-64 justify-center mx-auto ",
   alignment = "center",
   navPointName,
 }) => {
@@ -84,6 +85,10 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
 
   return (
     <div id={sectionId} {...navPointDataAttr} className={containerClassName}>
+    <div className="grid grid-cols-6 md:grid-cols-12 z-1 mx-auto container relative font-aspekta">
+        {/* Background grid (optional visual helper) */}
+      <GridBackground delay={0.2} staggerDelay={0.06} />
+      <div className="z-1   py-12 col-span-12 col-start-1 container mx-auto row-start-1 grid-cols-12">
       <StaggeredSlideUp {...defaultStaggeredProps}>
         <h3 className={titleClass}>{title}</h3>
         <p className={subtitleClass}>{subtitle}</p>
@@ -97,7 +102,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
           />
         </div>
       )}
-    </div>
+    </div> </div>    </div>
   );
 };
 
