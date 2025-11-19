@@ -1,10 +1,5 @@
 import { IoShareSocialOutline } from 'react-icons/io5'
 import {
-    FaFacebook,
-    FaInstagram,
-    FaTwitter,
-    FaGithub,
-    FaYoutube,
     FaElementor,
 } from "react-icons/fa";
 import React from "react";
@@ -194,12 +189,47 @@ export default {
                                             type: "reference",
                                             to: [{ type: "page" }],
                                             hidden: ({ parent }: { parent?: any }) =>
-                                                parent?.linkType !== "internal",
+                                                parent?.linkType !== "internal" || parent?.isCaseLink,
                                             validation: (Rule: any) =>
                                                 Rule.custom((page: any, context: any) => {
                                                     const { parent } = context as any;
-                                                    if (parent?.linkType === "internal" && !page) {
+                                                    if (parent?.linkType === "internal" && !parent?.isCaseLink && !page) {
                                                         return "Page is required for internal links";
+                                                    }
+                                                    return true;
+                                                }),
+                                            options: {
+                                                filter: ({ document }: { document?: { language?: string } }) => {
+                                                    if (!document?.language) {
+                                                        return { filter: '_id == "___"' };
+                                                    }
+                                                    return {
+                                                        filter: "language == $language",
+                                                        params: { language: document.language },
+                                                    };
+                                                },
+                                            },
+                                        },
+                                        {
+                                            name: "isCaseLink",
+                                            title: "The link is a case",
+                                            type: "boolean",
+                                            initialValue: false,
+                                            hidden: ({ parent }: { parent?: any }) =>
+                                                parent?.linkType !== "internal",
+                                        },
+                                        {
+                                            name: "case",
+                                            title: "Case",
+                                            type: "reference",
+                                            to: [{ type: "caseStudy" }],
+                                            hidden: ({ parent }: { parent?: any }) =>
+                                                parent?.linkType !== "internal" || !parent?.isCaseLink,
+                                            validation: (Rule: any) =>
+                                                Rule.custom((val: any, context: any) => {
+                                                    const { parent } = context as any;
+                                                    if (parent?.linkType === "internal" && parent?.isCaseLink && !val) {
+                                                        return "Case is required when 'The link is a case' is selected";
                                                     }
                                                     return true;
                                                 }),
@@ -297,24 +327,20 @@ export default {
                     type: "object",
                     fields: [
                         {
-                            name: "platform",
-                            title: "Platform",
+                            name: "icon",
+                            title: "Social Icon",
+                            type: "cloudinary.asset",
+                            validation: (Rule: any) => Rule.required(),
+                        },
+                        {
+                            name: "name",
+                            title: "Name",
                             type: "string",
-                            options: {
-                                list: [
-                                    { title: "Facebook", value: "Facebook" },
-                                    { title: "Instagram", value: "Instagram" },
-                                    { title: "X (Twitter)", value: "X" },
-                                    { title: "GitHub", value: "GitHub" },
-                                    { title: "YouTube", value: "YouTube" },
-                                ],
-                                layout: "dropdown",
-                            },
                             validation: (Rule: any) => Rule.required(),
                         },
                         {
                             name: "url",
-                            title: "Profile URL",
+                            title: "URL",
                             type: "url",
                             validation: (Rule: any) => Rule.required().uri({
                                 scheme: ['http', 'https']
@@ -323,23 +349,9 @@ export default {
                     ],
                     preview: {
                         select: {
-                            platform: "platform",
-                            url: "url",
-                        },
-                        prepare({ platform, url }: { platform?: string; url?: string }) {
-                            const icons: Record<string, React.ElementType> = {
-                                Facebook: FaFacebook,
-                                Instagram: FaInstagram,
-                                X: FaTwitter,
-                                GitHub: FaGithub,
-                                YouTube: FaYoutube,
-                            };
-
-                            return {
-                                title: platform || "Unknown platform",
-                                subtitle: url || "No URL",
-                                media: icons[platform || ""] ? React.createElement(icons[platform || ""]) : null,
-                            };
+                            title: "name",
+                            subtitle: "url",
+                            media: "icon",
                         },
                     },
                 },
@@ -353,6 +365,39 @@ export default {
             type: "string",
             group: 'footer',
             hidden: ({ parent }: { parent?: any }) => parent?.menuType !== "Footer",
+        },
+         /* Footer Fields */
+        {
+            name: "addressTitle",
+            title: "Address Section Title",
+            type: "string",
+            group: 'footer',
+            hidden: ({ parent }: { parent?: any }) => parent?.menuType !== "Footer",
+        },
+        {
+            name: "locations",
+            title: "Locations",
+            type: "array",
+            group: 'footer',
+            hidden: ({ parent }: { parent?: any }) => parent?.menuType !== "Footer",
+            of: [
+                {
+                    type: "object",
+                    fields: [
+                        {
+                            name: "name",
+                            title: "Location Name",
+                            type: "string",
+                            description: "e.g. Mallorca",
+                        },
+                        {
+                            name: "address",
+                            title: "Address",
+                            type: "string",
+                        }
+                    ]
+                }
+            ]
         },
 
         {

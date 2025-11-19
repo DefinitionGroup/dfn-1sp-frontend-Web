@@ -18,17 +18,6 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
     // Handle newsletter signup - integrate with your newsletter service
   };
 
-  // Social media icon mapping
-  const getSocialIcon = (platform: string) => {
-    const icons: Record<string, string> = {
-      Facebook: "/MetaLogo.svg",
-      Instagram: "/InstagramLogo.svg",
-      X: "/TiktokLogo.svg",
-      GitHub: "/LinkedinLogo.svg",
-      YouTube: "/LinkedinLogo.svg",
-    };
-    return icons[platform] || "/MetaLogo.svg";
-  };
 
   return (
     <>
@@ -39,13 +28,9 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
           <div className="w-full h-px bg-neutral-600 mb-8"></div>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 min-h-[163px]">
             {/* Company Name */}
-            <div className="lg:col-span-3 flex flex-col gap-3">
-              <h1 className="text-7xl font-medium tracking-tighter text-neutral-300">
-                1SP
-              </h1>
-              <h2 className="text-xl font-bold tracking-tight text-neutral-300">
-                Superagency
-              </h2>
+            <div className="lg:col-span-3 flex flex-col justify-center gap-3">
+              <Image src={menuData?.imageCloud?.secure_url || "/1sp-fallback.svg"} alt="Logo" width={146} height={79} />
+              
             </div>
 
             {/* Dynamic Footer Columns from Sanity */}
@@ -62,6 +47,8 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                         href={
                           link.linkType === "external"
                             ? link.externalUrl || "#"
+                            : link.isCaseLink
+                            ? `/cases/${link.case?.slug?.current || ""}`
                             : `/${link.slug || ""}`
                         }
                         target={
@@ -189,15 +176,17 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
-                      aria-label={social.platform || "social"}
+                      aria-label={social.name || "social"}
                     >
-                      <Image
-                        src={getSocialIcon(social.platform || "")}
-                        alt={social.platform || "social"}
-                        width={24}
-                        height={24}
-                        className="w-full h-full"
-                      />
+                      {social.icon?.secure_url && (
+                        <Image
+                          src={social.icon.secure_url}
+                          alt={social.name || "social"}
+                          width={24}
+                          height={24}
+                          className="w-full h-full object-contain"
+                        />
+                      )}
                     </Link>
                   ))
               ) : (
@@ -264,19 +253,42 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
               {/* Company Info */}
               <div className="flex-1">
                 <h3 className="text-gray-400 text-[15px] font-medium mb-4">
-                  Super* international
+                  {menuData?.addressTitle || "Super* international"}
                 </h3>
                 <div className="space-y-4">
-                  <div className="border-b border-gray-700 pb-3">
-                    <p className="text-gray-400 text-[11px] leading-relaxed">
-                      Mallorca
-                    </p>
-                  </div>
-                  <div className="border-b border-gray-700 pb-3">
-                    <p className="text-gray-400 text-[11px] leading-relaxed">
-                      Address
-                    </p>
-                  </div>
+                  {menuData?.locations && menuData.locations.length > 0 ? (
+                    menuData.locations.map((location) => (
+                      <React.Fragment key={location._key}>
+                        {location.name && (
+                          <div className="mb-1">
+                            <p className="text-gray-400 text-[13px] leading-relaxed">
+                              {location.name}
+                            </p>
+                          </div>
+                        )}
+                        {location.address && (
+                          <div className="border-b border-gray-700 pb-3">
+                            <p className="text-gray-400 text-[11px] leading-relaxed whitespace-pre-line">
+                              {location.address}
+                            </p>
+                          </div>
+                        )}
+                      </React.Fragment>
+                    ))
+                  ) : (
+                    <>
+                      <div className=" pb-1">
+                        <p className="text-gray-400 text-[12px] leading-relaxed">
+                          Mallorca
+                        </p>
+                      </div>
+                      <div className="border-b border-gray-700 pb-3">
+                        <p className="text-gray-400 text-[11px] leading-relaxed">
+                          Address
+                        </p>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
 
