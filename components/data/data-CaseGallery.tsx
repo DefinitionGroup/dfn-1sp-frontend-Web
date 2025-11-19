@@ -4,7 +4,7 @@ import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
-import { useTransitionRouter } from "next-view-transitions";
+import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
 import Button2 from "../ui/Button2";
 import Image from "next/image";
 
@@ -41,7 +41,7 @@ export default function CaseGalleryComponent({
   variant,
   filterAllText = "All",
 }: CaseGalleryComponentProps) {
-  const router = useTransitionRouter();
+  const router = useOptimizedTransitionRouter();
   const [active, setActive] = useState<CaseStudy | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   const id = useId();
@@ -264,11 +264,7 @@ export default function CaseGalleryComponent({
                     >
                       {item.services.map((s) => s.name).join(", ")}
                     </motion.p>
-
-                    
                   )}
-
-                 
                 </div>
               </div>
             </motion.div>

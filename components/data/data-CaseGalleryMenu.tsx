@@ -4,7 +4,7 @@ import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
 import { useOutsideClick } from "@/hooks/use-outside-click";
-import { useTransitionRouter } from "next-view-transitions";
+import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
 import IntertitleCTA from "./Fragments/data-IntertitleCTA";
 import Image from "next/image";
 interface CaseStudy {
@@ -36,7 +36,7 @@ export default function CaseGalleryMenu({
   activeFilter = "All",
   locale = "en",
 }: CaseGalleryProps) {
-  const router = useTransitionRouter();
+  const router = useOptimizedTransitionRouter();
   const [active, setActive] = useState<CaseStudy | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   const id = useId();

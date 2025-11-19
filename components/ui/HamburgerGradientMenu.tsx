@@ -8,8 +8,8 @@ import {
   useMotionValue,
   useIsPresent,
 } from "motion/react";
-import Link from "next/link";
-import { useTransitionRouter } from "next-view-transitions";
+import { Link } from "next-view-transitions";
+import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
 import FrontNavOverlay from "../menu/FrontNavOverlay";
 import Image from "next/image";
 
@@ -41,7 +41,7 @@ export default function HamburgerGradientMenu({
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const firstLinkRef = useRef<HTMLAnchorElement | null>(null);
-  const router = useTransitionRouter();
+  const router = useOptimizedTransitionRouter();
 
   useEffect(() => {
     if (!open) return;

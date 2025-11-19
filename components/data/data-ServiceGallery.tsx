@@ -3,7 +3,7 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
-import { useTransitionRouter } from "next-view-transitions";
+import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import Image from "next/image";
 import { Service } from "@/types/sanity.types";
@@ -21,7 +21,7 @@ export default function ServiceGalleryComponent({
   locale = "en",
   filterAllText = "All",
 }: ServiceGalleryProps) {
-  const router = useTransitionRouter();
+  const router = useOptimizedTransitionRouter();
   const [active, setActive] = useState<Service | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   const id = useId();

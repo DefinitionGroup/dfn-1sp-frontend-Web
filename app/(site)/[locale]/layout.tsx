@@ -4,6 +4,8 @@ import { VisualEditing } from "next-sanity/visual-editing";
 import { SanityLive } from "@/sanity/lib/live";
 import { DisableDraftMode } from "@/components/DisableDraftMode";
 import { StegaErrorHandler } from "@/components/StegaErrorHandler";
+import { ViewTransitions } from "next-view-transitions";
+import { TransitionLoader } from "@/components/TransitionLoader";
 
 // Removed localFont imports and variables — font classes should be applied in root layout
 
@@ -23,7 +25,8 @@ export default async function SiteLayout({
   const { isEnabled } = await draftMode();
 
   return (
-    <>
+    <ViewTransitions>
+      <TransitionLoader />
       {children}
       <SanityLive />
       <StegaErrorHandler />
@@ -33,6 +36,6 @@ export default async function SiteLayout({
           <DisableDraftMode />
         </>
       )}
-    </>
+    </ViewTransitions>
   );
 }

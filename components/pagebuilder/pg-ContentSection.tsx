@@ -5,7 +5,7 @@ import StaggeredFadeIn from "@/components/ui/StaggeredFadeIn";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
 type ContentSectionData = {
   title?: string;

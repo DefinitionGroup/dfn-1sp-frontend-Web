@@ -3,8 +3,8 @@ import React from "react";
 import Image from "next/image";
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
 import { motion } from "motion/react";
-import Link from "next/link";
-import { useTransitionRouter } from "next-view-transitions";
+import { Link } from "next-view-transitions";
+import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
 import { usePathname } from "next/navigation";
 import CaseGalleryMenu from "../data/data-CaseGalleryMenu";
 import Button2 from "../ui/Button2";
@@ -31,7 +31,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   hasServices = false,
   services = [],
 }) => {
-  const router = useTransitionRouter();
+  const router = useOptimizedTransitionRouter();
   const pathname = usePathname() || "";
   const [showOverlay, setShowOverlay] = React.useState(false);
   const navRef = React.useRef<HTMLElement>(null);

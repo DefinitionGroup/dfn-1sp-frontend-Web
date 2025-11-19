@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "@phosphor-icons/react";
-import { useTransitionRouter } from "next-view-transitions";
+import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
 
 interface Button2Props {
   text?: string;
@@ -38,14 +38,15 @@ const variantStyles: Record<
   },
   limesmallrounded: {
     top: "border-lime-500/30 text-xxs rounded-full bg-lime-400 text-neutral-900 px-2 py-1 ",
-    bottom: "border-neutral-800 text-xxs rounded-full  bg-neutral-800 text-white px-2 py-1 ",
+    bottom:
+      "border-neutral-800 text-xxs rounded-full  bg-neutral-800 text-white px-2 py-1 ",
     container: "h-10",
   },
 };
 
 function Button2({ text, className, href, variant = "default" }: Button2Props) {
   const isExternal = !!href && /^(https?:|mailto:|tel:)/.test(href);
-  const router = useTransitionRouter();
+  const router = useOptimizedTransitionRouter();
   const safeVariant: NonNullable<Button2Props["variant"]> =
     variant in variantStyles ? variant : "default";
 
