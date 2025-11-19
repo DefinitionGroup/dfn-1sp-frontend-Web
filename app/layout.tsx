@@ -1,7 +1,7 @@
 import localFont from "next/font/local";
 import type { Metadata } from "next";
 import "./globals.css";
-
+import { SpeedInsights } from '@vercel/speed-insights/next';
 const aspekta = localFont({
   src: [
     { path: "./fonts/AspektaVF.woff2", style: "normal" },
@@ -36,7 +36,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="antialiased" suppressHydrationWarning>
-        {children}
+        {children}      <SpeedInsights />
       </body>
     </html>
   );
