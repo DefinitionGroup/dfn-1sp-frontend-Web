@@ -217,6 +217,18 @@ const CasesGalleryFiltered = dynamic(
   }
 );
 
+const CasesGalleryFilteredWithPagination = dynamic(
+  () => import("./pagebuilder/pg-CasesGalleryFilteredWithPagination"),
+  {
+    loading: () => (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: true,
+  }
+);
+
 const ServicesGalleryFiltered = dynamic(
   () => import("./pagebuilder/pg-ServicesGalleryFiltered"),
   {
@@ -397,6 +409,12 @@ export function PageBuilder({ content }: PageBuilderProps) {
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <CasesGalleryFiltered key={key} {...block} />
+              </ErrorBoundary>
+            );
+          case "casesGalleryFilteredWithPagination":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <CasesGalleryFilteredWithPagination key={key} {...block} />
               </ErrorBoundary>
             );
           case "servicesGalleryFiltered":
