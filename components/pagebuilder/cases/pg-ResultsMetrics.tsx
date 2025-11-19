@@ -21,9 +21,10 @@ interface CloudinaryAsset {
 }
 
 interface Metric {
-  type: "vertical" | "horizontal" | "posNeg";
+  type: "vertical" | "horizontal" | "posNeg" | "animatedNumber";
   label: string;
   value: number;
+  suffix?: string;
 }
 
 interface ResultsMetricsProps {
@@ -155,31 +156,45 @@ export default function ResultsMetrics({
                   key={index}
                   className="flex flex-col items-start border-b border-white/10 flex-1"
                 >
-                  {getDiagramComponent(
-                    metric.type,
-                    metric.value,
-                    0.3 + index * 0.1,
-                    index
+                  {metric.type === "animatedNumber" ? (
+                    <div className="mt-12 mb-4">
+                      <AnimateNumberinView
+                        number={metric.value}
+                        format={{ minimumIntegerDigits: 1 }}
+                        suffix={metric.suffix || ""}
+                        className="number text-gray-100"
+                        delay={300}
+                      />
+                    </div>
+                  ) : (
+                    <>
+                      {getDiagramComponent(
+                        metric.type as any,
+                        metric.value,
+                        0.3 + index * 0.1,
+                        index
+                      )}
+                      <motion.div
+                        className="text-[8px] font-bold mt-12 text-gray-100"
+                        variants={{
+                          hidden: { opacity: 0, y: 20 },
+                          visible: {
+                            opacity: 1,
+                            y: -10,
+                            transition: { duration: 0.6, ease: "easeOut" },
+                          },
+                        }}
+                      >
+                        <AnimateNumberinView
+                          number={Math.abs(metric.value)}
+                          format={{ minimumIntegerDigits: 2 }}
+                          suffix="%"
+                          className="text-4xl font-bold tracking-tighter"
+                          delay={300}
+                        />
+                      </motion.div>
+                    </>
                   )}
-                  <motion.div
-                    className="text-[8px] font-bold mt-12 text-gray-100"
-                    variants={{
-                      hidden: { opacity: 0, y: 20 },
-                      visible: {
-                        opacity: 1,
-                        y: -10,
-                        transition: { duration: 0.6, ease: "easeOut" },
-                      },
-                    }}
-                  >
-                    <AnimateNumberinView
-                      number={Math.abs(metric.value)}
-                      format={{ minimumIntegerDigits: 2 }}
-                      suffix="%"
-                      className="text-4xl font-bold tracking-tighter"
-                      delay={300}
-                    />
-                  </motion.div>
                   <StaggeredSlideUp
                     className=""
                     delay={0.0}
