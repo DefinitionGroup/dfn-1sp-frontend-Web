@@ -16,11 +16,12 @@ declare module "@react-three/fiber" {
 extend({ ThreeGlobe: ThreeGlobe });
 
 const RING_PROPAGATION_SPEED = 1;
-const aspect =12;
-const CAMERA_FORWARD =180;
+const aspect = 1;
+const CAMERA_FORWARD = 160;
 const CAMERA_HEIGHT = 100;
+const CAMERA_TARGET = new Vector3(0, 30, 0);
 const CAMERA_RADIUS = Math.sqrt(
-  CAMERA_FORWARD * CAMERA_FORWARD + CAMERA_HEIGHT * CAMERA_HEIGHT ,
+  CAMERA_FORWARD * CAMERA_FORWARD + CAMERA_HEIGHT * CAMERA_HEIGHT,
 );
 
 type Position = {
@@ -355,8 +356,8 @@ function CameraTopHalfFocus() {
   const { camera } = useThree();
 
   useEffect(() => {
-    camera.position.set(1, CAMERA_HEIGHT, CAMERA_FORWARD);
-    camera.lookAt(1, 1, 22);
+    camera.position.set(0, CAMERA_HEIGHT, CAMERA_FORWARD);
+    camera.lookAt(CAMERA_TARGET);
   }, [camera]);
 
   return null;
@@ -380,10 +381,11 @@ export function World(props: WorldProps) {
         enableZoom={false}
         minDistance={CAMERA_RADIUS}
         maxDistance={CAMERA_RADIUS}
+        target={[CAMERA_TARGET.x, CAMERA_TARGET.y, CAMERA_TARGET.z]}
         autoRotateSpeed={1}
         autoRotate={true}
-        minPolarAngle={Math.PI / 4}
-        maxPolarAngle={Math.PI / 2.2}
+        minPolarAngle={Math.PI / 3.2}
+        maxPolarAngle={Math.PI / 2}
       />
     </Canvas>
   );
