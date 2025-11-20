@@ -331,7 +331,19 @@ export function WebGLRendererConfig() {
     gl.setPixelRatio(window.devicePixelRatio);
     gl.setSize(size.width, size.height);
     gl.setClearColor(0xffaaff, 0);
-  }, []);
+  }, [gl, size]);
+
+  return null;
+}
+
+function CameraAspectController() {
+  const { camera, size } = useThree();
+
+  useEffect(() => {
+    const perspectiveCamera = camera as PerspectiveCamera;
+    perspectiveCamera.aspect = size.width / size.height;
+    perspectiveCamera.updateProjectionMatrix();
+  }, [camera, size]);
 
   return null;
 }
@@ -343,6 +355,7 @@ export function World(props: WorldProps) {
   return (
     <Canvas scene={scene} camera={new PerspectiveCamera(50, aspect, 180, 1800)}>
       <WebGLRendererConfig />
+      <CameraAspectController />
       <ambientLight color={globeConfig.ambientLight} intensity={1} />
       
       <Globe {...props} />

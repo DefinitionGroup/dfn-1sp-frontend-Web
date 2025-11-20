@@ -34,7 +34,7 @@ export default async function Home({
           <NotFound />
         )}
 
-        <div className="aspect-square w-140 mx-auto my-10">
+        <div className="mx-auto my-10">
         <GlobalDataComponent />
         </div>
       </div>
