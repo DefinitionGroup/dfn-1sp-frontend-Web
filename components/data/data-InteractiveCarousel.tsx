@@ -250,7 +250,7 @@ export default function SmartCarousel({
     <section>
       <div
         ref={containerRef}
-        className="container relative top-0 left-0 mx-auto w-full my-32"
+        className="container relative top-0  left-0 mx-auto w-full  "
       >
         <div className="relative h-[800px] flex items-start">
           {/* Main Carousel */}

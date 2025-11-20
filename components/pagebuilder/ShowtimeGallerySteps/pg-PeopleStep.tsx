@@ -135,7 +135,7 @@ export default function PeopleStep({
         )}
 
         {/* People grid */}
-        <div className="col-span-8 row-start-2 col-start-3">
+        <div className="col-span-10 row-start-2 col-start-1 mt-12 ">
           <PeopleShowcaseHero members={mappedMembers} />
         </div>
       </div>
