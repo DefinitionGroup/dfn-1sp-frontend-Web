@@ -16,11 +16,11 @@ declare module "@react-three/fiber" {
 extend({ ThreeGlobe: ThreeGlobe });
 
 const RING_PROPAGATION_SPEED = 1;
-const aspect = 1;
-const CAMERA_FORWARD =150;
-const CAMERA_HEIGHT = 180;
+const aspect =12;
+const CAMERA_FORWARD =180;
+const CAMERA_HEIGHT = 100;
 const CAMERA_RADIUS = Math.sqrt(
-  CAMERA_FORWARD * CAMERA_FORWARD + CAMERA_HEIGHT * CAMERA_HEIGHT,
+  CAMERA_FORWARD * CAMERA_FORWARD + CAMERA_HEIGHT * CAMERA_HEIGHT ,
 );
 
 type Position = {
@@ -158,8 +158,8 @@ export function Globe({ globeConfig, data }: WorldProps) {
 
     globeRef.current
       .hexPolygonsData(countries.features)
-      .hexPolygonResolution(3)
-      .hexPolygonMargin(0.7)
+      .hexPolygonResolution(4)
+      .hexPolygonMargin(0.3)
       .showAtmosphere(defaultProps.showAtmosphere)
       .atmosphereColor(defaultProps.atmosphereColor)
       .atmosphereAltitude(defaultProps.atmosphereAltitude)
@@ -308,16 +308,15 @@ function ArcLabels({ data }: Pick<WorldProps, "data">) {
           }}
           position={point.position}
           center
-          distanceFactor={222}
+          distanceFactor={180}
           style={{
             color: point.color,
-            fontWeight: 600,
-            fontSize: "0.9rem",
+            fontWeight: 400,
+            fontSize: "0.8rem",
             backgroundColor: "rgba(0,0,0,0.8)",
-            padding: "0.25rem 0.5rem",
-            borderRadius: "999px",
-            border: "1px solid rgba(255,255,255,0.2)",
-            textShadow: "0 0 8px rgba(0,0,0,0.65)",
+            padding: "0.33rem 0.75rem",
+            borderRadius: "2px",
+            textTransform: "uppercase",
             whiteSpace: "nowrap",
           }}
         >
@@ -356,8 +355,8 @@ function CameraTopHalfFocus() {
   const { camera } = useThree();
 
   useEffect(() => {
-    camera.position.set(0, CAMERA_HEIGHT, CAMERA_FORWARD);
-    camera.lookAt(1, 1, 0);
+    camera.position.set(1, CAMERA_HEIGHT, CAMERA_FORWARD);
+    camera.lookAt(1, 1, 22);
   }, [camera]);
 
   return null;

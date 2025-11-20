@@ -115,7 +115,7 @@ export default function ServiceGalleryComponent({
                     height={400}
                     src={activeBg}
                     alt={active.name}
-                    className="w-full min-h-[1000px] object-cover border border-lime-500 sm:rounded-t-xl  opacity-50 object-cover object-top"
+                    className="w-full min-h-[1000px] border border-lime-500 sm:rounded-t-xl  opacity-50 object-cover object-top"
                   />
                 ) : (
                   <div className="w-full h-full sm:rounded-t-xl bg-neutral-800 opacity-50" />
