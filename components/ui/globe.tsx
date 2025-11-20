@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Color, Scene, Fog, PerspectiveCamera, Vector3, Group } from "three";
+import { Color, Scene,  PerspectiveCamera, Vector3, Group } from "three";
 import ThreeGlobe from "three-globe";
 import { useThree, Canvas, extend, useFrame } from "@react-three/fiber";
 import { Html, OrbitControls } from "@react-three/drei";
@@ -16,8 +16,12 @@ declare module "@react-three/fiber" {
 extend({ ThreeGlobe: ThreeGlobe });
 
 const RING_PROPAGATION_SPEED = 1;
-const aspect =1;
-const cameraZ =288;
+const aspect = 1;
+const CAMERA_FORWARD =150;
+const CAMERA_HEIGHT = 180;
+const CAMERA_RADIUS = Math.sqrt(
+  CAMERA_FORWARD * CAMERA_FORWARD + CAMERA_HEIGHT * CAMERA_HEIGHT,
+);
 
 type Position = {
   order: number;
@@ -348,14 +352,26 @@ function CameraAspectController() {
   return null;
 }
 
+function CameraTopHalfFocus() {
+  const { camera } = useThree();
+
+  useEffect(() => {
+    camera.position.set(0, CAMERA_HEIGHT, CAMERA_FORWARD);
+    camera.lookAt(1, 1, 0);
+  }, [camera]);
+
+  return null;
+}
+
 export function World(props: WorldProps) {
   const { globeConfig, data } = props;
   const scene = new Scene();
-  scene.fog = new Fog(0xffffff, 400, 2000);
+
   return (
-    <Canvas scene={scene} camera={new PerspectiveCamera(50, aspect, 180, 1800)}>
+    <Canvas scene={scene} camera={new PerspectiveCamera(50, aspect, 0.1, 2000)}>
       <WebGLRendererConfig />
       <CameraAspectController />
+      <CameraTopHalfFocus />
       <ambientLight color={globeConfig.ambientLight} intensity={1} />
       
       <Globe {...props} />
@@ -363,12 +379,12 @@ export function World(props: WorldProps) {
       <OrbitControls
         enablePan={false}
         enableZoom={false}
-        minDistance={cameraZ}
-        maxDistance={cameraZ}
+        minDistance={CAMERA_RADIUS}
+        maxDistance={CAMERA_RADIUS}
         autoRotateSpeed={1}
         autoRotate={true}
-        minPolarAngle={Math.PI / 3.5}
-        maxPolarAngle={Math.PI - Math.PI / 3}
+        minPolarAngle={Math.PI / 4}
+        maxPolarAngle={Math.PI / 2.2}
       />
     </Canvas>
   );
