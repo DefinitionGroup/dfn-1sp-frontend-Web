@@ -4,6 +4,7 @@ import { PageBuilder } from "@/components/PageBuilder";
 import { cookies } from "next/headers";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
+import { GlobalDataComponent } from "@/components/globalDataComponent";
 
 export const revalidate = 60;
 
@@ -32,6 +33,10 @@ export default async function Home({
         ) : (
           <NotFound />
         )}
+
+        <div className="aspect-square w-140 mx-auto my-10">
+        <GlobalDataComponent />
+        </div>
       </div>
     </SiteWrapper>
   );
