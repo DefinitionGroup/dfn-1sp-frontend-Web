@@ -12,18 +12,26 @@ import type {
 import { assetUrl, resolveLinkAsync } from "@/utils/utils";
 import { useParams } from "next/navigation";
 
-type RawItem = string | { name?: string; text?: string };
+type RawItem =
+  | string
+  | {
+      _type?: string;
+      name?: string;
+      text?: string;
+      taglabel?: string;
+      introText?: string;
+    };
 
 function pickItems(step: any): RawItem[] {
-  const candidates = [
-    step?.scrollHighlightContent?.items,
-    step?.items,
-    step?.content?.items,
-  ];
-  for (const c of candidates) {
-    if (Array.isArray(c)) return c as RawItem[];
+  const contentType = step?.scrollHighlightContent?.contentType;
+
+  // Return items based on selected content type
+  if (contentType === "services") {
+    return step?.scrollHighlightContent?.serviceItems || [];
+  } else {
+    // Default to text items (including when contentType is 'text' or undefined)
+    return step?.scrollHighlightContent?.textItems || [];
   }
-  return [];
 }
 
 export default function HighlightStep({
@@ -39,11 +47,23 @@ export default function HighlightStep({
 
   const rawItems = pickItems(step);
   const items = rawItems
-    .map((it) =>
-      typeof it === "string"
-        ? { name: it, text: "" }
-        : { name: it?.name || "", text: it?.text || "" }
-    )
+    .map((it) => {
+      if (typeof it === "string") {
+        return { name: it, text: "" };
+      }
+      // Handle Services references
+      if (it?._type === "services") {
+        return {
+          name: it.name || it.taglabel || "",
+          text: it.introText || "",
+        };
+      }
+      // Handle slideUpText
+      return {
+        name: it?.name || "",
+        text: it?.text || "",
+      };
+    })
     .filter((i) => i.name);
 
   // Generate section ID from badge text
