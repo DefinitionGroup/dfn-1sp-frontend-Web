@@ -309,7 +309,7 @@ function ArcLabels({ data }: Pick<WorldProps, "data">) {
           }}
           position={point.position}
           center
-          distanceFactor={180}
+          distanceFactor={120}
           style={{
             color: point.color,
             fontWeight: 400,
@@ -382,7 +382,7 @@ export function World(props: WorldProps) {
         minDistance={CAMERA_RADIUS}
         maxDistance={CAMERA_RADIUS}
         target={[CAMERA_TARGET.x, CAMERA_TARGET.y, CAMERA_TARGET.z]}
-        autoRotateSpeed={1}
+        autoRotateSpeed={0.2}
         autoRotate={true}
         minPolarAngle={Math.PI / 3.2}
         maxPolarAngle={Math.PI / 2}
