@@ -18,6 +18,7 @@ interface CtaMiniProps {
   duration?: number;
   distance?: number;
   className?: string;
+  showButton?: boolean;
 }
 
 function CtaMiniComponent({
@@ -32,6 +33,7 @@ function CtaMiniComponent({
   duration = 0.5,
   distance = 22,
   className,
+  showButton = true,
 }: CtaMiniProps) {
   const finalUrl = url || "#";
 
@@ -62,22 +64,24 @@ function CtaMiniComponent({
         {heading}
       </h3>
       <p className={`text-xs mb-8 ${textAlignClass}`}>{paragraph}</p>
-      {buttonText && finalUrl && finalUrl !== "#" ? (
-        <div className="text-xs mb-8 min-w-[120px] w-full">
-          <Button2
-            variant={buttonVariant}
-            className="w-full"
-            text={buttonText}
-            href={finalUrl}
-          />
-        </div>
-      ) : (
-        <div className="text-xs mb-8 text-red-500">
-          {!buttonText && "Missing buttonText"}
-          {!finalUrl && "Missing URL"}
-          {finalUrl === "#" && "URL is #"}
-        </div>
-      )}
+      {showButton ? (
+        buttonText && finalUrl && finalUrl !== "#" ? (
+          <div className="text-xs mb-8 min-w-[120px] w-full">
+            <Button2
+              variant={buttonVariant}
+              className="w-full"
+              text={buttonText}
+              href={finalUrl}
+            />
+          </div>
+        ) : (
+          <div className="text-xs mb-8 text-red-500">
+            {!buttonText && "Missing buttonText"}
+            {!finalUrl && "Missing URL"}
+            {finalUrl === "#" && "URL is #"}
+          </div>
+        )
+      ) : null}
     </StaggeredSlideUp>
   );
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import dynamic from "next/dynamic";
 import type {
   ShowtimeGallery as ShowtimeGalleryType,
@@ -196,6 +196,15 @@ const SmartUnitsGallery = dynamic(
   }
 );
 
+const SmartUnitsGlobe = dynamic(() => import("./data/data-SmartUnitsGlobe"), {
+  loading: () => (
+    <div className="w-full h-64 flex items-center justify-center">
+      <div className="text-gray-400">Loading...</div>
+    </div>
+  ),
+  ssr: true,
+});
+
 const CasesIntro = dynamic(() => import("./pagebuilder/pg-CasesIntro"), {
   loading: () => (
     <div className="w-full h-64 flex items-center justify-center">
@@ -262,9 +271,12 @@ const IntertitleCTA = dynamic(() => import("./pagebuilder/pg-IntertitleCTA"), {
   ssr: true,
 });
 
-type PageBuilderProps = { content: NonNullable<Page["content1sp"]> };
+type PageBuilderProps = {
+  content: NonNullable<Page["content1sp"]>;
+  language?: string;
+};
 
-export function PageBuilder({ content }: PageBuilderProps) {
+export function PageBuilder({ content, language = "de" }: PageBuilderProps) {
   if (!Array.isArray(content) || content.length === 0) return null;
 
   return (
@@ -397,6 +409,24 @@ export function PageBuilder({ content }: PageBuilderProps) {
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <SmartUnitsGallery key={key} {...(block as any)} />
+              </ErrorBoundary>
+            );
+          case "smartUnitsGlobe":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <Suspense
+                  fallback={
+                    <div className="w-full h-64 flex items-center justify-center">
+                      <div className="text-gray-400">Loading...</div>
+                    </div>
+                  }
+                >
+                  <SmartUnitsGlobe
+                    key={key}
+                    language={language}
+                    {...(block as any)}
+                  />
+                </Suspense>
               </ErrorBoundary>
             );
           case "casesIntro":

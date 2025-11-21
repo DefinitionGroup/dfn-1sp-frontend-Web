@@ -142,7 +142,7 @@ export default defineType({
             group: 'content',
             of: [
                 { type: 'headlineChallenge', title: 'Headline Component' },
-                { type: 'showtimeGallery' },
+                // { type: 'showtimeGallery' },
                 { type: 'heroShowTime' },
                 { type: 'sublineComponent' },
                 { type: 'oneSPHeader' },
@@ -165,7 +165,8 @@ export default defineType({
                 { type: 'carousel' },
                 { type: 'smartCarousel' },
                 { type: 'smartPeople' },
-                { type: 'smartUnitsGallery' }
+                { type: 'smartUnitsGallery' },
+                { type: 'smartUnitsGlobe' }
             ],
             hidden: ({ parent }: any) => parent?.channel !== '1spWeb',
         }),

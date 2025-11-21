@@ -58,6 +58,21 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
             channel
           }
         },
+        _type == 'galleryScrollHighlightStep' => {
+          ...,
+          scrollHighlightContent{
+            ...,
+            contentType,
+            textItems,
+            serviceItems[]->{
+              _id,
+              _type,
+              name,
+              taglabel,
+              introText
+            }
+          }
+        },
         _type == 'galleryListStep' => {
           ...,
           additionalContent[]{
@@ -104,6 +119,21 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
         profileUrl,
         tagline,
         channel
+      }
+    },
+    _type == 'galleryScrollHighlightStep' => {
+      ...,
+      scrollHighlightContent{
+        ...,
+        contentType,
+        textItems,
+        serviceItems[]->{
+          _id,
+          _type,
+          name,
+          taglabel,
+          introText
+        }
       }
     },
     _type == 'galleryListStep' => {
@@ -187,6 +217,21 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
             channel
           }
         },
+        _type == 'galleryScrollHighlightStep' => {
+          ...,
+          scrollHighlightContent{
+            ...,
+            contentType,
+            textItems,
+            serviceItems[]->{
+              _id,
+              _type,
+              name,
+              taglabel,
+              introText
+            }
+          }
+        },
         _type == 'galleryListStep' => {
           ...,
           additionalContent[]{
@@ -233,6 +278,21 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
         profileUrl,
         tagline,
         channel
+      }
+    },
+    _type == 'galleryScrollHighlightStep' => {
+      ...,
+      scrollHighlightContent{
+        ...,
+        contentType,
+        textItems,
+        serviceItems[]->{
+          _id,
+          _type,
+          name,
+          taglabel,
+          introText
+        }
       }
     },
     _type == 'galleryListStep' => {
@@ -386,6 +446,7 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
     services[]->{_id, name},
     ctaHeading,
     ctaParagraph,
+    showButton,
     ctaButton{
       ...,
       link{
@@ -487,6 +548,27 @@ export const SMART_UNITS_QUERY = defineQuery(`
   tagline,
   cta,
   _createdAt
+}
+`);
+
+export const SMART_UNITS_GLOBE_QUERY = defineQuery(`
+*[
+  _type == "unit" && 
+  isActive == true &&
+  language == $language &&
+  (showOnGlobe == true || !defined(showOnGlobe)) &&
+  defined(coordinateLat) &&
+  defined(coordinateLon)
+] | order(_createdAt desc) {
+  _id,
+  _type,
+  name,
+  slug,
+  coordinateLat,
+  coordinateLon,
+  tagline,
+  logo,
+  showOnGlobe
 }
 `);
 

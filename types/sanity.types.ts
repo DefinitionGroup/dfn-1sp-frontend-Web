@@ -448,6 +448,7 @@ export interface ChallengeAndSolutionComponent {
     services?: { _id: string; name: string }[];
     ctaHeading?: string;
     ctaParagraph?: string;
+    showButton?: boolean;
     solution?: string;
     navPointName?: string;
     showGridBackground?: boolean;

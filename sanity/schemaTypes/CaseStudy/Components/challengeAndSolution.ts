@@ -129,10 +129,18 @@ export default defineType({
             group: "cta",
         }),
         defineField({
+            name: "showButton",
+            title: "Show Button",
+            type: "boolean",
+            initialValue: false,
+            group: "cta",
+        }),
+        defineField({
             name: "ctaButton",
             title: "CTA Button",
             type: "cta",
             description: "CTA button",
+            hidden: ({ parent }) => !parent?.showButton,
             group: "cta",
         }),
 
