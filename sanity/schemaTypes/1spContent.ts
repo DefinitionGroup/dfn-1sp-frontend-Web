@@ -16,7 +16,7 @@ import slideUpText from "./1SP/Items/slideUpText";
 import cardItem from "./1SP/Items/cardItem";
 import member from "./1SP/Items/member";
 
-import carousel from "./1SP/Objects/carousel";
+import carousel from "./1SP/Components/carousel";
 import smartCarousel from "./1SP/Components/smartCarousel";
 import smartPeople from "./1SP/Components/smartPeople";
 import smartUnitsGallery from "./1SP/Components/smartUnitsGallery";

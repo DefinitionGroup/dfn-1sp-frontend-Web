@@ -446,6 +446,7 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
     services[]->{_id, name},
     ctaHeading,
     ctaParagraph,
+    showButton,
     ctaButton{
       ...,
       link{
