@@ -134,6 +134,14 @@ export default defineType({
             validation: (Rule) => Rule.min(-180).max(180),
             group: 'location',
         },
+        {
+            name: 'showOnGlobe',
+            title: 'Show on Globe',
+            type: 'boolean',
+            description: 'Display this unit on the interactive globe',
+            initialValue: false,
+            group: 'location',
+        },
 
         // Contact group
         {

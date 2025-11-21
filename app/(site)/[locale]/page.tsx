@@ -29,14 +29,10 @@ export default async function Home({
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
       <div className="  min-h-screen">
         {page?.content1sp ? (
-          <PageBuilder content={page.content1sp} />
+          <PageBuilder content={page.content1sp} language={language} />
         ) : (
           <NotFound />
         )}
-
-        <div className="mx-auto my-10">
-        <GlobalDataComponent />
-        </div>
       </div>
     </SiteWrapper>
   );
