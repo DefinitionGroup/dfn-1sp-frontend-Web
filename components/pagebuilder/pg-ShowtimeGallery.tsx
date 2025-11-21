@@ -6,7 +6,7 @@ import type {
 } from "@/types/sanity.types";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
 
-import HeroStep from "./ShowtimeGallerySteps/pg-HeroStep";
+import HeroStep from "./pg-GalleryHeroStep";
 import CardsStep from "./ShowtimeGallerySteps/pg-CardsStep";
 import ListStep from "./ShowtimeGallerySteps/pg-ListStep";
 import HighlightStep from "./ShowtimeGallerySteps/pg-HighlightStep";

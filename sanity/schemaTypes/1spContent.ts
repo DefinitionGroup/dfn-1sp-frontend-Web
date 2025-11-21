@@ -16,11 +16,11 @@ import slideUpText from "./1SP/Items/slideUpText";
 import cardItem from "./1SP/Items/cardItem";
 import member from "./1SP/Items/member";
 
-import carousel from "./1SP/Objects/carousel";
-import smartCarousel from "./1SP/Objects/smartCarousel";
-import smartPeople from "./1SP/Objects/smartPeople";
-import smartUnitsGallery from "./1SP/Objects/smartUnitsGallery";
-import smartUnitsGlobe from "./1SP/Objects/smartUnitsGlobe";
+import carousel from "./1SP/Components/carousel";
+import smartCarousel from "./1SP/Components/smartCarousel";
+import smartPeople from "./1SP/Components/smartPeople";
+import smartUnitsGallery from "./1SP/Components/smartUnitsGallery";
+import smartUnitsGlobe from "./1SP/Components/smartUnitsGlobe";
 import heroAdditionalContent from "./1SP/Objects/heroAdditionalContent";
 import slideUpContent from "./1SP/Objects/slideUpContent";
 import galleryStep from "./1SP/Objects/galleryStep";
@@ -33,14 +33,14 @@ import staggeredHeader from "./1SP/Objects/staggeredHeader";
 import cardsStepContent from "./1SP/Objects/cardsStepContent";
 import peopleStepHeader from "./1SP/Objects/peopleStepHeader";
 
-import galleryCardsStep from "./1SP/Objects/GalleryScroll/galleryCardsStep";
-import galleryHeroStep from "./1SP/Objects/GalleryScroll/galleryHeroStep";
-import galleryListStep from "./1SP/Objects/GalleryScroll/galleryListStep";
-import galleryPeopleStep from "./1SP/Objects/GalleryScroll/galleryPeopleStep";
-import galleryScrollHighlightStep from "./1SP/Objects/GalleryScroll/galleryScrollHighlightStep";
+import galleryCardsStep from "./1SP/Components/galleryCardsStep";
+import galleryHeroStep from "./1SP/Components/galleryHeroStep";
+import galleryListStep from "./1SP/Components/galleryListStep";
+import galleryPeopleStep from "./1SP/Components/galleryPeopleStep";
+import galleryScrollHighlightStep from "./1SP/Components/galleryScrollHighlightStep";
 import grid from "./1SP/Items/grid";
-import GalleryRevealStep from "./1SP/Objects/GalleryScroll/GalleryRevealStep";
-import GalleryOverviewStep from "./1SP/Objects/GalleryScroll/GalleryOverviewStep";
+import GalleryRevealStep from "./1SP/Components/GalleryRevealStep";
+import GalleryOverviewStep from "./1SP/Components/GalleryOverviewStep";
 import CTASplitHeader from "./1SP/Objects/CTASplitHeader";
 
 const oneSPComponents = [
