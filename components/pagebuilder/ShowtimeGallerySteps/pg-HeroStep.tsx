@@ -7,9 +7,6 @@ import { Typewriter } from "motion-plus/react";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import { useRef } from "react";
 import { assetUrl } from "@/utils/utils";
-import InteractiveCarousel from "../Fragments/pg-InteractiveCarousel";
-import SmartCarousel from "../../data/data-InteractiveCarousel";
-import SmartPeople from "../../data/data-SmartPeople";
 import { useInView } from "motion/react";
 import { useParams } from "next/navigation";
 
@@ -63,7 +60,7 @@ export default function HeroStep({ step }: { step: GalleryHeroStep }) {
 
       <div className="grid grid-cols-6 md:grid-cols-12 z-1 mx-auto container  relative font-aspekta">
         {/* Background grid (optional visual helper) */}
-      <GridBackground delay={0.2} staggerDelay={0.06} />
+        <GridBackground delay={0.2} staggerDelay={0.06} />
 
         <div className="z-1 grid  col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           {step.badge && (
@@ -71,7 +68,7 @@ export default function HeroStep({ step }: { step: GalleryHeroStep }) {
               text={step.badge.text ?? ""}
               subtitle={step.badge.subtitle ?? ""}
               numberEl={step.badge.numberEl ?? ""}
-                className="col-span-6 md:col-span-2 col-start-2 md:col-start-1"
+              className="col-span-6 md:col-span-2 col-start-2 md:col-start-1"
             />
           )}
 
@@ -110,54 +107,6 @@ export default function HeroStep({ step }: { step: GalleryHeroStep }) {
             )}
           </div>
         </div>
-
-        {/* Legacy carousel field - render if it has items */}
-        {carouselItems.length > 0 && (
-          <div className="col-span-12 col-start-1 mt-8 ">
-            <InteractiveCarousel items={carouselItems} />
-          </div>
-        )}
-
-        {/* Additional content - render all items in the array */}
-        {additionalContent.length > 0 &&
-          additionalContent.map((content: any, idx: number) => {
-            const key = content._key || `additional-${idx}`;
-
-            if (content.contentType === "carousel" && content.carousel?.items) {
-              return (
-                <div key={key} className="col-span-12 col-start-1 mt-8">
-                  <InteractiveCarousel
-                    items={content.carousel.items as CarouselItem[]}
-                  />
-                </div>
-              );
-            } else if (
-              content.contentType === "smartCarousel" &&
-              content.smartCarousel?.maxItems
-            ) {
-              return (
-                <div key={key} className="col-span-12 col-start-1 mt-8">
-                  <SmartCarousel
-                    maxItems={content.smartCarousel.maxItems}
-                    language={language}
-                  />
-                </div>
-              );
-            } else if (
-              content.contentType === "smartPeople" &&
-              content.smartPeople?.maxItems
-            ) {
-              return (
-                <div key={key} className="col-span-12 col-start-1 mt-8">
-                  <SmartPeople
-                    maxItems={content.smartPeople.maxItems}
-                    language={language}
-                  />
-                </div>
-              );
-            }
-            return null;
-          })}
       </div>
     </section>
   );
