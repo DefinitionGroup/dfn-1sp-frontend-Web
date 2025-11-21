@@ -28,7 +28,7 @@ export default async function ServicesPage({
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
       <div className="min-h-screen">
         {page?.content1sp ? (
-          <PageBuilder content={page.content1sp} />
+          <PageBuilder content={page.content1sp} language={language} />
         ) : (
           <NotFound />
         )}

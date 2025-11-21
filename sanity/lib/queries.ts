@@ -550,6 +550,27 @@ export const SMART_UNITS_QUERY = defineQuery(`
 }
 `);
 
+export const SMART_UNITS_GLOBE_QUERY = defineQuery(`
+*[
+  _type == "unit" && 
+  isActive == true &&
+  language == $language &&
+  (showOnGlobe == true || !defined(showOnGlobe)) &&
+  defined(coordinateLat) &&
+  defined(coordinateLon)
+] | order(_createdAt desc) {
+  _id,
+  _type,
+  name,
+  slug,
+  coordinateLat,
+  coordinateLon,
+  tagline,
+  logo,
+  showOnGlobe
+}
+`);
+
 // Helper function to generate interactive carousel query with dynamic field
 export const getInteractiveCarouselQuery = (carouselField: string) => `
 *[
