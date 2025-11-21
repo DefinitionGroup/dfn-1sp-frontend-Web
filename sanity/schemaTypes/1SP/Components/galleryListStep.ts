@@ -76,6 +76,7 @@ export default defineType({
                 defineArrayMember({ type: "ctaMiniComponent" }),
                 defineArrayMember({ type: "ctaSplitHeader" })
             ],
+            validation: (Rule) => Rule.max(1).error('You can add up to 1 additional content item only.')
         }),
     ],
     preview: {
