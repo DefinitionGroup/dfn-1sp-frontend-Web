@@ -29,6 +29,7 @@ interface ChallengeAndSolutionProps {
   ctaHeading?: string;
   ctaParagraph?: string;
   ctaButton?: CTA;
+  showButton?: boolean;
   solution?: string;
   showGridBackground?: boolean;
   backgroundColor?: string;
@@ -48,6 +49,7 @@ export default function ChallengeAndSolution({
   ctaHeading,
   ctaParagraph,
   ctaButton,
+  showButton = true,
   solution,
   showGridBackground = true,
   backgroundColor = "bg-neutral-50",
@@ -125,6 +127,7 @@ export default function ChallengeAndSolution({
                   url={
                     ctaButton?.link ? resolveLink(ctaButton.link) : undefined
                   }
+                  showButton={showButton}
                   align="left"
                 />
               </div>

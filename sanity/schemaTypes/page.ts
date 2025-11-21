@@ -142,7 +142,7 @@ export default defineType({
             group: 'content',
             of: [
                 { type: 'headlineChallenge', title: 'Headline Component' },
-                { type: 'showtimeGallery' },
+                // { type: 'showtimeGallery' },
                 { type: 'heroShowTime' },
                 { type: 'sublineComponent' },
                 { type: 'oneSPHeader' },

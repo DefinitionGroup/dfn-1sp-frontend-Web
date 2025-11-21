@@ -51,6 +51,13 @@ export default defineType({
         //     description: 'Add carousels and other content blocks'
         // }),
         defineField({
+            name: 'backgroundVideo',
+            title: 'Background Video',
+            type: 'cloudinary.asset',
+            group: 'media',
+            description: 'Optional background video'
+        }),
+        defineField({
             name: 'grid',
             title: 'Grid Element',
             type: 'gridElement',
