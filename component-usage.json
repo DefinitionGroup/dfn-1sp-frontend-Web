@@ -1,0 +1,663 @@
+[
+  {
+    "file": "components/overlayNav.tsx",
+    "uses": []
+  },
+  {
+    "file": "components/TextLayout.tsx",
+    "uses": []
+  },
+  {
+    "file": "components/SiteWrapper.tsx",
+    "uses": [
+      "app/(site)/[locale]/[slug]/page.tsx",
+      "app/(site)/[locale]/cases/[slug]/page.tsx",
+      "app/(site)/[locale]/cases/page.tsx",
+      "app/(site)/[locale]/page.tsx",
+      "app/(site)/[locale]/services/page.tsx"
+    ]
+  },
+  {
+    "file": "components/PageBuilder.tsx",
+    "uses": [
+      "app/(site)/[locale]/[slug]/page.tsx",
+      "app/(site)/[locale]/cases/page.tsx",
+      "app/(site)/[locale]/page.tsx",
+      "app/(site)/[locale]/services/page.tsx"
+    ]
+  },
+  {
+    "file": "components/CasePageBuilder.tsx",
+    "uses": [
+      "app/(site)/[locale]/cases/[slug]/CaseStudyPageClient.tsx"
+    ]
+  },
+  {
+    "file": "components/TransitionLoader.tsx",
+    "uses": [
+      "app/(site)/[locale]/layout.tsx"
+    ]
+  },
+  {
+    "file": "components/ErrorBoundary.tsx",
+    "uses": [
+      "components/CasePageBuilder.tsx",
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/MapVertical.tsx",
+    "uses": [
+      "app/(site)/[locale]/cases/[slug]/CaseStudyPageClient.tsx",
+      "components/ui/PageWithMapVertical.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/not-found.tsx",
+    "uses": [
+      "app/(site)/[locale]/[slug]/page.tsx",
+      "app/(site)/[locale]/cases/page.tsx",
+      "app/(site)/[locale]/page.tsx",
+      "app/(site)/[locale]/services/page.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/AnimateNumberinView.tsx",
+    "uses": [
+      "components/pagebuilder/cases/pg-ResultsMetrics.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/GridBackground.tsx",
+    "uses": [
+      "components/pagebuilder/ShowtimeGallerySteps/pg-HeroStep.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-ListStep.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-OverviewStep.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-PeopleStep.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-RevealStep.tsx",
+      "components/pagebuilder/cases/pg-ChallengeAndSolution.tsx",
+      "components/pagebuilder/cases/pg-HeadlineChallenge.tsx",
+      "components/pagebuilder/pg-CasesGalleryFiltered.tsx",
+      "components/pagebuilder/pg-CasesGalleryFilteredWithPagination.tsx",
+      "components/pagebuilder/pg-CasesIntro.tsx",
+      "components/pagebuilder/pg-ContentSection.tsx",
+      "components/pagebuilder/pg-IntertitleCTA.tsx",
+      "components/pagebuilder/pg-SublineComponent.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/Button.tsx",
+    "uses": [
+      "components/ui/not-found.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/TextHeadlineCombo.tsx",
+    "uses": [
+      "components/pagebuilder/ShowtimeGallerySteps/pg-OverviewStep.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/ScrollHighlight.tsx",
+    "uses": [
+      "components/pagebuilder/ShowtimeGallerySteps/pg-HighlightStep.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/percentageDiagramVertical.tsx",
+    "uses": [
+      "components/pagebuilder/cases/pg-ResultsMetrics.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/ListItemComponent.tsx",
+    "uses": [
+      "components/pagebuilder/ShowtimeGallerySteps/pg-ListStep.tsx",
+      "components/pagebuilder/cases/pg-ApproachSection.tsx",
+      "components/pagebuilder/cases/pg-ChallengeAndSolution.tsx",
+      "components/pagebuilder/pg-ServicesHeroWithBadge.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/arrowBig.tsx",
+    "uses": [
+      "components/pagebuilder/ShowtimeGallerySteps/pg-HighlightStep.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/percentageDiagramHorizontal.tsx",
+    "uses": [
+      "components/pagebuilder/cases/pg-ResultsMetrics.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/percentagePosNegDiagram.tsx",
+    "uses": [
+      "components/pagebuilder/cases/pg-ResultsMetrics.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/Button2.tsx",
+    "uses": [
+      "components/PeopleShowcaseHero.tsx",
+      "components/data/Fragments/data-CtaMiniComponent.tsx",
+      "components/data/Fragments/data-IntertitleCTA.tsx",
+      "components/data/data-CaseGallery.tsx",
+      "components/data/data-InteractiveCarousel.tsx",
+      "components/menu/FrontNavOverlay.tsx",
+      "components/pagebuilder/Fragments/pg-CtaMiniComponent.tsx",
+      "components/pagebuilder/Fragments/pg-InteractiveCarousel.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-ListStep.tsx",
+      "components/pagebuilder/pg-HeroShowtime.tsx",
+      "components/pagebuilder/pg-IntertitleCTA.tsx",
+      "components/pagebuilder/pg-SublineComponent.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/StaggeredSlideUp.tsx",
+    "uses": [
+      "app/(site)/[locale]/cases/[slug]/CaseStudyPageClient.tsx",
+      "components/PeopleShowcaseHero.tsx",
+      "components/data/Fragments/data-CtaMiniComponent.tsx",
+      "components/data/Fragments/data-IntertitleCTA.tsx",
+      "components/data/data-CaseGallery.tsx",
+      "components/data/data-CaseGalleryMenu.tsx",
+      "components/data/data-ServiceGallery.tsx",
+      "components/data/data-SmartPeople.tsx",
+      "components/menu/FrontNavOverlay.tsx",
+      "components/pagebuilder/Fragments/pg-CtaMiniComponent.tsx",
+      "components/pagebuilder/Fragments/pg-ExpandableCards.tsx",
+      "components/pagebuilder/Fragments/pg-PeopleShowcaseHero.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-CardsStep.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-HeroStep.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-ListStep.tsx",
+      "components/pagebuilder/cases/pg-ApproachSection.tsx",
+      "components/pagebuilder/cases/pg-ChallengeAndSolution.tsx",
+      "components/pagebuilder/cases/pg-HeadlineChallenge.tsx",
+      "components/pagebuilder/cases/pg-ResultsMetrics.tsx",
+      "components/pagebuilder/pg-CasesIntro.tsx",
+      "components/pagebuilder/pg-ContentSection.tsx",
+      "components/pagebuilder/pg-Header.tsx",
+      "components/pagebuilder/pg-HeroShowtime.tsx",
+      "components/pagebuilder/pg-IntertitleCTA.tsx",
+      "components/pagebuilder/pg-ServicesHeroWithBadge.tsx",
+      "components/ui/ListContainerComponent.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/globe.tsx",
+    "uses": [
+      "components/globalDataComponent.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/Badgemodule.tsx",
+    "uses": [
+      "components/pagebuilder/ShowtimeGallerySteps/pg-CardsStep.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-HeroStep.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-HighlightStep.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-ListStep.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-PeopleStep.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-RevealStep.tsx",
+      "components/pagebuilder/cases/pg-ApproachSection.tsx",
+      "components/pagebuilder/cases/pg-ChallengeAndSolution.tsx",
+      "components/pagebuilder/cases/pg-ResultsMetrics.tsx",
+      "components/pagebuilder/pg-ServicesHeroWithBadge.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/StaggeredFadeIn.tsx",
+    "uses": [
+      "components/pagebuilder/Fragments/pg-PeopleShowcaseHero.tsx",
+      "components/pagebuilder/pg-ContentSection.tsx",
+      "components/ui/PersonCard.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/AnimatedPathIconView.tsx",
+    "uses": []
+  },
+  {
+    "file": "components/ui/TypewriterRotator.tsx",
+    "uses": [
+      "components/pagebuilder/pg-Header.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/TextReveal.tsx",
+    "uses": [
+      "components/pagebuilder/ShowtimeGallerySteps/pg-RevealStep.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/PersonCard.tsx",
+    "uses": [
+      "components/data/data-SmartPeople.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/AnimatedPathIcon.tsx",
+    "uses": []
+  },
+  {
+    "file": "components/ui/ListContainerComponent.tsx",
+    "uses": [
+      "components/pagebuilder/ShowtimeGallerySteps/pg-ListStep.tsx",
+      "components/pagebuilder/cases/pg-ApproachSection.tsx",
+      "components/pagebuilder/cases/pg-ChallengeAndSolution.tsx",
+      "components/pagebuilder/pg-ServicesHeroWithBadge.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/HamburgerGradientMenu.tsx",
+    "uses": [
+      "app/(site)/[locale]/cases/[slug]/CaseStudyPageClient.tsx",
+      "components/pagebuilder/pg-CasesIntro.tsx"
+    ]
+  },
+  {
+    "file": "components/ui/closeIcon.tsx",
+    "uses": []
+  },
+  {
+    "file": "components/ui/PageWithMapVertical.tsx",
+    "uses": [
+      "components/SiteWrapper.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/pg-GalleryListStep.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/pg-GalleryOverviewStep.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/pg-ServicesGalleryFiltered.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/pg-GalleryHeroStep.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/pg-Header.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/pg-HeroShowtime.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/pg-GalleryRevealStep.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/pg-SublineComponent.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/pg-CasesGalleryFilteredWithPagination.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/pg-InteractiveCarousel.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/pg-GalleryCardsStep.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/pg-ShowtimeGallery.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/pg-CasesGalleryFiltered.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/cases/pg-ApproachSection.tsx",
+    "uses": [
+      "components/CasePageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/cases/pg-HeadlineChallenge.tsx",
+    "uses": [
+      "components/CasePageBuilder.tsx",
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/cases/pg-ResultsMetrics.tsx",
+    "uses": [
+      "components/CasePageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/cases/pg-ChallengeAndSolution.tsx",
+    "uses": [
+      "components/CasePageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/pg-GalleryPeopleStep.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/pg-SmartCarousel.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/PeopleShowcaseHero.tsx",
+    "uses": []
+  },
+  {
+    "file": "components/pagebuilder/pg-ContentSection.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/pg-CasesIntro.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/globalDataComponent.tsx",
+    "uses": [
+      "app/(site)/[locale]/page.tsx"
+    ]
+  },
+  {
+    "file": "components/NavbarVariantProvider.tsx",
+    "uses": []
+  },
+  {
+    "file": "components/LogoCarousel.tsx",
+    "uses": []
+  },
+  {
+    "file": "components/StegaErrorHandler.tsx",
+    "uses": [
+      "app/(site)/[locale]/layout.tsx"
+    ]
+  },
+  {
+    "file": "components/dev/DebugBadge.tsx",
+    "uses": [
+      "components/dev/withDebugBadge.tsx"
+    ]
+  },
+  {
+    "file": "components/dev/withDebugBadge.tsx",
+    "uses": [
+      "components/pagebuilder/Fragments/pg-CtaMiniComponent.tsx",
+      "components/pagebuilder/Fragments/pg-CtaSplitHeader.tsx",
+      "components/pagebuilder/Fragments/pg-ExpandableCards.tsx",
+      "components/pagebuilder/Fragments/pg-HeaderImageVideoComp.tsx",
+      "components/pagebuilder/Fragments/pg-HeaderImageVideoComp2.tsx",
+      "components/pagebuilder/Fragments/pg-InteractiveCarousel.tsx",
+      "components/pagebuilder/Fragments/pg-PeopleShowcaseHero.tsx",
+      "components/pagebuilder/pg-CasesGalleryFiltered.tsx",
+      "components/pagebuilder/pg-CasesGalleryFilteredWithPagination.tsx",
+      "components/pagebuilder/pg-CasesIntro.tsx",
+      "components/pagebuilder/pg-ContentSection.tsx",
+      "components/pagebuilder/pg-GalleryCardsStep.tsx",
+      "components/pagebuilder/pg-GalleryHeroStep.tsx",
+      "components/pagebuilder/pg-GalleryHighlightStep.tsx",
+      "components/pagebuilder/pg-GalleryListStep.tsx",
+      "components/pagebuilder/pg-GalleryOverviewStep.tsx",
+      "components/pagebuilder/pg-GalleryPeopleStep.tsx",
+      "components/pagebuilder/pg-GalleryRevealStep.tsx",
+      "components/pagebuilder/pg-Header.tsx",
+      "components/pagebuilder/pg-HeroShowtime.tsx",
+      "components/pagebuilder/pg-InteractiveCarousel.tsx",
+      "components/pagebuilder/pg-ServicesGalleryFiltered.tsx",
+      "components/pagebuilder/pg-ServicesHeroWithBadge.tsx",
+      "components/pagebuilder/pg-ShowtimeGallery.tsx",
+      "components/pagebuilder/pg-SmartCarousel.tsx",
+      "components/pagebuilder/pg-SublineComponent.tsx"
+    ]
+  },
+  {
+    "file": "components/DisableDraftMode.tsx",
+    "uses": [
+      "app/(site)/[locale]/layout.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/ShowtimeGallerySteps/pg-PeopleStep.tsx",
+    "uses": [
+      "components/pagebuilder/pg-GalleryPeopleStep.tsx",
+      "components/pagebuilder/pg-ShowtimeGallery.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/ShowtimeGallerySteps/pg-CardsStep.tsx",
+    "uses": [
+      "components/pagebuilder/pg-GalleryCardsStep.tsx",
+      "components/pagebuilder/pg-ShowtimeGallery.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/ShowtimeGallerySteps/pg-HighlightStep.tsx",
+    "uses": [
+      "components/pagebuilder/pg-GalleryHighlightStep.tsx",
+      "components/pagebuilder/pg-ShowtimeGallery.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/ShowtimeGallerySteps/pg-RevealStep.tsx",
+    "uses": [
+      "components/pagebuilder/pg-GalleryRevealStep.tsx",
+      "components/pagebuilder/pg-ShowtimeGallery.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/ShowtimeGallerySteps/pg-HeroStep.tsx",
+    "uses": [
+      "components/pagebuilder/pg-GalleryHeroStep.tsx",
+      "components/pagebuilder/pg-ShowtimeGallery.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/ShowtimeGallerySteps/pg-OverviewStep.tsx",
+    "uses": [
+      "components/pagebuilder/pg-GalleryOverviewStep.tsx",
+      "components/pagebuilder/pg-ShowtimeGallery.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/ShowtimeGallerySteps/pg-ListStep.tsx",
+    "uses": [
+      "components/pagebuilder/pg-GalleryListStep.tsx",
+      "components/pagebuilder/pg-ShowtimeGallery.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/pg-GalleryHighlightStep.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/data/data-SmartPeople.tsx",
+    "uses": [
+      "components/PageBuilder.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-HeroStep.tsx"
+    ]
+  },
+  {
+    "file": "components/data/data-UnitsExpandableCards.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/data/data-CaseGalleryMenu.tsx",
+    "uses": [
+      "components/menu/FrontNavOverlay.tsx"
+    ]
+  },
+  {
+    "file": "components/data/data-CaseGallery.tsx",
+    "uses": [
+      "components/pagebuilder/pg-CasesGalleryFiltered.tsx",
+      "components/pagebuilder/pg-CasesGalleryFilteredWithPagination.tsx"
+    ]
+  },
+  {
+    "file": "components/data/data-ServiceGallery.tsx",
+    "uses": [
+      "components/pagebuilder/pg-ServicesGalleryFiltered.tsx"
+    ]
+  },
+  {
+    "file": "components/data/data-InteractiveCarousel.tsx",
+    "uses": [
+      "components/pagebuilder/ShowtimeGallerySteps/pg-HeroStep.tsx",
+      "components/pagebuilder/pg-SmartCarousel.tsx"
+    ]
+  },
+  {
+    "file": "components/data/Fragments/data-HeaderImageVideoComp2.tsx",
+    "uses": [
+      "components/pagebuilder/pg-ServicesHeroWithBadge.tsx"
+    ]
+  },
+  {
+    "file": "components/data/Fragments/data-HeaderImageVideoComp.tsx",
+    "uses": [
+      "app/(site)/[locale]/cases/[slug]/CaseStudyPageClient.tsx"
+    ]
+  },
+  {
+    "file": "components/data/Fragments/data-CtaMiniComponent.tsx",
+    "uses": [
+      "components/pagebuilder/pg-ServicesHeroWithBadge.tsx"
+    ]
+  },
+  {
+    "file": "components/data/Fragments/data-IntertitleCTA.tsx",
+    "uses": [
+      "components/data/data-CaseGalleryMenu.tsx"
+    ]
+  },
+  {
+    "file": "components/dataPointerRadial.tsx",
+    "uses": []
+  },
+  {
+    "file": "components/pagebuilder/pg-IntertitleCTA.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/pg-ServicesHeroWithBadge.tsx",
+    "uses": [
+      "components/PageBuilder.tsx"
+    ]
+  },
+  {
+    "file": "components/menu/FrontNavOverlay.tsx",
+    "uses": [
+      "components/SiteWrapper.tsx",
+      "components/ui/HamburgerGradientMenu.tsx"
+    ]
+  },
+  {
+    "file": "components/menu/FooterNew.tsx",
+    "uses": [
+      "components/SiteWrapper.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/Fragments/pg-ExpandableCards.tsx",
+    "uses": [
+      "components/data/data-UnitsExpandableCards.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-CardsStep.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-ListStep.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/Fragments/pg-HeaderImageVideoComp2.tsx",
+    "uses": [
+      "components/pagebuilder/ShowtimeGallerySteps/pg-CardsStep.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-HeroStep.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-HighlightStep.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-ListStep.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-RevealStep.tsx",
+      "components/pagebuilder/cases/pg-ApproachSection.tsx",
+      "components/pagebuilder/cases/pg-ResultsMetrics.tsx",
+      "components/pagebuilder/pg-Header.tsx",
+      "components/pagebuilder/pg-HeroShowtime.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/Fragments/pg-CtaSplitHeader.tsx",
+    "uses": [
+      "components/pagebuilder/ShowtimeGallerySteps/pg-ListStep.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/Fragments/pg-HeaderImageVideoComp.tsx",
+    "uses": []
+  },
+  {
+    "file": "components/pagebuilder/Fragments/pg-InteractiveCarousel.tsx",
+    "uses": [
+      "components/pagebuilder/ShowtimeGallerySteps/pg-HeroStep.tsx",
+      "components/pagebuilder/pg-InteractiveCarousel.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/Fragments/pg-PeopleShowcaseHero.tsx",
+    "uses": [
+      "components/pagebuilder/ShowtimeGallerySteps/pg-PeopleStep.tsx"
+    ]
+  },
+  {
+    "file": "components/pagebuilder/Fragments/pg-CtaMiniComponent.tsx",
+    "uses": [
+      "components/pagebuilder/Fragments/pg-CtaSplitHeader.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-HighlightStep.tsx",
+      "components/pagebuilder/ShowtimeGallerySteps/pg-ListStep.tsx",
+      "components/pagebuilder/cases/pg-ChallengeAndSolution.tsx"
+    ]
+  }
+]
