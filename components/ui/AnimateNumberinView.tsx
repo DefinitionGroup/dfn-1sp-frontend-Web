@@ -58,18 +58,18 @@ const StyleSheet = () => {
         }
 
         .number {
-          font-size: 128px;
+          font-size: 96px;
           letter-spacing: -0.014rem; /* match Plaintext */
           font-weight: 300;
           font-variation-settings: "opsz" 30, "wght" 530;
         }
 
         .number-section-post {
-          font-size: 12px; /* match Plaintext */
+          font-size: 16px; /* match Plaintext */
           opacity: 1; /* match Plaintext */
           color: var(--color-lime-500); /* match Plaintext */
           position: relative;
-          bottom: 5px; /* match Plaintext */
+          bottom:18px; /* match Plaintext */
           align-self: flex-end;
           margin-left: 5px;
           letter-spacing: -0.02em;
