@@ -85,7 +85,7 @@ export default function ApproachSection({
         )}
 
         <div
-          className={`z-1 grid col-span-12 py-${paddingY} gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12`}
+          className={`z-1 grid col-span-12 py-${paddingY} gap-8 col-start-1  container mx-auto row-start-1 grid-cols-12`}
         >
           <Badgemodule
             className="col-span-2 sticky top-0"

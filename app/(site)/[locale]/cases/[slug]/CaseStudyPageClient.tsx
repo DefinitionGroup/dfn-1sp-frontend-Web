@@ -104,7 +104,7 @@ export default function CaseStudyPageClient({
         <div className="relative z-10 container mt-[30vh] mx-auto p-8 md:p-0">
           <StaggeredSlideUp
             delay={1}
-            className="max-w-full flex flex-col md:max-w-2/3   pl-4 gap-4"
+            className="max-w-full flex flex-col pl-4 gap-4"
           >  {caseStudy.subtitle && (
               <h2 className="text-neutral-50  text-xs font-bold bg-lime-500 rounded-full inline-block p-1 px-4">
                 {caseStudy.subtitle}

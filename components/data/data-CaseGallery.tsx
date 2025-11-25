@@ -102,7 +102,7 @@ export default function CaseGalleryComponent({
               initial={{ opacity: 1 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 1, transition: { duration: 0.05 } }}
-              className="flex absolute top-2 right-2 lg:hidden items-center overflow-hidden justify-around rounded-full h-6 w-6 z-50"
+              className="flex absolute top-2 right-2 lg:hidden items-center overflow-hidden justify-around rounded-full h-6 w-6 z-100"
               onClick={() => setActive(null)}
               aria-label="Close"
             >
@@ -148,20 +148,15 @@ export default function CaseGalleryComponent({
                       layoutId={`logo-${active.title}-${id}`}
                       src={active.client.logoUrl}
                       alt={active.title}
-                      className={`w-24 h-20 object-contain ${variant === "light" ? "invert" : ""}`}
+                      className={`w-24 h-20 object-contain invert ${variant === "light" ? "invert" : ""}`}
                     />
                   )}
 
                   <div>
-                    <motion.p
-                      layoutId={`description-${active.description}-${id}`}
-                      className="text-neutral-100 text-5xl dark:text-neutral-400 mb-8"
-                    >
-                      {active.description}
-                    </motion.p>
+              
                     <motion.h3
                       layoutId={`title-${active.title}-${id}`}
-                      className="text-white text-xl max-w-2/3 dark:text-neutral-200"
+                      className="text-white text-5xl max-w-2/3 dark:text-neutral-200"
                     >
                       {active.title}
                     </motion.h3>
@@ -208,7 +203,7 @@ export default function CaseGalleryComponent({
               layoutId={`card-${item.title}-${id}`}
               key={`card-${item.title}-${id}`}
               onClick={() => setActive(item)}
-              className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[400px] group/card overflow-hidden h-[300px] cursor-pointer rounded-sm"
+              className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[530px]  group/card overflow-hidden h-[530px] cursor-pointer rounded-sm"
             >
               <motion.div
                 layoutId={`image-${item.title}-${id}`}
@@ -220,7 +215,7 @@ export default function CaseGalleryComponent({
                     autoPlay
                     muted
                     loop
-                    className="w-full h-full object-cover min-h-[400px] group-hover/card:opacity-100 object-top opacity-80 transition-all"
+                    className="w-full h-full object-cover h-[300px] group-hover/card:opacity-100 object-top opacity-80 transition-all"
                   />
                 ) : (
                   <Image
@@ -228,7 +223,7 @@ export default function CaseGalleryComponent({
                     height={1000}
                     src={item.mainImageUrl || "/placeholder.png"}
                     alt={item.title}
-                    className="w-full h-full object-cover min-h-[400px] group-hover/card:opacity-100 object-top opacity-80 transition-all"
+                    className="w-full  object-cover h-[380px] group-hover/card:opacity-100 object-top opacity-80 transition-all"
                   />
                 )}
               </motion.div>
@@ -236,7 +231,7 @@ export default function CaseGalleryComponent({
               <div
                 className={`col-start-1 col-span-1 flex ${
                   item.client?.logoUrl ? "justify-between" : "justify-end"
-                } opacity-100 row-start-2 p-2 mb-16 z-1`}
+                } opacity-100 row-start-2 p-2 mb-16 z-1   h-[130px]`}
               >
                 {item.client?.logoUrl ? (
                   <motion.img
@@ -251,7 +246,7 @@ export default function CaseGalleryComponent({
                 <div className="flex flex-col items-end">
                   <motion.h3
                     layoutId={`title-${item.title}-${id}`}
-                    className={`font-medium text-lg leading-snug tracking-tight ${
+                    className={`font-medium text-lg leading-snug max-w-[250px] tracking-tight ${
                       variant !== "light" ? "" : "invert"
                     } text-neutral-600 dark:text-neutral-200 text-right`}
                   >
@@ -290,7 +285,7 @@ export const CloseIcon = () => (
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
-    className="h-6 w-6 text-white"
+    className="h-6 w-6 text-white z-100"
   >
     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
     <path d="M18 6l-12 12" />

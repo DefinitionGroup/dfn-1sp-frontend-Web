@@ -100,11 +100,12 @@ export default defineType({
     select: {
       eyebrow: "eyebrow",
       words: "rotatingText",
+    
     },
     prepare({ eyebrow, words }) {
       const count = Array.isArray(words) ? words.length : 0;
       return {
-        title: eyebrow || "Header – Typewriter",
+        title: `Header : ${eyebrow  || "Header – Typewriter"}`,
         subtitle: `${count} word${count === 1 ? "" : "s"} • Parallax media`,
       };
     },

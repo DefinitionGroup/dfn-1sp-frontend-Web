@@ -93,11 +93,11 @@ export default function ChallengeAndSolution({
               duration={0.5}
               distance={80}
             >
-              <h2 className="text-7xl leading-compress text-gray-900 max-w-lg tracking-tight leading-tighter mb-8">
+              <h2 className="text-5xl text-gray-900 max-w-xl tracking-tight leading-tighter mb-8">
                 {title}
               </h2>
               {description && (
-                <p className="text-lg text-gray-900 font-medium max-w-2xs mx-auto">
+                <p className="text-lg text-gray-900 font-medium max-w-lg mx-auto">
                   {description}
                 </p>
               )}

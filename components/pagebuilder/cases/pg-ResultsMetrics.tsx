@@ -137,11 +137,11 @@ export default function ResultsMetrics({
               duration={0.5}
               distance={80}
             >
-              <h2 className="text-9xl mb-2 text-gray-100 max-w-xl font-semibold tracking-tight leading-compress">
+              <h2 className="text-6xl mb-2 text-gray-100 max-w-xl  tracking-tight leading-none">
                 {title}
               </h2>
               {description && (
-                <p className="text-xl text-gray-100 max-w-2xs mx-auto">
+                <p className="text-xl text-gray-100 max-w-xl mx-auto">
                   {description}
                 </p>
               )}
@@ -150,11 +150,11 @@ export default function ResultsMetrics({
 
           {/* Metrics grid - uses data from props, maps over any number of metrics */}
           {metrics && metrics.length > 0 && (
-            <div className="col-span-12 flex justify-between col-start-1 bg-neutral-900/60 backdrop-blur-lg gap-4 p-12 rounded-xl">
+            <div className="col-span-12 flex flex-wrap justify-between col-start-1 bg-neutral-900/60 backdrop-blur-lg gap-4 mt-12 p-12 rounded-xl">
               {metrics.map((metric, index) => (
                 <div
                   key={index}
-                  className="flex flex-col items-start border-b border-white/10 flex-1"
+                  className="flex flex-col items-start pb-8 border-b border-white/20 flex-1"
                 >
                   {metric.type === "animatedNumber" ? (
                     <div className="mt-12 mb-4">
@@ -202,7 +202,7 @@ export default function ResultsMetrics({
                     duration={0.5}
                     distance={80}
                   >
-                    <h2 className="text-sm text-gray-100 tracking-tight">
+                    <h2 className="text-lg text-gray-100 tracking-tight">
                       {metric.label}
                     </h2>
                   </StaggeredSlideUp>
