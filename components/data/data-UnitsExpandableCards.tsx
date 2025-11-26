@@ -74,7 +74,7 @@ export default async function UnitsExpandableCards({
 
   if (units.length === 0) {
     return (
-      <div className="w-full py-16 flex items-center justify-center">
+      <div className="w-full py-16  flex items-center justify-center">
         <div className="text-gray-400">No units found</div>
       </div>
     );

@@ -88,14 +88,14 @@ export default function PersonCard({ person, index }: PersonCardProps) {
       )}
 
       {/* Always visible name overlay at bottom */}
-      <div className="absolute flex flex-col   bottom-0 left-0 right-0 bg-gradient-to-t from-black/20 h-full via-black/10 to-black/10 p-2 transition-all duration-300 group-hover:from-black/55 group-hover:via-black/40 group-hover:to-black/30">
+      <div className="absolute flex flex-col   bottom-0 left-0 right-0 bg-gradient-to-t from-black/25 h-full via-black/10 to-black/10 p-2 transition-all duration-300 group-hover:from-black/55 group-hover:via-black/40 group-hover:to-black/70">
         {person.fullname && (
-          <h3 className="text-black font-bold text-xs mb-0.5 drop-shadow-lg">
+          <h3 className="text-black group-hover:text-white font-bold text-xs mb-0.5 drop-shadow-lg">
             {person.fullname}
           </h3>
         )}
         {person.position && (
-          <p className="text-black/80 text-xxs font-medium mb-2">
+          <p className="text-black/80 group-hover:text-white  text-xxs font-medium mb-2">
             {person.position}
           </p>
         )}
@@ -111,7 +111,7 @@ export default function PersonCard({ person, index }: PersonCardProps) {
           {person.email && (
             <a
               href={`mailto:${person.email}`}
-              className="flex items-center gap-1.5 text-black/90 hover:text-white transition-colors"
+              className="flex items-center gap-1.5 text-black/90 group-hover:text-white   hover:text-lime-500 transition-colors"
               title={person.email}
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -128,7 +128,7 @@ export default function PersonCard({ person, index }: PersonCardProps) {
               href={person.profileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-black/90 hover:text-white transition-colors"
+              className="flex items-center gap-1.5 text-black/90 group-hover:text-white  hover:text-lime-500 transition-colors"
               title="LinkedIn Profile"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">

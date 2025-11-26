@@ -253,13 +253,13 @@ function ExpandableCards({
                 />
               </motion.div>
 
-              <div className="col-start-1 col-span-1 flex flex-col justify-end opacity-100 row-start-1 p-4 z-1 text-white">
+              <div className="col-start-1 col-span-1 flex flex-col justify-between opacity-100 row-start-1 p-4 z-1 text-white">
                 {card.logo && (
                   <motion.img
                     layoutId={`logo-${card.title}-${id}`}
                     src={card.logo}
                     alt={card.title}
-                    className="w-28 h-14 object-contain object-left"
+                    className="w-full h-8 object-contain object-left"
                   />
                 )}
                 {/* Old tile only showed title; keep that for parity */}
