@@ -166,9 +166,10 @@ function OverlayRoot({
         exit={{ y: 20, opacity: 0, scale: 0.98, transition: { duration: 0.1 } }}
         transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
       >
-        <nav className="flex container mx-auto justify-start gap-8 ">
+        <nav className="flex container mx-auto flex-col  justify-start items-start gap-8 ">
           {items.map((item, idx) => (
             <motion.div
+            className="x"
               key={item.href}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -181,8 +182,9 @@ function OverlayRoot({
               <Link
                 href={item.href}
                 ref={idx === 0 ? firstLinkRef : undefined}
-                className="text-xl md:text-2xl font-medium tracking-tight text-neutral-50 hover:text-lime-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 rounded-sm transition-colors"
+                className="text-xl md:text-2xl  tracking-tighter text-neutral-50 hover:text-lime-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 rounded-sm transition-colors"
                 onClick={onClose}
+
               >
                 {item.label}
               </Link>

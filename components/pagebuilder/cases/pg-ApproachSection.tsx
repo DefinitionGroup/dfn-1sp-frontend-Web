@@ -96,13 +96,13 @@ export default function ApproachSection({
 
           <div className="col-span-10 col-start-2 md:col-start-3 mt-12 md:mt-0">
             <StaggeredSlideUp
-              className="flex flex-col items-start justify-start"
+              className="flex flex-col items-start gap-4 justify-start"
               delay={0.0}
               staggerDelay={0.1}
               duration={0.5}
               distance={80}
             >
-              <h2 className="text-5xl md:text-7xl mb-2  text-gray-100 max-w-2xl  tracking-tight leading-compress">
+              <h2 className="text-5xl md:text-7xl mb-2  text-gray-100 max-w-2xl  tracking-tight leading">
                 {mainHeadline}
               </h2>
               {subHeadline && (

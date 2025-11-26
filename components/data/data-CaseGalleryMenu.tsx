@@ -87,7 +87,7 @@ export default function CaseGalleryMenu({
           ></motion.div>
         )}
       </AnimatePresence>
-      <div className="px-8 ">
+      <div className="px-8 mt-24 ">
         <IntertitleCTA
           title={"Our Work"}
           alignment="left"
