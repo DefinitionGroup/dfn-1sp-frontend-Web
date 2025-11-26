@@ -21,9 +21,9 @@ interface ListItemProps {
 }
 
 const sizeClasses: Record<NonNullable<ListItemProps["size"]>, string> = {
-  small: "text-base",
-  medium: "text-2xl",
-  large: "text-5xl",
+  small: "text-sm",
+  medium: "text-xl",
+  large: "text-3xl",
 };
 
 const weightClasses: Record<
@@ -58,7 +58,7 @@ const lineColorClasses: Record<NonNullable<ListItemProps["color"]>, string> = {
   "gray-600": "bg-gray-600",
   "gray-700": "bg-gray-700",
   white: "bg-white",
-  black: "bg-black",
+  black: "bg-gray-200",
 };
 
 function ListItemComponent({
@@ -80,7 +80,7 @@ function ListItemComponent({
       >
         {children}
       </p>
-      <div className={cn("w-full h-px mt-4", lineColorClasses[color])} />
+      <div className={cn("w-full  h-px mt-4", lineColorClasses[color])} />
     </div>
   );
 }

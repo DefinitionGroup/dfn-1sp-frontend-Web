@@ -35,7 +35,7 @@ export default function Badgemodule({
     <div className={`${className}`}>
       <motion.div
         ref={ref}
-        className={`flex flex-col rounded justify-between w-3/4 aspect-square bg-black items-start ${className}`}
+        className={`flex flex-col rounded justify-between w-[80%] mr-12  lg:scale-100 lg:w-3/4 aspect-square bg-black items-start ${className}`}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
         variants={{
@@ -47,7 +47,7 @@ export default function Badgemodule({
           },
         }}
       >
-        <div className="flex-col w-full">
+        <div className="flex-col w-full ">
           <div className="flex px-4 py-4 items-start border-white justify-between w-full">
             <motion.div
               variants={{
@@ -87,7 +87,7 @@ export default function Badgemodule({
             </motion.div>
           </div>
           <motion.p
-            className="text-3xl font px-4 text-gray-200"
+            className="text-lg lg:text-3xl font px-4 text-gray-200"
             variants={{
               hidden: { opacity: 0, y: 10 },
               visible: {

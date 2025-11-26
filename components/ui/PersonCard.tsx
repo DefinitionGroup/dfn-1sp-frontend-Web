@@ -63,7 +63,7 @@ export default function PersonCard({ person, index }: PersonCardProps) {
   return (
     <div
       key={key}
-      className="group relative overflow-hidden rounded-lg  transition-all duration-300 ease-out hover:-translate-y-1 aspect-[3/4]"
+      className="group relative overflow-hidden rounded-xs transition-all duration-300 hover:cursor-pointer ease-out aspect-[3/4]"
       data-member={(person.name || person.fullname || "").toLowerCase()}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -75,7 +75,7 @@ export default function PersonCard({ person, index }: PersonCardProps) {
           muted
           loop
           playsInline
-          className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          className="w-full  h-full object-cover object-bottom transition-transform duration-500 ease-out group-hover:scale-105"
         />
       ) : (
         <Image
@@ -88,14 +88,14 @@ export default function PersonCard({ person, index }: PersonCardProps) {
       )}
 
       {/* Always visible name overlay at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-3 transition-all duration-300 group-hover:from-black/95 group-hover:via-black/80">
+      <div className="absolute flex flex-col   bottom-0 left-0 right-0 bg-gradient-to-t from-black/20 h-full via-black/10 to-black/10 p-2 transition-all duration-300 group-hover:from-black/55 group-hover:via-black/40 group-hover:to-black/30">
         {person.fullname && (
-          <h3 className="text-white font-bold text-sm mb-0.5 drop-shadow-lg">
+          <h3 className="text-black font-bold text-xs mb-0.5 drop-shadow-lg">
             {person.fullname}
           </h3>
         )}
         {person.position && (
-          <p className="text-white/80 text-xs font-medium mb-2">
+          <p className="text-black/80 text-xxs font-medium mb-2">
             {person.position}
           </p>
         )}
@@ -104,14 +104,14 @@ export default function PersonCard({ person, index }: PersonCardProps) {
         <StaggeredFadeIn
           className="flex items-center gap-3"
           triggerOnView={false}
-          delay={0}
-          staggerDelay={0.03}
+          delay={0} duration={0.2}
+          staggerDelay={0.15}
           animate={isHovered ? "visible" : "hidden"}
         >
           {person.email && (
             <a
               href={`mailto:${person.email}`}
-              className="flex items-center gap-1.5 text-white/90 hover:text-lime-400 transition-colors"
+              className="flex items-center gap-1.5 text-black/90 hover:text-white transition-colors"
               title={person.email}
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -128,7 +128,7 @@ export default function PersonCard({ person, index }: PersonCardProps) {
               href={person.profileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-white/90 hover:text-lime-400 transition-colors"
+              className="flex items-center gap-1.5 text-black/90 hover:text-white transition-colors"
               title="LinkedIn Profile"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">

@@ -277,14 +277,14 @@ export default function SmartCarousel({
                 onMouseEnter={() => setIsAutoPlaying(false)}
                 onMouseLeave={() => setIsAutoPlaying(true)}
               >
-                <div className="relative w-full h-full overflow-hidden bg-gradient-to-brshadow-2xl">
+                <div className="relative w-full h-full overflow-hidden bg-black">
                   {/* Background media */}
                   {active.video ? (
                     <motion.video
                       src={active.video}
                       className="absolute inset-0 w-full h-full overflow-hidden object-cover"
-                      initial={{ scale: 1.3, opacity: 1 }}
-                      animate={{ scale: 1, opacity: 1 }}
+                      initial={{ scale: 1.3, opacity: 0.7}}
+                      animate={{ scale: 1, opacity: 0.7}}
                       transition={{ duration: 1.6 }}
                       loop
                       autoPlay
@@ -295,8 +295,8 @@ export default function SmartCarousel({
                       src={active.image}
                       alt={active.title}
                       className="absolute inset-0 w-full h-full object-cover"
-                      initial={{ scale: 1.3, opacity: 1 }}
-                      animate={{ scale: 1, opacity: 1 }}
+                      initial={{ scale: 1.3, opacity: 0.7 }}
+                      animate={{ scale: 1, opacity: 0.7 }}
                       transition={{ duration: 1.6 }}
                     />
                   ) : null}
@@ -331,7 +331,7 @@ export default function SmartCarousel({
                           </motion.div>
                         )}
                         {active.title && (
-                          <motion.h3 className="text-3xl md:text-5xl font-semibold leading-compressed pb-0">
+                          <motion.h3 className="text-3xl md:text-5xl tracking-tighter leading-compressed pb-0">
                             {active.title}
                           </motion.h3>
                         )}
@@ -342,7 +342,7 @@ export default function SmartCarousel({
                         </motion.p>
                       )} */}
                       {active.description && (
-                        <motion.p className="text-gray-100 text-base max-w-lg ">
+                        <motion.p className="text-gray-100 text-base max-w-lg mb-4 ">
                           {active.description}
                         </motion.p>
                       )}

@@ -87,18 +87,18 @@ export default function PeopleStep({
       )}
 
       {/* Header + description + people */}
-      <div className="col-span-12 container col-start-3  row-start-1 grid grid-cols-10 pt-32">
+      <div className="col-span-12 container col-start-3   row-start-1 grid grid-cols-10 pt-32">
         {/* Left header block */}
-        <header className="col-span-2 col-start-1 border-t p-4">
+        <header className="col-span-4 col-start-1 border-t  border-gray-200">
           <div className="flex flex-col lg:gap-8 items-start justify-start w-full">
             <div className="flex-1 flex gap-4 flex-col min-w-0">
               {header.superText && (
-                <h2 className="text-xl text-neutral-900 font-bold font-aspekta">
+                <h2 className="text text-neutral-700 font-semibold tracking-tighter  font-aspekta">
                   {header.superText}
                 </h2>
               )}
               {header.mainHeadline && (
-                <h4 className="text-5xl text-neutral-900 font-semibold leading-compress font-aspekta">
+                <h4 className="text-5xl text-neutral-900 font tracking-tighter leading-compress font-aspekta">
                   {header.mainHeadline}
                 </h4>
               )}
@@ -112,7 +112,7 @@ export default function PeopleStep({
                   )}
                   {header.uniquePeopleText && (
                     <h4 className="text-2xl text-neutral-900 font-aspekta">
-                      <span className="text-neutral-200">
+                      <span className="text-neutral-400">
                         {header.uniquePeopleText}
                       </span>
                     </h4>
@@ -125,11 +125,11 @@ export default function PeopleStep({
 
         {/* Description row (matches original layout) */}
         {step.description && step.description.trim().length > 0 && (
-          <div className="col-span-8 grid grid-cols-12 col-start-3 gap-8 border-t pt-8">
-            <header className="col-span-5 col-start-1">
-              <h2 className="text-lg text-neutral-500 font-aspekta">
+          <div className="col-span-8 grid grid-cols-12 col-start-5  border-t border-gray-200 ">
+            <header className="col-span-8 col-start-1">
+              <h3 className="text text-neutral-500 font-aspekta">
                 {step.description}
-              </h2>
+              </h3>
             </header>
           </div>
         )}

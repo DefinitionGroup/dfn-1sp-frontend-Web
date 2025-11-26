@@ -86,7 +86,7 @@ export default function CaseStudyPageClient({
             useVideo={true}
             videoSrc={mainVideoUrl}
             enableParallax={true}
-            opacity="opacity-100"
+            opacity="opacity-50"
             enableVertical={caseStudy.isVerticalVideo}
           />
         ) : (
@@ -94,7 +94,7 @@ export default function CaseStudyPageClient({
             useVideo={false}
             imageSrc={mainImageUrl}
             enableParallax={true}
-            opacity="opacity-100"
+            opacity="opacity-50"
           />
         )}
 
@@ -103,8 +103,8 @@ export default function CaseStudyPageClient({
         <div id={t.ids.top} className="" />
         <div className="relative z-10 container mt-[30vh] mx-auto p-8 md:p-0">
           <StaggeredSlideUp
-            delay={1}
-            className="max-w-full flex flex-col pl-4 gap-4"
+            delay={0.4}
+            className="max-w-full flex flex-col pl-4 gap-4 lg:max-w-2/3"
           >  {caseStudy.subtitle && (
               <h2 className="text-neutral-50  text-xs font-bold bg-lime-500 rounded-full inline-block p-1 px-4">
                 {caseStudy.subtitle}

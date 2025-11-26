@@ -46,6 +46,8 @@ export default function TypewriterRotator({
  */
 const container: React.CSSProperties = {
   display: "flex",
+  flexWrap: "wrap",
+  maxWidth: "90%",
   alignItems: "flex-start",
   gap: 0,
   flexDirection: "column",
@@ -57,13 +59,13 @@ const container: React.CSSProperties = {
 };
 
 const animatingText: React.CSSProperties = {
-  fontSize: "calc(32px + 4vw)",
+  fontSize: "calc(32px + 3vw)",
   fontWeight: 700,
   lineHeight: "calc(48px + 3vw)",
-  letterSpacing: "calc(2px - 0.15vw)",
+  letterSpacing: "calc(2px - 0.2vw)",
   textTransform: "uppercase",
   color: "var(--text-primary)",
-  whiteSpace: "nowrap",
+  whiteSpace: "wrap",
 };
 
 const cursor: React.CSSProperties = {

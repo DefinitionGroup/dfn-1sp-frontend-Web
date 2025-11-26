@@ -76,7 +76,7 @@ function Stylesheet() {
     <style>{`
         .containerElement { display: flex; }
         .container h3.containerED1 {
-          font-size:28px;
+          font-size:22px;
           line-height: 1;
           font-weight: 500;
           margin: 0;
@@ -110,14 +110,14 @@ function Stylesheet() {
         }
         .skill-name { white-space: wrap; }
         .skill-description {
-          font-size: 1.5rem;
+          font-size: 1rem;
         
           font-weight: 400;
           line-height: 1.3;
-          margin-top:1.75rem;
+          margin-top: 1rem;
           text-transform: none;
           opacity: 0.85;
-          max-width: min(44ch, 90vw);
+          max-width: min(50ch, 90vw);
           white-space: normal;
           overflow-wrap: break-word;
           word-break: break-word;

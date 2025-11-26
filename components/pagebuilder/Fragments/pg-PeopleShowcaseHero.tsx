@@ -41,7 +41,7 @@ function PeopleShowcaseHero({
       aria-labelledby="people-showcase-title"
     >
       <div className="flex items-center justify-start w-full overflow-x-auto">
-        <StaggeredSlideUp className="grid grid-cols-5 gap-1 w-full overflow-x-auto">
+        <StaggeredSlideUp className="grid grid-cols-3 lg:grid-cols-5 gap-[2px] w-full overflow-x-auto">
           {members.map((member, index) => {
             const src = assetUrl(member.media as any);
 
@@ -60,7 +60,7 @@ function PeopleShowcaseHero({
             return (
               <div
                 key={key}
-                className="group relative border-neutral-100 overflow-hidden flex-shrink-0 rounded-xs transition-transform duration-300 focus-within:scale-[1.02] aspect-square"
+                className="group relative border-neutral-100 overflow-hidden flex-shrink-0  transition-transform duration-300 focus-within:scale-[1.02] aspect-square"
                 data-member={(
                   member.name ||
                   member.fullname ||
@@ -91,7 +91,7 @@ function PeopleShowcaseHero({
                     className="object-cover transition-all duration-300 group-hover:brightness-110 "
                   />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/90 to-black/95 opacity-0 group-hover:opacity-100 rounded-sm transition-opacity duration-300 flex flex-col justify-end p-4">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/90 to-black/95 opacity-0 group-hover:opacity-100 rounded-xs transition-opacity duration-300 flex flex-col justify-end p-4">
                   <StaggeredFadeIn
                     className="flex flex-col"
                     triggerOnView={false}

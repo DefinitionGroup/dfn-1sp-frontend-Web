@@ -79,13 +79,13 @@ export default function ChallengeAndSolution({
           className={`z-1 grid col-span-12 py-${paddingY} col-start-1 container mx-auto row-start-1 grid-cols-12`}
         >
           <Badgemodule
-            className="col-span-2 sticky top-0"
+            className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky top-0 "
             text={badgeText || t.badges.intro}
             subtitle={badgeSubtitle || t.badges.theGoal}
             numberEl={badgeNumber}
           />
 
-          <div className="col-span-10 col-start-3">
+          <div className="col-span-10 col-start-2 md:col-start-3 mt-12 md:mt-0">
             <StaggeredSlideUp
               className="flex flex-col items-start justify-start"
               delay={0.1}
@@ -139,7 +139,7 @@ export default function ChallengeAndSolution({
                           key={idx}
                           size="small"
                           fontWeight="normal"
-                          color="black"
+                          color="gray-700"
                         >
                           {challenge}
                         </ListItemComponent>
@@ -149,7 +149,7 @@ export default function ChallengeAndSolution({
                           key={service._id}
                           size="small"
                           fontWeight="normal"
-                          color="black"
+                          color="gray-700"
                         >
                           {service.name}
                         </ListItemComponent>

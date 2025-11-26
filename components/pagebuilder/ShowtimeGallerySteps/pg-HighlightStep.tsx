@@ -5,6 +5,7 @@ import Badgemodule from "@/components/ui/Badgemodule";
 import ScrollHighlight from "../../ui/ScrollHighlight";
 import ArrowBig from "@/components/ui/arrowBig";
 import CtaMiniComponent from "../Fragments/pg-CtaMiniComponent";
+import { TracingBeam } from "@/components/ui/tracing-beam";
 import type {
   GalleryScrollHighlightStep,
   CloudinaryAsset,
@@ -114,9 +115,10 @@ export default function HighlightStep({
       )}
 
       <div className="grid grid-cols-12 z-1 mx-auto relative container">
-        <div className="z-1 grid col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12">
+   
+        <div className="z-1 grid col-span-12 pt-64 pb-96 col-start-1 container mx-auto row-start-1 grid-cols-12">
           {/* Left column: sticky badge + controls */}
-          <div className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky md:top-0 top-0 flex flex-col">
+          <div className="col-span-6 col-start-2 md:col-start-1   md:col-span-2 md:sticky md:top-0 top-0 flex flex-col">
             {step.badge && (
               <Badgemodule
                 className={step.badge.colSpan || ""}
@@ -132,11 +134,11 @@ export default function HighlightStep({
                   animate={true}
                   size={48}
                   color="white"
-                  className="my-12 fill-white text-white"
+                  className="mt-12 mp-4 fill-white text-white"
                 />
                 <CtaMiniComponent
                   {...({
-                    className: "w-1/2 text-white",
+                    className: "pr-20 text-white",
                     heading: cta?.heading,
                     paragraph: cta?.paragraph,
                     buttonText: cta?.buttonText,
@@ -151,9 +153,12 @@ export default function HighlightStep({
 
           {/* Right column: scroll highlight content */}
           <div className="col-span-9 col-start-2 mt-12 md:mt-0 md:col-start-3">
+                 <TracingBeam>
             {items.length > 0 && <ScrollHighlight items={items} />}
+              </TracingBeam>
           </div>
         </div>
+      
       </div>
     </section>
   );

@@ -95,12 +95,12 @@ function ServicesHeroWithBadge({
       />
 
       <div
-        className={`z-1 grid col-span-12 py-${paddingY} gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12`}
+        className={`z-1 p-12  md:grid col-span-12 py-${paddingY} gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12`}
       >
         {/* Badge Module */}
         {badgeText && (
           <Badgemodule
-            className="col-span-2 sticky top-0"
+            className="w-1/2 mb-12 md:mb-0 md:w-1/1 flex md:col-span-2 md:sticky top-0"
             text={badgeText}
             subtitle={badgeSubtitle || ""}
             numberEl={badgeNumber}
