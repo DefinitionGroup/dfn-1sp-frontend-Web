@@ -49,6 +49,7 @@ export default function LineMinimap({
   const scrollY = useScrollY(MAX_HEIGHT);
   const { mouseX, onMouseMove, onMouseLeave } = useMouseX();
   const [isHovered, setIsHovered] = React.useState(false);
+  const [isDesktop, setIsDesktop] = React.useState<boolean>(false);
 
   // Normalize navPoints to always be NavPoint objects
   const normalizedNavPoints: NavPoint[] = React.useMemo(() => {
@@ -63,9 +64,28 @@ export default function LineMinimap({
     element?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // Only render on md+ breakpoints. This prevents creating the DOM and running
+  // motion effects on mobile for performance.
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(min-width: 768px)");
+    const handler = (e: MediaQueryListEvent | MediaQueryList) =>
+      setIsDesktop(e.matches);
+    setIsDesktop(mq.matches);
+    if (typeof mq.addEventListener === "function") {
+      mq.addEventListener("change", handler);
+      return () => mq.removeEventListener("change", handler);
+    }
+    // Fallback for older browsers
+    mq.addListener(handler);
+    return () => mq.removeListener(handler);
+  }, []);
+
+  if (!isDesktop) return null;
+
   return (
     <div
-      className="fixed top-0 md:left-6 z-100 w-[72px] flex flex-col justify-center h-[100vh]"
+      className="hidden md:flex fixed top-0 md:left-6 z-100 w-[72px] flex-col justify-center h-[100vh]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

@@ -75,7 +75,7 @@ export default async function SmartPeople({
   return (
     <section className="w-full  py-8" data-component="smart-people">
       <div className="container mx-auto px-4 ">
-        <StaggeredSlideUp className={`grid ${getGridClass()} gap-1 `}>
+        <StaggeredSlideUp className={`grid ${getGridClass()} gap-[2px] `}>
           {people.map((person, index) => (
             <PersonCard key={person._id} person={person} index={index} />
           ))}

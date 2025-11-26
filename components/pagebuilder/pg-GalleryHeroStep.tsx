@@ -91,7 +91,7 @@ function GalleryHeroStepComponent(props: Props) {
             />
           )}
 
-          <div className="col-span-10 col-start-3 ">
+          <div className="col-span-10 col-start-2 md:col-start-3">
             {step.typewriterText && (
               <h2 className="text-7xl font-regular tracking-tighter pr-2 mb-4">
                 <Typewriter

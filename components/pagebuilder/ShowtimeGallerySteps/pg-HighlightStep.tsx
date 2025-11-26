@@ -132,11 +132,11 @@ export default function HighlightStep({
                   animate={true}
                   size={48}
                   color="white"
-                  className="my-12 fill-white text-white"
+                  className="mt-12 mp-4 fill-white text-white"
                 />
                 <CtaMiniComponent
                   {...({
-                    className: "w-1/2 text-white",
+                    className: "pr-20 text-white",
                     heading: cta?.heading,
                     paragraph: cta?.paragraph,
                     buttonText: cta?.buttonText,

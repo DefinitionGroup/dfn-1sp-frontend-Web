@@ -102,7 +102,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="relative h-[85vh] overflow-hidden"
+      className="relative h-screen md:h-[90vh] overflow-hidden"
     >
       {/* Background media */}
       {mediaUrl && (
@@ -115,10 +115,10 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
       )}
 
       {/* Foreground content */}
-      <div className="relative z-10 container mt-[30vh] mx-auto">
-        <StaggeredSlideUp className="space-y-6 max-w-full">
+      <div className="absolute bottom-24 md:relative z-10 container md:mt-[45vh] mx-auto">
+        <StaggeredSlideUp className="px-12 md:px-4  space-y-6 max-w-full">
           {eyebrow && (
-            <h1 className="text-neutral-50 uppercase pb-2 text-xs border-b font-bold max-w-1/2">
+            <h1 className="text-neutral-50 uppercase pb-2 text-xs border-b font-bold max-w-3/4">
               {eyebrow}
             </h1>
           )}
@@ -145,7 +145,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
                   className={[
                     "text-neutral-50 pt-2",
                     sizeToClass[size] || "text-base",
-                    i === 0 ? "max-w-1/3" : "",
+                    i === 0 ? "max-w-2/3" : "",
                   ].join(" ")}
                 >
                   {text}{" "}
@@ -162,7 +162,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
                 className={[
                   "text-neutral-50",
                   sizeToClass[size] || "text-base",
-                  i === 0 ? "max-w-1/3" : "",
+                  i === 0 ? "max-w-3/4 md:max-w-1/3" : "",
                 ].join(" ")}
               >
                 {highlightInline(text, highlight)}
@@ -174,12 +174,12 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
       {/* Corner labels */}
       {leftMark && (
-        <div className="absolute bottom-[42px] left-[24px] text-white text-xs font-medium -rotate-90 origin-bottom-left">
+        <div className="absolute bottom-[22px] left-[24px] text-white text-xxs font-bold -rotate-90 origin-bottom-left">
           {leftMark}
         </div>
       )}
       {rightMark && (
-        <div className="absolute bottom-[19px] right-[18px] text-white text-xxs text-eyebrow font-medium">
+        <div className="absolute bottom-[19px] right-[18px] text-white text-xxs text-eyebrow font-bold">
           {rightMark}
         </div>
       )}

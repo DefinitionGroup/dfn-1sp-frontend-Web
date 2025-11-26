@@ -61,7 +61,7 @@ const GridBackground: React.FC<GridBackgroundProps> = ({
   return (
     <motion.div
       ref={ref}
-      className={`z-0 grid col-span-12 col-start-1 row-start-1 grid-cols-6  divide-x border-x  border-neutral-100 divide divide-neutral-200/50 ${className}`}
+      className={`z-0 hidden md:grid col-span-12 col-start-1 row-start-1 grid-cols-6  divide-x border-x  border-neutral-100 divide divide-neutral-200/50 ${className}`}
       variants={containerVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}

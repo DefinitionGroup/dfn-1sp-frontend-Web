@@ -296,7 +296,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
       <GridBackground delay={delay} staggerDelay={staggerDelay} />
 
-      <div className="z-1 grid col-span-12 col-start-1 pt-32 row-start-1 grid-cols-12 ">
+      <div className="z-1 grid col-span-12  col-start-1 pt-32 row-start-1 grid-cols-12 ">
         {/* Badge */}
         {step.badge && (
           <Badgemodule
@@ -342,7 +342,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
           : (header?.superText ||
               header?.mainHeadline ||
               header?.subHeadline) && (
-              <header className="col-span-4 col-start-3 border-t">
+              <header className="col-span-12  md:col-span-4 col-start-2 md:col-start-3 mt-12 md:mt-0 border-t">
                 <div className="flex flex-col items-start justify-start w-full">
                   <div className="flex-1 flex flex-col min-w-0">
                     {header?.superText && (
@@ -351,7 +351,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                       </h4>
                     )}
                     {header?.mainHeadline && (
-                      <h2 className="text-7xl  text-gray-900  tracking-tight font-aspekta">
+                      <h2 className="text-5xl md:text-7xl  text-gray-900  tracking-tight font-aspekta">
                         {header.mainHeadline}
                       </h2>
                     )}
@@ -367,7 +367,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
         {/* Right list column */}
         {Array.isArray(listItems) && listItems.length > 0 && (
-          <div className="col-span-11 md:col-span-8 col-start-2 md:col-start-3 mt-12 md:mt-0 border-gray-500 pb-8 md:row-start-2 ">
+          <div className="col-span-10 md:col-span-8 col-start-2 md:col-start-3 mt-12 md:mt-0 border-gray-500 pb-8 md:row-start-2 ">
             <ListContainerComponent>
               {listItems.map((it, i) => (
                 <ListItemComponent
@@ -415,7 +415,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
         {/* Variant A: Cards present (no buttons) */}
         {hasCards && (
-          <div className="col-span-10 col-start-3 mt-8">
+          <div className="col-span-10 md:col-span-8 col-start-2 md:col-start-3 mt-8">
             <ExpandableCards items={cards} variant="default" />
           </div>
         )}
