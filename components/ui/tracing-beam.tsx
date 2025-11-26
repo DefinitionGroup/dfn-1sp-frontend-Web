@@ -94,7 +94,7 @@ export const TracingBeam = ({
             d={`M 1 0V -36 l 18 24 V ${svgHeight * 0.8} l -0 24V ${svgHeight}`}
             fill="none"
             stroke="url(#gradient)"
-            strokeWidth="2.25" round="round"
+            strokeWidth="2.25" strokeLinecap="round"
             className="motion-reduce:hidden"
             transition={{
               duration: 10,
