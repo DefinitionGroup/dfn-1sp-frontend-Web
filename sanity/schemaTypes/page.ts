@@ -170,6 +170,14 @@ export default defineType({
             ],
             hidden: ({ parent }: any) => parent?.channel !== '1spWeb',
         }),
+        defineField({
+            name: 'contactForm',
+            title: 'Contact Form',
+            type: 'contactForm',
+            group: 'content',
+            description: 'Shown after the Page Builder modules on the Contact page.',
+            hidden: ({ parent }: any) => parent?.slug?.current !== 'contact',
+        }),
 
         defineField({
             name: 'contentMSM',

@@ -25,6 +25,16 @@ export interface CTA {
     variant?: string;
 }
 
+export interface ContactFormSettings {
+    headline?: string;
+    subheadline?: string;
+    description?: string;
+    consentText?: string;
+    submitLabel?: string;
+    successMessage?: string;
+    errorMessage?: string;
+}
+
 /* 1SP specific items/objects */
 export interface BadgeModule {
     text?: string;
@@ -260,6 +270,7 @@ export interface Page {
     };
     channel?: "1spWeb" | "msmWeb" | "studioco2Web" | string;
     navbarVariant?: "light" | "dark";
+    contactForm?: ContactFormSettings;
 
     // channel-specific content (kept generic)
     content1sp?: Array<any | ShowtimeGallery | HeroShowtime | SublineComponent | OneSPHeader>;
