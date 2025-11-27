@@ -50,18 +50,18 @@ function CasesIntro({
           className={`z-1 grid col-span-12 py-${paddingY} col-start-1 container mx-auto row-start-1 grid-cols-12`}
         >
           <div className="z-1 col-span-16 col-start-1 mt-16">
-            <div className="flex flex-col items-start gap-8 justify-center w-full">
+            <div className="flex flex-col items-start gap-8 justify-center w-full px-4">
               <StaggeredSlideUp
                 delay={0.19}
                 staggerDelay={0.03}
                 distance={100}
-                className="max-w-2/4"
+                className="md:max-w-2/4"
               >
-                <h2 className="text-5xl leading-none text-neutral-700 pb-3 font-aspekta font-medium">
+                <h2 className="text-3xl md:text-5xl leading-none text-neutral-700 pb-3 font-aspekta font-medium">
                   {title}
                 </h2>
                 {subtitle && (
-                  <h2 className="text-5xl leading-none text-neutral-400 pb-3 font-aspekta">
+                  <h2 className="text-3xl  md:text-5xl leading-none text-neutral-400 pb-3 font-aspekta">
                     {subtitle}
                   </h2>
                 )}

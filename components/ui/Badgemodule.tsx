@@ -32,10 +32,10 @@ export default function Badgemodule({
   }, [isInView, numberEl]);
 
   return (
-    <div className={`${className}`}>
+    <div className={`${className}  `}>
       <motion.div
         ref={ref}
-        className={`flex flex-col rounded justify-between w-[80%] mr-12  lg:scale-100 lg:w-3/4 aspect-square bg-black items-start ${className}`}
+        className={` relative  border-t  border-black/20 mb-12 md:mb-0 flex flex-col md:rounded justify-between min-w-[70%] md:w-[80%] mr-12  lg:scale-100 lg:w-3/4 md:aspect-square md:bg-black items-start ${className}`}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
         variants={{
@@ -48,7 +48,7 @@ export default function Badgemodule({
         }}
       >
         <div className="flex-col w-full ">
-          <div className="flex px-4 py-4 items-start border-white justify-between w-full">
+          <div className="flex md:px-4 pt-2 md:py-4 items-start border-white justify-between w-full">
             <motion.div
               variants={{
                 hidden: { opacity: 0, scale: 0.8 },
@@ -68,7 +68,7 @@ export default function Badgemodule({
               />
             </motion.div>
             <motion.div
-              className="text-[8px] font-bold self-end text-gray-100"
+              className="text-[8px] absolute -top-[8px] md:relative font-bold self-start  md:self-end md:text-gray-100"
               variants={{
                 hidden: { opacity: 0, y: 20 },
                 visible: {
@@ -87,7 +87,7 @@ export default function Badgemodule({
             </motion.div>
           </div>
           <motion.p
-            className="text-lg lg:text-3xl font px-4 text-gray-200"
+            className="text-lg lg:text-3xl font md:px-4 md:text-gray-200"
             variants={{
               hidden: { opacity: 0, y: 10 },
               visible: {
@@ -101,7 +101,7 @@ export default function Badgemodule({
           </motion.p>
         </div>
         <motion.p
-          className="text-xxs rounded-b-sm font-semibold mt-2 px-4 py-4 w-full bg-neutral-800 text-gray-200"
+          className="text-xxs rounded-b-sm font-semibold md:mt-2 md:px-4 md:py-4 w-full md:bg-neutral-800 md:text-gray-200"
           variants={{
             hidden: { opacity: 0 },
             visible: {

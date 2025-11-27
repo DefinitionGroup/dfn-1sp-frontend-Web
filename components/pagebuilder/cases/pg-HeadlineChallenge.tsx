@@ -53,10 +53,10 @@ export default function HeadlineChallenge({
                 distance={100}
                 className="max-w-2/4 py-32"
               >
-                <h2 className="text-lg leading-none text-neutral-700 pb-3 font-aspekta ">
+                <h2 className="text-lg leading-none text-neutral-700 pb-3  font-aspekta ">
                   {headline}
                 </h2>
-                <h3 className="text-5xl text-neutral-700  leading-[60px] font-aspekta ">
+                <h3 className="text-5xl text-neutral-700  leading-[60px]  font-aspekta ">
                   {title}
                 </h3>
                 {description && (

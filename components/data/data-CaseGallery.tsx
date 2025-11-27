@@ -95,7 +95,7 @@ export default function CaseGalleryComponent({
 
       <AnimatePresence>
         {active ? (
-          <div className="fixed inset-0 grid place-items-center z-[100]">
+          <div className="fixed inset-0 grid place-items-center  z-[100]">
             <motion.button
               key={`button-${active.title}-${id}`}
               layout
@@ -196,14 +196,14 @@ export default function CaseGalleryComponent({
           distance={30}
           duration={1.6}
           viewport={{ once: true, amount: 0.2, margin: "0px 0px -100px 0px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto w-full min-h-full"
+          className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto w-full min-h-full"
         >
           {filteredItems.map((item) => (
             <motion.div
               layoutId={`card-${item.title}-${id}`}
               key={`card-${item.title}-${id}`}
               onClick={() => setActive(item)}
-              className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[530px]  group/card overflow-hidden h-[530px] cursor-pointer rounded-sm"
+              className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1 h-[300px] md:min-h-[530px]  group/card overflow-hidden md:h-[530px] cursor-pointer rounded-sm"
             >
               <motion.div
                 layoutId={`image-${item.title}-${id}`}
@@ -229,9 +229,9 @@ export default function CaseGalleryComponent({
               </motion.div>
 
               <div
-                className={`col-start-1 col-span-1 flex ${
+                className={`col-start-1 col-span-1 md:flex ${
                   item.client?.logoUrl ? "justify-between" : "justify-end"
-                } opacity-100 row-start-2 p-2 mb-16 z-1   h-[130px]`}
+                } opacity-100 row-start-2 p-2 mb-8 md:mb-16 z-1   h-[130px]`}
               >
                 {item.client?.logoUrl ? (
                   <motion.img
@@ -246,16 +246,16 @@ export default function CaseGalleryComponent({
                 <div className="flex flex-col items-end">
                   <motion.h3
                     layoutId={`title-${item.title}-${id}`}
-                    className={`font-medium text-lg leading-snug max-w-[250px] tracking-tight ${
+                    className={`font-medium md:ext-lg leading-snug max-w-[250px] tracking-tight ${
                       variant !== "light" ? "" : "invert"
-                    } text-neutral-600 dark:text-neutral-200 text-right`}
+                    } text-neutral-600 dark:text-neutral-200 md:text-right`}
                   >
                     {item.title}
                   </motion.h3>
                   {item.services && item.services.length > 0 && (
                     <motion.p
                       layoutId={`description-${item.description}-${id}`}
-                      className="text-neutral-500 text-right text-sm dark:text-neutral-600"
+                      className="text-neutral-500 md:text-right text-xs md:text-sm dark:text-neutral-600"
                     >
                       {item.services.map((s) => s.name).join(", ")}
                     </motion.p>

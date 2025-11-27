@@ -11,6 +11,7 @@ import FrontNavOverlay from "./menu/FrontNavOverlay";
 import Footer from "./menu/FooterNew";
 import { NavbarMenu, FooterMenu } from "@/types/menu.types";
 import PageWithMapVertical from "./ui/PageWithMapVertical";
+import { FooterMenuProvider } from "./menu/FooterMenuContext";
 
 interface SiteWrapperProps {
   children: React.ReactNode;
@@ -62,7 +63,7 @@ export default async function SiteWrapper({
   });
 
   return (
-    <>
+    <FooterMenuProvider menu={footerData as FooterMenu}>
       <PageWithMapVertical>
         <FrontNavOverlay
           menuData={navbarData as NavbarMenu}
@@ -76,6 +77,6 @@ export default async function SiteWrapper({
         {children}
         <Footer menuData={footerData as FooterMenu} />
       </PageWithMapVertical>
-    </>
+    </FooterMenuProvider>
   );
 }

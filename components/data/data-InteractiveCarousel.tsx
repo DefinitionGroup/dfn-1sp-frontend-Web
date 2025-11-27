@@ -464,15 +464,15 @@ export default function SmartCarousel({
         </div>
 
         {/* Thumbnail Strip (match Plaintext absolute positioning) */}
-        <div className="absolute flex justify-center w-full bottom-[200px] z-30">
+        <div className="absolute flex justify-center w-full  bottom-[160px] md:bottom-[200px] z-30">
           <div
             ref={stripRef}
-            className={`flex absolute justify-center mt-8 space-x-4 pt-4 pb-4 ${isScrollable ? "overflow-x-auto" : ""}`}
+            className={`flex absolute justify-center mt-8 space-x-2 md:space-x-4 pt-4 md:pb-4 ${isScrollable ? "overflow-x-auto" : ""}`}
           >
             {carouselItems.map((item, index) => (
               <motion.button
                 key={item.id}
-                className={`relative flex-shrink-0 w-22 h-18 rounded-sm overflow-hidden outline-3 transition-colors ${index === currentIndex ? "outline-lime-500" : "outline-transparent"}`}
+                className={`relative flex-shrink-0 w-12 md:w-22 h-12 md:h-18 rounded-sm overflow-hidden outline-1 md:outline-3 transition-colors ${index === currentIndex ? "outline-lime-500" : "outline-transparent"}`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => {
