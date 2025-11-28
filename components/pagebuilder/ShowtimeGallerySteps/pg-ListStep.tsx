@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import GridBackground from "@/components/ui/GridBackground";
 import Badgemodule from "@/components/ui/Badgemodule";
 import ListContainerComponent from "@/components/ui/ListContainerComponent";
@@ -21,7 +21,13 @@ import type {
   CtaSplitHeader as CtaSplitHeaderType,
 } from "@/types/sanity.types";
 
-import { ctaToButtonProps, assetUrl, resolveLink } from "@/utils/utils";
+import {
+  ctaToButtonProps,
+  assetUrl,
+  resolveLink,
+  resolveLinkAsync,
+} from "@/utils/utils";
+import { useParams } from "next/navigation";
 
 /* ---------- helpers ---------- */
 
@@ -220,6 +226,16 @@ function normalizeParagraphs(lines: unknown) {
 /* ---------- component ---------- */
 
 export default function ListStep({ step }: { step: GalleryListStep }) {
+  const params = useParams();
+  const locale = (params?.locale as string) || "en";
+
+  const applyLocaleToPath = (url?: string | null) => {
+    if (!url) return undefined;
+    if (!url.startsWith("/")) return url || undefined;
+    if (url.startsWith(`/${locale}`)) return url;
+    return `/${locale}${url}`;
+  };
+
   const delay = step.grid?.delay;
   const staggerDelay = step.grid?.staggerDelay;
 
@@ -278,6 +294,33 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
     ? { "data-navpoint-name": step.navPointName }
     : {};
 
+  const badgeMiniCta = step.badgeMiniCta;
+  const showBadgeMiniCta = Boolean(step.showBadgeMiniCta && badgeMiniCta);
+  const [badgeMiniUrl, setBadgeMiniUrl] = useState<string | undefined>();
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function updateBadgeUrl() {
+      if (!showBadgeMiniCta || !badgeMiniCta?.link) {
+        if (!cancelled) setBadgeMiniUrl(undefined);
+        return;
+      }
+      const resolved = await resolveLinkAsync(badgeMiniCta.link);
+      if (!cancelled) setBadgeMiniUrl(applyLocaleToPath(resolved));
+    }
+
+    updateBadgeUrl();
+    return () => {
+      cancelled = true;
+    };
+  }, [showBadgeMiniCta, badgeMiniCta?.link, locale]);
+
+  const [ctaMiniUrls, setCtaMiniUrls] = useState<string[]>(() =>
+    ctaMini.map((item) => applyLocaleToPath(resolveLink(item.link)) || "")
+  );
+
+
   return (
     <section
       id={sectionId}
@@ -298,14 +341,31 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
       <div className="z-1 grid col-span-12  col-start-1 pt-32 row-start-1 grid-cols-12 ">
         {/* Badge */}
+        <div className="col-span-6 col-start-2  row-span-2 md:col-start-1 md:col-span-2 md:sticky top-0 ">
+
         {step.badge && (
           <Badgemodule
-            className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky top-0 "
             text={step.badge.text ?? ""}
             subtitle={step.badge.subtitle ?? ""}
             numberEl={step.badge.numberEl ?? ""}
           />
+          
         )}
+         {showBadgeMiniCta && (
+              <div className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 mt-4 pr-8 ">
+                <CtaMiniComponent
+                  heading={badgeMiniCta.heading || ""}
+                  paragraph={badgeMiniCta.paragraph || ""}
+                  buttonText={badgeMiniCta.buttonText || ""}
+                  buttonVariant={(badgeMiniCta.variant as any) || "limesmall"}
+                  align={(badgeMiniCta.alignment as any) || "left"}
+                  url={badgeMiniUrl || undefined}
+                />
+              </div>
+            )}
+        </div>
+
+      
 
         {/* Header area */}
         {staggered
@@ -387,7 +447,8 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
         {hasCtaMini && (
           <div className="col-span-2 col-start-3 mt-8 pr-8 text-gray-100">
             {ctaMini.map((m, i) => {
-              const href = resolveLink(m.link);
+              const href =
+                ctaMiniUrls[i] || applyLocaleToPath(resolveLink(m.link));
               return (
                 <CtaMiniComponent
                   key={`ctaMini-${i}`}

@@ -116,6 +116,8 @@ export interface CtaMiniComponent {
 
 export interface GalleryListStep extends GalleryBase {
     type: "list";
+    badgeMiniCta?: CtaMiniComponent;
+    showBadgeMiniCta?: boolean;
 
     /** Regular header (hidden when staggeredSlideUp is true) */
     header?: {
