@@ -37,7 +37,7 @@ const DEFAULT_ITEMS: MenuItem[] = [
     href: "/cases",
     subitems: [
       { label: "All case studies", href: "/cases" },
-      { label: "Featured work", href: "/cases" },
+  
     ],
   },
   {
@@ -45,9 +45,18 @@ const DEFAULT_ITEMS: MenuItem[] = [
     href: "/services",
     subitems: [
       { label: "What we do", href: "/services" },
-      { label: "How we work", href: "/services" },
+  
     ],
   },
+  {
+    label: "Our Family",
+    href: "/our-family",
+    subitems: [
+      { label: "What we do", href: "/our-family" },
+  
+    ],
+  },
+
   {
     label: "Contact",
     href: "/contact",
@@ -217,7 +226,7 @@ function OverlayRoot({
             alt="1SP Logo"
             width={190}
             height={190}
-            className="object-contain drop-shadow-[0_0_24px_rgba(0,0,0,0.35)]"
+            className="object-contain "
           />
           <span className="text-xs uppercase -tracking-[0.25em] text-neutral-200">
             1SP
@@ -229,14 +238,14 @@ function OverlayRoot({
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="bg-white/5  backdrop-blur-2xl  h-full shadow-2xl p-8 md:p-12 max-w-4xl"
+            className="bg-white/5  backdrop-blur-2xl  h-full p-8 md:p-12 max-w-4xl"
           >
             <div className="mb-8 flex items-center justify-between gap-6">
               <div className="flex flex-col text-left text-neutral-100">
-                <span className="text-xs font-bold uppercase -tracking-[0.03em] text-neutral-100">
+                <span className="text-xxs font-bold uppercase -tracking-[0.03em] text-neutral-100">
                   Navigation
                 </span>
-                <h2 className="text-3xl md:text-4xl font-semibold font-aspekta leading-none tracking-tight">
+                <h2 className="text-3xl md:text-4xl font-aspekta leading-none tracking-tight">
                   Jump into our world
                 </h2>
               </div>
@@ -256,7 +265,7 @@ function OverlayRoot({
             </div>
 
             <motion.nav
-              className="flex flex-col gap-6 text-left text-neutral-50"
+              className="flex flex-col gap-2 text-left text-neutral-50"
               initial="hidden"
               animate="visible"
               exit="hidden"
@@ -317,7 +326,7 @@ function OverlayRoot({
                         >
                           <Link
                             href={sub.href}
-                            className="text-sm text-white hover:text-lime-200 px-3 py-2  bg-white/5 border border-white/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400"
+                            className="text-sm text-white hover:text-lime-200  py-2  transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400"
                             onClick={onClose}
                           >
                             {sub.label}
@@ -331,17 +340,17 @@ function OverlayRoot({
             </motion.nav>
 
             <motion.div
-              className="mt-10 pt-6 border-t border-white/10 flex flex-col gap-4"
+              className="mt-10 pt-6 flex flex-col gap-4"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15, duration: 0.4 }}
             >
-              <div className="flex items-center justify-between text-neutral-200">
-                <span className="text-xs uppercase tracking-[0.3em]">
+              <div className="flex items-center justify-between text-neutral-100">
+                <span className="text-xs uppercase -tracking-[0.03em]">
                   Follow us
                 </span>
                 <span className="text-xs text-neutral-300">
-                  From footer · stays in sync
+                  Copyright 2025 1SP GmbH
                 </span>
               </div>
               <div className="flex flex-wrap gap-3">
@@ -451,11 +460,11 @@ function FullscreenGradientBackdrop({ onClose }: { onClose: () => void }) {
         transition={{ duration: 0.5 }}
       />
       <motion.div
-        className="absolute inset-0 mix-blend-screen"
+        className="absolute inset-0 mix-blend-screen aspect-square"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: [0.5, 0.75, 0.55, 0.7], rotate: [0, 25, -30, -20] }}
         exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.1 } }}
-        transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         style={{
           scale: breathe,
           background:
@@ -464,11 +473,11 @@ function FullscreenGradientBackdrop({ onClose }: { onClose: () => void }) {
         }}
       />
       <motion.div
-        className="absolute inset-0 pointer-events-none mix-blend-screen"
+        className="absolute inset-0 pointer-events-none mix-blend-screen aspect-square"
         initial={{ opacity: 0 }}
         animate={{ opacity: [0.2, 0.35, 0.25, 0.3], rotate: [22, -25, 30, 0] }}
         exit={{ opacity: 0, transition: { duration: 0.1 } }}
-        transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         style={{
           background:
             "radial-gradient(65% 70% at 10% 18%, rgba(70,255,175,1),  rgba(0 ,250,20,1) 90%)",
@@ -476,11 +485,11 @@ function FullscreenGradientBackdrop({ onClose }: { onClose: () => void }) {
         }}
       />
       <motion.div
-        className="absolute inset-0 pointer-events-none mix-blend-screen"
+        className="absolute inset-0 pointer-events-none mix-blend-screen aspect-square"
         initial={{ opacity: 0 }}
         animate={{ opacity: [0.2, 0.35, 0.25, 0.3], rotate: [122, 25, 130, 0] }}
         exit={{ opacity: 0, transition: { duration: 0.1 } }}
-        transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         style={{
           background:
             "radial-gradient(65% 70% at 10% 18%, rgba(70,255,175,1),  rgba(0 ,250,20,1) 90%)",
@@ -489,11 +498,11 @@ function FullscreenGradientBackdrop({ onClose }: { onClose: () => void }) {
       />
       <motion.div
         className="absolute inset-0 pointer-events-none mix-blend-screen"
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 0, rotate: [122, 75, 90, 0] }}
         animate={{ opacity: 1, rotate: [22, -25, 30, 0] }}
         exit={{ opacity: 0, transition: { duration: 0.1 } }}
         transition={{
-          duration: 12,
+          duration: 3,
           repeat: Infinity,
           ease: "easeInOut",
           delay: 1,

@@ -306,7 +306,7 @@ export default function SmartCarousel({
                       animate={{ scale: 1, opacity: 0.7}}
                       transition={{ duration: 1.6 }}
                       loop
-                      autoPlay
+                      autoPlay playsInline
                       muted
                     />
                   ) : active.image ? (
