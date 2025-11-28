@@ -294,8 +294,11 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
     ? { "data-navpoint-name": step.navPointName }
     : {};
 
-  const badgeMiniCta = step.badgeMiniCta;
-  const showBadgeMiniCta = Boolean(step.showBadgeMiniCta && badgeMiniCta);
+  const shouldShowBadgeMiniCta = Boolean(
+    step.showBadgeMiniCta && step.badgeMiniCta
+  );
+  const badgeMiniCta = shouldShowBadgeMiniCta ? step.badgeMiniCta : undefined;
+  const showBadgeMiniCta = shouldShowBadgeMiniCta;
   const [badgeMiniUrl, setBadgeMiniUrl] = useState<string | undefined>();
 
   useEffect(() => {
@@ -351,7 +354,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
           />
           
         )}
-         {showBadgeMiniCta && (
+         {showBadgeMiniCta && badgeMiniCta && (
               <div className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 mt-4 pr-8 ">
                 <CtaMiniComponent
                   heading={badgeMiniCta.heading || ""}
