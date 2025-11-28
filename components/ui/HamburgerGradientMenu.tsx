@@ -60,10 +60,7 @@ const DEFAULT_ITEMS: MenuItem[] = [
   {
     label: "Contact",
     href: "/contact",
-    subitems: [
-      { label: "Start a project", href: "/contact" },
-      { label: "Say hello", href: "/contact" },
-    ],
+
   },
 ];
 
@@ -238,14 +235,12 @@ function OverlayRoot({
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="bg-white/5  backdrop-blur-2xl  h-full p-8 md:p-12 max-w-4xl"
+            className="    h-full p-8 md:p-12 max-w-4xl"
           >
             <div className="mb-8 flex items-center justify-between gap-6">
               <div className="flex flex-col text-left text-neutral-100">
-                <span className="text-xxs font-bold uppercase -tracking-[0.03em] text-neutral-100">
-                  Navigation
-                </span>
-                <h2 className="text-3xl md:text-4xl font-aspekta leading-none tracking-tight">
+            
+                <h2 className="text-2xl md:text-2xl font-aspekta leading-none tracking-tight">
                   Jump into our world
                 </h2>
               </div>
@@ -286,13 +281,13 @@ function OverlayRoot({
                     visible: { opacity: 1, y: 0 },
                   }}
                   transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  className="group    border-b-1 border-white/50  py-4 md:px-6 md:py-5 "
+                  className="group    border-b-1 border-white/50   pb-2 md:px-6 md:py-5 "
                 >
-                  <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center justify-between ">
                     <Link
                       href={item.href}
                       ref={idx === 0 ? firstLinkRef : undefined}
-                      className="text-xl md:text-2xl font-semibold tracking-tight text-neutral-50 hover:text-lime-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 rounded-sm transition-colors"
+                      className="text-xl md:text-2xl tracking-tight text-neutral-50 hover:text-lime-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 rounded-sm transition-colors"
                       onClick={onClose}
                     >
                       {item.label}
@@ -420,7 +415,10 @@ function OverlayRoot({
           whileHover={{ opacity: 1 }}
           transition={{ delay: 0.25 }}
         >
-          +
+       <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M15.2653 9.26531L12.5306 12L15.2653 14.7347C15.3357 14.8051 15.3752 14.9005 15.3752 15C15.3752 15.0995 15.3357 15.1949 15.2653 15.2653C15.195 15.3357 15.0995 15.3752 15 15.3752C14.9005 15.3752 14.8051 15.3357 14.7347 15.2653L12 12.5306L9.26532 15.2653C9.19495 15.3357 9.09952 15.3752 9 15.3752C8.90049 15.3752 8.80506 15.3357 8.73469 15.2653C8.66433 15.1949 8.6248 15.0995 8.6248 15C8.6248 14.9005 8.66433 14.8051 8.73469 14.7347L11.4694 12L8.73469 9.26531C8.66433 9.19495 8.6248 9.09951 8.6248 9C8.6248 8.90049 8.66433 8.80505 8.73469 8.73469C8.80506 8.66432 8.90049 8.62479 9 8.62479C9.09952 8.62479 9.19495 8.66432 9.26532 8.73469L12 11.4694L14.7347 8.73469C14.7695 8.69985 14.8109 8.67221 14.8564 8.65335C14.9019 8.6345 14.9507 8.62479 15 8.62479C15.0493 8.62479 15.0981 8.6345 15.1436 8.65335C15.1891 8.67221 15.2305 8.69985 15.2653 8.73469C15.3002 8.76953 15.3278 8.81089 15.3467 8.85641C15.3655 8.90194 15.3752 8.95073 15.3752 9C15.3752 9.04927 15.3655 9.09806 15.3467 9.14359C15.3278 9.18911 15.3002 9.23047 15.2653 9.26531ZM21.375 12C21.375 13.8542 20.8252 15.6668 19.795 17.2085C18.7649 18.7502 17.3007 19.9518 15.5877 20.6614C13.8746 21.3709 11.9896 21.5566 10.171 21.1949C8.35246 20.8331 6.682 19.9402 5.37088 18.6291C4.05976 17.318 3.16688 15.6475 2.80514 13.829C2.44341 12.0104 2.62906 10.1254 3.33863 8.41234C4.04821 6.69929 5.24982 5.23511 6.79153 4.20497C8.33324 3.17483 10.1458 2.625 12 2.625C14.4856 2.62773 16.8686 3.61633 18.6261 5.37389C20.3837 7.13145 21.3723 9.51443 21.375 12ZM20.625 12C20.625 10.2941 20.1192 8.62658 19.1714 7.20821C18.2237 5.78983 16.8767 4.68434 15.3006 4.03154C13.7246 3.37873 11.9904 3.20793 10.3174 3.54073C8.64426 3.87352 7.10744 4.69498 5.90121 5.9012C4.69498 7.10743 3.87353 8.64426 3.54073 10.3173C3.20793 11.9904 3.37874 13.7246 4.03154 15.3006C4.68435 16.8767 5.78984 18.2237 7.20821 19.1714C8.62658 20.1192 10.2941 20.625 12 20.625C14.2867 20.6225 16.4791 19.713 18.0961 18.0961C19.713 16.4791 20.6225 14.2867 20.625 12Z" fill="white"/>
+</svg>
+
         </motion.button>
       </motion.div>
     </motion.div>
@@ -453,7 +451,7 @@ function FullscreenGradientBackdrop({ onClose }: { onClose: () => void }) {
       onClick={onClose}
     >
       <motion.div
-        className="absolute inset-0 bg-neutral-950"
+        className="absolute inset-0 bg-black pointer-events-none"
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.7 }}
         exit={{ opacity: 0, transition: { duration: 0.1 } }}
@@ -535,26 +533,13 @@ function HamburgerButton({
       aria-expanded={open}
       aria-controls={ariaControls}
       onClick={onClick}
-      className={`relative top-14 left-4 w-12 h-12 flex items-center justify-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 rounded-md ${className}`}
+      className={`relative top-4 left-4 w-12 h-12 flex items-center justify-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 rounded-md ${className}`}
     >
-      <span className="sr-only">Menu</span>
-      {[0, 1, 2].map((i) => (
-        <motion.span
-          key={i}
-          className="absolute top-0 h-[1.5px] w-6 bg-neutral-100 dark:bg-neutral-100 rounded-full"
-          initial={false}
-          animate={
-            open
-              ? i === 0
-                ? { y: 0, rotate: 45 }
-                : i === 1
-                  ? { opacity: 0 }
-                  : { y: 0, rotate: -45 }
-              : { y: (i - 1) * 6, rotate: 0, opacity: 1 }
-          }
-          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-        />
-      ))}
+     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M20.625 12C20.625 12.0995 20.5855 12.1948 20.5152 12.2652C20.4448 12.3355 20.3495 12.375 20.25 12.375H3.75C3.65054 12.375 3.55516 12.3355 3.48484 12.2652C3.41451 12.1948 3.375 12.0995 3.375 12C3.375 11.9005 3.41451 11.8052 3.48484 11.7348C3.55516 11.6645 3.65054 11.625 3.75 11.625H20.25C20.3495 11.625 20.4448 11.6645 20.5152 11.7348C20.5855 11.8052 20.625 11.9005 20.625 12ZM3.75 6.375H20.25C20.3495 6.375 20.4448 6.33549 20.5152 6.26517C20.5855 6.19484 20.625 6.09946 20.625 6C20.625 5.90054 20.5855 5.80516 20.5152 5.73484C20.4448 5.66451 20.3495 5.625 20.25 5.625H3.75C3.65054 5.625 3.55516 5.66451 3.48484 5.73484C3.41451 5.80516 3.375 5.90054 3.375 6C3.375 6.09946 3.41451 6.19484 3.48484 6.26517C3.55516 6.33549 3.65054 6.375 3.75 6.375ZM20.25 17.625H3.75C3.65054 17.625 3.55516 17.6645 3.48484 17.7348C3.41451 17.8052 3.375 17.9005 3.375 18C3.375 18.0995 3.41451 18.1948 3.48484 18.2652C3.55516 18.3355 3.65054 18.375 3.75 18.375H20.25C20.3495 18.375 20.4448 18.3355 20.5152 18.2652C20.5855 18.1948 20.625 18.0995 20.625 18C20.625 17.9005 20.5855 17.8052 20.5152 17.7348C20.4448 17.6645 20.3495 17.625 20.25 17.625Z" fill="white"/>
+</svg>
+
+
     </button>
   );
 }
