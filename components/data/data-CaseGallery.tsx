@@ -126,8 +126,8 @@ export default function CaseGalleryComponent({
                   <video
                     src={active.mainVideoUrl}
                     autoPlay
-                    muted
-                    loop
+                    muted  playsInline
+                    loop 
                     className="w-full h-full absolute min-h-[70vh] sm:rounded-t-xl opacity-50 object-cover object-top"
                   />
                 ) : (

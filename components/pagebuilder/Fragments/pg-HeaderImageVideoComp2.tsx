@@ -57,7 +57,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
             src={videoSrc}
             autoPlay
             loop
-            muted
+            muted  playsInline
             className="object-cover w-full h-full overflow-hidden "
           />
         ) : (
