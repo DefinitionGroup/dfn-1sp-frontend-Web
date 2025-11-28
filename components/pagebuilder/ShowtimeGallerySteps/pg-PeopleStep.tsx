@@ -1,9 +1,12 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Badgemodule from "@/components/ui/Badgemodule";
 import type { GalleryPeopleStep, CloudinaryAsset } from "@/types/sanity.types";
 import PeopleShowcaseHero from "../Fragments/pg-PeopleShowcaseHero";
 import GridBackground from "@/components/ui/GridBackground";
+import CtaMiniComponent from "../Fragments/pg-CtaMiniComponent";
+import { resolveLink, resolveLinkAsync } from "@/utils/utils";
+import { useParams } from "next/navigation";
 
 type Member = {
   _id?: string;
@@ -38,6 +41,16 @@ export default function PeopleStep({
     media?: CloudinaryAsset;
   };
 }) {
+  const params = useParams();
+  const locale = (params?.locale as string) || "en";
+
+  const applyLocaleToPath = (url?: string | null) => {
+    if (!url) return undefined;
+    if (!url.startsWith("/")) return url || undefined;
+    if (url.startsWith(`/${locale}`)) return url;
+    return `/${locale}${url}`;
+  };
+
   const members = step.teamMembers ?? [];
   const header = step.header ?? {};
 
@@ -67,6 +80,33 @@ export default function PeopleStep({
     ? { "data-navpoint-name": step.navPointName }
     : {};
 
+  const shouldShowBadgeMiniCta = Boolean(
+    step.showBadgeMiniCta && step.badgeMiniCta
+  );
+  const badgeMiniCta = shouldShowBadgeMiniCta ? step.badgeMiniCta : undefined;
+
+  const [badgeMiniUrl, setBadgeMiniUrl] = useState<string | undefined>(() =>
+    applyLocaleToPath(resolveLink(badgeMiniCta?.link))
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function updateBadgeUrl() {
+      if (!shouldShowBadgeMiniCta || !badgeMiniCta?.link) {
+        if (!cancelled) setBadgeMiniUrl(undefined);
+        return;
+      }
+      const resolved = await resolveLinkAsync(badgeMiniCta.link);
+      if (!cancelled) setBadgeMiniUrl(applyLocaleToPath(resolved));
+    }
+
+    updateBadgeUrl();
+    return () => {
+      cancelled = true;
+    };
+  }, [shouldShowBadgeMiniCta, badgeMiniCta?.link, locale]);
+
   return (
     <section
       id={sectionId}
@@ -75,14 +115,30 @@ export default function PeopleStep({
     >
       {/* Badge */}
       <GridBackground />
-      {step.badge && (
+      {(step.badge || shouldShowBadgeMiniCta) && (
         <div className="z-1 grid col-span-12 col-start-1 pt-32 row-start-1 grid-cols-12 ">
-          <Badgemodule
-            text={step.badge.text ?? ""}
-            subtitle={step.badge.subtitle ?? ""}
-            numberEl={step.badge.numberEl ?? ""}
-            className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky top-0 "
-          />
+          <div className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky top-0 flex flex-col gap-6">
+            {step.badge && (
+              <Badgemodule
+                text={step.badge.text ?? ""}
+                subtitle={step.badge.subtitle ?? ""}
+                numberEl={step.badge.numberEl ?? ""}
+              />
+            )}
+
+            {shouldShowBadgeMiniCta && badgeMiniCta && (
+              <div className="pr-4">
+                <CtaMiniComponent
+                  heading={badgeMiniCta.heading || ""}
+                  paragraph={badgeMiniCta.paragraph || ""}
+                  buttonText={badgeMiniCta.buttonText || ""}
+                  buttonVariant={(badgeMiniCta.variant as any) || "limesmall"}
+                  align={(badgeMiniCta.alignment as any) || "left"}
+                  url={badgeMiniUrl || undefined}
+                />
+              </div>
+            )}
+          </div>
         </div>
       )}
 

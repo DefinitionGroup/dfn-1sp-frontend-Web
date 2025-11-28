@@ -22,6 +22,22 @@ export default defineType({
         }),
         defineField({ name: 'badge', title: 'Badge', type: 'badgeModule', group: 'badge' }),
         defineField({
+            name: 'showBadgeMiniCta',
+            title: 'Show Badge CTA mini',
+            type: 'boolean',
+            initialValue: false,
+            description: 'Enable to display a CTA mini component beneath the badge.',
+            group: 'badge'
+        }),
+        defineField({
+            name: 'badgeMiniCta',
+            title: 'Badge CTA mini',
+            type: 'ctaMiniComponent',
+            description: 'Optional CTA mini component that renders under the badge.',
+            group: 'badge',
+            hidden: ({ parent }) => !parent?.showBadgeMiniCta
+        }),
+        defineField({
             name: 'header',
             title: 'Header Section',
             type: 'peopleStepHeader',

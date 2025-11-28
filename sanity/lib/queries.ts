@@ -34,6 +34,24 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
         },
         _type == 'galleryPeopleStep' => {
           ...,
+          showBadgeMiniCta,
+          badgeMiniCta{
+            _type,
+            heading,
+            paragraph,
+            buttonText,
+            variant,
+            alignment,
+            link{
+              _type,
+              linkType,
+              externalUrl,
+              page->{
+                _id,
+                slug
+              }
+            }
+          },
           teamMembers[]->{
             _id,
             name,
@@ -115,6 +133,24 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
     },
     _type == 'galleryPeopleStep' => {
       ...,
+      showBadgeMiniCta,
+      badgeMiniCta{
+        _type,
+        heading,
+        paragraph,
+        buttonText,
+        variant,
+        alignment,
+        link{
+          _type,
+          linkType,
+          externalUrl,
+          page->{
+            _id,
+            slug
+          }
+        }
+      },
       teamMembers[]->{
         _id,
         name,

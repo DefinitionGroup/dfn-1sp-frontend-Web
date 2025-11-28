@@ -182,8 +182,30 @@ export interface GalleryRevealStep extends GalleryBase {
 
 export interface GalleryPeopleStep extends GalleryBase {
     type: "people";
-    header?: { superText?: string; mainHeadline?: string };
+    header?: {
+        superText?: string;
+        mainHeadline?: string;
+        creativityTitle?: string;
+        uniquePeopleText?: string;
+    };
+    description?: string;
+    teamMembers?: Array<{
+        _id?: string;
+        name?: string;
+        image?: CloudinaryAsset | null;
+        video?: CloudinaryAsset | null;
+        media?: CloudinaryAsset | null;
+        altText?: string;
+        fullname?: string;
+        position?: string;
+        email?: string;
+        profileUrl?: string;
+        tagline?: string;
+        channel?: string[];
+    }>;
     media?: CloudinaryAsset;
+    badgeMiniCta?: CtaMiniComponent;
+    showBadgeMiniCta?: boolean;
 }
 
 export interface GalleryScrollHighlightStep extends GalleryBase {
