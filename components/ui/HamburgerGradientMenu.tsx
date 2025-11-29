@@ -113,15 +113,17 @@ export default function HamburgerGradientMenu({
   const toggle = useCallback(() => setOpen((o) => !o), []);
 
   return (
-    <div className="fixed top-0 w-full z-[2000]">
-      <HamburgerButton
-        open={open}
-        onClick={toggle}
-        className={buttonClassName}
-        ariaControls="gradient-menu-panel"
-      />
+    <div className="fixed top-0 left-0 w-full z-[2000] pointer-events-none">
+      <div className="pointer-events-auto inline-block">
+        <HamburgerButton
+          open={open}
+          onClick={toggle}
+          className={buttonClassName}
+          ariaControls="gradient-menu-panel"
+        />
+      </div>
       <Link
-        className="hover:text-lime-400"
+        className="hover:text-lime-400 pointer-events-auto"
         href={"/"}
         onClick={(e) => {
           e.preventDefault();
@@ -133,7 +135,7 @@ export default function HamburgerGradientMenu({
           alt="1SP Logo"
           width={60}
           height={60}
-          className="object-contain md:hidden absolute top-2 right-10  "
+          className="object-contain md:hidden absolute top-3 right-3 sm:top-4 sm:right-4 w-[50px] sm:w-[60px] h-auto"
         />
       </Link>
       <AnimatePresence>
@@ -536,19 +538,19 @@ function HamburgerButton({
       aria-expanded={open}
       aria-controls={ariaControls}
       onClick={onClick}
-      className={`relative top-1 left-4 w-12 h-12 flex mix-blend-color-dodge
- items-center justify-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 rounded-md ${className}`}
+      className={`m-3 sm:m-4 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-md bg-black/50 backdrop-blur-sm border border-white/20 hover:bg-black/70 hover:border-white/40 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 ${className}`}
     >
       <svg
-        width="24"
-        height="24"
+        width="20"
+        height="20"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        className="sm:w-6 sm:h-6"
       >
         <path
           d="M20.625 12C20.625 12.0995 20.5855 12.1948 20.5152 12.2652C20.4448 12.3355 20.3495 12.375 20.25 12.375H3.75C3.65054 12.375 3.55516 12.3355 3.48484 12.2652C3.41451 12.1948 3.375 12.0995 3.375 12C3.375 11.9005 3.41451 11.8052 3.48484 11.7348C3.55516 11.6645 3.65054 11.625 3.75 11.625H20.25C20.3495 11.625 20.4448 11.6645 20.5152 11.7348C20.5855 11.8052 20.625 11.9005 20.625 12ZM3.75 6.375H20.25C20.3495 6.375 20.4448 6.33549 20.5152 6.26517C20.5855 6.19484 20.625 6.09946 20.625 6C20.625 5.90054 20.5855 5.80516 20.5152 5.73484C20.4448 5.66451 20.3495 5.625 20.25 5.625H3.75C3.65054 5.625 3.55516 5.66451 3.48484 5.73484C3.41451 5.80516 3.375 5.90054 3.375 6C3.375 6.09946 3.41451 6.19484 3.48484 6.26517C3.55516 6.33549 3.65054 6.375 3.75 6.375ZM20.25 17.625H3.75C3.65054 17.625 3.55516 17.6645 3.48484 17.7348C3.41451 17.8052 3.375 17.9005 3.375 18C3.375 18.0995 3.41451 18.1948 3.48484 18.2652C3.55516 18.3355 3.65054 18.375 3.75 18.375H20.25C20.3495 18.375 20.4448 18.3355 20.5152 18.2652C20.5855 18.1948 20.625 18.0995 20.625 18C20.625 17.9005 20.5855 17.8052 20.5152 17.7348C20.4448 17.6645 20.3495 17.625 20.25 17.625Z"
-          fill="#888"
+          fill="white"
         />
       </svg>
     </button>
