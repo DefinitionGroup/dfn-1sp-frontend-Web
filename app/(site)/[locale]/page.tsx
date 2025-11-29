@@ -27,7 +27,7 @@ export default async function Home({
 
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
-          <HamburgerGradientMenu />
+       <HamburgerGradientMenu />
       <div className="  min-h-screen">
        
         {page?.content1sp ? (
