@@ -21,9 +21,9 @@ interface ListItemProps {
 }
 
 const sizeClasses: Record<NonNullable<ListItemProps["size"]>, string> = {
-  small: "text-sm",
-  medium: "text-xl",
-  large: "text-3xl",
+  small: "text-xs sm:text-sm",
+  medium: "text-base sm:text-lg md:text-xl",
+  large: "text-xl sm:text-2xl md:text-3xl",
 };
 
 const weightClasses: Record<
@@ -49,16 +49,16 @@ const textColorClasses: Record<NonNullable<ListItemProps["color"]>, string> = {
 };
 
 const lineColorClasses: Record<NonNullable<ListItemProps["color"]>, string> = {
-  "gray-50": "bg-gray-50",
-  "gray-100": "bg-gray-100",
-  "gray-200": "bg-gray-200",
-  "gray-300": "bg-gray-300",
-  "gray-400": "bg-gray-400",
-  "gray-500": "bg-gray-500",
-  "gray-600": "bg-gray-600",
-  "gray-700": "bg-gray-700",
-  white: "bg-white",
-  black: "bg-gray-200",
+  "gray-50": "bg-gray-50/30",
+  "gray-100": "bg-gray-100/30",
+  "gray-200": "bg-gray-200/40",
+  "gray-300": "bg-gray-300/40",
+  "gray-400": "bg-gray-400/40",
+  "gray-500": "bg-gray-500/40",
+  "gray-600": "bg-gray-600/40",
+  "gray-700": "bg-gray-700/40",
+  white: "bg-white/30",
+  black: "bg-gray-300",
 };
 
 function ListItemComponent({
@@ -69,9 +69,10 @@ function ListItemComponent({
   className,
 }: ListItemProps) {
   return (
-    <div className="pb-2">
+    <div className="pb-3 sm:pb-4 group">
       <p
         className={cn(
+          "leading-relaxed transition-colors duration-200",
           sizeClasses[size],
           weightClasses[fontWeight],
           textColorClasses[color],
@@ -80,7 +81,13 @@ function ListItemComponent({
       >
         {children}
       </p>
-      <div className={cn("w-full  h-px mt-4", lineColorClasses[color])} />
+      <div 
+        className={cn(
+          "w-full h-px mt-3 sm:mt-4 transition-all duration-300",
+          "group-hover:h-[2px]",
+          lineColorClasses[color]
+        )} 
+      />
     </div>
   );
 }

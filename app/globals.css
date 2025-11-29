@@ -354,6 +354,80 @@
       transparent
     );
   }
+
+  /* Responsive container utilities */
+  .container-responsive {
+    @apply w-full px-4 sm:px-6 lg:px-8 mx-auto;
+    max-width: min(100%, 1400px);
+  }
+
+  /* Badge module utilities */
+  .badge-glass {
+    @apply bg-white/5 backdrop-blur-md border border-white/20 shadow-lg;
+  }
+
+  .badge-solid {
+    @apply bg-black shadow-xl;
+  }
+
+  .badge-minimal {
+    @apply border-t border-black/15 md:border md:border-black/10;
+  }
+
+  /* Text clarity utilities */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Smooth scrolling for sticky elements */
+  .scroll-smooth-sticky {
+    scroll-margin-top: 6rem;
+  }
+
+  /* Responsive typography scaling */
+  .heading-responsive {
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl;
+    @apply tracking-tighter leading-[0.9];
+  }
+
+  .subheading-responsive {
+    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
+    @apply tracking-tight leading-tight;
+  }
+
+  .body-responsive {
+    @apply text-sm sm:text-base md:text-lg;
+    @apply leading-relaxed;
+  }
+
+  /* Grid gap responsive utilities */
+  .gap-responsive {
+    @apply gap-4 sm:gap-6 lg:gap-8;
+  }
+
+  /* Padding responsive utilities */
+  .py-section {
+    @apply py-12 sm:py-16 md:py-24 lg:py-32;
+  }
+
+  .px-section {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Card hover effects */
+  .card-hover {
+    @apply transition-all duration-300 ease-out;
+    @apply hover:shadow-lg hover:-translate-y-0.5;
+  }
+
+  /* Focus visible improvements */
+  .focus-ring {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime-500 focus-visible:ring-offset-2;
+  }
 }
 
 video::-webkit-media-controls {

@@ -82,10 +82,11 @@ function ServicesHeroWithBadge({
   const sectionId = t.ids.top;
 
   return (
-    <div
+    <section
       id={sectionId}
       data-navpoint-name={navPointName}
-      className={`grid grid-cols-12 z-1 mx-auto min-h-[${minHeight}] relative font-aspekta`}
+      className="relative font-aspekta"
+      style={{ minHeight }}
     >
       <HeaderImageVideoComp2
         useVideo={useVideo}
@@ -94,76 +95,81 @@ function ServicesHeroWithBadge({
         enableParallax={enableParallax}
       />
 
-      <div
-        className={`z-1 p-12  md:grid col-span-12 py-${paddingY} gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12`}
-      >
-        {/* Badge Module */}
-        {badgeText && (
-          <Badgemodule
-            className="w-1/2 mb-12 md:mb-0 md:w-1/1 flex md:col-span-2 md:sticky top-0"
-            text={badgeText}
-            subtitle={badgeSubtitle || ""}
-            numberEl={badgeNumber}
-          />
-        )}
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          className={`grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 py-16 sm:py-24 lg:py-${paddingY}`}
+        >
+          {/* Badge Module - Responsive positioning */}
+          {badgeText && (
+            <div className="col-span-4 sm:col-span-3 md:col-span-2 mb-8 md:mb-0 md:sticky md:top-24 self-start">
+              <Badgemodule
+                text={badgeText}
+                subtitle={badgeSubtitle || ""}
+                numberEl={badgeNumber}
+                variant="glass"
+                size="md"
+              />
+            </div>
+          )}
 
-        {/* Title and Subtitle */}
-        <div className="col-span-10 col-start-3">
-          <StaggeredSlideUp
-            className="flex flex-col items-start justify-start"
-            delay={0.0}
-            staggerDelay={0.1}
-            duration={0.5}
-            distance={80}
-          >
-            <h2 className="text-7xl text-gray-100 max-w-xl  tracking-tighter leading-compress mb-4">
-              {title}
-            </h2>
-            {subtitle && (
-              <p className="text-2xl text-gray-100  leading-none max-w-xs mx-auto">
-                {subtitle}
-              </p>
-            )}
-          </StaggeredSlideUp>
+          {/* Title and Subtitle */}
+          <div className={`col-span-4 sm:col-span-6 ${badgeText ? "md:col-span-10 md:col-start-3" : "md:col-span-12"}`}>
+            <StaggeredSlideUp
+              className="flex flex-col items-start justify-start gap-4"
+              delay={0.0}
+              staggerDelay={0.1}
+              duration={0.5}
+              distance={80}
+            >
+              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-gray-100 max-w-2xl tracking-tighter leading-[0.9] mb-2 md:mb-4">
+                {title}
+              </h2>
+              {subtitle && (
+                <p className="text-lg sm:text-xl md:text-2xl text-gray-200 leading-snug max-w-md">
+                  {subtitle}
+                </p>
+              )}
+            </StaggeredSlideUp>
+          </div>
+
+          {/* CTA Section - Improved responsive layout */}
+          {cta && (
+            <div className="col-span-4 sm:col-span-3 md:col-span-3 md:col-start-3 mt-6 md:mt-8">
+              <CtaMiniComponent
+                heading={cta.heading}
+                paragraph={cta.paragraph || ""}
+                buttonText={cta.buttonText}
+                buttonVariant={(cta.variant as any) || "limesmall"}
+                url={
+                  cta.link?.linkType === "internal"
+                    ? `/${locale}/${cta.link.page?.slug?.current || ""}`
+                    : cta.link?.externalUrl || "/contact"
+                }
+                align={(cta.alignment as any) || "left"}
+              />
+            </div>
+          )}
+
+          {/* List Items - Improved responsive layout */}
+          {listItems && listItems.length > 0 && (
+            <div className={`col-span-4 sm:col-span-6 ${cta ? "md:col-span-6 md:col-start-6" : "md:col-span-8 md:col-start-3"} mt-6 md:mt-8`}>
+              <ListContainerComponent>
+                {listItems.map((item, index) => (
+                  <ListItemComponent
+                    key={index}
+                    size={(item.size as any) || "small"}
+                    fontWeight={(item.fontWeight as any) || "normal"}
+                    color={item.color as any}
+                  >
+                    {item.text}
+                  </ListItemComponent>
+                ))}
+              </ListContainerComponent>
+            </div>
+          )}
         </div>
-
-        {/* CTA Section */}
-        {cta && (
-          <div className="col-span-2 col-start-3 mt-8 pr-8 text-gray-100">
-            <CtaMiniComponent
-              heading={cta.heading}
-              paragraph={cta.paragraph || ""}
-              buttonText={cta.buttonText}
-              buttonVariant={(cta.variant as any) || "limesmall"}
-              url={
-                cta.link?.linkType === "internal"
-                  ? `/${locale}/${cta.link.page?.slug?.current || ""}`
-                  : cta.link?.externalUrl || "/contact"
-              }
-              align={(cta.alignment as any) || "left"}
-            />
-          </div>
-        )}
-
-        {/* List Items */}
-        {listItems && listItems.length > 0 && (
-          <div className="col-span-5 col-start-5 mt-8">
-            <ListContainerComponent>
-              {listItems.map((item, index) => (
-                <ListItemComponent
-                  key={index}
-                  size={(item.size as any) || "small"}
-                  fontWeight={(item.fontWeight as any) || "normal"}
-                  color={item.color as any}
-                >
-                  {item.text}
-                </ListItemComponent>
-              ))}
-            </ListContainerComponent>
-          </div>
-        )}
       </div>
-    </div>
+    </section>
   );
 }
 

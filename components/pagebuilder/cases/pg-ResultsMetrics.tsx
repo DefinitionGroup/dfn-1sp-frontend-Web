@@ -110,7 +110,7 @@ export default function ResultsMetrics({
       <div
         id={sectionId}
         data-navpoint-name={navPointName}
-        className="grid grid-cols-12 z-1 mx-auto min-h-[90vh] relative font-aspekta"
+        className="min-h-[80vh] md:min-h-[90vh] relative font-aspekta"
       >
         <HeaderImageVideoComp2
           useVideo={false}
@@ -119,97 +119,106 @@ export default function ResultsMetrics({
           enableParallax={enableParallax}
         />
 
-        <div
-          className={`z-1 grid col-span-12 py-${paddingY} gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12`}
-        >
-          <Badgemodule
-            className="col-span-2 sticky top-0"
-            text={badgeText || t.caseStudy.results}
-            subtitle={badgeSubtitle || t.caseStudy.resultsSubtitle}
-            numberEl={badgeNumber}
-          />
-
-          <div className="col-span-10 col-start-3">
-            <StaggeredSlideUp
-              className="flex flex-col items-start justify-start"
-              delay={0.0}
-              staggerDelay={0.1}
-              duration={0.5}
-              distance={80}
-            >
-              <h2 className="text-6xl mb-2 text-gray-100 max-w-xl  tracking-tight leading-none">
-                {title}
-              </h2>
-              {description && (
-                <p className="text-xl text-gray-100 max-w-xl mx-auto">
-                  {description}
-                </p>
-              )}
-            </StaggeredSlideUp>
-          </div>
-
-          {/* Metrics grid - uses data from props, maps over any number of metrics */}
-          {metrics && metrics.length > 0 && (
-            <div className="col-span-12 flex flex-wrap justify-between col-start-1 bg-neutral-900/60 backdrop-blur-lg gap-4 mt-12 p-12 rounded-xl">
-              {metrics.map((metric, index) => (
-                <div
-                  key={index}
-                  className="flex flex-col items-start pb-8 border-b border-white/20 flex-1"
-                >
-                  {metric.type === "animatedNumber" ? (
-                    <div className="mt-12 mb-4">
-                      <AnimateNumberinView
-                        number={metric.value}
-                        format={{ minimumIntegerDigits: 1 }}
-                        suffix={metric.suffix || ""}
-                        className="number text-gray-100"
-                        delay={300}
-                      />
-                    </div>
-                  ) : (
-                    <>
-                      {getDiagramComponent(
-                        metric.type as any,
-                        metric.value,
-                        0.3 + index * 0.1,
-                        index
-                      )}
-                      <motion.div
-                        className="text-[8px] font-bold mt-12 text-gray-100"
-                        variants={{
-                          hidden: { opacity: 0, y: 20 },
-                          visible: {
-                            opacity: 1,
-                            y: -10,
-                            transition: { duration: 0.6, ease: "easeOut" },
-                          },
-                        }}
-                      >
-                        <AnimateNumberinView
-                          number={Math.abs(metric.value)}
-                          format={{ minimumIntegerDigits: 2 }}
-                          suffix="%"
-                          className="text-4xl font-bold tracking-tighter"
-                          delay={300}
-                        />
-                      </motion.div>
-                    </>
-                  )}
-                  <StaggeredSlideUp
-                    className=""
-                    delay={0.0}
-                    staggerDelay={0.1}
-                    duration={0.5}
-                    distance={80}
-                  >
-                    <h2 className="text-lg text-gray-100 tracking-tight">
-                      {metric.label}
-                    </h2>
-                  </StaggeredSlideUp>
-                </div>
-              ))}
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className={`grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 py-16 sm:py-24 lg:py-${paddingY}`}>
+            {/* Badge Module - Responsive sticky */}
+            <div className="col-span-4 sm:col-span-3 md:col-span-2 mb-6 md:mb-0 md:sticky md:top-24 self-start">
+              <Badgemodule
+                text={badgeText || t.caseStudy.results}
+                subtitle={badgeSubtitle || t.caseStudy.resultsSubtitle}
+                numberEl={badgeNumber}
+                variant="glass"
+                size="md"
+              />
             </div>
-          )}
+
+            {/* Title and Description */}
+            <div className="col-span-4 sm:col-span-6 md:col-span-10 md:col-start-3">
+              <StaggeredSlideUp
+                className="flex flex-col items-start justify-start gap-3"
+                delay={0.0}
+                staggerDelay={0.1}
+                duration={0.5}
+                distance={80}
+              >
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-2 text-gray-100 max-w-xl tracking-tight leading-[1.1]">
+                  {title}
+                </h2>
+                {description && (
+                  <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-xl leading-relaxed">
+                    {description}
+                  </p>
+                )}
+              </StaggeredSlideUp>
+            </div>
+
+            {/* Metrics grid - Responsive layout */}
+            {metrics && metrics.length > 0 && (
+              <div className="col-span-4 sm:col-span-6 md:col-span-12 mt-8 md:mt-12">
+                <div className="bg-neutral-900/60 backdrop-blur-lg rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-10 lg:p-12">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
+                    {metrics.map((metric, index) => (
+                      <div
+                        key={index}
+                        className="flex flex-col items-start pb-6 border-b border-white/15 last:border-b-0 sm:last:border-b sm:border-b"
+                      >
+                        {metric.type === "animatedNumber" ? (
+                          <div className="mt-6 sm:mt-8 md:mt-12 mb-3 md:mb-4">
+                            <AnimateNumberinView
+                              number={metric.value}
+                              format={{ minimumIntegerDigits: 1 }}
+                              suffix={metric.suffix || ""}
+                              className="number text-gray-100"
+                              delay={300}
+                            />
+                          </div>
+                        ) : (
+                          <>
+                            {getDiagramComponent(
+                              metric.type as any,
+                              metric.value,
+                              0.3 + index * 0.1,
+                              index
+                            )}
+                            <motion.div
+                              className="text-[8px] sm:text-[9px] font-bold mt-6 sm:mt-8 md:mt-12 text-gray-100"
+                              variants={{
+                                hidden: { opacity: 0, y: 20 },
+                                visible: {
+                                  opacity: 1,
+                                  y: -10,
+                                  transition: { duration: 0.6, ease: "easeOut" },
+                                },
+                              }}
+                            >
+                              <AnimateNumberinView
+                                number={Math.abs(metric.value)}
+                                format={{ minimumIntegerDigits: 2 }}
+                                suffix="%"
+                                className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter"
+                                delay={300}
+                              />
+                            </motion.div>
+                          </>
+                        )}
+                        <StaggeredSlideUp
+                          className="mt-2"
+                          delay={0.0}
+                          staggerDelay={0.1}
+                          duration={0.5}
+                          distance={80}
+                        >
+                          <h3 className="text-sm sm:text-base md:text-lg text-gray-200 tracking-tight leading-snug">
+                            {metric.label}
+                          </h3>
+                        </StaggeredSlideUp>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </section>

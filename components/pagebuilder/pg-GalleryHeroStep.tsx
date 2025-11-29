@@ -77,23 +77,28 @@ function GalleryHeroStepComponent(props: Props) {
         <HeaderImageVideoComp2 useVideo videoSrc={videoSrc} enableParallax />
       )}
 
-      <div className="grid grid-cols-6 md:grid-cols-12 z-1 mx-auto container  relative font-aspekta">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 font-aspekta">
         {/* Background grid (optional visual helper) */}
         <GridBackground delay={0.2} staggerDelay={0.06} />
 
-        <div className="z-1 grid  col-span-12 py-32 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
+        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 py-16 sm:py-24 lg:py-32">
+          {/* Badge - Responsive positioning */}
           {step.badge && (
-            <Badgemodule
-              text={step.badge.text ?? ""}
-              subtitle={step.badge.subtitle ?? ""}
-              numberEl={step.badge.numberEl ?? ""}
-              className="col-span-6 md:col-span-2 col-start-2 md:col-start-1"
-            />
+            <div className="col-span-4 sm:col-span-3 md:col-span-2 mb-6 md:mb-0">
+              <Badgemodule
+                text={step.badge.text ?? ""}
+                subtitle={step.badge.subtitle ?? ""}
+                numberEl={step.badge.numberEl ?? ""}
+                variant="minimal"
+                size="md"
+              />
+            </div>
           )}
 
-          <div className="col-span-10 col-start-2 md:col-start-3">
+          {/* Main Content */}
+          <div className={`col-span-4 sm:col-span-6 ${step.badge ? "md:col-span-10 md:col-start-3" : "md:col-span-12"}`}>
             {step.typewriterText && (
-              <h2 className="text-7xl font-regular tracking-tighter pr-2 mb-4">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-regular tracking-tighter mb-4 md:mb-6">
                 <Typewriter
                   ref={typewriterref}
                   play={isInView}
@@ -109,7 +114,7 @@ function GalleryHeroStepComponent(props: Props) {
 
             {(step.description?.length ?? 0) > 0 && (
               <StaggeredSlideUp
-                className="flex flex-col items-start justify-start "
+                className="flex flex-col items-start justify-start gap-2"
                 delay={0}
                 debug={false}
                 easing="smooth"
@@ -118,7 +123,7 @@ function GalleryHeroStepComponent(props: Props) {
                 distance={40}
               >
                 {step.description?.map((p, i) => (
-                  <p key={i} className="text-lg text-gray-600">
+                  <p key={i} className="text-base sm:text-lg text-gray-600 max-w-2xl leading-relaxed">
                     {p}
                   </p>
                 ))}
