@@ -50,7 +50,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
           ease: [0.16, 1, 0.3, 1],
           opacity: { duration: 0.8 },
         }}
-        className="absolute mx-auto rounded-sm inset-0 overflow-hidden "
+        className="absolute mx-auto md:rounded-sm inset-0 overflow-hidden "
       >
         {useVideo ? (
           <video

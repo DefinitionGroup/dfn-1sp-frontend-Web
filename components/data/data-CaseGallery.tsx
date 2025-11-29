@@ -215,7 +215,7 @@ export default function CaseGalleryComponent({
                     autoPlay
                     muted
                     loop
-                    className="w-full h-full object-cover h-[300px] group-hover/card:opacity-100 object-top opacity-80 transition-all"
+                    className="w-full  object-cover h-[300px] group-hover/card:opacity-100 object-top opacity-80 transition-all"
                   />
                 ) : (
                   <Image

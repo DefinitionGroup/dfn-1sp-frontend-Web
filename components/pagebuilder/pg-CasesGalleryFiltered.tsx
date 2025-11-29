@@ -141,7 +141,7 @@ function CasesGalleryFiltered({
         <div className="z-1 col-span-12 col-start-1 px-4 md:px-0">
           {/* Filter Buttons */}
           {showFilters && filters.length > 1 && (
-            <div className="flex flex-wrap gap-4 mb-8 md:justify-center md:justify-start">
+            <div className="flex flex-wrap gap-4 mb-8 justify-center md:justify-start">
               {filters.map((filter) => (
                 <button
                   key={filter}

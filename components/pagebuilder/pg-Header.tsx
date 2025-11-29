@@ -102,7 +102,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="relative h-screen md:h-[90vh] overflow-hidden"
+      className="relative min-h-[80vh] h-[80vh] overflow-hidden"
     >
       {/* Background media */}
       {mediaUrl && (

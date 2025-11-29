@@ -269,9 +269,9 @@ export default function SmartCarousel({
     <section>
       <div
         ref={containerRef}
-        className="container relative top-0  left-0 mx-auto w-full  "
+        className="container relative top-0  mx-2 left-0 md:mx-auto w-full  "
       >
-        <div className="relative h-[800px] flex items-start">
+        <div className="relative h-[500px] md:h-[800px] flex items-start">
           {/* Main Carousel */}
           <div className="relative w-full rounded-sm overflow-hidden h-full perspective-1000">
             <AnimatePresence initial={false} custom={direction}>
