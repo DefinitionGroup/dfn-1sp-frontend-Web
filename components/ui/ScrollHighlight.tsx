@@ -24,23 +24,22 @@ function ScrollHighlightItem({
       className="skill-item"
       initial={false}
       animate={{
-        opacity: isHighlighted ? 1 : 0.4,
-        scale: isHighlighted ? 1.1 : 1,
-        x: isHighlighted ?30 : 0,
-      
+        opacity: isHighlighted ? 1 : 0.35,
+        scale: isHighlighted ? 1.02 : 1,
+        x: isHighlighted ? 8 : 0,
       }}
-      transition={{ type: "spring", stiffness: 100 }}
+      transition={{ type: "spring", stiffness: 120, damping: 20 }}
       onViewportEnter={() => onHighlight(index)}
-      viewport={{ margin: "-28% 0px -68% 0px", amount: "some" }}
+      viewport={{ margin: "-20% 0px -75% 0px", amount: "some" }}
     >
       <span className="skill-name">{skill.name}</span>
       {isHighlighted && skill.text && (
         <motion.p
           className="skill-description"
           layout
-          initial={{ opacity: 0, y: 24 ,x:0}}
+          initial={{ opacity: 0, y: 16, x: 0 }}
           animate={{ opacity: 1, y: 0, x: 0 }}
-          transition={{ type: "spring", stiffness: 100 }}
+          transition={{ type: "spring", stiffness: 120, damping: 20 }}
         >
           {skill.text}
         </motion.p>
@@ -54,7 +53,7 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
   if (!items || items.length === 0) return null;
 
   return (
-    <div className="containerElement">
+    <div className="scroll-highlight-container">
       <ul className="skills-list">
         {items.map((skill, index) => (
           <ScrollHighlightItem
@@ -74,56 +73,97 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
 function Stylesheet() {
   return (
     <style>{`
-        .containerElement { display: flex; }
-        .container h3.containerED1 {
-          font-size:22px;
-          line-height: 1;
-          font-weight: 500;
-          margin: 0;
-          padding: 0;
-          text-align: center;
-          position: sticky;
-          top: 120px;
-          text-transform: none;
-          height: fit-content;
-        }
+      .scroll-highlight-container {
+        display: flex;
+        width: 100%;
+      }
+
+      .skills-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+        width: 100%;
+      }
+
+      @media (min-width: 640px) {
         .skills-list {
-          padding: 50vh 0;
-          list-style: none;
-          padding: 0;
-          margin: 0; color: white;
-          display: flex;
-          flex-direction: column;
-          gap:80px;
+          gap: 3.5rem;
         }
+      }
+
+      @media (min-width: 768px) {
+        .skills-list {
+          gap: 5rem;
+        }
+      }
+
+      .skill-item {
+        will-change: opacity, transform;
+        font-size: clamp(1.25rem, 5vw, 3rem);
+        font-weight: 300;
+        max-width: 100%;
+        margin: 0;
+        padding: 1rem 0;
+        line-height: 1;
+        text-transform: none;
+        display: flex;
+        flex-direction: column;
+      }
+
+      @media (min-width: 640px) {
         .skill-item {
-          padding: 4rem 0;margin-bottom:2rem;
-          will-change: opacity;
-          font-size: clamp(1rem, 4vw, 3rem);
-          font-weight: 300;   max-width: min(22ch, 44vw);
-          margin: 0;
-          padding: 0;
-          line-height: 0.9;
-          text-transform: none;
-          display: flex;
-          flex-direction: column;
+          max-width: min(28ch, 80vw);
+          padding: 1.5rem 0;
         }
-        .skill-name { white-space: wrap; }
+      }
+
+      @media (min-width: 768px) {
+        .skill-item {
+          max-width: min(24ch, 50vw);
+          padding: 2rem 0;
+        }
+      }
+
+      .skill-name {
+        white-space: normal;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        line-height: 1.1;
+      }
+
+      .skill-description {
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1.5;
+        margin-top: 0.75rem;
+        text-transform: none;
+        opacity: 0.85;
+        max-width: 100%;
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        hyphens: auto;
+      }
+
+      @media (min-width: 640px) {
+        .skill-description {
+          font-size: 0.9375rem;
+          margin-top: 1rem;
+          max-width: min(45ch, 85vw);
+        }
+      }
+
+      @media (min-width: 768px) {
         .skill-description {
           font-size: 1rem;
-        
-          font-weight: 400;
-          line-height: 1.3;
-          margin-top: 1rem;
-          text-transform: none;
-          opacity: 0.85;
-          max-width: min(50ch, 90vw);
-          white-space: normal;
-          overflow-wrap: break-word;
-          word-break: break-word;
-          overflow: hidden;
-          hyphens: auto;
+          max-width: min(50ch, 70vw);
         }
-      `}</style>
+      }
+    `}</style>
   );
 }
