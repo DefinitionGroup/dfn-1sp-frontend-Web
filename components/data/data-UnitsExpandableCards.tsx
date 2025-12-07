@@ -82,8 +82,8 @@ export default async function UnitsExpandableCards({
   const cards = transformUnitsToCards(units);
 
   return (
-    <section className="w-full py-8" data-component="smart-units-gallery">
-      <div className="container mx-auto px-4">
+    <section className="w-full " data-component="smart-units-gallery">
+      <div className="container mx-auto ">
         <ExpandableCards items={cards} variant={variant} columns={columns} />
       </div>
     </section>

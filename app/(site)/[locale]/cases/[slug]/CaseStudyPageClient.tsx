@@ -76,7 +76,7 @@ export default function CaseStudyPageClient({
 
   return (
     <>
-      <section className="relative h-[95vh] overflow-hidden">
+      <section className="relative h-[95vh] w-full px-1 md:px-4 overflow-hidden">
         <HamburgerGradientMenu />
         <LineMinimap navPoints={navPoints} />
 
@@ -104,7 +104,7 @@ export default function CaseStudyPageClient({
         <div className="relative z-10 container mt-[20vh] sm:mt-[25vh] md:mt-[30vh] mx-auto px-4 sm:px-6 md:px-8 lg:px-0">
           <StaggeredSlideUp
             delay={0.4}
-            className="max-w-full flex flex-col gap-3 sm:gap-4 lg:max-w-2/3"
+            className="max-w-full flex flex-col gap-3 sm:gap-4 lg:max-w-2/3 "
           >
             {caseStudy.subtitle && (
               <h2 className="text-neutral-50 text-[10px] sm:text-xs font-bold bg-lime-500 rounded-full inline-block w-fit py-1 px-3 sm:px-4">
@@ -114,7 +114,7 @@ export default function CaseStudyPageClient({
             <h1 className="text-neutral-50 w-full md:w-2/3 pb-2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-none">
               {caseStudy.title}
             </h1>
-          
+
             {caseStudy.description && (
               <h3 className="text-neutral-50 w-full sm:w-3/4 md:w-1/2 pb-2 text-base sm:text-lg md:text-xl leading-relaxed">
                 {caseStudy.description}

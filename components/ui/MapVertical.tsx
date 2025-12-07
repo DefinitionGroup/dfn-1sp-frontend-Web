@@ -12,7 +12,7 @@ import {
 import * as React from "react";
 import { clamp } from "@/lib/clamp";
 
-export const LINE_GAP = 6;
+export const LINE_GAP = 4;
 export const LINE_WIDTH = 1;
 export const LINE_COUNT = 50;
 export const LINE_HEIGHT = 4;
@@ -85,7 +85,7 @@ export default function LineMinimap({
 
   return (
     <div
-      className="hidden md:flex fixed top-0 md:left-6 z-100 w-[72px] flex-col justify-center h-[100vh]"
+      className="hidden md:flex fixed top-0 md:left-1 z-100 w-[72px] flex-col justify-center h-[100vh]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -94,7 +94,7 @@ export default function LineMinimap({
         onPointerMove={onMouseMove}
         onPointerLeave={onMouseLeave}
       >
-        <div className="absolute bottom-[4px] left-[32px] text-neutral-400 text-[9px] font-medium leading-none -rotate-90 origin-bottom-left">
+        <div className="absolute bottom-[0px] left-[32px] text-neutral-400 text-[7px] font-medium leading-none -rotate-90 origin-bottom-left">
           Scroll to Navigate
         </div>
 
@@ -354,7 +354,7 @@ export function isActive(index: number, count: number): boolean {
 export function Indicator({ y }: { y: MotionValue<number> }) {
   return (
     <motion.div
-      className="flex bg-lime-500 h-[1px] rounded-full items-center absolute w-[32px] -top-0"
+      className="flex bg-lime-500 h-[2px] rounded-full items-center absolute w-[32px] -top-0"
       style={{ y }}
     >
       <svg

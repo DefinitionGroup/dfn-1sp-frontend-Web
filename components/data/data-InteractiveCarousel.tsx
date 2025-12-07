@@ -273,7 +273,7 @@ export default function SmartCarousel({
       >
         <div className="relative h-[60vh] sm:h-[70vh] md:h-[800px] flex items-start">
           {/* Main Carousel */}
-          <div className="relative w-full rounded-sm overflow-hidden h-full perspective-1000">
+          <div className="relative w-full rounded-xl overflow-hidden h-full perspective-1000">
             <AnimatePresence initial={false} custom={direction}>
               <motion.div
                 key={currentIndex}
@@ -302,8 +302,8 @@ export default function SmartCarousel({
                     <motion.video
                       src={active.video}
                       className="absolute inset-0 w-full h-full overflow-hidden object-cover"
-                      initial={{ scale: 1.3, opacity: 0.7}}
-                      animate={{ scale: 1, opacity: 0.7}}
+                      initial={{ scale: 1.3, opacity: 0.7 }}
+                      animate={{ scale: 1, opacity: 0.7 }}
                       transition={{ duration: 1.6 }}
                       loop
                       autoPlay playsInline
@@ -340,7 +340,7 @@ export default function SmartCarousel({
                       <div>
                         {(active.logosrc || "/logos/Amazon_logo.svg") && (
                           <motion.div className="mb-2 sm:mb-4 max-h-6 sm:max-h-8 w-auto text-black flex items-start text-xs rounded-xs">
-                            <Image 
+                            <Image
                               className="invert h-5 sm:h-6 md:h-8 w-auto"
                               src={active.logosrc || "/logos/Amazon_logo.svg"}
                               alt="Logo"
@@ -350,7 +350,7 @@ export default function SmartCarousel({
                           </motion.div>
                         )}
                         {active.title && (
-                          <motion.h3 className="text-xl sm:text-2xl md:text-5xl tracking-tighter leading-tight md:leading-compressed pb-0">
+                          <motion.h3 className="text-xl sm:text-2xl md:text-5xl tracking-tighter leading-tight md:leading-none   pb-0 md:pb-4 md:pt-4 ">
                             {active.title}
                           </motion.h3>
                         )}
@@ -464,7 +464,7 @@ export default function SmartCarousel({
         </div>
 
         {/* Thumbnail Strip (match Plaintext absolute positioning) */}
-        <div className="absolute flex justify-center w-full bottom-12 sm:bottom-16 md:bottom-[200px] z-30 px-2">
+        <div className="absolute flex justify-center w-full  bottom-16 md:bottom-[100px] z-30 px-2">
           <div
             ref={stripRef}
             className={`flex justify-center mt-4 sm:mt-8 space-x-1.5 sm:space-x-2 md:space-x-4 pt-2 sm:pt-4 md:pb-4 ${isScrollable ? "overflow-x-auto scrollbar-hide" : ""}`}
@@ -472,7 +472,7 @@ export default function SmartCarousel({
             {carouselItems.map((item, index) => (
               <motion.button
                 key={item.id}
-                className={`relative flex-shrink-0 w-10 sm:w-12 md:w-22 h-8 sm:h-12 md:h-18 rounded-sm overflow-hidden outline-1 sm:outline-2 md:outline-3 transition-colors ${index === currentIndex ? "outline-lime-500" : "outline-transparent"}`}
+                className={`relative flex-shrink-0 w-10 sm:w-12 md:w-22 h-8 sm:h-12 md:h-18 rounded-xl overflow-hidden outline-1 sm:outline-2 md:outline-3 transition-colors ${index === currentIndex ? "outline-lime-500" : "outline-transparent"}`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => {

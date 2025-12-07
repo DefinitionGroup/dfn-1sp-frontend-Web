@@ -72,7 +72,7 @@ function ServicesHeroWithBadge({
   cta,
   listItems = [],
   minHeight = "66vh",
-  paddingY = "32",
+  paddingY = "64",
   navPointName,
 }: ServicesHeroWithBadgeProps) {
   const params = useParams();
@@ -95,7 +95,7 @@ function ServicesHeroWithBadge({
         enableParallax={enableParallax}
       />
 
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 lg:py-40">
         <div
           className={`grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 py-16 sm:py-24 lg:py-${paddingY}`}
         >
@@ -134,7 +134,7 @@ function ServicesHeroWithBadge({
 
           {/* CTA Section - Improved responsive layout */}
           {cta && (
-            <div className="col-span-4 sm:col-span-3 md:col-span-3 md:col-start-3 mt-6 md:mt-8">
+            <div className="col-span-4 sm:col-span-3 md:col-span-2 md:col-start-3 text-white mt-6 md:mt-8">
               <CtaMiniComponent
                 heading={cta.heading}
                 paragraph={cta.paragraph || ""}
@@ -152,7 +152,7 @@ function ServicesHeroWithBadge({
 
           {/* List Items - Improved responsive layout */}
           {listItems && listItems.length > 0 && (
-            <div className={`col-span-4 sm:col-span-6 ${cta ? "md:col-span-6 md:col-start-6" : "md:col-span-8 md:col-start-3"} mt-6 md:mt-8`}>
+            <div className={`col-span-4 sm:col-span-6 ${cta ? "md:col-span-4 md:col-start-5" : "md:col-span-8 md:col-start-3"} mt-6 md:mt-8`}>
               <ListContainerComponent>
                 {listItems.map((item, index) => (
                   <ListItemComponent

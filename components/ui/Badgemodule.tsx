@@ -56,7 +56,7 @@ export default function Badgemodule({
       logo: "w-3.5 h-3.5 md:w-4 md:h-4",
       number: "text-[9px] md:text-[10px]",
       text: "text-base md:text-lg lg:text-xl xl:text-2xl",
-      subtitle: "text-[10px] md:text-xs",
+      subtitle: "text-[10px] md:text-xxs",
     },
     lg: {
       container: "min-w-[180px] max-w-[260px]",
@@ -64,7 +64,7 @@ export default function Badgemodule({
       logo: "w-4 h-4 md:w-5 md:h-5",
       number: "text-[10px] md:text-xs",
       text: "text-lg md:text-xl lg:text-2xl xl:text-3xl",
-      subtitle: "text-xs md:text-sm",
+      subtitle: "text-xs md:text-sm ",
     },
   };
 
@@ -76,13 +76,13 @@ export default function Badgemodule({
       footer: "md:bg-neutral-800 md:text-gray-200 md:rounded-b-lg",
     },
     minimal: {
-      wrapper: "border-t border-black/15 md:border md:border-black/10 md:rounded-lg",
-      content: "text-gray-300",
-      footer: "text-gray-300 border-t border-black/10",
+      wrapper: "border-t border-black/30 md:border md:border-black/30 md:rounded-lg",
+      content: "text-gray-400",
+      footer: "text-gray-400 border-t border-black/30",
     },
     glass: {
       wrapper: "border border-white/20 bg-white/5 backdrop-blur-md rounded-lg shadow-lg",
-      content: "text-gray-100",
+      content: "text-gray-200",
       footer: "bg-white/10 text-gray-200 rounded-b-lg border-t border-white/10",
     },
   };
@@ -187,7 +187,7 @@ export default function Badgemodule({
         {/* Footer: Subtitle */}
         <motion.div
           className={cn(
-            "font-semibold uppercase tracking-wider",
+            "font-medium uppercase tracking-wider",
             sizes.padding,
             sizes.subtitle,
             variants.footer

@@ -25,7 +25,8 @@ export default async function Page({
 
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
-      <div className=" min-h-screen">
+      <div className="  min-h-screen px-1 md:px-4">
+
         {page?.content1sp ? (
           <PageBuilder content={page.content1sp} language={language} />
         ) : (

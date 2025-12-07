@@ -98,7 +98,7 @@ function GalleryHeroStepComponent(props: Props) {
           {/* Main Content */}
           <div className={`col-span-4 sm:col-span-6 ${step.badge ? "md:col-span-10 md:col-start-3" : "md:col-span-12"}`}>
             {step.typewriterText && (
-              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-regular tracking-tighter mb-4 md:mb-6">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-regular tracking-tighter mb-4 text-neutral-800 md:mb-2">
                 <Typewriter
                   ref={typewriterref}
                   play={isInView}
@@ -114,7 +114,7 @@ function GalleryHeroStepComponent(props: Props) {
 
             {(step.description?.length ?? 0) > 0 && (
               <StaggeredSlideUp
-                className="flex flex-col items-start justify-start gap-2"
+                className="flex flex-col items-start justify-start gap-0"
                 delay={0}
                 debug={false}
                 easing="smooth"
@@ -123,7 +123,7 @@ function GalleryHeroStepComponent(props: Props) {
                 distance={40}
               >
                 {step.description?.map((p, i) => (
-                  <p key={i} className="text-base sm:text-lg text-gray-600 max-w-2xl leading-relaxed">
+                  <p key={i} className="text-base overflow-visible sm:text-lg text-gray-600 max-w-2xl leading-normal">
                     {p}
                   </p>
                 ))}
