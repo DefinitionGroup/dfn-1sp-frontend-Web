@@ -205,6 +205,18 @@ const SmartUnitsGlobe = dynamic(() => import("./data/data-SmartUnitsGlobe"), {
   ssr: true,
 });
 
+const GlobeComponent = dynamic(
+  () => import("./pagebuilder/pg-GlobeComponent"),
+  {
+    loading: () => (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: true,
+  }
+);
+
 const CasesIntro = dynamic(() => import("./pagebuilder/pg-CasesIntro"), {
   loading: () => (
     <div className="w-full h-64 flex items-center justify-center">
@@ -427,6 +439,12 @@ export function PageBuilder({ content, language = "de" }: PageBuilderProps) {
                     {...(block as any)}
                   />
                 </Suspense>
+              </ErrorBoundary>
+            );
+          case "globeComponent":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <GlobeComponent key={key} data={block as any} />
               </ErrorBoundary>
             );
           case "casesIntro":

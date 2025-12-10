@@ -242,15 +242,12 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           </button>
         )}
 
-        <Link
-          className="min-w-[110px] w-fit inline-block"
+        <Button2
+          variant="limesmall"
+          className="min-w-[110px] w-fit"
           href={`/${locale}/contact`}
-          onClick={(e) => {
-            e.preventDefault();
-            router.push(`/${locale}/contact`);
-          }}
-        >
-          <Button2 variant="limesmall" className="w-fit" text="Contact us" /></Link>
+          text="Contact us"
+        />
       </div>
 
       {/* Cases overlay */}
