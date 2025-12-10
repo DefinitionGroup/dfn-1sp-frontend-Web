@@ -1,9 +1,12 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Badgemodule from "@/components/ui/Badgemodule";
 import type { GalleryPeopleStep, CloudinaryAsset } from "@/types/sanity.types";
 import PeopleShowcaseHero from "../Fragments/pg-PeopleShowcaseHero";
 import GridBackground from "@/components/ui/GridBackground";
+import CtaMiniComponent from "../Fragments/pg-CtaMiniComponent";
+import { resolveLink, resolveLinkAsync } from "@/utils/utils";
+import { useParams } from "next/navigation";
 
 type Member = {
   _id?: string;
@@ -38,6 +41,16 @@ export default function PeopleStep({
     media?: CloudinaryAsset;
   };
 }) {
+  const params = useParams();
+  const locale = (params?.locale as string) || "en";
+
+  const applyLocaleToPath = (url?: string | null) => {
+    if (!url) return undefined;
+    if (!url.startsWith("/")) return url || undefined;
+    if (url.startsWith(`/${locale}`)) return url;
+    return `/${locale}${url}`;
+  };
+
   const members = step.teamMembers ?? [];
   const header = step.header ?? {};
 
@@ -67,76 +80,143 @@ export default function PeopleStep({
     ? { "data-navpoint-name": step.navPointName }
     : {};
 
+  const shouldShowBadgeMiniCta = Boolean(
+    step.showBadgeMiniCta && step.badgeMiniCta
+  );
+  const badgeMiniCta = shouldShowBadgeMiniCta ? step.badgeMiniCta : undefined;
+
+  const [badgeMiniUrl, setBadgeMiniUrl] = useState<string | undefined>(() =>
+    applyLocaleToPath(resolveLink(badgeMiniCta?.link))
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function updateBadgeUrl() {
+      if (!shouldShowBadgeMiniCta || !badgeMiniCta?.link) {
+        if (!cancelled) setBadgeMiniUrl(undefined);
+        return;
+      }
+      const resolved = await resolveLinkAsync(badgeMiniCta.link);
+      if (!cancelled) setBadgeMiniUrl(applyLocaleToPath(resolved));
+    }
+
+    updateBadgeUrl();
+    return () => {
+      cancelled = true;
+    };
+  }, [shouldShowBadgeMiniCta, badgeMiniCta?.link, locale]);
+
   return (
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="z-4 grid col-span-12 relative col-start-1 container mx-auto row-start-1 grid-cols-12 "
+      className="relative font-aspekta"
     >
-      {/* Badge */}
       <GridBackground />
-      {step.badge && (
-        <div className="z-1 grid col-span-12 col-start-1 pt-32 row-start-1 grid-cols-12 ">
-          <Badgemodule
-            text={step.badge.text ?? ""}
-            subtitle={step.badge.subtitle ?? ""}
-            numberEl={step.badge.numberEl ?? ""}
-            className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 md:sticky top-0 "
-          />
-        </div>
-      )}
 
-      {/* Header + description + people */}
-      <div className="col-span-12 container col-start-3   row-start-1 grid grid-cols-10 pt-32">
-        {/* Left header block */}
-        <header className="col-span-4 col-start-1 border-t  border-gray-200">
-          <div className="flex flex-col lg:gap-8 items-start justify-start w-full">
-            <div className="flex-1 flex gap-4 flex-col min-w-0">
-              {header.superText && (
-                <h2 className="text text-neutral-700 font-semibold tracking-tighter  font-aspekta">
-                  {header.superText}
-                </h2>
-              )}
-              {header.mainHeadline && (
-                <h4 className="text-5xl text-neutral-900 font tracking-tighter leading-compress font-aspekta">
-                  {header.mainHeadline}
-                </h4>
-              )}
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 py-16 sm:py-24 lg:py-32">
+          
+          {/* Badge + CTA Column */}
+          {(step.badge || shouldShowBadgeMiniCta) && (
+            <div className="col-span-4 sm:col-span-3 md:col-span-2 mb-8 md:mb-0 md:sticky md:top-24 self-start">
+              <div className="flex flex-col gap-6">
+                {step.badge && (
+                  <Badgemodule
+                    text={step.badge.text ?? ""}
+                    subtitle={step.badge.subtitle ?? ""}
+                    numberEl={step.badge.numberEl ?? ""}
+                    variant="minimal"
+                    size="md"
+                  />
+                )}
 
-              {(header.creativityTitle || header.uniquePeopleText) && (
-                <div className="flex flex-col items-start justify-start w-full">
-                  {header.creativityTitle && (
-                    <h2 className="text-2xl text-neutral-900 font-aspekta">
-                      {header.creativityTitle}
-                    </h2>
-                  )}
-                  {header.uniquePeopleText && (
-                    <h4 className="text-2xl text-neutral-900 font-aspekta">
-                      <span className="text-neutral-400">
-                        {header.uniquePeopleText}
-                      </span>
-                    </h4>
-                  )}
-                </div>
-              )}
+                {shouldShowBadgeMiniCta && badgeMiniCta && (
+                  <div className="hidden md:block">
+                    <CtaMiniComponent
+                      heading={badgeMiniCta.heading || ""}
+                      paragraph={badgeMiniCta.paragraph || ""}
+                      buttonText={badgeMiniCta.buttonText || ""}
+                      buttonVariant={(badgeMiniCta.variant as any) || "limesmall"}
+                      align={(badgeMiniCta.alignment as any) || "left"}
+                      url={badgeMiniUrl || undefined}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        </header>
+          )}
 
-        {/* Description row (matches original layout) */}
-        {step.description && step.description.trim().length > 0 && (
-          <div className="col-span-8 grid grid-cols-12 col-start-5  border-t border-gray-200 ">
-            <header className="col-span-8 col-start-1">
-              <h3 className="text text-neutral-500 font-aspekta">
-                {step.description}
-              </h3>
+          {/* Main Content Area */}
+          <div className={`col-span-4 sm:col-span-6 ${step.badge || shouldShowBadgeMiniCta ? "md:col-span-10 md:col-start-3" : "md:col-span-12"}`}>
+            
+            {/* Header Section */}
+            <header className="border-t border-gray-200 pt-4 sm:pt-6 mb-8 md:mb-12">
+              <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-10 gap-4 sm:gap-6">
+                {/* Left: Titles */}
+                <div className="col-span-4 sm:col-span-3 md:col-span-4">
+                  <div className="flex flex-col gap-2 sm:gap-4">
+                    {header.superText && (
+                      <h2 className="text-xs sm:text-sm text-neutral-700 font-semibold tracking-tight">
+                        {header.superText}
+                      </h2>
+                    )}
+                    {header.mainHeadline && (
+                      <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-neutral-900 tracking-tighter leading-[1.1]">
+                        {header.mainHeadline}
+                      </h3>
+                    )}
+
+                    {(header.creativityTitle || header.uniquePeopleText) && (
+                      <div className="flex flex-col mt-2">
+                        {header.creativityTitle && (
+                          <span className="text-lg sm:text-xl md:text-2xl text-neutral-900">
+                            {header.creativityTitle}
+                          </span>
+                        )}
+                        {header.uniquePeopleText && (
+                          <span className="text-lg sm:text-xl md:text-2xl text-neutral-400">
+                            {header.uniquePeopleText}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Right: Description */}
+                {step.description && step.description.trim().length > 0 && (
+                  <div className="col-span-4 sm:col-span-3 md:col-span-5 md:col-start-6 mt-4 sm:mt-0">
+                    <div className="border-t border-gray-200 pt-4 sm:pt-6 md:border-t-0 md:pt-0">
+                      <p className="text-sm sm:text-base text-neutral-500 leading-relaxed">
+                        {step.description}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
             </header>
-          </div>
-        )}
 
-        {/* People grid */}
-        <div className="col-span-10 row-start-2 col-start-1 mt-12 ">
-          <PeopleShowcaseHero members={mappedMembers} />
+            {/* People Grid */}
+            <div className="mt-8 sm:mt-10 md:mt-12">
+              <PeopleShowcaseHero members={mappedMembers} />
+            </div>
+
+            {/* Mobile CTA - shown at bottom on mobile */}
+            {shouldShowBadgeMiniCta && badgeMiniCta && (
+              <div className="mt-10 md:hidden">
+                <CtaMiniComponent
+                  heading={badgeMiniCta.heading || ""}
+                  paragraph={badgeMiniCta.paragraph || ""}
+                  buttonText={badgeMiniCta.buttonText || ""}
+                  buttonVariant={(badgeMiniCta.variant as any) || "limesmall"}
+                  align={(badgeMiniCta.alignment as any) || "left"}
+                  url={badgeMiniUrl || undefined}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </section>

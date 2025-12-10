@@ -50,8 +50,8 @@ export default function CaseGalleryComponent({
     activeFilter === filterAllText
       ? caseStudies
       : caseStudies.filter((item) =>
-          item.services?.some((service) => service.name === activeFilter)
-        );
+        item.services?.some((service) => service.name === activeFilter)
+      );
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -84,30 +84,19 @@ export default function CaseGalleryComponent({
           <motion.div
             initial={{ opacity: 0 }}
             animate={{
-              opacity: 0.2,
-              transition: { type: "spring", stiffness: 20 },
+              opacity: 0.7,
+              transition: { type: "spring", stiffness: 110, duration: 0.2 },
             }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 h-full backdrop-blur-lg w-full z-10"
+            className="fixed inset-0 top-0 cl-overlay backdrop-blur-2xl bg-black w-full min-h-[100vh] z-100"
           />
         )}
       </AnimatePresence>
 
-      <AnimatePresence>
+      <>
         {active ? (
-          <div className="fixed inset-0 grid place-items-center z-[100]">
-            <motion.button
-              key={`button-${active.title}-${id}`}
-              layout
-              initial={{ opacity: 1 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 1, transition: { duration: 0.05 } }}
-              className="flex absolute top-2 right-2 lg:hidden items-center overflow-hidden justify-around rounded-full h-6 w-6 z-100"
-              onClick={() => setActive(null)}
-              aria-label="Close"
-            >
-              <CloseIcon />
-            </motion.button>
+          <div className="fixed inset-0 grid place-items-center  w-full  z-[100]">
+
 
             <motion.div
               layoutId={`card-${active.title}-${id}`}
@@ -126,7 +115,7 @@ export default function CaseGalleryComponent({
                   <video
                     src={active.mainVideoUrl}
                     autoPlay
-                    muted
+                    muted playsInline
                     loop
                     className="w-full h-full absolute min-h-[70vh] sm:rounded-t-xl opacity-50 object-cover object-top"
                   />
@@ -139,9 +128,23 @@ export default function CaseGalleryComponent({
                     className="w-full h-full absolute min-h-[70vh] sm:rounded-t-xl opacity-50 object-cover object-top"
                   />
                 )}
+
               </motion.div>
 
-              <div className="flex justify-between absolute items-start m-8 pt-8 z-10">
+              <div className="flex justify-between absolute items-start m-8 pt-8 z-10 ">
+
+                <motion.button
+                  key={`button-${active.title}-${id}`}
+                  layout
+                  initial={{ opacity: 1 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 1, transition: { duration: 0.05 } }}
+                  className="flex absolute top-2  right-2 lg items-center hover:cursor-pointer overflow-hidden justify-around rounded-full h-6 w-6 z-100"
+                  onClick={() => setActive(null)}
+                  aria-label="Close"
+                >
+                  <CloseIcon />
+                </motion.button>
                 <div className="flex justify-between relative top-0 flex-col items-start z-10 left-0">
                   {active.client?.logoUrl && (
                     <motion.img
@@ -153,7 +156,7 @@ export default function CaseGalleryComponent({
                   )}
 
                   <div>
-              
+
                     <motion.h3
                       layoutId={`title-${active.title}-${id}`}
                       className="text-white text-5xl max-w-2/3 dark:text-neutral-200"
@@ -173,7 +176,7 @@ export default function CaseGalleryComponent({
                   </motion.div>
 
                   <motion.div
-                    transition={{ duration: 0.3, delay: 0.7 }}
+                    transition={{ duration: 0.1, delay: 0.1 }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -187,27 +190,27 @@ export default function CaseGalleryComponent({
             </motion.div>
           </div>
         ) : null}
-      </AnimatePresence>
+      </>
 
-      <ul className="w-full">
+      <ul className="w-full ">
         <StaggeredSlideUp
           key={activeFilter}
-          staggerDelay={0.125}
-          distance={30}
-          duration={1.6}
+          staggerDelay={0.05}
+          distance={10}
+          duration={1.1}
           viewport={{ once: true, amount: 0.2, margin: "0px 0px -100px 0px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto w-full min-h-full"
+          className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3  mx-auto w-full min-h-full"
         >
           {filteredItems.map((item) => (
             <motion.div
               layoutId={`card-${item.title}-${id}`}
               key={`card-${item.title}-${id}`}
               onClick={() => setActive(item)}
-              className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[530px]  group/card overflow-hidden h-[530px] cursor-pointer rounded-sm"
+              className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1 px-1  h-[300px] md:min-h-430px]  group/card overflow-hidden md:h-[430px] cursor-pointer  "
             >
               <motion.div
                 layoutId={`image-${item.title}-${id}`}
-                className="col-start-1 col-span-1 row-start-1 bg-black h-full min-h-full overflow-hidden rounded-sm"
+                className="col-start-1 col-span-1 row-start-1 bg-black h-[300px] min-h-full  rounded-xl  shadow-lg"
               >
                 {item.mainVideoUrl ? (
                   <video
@@ -215,7 +218,7 @@ export default function CaseGalleryComponent({
                     autoPlay
                     muted
                     loop
-                    className="w-full h-full object-cover h-[300px] group-hover/card:opacity-100 object-top opacity-80 transition-all"
+                    className="w-full  object-cover h-[full] group-hover/card:opacity-100 overflow-hidden   object-top opacity-80 transition-all"
                   />
                 ) : (
                   <Image
@@ -223,45 +226,47 @@ export default function CaseGalleryComponent({
                     height={1000}
                     src={item.mainImageUrl || "/placeholder.png"}
                     alt={item.title}
-                    className="w-full  object-cover h-[380px] group-hover/card:opacity-100 object-top opacity-80 transition-all"
+                    className="w-full  object-cover h-full group-hover/card:opacity-100 object-top rounded-xl  overflow-hidden opacity-80 transition-all"
                   />
                 )}
               </motion.div>
 
-              <div
-                className={`col-start-1 col-span-1 flex ${
-                  item.client?.logoUrl ? "justify-between" : "justify-end"
-                } opacity-100 row-start-2 p-2 mb-16 z-1   h-[130px]`}
+
+              <StaggeredSlideUp
+                key={activeFilter}
+                staggerDelay={0.1}
+                distance={10} delay={0.16}
+                duration={3} className={`col-start-1 col-span-1 md:flex ${item.client?.logoUrl ? "justify-between" : "justify-end"
+                  } opacity-100 row-start-2 p-2 mb-8 md:mb-16 z-1   h-[130px]`}
               >
                 {item.client?.logoUrl ? (
                   <motion.img
                     layoutId={`logo-${item.title}-${id}`}
                     src={item.client?.logoUrl}
                     alt={item.title}
-                    className={`w-24 h-8 object-contain object-left mb-4 ${
-                      variant !== "light" ? "" : "invert"
-                    }`}
+                    className={`w-24 h-8 object-contain object-left mb-4 ${variant !== "light" ? "" : "invert"
+                      }`}
                   />
                 ) : null}
                 <div className="flex flex-col items-end">
                   <motion.h3
                     layoutId={`title-${item.title}-${id}`}
-                    className={`font-medium text-lg leading-snug max-w-[250px] tracking-tight ${
-                      variant !== "light" ? "" : "invert"
-                    } text-neutral-600 dark:text-neutral-200 text-right`}
+                    className={`font-medium md:ext-lg leading-snug max-w-[250px] tracking-tight ${variant !== "light" ? "" : "invert"
+                      } text-neutral-600 dark:text-neutral-200 md:text-right`}
                   >
                     {item.title}
                   </motion.h3>
                   {item.services && item.services.length > 0 && (
                     <motion.p
                       layoutId={`description-${item.description}-${id}`}
-                      className="text-neutral-500 text-right text-sm dark:text-neutral-600"
+                      className="text-neutral-400 md:text-right text-xxs font-medium md:text-xs mt-1 dark:text-neutral-400"
                     >
                       {item.services.map((s) => s.name).join(", ")}
                     </motion.p>
                   )}
                 </div>
-              </div>
+              </StaggeredSlideUp>
+
             </motion.div>
           ))}
         </StaggeredSlideUp>

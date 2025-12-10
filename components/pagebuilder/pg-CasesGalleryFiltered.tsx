@@ -8,6 +8,7 @@ import GridBackground from "@/components/ui/GridBackground";
 import CaseGalleryComponent from "@/components/data/data-CaseGallery";
 import { getTranslations } from "@/lib/translations";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
+import StaggeredSlideUp from "../ui/StaggeredSlideUp";
 
 interface CaseStudy {
   _id: string;
@@ -138,23 +139,31 @@ function CasesGalleryFiltered({
       <div
         className={`z-1 grid gap-8 col-span-12 ${paddingClass} col-start-1 container mx-auto row-start-1 grid-cols-12`}
       >
-        <div className="z-1 col-span-12 col-start-1">
+        <div className="z-1 col-span-12 col-start-1 px-4 md:px-0">
           {/* Filter Buttons */}
           {showFilters && filters.length > 1 && (
-            <div className="flex flex-wrap gap-4 mb-8 justify-center md:justify-start">
-              {filters.map((filter) => (
-                <button
-                  key={filter}
-                  onClick={() => setActiveFilter(filter)}
-                  className={`px-6 py-2 rounded-full text-xs font-medium uppercase transition-all duration-100 ${
-                    activeFilter === filter
+            <div className="flex flex-wrap gap-4 mb-8 justify-center  md:justify-start">
+              <StaggeredSlideUp
+                key={activeFilter}
+                staggerDelay={0.05}
+                distance={22}
+                duration={1}
+                className="flex flex-wrap gap-4 justify-center md:justify-start"
+              >
+                {filters.map((filter) => (
+                  <button
+                    key={filter}
+                    onClick={() => setActiveFilter(filter)}
+                    className={`px-6 py-2 rounded-full text-xxs md:text-xs font-bold md:font-medium uppercase transition-all  duration-100 ${activeFilter === filter
                       ? "bg-lime-500 text-black"
                       : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
-                  }`}
-                >
-                  {filter}
-                </button>
-              ))}
+                      }`}
+                  >
+                    {filter}
+                  </button>
+                ))}
+
+              </StaggeredSlideUp>
             </div>
           )}
           <CaseGalleryComponent

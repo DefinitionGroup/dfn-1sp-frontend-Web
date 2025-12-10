@@ -116,6 +116,8 @@ export interface CtaMiniComponent {
 
 export interface GalleryListStep extends GalleryBase {
     type: "list";
+    badgeMiniCta?: CtaMiniComponent;
+    showBadgeMiniCta?: boolean;
 
     /** Regular header (hidden when staggeredSlideUp is true) */
     header?: {
@@ -180,8 +182,30 @@ export interface GalleryRevealStep extends GalleryBase {
 
 export interface GalleryPeopleStep extends GalleryBase {
     type: "people";
-    header?: { superText?: string; mainHeadline?: string };
+    header?: {
+        superText?: string;
+        mainHeadline?: string;
+        creativityTitle?: string;
+        uniquePeopleText?: string;
+    };
+    description?: string;
+    teamMembers?: Array<{
+        _id?: string;
+        name?: string;
+        image?: CloudinaryAsset | null;
+        video?: CloudinaryAsset | null;
+        media?: CloudinaryAsset | null;
+        altText?: string;
+        fullname?: string;
+        position?: string;
+        email?: string;
+        profileUrl?: string;
+        tagline?: string;
+        channel?: string[];
+    }>;
     media?: CloudinaryAsset;
+    badgeMiniCta?: CtaMiniComponent;
+    showBadgeMiniCta?: boolean;
 }
 
 export interface GalleryScrollHighlightStep extends GalleryBase {
@@ -503,6 +527,22 @@ export interface ResultsMetricsComponent {
     enableParallax?: boolean;
     navPointName?: string;
     paddingY?: string;
+}
+
+export interface GlobeLocation {
+    name: string;
+    subtitle?: string;
+    coordinateLon: number;
+    coordinateLat: number;
+    _key?: string;
+}
+
+export interface GlobeComponent {
+    _type: "globeComponent";
+    _key?: string;
+    navPointName?: string;
+    sectionTitle?: string;
+    locations: GlobeLocation[];
 }
 
 export interface Service {

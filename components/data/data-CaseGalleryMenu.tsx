@@ -122,7 +122,7 @@ export default function CaseGalleryMenu({
                   <video
                     src={item.mainVideoUrl}
                     autoPlay
-                    muted
+                    muted playsInline
                     loop
                     className="w-full object-cover group-hover/card:opacity-100 object-top opacity-80 transition-all h-full"
                   />

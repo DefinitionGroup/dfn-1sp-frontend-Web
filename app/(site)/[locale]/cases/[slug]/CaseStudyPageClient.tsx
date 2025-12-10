@@ -76,7 +76,7 @@ export default function CaseStudyPageClient({
 
   return (
     <>
-      <section className="relative h-[95vh] overflow-hidden">
+      <section className="relative h-[95vh] w-full px-1 md:px-4 overflow-hidden">
         <HamburgerGradientMenu />
         <LineMinimap navPoints={navPoints} />
 
@@ -101,32 +101,35 @@ export default function CaseStudyPageClient({
 
         {/* Hero Content */}
         <div id={t.ids.top} className="" />
-        <div className="relative z-10 container mt-[30vh] mx-auto p-8 md:p-0">
+        <div className="relative z-10 container mt-[20vh] sm:mt-[25vh] md:mt-[30vh] mx-auto px-4 sm:px-6 md:px-8 lg:px-0">
           <StaggeredSlideUp
             delay={0.4}
-            className="max-w-full flex flex-col pl-4 gap-4 lg:max-w-2/3"
-          >  {caseStudy.subtitle && (
-              <h2 className="text-neutral-50  text-xs font-bold bg-lime-500 rounded-full inline-block p-1 px-4">
+            className="max-w-full flex flex-col gap-3 sm:gap-4 lg:max-w-2/3 "
+          >
+            {caseStudy.subtitle && (
+              <h2 className="text-neutral-50 text-[10px] sm:text-xs font-bold bg-lime-500 rounded-full inline-block w-fit py-1 px-3 sm:px-4">
                 {caseStudy.subtitle}
               </h2>
             )}
-            <h1 className="text-neutral-50 md:w-2/3 pb-2 text-7xl">{caseStudy.title}</h1>
-          
+            <h1 className="text-neutral-50 w-full md:w-2/3 pb-2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-none">
+              {caseStudy.title}
+            </h1>
+
             {caseStudy.description && (
-              <h3 className="text-neutral-50 md:w-1/2  pb-2 text-xl">
+              <h3 className="text-neutral-50 w-full sm:w-3/4 md:w-1/2 pb-2 text-base sm:text-lg md:text-xl leading-relaxed">
                 {caseStudy.description}
               </h3>
             )}
             {/* Display Unit Logos if available */}
             {caseStudy.units && caseStudy.units.length > 0 && (
-              <div className="flex flex-wrap gap-4 mb-4 border-t-2 w-fit py-4 border-white/50">
+              <div className="flex flex-wrap gap-3 sm:gap-4 mb-4 border-t-2 w-fit py-3 sm:py-4 border-white/50">
                 {caseStudy.units.map((unit) =>
                   unit.logoUrl ? (
                     <img
                       key={unit._id}
                       src={unit.logoUrl}
                       alt={unit.name}
-                      className="h-5 w-auto object-contain"
+                      className="h-4 sm:h-5 w-auto object-contain"
                     />
                   ) : null
                 )}

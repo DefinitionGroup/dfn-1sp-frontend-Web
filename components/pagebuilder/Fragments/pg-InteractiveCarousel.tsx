@@ -139,7 +139,7 @@ function InteractiveCarousel({
       >
         <div className="relative h-[800px] flex items-start">
           {/* Main Carousel */}
-          <div className="relative w-full rounded-sm overflow-hidden h-full perspective-1000">
+          <div className="relative w-full rounded-xl overflow-hidden h-full perspective-1000">
             <AnimatePresence initial={false} custom={direction}>
               <motion.div
                 key={currentIndex}
@@ -338,7 +338,7 @@ function InteractiveCarousel({
             {carouselItems.map((item, index) => (
               <motion.button
                 key={item.id}
-                className={`relative flex-shrink-0 w-22 h-18 rounded-sm overflow-hidden outline-3 transition-colors ${index === currentIndex ? "outline-lime-500" : "outline-transparent"}`}
+                className={`relative flex-shrink-0 w-22 h-18 rounded-xl overflow-hidden outline-3 transition-colors ${index === currentIndex ? "outline-lime-500" : "outline-transparent"}`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => {

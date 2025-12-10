@@ -4,7 +4,6 @@ import {
   motion,
   useTransform,
   useScroll,
-  useVelocity,
   useSpring,
 } from "motion/react";
 import { cn } from "@/lib/utils";
@@ -51,16 +50,15 @@ export const TracingBeam = ({
       ref={ref}
       className={cn("relative mx-auto h-full w-full max-w-4xl", className)}
     >
-      <div className="absolute top-3 -left-4 md:-left-20">
+      {/* Tracing beam - hidden on mobile, shown on md+ */}
+      <div className="absolute top-3 -left-4 md:-left-20 hidden md:block pointer-events-none">
         <motion.div
           transition={{
             duration: 0.2,
             delay: 0.5,
           }}
-          animate={{
-          
-          }}
-          className="ml-[27px] flex h-4 w-4 items-center justify-center rounded-full "
+          animate={{}}
+          className="ml-[27px] flex h-4 w-4 items-center justify-center rounded-full"
         >
           <motion.div
             transition={{
@@ -69,15 +67,14 @@ export const TracingBeam = ({
             }}
             animate={{
               backgroundColor: scrollYProgress.get() > 0 ? "white" : "#66ff00",
-            
             }}
-            className="h-2 w-2 rounded-full  bg-lemon-500"
+            className="h-2 w-2 rounded-full bg-lemon-500"
           />
         </motion.div>
         <svg
           viewBox={`0 0 20 ${svgHeight}`}
           width="20"
-          height={svgHeight} // Set the SVG height
+          height={svgHeight}
           className="ml-4 block"
           aria-hidden="true"
         >
@@ -94,7 +91,8 @@ export const TracingBeam = ({
             d={`M 1 0V -36 l 18 24 V ${svgHeight * 0.8} l -0 24V ${svgHeight}`}
             fill="none"
             stroke="url(#gradient)"
-            strokeWidth="2.25" strokeLinecap="round"
+            strokeWidth="2.25"
+            strokeLinecap="round"
             className="motion-reduce:hidden"
             transition={{
               duration: 10,
@@ -106,8 +104,8 @@ export const TracingBeam = ({
               gradientUnits="userSpaceOnUse"
               x1="0"
               x2="0"
-              y1={y1} // set y1 for gradient
-              y2={y2} // set y2 for gradient
+              y1={y1}
+              y2={y2}
             >
               <stop stopColor="#ffffff" stopOpacity="0"></stop>
               <stop stopColor="#ffffff"></stop>
@@ -117,7 +115,7 @@ export const TracingBeam = ({
           </defs>
         </svg>
       </div>
-      <div ref={contentRef}>{children}</div>
+      <div ref={contentRef} className="relative z-10">{children}</div>
     </motion.div>
   );
 };

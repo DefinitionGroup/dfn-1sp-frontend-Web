@@ -200,10 +200,10 @@ export default function SmartCarousel({
 
   if (loading) {
     return (
-      <section>
+      <section className="px-2 sm:px-4 md:px-0">
         <div className="container mx-auto w-full">
-          <div className="relative h-[800px] flex items-center justify-center">
-            <div className="text-gray-400">Loading case studies...</div>
+          <div className="relative h-[60vh] sm:h-[70vh] md:h-[800px] flex items-center justify-center">
+            <div className="text-gray-400 text-sm sm:text-base">Loading case studies...</div>
           </div>
         </div>
       </section>
@@ -212,10 +212,10 @@ export default function SmartCarousel({
 
   if (!carouselItems.length) {
     return (
-      <section>
+      <section className="px-2 sm:px-4 md:px-0">
         <div className="container mx-auto w-full">
-          <div className="relative h-[800px] flex items-center justify-center">
-            <div className="text-gray-400">
+          <div className="relative h-[60vh] sm:h-[70vh] md:h-[800px] flex items-center justify-center">
+            <div className="text-gray-400 text-sm sm:text-base text-center px-4">
               No case studies found for Smart Carousel
             </div>
           </div>
@@ -266,14 +266,14 @@ export default function SmartCarousel({
   const active = carouselItems[currentIndex];
 
   return (
-    <section>
+    <section className="px-2 sm:px-4 md:px-0">
       <div
         ref={containerRef}
-        className="container relative top-0  left-0 mx-auto w-full  "
+        className="container relative top-0 mx-auto w-full"
       >
-        <div className="relative h-[800px] flex items-start">
+        <div className="relative h-[60vh] sm:h-[70vh] md:h-[800px] flex items-start">
           {/* Main Carousel */}
-          <div className="relative w-full rounded-sm overflow-hidden h-full perspective-1000">
+          <div className="relative w-full rounded-xl overflow-hidden h-full perspective-1000">
             <AnimatePresence initial={false} custom={direction}>
               <motion.div
                 key={currentIndex}
@@ -302,11 +302,11 @@ export default function SmartCarousel({
                     <motion.video
                       src={active.video}
                       className="absolute inset-0 w-full h-full overflow-hidden object-cover"
-                      initial={{ scale: 1.3, opacity: 0.7}}
-                      animate={{ scale: 1, opacity: 0.7}}
+                      initial={{ scale: 1.3, opacity: 0.7 }}
+                      animate={{ scale: 1, opacity: 0.7 }}
                       transition={{ duration: 1.6 }}
                       loop
-                      autoPlay
+                      autoPlay playsInline
                       muted
                     />
                   ) : active.image ? (
@@ -324,11 +324,11 @@ export default function SmartCarousel({
                   <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/0 to-transparent" />
 
                   {/* Content (match Plaintext: top placement) */}
-                  <div className="absolute top-0 flex left-0 right-0 p-8 text-white">
+                  <div className="absolute top-0 flex left-0 right-0 p-4 sm:p-6 md:p-8 text-white">
                     <motion.div
                       initial="hidden"
                       animate="visible"
-                      className="flex-col items-start justify-start p-8 max-w-3xl space-y-2"
+                      className="flex-col items-start justify-start p-2 sm:p-4 md:p-8 max-w-full sm:max-w-2xl md:max-w-3xl space-y-2"
                       variants={{
                         hidden: { opacity: 0 },
                         visible: {
@@ -339,9 +339,9 @@ export default function SmartCarousel({
                     >
                       <div>
                         {(active.logosrc || "/logos/Amazon_logo.svg") && (
-                          <motion.div className="mb-4  max-h-8 w-96   text-black flex items-start  text-xs rounded-xs ">
-                            <Image 
-                              className="invert"
+                          <motion.div className="mb-2 sm:mb-4 max-h-6 sm:max-h-8 w-auto text-black flex items-start text-xs rounded-xs">
+                            <Image
+                              className="invert h-5 sm:h-6 md:h-8 w-auto"
                               src={active.logosrc || "/logos/Amazon_logo.svg"}
                               alt="Logo"
                               width={120}
@@ -350,7 +350,7 @@ export default function SmartCarousel({
                           </motion.div>
                         )}
                         {active.title && (
-                          <motion.h3 className="text-3xl  md:text-5xl tracking-tighter leading-compressed pb-0">
+                          <motion.h3 className="text-xl sm:text-2xl md:text-5xl tracking-tighter leading-tight md:leading-none   pb-0 md:pb-4 md:pt-4 ">
                             {active.title}
                           </motion.h3>
                         )}
@@ -361,11 +361,11 @@ export default function SmartCarousel({
                         </motion.p>
                       )} */}
                       {active.description && (
-                        <motion.p className="text-gray-100 text-base max-w-lg mb-4 ">
+                        <motion.p className="text-gray-100 text-sm sm:text-base max-w-xs sm:max-w-md md:max-w-lg mb-2 sm:mb-4 line-clamp-3 sm:line-clamp-none">
                           {active.description}
                         </motion.p>
                       )}
-                      <motion.div className="text-gray-100 text-sm max-w-2xl ">
+                      <motion.div className="text-gray-100 text-sm max-w-2xl">
                         {active.linkHref && (
                           <Button2
                             variant="limesmall"
@@ -445,12 +445,12 @@ export default function SmartCarousel({
         </div>
 
         {/* Dots Indicator (match Plaintext positioning & style) */}
-        <div className="absolute w-full bottom-[16px] z-30">
-          <div className="flex justify-center mt-8 mx-auto space-x-2 bg-gray-900/50 backdrop-blur-xl h-10 items-center px-8 rounded-full w-fit">
+        <div className="absolute w-full bottom-2 sm:bottom-4 z-30">
+          <div className="flex justify-center mt-4 sm:mt-8 mx-auto space-x-1.5 sm:space-x-2 bg-gray-900/50 backdrop-blur-xl h-8 sm:h-10 items-center px-4 sm:px-8 rounded-full w-fit">
             {carouselItems.map((_, index) => (
               <motion.button
                 key={index}
-                className={`h-2 rounded-full transition-all hover:bg-lime-400 duration-300 cursor-pointer ${index === currentIndex ? "bg-lime-400 min-w-16" : "bg-gray-100 min-w-2"}`}
+                className={`h-1.5 sm:h-2 rounded-full transition-all hover:bg-lime-400 duration-300 cursor-pointer ${index === currentIndex ? "bg-lime-400 min-w-8 sm:min-w-16" : "bg-gray-100 min-w-1.5 sm:min-w-2"}`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.8 }}
                 onClick={() => {
@@ -464,15 +464,15 @@ export default function SmartCarousel({
         </div>
 
         {/* Thumbnail Strip (match Plaintext absolute positioning) */}
-        <div className="absolute flex justify-center w-full bottom-[200px] z-30">
+        <div className="absolute flex justify-center w-full  bottom-16 md:bottom-[100px] z-30 px-2">
           <div
             ref={stripRef}
-            className={`flex absolute justify-center mt-8 space-x-4 pt-4 pb-4 ${isScrollable ? "overflow-x-auto" : ""}`}
+            className={`flex justify-center mt-4 sm:mt-8 space-x-1.5 sm:space-x-2 md:space-x-4 pt-2 sm:pt-4 md:pb-4 ${isScrollable ? "overflow-x-auto scrollbar-hide" : ""}`}
           >
             {carouselItems.map((item, index) => (
               <motion.button
                 key={item.id}
-                className={`relative flex-shrink-0 w-22 h-18 rounded-sm overflow-hidden outline-3 transition-colors ${index === currentIndex ? "outline-lime-500" : "outline-transparent"}`}
+                className={`relative flex-shrink-0 w-10 sm:w-12 md:w-22 h-8 sm:h-12 md:h-18 rounded-xl overflow-hidden outline-1 sm:outline-2 md:outline-3 transition-colors ${index === currentIndex ? "outline-lime-500" : "outline-transparent"}`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => {

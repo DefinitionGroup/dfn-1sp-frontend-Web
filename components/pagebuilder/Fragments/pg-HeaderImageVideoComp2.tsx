@@ -36,7 +36,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   });
 
   return (
-    <motion.div className={`absolute inset-0   mx-auto ${className}`}>
+    <motion.div className={`absolute mt-4 inset-0 overflow-visible mx-auto ${className}`}>
       <motion.div
         ref={ref}
         initial={{ opacity: 1, scale: 0.9, width: "90%" }}
@@ -50,14 +50,14 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
           ease: [0.16, 1, 0.3, 1],
           opacity: { duration: 0.8 },
         }}
-        className="absolute mx-auto rounded-sm inset-0 overflow-hidden "
+        className="absolute mx-auto md:rounded-xl inset-0 overflow-hidden "
       >
         {useVideo ? (
           <video
             src={videoSrc}
             autoPlay
             loop
-            muted
+            muted playsInline
             className="object-cover w-full h-full overflow-hidden "
           />
         ) : (

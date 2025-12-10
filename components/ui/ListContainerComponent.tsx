@@ -2,6 +2,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import StaggeredSlideUp from "./StaggeredSlideUp";
+
 interface ListContainerProps {
   children: React.ReactNode;
   delay?: number;
@@ -9,6 +10,8 @@ interface ListContainerProps {
   duration?: number;
   distance?: number;
   className?: string;
+  /** Visual variant */
+  variant?: "default" | "compact" | "spacious";
 }
 
 function ListContainerComponent({
@@ -18,9 +21,16 @@ function ListContainerComponent({
   duration = 0.7,
   distance = 22,
   className,
+  variant = "default",
 }: ListContainerProps) {
+  const variantClasses = {
+    default: "space-y-1",
+    compact: "space-y-0",
+    spacious: "space-y-2 sm:space-y-3",
+  };
+
   return (
-    <div className={cn("lg:col-span-8 text-gray-100", className)}>
+    <div className={cn("w-full", variantClasses[variant], className)}>
       <StaggeredSlideUp
         delay={delay}
         staggerDelay={staggerDelay}

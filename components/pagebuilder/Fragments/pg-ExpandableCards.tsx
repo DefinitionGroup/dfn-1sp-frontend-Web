@@ -26,7 +26,7 @@ type UIShape = {
 
 const colsClass = (n: number) =>
   (({ 3: "grid-cols-3", 4: "grid-cols-4", 5: "grid-cols-5" }) as const)[
-    (n as 3 | 4 | 5) || 4
+  (n as 3 | 4 | 5) || 4
   ] || "grid-cols-4";
 
 function mapCard(item: CardItem): UIShape | null {
@@ -144,7 +144,7 @@ function ExpandableCards({
       {/* Modal */}
       <AnimatePresence>
         {active && typeof active === "object" ? (
-          <div className="fixed inset-0 grid place-items-center z-[100]">
+          <div className="fixed inset-0 place-items-center z-[100]">
             <motion.button
               onClick={() => setActive(null)}
               className="absolute top-4 right-4 z-50 cursor-pointer"
@@ -229,16 +229,16 @@ function ExpandableCards({
       </AnimatePresence>
 
       {/* Grid */}
-      <ul className="w-full">
+      <ul className="w-full  ">
         <StaggeredSlideUp
-          className={`grid grid-cols-2 md:${colsClass(columns)} ${gap} mx-auto h-full min-h-full w-full`}
+          className={`grid grid-cols-2 md:${colsClass(columns)} grid ${gap} mx-auto h-full min-h-full w-full`}
         >
           {sourceCards.map((card) => (
             <motion.div
               layoutId={`card-${card.title}-${id}`}
               key={`card-${card.title}-${id}`}
               onClick={() => setActive(card)}
-              className={`col-span-1 grid grid-cols-1 grid-row-1 row-span-1 rounded-sm overflow-hidden cursor-pointer ${cardHeight} ${hoverScale}`}
+              className={`col-span-1 grid grid-cols-1 grid-row-1 row-span-1 rounded-xl overflow-hidden cursor-pointer ${cardHeight} ${hoverScale}`}
             >
               <motion.div
                 layoutId={`image-${card.title}-${id}`}

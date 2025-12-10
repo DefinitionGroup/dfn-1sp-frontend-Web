@@ -22,25 +22,30 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
   return (
     <>
       {/* Main Footer */}
-      <footer className={`bg-neutral-900 text-neutral-200 py-8 ${className}`}>
-        <div className="container mx-auto px-4">
+      <footer className={`bg-neutral-900 text-neutral-200 py-6 sm:py-8 ${className}`}>
+        <div className="container mx-auto px-4 sm:px-6">
           {/* Top border line */}
-          <div className="w-full h-px bg-neutral-600 mb-8"></div>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 min-h-[163px]">
-            {/* Company Name */}
-            <div className="lg:col-span-3 flex flex-col justify-center gap-3">
-              <Image src={menuData?.imageCloud?.secure_url || "/1sp-fallback.svg"} alt="Logo" width={146} height={79} />
-              
+          <div className="w-full h-px bg-neutral-600 mb-6 sm:mb-8"></div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-12 gap-6 sm:gap-8 min-h-[120px] lg:min-h-[163px]">
+            {/* Company Logo */}
+            <div className="col-span-2 sm:col-span-4 lg:col-span-3 flex flex-col justify-center gap-3 mb-4 lg:mb-0">
+              <Image 
+                src={menuData?.imageCloud?.secure_url || "/1sp-fallback.svg"} 
+                alt="Logo" 
+                width={146} 
+                height={79}
+                className="w-[80px] h-auto sm:w-[120px] lg:w-[146px]"
+              />
             </div>
 
             {/* Dynamic Footer Columns from Sanity */}
             {menuData?.footerColumns && menuData.footerColumns.length > 0 ? (
               menuData.footerColumns.map((column) => (
-                <div key={column._key} className="lg:col-span-2">
-                  <h3 className="text-sm text-neutral-300 mb-4">
+                <div key={column._key} className="col-span-1 sm:col-span-2 lg:col-span-2">
+                  <h3 className="text-xs sm:text-sm text-neutral-300 mb-3 sm:mb-4">
                     {column.title}
                   </h3>
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 sm:space-y-2">
                     {column.links?.map((link) => (
                       <Link
                         key={link._key}
@@ -59,7 +64,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                             ? "noopener noreferrer"
                             : undefined
                         }
-                        className="block text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer"
+                        className="block text-xs sm:text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer"
                       >
                         {link.displayName}
                       </Link>
@@ -71,38 +76,26 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
               // Fallback columns if no Sanity data
               <>
                 {/* Services */}
-                <div className="lg:col-span-2">
-                  <h3 className="text-sm text-neutral-300 mb-4">Services</h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      {["Marketing", "Social", "Design"].map(
-                        (service, index) => (
-                          <p
-                            key={index}
-                            className="text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer"
-                          >
-                            {service}
-                          </p>
-                        )
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      {["AR/VR", "POS", "Campaign"].map((service, index) => (
+                <div className="col-span-1 sm:col-span-2 lg:col-span-2">
+                  <h3 className="text-xs sm:text-sm text-neutral-300 mb-3 sm:mb-4">Services</h3>
+                  <div className="space-y-1.5 sm:space-y-2">
+                    {["Marketing", "Social", "Design", "AR/VR", "POS", "Campaign"].map(
+                      (service, index) => (
                         <p
                           key={index}
-                          className="text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer"
+                          className="text-xs sm:text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer"
                         >
                           {service}
                         </p>
-                      ))}
-                    </div>
+                      )
+                    )}
                   </div>
                 </div>
 
                 {/* Cases */}
-                <div className="lg:col-span-2">
-                  <h3 className="text-sm text-neutral-300 mb-4">Cases</h3>
-                  <div className="space-y-2">
+                <div className="col-span-1 sm:col-span-2 lg:col-span-2">
+                  <h3 className="text-xs sm:text-sm text-neutral-300 mb-3 sm:mb-4">Cases</h3>
+                  <div className="space-y-1.5 sm:space-y-2">
                     {[
                       "EA Games",
                       "SAMSUNG",
@@ -113,7 +106,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                     ].map((caseItem, index) => (
                       <p
                         key={index}
-                        className="text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer"
+                        className="text-xs sm:text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer"
                       >
                         {caseItem}
                       </p>
@@ -122,14 +115,14 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                 </div>
 
                 {/* About Us */}
-                <div className="lg:col-span-2">
-                  <h3 className="text-sm text-neutral-300 mb-4">About us</h3>
-                  <div className="space-y-2">
+                <div className="col-span-1 sm:col-span-2 lg:col-span-2">
+                  <h3 className="text-xs sm:text-sm text-neutral-300 mb-3 sm:mb-4">About us</h3>
+                  <div className="space-y-1.5 sm:space-y-2">
                     {["Our Story", "We are Special", "Work with us"].map(
                       (item, index) => (
                         <p
                           key={index}
-                          className="text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer"
+                          className="text-xs sm:text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer"
                         >
                           {item}
                         </p>
@@ -139,14 +132,14 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                 </div>
 
                 {/* Legal */}
-                <div className="lg:col-span-2">
-                  <h3 className="text-sm text-neutral-300 mb-4">Legal</h3>
-                  <div className="space-y-2">
+                <div className="col-span-1 sm:col-span-2 lg:col-span-2">
+                  <h3 className="text-xs sm:text-sm text-neutral-300 mb-3 sm:mb-4">Legal</h3>
+                  <div className="space-y-1.5 sm:space-y-2">
                     {["Disclaimer", "Data Protection", "Terms of Use"].map(
                       (item, index) => (
                         <p
                           key={index}
-                          className="text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer"
+                          className="text-xs sm:text-sm text-neutral-400 hover:text-neutral-200 transition-colors cursor-pointer"
                         >
                           {item}
                         </p>
@@ -161,11 +154,11 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
       </footer>
 
       {/* Footer Bottom */}
-      <div className="bg-neutral-900 text-gray-400 border-t pb-8 border-gray-800">
-        <div className="max-w-7xl mx-auto px-6 py-8">
-          <div className="flex flex-col lg:flex-row justify-between items-start gap-8 lg:gap-24">
+      <div className="bg-neutral-900 text-gray-400 border-t pb-6 sm:pb-8 border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+          <div className="flex flex-col gap-6 sm:gap-8 lg:flex-row lg:justify-between lg:items-start lg:gap-24">
             {/* Social Media Icons */}
-            <div className="flex gap-4 items-center">
+            <div className="flex gap-3 sm:gap-4 items-center">
               {menuData?.socialLinks && menuData.socialLinks.length > 0 ? (
                 menuData.socialLinks
                   .filter((s) => !!s?.url)
@@ -175,7 +168,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                       href={social.url || "#"}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
+                      className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
                       aria-label={social.name || "social"}
                     >
                       {social.icon?.secure_url && (
@@ -194,7 +187,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                 <>
                   <Link
                     href="#"
-                    className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
+                    className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
                     aria-label="Meta"
                   >
                     <Image
@@ -207,7 +200,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                   </Link>
                   <Link
                     href="#"
-                    className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
+                    className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
                     aria-label="Instagram"
                   >
                     <Image
@@ -220,7 +213,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                   </Link>
                   <Link
                     href="#"
-                    className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
+                    className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
                     aria-label="TikTok"
                   >
                     <Image
@@ -233,7 +226,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                   </Link>
                   <Link
                     href="#"
-                    className="w-6 h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
+                    className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
                     aria-label="LinkedIn"
                   >
                     <Image
@@ -249,26 +242,26 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
             </div>
 
             {/* Main Content */}
-            <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 flex-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 lg:flex lg:gap-16 flex-1">
               {/* Company Info */}
               <div className="flex-1">
-                <h3 className="text-gray-400 text-[15px] font-medium mb-4">
+                <h3 className="text-gray-400 text-[13px] sm:text-[15px] font-medium mb-3 sm:mb-4">
                   {menuData?.addressTitle || "Super* international"}
                 </h3>
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   {menuData?.locations && menuData.locations.length > 0 ? (
                     menuData.locations.map((location) => (
                       <React.Fragment key={location._key}>
                         {location.name && (
                           <div className="mb-1">
-                            <p className="text-gray-400 text-[13px] leading-relaxed">
+                            <p className="text-gray-400 text-[11px] sm:text-[13px] leading-relaxed">
                               {location.name}
                             </p>
                           </div>
                         )}
                         {location.address && (
-                          <div className="border-b border-gray-700 pb-3">
-                            <p className="text-gray-400 text-[11px] leading-relaxed whitespace-pre-line">
+                          <div className="border-b border-gray-700 pb-2 sm:pb-3">
+                            <p className="text-gray-400 text-[10px] sm:text-[11px] leading-relaxed whitespace-pre-line">
                               {location.address}
                             </p>
                           </div>
@@ -277,13 +270,13 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                     ))
                   ) : (
                     <>
-                      <div className=" pb-1">
-                        <p className="text-gray-400 text-[12px] leading-relaxed">
+                      <div className="pb-1">
+                        <p className="text-gray-400 text-[11px] sm:text-[12px] leading-relaxed">
                           Mallorca
                         </p>
                       </div>
-                      <div className="border-b border-gray-700 pb-3">
-                        <p className="text-gray-400 text-[11px] leading-relaxed">
+                      <div className="border-b border-gray-700 pb-2 sm:pb-3">
+                        <p className="text-gray-400 text-[10px] sm:text-[11px] leading-relaxed">
                           Address
                         </p>
                       </div>
@@ -294,16 +287,16 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
 
               {/* Newsletter */}
               <div className="flex-1">
-                <h3 className="text-gray-400 text-[15px] font-medium mb-4">
+                <h3 className="text-gray-400 text-[13px] sm:text-[15px] font-medium mb-3 sm:mb-4">
                   Stay in touch
                 </h3>
-                <form onSubmit={handleNewsletterSubmit} className="space-y-4">
+                <form onSubmit={handleNewsletterSubmit} className="space-y-3 sm:space-y-4">
                   <div className="border border-gray-700 rounded-none">
                     <div className="flex">
                       <label htmlFor="newsletter-email" className="sr-only">
                         Email address
                       </label>
-                      <span className="text-gray-400 text-[11px] px-3 py-3 border-r border-gray-700">
+                      <span className="text-gray-400 text-[10px] sm:text-[11px] px-2 sm:px-3 py-2.5 sm:py-3 border-r border-gray-700 whitespace-nowrap">
                         Newsletter:
                       </span>
                       <input
@@ -311,14 +304,14 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Your e-mail address"
-                        className="flex-1 bg-transparent text-gray-500 text-[11px] px-3 py-3 outline-none placeholder-gray-600 focus:placeholder-gray-500 transition-colors"
+                        className="flex-1 bg-transparent text-gray-500 text-[10px] sm:text-[11px] px-2 sm:px-3 py-2.5 sm:py-3 outline-none placeholder-gray-600 focus:placeholder-gray-500 transition-colors min-w-0"
                         required
                       />
                     </div>
                   </div>
                   <button
                     type="submit"
-                    className="w-full bg-transparent border border-gray-700 text-gray-400 text-[11px] py-3 px-3 hover:border-lime-400 hover:text-lime-400 transition-colors duration-200 focus:outline-none focus:border-lime-400 focus:text-lime-400"
+                    className="w-full bg-transparent border border-gray-700 text-gray-400 text-[10px] sm:text-[11px] py-2.5 sm:py-3 px-3 hover:border-lime-400 hover:text-lime-400 transition-colors duration-200 focus:outline-none focus:border-lime-400 focus:text-lime-400"
                   >
                     Subscribe
                   </button>
@@ -329,8 +322,8 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
 
           {/* Copyright */}
           {menuData?.copyright && (
-            <div className="mt-8 pt-4 border-t border-gray-800">
-              <p className="text-gray-500 text-xs text-center">
+            <div className="mt-6 sm:mt-8 pt-4 border-t border-gray-800">
+              <p className="text-gray-500 text-[10px] sm:text-xs text-center">
                 {menuData.copyright}
               </p>
             </div>

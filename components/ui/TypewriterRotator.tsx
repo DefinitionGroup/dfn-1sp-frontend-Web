@@ -28,7 +28,7 @@ export default function TypewriterRotator({
         variance={2.8}
         speed={"normal"}
         backspace="character"
-        cursorBlinkDuration={0.36}
+        cursorBlinkDuration={0.26}
         cursorStyle={cursor}
         textStyle={animatingText}
         onComplete={() => {
@@ -59,9 +59,9 @@ const container: React.CSSProperties = {
 };
 
 const animatingText: React.CSSProperties = {
-  fontSize: "calc(32px + 3vw)",
-  fontWeight: 700,
-  lineHeight: "calc(48px + 3vw)",
+  fontSize: "calc(22px + 3vw)",
+  fontWeight: 500,
+  lineHeight: "calc(28px + 3vw)",
   letterSpacing: "calc(2px - 0.2vw)",
   textTransform: "uppercase",
   color: "var(--text-primary)",
@@ -73,5 +73,5 @@ const cursor: React.CSSProperties = {
   width: 8,
   borderRadius: 4,
   marginLeft: 4,
-  minHeight: "calc(24px + 3.8vw)",
+  minHeight: "calc(22px + 3vw)",
 };
