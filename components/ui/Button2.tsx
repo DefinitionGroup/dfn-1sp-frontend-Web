@@ -63,7 +63,7 @@ function Button2({ text, className, href, variant = "default" }: Button2Props) {
   );
 
   const containerClass = cn(
-    "inline-block relative top-0 left-0 shadow-md  min-w-full ml-[1px] overflow-hidden group/btn",
+    "inline-block relative top-0 left-0 min-w-full ml-[1px] overflow-hidden group/btn",
     variantStyles[safeVariant].container
   );
 
