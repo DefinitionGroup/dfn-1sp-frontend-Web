@@ -56,6 +56,8 @@ const container: React.CSSProperties = {
   fontWeight: 500,
   lineHeight: 1,
   color: "var(--accent)",
+
+
 };
 
 const animatingText: React.CSSProperties = {
@@ -73,5 +75,5 @@ const cursor: React.CSSProperties = {
   width: 8,
   borderRadius: 4,
   marginLeft: 4,
-  minHeight: "calc(22px + 3vw)",
+  minHeight: "calc(12px + 3vw)",
 };

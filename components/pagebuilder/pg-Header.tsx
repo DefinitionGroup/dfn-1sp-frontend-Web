@@ -78,9 +78,9 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   // Generate section ID from eyebrow or default
   const sectionId = eyebrow
     ? eyebrow
-        .replace(/[^a-zA-Z0-9\s]/g, "")
-        .replace(/\s+/g, "-")
-        .toLowerCase()
+      .replace(/[^a-zA-Z0-9\s]/g, "")
+      .replace(/\s+/g, "-")
+      .toLowerCase()
     : "header-section";
 
   // Store the navPointName in a data attribute if provided
@@ -115,10 +115,10 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
       )}
 
       {/* Foreground content */}
-      <div className="absolute bottom-24 md:relative z-10 container md:mt-[45vh] mx-auto">
-        <StaggeredSlideUp className="px-12 md:px-4  space-y-6 max-w-full">
+      <div className="absolute bottom-24 md:relative z-10 container md:mt-[50vh] mx-auto">
+        <StaggeredSlideUp className="px-12 md:px-4  space-y-1 max-w-full">
           {eyebrow && (
-            <h1 className="text-neutral-50 uppercase pb-2 text-xs border-b font-bold max-w-3/4">
+            <h1 className="text-neutral-50 uppercase  text-xs border-b pb-1 border-white/50 font-bold max-w-1/4">
               {eyebrow}
             </h1>
           )}

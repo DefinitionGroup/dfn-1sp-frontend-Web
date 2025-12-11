@@ -16,12 +16,13 @@ import { useParams } from "next/navigation";
 type RawItem =
   | string
   | {
-      _type?: string;
-      name?: string;
-      text?: string;
-      taglabel?: string;
-      introText?: string;
-    };
+    _type?: string;
+    name?: string;
+    text?: string;
+    taglabel?: string;
+    introText?: string;
+    serviceBackground?: CloudinaryAsset;
+  };
 
 function pickItems(step: any): RawItem[] {
   const contentType = step?.scrollHighlightContent?.contentType;
@@ -44,9 +45,13 @@ export default function HighlightStep({
   const locale = (params?.locale as string) || "en";
   const [ctaUrl, setCtaUrl] = useState<string>("#");
 
-  const video = assetUrl(step.backgroundVideo);
+  const mediaUrl = assetUrl(step.backgroundVideo);
+  const isImage = mediaUrl
+    ? /\.(jpg|jpeg|png|gif|webp|avif|svg)$/i.test(mediaUrl)
+    : false;
 
   const rawItems = pickItems(step);
+  console.log("🔍 rawItems:", rawItems);
   const items = rawItems
     .map((it) => {
       if (typeof it === "string") {
@@ -54,9 +59,11 @@ export default function HighlightStep({
       }
       // Handle Services references
       if (it?._type === "services") {
+        console.log("🖼️ Service item:", it.name, "serviceBackground:", it.serviceBackground);
         return {
           name: it.name || it.taglabel || "",
           text: it.introText || "",
+          image: assetUrl((it.serviceBackground as any)?.asset),
         };
       }
       // Handle slideUpText
@@ -66,13 +73,14 @@ export default function HighlightStep({
       };
     })
     .filter((i) => i.name);
+  console.log("✅ Final items:", items);
 
   // Generate section ID from badge text
   const sectionId = step.badge?.text
     ? step.badge.text
-        .replace(/[^a-zA-Z0-9\s]/g, "")
-        .replace(/\s+/g, "-")
-        .toLowerCase()
+      .replace(/[^a-zA-Z0-9\s]/g, "")
+      .replace(/\s+/g, "-")
+      .toLowerCase()
     : "gallery-highlight";
 
   // Store the navPointName in a data attribute if provided
@@ -89,8 +97,8 @@ export default function HighlightStep({
         const baseUrl = await resolveLinkAsync(cta.link);
         const finalUrl =
           baseUrl &&
-          baseUrl.startsWith("/") &&
-          !baseUrl.startsWith(`/${locale}`)
+            baseUrl.startsWith("/") &&
+            !baseUrl.startsWith(`/${locale}`)
             ? `/${locale}${baseUrl}`
             : baseUrl || "#";
         setCtaUrl(finalUrl);
@@ -106,10 +114,11 @@ export default function HighlightStep({
       {...navPointDataAttr}
       className="z-1 mx-auto mt-8 min-h-[60vh] relative font-aspekta"
     >
-      {video && (
+      {mediaUrl && (
         <HeaderImageVideoComp2
-          useVideo={true}
-          videoSrc={video}
+          useVideo={!isImage}
+          videoSrc={isImage ? undefined : mediaUrl}
+          imageSrc={isImage ? mediaUrl : undefined}
           enableParallax={true}
         />
       )}

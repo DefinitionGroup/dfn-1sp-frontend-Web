@@ -2,10 +2,12 @@
 
 import { motion } from "motion/react";
 import { useState } from "react";
+import Image from "next/image";
 
 export interface SkillItem {
   name?: string;
   text?: string;
+  image?: string;
 }
 
 function ScrollHighlightItem({
@@ -33,6 +35,22 @@ function ScrollHighlightItem({
       viewport={{ margin: "-20% 0px -75% 0px", amount: "some" }}
     >
       <span className="skill-name">{skill.name}</span>
+      {isHighlighted && skill.image && (
+        <motion.div
+          className="skill-image"
+          layout
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ type: "spring", stiffness: 120, damping: 20 }}
+        >
+          <Image
+            src={skill.image}
+            alt={skill.name || "Service background"}
+            fill
+            className="rounded-lg object-cover"
+          />
+        </motion.div>
+      )}
       {isHighlighted && skill.text && (
         <motion.p
           className="skill-description"
@@ -134,6 +152,27 @@ function Stylesheet() {
         overflow-wrap: break-word;
         hyphens: auto;
         line-height: 1.1;
+      }
+
+      .skill-image {
+        position: relative;
+        margin-top: 1rem;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        border-radius: 0.5rem;
+        overflow: hidden;
+      }
+
+      @media (min-width: 640px) {
+        .skill-image {
+          max-width: 320px;
+        }
+      }
+
+      @media (min-width: 768px) {
+        .skill-image {
+          max-width: 400px;
+        }
       }
 
       .skill-description {

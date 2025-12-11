@@ -87,7 +87,8 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
               _type,
               name,
               taglabel,
-              introText
+              introText,
+              serviceBackground
             }
           }
         },
@@ -186,7 +187,8 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
           _type,
           name,
           taglabel,
-          introText
+          introText,
+          serviceBackground
         }
       }
     },
@@ -300,7 +302,8 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
               _type,
               name,
               taglabel,
-              introText
+              introText,
+              serviceBackground
             }
           }
         },
@@ -363,7 +366,8 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
           _type,
           name,
           taglabel,
-          introText
+          introText,
+          serviceBackground
         }
       }
     },
