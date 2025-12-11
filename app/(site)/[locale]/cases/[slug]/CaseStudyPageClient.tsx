@@ -122,15 +122,14 @@ export default function CaseStudyPageClient({
             )}
             {/* Display Unit Logos if available */}
             {caseStudy.units && caseStudy.units.length > 0 && (
-              <div className="flex flex-wrap gap-3 sm:gap-4 mb-4 border-t-2 w-fit py-3 sm:py-4 border-white/50">
+              <div className="flex flex-wrap gap-1 sm:gap-4 mb-4 w-fit  border-white/50">
                 {caseStudy.units.map((unit) =>
-                  unit.logoUrl ? (
-                    <img
-                      key={unit._id}
-                      src={unit.logoUrl}
-                      alt={unit.name}
-                      className="h-4 sm:h-5 w-auto object-contain"
-                    />
+                  unit.name ? (
+
+
+                    <h2 key={unit._id} className="text-neutral-200 tracking-wider text-[10px] sm:text-xxs font-regular bg-gray-700 rounded-full inline-block w-fit py-1 px-3 sm:px-4">
+                      {unit.name}
+                    </h2>
                   ) : null
                 )}
               </div>

@@ -32,7 +32,7 @@ function ScrollHighlightItem({
       }}
       transition={{ type: "spring", stiffness: 120, damping: 20 }}
       onViewportEnter={() => onHighlight(index)}
-      viewport={{ margin: "-20% 0px -75% 0px", amount: "some" }}
+      viewport={{ margin: "-50% 0px -55% 0px", amount: "some" }}
     >
       <span className="skill-name">{skill.name}</span>
       {isHighlighted && skill.image && (
@@ -115,7 +115,7 @@ function Stylesheet() {
 
       @media (min-width: 768px) {
         .skills-list {
-          gap: 5rem;
+          gap: 1rem;
         }
       }
 
@@ -142,7 +142,7 @@ function Stylesheet() {
       @media (min-width: 768px) {
         .skill-item {
           max-width: min(24ch, 50vw);
-          padding: 2rem 0;
+          padding: 1rem 0;
         }
       }
 
