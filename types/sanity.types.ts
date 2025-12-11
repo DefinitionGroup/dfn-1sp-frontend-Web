@@ -529,6 +529,22 @@ export interface ResultsMetricsComponent {
     paddingY?: string;
 }
 
+export interface GlobeLocation {
+    name: string;
+    subtitle?: string;
+    coordinateLon: number;
+    coordinateLat: number;
+    _key?: string;
+}
+
+export interface GlobeComponent {
+    _type: "globeComponent";
+    _key?: string;
+    navPointName?: string;
+    sectionTitle?: string;
+    locations: GlobeLocation[];
+}
+
 export interface Service {
     _id: string;
     name: string;

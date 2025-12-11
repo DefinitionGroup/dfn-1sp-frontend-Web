@@ -28,9 +28,9 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
   // Generate section ID from heading or use a default
   const sectionId = heading
     ? heading
-        .replace(/[^a-zA-Z0-9\s]/g, "")
-        .replace(/\s+/g, "-")
-        .toLowerCase()
+      .replace(/[^a-zA-Z0-9\s]/g, "")
+      .replace(/\s+/g, "-")
+      .toLowerCase()
     : "hero-section";
 
   // Store the navPointName in a data attribute if provided
@@ -42,7 +42,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="grid grid-cols-12 z-1 mx-auto relative font-aspekta text-white"
+      className="grid grid-cols-12 z-1 mx-auto min-h-[75vh] relative font-aspekta text-white"
     >
       {/* Background media wrapper */}
       <HeaderImageVideoComp2
@@ -54,16 +54,16 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
 
       <div className="z-1 grid col-span-12 py-24 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12">
         {/* Left column */}
-        <div className="col-span-12 md:col-span-3 col-start-1">
+        <div className="col-span-12 md:col-span-3 flex flex-col px-4 md:px-8 justify-center  col-start-1">
           <StaggeredSlideUp
-            className="flex flex-col items-start justify-start"
+            className="flex flex-col items-start justify-center"
             delay={0.0}
             staggerDelay={0.1}
             duration={0.5}
             distance={80}
           >
             {heading ? (
-              <h2 className="text-5xl md:text-7xl font-nyghtserif font-semibold tracking-tight leading-compress pb-8">
+              <h2 className="text-5xl md:text-7xl font-nyghtserif font-semibold  leading-none pb-2">
                 {heading}
               </h2>
             ) : null}

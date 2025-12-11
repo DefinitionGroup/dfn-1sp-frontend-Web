@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform, useInView } from "motion/react";
-import { useRef } from "react";
+import { motion, useInView } from "motion/react";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
 
 interface HeaderImageVideoCompProps {
@@ -25,40 +24,41 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   enableParallax = true,
   opacity = 0.6, // default overlay opacity
 }) => {
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 500], [0, 250]);
-
   // Create ref for the component
   const ref = useRef(null);
   const isInView = useInView(ref, {
-    once: false,
-    amount: 0.4,
+    once: true, // Only animate once for better performance
+    amount: 0.2,
   });
 
   return (
-    <motion.div className={`absolute inset-0   mx-auto ${className}`}>
+    <motion.div
+      className={`absolute mt-4 inset-0 overflow-visible mx-auto ${className}`}
+      style={{ willChange: "transform" }}
+    >
       <motion.div
         ref={ref}
-        initial={{ opacity: 1, scale: 0.9, width: "90%" }}
+        initial={{ opacity: 0, scale: 0.5 }}
         animate={
           isInView
-            ? { opacity: 1, scale: 1, width: "100%" }
-            : { opacity: 1, scale: 0.9, width: "90%" }
+            ? { opacity: 1, scale: 1, rotate: 0 }
+            : { opacity: 0, scale: 0.9, }
         }
         transition={{
-          duration: 0.7,
+          duration: 0.5,
           ease: [0.16, 1, 0.3, 1],
-          opacity: { duration: 0.8 },
         }}
-        className="absolute mx-auto md:rounded-sm inset-0 overflow-hidden "
+        className="absolute mx-auto md:rounded-xl inset-0 overflow-hidden"
+        style={{ willChange: "transform, opacity" }}
       >
         {useVideo ? (
           <video
             src={videoSrc}
             autoPlay
             loop
-            muted  playsInline
-            className="object-cover w-full h-full overflow-hidden "
+            muted
+            playsInline
+            className="object-cover w-full h-full overflow-hidden"
           />
         ) : (
           <Image
@@ -69,15 +69,8 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
             priority
           />
         )}
-        <motion.div
-          className="absolute inset-0 bg-black"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity } : { opacity: 0 }}
-          transition={{
-            duration: 0.8,
-            delay: 0.3,
-            ease: [0.16, 1, 0.3, 1],
-          }}
+        <div
+          className="absolute inset-0 bg-black/60"
         />
       </motion.div>
     </motion.div>

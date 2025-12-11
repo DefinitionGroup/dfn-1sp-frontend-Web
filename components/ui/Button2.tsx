@@ -17,30 +17,30 @@ const variantStyles: Record<
   { top: string; bottom: string; container: string }
 > = {
   default: {
-    top: "border-white/20 text-white fill-white p-4",
-    bottom: "border-slate-100 bg-slate-100 text-slate-900 ",
+    top: "border-white/20 text-white  fill-white p-4",
+    bottom: "border-slate-100 bg-slate-100  text-slate-900 ",
     container: "h-15",
   },
   black: {
     top: "border-neutral-800/30 bg-neutral-900 text-white p-4 ",
-    bottom: "border-neutral-900 bg-neutral-800 text-white ",
+    bottom: "border-neutral-900 bg-neutral-800  text-white ",
     container: "h-15",
   },
   lime: {
-    top: "border-lime-500/30 bg-lime-400 p-4 w-full",
-    bottom: "border-neutral-800 bg-neutral-900 text-white w-full ",
+    top: "border-lime-500/30 bg-lime-400 p-4  w-full",
+    bottom: "border-neutral-800 bg-neutral-900 text-white  w-full ",
     container: "h-12",
   },
   limesmall: {
-    top: "border-lime-500/30 bg-lime-400 text-neutral-900 px-4 py-2 ",
-    bottom: "border-neutral-800 bg-neutral-800 text-white px-4 py-2 ",
-    container: "h-10",
+    top: "border-lime-500/30 bg-lime-400 text-neutral-900  px-4 py-2 ",
+    bottom: "border-neutral-800 bg-neutral-800 text-white px-4  py-2 ",
+    container: "h-8",
   },
   limesmallrounded: {
     top: "border-lime-500/30 text-xxs rounded-full bg-lime-400 text-neutral-900 px-2 py-1 ",
     bottom:
-      "border-neutral-800 text-xxs rounded-full  bg-neutral-800 text-white px-2 py-1 ",
-    container: "h-10",
+      "border-neutral-800 text-xxs rounded-full  bg-neutral-800   text-white px-2 py-1 ",
+    container: "h-8",
   },
 };
 
@@ -68,7 +68,7 @@ function Button2({ text, className, href, variant = "default" }: Button2Props) {
   );
 
   const content = (rotated: boolean) => (
-    <div className="flex justify-between items-center w-full">
+    <div className="flex justify-between items-center w-full ">
       <span className="text-xxs">{text}</span>
       <ArrowRightIcon
         className={cn(

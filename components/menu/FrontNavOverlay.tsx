@@ -107,10 +107,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   return (
     <nav
       ref={navRef}
-      className={`hidden absolute top-0 left-0 right-0 md:grid items-center z-50 grid-cols-12 gap-4 py-5 container mx-auto ${textColor} ${className}`}
+      className={`hidden absolute top-0 left-0  px-8 right-0 md:grid items-center z-50 grid-cols-12 py-5 container mx-auto ${textColor} ${className}`}
     >
-      <div className="col-span-1 flex items-center justify-center">
-        <div className=" flex items-center justify-center">
+      <div className="col-span-1 flex items-center  justify-start">
+        <div className=" flex items-start  justify-center">
           <Link
             href={`/${locale}`}
             onClick={(e) => {
@@ -135,7 +135,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         initial={{ opacity: 0, scaleX: 0, y: 10, originX: 0, originY: 0 }}
         animate={{ opacity: 1, scaleX: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
-        className="col-span-9 flex items-center"
+        className="col-span-9 flex items-center "
       >
         <StaggeredSlideUp
           className="flex gap-16 items-center"
@@ -242,15 +242,12 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           </button>
         )}
 
-          <Link
-                className="min-w-3xl"
-                  href={`/${locale}/contact`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push(`/${locale}/our-family`);
-                  }}
-                >
-        <Button2 variant="limesmall" text="Contact us" /></Link>
+        <Button2
+          variant="limesmall"
+          className="min-w-[110px] w-fit"
+          href={`/${locale}/contact`}
+          text="Contact us"
+        />
       </div>
 
       {/* Cases overlay */}

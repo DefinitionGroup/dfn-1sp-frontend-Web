@@ -166,7 +166,8 @@ export default defineType({
                 { type: 'smartCarousel' },
                 { type: 'smartPeople' },
                 { type: 'smartUnitsGallery' },
-                { type: 'smartUnitsGlobe' }
+                { type: 'smartUnitsGlobe' },
+                { type: 'globeComponent' }
             ],
             hidden: ({ parent }: any) => parent?.channel !== '1spWeb',
         }),

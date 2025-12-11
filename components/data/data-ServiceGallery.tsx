@@ -31,8 +31,8 @@ export default function ServiceGalleryComponent({
     activeFilter === filterAllText
       ? services
       : services.filter((item) =>
-          item.servicegrouprel?.some((group) => group.name === activeFilter)
-        );
+        item.servicegrouprel?.some((group) => group.name === activeFilter)
+      );
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -186,9 +186,9 @@ export default function ServiceGalleryComponent({
       <ul className="w-full">
         <StaggeredSlideUp
           key={activeFilter}
-          staggerDelay={0.125}
+          staggerDelay={0.0225}
           distance={30}
-          duration={1.6}
+          duration={1}
           viewport={{
             once: true,
             amount: 0.2,
@@ -215,7 +215,7 @@ export default function ServiceGalleryComponent({
               >
                 <motion.div
                   layoutId={`image-${item.name}-${id}`}
-                  className="col-start-1 col-span-1  row-start-1 bg-black h-full min-h-full overflow-hidden rounded-sm"
+                  className="col-start-1 col-span-1  row-start-1 bg-black h-full min-h-full overflow-hidden rounded-xl"
                 >
                   {bg ? (
                     <Image

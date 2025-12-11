@@ -281,7 +281,7 @@ function OverlayRoot({
                     <Link
                       href={item.href}
                       ref={idx === 0 ? firstLinkRef : undefined}
-                      className="text-xl md:text-2xl tracking-tight text-neutral-50 hover:text-lime-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 rounded-sm transition-colors"
+                      className="text-xl md:text-2xl tracking-tight text-neutral-50 hover:text-lime-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 rounded-xl transition-colors"
                       onClick={onClose}
                     >
                       {item.label}
@@ -349,31 +349,31 @@ function OverlayRoot({
                 {(socialLinks && socialLinks.length > 0
                   ? socialLinks.filter((s) => !!s?.url)
                   : [
-                      {
-                        _key: "meta",
-                        name: "Meta",
-                        url: "#",
-                        icon: { secure_url: "/MetaLogo.svg" },
-                      },
-                      {
-                        _key: "instagram",
-                        name: "Instagram",
-                        url: "#",
-                        icon: { secure_url: "/InstagramLogo.svg" },
-                      },
-                      {
-                        _key: "tiktok",
-                        name: "TikTok",
-                        url: "#",
-                        icon: { secure_url: "/TiktokLogo.svg" },
-                      },
-                      {
-                        _key: "linkedin",
-                        name: "LinkedIn",
-                        url: "#",
-                        icon: { secure_url: "/LinkedinLogo.svg" },
-                      },
-                    ]
+                    {
+                      _key: "meta",
+                      name: "Meta",
+                      url: "#",
+                      icon: { secure_url: "/MetaLogo.svg" },
+                    },
+                    {
+                      _key: "instagram",
+                      name: "Instagram",
+                      url: "#",
+                      icon: { secure_url: "/InstagramLogo.svg" },
+                    },
+                    {
+                      _key: "tiktok",
+                      name: "TikTok",
+                      url: "#",
+                      icon: { secure_url: "/TiktokLogo.svg" },
+                    },
+                    {
+                      _key: "linkedin",
+                      name: "LinkedIn",
+                      url: "#",
+                      icon: { secure_url: "/LinkedinLogo.svg" },
+                    },
+                  ]
                 ).map((social) => (
                   <Link
                     key={social._key || social.name || social.url}
@@ -406,7 +406,7 @@ function OverlayRoot({
         <FrontNavOverlay />
         <motion.button
           onClick={onClose}
-          className="mt-6 text-7xl fixed top-0 font-extralight uppercase tracking-wide text-neutral-100 hover:text-white focus:outline-none hover:rotate-45 transition focus-visible:ring-2 focus-visible:ring-lime-400 rounded-sm"
+          className="mt-6 text-7xl fixed top-0 font-extralight uppercase tracking-wide text-neutral-100 hover:text-white focus:outline-none hover:rotate-45 transition focus-visible:ring-2 focus-visible:ring-lime-400 rounded-xl"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 0.8, y: 0 }}
           whileHover={{ opacity: 1 }}

@@ -37,15 +37,15 @@ function ContentSection({ data }: { data: ContentSectionData }) {
   // Generate section ID from title or intro heading
   const sectionId = title
     ? title
+      .replace(/[^a-zA-Z0-9\s]/g, "")
+      .replace(/\s+/g, "-")
+      .toLowerCase()
+    : introHeading
+      ? introHeading
+        .substring(0, 30)
         .replace(/[^a-zA-Z0-9\s]/g, "")
         .replace(/\s+/g, "-")
         .toLowerCase()
-    : introHeading
-      ? introHeading
-          .substring(0, 30)
-          .replace(/[^a-zA-Z0-9\s]/g, "")
-          .replace(/\s+/g, "-")
-          .toLowerCase()
       : "content-section";
 
   // Store the navPointName in a data attribute if provided
@@ -152,7 +152,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
           {showGridBackground && <GridBackground />}
           <div className="z-1 grid gap-8 col-span-12 py-16 col-start-1 container mx-auto row-start-1 grid-cols-12">
             <div className="z-1 col-span-12 col-start-1">
-              <div className="flex flex-col items-start gap-8 justify-center w-full">
+              <div className="flex flex-col items-start gap-8  justify-center w-full">
                 {introHeading && (
                   <StaggeredSlideUp
                     delay={0.59}

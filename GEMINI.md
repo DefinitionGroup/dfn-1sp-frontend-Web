@@ -30,6 +30,7 @@ This is a Next.js project bootstrapped with `create-next-app`. It uses Sanity as
 
 ## Key Architectural Patterns
 
+
 ### Page Builder
 The project uses a flexible Page Builder pattern. The `PageBuilder` component (`components/PageBuilder.tsx`) iterates over a list of content blocks from Sanity and dynamically renders the corresponding React component.
 *   **Dynamic Imports**: Heavy components in the page builder are dynamically imported to optimize bundle size and initial load performance.
