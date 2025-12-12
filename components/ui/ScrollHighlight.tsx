@@ -46,7 +46,7 @@ function ScrollHighlightItem({
       viewport={{ margin: "-50% 0px -55% 0px", amount: "some" }}
     >
       <span className="skill-name relative ">{skill.name}</span>
-      {isHighlighted && (<motion.div
+      {isHighlighted && skill.image && (<motion.div
         className="fixed top-8 -left-52 w-42 h-36 "
         layout
       >

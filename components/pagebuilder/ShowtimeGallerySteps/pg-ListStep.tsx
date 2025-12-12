@@ -278,15 +278,15 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
   // Generate section ID from badge text or header text
   const sectionId = step.badge?.text
     ? step.badge.text
+      .replace(/[^a-zA-Z0-9\s]/g, "")
+      .replace(/\s+/g, "-")
+      .toLowerCase()
+    : header.mainHeadline
+      ? header.mainHeadline
+        .substring(0, 30)
         .replace(/[^a-zA-Z0-9\s]/g, "")
         .replace(/\s+/g, "-")
         .toLowerCase()
-    : header.mainHeadline
-      ? header.mainHeadline
-          .substring(0, 30)
-          .replace(/[^a-zA-Z0-9\s]/g, "")
-          .replace(/\s+/g, "-")
-          .toLowerCase()
       : "gallery-list";
 
   // Store the navPointName in a data attribute if provided
@@ -317,6 +317,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showBadgeMiniCta, badgeMiniCta?.link, locale]);
 
   const [ctaMiniUrls, setCtaMiniUrls] = useState<string[]>(() =>
@@ -346,87 +347,87 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
         {/* Badge */}
         <div className="col-span-6 col-start-2  row-span-2 md:col-start-1 md:col-span-2 md:sticky top-0 ">
 
-        {step.badge && (
-          <Badgemodule
-            text={step.badge.text ?? ""}
-            subtitle={step.badge.subtitle ?? ""}
-            numberEl={step.badge.numberEl ?? ""}
-          />
-          
-        )}
-         {showBadgeMiniCta && badgeMiniCta && (
-              <div className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 mt-4 pr-8 ">
-                <CtaMiniComponent
-                  heading={badgeMiniCta.heading || ""}
-                  paragraph={badgeMiniCta.paragraph || ""}
-                  buttonText={badgeMiniCta.buttonText || ""}
-                  buttonVariant={(badgeMiniCta.variant as any) || "limesmall"}
-                  align={(badgeMiniCta.alignment as any) || "left"}
-                  url={badgeMiniUrl || undefined}
-                />
-              </div>
-            )}
+          {step.badge && (
+            <Badgemodule
+              text={step.badge.text ?? ""}
+              subtitle={step.badge.subtitle ?? ""}
+              numberEl={step.badge.numberEl ?? ""}
+            />
+
+          )}
+          {showBadgeMiniCta && badgeMiniCta && (
+            <div className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 mt-4 pr-8 ">
+              <CtaMiniComponent
+                heading={badgeMiniCta.heading || ""}
+                paragraph={badgeMiniCta.paragraph || ""}
+                buttonText={badgeMiniCta.buttonText || ""}
+                buttonVariant={(badgeMiniCta.variant as any) || "limesmall"}
+                align={(badgeMiniCta.alignment as any) || "left"}
+                url={badgeMiniUrl || undefined}
+              />
+            </div>
+          )}
         </div>
 
-      
+
 
         {/* Header area */}
         {staggered
           ? ((staggeredHeader as any)?.title || paragraphLines.length > 0) && (
-              <div className="col-span-10 col-start-3">
-                <StaggeredSlideUp
-                  className="flex flex-col items-start justify-start"
-                  delay={0}
-                  staggerDelay={0.1}
-                  duration={0.5}
-                  distance={80}
-                >
-                  {(staggeredHeader as any)?.title && (
-                    <h2 className="text-9xl text-gray-100 max-w-xl font-nyghtserif font-semibold tracking-tight leading-compress mb-4 pb-8">
-                      {(staggeredHeader as any).title}
+            <div className="col-span-10 col-start-3">
+              <StaggeredSlideUp
+                className="flex flex-col items-start justify-start"
+                delay={0}
+                staggerDelay={0.1}
+                duration={0.5}
+                distance={80}
+              >
+                {(staggeredHeader as any)?.title && (
+                  <h2 className="text-9xl text-gray-100 max-w-xl font-nyghtserif font-semibold tracking-tight leading-compress mb-4 pb-8">
+                    {(staggeredHeader as any).title}
+                  </h2>
+                )}
+
+                {paragraphLines.map((line, idx) => (
+                  <p
+                    key={`para-${idx}`}
+                    className={[
+                      sizeToClass[line.fontSize] || "text-base",
+                      "text-gray-100 max-w-2xs mx-auto",
+                      idx > 0 ? "mt-4" : "",
+                    ].join(" ")}
+                  >
+                    {line.text}
+                  </p>
+                ))}
+              </StaggeredSlideUp>
+            </div>
+          )
+          : (header?.superText ||
+            header?.mainHeadline ||
+            header?.subHeadline) && (
+            <header className="col-span-12  md:col-span-4 col-start-2 md:col-start-3  md:mt-0 border-y border-gray-200">
+              <div className="flex flex-col items-start justify-start w-full">
+                <div className="flex-1 flex flex-col min-w-0">
+                  {header?.superText && (
+                    <h4 className=" text-neutral-900 font-bold font-aspekta">
+                      {header.superText}
+                    </h4>
+                  )}
+                  {header?.mainHeadline && (
+                    <h2 className="text-5xl md:text-7xl  text-gray-900  tracking-tight font-aspekta">
+                      {header.mainHeadline}
                     </h2>
                   )}
-
-                  {paragraphLines.map((line, idx) => (
-                    <p
-                      key={`para-${idx}`}
-                      className={[
-                        sizeToClass[line.fontSize] || "text-base",
-                        "text-gray-100 max-w-2xs mx-auto",
-                        idx > 0 ? "mt-4" : "",
-                      ].join(" ")}
-                    >
-                      {line.text}
-                    </p>
-                  ))}
-                </StaggeredSlideUp>
-              </div>
-            )
-          : (header?.superText ||
-              header?.mainHeadline ||
-              header?.subHeadline) && (
-              <header className="col-span-12  md:col-span-4 col-start-2 md:col-start-3  md:mt-0 border-y border-gray-200">
-                <div className="flex flex-col items-start justify-start w-full">
-                  <div className="flex-1 flex flex-col min-w-0">
-                    {header?.superText && (
-                      <h4 className=" text-neutral-900 font-bold font-aspekta">
-                        {header.superText}
-                      </h4>
-                    )}
-                    {header?.mainHeadline && (
-                      <h2 className="text-5xl md:text-7xl  text-gray-900  tracking-tight font-aspekta">
-                        {header.mainHeadline}
-                      </h2>
-                    )}
-                    {header?.subHeadline && (
-                      <h4 className=" text-gray-700 font-medium leading- font-aspekta">
-                        {header.subHeadline}
-                      </h4>
-                    )}
-                  </div>
+                  {header?.subHeadline && (
+                    <h4 className=" text-gray-700 font-medium leading- font-aspekta">
+                      {header.subHeadline}
+                    </h4>
+                  )}
                 </div>
-              </header>
-            )}
+              </div>
+            </header>
+          )}
 
         {/* Right list column */}
         {Array.isArray(listItems) && listItems.length > 0 && (

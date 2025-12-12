@@ -175,6 +175,7 @@ export default function SmartCarousel({
   useEffect(() => {
     startAutoPlay();
     return clearAutoPlay;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAutoPlaying, carouselItems.length]);
 
   useEffect(() => {

@@ -64,15 +64,15 @@ export default function PeopleStep({
   // Generate section ID from badge text or header text
   const sectionId = step.badge?.text
     ? step.badge.text
+      .replace(/[^a-zA-Z0-9\s]/g, "")
+      .replace(/\s+/g, "-")
+      .toLowerCase()
+    : header.mainHeadline
+      ? header.mainHeadline
+        .substring(0, 30)
         .replace(/[^a-zA-Z0-9\s]/g, "")
         .replace(/\s+/g, "-")
         .toLowerCase()
-    : header.mainHeadline
-      ? header.mainHeadline
-          .substring(0, 30)
-          .replace(/[^a-zA-Z0-9\s]/g, "")
-          .replace(/\s+/g, "-")
-          .toLowerCase()
       : "gallery-people";
 
   // Store the navPointName in a data attribute if provided
@@ -105,6 +105,7 @@ export default function PeopleStep({
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldShowBadgeMiniCta, badgeMiniCta?.link, locale]);
 
   return (
@@ -117,7 +118,7 @@ export default function PeopleStep({
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 py-16 sm:py-24 lg:py-32">
-          
+
           {/* Badge + CTA Column */}
           {(step.badge || shouldShowBadgeMiniCta) && (
             <div className="col-span-4 sm:col-span-3 md:col-span-2 mb-8 md:mb-0 md:sticky md:top-24 self-start">
@@ -150,7 +151,7 @@ export default function PeopleStep({
 
           {/* Main Content Area */}
           <div className={`col-span-4 sm:col-span-6 ${step.badge || shouldShowBadgeMiniCta ? "md:col-span-10 md:col-start-3" : "md:col-span-12"}`}>
-            
+
             {/* Header Section */}
             <header className="border-t border-gray-200 pt-4 sm:pt-6 mb-8 md:mb-12">
               <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-10 gap-4 sm:gap-6">
