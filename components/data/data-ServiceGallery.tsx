@@ -104,7 +104,26 @@ export default function ServiceGalleryComponent({
               transition={{ type: "spring", visualDuration: 0.3, bounce: 0.2 }}
               ref={ref}
               className="w-full z-50 max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
+            >      <motion.button
+              key={`button-${active.name}-${id}`}
+              layout
+              initial={{
+                opacity: 1,
+              }}
+              animate={{
+                opacity: 1,
+              }}
+              exit={{
+                opacity: 1,
+                transition: {
+                  duration: 0.025,
+                },
+              }}
+              className="flex absolute top-4 right-4 items-center overflow-hidden justify-around rounded-full h-6 w-6 z-50"
+              onClick={() => setActive(null)}
             >
+                <CloseIcon />
+              </motion.button>
               <motion.div
                 className="w-full sm:rounded-t-xl relative overflow-hidden h-full"
                 layoutId={`image-${active.name}-${id}`}
@@ -115,7 +134,7 @@ export default function ServiceGalleryComponent({
                     height={400}
                     src={activeBg}
                     alt={active.name}
-                    className="w-full min-h-[1000px] border border-lime-500 sm:rounded-t-xl  opacity-50 object-cover object-top"
+                    className="w-full min-h-[1000px]  sm:rounded-t-xl  opacity-50 object-cover object-top"
                   />
                 ) : (
                   <div className="w-full h-full sm:rounded-t-xl bg-neutral-800 opacity-50" />
@@ -239,7 +258,7 @@ export default function ServiceGalleryComponent({
                         className="w-10 h-10 object-contain mb-2"
                       />
                     )} */}
-                    <div className="flex flex-col items-end">
+                    <div className="flex flex-col   items-end">
                       <motion.h3
                         layoutId={`title-${item.name}-${id}`}
                         className="font-medium text-xl leading-snug tracking-tight text-neutral-700 dark:text-neutral-200 text-right"

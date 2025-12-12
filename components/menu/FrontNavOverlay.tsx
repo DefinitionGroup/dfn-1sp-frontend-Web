@@ -107,9 +107,9 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   return (
     <nav
       ref={navRef}
-      className={`hidden absolute top-0 left-0  px-8 right-0 md:grid items-center z-50 grid-cols-12 py-5 container mx-auto ${textColor} ${className}`}
+      className={`hidden fixed top-6 left-0 backdrop-blur-md rounded-4xl max-w-4xl bg-neutral-400/60  px-6 right-0 md:grid items-center z-50 grid-cols-12 py-2 container mx-auto ${textColor} ${className}`}
     >
-      <div className="col-span-1 flex items-center  justify-start">
+      <div className="col-span-1 flex items-center  mr-8  justify-start">
         <div className=" flex items-start  justify-center">
           <Link
             href={`/${locale}`}
@@ -123,8 +123,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             <Image
               src={logoUrl}
               alt="1SP Logo"
-              width={90}
-              height={90}
+              width={66}
+              height={66}
               className="object-contain transition-all duration-300"
             />
           </Link>
@@ -139,9 +139,9 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       >
         <StaggeredSlideUp
           className="flex gap-16 items-center"
-          delay={0.55}
-          staggerDelay={0.02}
-          duration={0.8}
+          delay={2}
+          staggerDelay={0.26}
+          duration={3}
           distance={10}
           maskHeight="150%"
           easing="spring"
@@ -244,7 +244,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
         <Button2
           variant="limesmall"
-          className="min-w-[110px] w-fit"
+          className="min-w-[110px] w-fit rounded-full"
           href={`/${locale}/contact`}
           text="Contact us"
         />

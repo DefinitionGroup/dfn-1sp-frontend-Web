@@ -1,13 +1,20 @@
 "use client";
 
-import { motion } from "motion/react";
-import { useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { useState, useRef, useId } from "react";
 import Image from "next/image";
+import { useOutsideClick } from "@/hooks/use-outside-click";
 
 export interface SkillItem {
   name?: string;
   text?: string;
   image?: string;
+  buttonLabel?: string;
+  modalContent?: {
+    title?: string;
+    description?: string;
+    tags?: string[];
+  };
 }
 
 function ScrollHighlightItem({
@@ -15,45 +22,44 @@ function ScrollHighlightItem({
   index,
   isHighlighted,
   onHighlight,
+  onOpenModal,
 }: {
   skill: SkillItem;
   index: number;
   isHighlighted: boolean;
   onHighlight: (index: number) => void;
+  onOpenModal: (skill: SkillItem) => void;
 }) {
+  const id = useId();
   return (
     <motion.li
-      className="skill-item"
+      className="skill-item "
       initial={false}
       animate={{
         opacity: isHighlighted ? 1 : 0.35,
-        scale: isHighlighted ? 1.02 : 1,
-        x: isHighlighted ? 8 : 0,
+        scale: isHighlighted ? 1.02 : 0.7,
+        x: isHighlighted ? 0 : 0,
+        transformOrigin: "left",
       }}
       transition={{ type: "spring", stiffness: 120, damping: 20 }}
       onViewportEnter={() => onHighlight(index)}
       viewport={{ margin: "-50% 0px -55% 0px", amount: "some" }}
     >
-      <span className="skill-name">{skill.name}</span>
-      {isHighlighted && skill.image && (
-        <motion.div
-          className="skill-image"
-          layout
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ type: "spring", stiffness: 120, damping: 20 }}
-        >
-          <Image
-            src={skill.image}
-            alt={skill.name || "Service background"}
-            fill
-            className="rounded-lg object-cover"
-          />
-        </motion.div>
-      )}
+      <span className="skill-name relative ">{skill.name}</span>
+      {isHighlighted && (<motion.div
+        className="fixed top-8 -left-52 w-42 h-36 "
+        layout
+      >
+        <Image
+          src={skill.image}
+          alt={skill.name || "Service background"}
+          fill
+          className="rounded-lg object-cover"
+        />
+      </motion.div>)}
       {isHighlighted && skill.text && (
         <motion.p
-          className="skill-description"
+          className="skill-description mb-4"
           layout
           initial={{ opacity: 0, y: 16, x: 0 }}
           animate={{ opacity: 1, y: 0, x: 0 }}
@@ -62,16 +68,141 @@ function ScrollHighlightItem({
           {skill.text}
         </motion.p>
       )}
+      {isHighlighted && (
+        <motion.button
+          className="text-xs text-white bg-lime-500 rounded-full inline-block w-fit px-4 py-2 hover:cursor-pointer hover:bg-black transition-all"
+          initial={{ opacity: 0, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: "spring", stiffness: 120, damping: 20, delay: 0.1 }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onOpenModal(skill);
+          }}
+        >
+          {skill.buttonLabel || "Learn More"}
+        </motion.button>
+      )}
     </motion.li>
   );
 }
 
 export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
   const [activeSkill, setActiveSkill] = useState<number | null>(null);
+  const [activeModal, setActiveModal] = useState<SkillItem | null>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const id = useId();
+
+  useOutsideClick(modalRef, () => setActiveModal(null));
+
   if (!items || items.length === 0) return null;
 
   return (
     <div className="scroll-highlight-container">
+      <AnimatePresence>
+        {activeModal && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-lg z-50 grid place-items-center">
+            <motion.button
+              key={`button-${activeModal.name}-${id}`}
+              layout
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, transition: { duration: 0.025 } }}
+              className="flex absolute top-2 right-2 lg:hidden items-center overflow-hidden justify-around rounded-full h-6 w-6 z-50"
+              onClick={() => setActiveModal(null)}
+            >
+              <CloseIcon />
+            </motion.button>
+            <motion.div
+              layoutId={`modal-card-${activeModal.name}-${id}`}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.15 } }}
+              transition={{ type: "spring", visualDuration: 0.3, bounce: 0.2 }}
+              ref={modalRef}
+              className="w-full z-50 max-w-[900px] min-h-[50vh] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
+            >
+              <motion.button
+                key={`button-inner-${activeModal.name}-${id}`}
+                layout
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 1, transition: { duration: 0.025 } }}
+                className="flex absolute top-4 right-4 items-center overflow-hidden justify-around rounded-full h-6 w-6 z-50"
+                onClick={() => setActiveModal(null)}
+              >
+                <CloseIcon />
+              </motion.button>
+              <motion.div
+                className="w-full sm:rounded-t-xl relative overflow-hidden h-full"
+                layoutId={`modal-image-${activeModal.name}-${id}`}
+              >
+                {activeModal.image ? (
+                  <Image
+                    width={1000}
+                    height={400}
+                    src={activeModal.image}
+                    alt={activeModal.name || "Service background"}
+                    className="w-full min-h-[400px] sm:rounded-t-xl opacity-50 object-cover object-top"
+                  />
+                ) : (
+                  <div className="w-full h-[400px] sm:rounded-t-xl bg-neutral-800 opacity-50" />
+                )}
+              </motion.div>
+              <div className="flex justify-between absolute items-start m-8 pt-8 z-10">
+                <div className="flex justify-between relative top-0 flex-col items-start z-10 left-0">
+                  <div className="">
+                    <motion.h3
+                      layoutId={`modal-title-${activeModal.name}-${id}`}
+                      className="text-white text-5xl max-w-2/3 dark:text-neutral-200 mb-4"
+                    >
+                      {activeModal.modalContent?.title || activeModal.name}
+                    </motion.h3>
+                    {activeModal.text && (
+                      <motion.p
+                        layoutId={`modal-description-${activeModal.name}-${id}`}
+                        className="text-neutral-100 text-xl dark:text-neutral-400 mb-4"
+                      >
+                        {activeModal.text}
+                      </motion.p>
+                    )}
+                    {activeModal.modalContent?.description && (
+                      <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3, delay: 0.2 }}
+                        className="text-neutral-100 text-xl md:max-w-1/2 dark:text-neutral-400"
+                      >
+                        {activeModal.modalContent.description}
+                      </motion.p>
+                    )}
+                  </div>
+                  {activeModal.modalContent?.tags && activeModal.modalContent.tags.length > 0 && (
+                    <motion.div
+                      transition={{ duration: 0.3, delay: 0.5 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="text-white text-sm md:text-sm lg:text-base mt-8 max-w-1/2 mb-2 md:h-fit pb-8 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400"
+                    >
+                      <div className="text-sm text-neutral-300 mb-2">Tags:</div>
+                      <div className="flex flex-wrap gap-2">
+                        {activeModal.modalContent.tags.map((tag, index) => (
+                          <span
+                            key={`${tag}-${index}`}
+                            className="px-3 py-1 bg-neutral-700 rounded-full text-xs"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
       <ul className="skills-list">
         {items.map((skill, index) => (
           <ScrollHighlightItem
@@ -80,6 +211,7 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
             index={index}
             isHighlighted={activeSkill === index}
             onHighlight={() => setActiveSkill(index)}
+            onOpenModal={(skill) => setActiveModal(skill)}
           />
         ))}
       </ul>
@@ -87,6 +219,31 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
     </div>
   );
 }
+
+const CloseIcon = () => {
+  return (
+    <motion.svg
+      whileHover={{ rotate: 90 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0, transition: { duration: 0.05 } }}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-6 w-6 text-white"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M18 6l-12 12" />
+      <path d="M6 6l12 12" />
+    </motion.svg>
+  );
+};
 
 function Stylesheet() {
   return (
@@ -201,6 +358,32 @@ function Stylesheet() {
         .skill-description {
           font-size: 1rem;
           max-width: min(50ch, 70vw);
+        }
+      }
+
+      .skill-button {
+        margin-top: 1rem;
+        padding: 0.5rem 1.25rem;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 9999px;
+        color: white;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        width: fit-content;
+      }
+
+      .skill-button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+
+      @media (min-width: 640px) {
+        .skill-button {
+          font-size: 0.9375rem;
+          padding: 0.625rem 1.5rem;
         }
       }
     `}</style>
