@@ -51,69 +51,71 @@ export const TracingBeam = ({
       className={cn("relative mx-auto h-full w-full max-w-4xl", className)}
     >
       {/* Tracing beam - hidden on mobile, shown on md+ */}
-      <div className="absolute top-3 -left-4 border  h-full md:-left-20 hidden md:block pointer-events-none">
-        <motion.div
-          transition={{
-            duration: 0.2,
-            delay: 0.5,
-          }}
-          animate={{}}
-          className="ml-[27px] flex h-4 w-4 items-center justify-center rounded-full"
-        >
+      <div className="absolute top-0 -left-20 md:-left-40 hidden md:block pointer-events-none">
+        <div className="sticky top-20">
           <motion.div
             transition={{
               duration: 0.2,
               delay: 0.5,
             }}
-            animate={{
-              backgroundColor: scrollYProgress.get() > 0 ? "white" : "#66ff00",
-            }}
-            className="h-2 w-2 rounded-full bg-lemon-500"
-          />
-        </motion.div>
-        <svg
-          viewBox={`0 0 20 ${svgHeight}`}
-          width="20"
-          height={svgHeight}
-          className="ml-4 block"
-          aria-hidden="true"
-        >
-          <motion.path
-            d={`M 1 0V -36 l 18 24 V ${svgHeight * 0.8} l -0 24V ${svgHeight}`}
-            fill="none"
-            stroke="#9091A0"
-            strokeOpacity="0.16"
-            transition={{
-              duration: 10,
-            }}
-          ></motion.path>
-          <motion.path
-            d={`M 1 0V -36 l 18 24 V ${svgHeight * 0.8} l -0 24V ${svgHeight}`}
-            fill="none"
-            stroke="url(#gradient)"
-            strokeWidth="2.25"
-            strokeLinecap="round"
-            className="motion-reduce:hidden"
-            transition={{
-              duration: 10,
-            }}
-          ></motion.path>
-          <defs>
-            <motion.linearGradient
-              id="gradient"
-              gradientUnits="userSpaceOnUse"
-              x1="0"
-              x2="0"
-              y1={y1}
-              y2={y2}
-            >
-              <stop stopColor="#ffffff" stopOpacity="0"></stop>
-              <stop stopColor="#ffffff"></stop>
-              <stop offset="0.325" stopColor="#00ff00"></stop>
-              <stop offset="1" stopColor="#6344F5" stopOpacity="0"></stop>
-            </motion.linearGradient>
-          </defs>
-        </svg>
+            animate={{}}
+            className="ml-[27px] flex h-4 w-4 items-center justify-center rounded-full"
+          >
+            <motion.div
+              transition={{
+                duration: 0.2,
+                delay: 0.5,
+              }}
+              animate={{
+                backgroundColor: scrollYProgress.get() > 0 ? "white" : "#66ff00",
+              }}
+              className="h-2 w-2 rounded-full bg-lemon-500"
+            />
+          </motion.div>
+          <svg
+            viewBox={`0 0 20 ${svgHeight}`}
+            width="20"
+            height={svgHeight}
+            className="ml-4 block"
+            aria-hidden="true"
+          >
+            <motion.path
+              d={`M 1 0V -36 l 18 24 V ${svgHeight * 0.8} l -0 24V ${svgHeight}`}
+              fill="none"
+              stroke="#9091A0"
+              strokeOpacity="0.16"
+              transition={{
+                duration: 10,
+              }}
+            ></motion.path>
+            <motion.path
+              d={`M 1 0V -36 l 18 24 V ${svgHeight * 0.8} l -0 24V ${svgHeight}`}
+              fill="none"
+              stroke="url(#gradient)"
+              strokeWidth="2.25"
+              strokeLinecap="round"
+              className="motion-reduce:hidden"
+              transition={{
+                duration: 10,
+              }}
+            ></motion.path>
+            <defs>
+              <motion.linearGradient
+                id="gradient"
+                gradientUnits="userSpaceOnUse"
+                x1="0"
+                x2="0"
+                y1={y1}
+                y2={y2}
+              >
+                <stop stopColor="#ffffff" stopOpacity="0"></stop>
+                <stop stopColor="#ffffff"></stop>
+                <stop offset="0.325" stopColor="#00ff00"></stop>
+                <stop offset="1" stopColor="#6344F5" stopOpacity="0"></stop>
+              </motion.linearGradient>
+            </defs>
+          </svg>
+        </div>
       </div>
       <div ref={contentRef} className="relative z-10">{children}</div>
     </motion.div>
