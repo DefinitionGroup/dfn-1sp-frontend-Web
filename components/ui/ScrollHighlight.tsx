@@ -23,12 +23,13 @@ function ScrollHighlightItem({
 }) {
   return (
     <motion.li
-      className="skill-item"
+      className="skill-item transform-gpu transform-origin-left"
       initial={false}
       animate={{
         opacity: isHighlighted ? 1 : 0.35,
-        scale: isHighlighted ? 1.02 : 1,
+        scale: isHighlighted ? 1.02 : 0.7,
         x: isHighlighted ? 8 : 0,
+        transformOrigin: "left",
       }}
       transition={{ type: "spring", stiffness: 120, damping: 20 }}
       onViewportEnter={() => onHighlight(index)}
@@ -39,7 +40,7 @@ function ScrollHighlightItem({
         <motion.div
           className="skill-image"
           layout
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.75 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ type: "spring", stiffness: 120, damping: 20 }}
         >

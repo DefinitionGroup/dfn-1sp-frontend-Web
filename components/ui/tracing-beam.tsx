@@ -51,7 +51,7 @@ export const TracingBeam = ({
       className={cn("relative mx-auto h-full w-full max-w-4xl", className)}
     >
       {/* Tracing beam - hidden on mobile, shown on md+ */}
-      <div className="absolute top-3 -left-4 md:-left-20 hidden md:block pointer-events-none">
+      <div className="absolute top-3 -left-4 border  h-full md:-left-20 hidden md:block pointer-events-none">
         <motion.div
           transition={{
             duration: 0.2,
