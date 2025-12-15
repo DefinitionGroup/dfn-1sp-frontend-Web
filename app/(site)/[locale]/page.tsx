@@ -4,7 +4,7 @@ import { PageBuilder } from "@/components/PageBuilder";
 import { cookies } from "next/headers";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
-import { GlobalDataComponent } from "@/components/globalDataComponent";
+
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 export const revalidate = 60;
 

@@ -1,12 +1,17 @@
 "use client";
-import React from "react";
-import { motion } from "motion/react";
+import React, { useRef, useState, useEffect } from "react";
+import { motion, useInView } from "motion/react";
 import dynamic from "next/dynamic";
 
 const World = dynamic(
   () => import("@/components/ui/globe").then((m) => m.World),
   {
     ssr: false,
+    loading: () => (
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="w-32 h-32 rounded-full bg-neutral-200 dark:bg-neutral-800 animate-pulse" />
+      </div>
+    ),
   }
 );
 
@@ -57,8 +62,30 @@ export default function GlobalDataComponent({
   title = "We are global.",
   description = "You will find us connecting businesses and people across the world.",
 }: GlobalDataComponentProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [shouldLoadGlobe, setShouldLoadGlobe] = useState(false);
+
+  // Trigger when component is near viewport (with margin for preloading)
+  const isInView = useInView(containerRef, {
+    once: true,
+    margin: "200px 0px", // Start loading 200px before entering viewport
+  });
+
+  // Delay globe loading slightly after in view to not block other animations
+  useEffect(() => {
+    if (isInView) {
+      const timer = setTimeout(() => {
+        setShouldLoadGlobe(true);
+      }, 100); // Small delay to let other animations settle
+      return () => clearTimeout(timer);
+    }
+  }, [isInView]);
+
   return (
-    <div className="flex flex-row items-center justify-center py-20 h-screen md:h-auto dark:bg-black bg-white relative w-full">
+    <div
+      ref={containerRef}
+      className="flex flex-row items-center justify-center py-20 h-screen md:h-auto dark:bg-black bg-white relative w-full"
+    >
       <div className="max-w-7xl mx-auto z-10 w-full relative overflow-hidden h-full md:h-[40rem] px-4">
         <motion.div
           initial={{
@@ -82,7 +109,13 @@ export default function GlobalDataComponent({
           </p>
         </motion.div>
         <div className="absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b pointer-events-none select-none from-transparent dark:to-black to-white z-40" />
-        <World data={arcs} globeConfig={globeConfig} />
+        {shouldLoadGlobe ? (
+          <World data={arcs} globeConfig={globeConfig} />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-32 h-32 rounded-full bg-neutral-200 dark:bg-neutral-800 animate-pulse" />
+          </div>
+        )}
       </div>
     </div>
   );

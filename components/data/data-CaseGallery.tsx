@@ -7,6 +7,7 @@ import StaggeredSlideUp from "../ui/StaggeredSlideUp";
 import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
 import Button2 from "../ui/Button2";
 import Image from "next/image";
+import StaggeredFadeIn from "../ui/StaggeredFadeIn";
 
 interface CaseStudy {
   _id: string;
@@ -193,13 +194,13 @@ export default function CaseGalleryComponent({
       </>
 
       <ul className="w-full ">
-        <StaggeredSlideUp
+        <StaggeredFadeIn
           key={activeFilter}
-          staggerDelay={0.05}
+          staggerDelay={0.2}
           distance={10}
-          duration={1.1}
-          threshold={0.2}
-          rootMargin="0px 0px -100px 0px"
+          duration={1}
+
+
           once={true}
           className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3  mx-auto w-full min-h-full"
         >
@@ -236,9 +237,9 @@ export default function CaseGalleryComponent({
 
               <StaggeredSlideUp
                 key={activeFilter}
-                staggerDelay={0.1}
-                distance={10} delay={0.16}
-                duration={3} className={`col-start-1 col-span-1 md:flex ${item.client?.logoUrl ? "justify-between" : "justify-end"
+                staggerDelay={0.2}
+                distance={10} delay={0.4}
+                duration={1} className={`col-start-1 col-span-1 md:flex ${item.client?.logoUrl ? "justify-between" : "justify-end"
                   } opacity-100 row-start-2 p-2 mb-8 md:mb-16 z-1   h-[130px]`}
               >
                 {item.client?.logoUrl ? (
@@ -271,7 +272,7 @@ export default function CaseGalleryComponent({
 
             </motion.div>
           ))}
-        </StaggeredSlideUp>
+        </StaggeredFadeIn>
       </ul>
     </>
   );

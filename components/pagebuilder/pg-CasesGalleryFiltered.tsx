@@ -146,7 +146,7 @@ function CasesGalleryFiltered({
               <StaggeredSlideUp
                 key={activeFilter}
                 staggerDelay={0.05}
-                distance={22}
+                distance={11}
                 duration={1}
                 className="flex flex-wrap gap-4 justify-center md:justify-start"
               >

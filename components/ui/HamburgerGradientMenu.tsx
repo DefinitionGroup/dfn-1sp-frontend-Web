@@ -113,12 +113,12 @@ export default function HamburgerGradientMenu({
   const toggle = useCallback(() => setOpen((o) => !o), []);
 
   return (
-    <div className="fixed top-0 left-0 w-full z-[2000] pointer-events-none">
+    <div className="fixed top-0 left-0 w-full z-[99999] pointer-events-none md:hidden">
       <div className="pointer-events-auto inline-block">
         <HamburgerButton
           open={open}
           onClick={toggle}
-          className={buttonClassName}
+          className=""
           ariaControls="gradient-menu-panel"
         />
       </div>

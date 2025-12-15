@@ -155,7 +155,7 @@ export default function CaseGalleryMenu({
                     e.stopPropagation();
                     handleViewCase(item.slug.current);
                   }}
-                  className="text-gray-700 hover:text-white transition mt-2 absolute bottom-4 border hover:bg-black px-2 py-0.5 rounded-full font-medium text-xs "
+                  className="text-gray-700 hover:text-white transition mt-2 absolute  bottom-4 border hover:bg-black px-2 py-0.5 rounded-full font-medium text-xs "
                 >
                   View Case
                 </motion.button>

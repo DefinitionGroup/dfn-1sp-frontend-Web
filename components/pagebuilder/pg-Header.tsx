@@ -115,16 +115,17 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
       )}
 
       {/* Foreground content */}
-      <div className="absolute bottom-24 md:relative z-10 container md:mt-[50vh] mx-auto">
+      <div className="absolute bottom-24 md:relative z-10  max-w-9xl container md:mt-[50vh] mx-auto">
         <StaggeredSlideUp
           className="px-12 md:px-4 space-y-1 max-w-full"
-          delay={0.2}
-          staggerDelay={0.1}
-          duration={2.6}
+          delay={0.1}
+          staggerDelay={0.08}
+          duration={0.5}
           distance={20}
           easing="spring"
           rootMargin="0px 0px -20px 0px"
           once={true}
+          animateImmediately={true}
         >
           {eyebrow && (
             <h1 className="text-neutral-50 uppercase  text-xs border-b pb-1 border-white/50 font-bold max-w-1/4">
@@ -152,13 +153,13 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
                 <p
                   key={`p-${i}`}
                   className={[
-                    "text-neutral-50 pt-2",
+                    "text-neutral-50  pt-2",
                     sizeToClass[size] || "text-base",
-                    i === 0 ? "max-w-2/3" : "",
+                    i === 0 ? "max-w-2/3 " : "",
                   ].join(" ")}
                 >
                   {text}{" "}
-                  <span className="bg-gradient-to-r from-lime-300 to-lime-500 bg-clip-text text-transparent font-bold">
+                  <span className="bg-gradient-to-r from-lime-300 to-lime-500 bg-clip-text text-transparent font-">
                     {highlightText}
                   </span>
                 </p>

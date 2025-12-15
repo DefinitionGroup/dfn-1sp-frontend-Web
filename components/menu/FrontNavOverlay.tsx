@@ -102,15 +102,33 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       );
     });
 
-  const itemClass = `text-xs leading-compress font-bold mr-8 inline-block transition-colors duration-300`;
+  const itemClass = `text-xs leading-compress tracking-wide font-medium mr-8 inline-block `;
 
   return (
-    <nav
+    <motion.nav
       ref={navRef}
-      className={`hidden fixed top-6 left-0 backdrop-blur-md rounded-4xl max-w-4xl bg-neutral-400/60  px-6 right-0 md:grid items-center z-50 grid-cols-12 py-2 container mx-auto ${textColor} ${className}`}
+      initial={{ opacity: 0, clipPath: "inset(45% 49.5% 45% 49.5% round 50%)", backdropFilter: "blur(3px)", backgroundColor: "rgba(255, 255, 255, 0.8)" }}
+      animate={{
+        opacity: [1, 1, 1],
+        clipPath: [
+          "inset(49% 49.9% 49% 49.9% round 50%)", // tiny circle
+          "inset(0% 49% 0% 49% round 2rem)",       // full height pill
+          "inset(0% 0% 0% 0% round 2rem)"          // full width menu
+        ],
+        backdropFilter: "blur(12px)", backgroundColor: "rgba(255, 255, 255, 0.3)"
+      }}
+      transition={{
+        duration: 1.2,
+        delay: 1,
+
+
+      }}
+      className={`z-99999 hidden fixed top-6 left-0 backdrop-blur-md rounded-4xl w-fit  px-6 right-0 md:grid items-center z-50 grid-cols-12 py-2  mx-auto ${textColor} ${className}`}
     >
-      <div className="col-span-1 flex items-center  mr-8  justify-start">
-        <div className=" flex items-start  justify-center">
+      <div className="col-span-2 flex items-center  pr-16  justify-start">
+        <motion.div
+
+          className=" flex items-start  justify-center">
           <Link
             href={`/${locale}`}
             onClick={(e) => {
@@ -123,23 +141,32 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             <Image
               src={logoUrl}
               alt="1SP Logo"
-              width={80}
-              height={80}
+              width={64}
+              height={64}
               className="object-contain transition-all duration-300"
             />
           </Link>
-        </div>
+        </motion.div>
       </div>
 
       <motion.div
-        initial={{ opacity: 0, scaleX: 0, y: 10, originX: 0, originY: 0 }}
-        animate={{ opacity: 1, scaleX: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-        className="col-span-9 flex items-center "
+
+        className="col-span-7  flex items-center "
       >
 
+
         {menuData?.menuItems && menuData.menuItems.length > 0 ? (
-          <>
+          <StaggeredSlideUp
+            className="flex items-center"
+            delay={2.3}
+            staggerDelay={0.08}
+            duration={0.5}
+            distance={10}
+            easing="spring"
+            rootMargin="0px 0px -20px 0px"
+            once={true}
+            animateImmediately={true}
+          >
             {menuData.menuItems
               .filter((item) => {
                 const isCasesPage = item.slug?.includes("cases");
@@ -155,7 +182,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               .map((item) => (
                 <span key={item._key} className={itemClass}>
                   <Link
-                    className="hover:text-lime-400 transition-colors"
+                    className="hover:text-lime-400 "
                     href={`/${item.slug}`}
                     onClick={(e) => {
                       e.preventDefault();
@@ -166,7 +193,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                   </Link>
                 </span>
               ))}
-          </>
+          </StaggeredSlideUp>
         ) : (
           <>
             <span className={itemClass}>
@@ -220,9 +247,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           </>
         )}
 
+
       </motion.div>
 
-      <div className="col-span-2 flex justify-center items-center  gap-4">
+      <div className="col-span-3 flex relative justify-end items-end align-end   gap-1">
         {/* All Cases button only on case detail pages */}
         {isCaseDetailRoute && (
           <button
@@ -236,7 +264,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
         <Button2
           variant="limesmall"
-          className="min-w-[110px] w-fit rounded-full"
+          className="min-w-[110px] w-[100px] max-w-[110px] overflow-hidden block absolute right-0 rounded-full "
           href={`/${locale}/contact`}
           text="Contact us"
         />
@@ -286,7 +314,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           </motion.div>
         </div>
       )}
-    </nav>
+    </motion.nav>
   );
 };
 

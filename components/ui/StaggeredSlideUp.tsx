@@ -38,25 +38,62 @@ interface StaggeredSlideUpProps {
 // Memoized item component to prevent unnecessary re-renders
 const StaggeredItem = React.memo(({
   children,
-  variants,
   index,
+  isVisible,
+  delay,
+  staggerDelay,
+  duration,
+  distance,
+  easing,
 }: {
   children: React.ReactNode;
-  variants: any;
   index: number;
-}) => (
-  <div className="relative overflow-hidden">
+  isVisible: boolean;
+  delay: number;
+  staggerDelay: number;
+  duration: number;
+  distance: number;
+  easing: [number, number, number, number];
+}) => {
+  const itemDelay = delay + index * staggerDelay;
+
+  return (
     <motion.div
-      variants={variants}
-      style={{
-        willChange: "transform, opacity",
-        transform: "translateZ(0)", // Force GPU layer
+      className="relative"
+      initial={{ clipPath: "inset(50% 0% 0% 0%)" }}
+      animate={
+        isVisible
+          ? { clipPath: "inset(0% 0% 0% 0%)" }
+          : { clipPath: "inset(20% 0% 0% 0%)" }
+      }
+      transition={{
+        duration,
+        delay: itemDelay,
+        ease: easing,
       }}
     >
-      {children}
+      <motion.div
+        initial={{ y: distance, opacity: 0 }}
+        animate={
+          isVisible
+            ? { y: 0, opacity: 1 }
+            : { y: distance, opacity: 0 }
+        }
+        transition={{
+          duration,
+          delay: itemDelay,
+          ease: easing,
+        }}
+        style={{
+          willChange: "transform, opacity",
+          transform: "translateZ(0)", // Force GPU layer
+        }}
+      >
+        {children}
+      </motion.div>
     </motion.div>
-  </div>
-));
+  );
+});
 
 StaggeredItem.displayName = "StaggeredItem";
 
@@ -84,75 +121,40 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
     margin: rootMargin as `${number}px ${number}px ${number}px ${number}px`,
   });
 
-  // Determine if we should animate
+  // Determine if animation should be active
   const shouldAnimate = animateImmediately || isInView;
 
-  // Memoize variants to prevent recreation on each render
-  const containerVariants = React.useMemo(
-    () => ({
-      hidden: {},
-      visible: {
-        transition: {
-          staggerChildren: staggerDelay,
-          delayChildren: delay,
-        },
-      },
-    }),
-    [delay, staggerDelay]
-  );
+  // Convert children to array for mapping
+  const childArray = React.Children.toArray(children);
 
-  const itemVariants = React.useMemo(
-    () => ({
-      hidden: {
-        opacity: 0,
-        y: distance,
-      },
-      visible: {
-        opacity: 1,
-        y: 0,
-        transition: {
-          duration,
-          ease: EASING_MAP[easing],
-        },
-      },
-    }),
-    [distance, duration, easing]
-  );
-
-  // Normalize children to array
-  const childArray = React.useMemo(() => {
-    if (!children) return [];
-    return Array.isArray(children) ? children : [children];
-  }, [children]);
-
-  if (childArray.length === 0) {
-    return <div className={className} />;
-  }
+  // Get the easing curve
+  const easingCurve = EASING_MAP[easing];
 
   return (
-    <motion.div
-      ref={ref}
-      className={`relative ${className}`}
-      variants={containerVariants}
-      initial="hidden"
-      animate={shouldAnimate ? "visible" : "hidden"}
-      style={debug ? { border: "2px dashed red", padding: "4px" } : undefined}
-    >
+    <div ref={ref} className={className} data-stagger-id={id}>
       {debug && (
-        <div className="absolute top-0 right-0 bg-red-500 text-white text-xs p-1 z-50">
-          ID: {id.slice(0, 6)} | InView: {isInView ? "Y" : "N"}
+        <div
+          className={`fixed top-4 right-4 z-50 px-3 py-1 rounded text-xs font-mono ${shouldAnimate ? "bg-green-500" : "bg-red-500"
+            } text-white`}
+        >
+          {shouldAnimate ? "IN VIEW" : "OUT OF VIEW"}
         </div>
       )}
       {childArray.map((child, index) => (
         <StaggeredItem
           key={`${id}-${index}`}
-          variants={itemVariants}
           index={index}
+          isVisible={shouldAnimate}
+          delay={delay}
+          staggerDelay={staggerDelay}
+          duration={duration}
+          distance={distance}
+          easing={easingCurve}
         >
           {child}
         </StaggeredItem>
       ))}
-    </motion.div>
+    </div>
   );
 };
 
