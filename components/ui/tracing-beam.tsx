@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import {
   motion,
   useTransform,
@@ -15,44 +15,67 @@ export const TracingBeam = ({
   children: React.ReactNode;
   className?: string;
 }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-
   const contentRef = useRef<HTMLDivElement>(null);
   const [svgHeight, setSvgHeight] = useState(0);
 
-  useEffect(() => {
+  // Track scroll progress relative to the CONTENT, not the container
+  const { scrollYProgress } = useScroll({
+    target: contentRef,
+    offset: ["start 0.8", "end 0.2"], // Start when content is 80% from top, end when 20% from top
+  });
+
+  // Update height dynamically when content changes
+  const updateHeight = useCallback(() => {
     if (contentRef.current) {
-      setSvgHeight(contentRef.current.offsetHeight);
+      const height = contentRef.current.offsetHeight;
+      setSvgHeight(height);
     }
   }, []);
 
+  useEffect(() => {
+    updateHeight();
+
+    // Use ResizeObserver to track content height changes
+    const resizeObserver = new ResizeObserver(() => {
+      updateHeight();
+    });
+
+    if (contentRef.current) {
+      resizeObserver.observe(contentRef.current);
+    }
+
+    // Also update on window resize
+    window.addEventListener("resize", updateHeight);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", updateHeight);
+    };
+  }, [updateHeight]);
+
+  // Smooth spring animation for the gradient endpoints
   const y1 = useSpring(
-    useTransform(scrollYProgress, [0, 0.8], [50, svgHeight]),
+    useTransform(scrollYProgress, [0, 0.9], [50, svgHeight]),
     {
-      stiffness: 500,
+      stiffness: 400,
       damping: 90,
     },
   );
   const y2 = useSpring(
     useTransform(scrollYProgress, [0, 1], [50, svgHeight - 200]),
     {
-      stiffness: 500,
+      stiffness: 400,
       damping: 90,
     },
   );
 
   return (
     <motion.div
-      ref={ref}
       className={cn("relative mx-auto h-full w-full max-w-4xl", className)}
     >
       {/* Tracing beam - hidden on mobile, shown on md+ */}
-      <div className="absolute top-0 -left-20 md:-left-40 hidden md:block pointer-events-none">
-        <div className="sticky top-20">
+      <div className="absolute top-0 -left-10 xl:-left-70 hidden md:block pointer-events-none">
+        <div className="sticky top-0">
           <motion.div
             transition={{
               duration: 0.2,

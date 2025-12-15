@@ -34,13 +34,13 @@ const variantStyles: Record<
   limesmall: {
     top: "border-lime-500/30 bg-lime-400 text-neutral-900  px-4 py-2 ",
     bottom: "border-neutral-800 bg-neutral-800 text-white px-4  py-2 ",
-    container: "h-8",
+    container: "h-9",
   },
   limesmallrounded: {
     top: "border-lime-500/30 text-xxs rounded-full bg-lime-400 text-neutral-900 px-2 py-1 ",
     bottom:
       "border-neutral-800 text-xxs rounded-full  bg-neutral-800   text-white px-2 py-1 ",
-    container: "h-8",
+    container: "h-9",
   },
 };
 

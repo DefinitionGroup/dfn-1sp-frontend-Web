@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useId } from "react";
 import { motion, useInView } from "motion/react";
 
 const EASING_MAP = {
@@ -21,8 +21,6 @@ interface StaggeredSlideUpProps {
   duration?: number;
   /** Distance to slide up from (pixels) */
   distance?: number;
-  /** Height of the reveal mask */
-  maskHeight?: string;
   /** Easing function for animations */
   easing?: "smooth" | "spring" | "ease-out" | "bounce";
   /** Intersection Observer threshold (0-1) */
@@ -37,22 +35,47 @@ interface StaggeredSlideUpProps {
   animateImmediately?: boolean;
 }
 
+// Memoized item component to prevent unnecessary re-renders
+const StaggeredItem = React.memo(({
+  children,
+  variants,
+  index,
+}: {
+  children: React.ReactNode;
+  variants: any;
+  index: number;
+}) => (
+  <div className="relative overflow-hidden">
+    <motion.div
+      variants={variants}
+      style={{
+        willChange: "transform, opacity",
+        transform: "translateZ(0)", // Force GPU layer
+      }}
+    >
+      {children}
+    </motion.div>
+  </div>
+));
+
+StaggeredItem.displayName = "StaggeredItem";
+
 const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
   children,
   className = "",
   delay = 0.1,
-  staggerDelay = 0.08,
-  duration = 0.5,
-  distance = 24,
-  maskHeight = "120%",
+  staggerDelay = 0.06,
+  duration = 0.4,
+  distance = 20,
   easing = "spring",
-  threshold = 0.2,
-  rootMargin = "0px 0px -50px 0px",
+  threshold = 0.15,
+  rootMargin = "0px 0px -30px 0px",
   once = true,
   debug = false,
   animateImmediately = false,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
+  const id = useId(); // Unique ID to prevent animation conflicts
 
   // Single source of truth for viewport detection
   const isInView = useInView(ref, {
@@ -64,15 +87,14 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
   // Determine if we should animate
   const shouldAnimate = animateImmediately || isInView;
 
+  // Memoize variants to prevent recreation on each render
   const containerVariants = React.useMemo(
     () => ({
-      hidden: { opacity: 1 },
+      hidden: {},
       visible: {
-        opacity: 1,
         transition: {
           staggerChildren: staggerDelay,
           delayChildren: delay,
-          when: "beforeChildren" as const,
         },
       },
     }),
@@ -81,64 +103,30 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
 
   const itemVariants = React.useMemo(
     () => ({
-      hidden: { opacity: 0, y: distance },
+      hidden: {
+        opacity: 0,
+        y: distance,
+      },
       visible: {
         opacity: 1,
         y: 0,
-        transition: { duration, ease: EASING_MAP[easing] },
+        transition: {
+          duration,
+          ease: EASING_MAP[easing],
+        },
       },
     }),
     [distance, duration, easing]
   );
 
-  const maskVariants = React.useMemo(
-    () => ({
-      hidden: { y: 0 },
-      visible: {
-        y: `-${maskHeight}`,
-        transition: {
-          duration: duration * 0.8,
-          ease: EASING_MAP[easing],
-          delay: 0.05,
-        },
-      },
-    }),
-    [maskHeight, duration, easing]
-  );
+  // Normalize children to array
+  const childArray = React.useMemo(() => {
+    if (!children) return [];
+    return Array.isArray(children) ? children : [children];
+  }, [children]);
 
-  // Handle single child or no children
-  if (!Array.isArray(children) || children.length === 0) {
-    if (!Array.isArray(children) && children) {
-      return (
-        <motion.div
-          ref={ref}
-          className={`relative ${className}`}
-          variants={containerVariants}
-          initial="hidden"
-          animate={shouldAnimate ? "visible" : "hidden"}
-          style={
-            debug ? { border: "2px dashed red", padding: "4px" } : undefined
-          }
-        >
-          {debug && (
-            <div className="absolute top-0 right-0 bg-red-500 text-white text-xs p-1 z-50">
-              InView: {isInView ? "Y" : "N"}
-            </div>
-          )}
-          <div className="relative overflow-hidden">
-            <motion.div variants={itemVariants} className="relative z-10">
-              {children}
-            </motion.div>
-            <motion.div
-              variants={maskVariants}
-              className="absolute inset-0 z-20 pointer-events-none"
-              style={{ height: maskHeight }}
-            />
-          </div>
-        </motion.div>
-      );
-    }
-    return <div className={className}></div>;
+  if (childArray.length === 0) {
+    return <div className={className} />;
   }
 
   return (
@@ -152,20 +140,17 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
     >
       {debug && (
         <div className="absolute top-0 right-0 bg-red-500 text-white text-xs p-1 z-50">
-          InView: {isInView ? "Y" : "N"}
+          ID: {id.slice(0, 6)} | InView: {isInView ? "Y" : "N"}
         </div>
       )}
-      {children.map((child, index) => (
-        <div key={index} className="relative overflow-hidden">
-          <motion.div variants={itemVariants} className="relative z-10">
-            {child}
-          </motion.div>
-          <motion.div
-            variants={maskVariants}
-            className="absolute inset-0 z-20 pointer-events-none"
-            style={{ height: maskHeight }}
-          />
-        </div>
+      {childArray.map((child, index) => (
+        <StaggeredItem
+          key={`${id}-${index}`}
+          variants={itemVariants}
+          index={index}
+        >
+          {child}
+        </StaggeredItem>
       ))}
     </motion.div>
   );
