@@ -116,7 +116,16 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
       {/* Foreground content */}
       <div className="absolute bottom-24 md:relative z-10 container md:mt-[50vh] mx-auto">
-        <StaggeredSlideUp className="px-12 md:px-4  space-y-1 max-w-full">
+        <StaggeredSlideUp
+          className="px-12 md:px-4 space-y-1 max-w-full"
+          delay={0.2}
+          staggerDelay={0.1}
+          duration={2.6}
+          distance={20}
+          easing="spring"
+          rootMargin="0px 0px -20px 0px"
+          once={true}
+        >
           {eyebrow && (
             <h1 className="text-neutral-50 uppercase  text-xs border-b pb-1 border-white/50 font-bold max-w-1/4">
               {eyebrow}

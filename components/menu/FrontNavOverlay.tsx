@@ -123,8 +123,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             <Image
               src={logoUrl}
               alt="1SP Logo"
-              width={66}
-              height={66}
+              width={80}
+              height={80}
               className="object-contain transition-all duration-300"
             />
           </Link>
@@ -137,100 +137,92 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         transition={{ duration: 0.5, delay: 0.4 }}
         className="col-span-9 flex items-center "
       >
-        <StaggeredSlideUp
-          className="flex gap-16 items-center"
-          delay={2}
-          staggerDelay={0.26}
-          duration={3}
-          distance={10}
-          maskHeight="150%"
-          easing="spring"
-        >
-          {menuData?.menuItems && menuData.menuItems.length > 0 ? (
-            <>
-              {menuData.menuItems
-                .filter((item) => {
-                  const isCasesPage = item.slug?.includes("cases");
-                  const isServicesPage = item.slug?.includes("services");
-                  if (isCasesPage && !hasCaseStudies) {
-                    return false;
-                  }
-                  if (isServicesPage && !hasServices) {
-                    return false;
-                  }
-                  return true;
-                })
-                .map((item) => (
-                  <span key={item._key} className={itemClass}>
-                    <Link
-                      className="hover:text-lime-400 transition-colors"
-                      href={`/${item.slug}`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        router.push(`/${item.slug}`);
-                      }}
-                    >
-                      {item.displayName || item.title}
-                    </Link>
-                  </span>
-                ))}
-            </>
-          ) : (
-            <>
-              <span className={itemClass}>
-                <Link
-                  className="hover:text-lime-400 transition-colors"
-                  href={`/${locale}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push(`/${locale}`);
-                  }}
-                >
-                  Home
-                </Link>
-              </span>
-              <span className={itemClass}>
-                <Link
-                  className="hover:text-lime-400 transition-colors"
-                  href={`/${locale}/whatwedo`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push(`/${locale}/whatwedo`);
-                  }}
-                >
-                  Services
-                </Link>
-              </span>
-              <span className={itemClass}>
-                <Link
-                  className="hover:text-lime-400 transition-colors"
-                  href={`/${locale}/our-family`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push(`/${locale}/our-family`);
-                  }}
-                >
-                  Our Family
-                </Link>
-              </span>
-              <span className={itemClass}>
-                <Link
-                  className="hover:text-lime-400 transition-colors"
-                  href={`/${locale}/whatwedo`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push(`/${locale}/whatwedo`);
-                  }}
-                >
-                  Work with us
-                </Link>
-              </span>
-            </>
-          )}
-        </StaggeredSlideUp>
+
+        {menuData?.menuItems && menuData.menuItems.length > 0 ? (
+          <>
+            {menuData.menuItems
+              .filter((item) => {
+                const isCasesPage = item.slug?.includes("cases");
+                const isServicesPage = item.slug?.includes("services");
+                if (isCasesPage && !hasCaseStudies) {
+                  return false;
+                }
+                if (isServicesPage && !hasServices) {
+                  return false;
+                }
+                return true;
+              })
+              .map((item) => (
+                <span key={item._key} className={itemClass}>
+                  <Link
+                    className="hover:text-lime-400 transition-colors"
+                    href={`/${item.slug}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push(`/${item.slug}`);
+                    }}
+                  >
+                    {item.displayName || item.title}
+                  </Link>
+                </span>
+              ))}
+          </>
+        ) : (
+          <>
+            <span className={itemClass}>
+              <Link
+                className="hover:text-lime-400 transition-colors"
+                href={`/${locale}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push(`/${locale}`);
+                }}
+              >
+                Home
+              </Link>
+            </span>
+            <span className={itemClass}>
+              <Link
+                className="hover:text-lime-400 transition-colors"
+                href={`/${locale}/whatwedo`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push(`/${locale}/whatwedo`);
+                }}
+              >
+                Services
+              </Link>
+            </span>
+            <span className={itemClass}>
+              <Link
+                className="hover:text-lime-400 transition-colors"
+                href={`/${locale}/our-family`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push(`/${locale}/our-family`);
+                }}
+              >
+                Our Family
+              </Link>
+            </span>
+            <span className={itemClass}>
+              <Link
+                className="hover:text-lime-400 transition-colors"
+                href={`/${locale}/whatwedo`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push(`/${locale}/whatwedo`);
+                }}
+              >
+                Work with us
+              </Link>
+            </span>
+          </>
+        )}
+
       </motion.div>
 
-      <div className="col-span-2 flex justify-center items-center gap-4">
+      <div className="col-span-2 flex justify-center items-center  gap-4">
         {/* All Cases button only on case detail pages */}
         {isCaseDetailRoute && (
           <button

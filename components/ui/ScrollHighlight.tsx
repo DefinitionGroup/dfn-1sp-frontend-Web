@@ -33,7 +33,7 @@ function ScrollHighlightItem({
   const id = useId();
   return (
     <motion.li
-      className="skill-item "
+      className="skill-item  max-w-2/3 sm:max-w-1/2 md:max-w-1/2 lg:max-w-1/4"
       initial={false}
       animate={{
         opacity: isHighlighted ? 1 : 0.35,
@@ -47,7 +47,7 @@ function ScrollHighlightItem({
     >
       <span className="skill-name relative ">{skill.name}</span>
       {isHighlighted && skill.image && (<motion.div
-        className="fixed top-8 -left-52 w-42 h-36 "
+        className="relative md:fixed md:top-8 md:-right-20 xl:-left-52  w-16 h-16 lg:w-42 lg:h-36 "
         layout
       >
         <Image
@@ -59,7 +59,7 @@ function ScrollHighlightItem({
       </motion.div>)}
       {isHighlighted && skill.text && (
         <motion.p
-          className="skill-description mb-4"
+          className="skill-description mb-4  max-w-1/2"
           layout
           initial={{ opacity: 0, y: 16, x: 0 }}
           animate={{ opacity: 1, y: 0, x: 0 }}

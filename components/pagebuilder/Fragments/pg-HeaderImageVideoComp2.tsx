@@ -27,29 +27,30 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   // Create ref for the component
   const ref = useRef(null);
   const isInView = useInView(ref, {
-    once: true, // Only animate once for better performance
-    amount: 0.2,
+    once: true, // Only animate once - prevent re-triggering
+    amount: 0.1, // Lower threshold to trigger earlier
+    margin: "100px 0px 0px 0px", // Trigger before element enters viewport
   });
 
   return (
-    <motion.div
+    <div
+      ref={ref}
       className={`absolute mt-4 inset-0 overflow-visible mx-auto ${className}`}
-      style={{ willChange: "transform" }}
+
     >
       <motion.div
-        ref={ref}
-        initial={{ opacity: 0, scale: 0.5 }}
+        initial={{ opacity: 0, scale: 0.9 }}
         animate={
           isInView
-            ? { opacity: 1, scale: 1, rotate: 0 }
-            : { opacity: 0, scale: 0.9, }
+            ? { opacity: 1, scale: 1 }
+            : { opacity: 0, scale: 0.9 }
         }
         transition={{
-          duration: 0.5,
-          ease: [0.16, 1, 0.3, 1],
+          duration: 0.4,
+          ease: "easeOut",
         }}
-        className="absolute mx-auto md:rounded-xl inset-0 overflow-hidden"
-        style={{ willChange: "transform, opacity" }}
+        className="absolute mx-auto rounded-xl inset-0 overflow-hidden"
+
       >
         {useVideo ? (
           <video
@@ -70,10 +71,12 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
           />
         )}
         <div
-          className="absolute inset-0 bg-black/60"
+
+          className="absolute inset-0 opacity-60
+           bg-black"
         />
       </motion.div>
-    </motion.div>
+    </div>
   );
 };
 

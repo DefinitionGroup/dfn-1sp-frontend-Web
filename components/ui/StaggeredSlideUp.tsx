@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef } from "react";
 import { motion, useInView } from "motion/react";
 
 const EASING_MAP = {
@@ -13,62 +13,65 @@ const EASING_MAP = {
 interface StaggeredSlideUpProps {
   children: React.ReactNode | React.ReactNode[];
   className?: string;
+  /** Initial delay before animation starts (seconds) */
   delay?: number;
+  /** Delay between each child animation (seconds) */
   staggerDelay?: number;
+  /** Duration of each child's animation (seconds) */
   duration?: number;
+  /** Distance to slide up from (pixels) */
   distance?: number;
+  /** Height of the reveal mask */
   maskHeight?: string;
+  /** Easing function for animations */
   easing?: "smooth" | "spring" | "ease-out" | "bounce";
-  viewport?: { once?: boolean; amount?: number; margin?: string };
+  /** Intersection Observer threshold (0-1) */
   threshold?: number;
-  triggerOnce?: boolean;
+  /** Root margin for Intersection Observer */
+  rootMargin?: string;
+  /** Whether to trigger animation only once */
+  once?: boolean;
+  /** Enable debug mode to visualize trigger state */
   debug?: boolean;
+  /** Skip viewport detection - animate immediately */
+  animateImmediately?: boolean;
 }
 
 const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
   children,
   className = "",
   delay = 0.1,
-  staggerDelay = 0.05,
-  duration = 0.4,
-  distance = 20,
+  staggerDelay = 0.08,
+  duration = 0.5,
+  distance = 24,
   maskHeight = "120%",
   easing = "spring",
-  viewport = { once: true, amount: 0.2, margin: "0px 0px -100px 0px" },
-  threshold = 0.1,
-  triggerOnce = false,
+  threshold = 0.2,
+  rootMargin = "0px 0px -50px 0px",
+  once = true,
   debug = false,
+  animateImmediately = false,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
+
+  // Single source of truth for viewport detection
   const isInView = useInView(ref, {
-    once: triggerOnce,
+    once,
     amount: threshold,
-    margin: (viewport.margin as any) || "0px 0px -100px 0px",
+    margin: rootMargin as `${number}px ${number}px ${number}px ${number}px`,
   });
-  const [hasTriggered, setHasTriggered] = useState(false);
 
-  useEffect(() => {
-    if (isInView && !hasTriggered) {
-      setHasTriggered(true);
-    }
-  }, [isInView, hasTriggered]);
+  // Determine if we should animate
+  const shouldAnimate = animateImmediately || isInView;
 
-  useEffect(() => {
-    if (!triggerOnce && !isInView) {
-      setHasTriggered(false);
-    }
-  }, [isInView, triggerOnce]);
-
-  const memoizedContainerVariants = React.useMemo(
+  const containerVariants = React.useMemo(
     () => ({
       hidden: { opacity: 1 },
       visible: {
         opacity: 1,
         transition: {
-          delay,
           staggerChildren: staggerDelay,
           delayChildren: delay,
-          duration: 0.1,
           when: "beforeChildren" as const,
         },
       },
@@ -76,7 +79,7 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
     [delay, staggerDelay]
   );
 
-  const memoizedItemVariants = React.useMemo(
+  const itemVariants = React.useMemo(
     () => ({
       hidden: { opacity: 0, y: distance },
       visible: {
@@ -88,7 +91,7 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
     [distance, duration, easing]
   );
 
-  const memoizedMaskVariants = React.useMemo(
+  const maskVariants = React.useMemo(
     () => ({
       hidden: { y: 0 },
       visible: {
@@ -96,62 +99,38 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
         transition: {
           duration: duration * 0.8,
           ease: EASING_MAP[easing],
-          delay: 0.1,
+          delay: 0.05,
         },
       },
     }),
     [maskHeight, duration, easing]
   );
 
-  const shouldAnimate = hasTriggered || isInView;
-
-  useEffect(() => {
-    const currentRef = ref.current;
-    if (!currentRef || hasTriggered) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio >= threshold) {
-            setHasTriggered(true);
-            if (triggerOnce) observer.unobserve(currentRef);
-          }
-        });
-      },
-      {
-        threshold: threshold,
-        rootMargin: viewport.margin || "0px 0px -100px 0px",
-      }
-    );
-
-    observer.observe(currentRef);
-    return () => {
-      if (currentRef) observer.unobserve(currentRef);
-    };
-  }, [threshold, viewport.margin, hasTriggered, triggerOnce]);
-
+  // Handle single child or no children
   if (!Array.isArray(children) || children.length === 0) {
     if (!Array.isArray(children) && children) {
       return (
         <motion.div
           ref={ref}
           className={`relative ${className}`}
-          variants={memoizedContainerVariants}
+          variants={containerVariants}
           initial="hidden"
           animate={shouldAnimate ? "visible" : "hidden"}
           style={
             debug ? { border: "2px dashed red", padding: "4px" } : undefined
           }
         >
+          {debug && (
+            <div className="absolute top-0 right-0 bg-red-500 text-white text-xs p-1 z-50">
+              InView: {isInView ? "Y" : "N"}
+            </div>
+          )}
           <div className="relative overflow-hidden">
-            <motion.div
-              variants={memoizedItemVariants}
-              className="relative z-10"
-            >
+            <motion.div variants={itemVariants} className="relative z-10">
               {children}
             </motion.div>
             <motion.div
-              variants={memoizedMaskVariants}
+              variants={maskVariants}
               className="absolute inset-0 z-20 pointer-events-none"
               style={{ height: maskHeight }}
             />
@@ -166,23 +145,23 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
     <motion.div
       ref={ref}
       className={`relative ${className}`}
-      variants={memoizedContainerVariants}
+      variants={containerVariants}
       initial="hidden"
       animate={shouldAnimate ? "visible" : "hidden"}
       style={debug ? { border: "2px dashed red", padding: "4px" } : undefined}
     >
       {debug && (
         <div className="absolute top-0 right-0 bg-red-500 text-white text-xs p-1 z-50">
-          InView: {isInView ? "Y" : "N"} | Triggered: {hasTriggered ? "Y" : "N"}
+          InView: {isInView ? "Y" : "N"}
         </div>
       )}
       {children.map((child, index) => (
         <div key={index} className="relative overflow-hidden">
-          <motion.div variants={memoizedItemVariants} className="relative z-10">
+          <motion.div variants={itemVariants} className="relative z-10">
             {child}
           </motion.div>
           <motion.div
-            variants={memoizedMaskVariants}
+            variants={maskVariants}
             className="absolute inset-0 z-20 pointer-events-none"
             style={{ height: maskHeight }}
           />

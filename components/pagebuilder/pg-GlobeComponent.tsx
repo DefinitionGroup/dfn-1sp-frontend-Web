@@ -24,9 +24,9 @@ function GlobeComponent({ data }: GlobeComponentProps) {
   // Generate section ID
   const sectionId = sectionTitle
     ? sectionTitle
-        .replace(/[^a-zA-Z0-9\s]/g, "")
-        .replace(/\s+/g, "-")
-        .toLowerCase()
+      .replace(/[^a-zA-Z0-9\s]/g, "")
+      .replace(/\s+/g, "-")
+      .toLowerCase()
     : "globe-component";
 
   // Store the navPointName in a data attribute if provided
@@ -58,12 +58,12 @@ function GlobeComponent({ data }: GlobeComponentProps) {
   // Globe configuration
   const globeConfig = {
     pointSize: 1,
-    globeColor: "#fdfdfd",
+    globeColor: "#f6f6f6",
     showAtmosphere: false,
     atmosphereColor: "#ffffff",
     atmosphereAltitude: 0.1,
     emissive: "#ffffff",
-    emissiveIntensity: 1,
+    emissiveIntensity: 22,
     shininess: 1,
     polygonColor: "rgba(1,255,2,1)",
     ambientLight: "#ffffff",

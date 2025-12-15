@@ -8,7 +8,7 @@ import countries from "@/data/globe.json";
 declare module "@react-three/fiber" {
   interface ThreeElements {
     threeGlobe: ThreeElements["mesh"] & {
-      new (): ThreeGlobe;
+      new(): ThreeGlobe;
     };
   }
 }
@@ -76,18 +76,18 @@ export function Globe({ globeConfig, data }: WorldProps) {
 
   const defaultProps = {
     pointSize: 1,
-    atmosphereColor: "#ffffff",
+    atmosphereColor: "#f4f4f4",
     showAtmosphere: false,
     atmosphereAltitude: 0.1,
-    polygonColor: "rgba(255,255,255,1)",
+    polygonColor: "rgba(200.200.200,1)",
     globeColor: "#1d072e",
     emissive: "#ffffff",
     emissiveIntensity: 1.0,
-    shininess: 0,
+    shininess: 1,
     arcTime: 2000,
     arcLength: 0.9,
     rings: 1,
-    maxRings: 3,
+    maxRings: 2,
     ...globeConfig,
   };
 
@@ -313,10 +313,10 @@ function ArcLabels({ data }: Pick<WorldProps, "data">) {
           style={{
             color: point.color,
             fontWeight: 400,
-            fontSize: "0.8rem",
-            backgroundColor: "rgba(0,0,0,0.8)",
-            padding: "0.33rem 0.75rem",
-            borderRadius: "2px",
+            fontSize: "0.5rem",
+            backgroundColor: "rgba(0,0,0,0.5)",
+            padding: "0.13rem 0.25rem",
+            borderRadius: "100px",
             textTransform: "uppercase",
             whiteSpace: "nowrap",
           }}
@@ -372,17 +372,17 @@ export function World(props: WorldProps) {
       <WebGLRendererConfig />
       <CameraAspectController />
       <CameraTopHalfFocus />
-      <ambientLight color={globeConfig.ambientLight} intensity={1} />
+      <ambientLight color={globeConfig.ambientLight} intensity={1.8} />
 
       <Globe {...props} />
       <ArcLabels data={data} />
       <OrbitControls
         enablePan={false}
-        enableZoom={false}
+        enableZoom={true}
         minDistance={CAMERA_RADIUS}
         maxDistance={CAMERA_RADIUS}
         target={[CAMERA_TARGET.x, CAMERA_TARGET.y, CAMERA_TARGET.z]}
-        autoRotateSpeed={0.2}
+        autoRotateSpeed={1.1}
         autoRotate={true}
         minPolarAngle={Math.PI / 3.2}
         maxPolarAngle={Math.PI / 2}
@@ -400,10 +400,10 @@ export function hexToRgb(hex: string) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16),
-      }
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16),
+    }
     : null;
 }
 
