@@ -46,8 +46,8 @@ export default function CaseGalleryMenu({
     activeFilter === "All"
       ? caseStudies
       : caseStudies.filter((item) =>
-          item.services?.some((service) => service.name === activeFilter)
-        );
+        item.services?.some((service) => service.name === activeFilter)
+      );
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -100,11 +100,9 @@ export default function CaseGalleryMenu({
           easing="ease-out"
           distance={10}
           duration={0.6}
-          viewport={{
-            once: true,
-            amount: 0.2,
-            margin: "0px 0px -100px 0px",
-          }}
+          threshold={0.2}
+          rootMargin="0px 0px -100px 0px"
+          once={true}
           className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 "
         >
           {filteredItems.map((item, index) => (

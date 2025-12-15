@@ -208,11 +208,9 @@ export default function ServiceGalleryComponent({
           staggerDelay={0.0225}
           distance={30}
           duration={1}
-          viewport={{
-            once: true,
-            amount: 0.2,
-            margin: "0px 0px -100px 0px",
-          }}
+          threshold={0.2}
+          rootMargin="0px 0px -100px 0px"
+          once={true}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto w-full min-h-full"
         >
           {filteredItems.map((item) => {
