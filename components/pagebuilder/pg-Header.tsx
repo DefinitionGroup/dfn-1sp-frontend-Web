@@ -128,7 +128,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           animateImmediately={true}
         >
           {eyebrow && (
-            <h1 className="text-neutral-50 uppercase  text-xs border-b pb-1 border-white/50 font-bold max-w-1/4">
+            <h1 className="text-neutral-50 uppercase  text-xs border-b pb-1 border-white/50 font-medium max-w-1/4">
               {eyebrow}
             </h1>
           )}
@@ -155,7 +155,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
                   className={[
                     "text-neutral-50  pt-2",
                     sizeToClass[size] || "text-base",
-                    i === 0 ? "max-w-2/3 " : "",
+                    i === 0 ? "max-w-2/3" : "",
                   ].join(" ")}
                 >
                   {text}{" "}

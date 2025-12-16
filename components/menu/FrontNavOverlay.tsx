@@ -120,8 +120,6 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       transition={{
         duration: 1.2,
         delay: 1,
-
-
       }}
       className={`z-99999 hidden fixed top-6 left-0 backdrop-blur-md rounded-4xl w-fit  px-6 right-0 md:grid items-center z-50 grid-cols-12 py-2  mx-auto ${textColor} ${className}`}
     >
