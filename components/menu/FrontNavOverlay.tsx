@@ -107,7 +107,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   return (
     <motion.nav
       ref={navRef}
-      initial={{ opacity: 0, clipPath: "inset(45% 49.5% 45% 49.5% round 50%)", backdropFilter: "blur(3px)", backgroundColor: "rgba(255, 255, 255, 0.8)" }}
+      initial={{ opacity: 0, clipPath: "inset(45% 49.9% 45% 49.9% round 48%)", backdropFilter: "blur(1px)", backgroundColor: "rgba(255, 255, 255, 0.8)" }}
       animate={{
         opacity: [1, 1, 1],
         clipPath: [
@@ -115,13 +115,13 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           "inset(0% 49% 0% 49% round 2rem)",       // full height pill
           "inset(0% 0% 0% 0% round 2rem)"          // full width menu
         ],
-        backdropFilter: "blur(12px)", backgroundColor: "rgba(255, 255, 255, 0.3)"
+        backdropFilter: "blur(12px)", backgroundColor: "rgba(111,111,111, 0.4)"
       }}
       transition={{
-        duration: 1.2,
-        delay: 1,
+        duration: 0.5,
+        delay: 0.7,
       }}
-      className={`z-99999 hidden fixed top-6 left-0 backdrop-blur-md rounded-4xl w-fit  px-6 right-0 md:grid items-center z-50 grid-cols-12 py-2  mx-auto ${textColor} ${className}`}
+      className={`z-99999 hidden fixed top-6 left-0 backdrop-blur-md rounded-4xl w-fit h-16 overflow-hidden px-6 right-0 md:grid items-center z-50 grid-cols-12 py-2  mx-auto ${textColor} ${className}`}
     >
       <div className="col-span-2 flex items-center  pr-16  justify-start">
         <motion.div
@@ -149,7 +149,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
       <motion.div
 
-        className="col-span-7  flex items-center "
+        className="col-span-7   flex items-center "
       >
 
 
@@ -180,7 +180,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               .map((item) => (
                 <span key={item._key} className={itemClass}>
                   <Link
-                    className="hover:text-lime-400 "
+                    className="hover:text-lime-400  transition-colors"
                     href={`/${item.slug}`}
                     onClick={(e) => {
                       e.preventDefault();
@@ -259,13 +259,14 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             All Cases
           </button>
         )}
-
-        <Button2
-          variant="limesmall"
-          className="min-w-[110px] w-[100px] max-w-[110px] overflow-hidden block absolute right-0 rounded-full "
-          href={`/${locale}/contact`}
-          text="Contact us"
-        />
+        <div className="min-w-[110px] w-[50px] max-w-[110px] n block relative   -right-2 top-1 rounded-full ">
+          <Button2
+            variant="limesmall"
+            className="min-w-[110px] w-[50px] max-w-[110px] overflow-hidden block absolute  rounded-full "
+            href={`/${locale}/contact`}
+            text="Contact us"
+          />
+        </div>
       </div>
 
       {/* Cases overlay */}

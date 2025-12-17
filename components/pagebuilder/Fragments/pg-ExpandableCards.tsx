@@ -144,15 +144,8 @@ function ExpandableCards({
       {/* Modal */}
       <AnimatePresence>
         {active && typeof active === "object" ? (
-          <div className="fixed inset-0 place-items-center z-[100]">
-            <motion.button
-              onClick={() => setActive(null)}
-              className="absolute top-4 right-4 z-50 cursor-pointer"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <CloseIcon />
-            </motion.button>
+          <div className="fixed inset-0 flex items-center justify-center  z-[100]">
+
 
             <motion.div
               layoutId={`card-${active.title}-${id}`}
@@ -163,7 +156,14 @@ function ExpandableCards({
               transition={{ type: "spring", bounce: 0.2, visualDuration: 0.3 }}
               className="w-full max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[50%] rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
             >
-              {/* Media */}
+              {/* Media */} <motion.button
+                onClick={() => setActive(null)}
+                className="absolute top-4 right-4 z-50 cursor-pointer"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <CloseIcon />
+              </motion.button>
               <motion.div
                 className="w-full h-100 sm:rounded-t-xl opacity-80 object-cover object-top"
                 layoutId={`image-${active.title}-${id}`}
@@ -231,7 +231,7 @@ function ExpandableCards({
       {/* Grid */}
       <ul className="w-full  ">
         <StaggeredSlideUp
-          className={`grid grid-cols-2 md:${colsClass(columns)} grid ${gap} mx-auto h-full min-h-full w-full`}
+          className={`grid grid-cols-2  lg:${colsClass(columns)} grid ${gap} mx-auto h-full min-h-full w-full`}
         >
           {sourceCards.map((card) => (
             <motion.div

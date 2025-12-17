@@ -161,8 +161,8 @@ export default function HighlightStep({
           </div>
 
           {/* Right column: scroll highlight content */}
-          <div className="col-span-4 sm:col-span-6 md:col-span-9 md:col-start-4">
-            <TracingBeam>
+          <div className="col-span-4 sm:col-span-6   md:col-span-9 md:col-start-4">
+            <TracingBeam className="">
               {items.length > 0 && <ScrollHighlight items={items} />}
             </TracingBeam>
           </div>

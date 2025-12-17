@@ -118,7 +118,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
       <div className="absolute bottom-24 md:relative z-10  max-w-9xl container md:mt-[50vh] mx-auto">
         <StaggeredSlideUp
           className="px-12 md:px-4 space-y-1 max-w-full"
-          delay={0.1}
+          delay={1}
           staggerDelay={0.08}
           duration={0.5}
           distance={20}

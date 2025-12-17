@@ -84,7 +84,7 @@ export default function ContactForm({
     settings?.errorMessage || "Sorry, something went wrong. Please try again in a moment.";
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-black via-neutral-900 to-gray-950 py-20 text-white">
+    <section className="relative overflow-hidden  bg-gradient-to-br from-black via-neutral-900 to-gray-950 py-20 text-white">
       <div
         className="pointer-events-none absolute inset-0 opacity-40"
         aria-hidden="true"

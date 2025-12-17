@@ -33,55 +33,65 @@ function ScrollHighlightItem({
   const id = useId();
   return (
     <motion.li
-      className="skill-item  max-w-2/3 sm:max-w-1/2 md:max-w-1/2 lg:max-w-1/4"
+      className="skill-item p-2 md:p-0  flex flex-col md:flex-row   flex-grow gap-4 cursor-pointer"
       initial={false}
       animate={{
-        opacity: isHighlighted ? 1 : 0.35,
-        scale: isHighlighted ? 1.02 : 0.7,
+        opacity: isHighlighted ? 1 : 0.5,
+        scale: isHighlighted ? 1.00 : 0.8,
         x: isHighlighted ? 0 : 0,
         transformOrigin: "left",
       }}
-      transition={{ type: "spring", stiffness: 120, damping: 20 }}
+      transition={{ type: "spring", duration: 0.15, }}
       onViewportEnter={() => onHighlight(index)}
       viewport={{ margin: "-50% 0px -55% 0px", amount: "some" }}
     >
-      <span className="skill-name relative ">{skill.name}</span>
-      {isHighlighted && skill.image && (<motion.div
-        className="relative md:fixed md:top-8 md:-right-20 xl:-left-52  w-16 h-16 lg:w-42 lg:h-36 "
-        layout
-      >
-        <Image
-          src={skill.image}
-          alt={skill.name || "Service background"}
-          fill
-          className="rounded-lg object-cover"
-        />
-      </motion.div>)}
-      {isHighlighted && skill.text && (
-        <motion.p
-          className="skill-description mb-4  max-w-1/2"
-          layout
-          initial={{ opacity: 0, y: 16, x: 0 }}
-          animate={{ opacity: 1, y: 0, x: 0 }}
-          transition={{ type: "spring", stiffness: 120, damping: 20 }}
-        >
-          {skill.text}
-        </motion.p>
-      )}
-      {isHighlighted && (
-        <motion.button
-          className="text-xs text-white bg-lime-500 rounded-full inline-block w-fit px-4 py-2 hover:cursor-pointer hover:bg-black transition-all"
-          initial={{ opacity: 0, y: 0 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 120, damping: 20, delay: 0.1 }}
-          onClick={(e) => {
-            e.stopPropagation();
-            onOpenModal(skill);
-          }}
-        >
-          {skill.buttonLabel || "Learn More"}
-        </motion.button>
-      )}
+
+      <motion.div
+        className="relative   min-w-1/4 "
+
+      >{isHighlighted && skill.image && (
+
+        <motion.div layout initial={{ opacity: 0, y: -22 }} animate={{ opacity: 1, y: 0 }} transition={{ type: "spring", }} className="skill-image">
+          <Image
+            src={skill.image}
+            alt={skill.name || "Service background"}
+            fill
+            className="rounded-lg object-cover"
+          />
+
+
+        </motion.div>)}
+      </motion.div>
+
+
+      <div className=" flex  flex-col">
+        <h3 className="skill-name relative max-w-[20ch] ">{skill.name}</h3>
+
+        {isHighlighted && skill.text && (
+          <motion.p
+            className="skill-description mb-4  max-w-1/2"
+            layout
+            initial={{ opacity: 0, y: 0, x: 0 }}
+            animate={{ opacity: 1, y: 0, x: 0 }}
+            transition={{ type: "spring", }}
+          >
+            {skill.text}
+          </motion.p>
+        )}
+        {isHighlighted && (
+          <motion.button
+            className="text-xs text-white bg-lime-500 rounded-full inline-block w-fit px-4 py-2 hover:cursor-pointer hover:bg-black transition-all"
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: "spring", }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpenModal(skill);
+            }}
+          >
+            {skill.buttonLabel || "Learn More"}
+          </motion.button>
+        )}</div>
     </motion.li>
   );
 }
@@ -248,11 +258,7 @@ const CloseIcon = () => {
 function Stylesheet() {
   return (
     <style>{`
-      .scroll-highlight-container {
-        display: flex;
-        width: 100%;
-      }
-
+ 
       .skills-list {
         list-style: none;
         padding: 0;
@@ -260,7 +266,6 @@ function Stylesheet() {
         color: white;
         display: flex;
         flex-direction: column;
-        gap: 2.5rem;
         width: 100%;
       }
 
@@ -278,29 +283,24 @@ function Stylesheet() {
 
       .skill-item {
         will-change: opacity, transform;
-        font-size: clamp(1.25rem, 5vw, 3rem);
+        font-size: clamp(1.25rem, 5vw, 2rem);
         font-weight: 300;
         max-width: 100%;
         margin: 0;
-        padding: 1rem 0;
-        line-height: 1;
+    
         text-transform: none;
         display: flex;
-        flex-direction: column;
+   
       }
 
       @media (min-width: 640px) {
         .skill-item {
-          max-width: min(28ch, 80vw);
+          max-width: min(45ch, 80vw);
           padding: 1.5rem 0;
         }
       }
 
-      @media (min-width: 768px) {
-        .skill-item {
-          max-width: min(24ch, 50vw);
-          padding: 1rem 0;
-        }
+     
       }
 
       .skill-name {

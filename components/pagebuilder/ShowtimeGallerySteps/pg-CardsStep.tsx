@@ -58,15 +58,15 @@ export default function CardsStep({ step }: CardsStepProps) {
   // Generate section ID from badge text or title
   const sectionId = step.badge?.text
     ? step.badge.text
+      .replace(/[^a-zA-Z0-9\s]/g, "")
+      .replace(/\s+/g, "-")
+      .toLowerCase()
+    : title
+      ? title
+        .substring(0, 30)
         .replace(/[^a-zA-Z0-9\s]/g, "")
         .replace(/\s+/g, "-")
         .toLowerCase()
-    : title
-      ? title
-          .substring(0, 30)
-          .replace(/[^a-zA-Z0-9\s]/g, "")
-          .replace(/\s+/g, "-")
-          .toLowerCase()
       : "gallery-cards";
 
   // Store the navPointName in a data attribute if provided
@@ -103,7 +103,7 @@ export default function CardsStep({ step }: CardsStepProps) {
 
         {/* Title + paragraph (center) */}
         {(title || description) && (
-          <div className="col-span-10 col-start-3">
+          <div className="col-span-10 col-start-3 border">
             <StaggeredSlideUp
               className="flex flex-col items-start justify-start"
               delay={0.1}
