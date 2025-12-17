@@ -29,10 +29,10 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-12 gap-6 sm:gap-8 min-h-[120px] lg:min-h-[163px]">
             {/* Company Logo */}
             <div className="col-span-2 sm:col-span-4 lg:col-span-3 flex flex-col justify-center gap-3 mb-4 lg:mb-0">
-              <Image 
-                src={menuData?.imageCloud?.secure_url || "/1sp-fallback.svg"} 
-                alt="Logo" 
-                width={146} 
+              <Image
+                src={menuData?.imageCloud?.secure_url || "/1sp-fallback.svg"}
+                alt="Logo"
+                width={146}
                 height={79}
                 className="w-[80px] h-auto sm:w-[120px] lg:w-[146px]"
               />
@@ -53,8 +53,8 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                           link.linkType === "external"
                             ? link.externalUrl || "#"
                             : link.isCaseLink
-                            ? `/cases/${link.case?.slug?.current || ""}`
-                            : `/${link.slug || ""}`
+                              ? `/cases/${link.case?.slug?.current || ""}`
+                              : `/${link.slug || ""}`
                         }
                         target={
                           link.linkType === "external" ? "_blank" : undefined

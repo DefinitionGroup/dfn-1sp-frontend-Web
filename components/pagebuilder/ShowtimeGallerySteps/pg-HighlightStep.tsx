@@ -170,22 +170,17 @@ export default function HighlightStep({
           {/* Mobile CTA - shown at bottom on mobile */}
           {showCta && (
             <div className="col-span-4 sm:col-span-6 md:hidden mt-8">
-              <div className="flex flex-col items-start gap-4">
-                <ArrowBig
-                  animate={true}
-                  size={36}
-                  color="white"
-                  className="fill-white text-white"
-                />
+              <div className="flex flex-col border-t  border-white pt-8 items-start gap-4">
+
                 <CtaMiniComponent
                   {...({
-                    className: "text-white",
-                    heading: cta?.heading,
-                    paragraph: cta?.paragraph,
+                    className: "text-white font-regular line-height-normal",
+                    heading: cta?.paragraph,
+
                     buttonText: cta?.buttonText,
                     buttonVariant: cta?.variant ?? cta?.buttonVariant,
                     url: ctaUrl,
-                    align: cta?.alignment,
+                    align: "center",
                   } as any)}
                 />
               </div>

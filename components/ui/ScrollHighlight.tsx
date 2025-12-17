@@ -110,13 +110,18 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
     <div className="scroll-highlight-container">
       <AnimatePresence>
         {activeModal && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-lg z-50 grid place-items-center">
+          <motion.div
+            className="fixed inset-0 bg-black/50 backdrop-blur-lg z-50 grid place-items-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.18, ease: "easeInOut" } }}
+          >
             <motion.button
               key={`button-${activeModal.name}-${id}`}
               layout
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0, transition: { duration: 0.025 } }}
+              exit={{ opacity: 0, transition: { duration: 0.12 } }}
               className="flex absolute top-2 right-2 lg:hidden items-center overflow-hidden justify-around rounded-full h-6 w-6 z-50"
               onClick={() => setActiveModal(null)}
             >
@@ -126,7 +131,7 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
               layoutId={`modal-card-${activeModal.name}-${id}`}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.15 } }}
+              exit={{ opacity: 0, scale: 0.92, transition: { duration: 0.18, ease: "easeInOut" } }}
               transition={{ type: "spring", visualDuration: 0.3, bounce: 0.2 }}
               ref={modalRef}
               className="w-full z-50 max-w-[900px] min-h-[50vh] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
@@ -136,7 +141,7 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
                 layout
                 initial={{ opacity: 1 }}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 1, transition: { duration: 0.025 } }}
+                exit={{ opacity: 0, transition: { duration: 0.12 } }}
                 className="flex absolute top-4 right-4 items-center overflow-hidden justify-around rounded-full h-6 w-6 z-50"
                 onClick={() => setActiveModal(null)}
               >
@@ -152,7 +157,7 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
                     height={400}
                     src={activeModal.image}
                     alt={activeModal.name || "Service background"}
-                    className="w-full min-h-[400px] sm:rounded-t-xl opacity-50 object-cover object-top"
+                    className="w-full min-h-full  sm:rounded-t-xl opacity-50 object-cover object-top"
                   />
                 ) : (
                   <div className="w-full h-[400px] sm:rounded-t-xl bg-neutral-800 opacity-50" />
@@ -210,7 +215,7 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
                 </div>
               </div>
             </motion.div>
-          </div>
+          </motion.div>
         )}
       </AnimatePresence>
       <ul className="skills-list">

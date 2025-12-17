@@ -71,10 +71,10 @@ export const TracingBeam = ({
 
   return (
     <motion.div
-      className={cn("relative mx-auto h-full w-full max-w-4xl", className)}
+      className={cn("relative top-0 left-0  mx-auto h-full w-full ", className)}
     >
       {/* Tracing beam - hidden on mobile, shown on md+ */}
-      <div className="absolute top-0 -left-10 xl:-left-60 hidden  md:block pointer-events-none">
+      < div className="absolute top-0 md:-left-10 lg:-left-20 hidden  md:block pointer-events-none" >
         <div className="sticky top-0">
           <motion.div
             transition={{
@@ -139,8 +139,8 @@ export const TracingBeam = ({
             </defs>
           </svg>
         </div>
-      </div>
-      <div ref={contentRef} className="relative md:left-24 z-10 ">{children}</div>
-    </motion.div>
+      </div >
+      <div ref={contentRef} className="relative md:left-2 lg:left-1  z-10 ">{children}</div>
+    </motion.div >
   );
 };

@@ -107,21 +107,23 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   return (
     <motion.nav
       ref={navRef}
-      initial={{ opacity: 0, clipPath: "inset(45% 49.9% 45% 49.9% round 48%)", backdropFilter: "blur(1px)", backgroundColor: "rgba(255, 255, 255, 0.8)" }}
+      initial={{ opacity: 0, scale: 0.95, clipPath: "inset(45% 49.9% 45% 49.9% round 48%)", backdropFilter: "blur(1px)", backgroundColor: "rgba(255, 255, 255, 1)" }}
       animate={{
-        opacity: [1, 1, 1],
+        opacity: [0, 1, 1],
+        scale: [2, 1, 1],
         clipPath: [
-          "inset(49% 49.9% 49% 49.9% round 50%)", // tiny circle
+          "inset(49% 49% 49% 49% round 50%)", // tiny circle
+          "inset(0% 49% 0% 49% round 2rem)",       // full height pill
           "inset(0% 49% 0% 49% round 2rem)",       // full height pill
           "inset(0% 0% 0% 0% round 2rem)"          // full width menu
         ],
-        backdropFilter: "blur(12px)", backgroundColor: "rgba(111,111,111, 0.4)"
+        backdropFilter: "blur(12px)", backgroundColor: "rgba(111,111,111, 0.2)"
       }}
       transition={{
-        duration: 0.5,
+        duration: 1,
         delay: 0.7,
       }}
-      className={`z-99999 hidden fixed top-6 left-0 backdrop-blur-md rounded-4xl w-fit h-16 overflow-hidden px-6 right-0 md:grid items-center z-50 grid-cols-12 py-2  mx-auto ${textColor} ${className}`}
+      className={`z-99999 shadow-xl hidden fixed top-6 left-0 backdrop-blur-md rounded-4xl w-fit h-16  px-6  right-0 md:grid items-center z-50 grid-cols-12 py-2  mx-auto ${textColor} ${className}`}
     >
       <div className="col-span-2 flex items-center  pr-16  justify-start">
         <motion.div
@@ -156,7 +158,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         {menuData?.menuItems && menuData.menuItems.length > 0 ? (
           <StaggeredSlideUp
             className="flex items-center"
-            delay={2.3}
+            delay={1.3}
             staggerDelay={0.08}
             duration={0.5}
             distance={10}
