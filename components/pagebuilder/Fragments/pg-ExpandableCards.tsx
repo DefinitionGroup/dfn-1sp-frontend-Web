@@ -134,15 +134,12 @@ function ExpandableCards({
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.2 }}
-            exit={{ opacity: 0 }}
-            transition={{ type: "spring", stiffness: 20 }}
+            exit={{ opacity: 0, transition: { duration: 0.14, ease: "easeInOut" } }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
             className="fixed inset-0 bg-black/50 backdrop-blur-lg h-full w-full z-10"
           />
         )}
-      </AnimatePresence>
 
-      {/* Modal */}
-      <AnimatePresence>
         {active && typeof active === "object" ? (
           <div className="fixed inset-0 flex items-center justify-center  z-[100]">
 
@@ -150,10 +147,10 @@ function ExpandableCards({
             <motion.div
               layoutId={`card-${active.title}-${id}`}
               ref={ref}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, transition: { duration: 0.05 } }}
-              transition={{ type: "spring", bounce: 0.2, visualDuration: 0.3 }}
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.12, ease: "easeInOut" } }}
+              transition={{ type: "spring", bounce: 0.18, visualDuration: 0.25 }}
               className="w-full max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[50%] rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
             >
               {/* Media */} <motion.button
@@ -265,7 +262,7 @@ function ExpandableCards({
                 {/* Old tile only showed title; keep that for parity */}
                 <motion.h3
                   layoutId={`title-${card.title}-${id}`}
-                  className="font-medium mt-2 text-sm leading-snug tracking-tight text-neutral-100 dark:text-neutral-200 text-center md:text-left"
+                  className="font-medium mt-2 text-sm leading-snug tracking-tight text-neutral-100 dark:text-neutral-200 md:text-center md:text-left"
                 >
                   {card.title}
                 </motion.h3>

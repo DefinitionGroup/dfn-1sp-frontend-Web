@@ -66,10 +66,10 @@ function CtaMiniComponent({
       <p className={`text-xs mb-8 ${textAlignClass}`}>{paragraph}</p>
       {showButton ? (
         buttonText && finalUrl && finalUrl !== "#" ? (
-          <div className="text-xs mb-8 min-w-[120px] w-full">
+          <div className="text-xs mb-8 min-w-[140px] w-full">
             <Button2
               variant={buttonVariant}
-              className="w-full"
+              className="w-full text-xxs"
               text={buttonText}
               href={finalUrl}
             />

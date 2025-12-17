@@ -126,8 +126,9 @@ export default function CardsStep({ step }: CardsStepProps) {
         )}
 
         {/* Cards */}
+
         {cards.length > 0 && (
-          <div className="col-span-9 col-start-3 mt-8">
+          <div className="col-span-9  col-start-3 mt-8 ">
             <ExpandableCards items={cards} variant="compact" columns={5} />
           </div>
         )}

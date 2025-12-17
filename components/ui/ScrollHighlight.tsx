@@ -65,11 +65,11 @@ function ScrollHighlightItem({
 
 
       <div className=" flex  flex-col">
-        <h3 className="skill-name relative max-w-[20ch] ">{skill.name}</h3>
+        <h3 className="skill-name relative leading-none font-medium max-w-[20ch] ">{skill.name}</h3>
 
         {isHighlighted && skill.text && (
           <motion.p
-            className="skill-description mb-4  max-w-1/2"
+            className="skill-description mb-4  text-xs"
             layout
             initial={{ opacity: 0, y: 0, x: 0 }}
             animate={{ opacity: 1, y: 0, x: 0 }}
