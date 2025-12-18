@@ -68,6 +68,18 @@ const ContentSection = dynamic(
   }
 );
 
+const TwoColContentSection = dynamic(
+  () => import("./pagebuilder/pg-2ColContentSection"),
+  {
+    loading: () => (
+      <div className="w-full h-64 flex items-center justify-center">
+        <div className="text-gray-400">Loading...</div>
+      </div>
+    ),
+    ssr: true,
+  }
+);
+
 // Gallery step components - now available as standalone components
 const GalleryHeroStep = dynamic(
   () => import("./pagebuilder/pg-GalleryHeroStep"),
@@ -330,6 +342,12 @@ export function PageBuilder({ content, language = "de" }: PageBuilderProps) {
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <ContentSection key={key} data={block} />
+              </ErrorBoundary>
+            );
+          case "twoColContentSection":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <TwoColContentSection key={key} data={block} />
               </ErrorBoundary>
             );
 

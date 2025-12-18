@@ -147,6 +147,7 @@ export default defineType({
                 { type: 'sublineComponent' },
                 { type: 'oneSPHeader' },
                 { type: 'contentSection' },
+                { type: 'twoColContentSection' },
                 { type: 'casesIntro' },
                 { type: 'casesGalleryFiltered' },
                 { type: 'casesGalleryFilteredWithPagination' },
