@@ -61,9 +61,9 @@ const container: React.CSSProperties = {
 };
 
 const animatingText: React.CSSProperties = {
-  fontSize: "calc(22px + 3vw)",
+  fontSize: "min(12vw, 5rem)",
   fontWeight: 500,
-  lineHeight: "calc(28px + 3vw)",
+  lineHeight: "min(14vw, 5.5rem)",
   letterSpacing: "calc(2px - 0.2vw)",
   textTransform: "uppercase",
   color: "var(--text-primary)",

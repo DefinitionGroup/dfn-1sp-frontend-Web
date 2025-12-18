@@ -102,7 +102,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="relative min-h-[80vh] h-[80vh] overflow-hidden"
+      className="relative min-h-[80vh] h-[95vh] md:h-[80vh] overflow-hidden z-1"
     >
       {/* Background media */}
       {mediaUrl && (
@@ -115,9 +115,9 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
       )}
 
       {/* Foreground content */}
-      <div className="absolute bottom-24 md:relative z-10  max-w-9xl container md:mt-[50vh] mx-auto">
+      <div className="absolute bottom-12 md:bottom-24 md:relative z-10  max-w-9xl container md:mt-[50vh] mx-auto">
         <StaggeredSlideUp
-          className="px-12 md:px-4 space-y-1 max-w-full"
+          className="px-4 md:px-4 space-y-1 max-w-full"
           delay={1}
           staggerDelay={0.08}
           duration={0.5}
@@ -172,7 +172,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
                 className={[
                   "text-neutral-50",
                   sizeToClass[size] || "text-base",
-                  i === 0 ? "max-w-3/4 md:max-w-1/3" : "",
+                  i === 0 ? "lg:max-w-1/2 text-sm " : "",
                 ].join(" ")}
               >
                 {highlightInline(text, highlight)}

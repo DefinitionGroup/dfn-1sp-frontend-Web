@@ -85,7 +85,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
         )}
         <div
 
-          className="absolute inset-0 opacity-60
+          className="absolute inset-0 opacity-30
            bg-black"
         />
       </motion.div>

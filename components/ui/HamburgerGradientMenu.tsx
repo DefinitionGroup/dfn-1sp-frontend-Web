@@ -113,7 +113,7 @@ export default function HamburgerGradientMenu({
   const toggle = useCallback(() => setOpen((o) => !o), []);
 
   return (
-    <div className="fixed top-0 left-0 bg-gradient-to-b w-full from-black via-black/50 to-black/0  md:hidden z-[9999] flex items-center justify-between h-16">
+    <div className="fixed top-0 left-0 bg-gradient-to-b w-full from-black/50 via-black/30 to-black/0  md:hidden z-[9999] flex items-center justify-between h-16">
       <div className="pointer-events-auto inline-block">
         <HamburgerButton
           open={open}

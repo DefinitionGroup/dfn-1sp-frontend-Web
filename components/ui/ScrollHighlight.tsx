@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { useState, useRef, useId } from "react";
+import { useState, useRef, useId, useEffect } from "react";
 import Image from "next/image";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 
@@ -43,7 +43,8 @@ function ScrollHighlightItem({
       }}
       transition={{ type: "spring", duration: 0.15, }}
       onViewportEnter={() => onHighlight(index)}
-      viewport={{ margin: "-50% 0px -55% 0px", amount: "some" }}
+      onClick={() => onHighlight(index)}
+      viewport={{ margin: "-35% 0px -40% 0px", amount: "some", once: false }}
     >
 
       <motion.div
@@ -103,6 +104,12 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
   const id = useId();
 
   useOutsideClick(modalRef, () => setActiveModal(null));
+
+  useEffect(() => {
+    if (items && items.length > 0 && activeSkill === null) {
+      setActiveSkill(0);
+    }
+  }, [items, activeSkill]);
 
   if (!items || items.length === 0) return null;
 
