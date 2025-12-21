@@ -150,9 +150,9 @@ function ContentSection({ data }: { data: ContentSectionData }) {
       {(introHeading || introSubheading) && (
         <div className="grid grid-cols-12 z-1 mx-auto container relative font-aspekta">
           {showGridBackground && <GridBackground />}
-          <div className="z-1 grid gap-8 col-span-12 py-16 col-start-1 container mx-auto row-start-1 grid-cols-12">
+          <div className="z-1 grid gap-8 col-span-12 pt-12 col-start-1 container mx-auto row-start-1 grid-cols-12">
             <div className="z-1 col-span-12 col-start-1">
-              <div className="flex flex-col items-start gap-8  justify-center w-full">
+              <div className="flex flex-col items-start gap-2  justify-center w-full">
                 {introHeading && (
                   <StaggeredSlideUp
                     delay={0.59}
@@ -160,7 +160,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
                     distance={100}
                     className="max-w-2/4"
                   >
-                    <h2 className="text-7xl leading-none text-neutral-700 pb-3 font-aspekta">
+                    <h2 className="text-5xl leading-none text-neutral-700 font-aspekta">
                       {introHeading}
                     </h2>
                   </StaggeredSlideUp>
@@ -172,7 +172,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
                     distance={100}
                     className="max-w-2/4"
                   >
-                    <h2 className="text-7xl leading-none text-neutral-500 pb-3 font-aspekta">
+                    <h2 className="text-5xl leading-none text-neutral-400 font-aspekta">
                       {introSubheading}
                     </h2>
                   </StaggeredSlideUp>

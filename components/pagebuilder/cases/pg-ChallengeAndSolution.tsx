@@ -75,7 +75,7 @@ export default function ChallengeAndSolution({
         className={`${backgroundColor} mt-8 min-h-[80vh] md:min-h-[90vh] relative font-aspekta`}
       >
         {showGridBackground && <GridBackground />}
-        
+
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className={`grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 py-16 sm:py-24 lg:py-${paddingY}`}>
             {/* Badge Module - Responsive sticky behavior */}
@@ -112,37 +112,37 @@ export default function ChallengeAndSolution({
             {/* Challenge and Solution section */}
             {((contentType === "services" && services.length > 0) ||
               (contentType === "challenges" && challenges.length > 0)) && (
-              <>
-                {/* CTA Mini - Responsive */}
-                <div className="col-span-4 sm:col-span-3 md:col-span-3 md:col-start-3 mt-6 md:mt-8">
-                  <CtaMiniComponent
-                    heading={
-                      ctaHeading ||
-                      (contentType === "challenges"
-                        ? t.caseStudy.challenge
-                        : t.caseStudy.services)
-                    }
-                    paragraph={
-                      ctaParagraph ||
-                      (contentType === "challenges"
-                        ? t.caseStudy.challengeDescription
-                        : `${t.caseStudy.servicesDescription} ${services?.map((s) => s.name).join(", ")}`)
-                    }
-                    buttonText={ctaButton?.text || ""}
-                    buttonVariant={(ctaButton?.variant as any) || "limesmall"}
-                    url={
-                      ctaButton?.link ? resolveLink(ctaButton.link) : undefined
-                    }
-                    showButton={showButton}
-                    align="left"
-                  />
-                </div>
-                
-                {/* List Items - Responsive */}
-                <div className="col-span-4 sm:col-span-6 md:col-span-6 md:col-start-6 mt-6 md:mt-8">
-                  <ListContainerComponent>
-                    {contentType === "challenges"
-                      ? challenges.map((challenge, idx) => (
+                <>
+                  {/* CTA Mini - Responsive */}
+                  <div className="col-span-4 sm:col-span-3 md:col-span-3 md:col-start-3 mt-6 md:mt-8">
+                    <CtaMiniComponent
+                      heading={
+                        ctaHeading ||
+                        (contentType === "challenges"
+                          ? t.caseStudy.challenge
+                          : t.caseStudy.services)
+                      }
+                      paragraph={
+                        ctaParagraph ||
+                        (contentType === "challenges"
+                          ? t.caseStudy.challengeDescription
+                          : `${t.caseStudy.servicesDescription} ${services?.map((s) => s.name).join(", ")}`)
+                      }
+                      buttonText={ctaButton?.text || ""}
+                      buttonVariant={(ctaButton?.variant as any) || "limesmall"}
+                      url={
+                        ctaButton?.link ? resolveLink(ctaButton.link) : undefined
+                      }
+                      showButton={showButton}
+                      align="left"
+                    />
+                  </div>
+
+                  {/* List Items - Responsive */}
+                  <div className="col-span-4 sm:col-span-6 md:col-span-6 md:col-start-6 mt-6 md:mt-8">
+                    <ListContainerComponent>
+                      {contentType === "challenges"
+                        ? challenges.map((challenge, idx) => (
                           <ListItemComponent
                             key={idx}
                             size="small"
@@ -152,7 +152,7 @@ export default function ChallengeAndSolution({
                             {challenge}
                           </ListItemComponent>
                         ))
-                      : services.map((service) => (
+                        : services.map((service) => (
                           <ListItemComponent
                             key={service._id}
                             size="small"
@@ -162,28 +162,28 @@ export default function ChallengeAndSolution({
                             {service.name}
                           </ListItemComponent>
                         ))}
-                  </ListContainerComponent>
-                  
-                  {/* Solution */}
-                  {solution && (
-                    <StaggeredSlideUp
-                      className="flex flex-col mt-8 md:mt-10 items-start justify-start"
-                      delay={0.7}
-                      staggerDelay={0.1}
-                      duration={0.5}
-                      distance={80}
-                    >
-                      <h3 className="text-xl sm:text-2xl leading-tight text-gray-900 max-w-lg font-semibold tracking-tight mb-4 md:mb-6">
-                        {t.caseStudy.solution}
-                      </h3>
-                      <p className="text-sm sm:text-base text-gray-800 max-w-lg leading-relaxed">
-                        {solution}
-                      </p>
-                    </StaggeredSlideUp>
-                  )}
-                </div>
-              </>
-            )}
+                    </ListContainerComponent>
+
+                    {/* Solution */}
+                    {solution && (
+                      <StaggeredSlideUp
+                        className="flex flex-col  mt-8 md:mt-10 items-start justify-start"
+                        delay={0.7}
+                        staggerDelay={0.1}
+                        duration={0.5}
+                        distance={80}
+                      >
+                        <h3 className="text-xl sm:text-2xl leading-tight text-gray-900 max-w-lg font-semibold tracking-tight mb-4 md:mb-6">
+                          {t.caseStudy.solution}
+                        </h3>
+                        <p className="text-sm sm:text-base text-gray-800 max-w-lg leading-relaxed">
+                          {solution}
+                        </p>
+                      </StaggeredSlideUp>
+                    )}
+                  </div>
+                </>
+              )}
           </div>
         </div>
       </div>

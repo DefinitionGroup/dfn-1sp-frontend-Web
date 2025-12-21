@@ -5,6 +5,7 @@ import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
 
+
 export const revalidate = 60;
 
 export default async function CasesPage({
@@ -26,7 +27,8 @@ export default async function CasesPage({
 
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
-      <div className="  min-h-screen px-1 md:px-4">
+      <div className="  min-h-screen px-1  md:px-4">
+
         {page?.content1sp ? (
           <PageBuilder content={page.content1sp} language={language} />
         ) : (

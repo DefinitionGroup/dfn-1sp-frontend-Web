@@ -76,17 +76,17 @@ export default function CaseStudyPageClient({
 
   return (
     <>
-      <section className="relative h-[95vh] w-full px-1 md:px-4 overflow-hidden">
+      <section className="relative h-[95vh] w-full overflow-hidden  mx-auto">
         <HamburgerGradientMenu />
         <LineMinimap navPoints={navPoints} />
 
         {/* Background Image with Overlay */}
         {mainVideoUrl ? (
           <HeaderImageVideoComp
-            useVideo={true}
+            useVideo={true} className="z-1 rounded-xl overflow-hidden "
             videoSrc={mainVideoUrl}
             enableParallax={true}
-            opacity="opacity-50"
+            opacity="opacity-70"
             enableVertical={caseStudy.isVerticalVideo}
           />
         ) : (
@@ -101,17 +101,17 @@ export default function CaseStudyPageClient({
 
         {/* Hero Content */}
         <div id={t.ids.top} className="" />
-        <div className="relative z-10 container mt-[20vh] sm:mt-[25vh] md:mt-[30vh] mx-auto px-4 sm:px-6 md:px-8 lg:px-0">
+        <div className="relative container flex flex-col justify-end  h-full z-20  mx-auto px-4 sm:px-6 md:px-8 lg:px-0">
           <StaggeredSlideUp
             delay={0.4}
             className="max-w-full flex flex-col gap-3 sm:gap-4 lg:max-w-2/3 "
           >
             {caseStudy.subtitle && (
-              <h2 className="text-neutral-50 text-[10px] sm:text-xs font-bold bg-lime-500 rounded-full inline-block w-fit py-1 px-3 sm:px-4">
+              <h2 className="text-neutral-50 text-[10px] sm:text-xs font-bold bg-lime-500 rounded-full leading-compress  inline-block w-fit py-1 px-3 sm:px-4">
                 {caseStudy.subtitle}
               </h2>
             )}
-            <h1 className="text-neutral-50 w-full md:w-2/3 pb-2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-none">
+            <h1 className="text-neutral-50 w-full md:w-2/3 pb-2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-6xl tracking-tight leading-none">
               {caseStudy.title}
             </h1>
 

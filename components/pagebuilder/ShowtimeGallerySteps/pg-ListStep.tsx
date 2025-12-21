@@ -345,7 +345,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
       <div className="z-1 grid col-span-12  col-start-1 pt-32 row-start-1 grid-cols-12 ">
         {/* Badge */}
-        <div className="col-span-6 col-start-2  row-span-2 md:col-start-1 md:col-span-2 md:sticky top-0 ">
+        <div className="col-span-6 col-span-12 col-start-2  row-span-2 md:col-start-1 md:col-span-2 md:sticky top-0 pr-4 ">
 
           {step.badge && (
             <Badgemodule
@@ -356,7 +356,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
           )}
           {showBadgeMiniCta && badgeMiniCta && (
-            <div className="col-span-6 col-start-2 md:col-start-1 md:col-span-2 mt-4 pr-8 ">
+            <div className="col-span-6 col-start-1 md:col-start-1 md:col-span-2 mt-4 pr-8 ">
               <CtaMiniComponent
                 heading={badgeMiniCta.heading || ""}
                 paragraph={badgeMiniCta.paragraph || ""}

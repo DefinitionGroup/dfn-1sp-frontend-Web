@@ -25,6 +25,7 @@ interface IntertitleCTAProps {
   staggeredProps?: Partial<StaggeredSlideUpProps>;
   containerClassName?: string;
   alignment?: "center" | "left";
+  paddingTop?: "0" | "12" | "24" | "48";
   navPointName?: string;
 }
 
@@ -33,16 +34,26 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   subtitle,
   cta,
   staggeredProps = {},
-  containerClassName = "flex-col w-full min-w-64 justify-center mx-auto ",
+  containerClassName = "flex-col w-full  md:min-w-64 justify-center mx-auto ",
   alignment = "center",
+  paddingTop = "0",
   navPointName,
 }) => {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
   const isLeftAligned = alignment === "left";
 
+  // Padding top classes
+  const paddingTopMap: Record<string, string> = {
+    "0": "",
+    "12": "pt-12",
+    "24": "pt-24",
+    "48": "pt-48",
+  };
+  const paddingTopClass = paddingTopMap[paddingTop] || "";
+
   const defaultStaggeredProps: StaggeredSlideUpProps = {
-    className: `flex flex-col ${isLeftAligned ? "items-start" : "items-center"} font-normal justify-center`,
+    className: `flex flex-col ${isLeftAligned ? "items-start" : "items-center"} font-normal justify-center  w-full min-w-full `,
     delay: 0.0,
     debug: false,
     easing: "smooth",
@@ -52,8 +63,8 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
     ...staggeredProps,
   };
 
-  const titleClass = `text-4xl text-gray-700 ${isLeftAligned ? "text-left" : "text-center"} leading-[1.2]`;
-  const subtitleClass = `text-4xl text-gray-400 leading-snug ${isLeftAligned ? "text-left" : "text-center"}`;
+  const titleClass = `text-2xl  md:text-4xl text-gray-700 ${isLeftAligned ? "text-left" : "text-center"} leading-[1.2]`;
+  const subtitleClass = `text-2xl  md:text-4xl text-gray-400 leading-snug ${isLeftAligned ? "text-left" : "text-center"}`;
   const buttonContainerClass = `w-fit min-w-40 ${isLeftAligned ? "self-start" : "mx-auto"} mt-8 block`;
 
   // Resolve CTA link and props
@@ -84,11 +95,11 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
     : {};
 
   return (
-    <div id={sectionId} {...navPointDataAttr} className={containerClassName}>
-      <div className="grid grid-cols-6 md:grid-cols-12 z-1 mx-auto container relative font-aspekta">
+    <div id={sectionId} {...navPointDataAttr} className={`${containerClassName} `}>
+      <div className="grid z-1 mx-auto container relative font-aspekta">
         {/* Background grid (optional visual helper) */}
         <GridBackground delay={0.2} staggerDelay={0.06} />
-        <div className="z-1   py-12 col-span-12 col-start-1 container mx-auto row-start-1 grid-cols-12">
+        <div className={`z-1   py-12 col-span-8   col-start-3  container mx-auto row-start-1 grid-cols-12 ${paddingTopClass}`}>
           <StaggeredSlideUp {...defaultStaggeredProps}>
             <h3 className={titleClass}>{title}</h3>
             <p className={subtitleClass}>{subtitle}</p>
@@ -102,7 +113,9 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
               />
             </div>
           )}
-        </div> </div>    </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

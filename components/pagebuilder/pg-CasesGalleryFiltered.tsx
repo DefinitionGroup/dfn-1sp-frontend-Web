@@ -148,13 +148,13 @@ function CasesGalleryFiltered({
                 staggerDelay={0.05}
                 distance={11}
                 duration={1}
-                className="flex flex-wrap gap-4 justify-center md:justify-start"
+                className="flex flex-wrap gap-1 justify-start md:gap-3  w-full md:justify-start"
               >
                 {filters.map((filter) => (
                   <button
                     key={filter}
                     onClick={() => setActiveFilter(filter)}
-                    className={`px-6 py-2 rounded-full text-xxs md:text-xs font-bold md:font-medium uppercase transition-all  duration-100 ${activeFilter === filter
+                    className={`px-3 py-1 md:px-2 rounded-full text-xs md:text-xs  md:font-medium uppercase transition-all  duration-100 ${activeFilter === filter
                       ? "bg-lime-500 text-black"
                       : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
                       }`}

@@ -43,7 +43,7 @@ export default function Badgemodule({
   // Size-based classes
   const sizeClasses = {
     sm: {
-      container: "min-w-[120px] max-w-[160px]",
+      container: "min-w-[100px] max-w-[160px]",
       padding: "p-3",
       logo: "w-3 h-3",
       number: "text-[8px]",
@@ -51,8 +51,8 @@ export default function Badgemodule({
       subtitle: "text-[9px] md:text-[10px]",
     },
     md: {
-      container: "min-w-[140px] max-w-[200px]",
-      padding: "p-3 md:p-4",
+      container: "min-w-[110px]  ",
+      padding: "p-1 md:p-4",
       logo: "w-3.5 h-3.5 md:w-4 md:h-4",
       number: "text-[9px] md:text-[10px]",
       text: "text-base md:text-lg lg:text-xl xl:text-2xl",
@@ -119,8 +119,8 @@ export default function Badgemodule({
         }}
       >
         {/* Header: Logo and Number */}
-        <div className={cn("flex-1 flex flex-col", sizes.padding)}>
-          <div className="flex items-start justify-between w-full mb-2 md:mb-3">
+        <div className={cn("flex-1 flex flex-col ", sizes.padding)}>
+          <div className="flex items-start  justify-between w-full mb-2 md:mb-3">
             <motion.div
               variants={{
                 hidden: { opacity: 0, scale: 0.8 },
@@ -130,7 +130,7 @@ export default function Badgemodule({
                   transition: { duration: 0.5, ease: "easeOut", delay: 0.2 },
                 },
               }}
-              className="flex-shrink-0"
+              className="hidden flex-shrink-0"
             >
               <Image
                 src="/ci/1sp-outline.svg"

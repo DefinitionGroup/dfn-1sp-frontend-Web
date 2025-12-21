@@ -42,7 +42,7 @@ function PeopleShowcaseHero({
       data-component="people-showcase-hero"
       aria-labelledby="people-showcase-title"
     >
-      <div className="flex items-center justify-start w-full overflow-x-auto">
+      <div className="flex items-center justify-start  w-full overflow-x-auto">
         <StaggeredSlideUp className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-[2px] w-full overflow-x-auto">
           {members.map((member, index) => {
             const src = assetUrl(member.media as any);

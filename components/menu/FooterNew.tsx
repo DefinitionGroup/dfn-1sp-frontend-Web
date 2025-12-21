@@ -22,7 +22,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
   return (
     <>
       {/* Main Footer */}
-      <footer className={`bg-neutral-900 text-neutral-200 py-6 sm:py-8 ${className}`}>
+      <footer className={`bg-neutral-900 text-neutral-200 mt-5 md:mt-12 py-6 sm:py-8 ${className}`}>
         <div className="container mx-auto px-4 sm:px-6">
           {/* Top border line */}
           <div className="w-full h-px bg-neutral-600 mb-6 sm:mb-8"></div>
@@ -155,168 +155,131 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
 
       {/* Footer Bottom */}
       <div className="bg-neutral-900 text-gray-400 border-t pb-6 sm:pb-8 border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-          <div className="flex flex-col gap-6 sm:gap-8 lg:flex-row lg:justify-between lg:items-start lg:gap-24">
-            {/* Social Media Icons */}
-            <div className="flex gap-3 sm:gap-4 items-center">
-              {menuData?.socialLinks && menuData.socialLinks.length > 0 ? (
-                menuData.socialLinks
-                  .filter((s) => !!s?.url)
-                  .map((social) => (
-                    <Link
-                      key={social._key}
-                      href={social.url || "#"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
-                      aria-label={social.name || "social"}
-                    >
-                      {social.icon?.secure_url && (
-                        <Image
-                          src={social.icon.secure_url}
-                          alt={social.name || "social"}
-                          width={24}
-                          height={24}
-                          className="w-full h-full object-contain"
-                        />
-                      )}
-                    </Link>
-                  ))
-              ) : (
-                // Fallback social links
-                <>
-                  <Link
-                    href="#"
-                    className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
-                    aria-label="Meta"
-                  >
-                    <Image
-                      src="/MetaLogo.svg"
-                      alt="Meta"
-                      width={24}
-                      height={24}
-                      className="w-full h-full"
-                    />
-                  </Link>
-                  <Link
-                    href="#"
-                    className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
-                    aria-label="Instagram"
-                  >
-                    <Image
-                      src="/InstagramLogo.svg"
-                      alt="Instagram"
-                      width={24}
-                      height={24}
-                      className="w-full h-full"
-                    />
-                  </Link>
-                  <Link
-                    href="#"
-                    className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
-                    aria-label="TikTok"
-                  >
-                    <Image
-                      src="/TiktokLogo.svg"
-                      alt="TikTok"
-                      width={24}
-                      height={24}
-                      className="w-full h-full"
-                    />
-                  </Link>
-                  <Link
-                    href="#"
-                    className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
-                    aria-label="LinkedIn"
-                  >
-                    <Image
-                      src="/LinkedinLogo.svg"
-                      alt="LinkedIn"
-                      width={24}
-                      height={24}
-                      className="w-full h-full"
-                    />
-                  </Link>
-                </>
-              )}
-            </div>
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+          <div className="flex flex-col gap-6 sm:gap-3 lg:flex-row lg:justify-between lg:items-start lg:gap-20">
+
 
             {/* Main Content */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 lg:flex lg:gap-16 flex-1">
+            <div className="flex  sm:grid-cols-2 gap-6 sm:gap-8 lg:flex lg:gap-16 flex-1">
               {/* Company Info */}
-              <div className="flex-1">
-                <h3 className="text-gray-400 text-[13px] sm:text-[15px] font-medium mb-3 sm:mb-4">
-                  {menuData?.addressTitle || "Super* international"}
-                </h3>
-                <div className="space-y-3 sm:space-y-4">
-                  {menuData?.locations && menuData.locations.length > 0 ? (
-                    menuData.locations.map((location) => (
-                      <React.Fragment key={location._key}>
-                        {location.name && (
-                          <div className="mb-1">
-                            <p className="text-gray-400 text-[11px] sm:text-[13px] leading-relaxed">
-                              {location.name}
-                            </p>
-                          </div>
-                        )}
-                        {location.address && (
-                          <div className="border-b border-gray-700 pb-2 sm:pb-3">
-                            <p className="text-gray-400 text-[10px] sm:text-[11px] leading-relaxed whitespace-pre-line">
-                              {location.address}
-                            </p>
-                          </div>
-                        )}
-                      </React.Fragment>
-                    ))
+              <div className=" flex  gap-2  w-full lg:w-auto">
+
+                <div className="space-y-3 sm:space-y-4 w-2/3 max-w-1/2 md:w-2/3   ">
+
+                  <React.Fragment >
+                    <h3 className="text-gray-400 text-[13px] sm:text-[15px] font-medium mb-3 sm:mb-4">
+                      1SP Agency Holding GmbH
+                    </h3>
+                    <div className="mb-3">
+                      <p className="text-gray-400 text-[11px] sm:text-[13px] leading-relaxed">
+
+                        represented by the Managing Directors  <br />Markus Ernst Oeller and Torsten Oppermann
+                        <br />
+                        Hamburger Straße 11 <br />22083 Hamburg
+
+                      </p>
+                    </div>
+
+                    <div className="pb-2 sm:pb-3">
+                      <p className="text-gray-400 text-[10px] sm:text-[11px] leading-relaxed whitespace-pre-line">
+
+                        Telephone: +49 (451) 160 83 500<br />
+
+                        Fax: +49 (451) 30 50 988<br />
+
+                        Mail: info@msm.digital
+                      </p>
+                    </div>
+
+                  </React.Fragment>
+
+
+                </div>
+                <div className="flex gap-4 w-1/3   ">
+                  {menuData?.socialLinks && menuData.socialLinks.length > 0 ? (
+                    menuData.socialLinks
+                      .filter((s) => !!s?.url)
+                      .map((social) => (
+                        <Link
+                          key={social._key}
+                          href={social.url || "#"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
+                          aria-label={social.name || "social"}
+                        >
+                          {social.icon?.secure_url && (
+                            <Image
+                              src={social.icon.secure_url}
+                              alt={social.name || "social"}
+                              width={24}
+                              height={24}
+                              className="w-full h-full object-contain"
+                            />
+                          )}
+                        </Link>
+                      ))
                   ) : (
+                    // Fallback social links
                     <>
-                      <div className="pb-1">
-                        <p className="text-gray-400 text-[11px] sm:text-[12px] leading-relaxed">
-                          Mallorca
-                        </p>
-                      </div>
-                      <div className="border-b border-gray-700 pb-2 sm:pb-3">
-                        <p className="text-gray-400 text-[10px] sm:text-[11px] leading-relaxed">
-                          Address
-                        </p>
-                      </div>
+                      <Link
+                        href="#"
+                        className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
+                        aria-label="Meta"
+                      >
+                        <Image
+                          src="/MetaLogo.svg"
+                          alt="Meta"
+                          width={24}
+                          height={24}
+                          className="w-full h-full"
+                        />
+                      </Link>
+                      <Link
+                        href="#"
+                        className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
+                        aria-label="Instagram"
+                      >
+                        <Image
+                          src="/InstagramLogo.svg"
+                          alt="Instagram"
+                          width={24}
+                          height={24}
+                          className="w-full h-full"
+                        />
+                      </Link>
+                      <Link
+                        href="#"
+                        className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
+                        aria-label="TikTok"
+                      >
+                        <Image
+                          src="/TiktokLogo.svg"
+                          alt="TikTok"
+                          width={24}
+                          height={24}
+                          className="w-full h-full"
+                        />
+                      </Link>
+                      <Link
+                        href="#"
+                        className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
+                        aria-label="LinkedIn"
+                      >
+                        <Image
+                          src="/LinkedinLogo.svg"
+                          alt="LinkedIn"
+                          width={24}
+                          height={24}
+                          className="w-full h-full"
+                        />
+                      </Link>
                     </>
                   )}
                 </div>
               </div>
 
-              {/* Newsletter */}
-              <div className="flex-1">
-                <h3 className="text-gray-400 text-[13px] sm:text-[15px] font-medium mb-3 sm:mb-4">
-                  Stay in touch
-                </h3>
-                <form onSubmit={handleNewsletterSubmit} className="space-y-3 sm:space-y-4">
-                  <div className="border border-gray-700 rounded-none">
-                    <div className="flex">
-                      <label htmlFor="newsletter-email" className="sr-only">
-                        Email address
-                      </label>
-                      <span className="text-gray-400 text-[10px] sm:text-[11px] px-2 sm:px-3 py-2.5 sm:py-3 border-r border-gray-700 whitespace-nowrap">
-                        Newsletter:
-                      </span>
-                      <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Your e-mail address"
-                        className="flex-1 bg-transparent text-gray-500 text-[10px] sm:text-[11px] px-2 sm:px-3 py-2.5 sm:py-3 outline-none placeholder-gray-600 focus:placeholder-gray-500 transition-colors min-w-0"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full bg-transparent border border-gray-700 text-gray-400 text-[10px] sm:text-[11px] py-2.5 sm:py-3 px-3 hover:border-lime-400 hover:text-lime-400 transition-colors duration-200 focus:outline-none focus:border-lime-400 focus:text-lime-400"
-                  >
-                    Subscribe
-                  </button>
-                </form>
-              </div>
+
             </div>
           </div>
 

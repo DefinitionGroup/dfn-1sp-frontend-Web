@@ -61,6 +61,23 @@ export default defineType({
             },
             initialValue: "center",
         }),
+        defineField({
+            name: "paddingTop",
+            title: "Padding Top",
+            type: "string",
+            group: "layout",
+            description: "Top padding for the section",
+            options: {
+                list: [
+                    { title: "None", value: "0" },
+                    { title: "Medium (pt-12)", value: "12" },
+                    { title: "Large (pt-24)", value: "24" },
+                    { title: "Extra Large (pt-48)", value: "48" },
+                ],
+                layout: "radio",
+            },
+            initialValue: "0",
+        }),
 
     ],
     preview: {

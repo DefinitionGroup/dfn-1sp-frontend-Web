@@ -3,6 +3,7 @@ import heroShowtime from "./1SP/Components/heroShowtime";
 import sublineComponent from "./1SP/Components/sublineComponent";
 import Header from "./1SP/Components/Header";
 import contentSection from "./1SP/Components/contentSection";
+import twoColContentSection from "./1SP/Components/twoColContentSection";
 import casesIntro from "./1SP/Components/casesIntro";
 import casesGalleryFiltered from "./1SP/Components/casesGalleryFiltered";
 import casesGalleryFilteredWithPagination from "./1SP/Components/casesGalleryFilteredWithPagination";
@@ -50,6 +51,7 @@ const oneSPComponents = [
     sublineComponent,
     Header,
     contentSection,
+    twoColContentSection,
     casesIntro,
     casesGalleryFiltered,
     casesGalleryFilteredWithPagination,

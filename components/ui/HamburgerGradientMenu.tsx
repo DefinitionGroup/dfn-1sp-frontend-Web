@@ -4,10 +4,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import {
   motion,
   AnimatePresence,
-  animate,
-  useMotionValue,
-  useIsPresent,
 } from "motion/react";
+import AuroraShaderBackground from "./AuroraShaderBackground";
 import { Link } from "next-view-transitions";
 import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
 import FrontNavOverlay from "../menu/FrontNavOverlay";
@@ -113,7 +111,7 @@ export default function HamburgerGradientMenu({
   const toggle = useCallback(() => setOpen((o) => !o), []);
 
   return (
-    <div className="fixed top-0 left-0 bg-gradient-to-b w-full from-black/50 via-black/30 to-black/0  md:hidden z-[9999] flex items-center justify-between h-16">
+    <div className="fixed top-0 left-0 bg-gradient-to-b w-full from-black/60 via-black/40 to-black/0  md:hidden z-[9999] flex items-center justify-between h-16">
       <div className="pointer-events-auto inline-block">
         <HamburgerButton
           open={open}
@@ -189,12 +187,12 @@ function OverlayRoot({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0.1 }, scale: 0 }}
-      transition={{ duration: 0.0135, ease: [0.59, 0, 0.35, 1] }}
+      transition={{ duration: 0.35, ease: [0.59, 0, 0.35, 1] }}
       aria-modal="true"
       role="dialog"
       aria-label="Main navigation overlay"
     >
-      <FullscreenGradientBackdrop onClose={onClose} />
+      <AuroraShaderBackground onClose={onClose} />
       <motion.div
         ref={innerRef}
         id={id}
@@ -229,7 +227,7 @@ function OverlayRoot({
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             className="    h-full p-8 md:p-12 max-w-4xl"
           >
-            <div className="mb-8 flex items-center justify-between gap-6">
+            <div className="mb-8 flex items-start justify-between gap-6">
               <div className="flex flex-col text-left text-neutral-100">
                 <h2 className="text-2xl md:text-2xl font-aspekta leading-none tracking-tight">
                   Jump into our world
@@ -293,7 +291,7 @@ function OverlayRoot({
 
                   {item.subitems && item.subitems.length > 0 && (
                     <motion.ul
-                      className="mt-3 flex flex-wrap gap-2 md:gap-3"
+                      className="mb-2 flex flex-wrap gap-2 md:gap-3"
                       initial="hidden"
                       animate="visible"
                       exit="hidden"
@@ -430,96 +428,6 @@ function OverlayRoot({
   );
 }
 
-function FullscreenGradientBackdrop({ onClose }: { onClose: () => void }) {
-  const breathe = useMotionValue(0);
-  const isPresent = useIsPresent();
-
-  useEffect(() => {
-    if (!isPresent) {
-      animate(breathe, 0, { duration: 0.4, ease: "easeInOut" });
-      return;
-    }
-    (async () => {
-      await animate(breathe, 1, { duration: 0.6, ease: [0, 0.55, 0.45, 1] });
-      animate(breathe, [null, 0.85, 1.05, 0.9, 1], {
-        duration: 24,
-        repeat: Infinity,
-        ease: "easeInOut",
-      });
-    })();
-  }, [isPresent, breathe]);
-
-  return (
-    <div
-      className="absolute inset-0 pointer-events-auto"
-      aria-hidden="true"
-      onClick={onClose}
-    >
-      <motion.div
-        className="absolute inset-0 bg-black pointer-events-none"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.7 }}
-        exit={{ opacity: 0, transition: { duration: 0.1 } }}
-        transition={{ duration: 0.5 }}
-      />
-      <motion.div
-        className="absolute inset-0 mix-blend-screen aspect-square"
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: [0.5, 0.75, 0.55, 0.7], rotate: [0, 25, -30, -20] }}
-        exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.1 } }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        style={{
-          scale: breathe,
-          background:
-            "radial-gradient(130% 85% at 82% 6%, rgba(255,170,96,0.9),  rgba(30,110,240,0.15) 55%, rgba(10,40,120,1) 99%)",
-          filter: "blur(110px)",
-        }}
-      />
-      <motion.div
-        className="absolute inset-0 pointer-events-none mix-blend-screen aspect-square"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: [0.2, 0.35, 0.25, 0.3], rotate: [22, -25, 30, 0] }}
-        exit={{ opacity: 0, transition: { duration: 0.1 } }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        style={{
-          background:
-            "radial-gradient(65% 70% at 10% 18%, rgba(70,255,175,1),  rgba(0 ,250,20,1) 90%)",
-          filter: "blur(110px)",
-        }}
-      />
-      <motion.div
-        className="absolute inset-0 pointer-events-none mix-blend-screen aspect-square"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: [0.2, 0.35, 0.25, 0.3], rotate: [122, 25, 130, 0] }}
-        exit={{ opacity: 0, transition: { duration: 0.1 } }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        style={{
-          background:
-            "radial-gradient(65% 70% at 10% 18%, rgba(70,255,175,1),  rgba(0 ,250,20,1) 90%)",
-          filter: "blur(110px)",
-        }}
-      />
-      <motion.div
-        className="absolute inset-0 pointer-events-none mix-blend-screen"
-        initial={{ opacity: 0, rotate: [122, 75, 90, 0] }}
-        animate={{ opacity: 1, rotate: [22, -25, 30, 0] }}
-        exit={{ opacity: 0, transition: { duration: 0.1 } }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 1,
-        }}
-        style={{
-          background:
-            "radial-gradient(78% 72% at 82% 82%, rgba(85,135,255,0.85), rgba(40,210,255,0.38) 50%, rgba(12,40,140,0.08) 78%), radial-gradient(60% 60% at 64% 38%, rgba(255,125,210,0.35), rgba(255,255,255,0.08) 55%, rgba(120,40,140,0.04) 75%)",
-          filter: "blur(90px)",
-        }}
-      />
-    </div>
-  );
-}
-
 function HamburgerButton({
   open,
   onClick,
@@ -538,11 +446,11 @@ function HamburgerButton({
       aria-expanded={open}
       aria-controls={ariaControls}
       onClick={onClick}
-      className={`m-3 sm:m-4 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-md bg-black/50 backdrop-blur-sm border border-white/20 hover:bg-black/70 hover:border-white/40 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 ${className}`}
+      className={`m-3 sm:m-4 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-sm backdrop-blur-lgaa bg-black/22  ${className}`}
     >
       <svg
-        width="20"
-        height="20"
+        width="21"
+        height="21"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

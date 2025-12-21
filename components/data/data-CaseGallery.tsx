@@ -209,7 +209,7 @@ export default function CaseGalleryComponent({
               layoutId={`card-${item.title}-${id}`}
               key={`card-${item.title}-${id}`}
               onClick={() => setActive(item)}
-              className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1 px-1  h-[300px] md:min-h-430px]  group/card overflow-hidden md:h-[430px] cursor-pointer  "
+              className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1 px-1  h-[500px] md:min-h-500px]  group/card overflow-hidden md:h-[500px] cursor-pointer  "
             >
               <motion.div
                 layoutId={`image-${item.title}-${id}`}
@@ -251,7 +251,7 @@ export default function CaseGalleryComponent({
                       }`}
                   />
                 ) : null}
-                <div className="flex flex-col items-end">
+                <div className="flex flex-col items-start md:items-end">
                   <motion.h3
                     layoutId={`title-${item.title}-${id}`}
                     className={`font-medium md:ext-lg leading-snug max-w-[250px] tracking-tight ${variant !== "light" ? "" : "invert"
@@ -262,7 +262,7 @@ export default function CaseGalleryComponent({
                   {item.services && item.services.length > 0 && (
                     <motion.p
                       layoutId={`description-${item.description}-${id}`}
-                      className="text-neutral-400 md:text-right text-xxs font-medium md:text-xs mt-1 dark:text-neutral-400"
+                      className="text-neutral-400 md:text-right text-xxs font-medium md:text-xs mt-1  dark:text-neutral-400"
                     >
                       {item.services.map((s) => s.name).join(", ")}
                     </motion.p>
