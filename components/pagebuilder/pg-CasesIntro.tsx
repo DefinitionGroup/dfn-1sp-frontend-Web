@@ -50,7 +50,7 @@ function CasesIntro({
           className={`z-1 grid col-span-12 py-${paddingY} col-start-1 container mx-auto row-start-1 grid-cols-12`}
         >
           <div className="z-1 col-span-16 col-start-1 mt-24">
-            <div className="flex flex-col items-start gap-8 justify-center w-full ">
+            <div className="flex flex-col px-4 md:px-0 items-start gap-8 justify-center w-full ">
               <StaggeredSlideUp
                 delay={0.19}
                 staggerDelay={0.03}

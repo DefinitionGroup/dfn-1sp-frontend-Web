@@ -113,7 +113,7 @@ export default function HamburgerGradientMenu({
   const toggle = useCallback(() => setOpen((o) => !o), []);
 
   return (
-    <div className="fixed top-0 left-0 bg-gradient-to-b w-full from-black via-black/50 to-black/0  md:hidden z-[9999] flex items-center justify-between h-16">
+    <div className="fixed top-0 left-0 bg-gradient-to-b w-full from-black/60 via-black/40 to-black/0  md:hidden z-[9999] flex items-center justify-between h-16">
       <div className="pointer-events-auto inline-block">
         <HamburgerButton
           open={open}
@@ -465,38 +465,38 @@ function FullscreenGradientBackdrop({ onClose }: { onClose: () => void }) {
       <motion.div
         className="absolute inset-0 mix-blend-screen aspect-square"
         initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: [0.5, 0.75, 0.55, 0.7], rotate: [0, 25, -30, -20] }}
+        animate={{ opacity: [0.8, 1, 0.85, 0.95], rotate: [0, 25, -30, -20] }}
         exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.1 } }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
         style={{
           scale: breathe,
           background:
-            "radial-gradient(130% 85% at 82% 6%, rgba(255,170,96,0.9),  rgba(30,110,240,0.15) 55%, rgba(10,40,120,1) 99%)",
-          filter: "blur(110px)",
+            "radial-gradient(130% 85% at 82% 6%, rgba(255,170,96,1),  rgba(30,110,240,0.4) 55%, rgba(10,40,120,1) 99%)",
+          filter: "blur(90px)",
         }}
       />
       <motion.div
         className="absolute inset-0 pointer-events-none mix-blend-screen aspect-square"
         initial={{ opacity: 0 }}
-        animate={{ opacity: [0.2, 0.35, 0.25, 0.3], rotate: [22, -25, 30, 0] }}
+        animate={{ opacity: [0.5, 0.7, 0.55, 0.65], rotate: [22, -25, 30, 0] }}
         exit={{ opacity: 0, transition: { duration: 0.1 } }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
         style={{
           background:
-            "radial-gradient(65% 70% at 10% 18%, rgba(70,255,175,1),  rgba(0 ,250,20,1) 90%)",
-          filter: "blur(110px)",
+            "radial-gradient(65% 70% at 10% 18%, rgba(70,255,175,1),  rgba(0,250,20,1) 90%)",
+          filter: "blur(80px)",
         }}
       />
       <motion.div
         className="absolute inset-0 pointer-events-none mix-blend-screen aspect-square"
         initial={{ opacity: 0 }}
-        animate={{ opacity: [0.2, 0.35, 0.25, 0.3], rotate: [122, 25, 130, 0] }}
+        animate={{ opacity: [0.45, 0.65, 0.5, 0.6], rotate: [122, 25, 130, 0] }}
         exit={{ opacity: 0, transition: { duration: 0.1 } }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
         style={{
           background:
-            "radial-gradient(65% 70% at 10% 18%, rgba(70,255,175,1),  rgba(0 ,250,20,1) 90%)",
-          filter: "blur(110px)",
+            "radial-gradient(65% 70% at 10% 18%, rgba(70,255,175,1),  rgba(0,250,20,1) 90%)",
+          filter: "blur(80px)",
         }}
       />
       <motion.div
@@ -505,15 +505,15 @@ function FullscreenGradientBackdrop({ onClose }: { onClose: () => void }) {
         animate={{ opacity: 1, rotate: [22, -25, 30, 0] }}
         exit={{ opacity: 0, transition: { duration: 0.1 } }}
         transition={{
-          duration: 3,
+          duration: 20,
           repeat: Infinity,
           ease: "easeInOut",
           delay: 1,
         }}
         style={{
           background:
-            "radial-gradient(78% 72% at 82% 82%, rgba(85,135,255,0.85), rgba(40,210,255,0.38) 50%, rgba(12,40,140,0.08) 78%), radial-gradient(60% 60% at 64% 38%, rgba(255,125,210,0.35), rgba(255,255,255,0.08) 55%, rgba(120,40,140,0.04) 75%)",
-          filter: "blur(90px)",
+            "radial-gradient(78% 72% at 82% 82%, rgba(85,135,255,1), rgba(40,210,255,0.6) 50%, rgba(12,40,140,0.2) 78%), radial-gradient(60% 60% at 64% 38%, rgba(255,125,210,0.6), rgba(255,255,255,0.15) 55%, rgba(120,40,140,0.1) 75%)",
+          filter: "blur(70px)",
         }}
       />
     </div>
@@ -538,11 +538,11 @@ function HamburgerButton({
       aria-expanded={open}
       aria-controls={ariaControls}
       onClick={onClick}
-      className={`m-3 sm:m-4 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-md bg-black/50 backdrop-blur-sm border border-white/20 hover:bg-black/70 hover:border-white/40 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 ${className}`}
+      className={`m-3 sm:m-4 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-sm backdrop-blur-lgaa bg-black/22  ${className}`}
     >
       <svg
-        width="20"
-        height="20"
+        width="21"
+        height="21"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

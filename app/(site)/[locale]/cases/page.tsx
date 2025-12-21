@@ -26,7 +26,7 @@ export default async function CasesPage({
 
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
-      <div className="  min-h-screen px-1 md:px-4">
+      <div className="  min-h-screen px-1  border-3 border-pink-600 md:px-8">
         {page?.content1sp ? (
           <PageBuilder content={page.content1sp} language={language} />
         ) : (

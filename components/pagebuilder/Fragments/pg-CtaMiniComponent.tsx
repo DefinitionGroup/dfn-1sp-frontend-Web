@@ -59,11 +59,11 @@ function CtaMiniComponent({
       distance={distance}
     >
       <h3
-        className={`text-2xl leading-none mb-4 tracking-tight font-semibold ${textAlignClass}`}
+        className={`text-2xl leading-none mb-0 md:mb-4 tracking-tight font-semibold ${textAlignClass}`}
       >
         {heading}
       </h3>
-      <p className={`text-xs mb-8 ${textAlignClass}`}>{paragraph}</p>
+      <p className={`md:text-xs mb-2 md:mb-8 ${textAlignClass}`}>{paragraph}</p>
       {showButton ? (
         buttonText && finalUrl && finalUrl !== "#" ? (
           <div className="text-xs mb-8 min-w-[140px] w-full">
