@@ -227,7 +227,7 @@ function OverlayRoot({
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             className="    h-full p-8 md:p-12 max-w-4xl"
           >
-            <div className="mb-8 flex items-center justify-between gap-6">
+            <div className="mb-8 flex items-start justify-between gap-6">
               <div className="flex flex-col text-left text-neutral-100">
                 <h2 className="text-2xl md:text-2xl font-aspekta leading-none tracking-tight">
                   Jump into our world
@@ -291,7 +291,7 @@ function OverlayRoot({
 
                   {item.subitems && item.subitems.length > 0 && (
                     <motion.ul
-                      className="mt-3 flex flex-wrap gap-2 md:gap-3"
+                      className="mb-2 flex flex-wrap gap-2 md:gap-3"
                       initial="hidden"
                       animate="visible"
                       exit="hidden"

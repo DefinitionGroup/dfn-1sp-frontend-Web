@@ -20,7 +20,7 @@ const fragmentShaderSource = `
   uniform float u_time;
   uniform vec2 u_resolution;
   
-  // Simplex noise functions
+  // Simplex noise for organic movement
   vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
   vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
   vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
@@ -49,16 +49,64 @@ const fragmentShaderSource = `
     return 130.0 * dot(m, g);
   }
   
-  float fbm(vec2 p) {
-    float value = 0.0;
-    float amplitude = 0.5;
-    float frequency = 1.0;
-    for (int i = 0; i < 5; i++) {
-      value += amplitude * snoise(p * frequency);
-      amplitude *= 0.5;
-      frequency *= 2.0;
+  // Metaball function - returns influence based on distance
+  float metaball(vec2 p, vec2 center, float radius) {
+    float d = length(p - center);
+    return radius * radius / (d * d + 0.001);
+  }
+  
+  // Organic movement path for each ball
+  vec2 getBallPosition(float index, float time) {
+    float t = time * 0.3;
+    float phase = index * 2.094; // 2π/3 offset for each ball
+    
+    // Different movement patterns based on index
+    if (index < 1.0) {
+      // Ball 1: Large circular orbit with noise
+      float nx = snoise(vec2(t * 0.5, index)) * 0.3;
+      float ny = snoise(vec2(t * 0.5 + 100.0, index)) * 0.3;
+      return vec2(
+        sin(t * 0.7 + phase) * 0.6 + nx,
+        cos(t * 0.5 + phase) * 0.5 + ny
+      );
+    } else if (index < 2.0) {
+      // Ball 2: Figure-8 pattern
+      float nx = snoise(vec2(t * 0.4, index + 10.0)) * 0.25;
+      float ny = snoise(vec2(t * 0.4 + 50.0, index + 10.0)) * 0.25;
+      return vec2(
+        sin(t * 0.6) * 0.7 + nx,
+        sin(t * 1.2) * 0.4 + ny
+      );
+    } else if (index < 3.0) {
+      // Ball 3: Elliptical orbit
+      float nx = snoise(vec2(t * 0.6, index + 20.0)) * 0.2;
+      float ny = snoise(vec2(t * 0.6 + 30.0, index + 20.0)) * 0.2;
+      return vec2(
+        cos(t * 0.8 + phase) * 0.5 + nx,
+        sin(t * 0.4 + phase) * 0.6 + ny
+      );
+    } else if (index < 4.0) {
+      // Ball 4: Wandering with more noise
+      float nx = snoise(vec2(t * 0.3, index + 30.0)) * 0.6;
+      float ny = snoise(vec2(t * 0.35 + 70.0, index + 30.0)) * 0.5;
+      return vec2(nx, ny);
+    } else if (index < 5.0) {
+      // Ball 5: Slow drift
+      float nx = snoise(vec2(t * 0.25, index + 40.0)) * 0.5;
+      float ny = snoise(vec2(t * 0.3 + 90.0, index + 40.0)) * 0.4;
+      return vec2(
+        sin(t * 0.3) * 0.4 + nx,
+        cos(t * 0.25) * 0.5 + ny
+      );
+    } else {
+      // Ball 6: Counter-rotating
+      float nx = snoise(vec2(t * 0.45, index + 50.0)) * 0.3;
+      float ny = snoise(vec2(t * 0.5 + 110.0, index + 50.0)) * 0.3;
+      return vec2(
+        cos(t * 0.9 + phase) * 0.55 + nx,
+        sin(t * 0.7 + phase) * 0.45 + ny
+      );
     }
-    return value;
   }
   
   void main() {
@@ -66,76 +114,89 @@ const fragmentShaderSource = `
     vec2 p = uv * 2.0 - 1.0;
     p.x *= u_resolution.x / u_resolution.y;
     
-    float t = u_time * 0.15;
+    float t = u_time;
     
-    // Create flowing aurora bands
-    float noise1 = fbm(vec2(p.x * 0.8 + t * 0.3, p.y * 1.2 + t * 0.2));
-    float noise2 = fbm(vec2(p.x * 1.2 - t * 0.2, p.y * 0.6 + t * 0.4));
-    float noise3 = fbm(vec2(p.x * 0.5 + t * 0.5, p.y * 1.5 - t * 0.3));
+    // Calculate metaball field
+    float field = 0.0;
+    float limeField = 0.0;
+    float blueField = 0.0;
     
-    // Aurora wave pattern
-    float wave1 = sin(p.x * 2.0 + noise1 * 3.0 + t) * 0.5 + 0.5;
-    float wave2 = sin(p.x * 1.5 - noise2 * 2.5 + t * 1.3) * 0.5 + 0.5;
-    float wave3 = sin(p.x * 3.0 + noise3 * 2.0 - t * 0.8) * 0.5 + 0.5;
+    // Define ball properties: position, radius, color type (0=lime, 1=blue)
+    // Lime balls
+    vec2 ball1 = getBallPosition(0.0, t);
+    vec2 ball2 = getBallPosition(1.0, t);
+    vec2 ball3 = getBallPosition(2.0, t);
     
-    // Vertical gradient for aurora positioning
-    float verticalGrad = smoothstep(-0.2, 0.8, p.y + noise1 * 0.5);
-    float verticalGrad2 = smoothstep(-0.5, 0.6, p.y + noise2 * 0.4);
+    // Blue balls
+    vec2 ball4 = getBallPosition(3.0, t);
+    vec2 ball5 = getBallPosition(4.0, t);
+    vec2 ball6 = getBallPosition(5.0, t);
     
-    // Aurora colors - vibrant greens, blues, and purples with lime accent
-    vec3 color1 = vec3(0.2, 1.0, 0.5);   // Bright green (lime-ish)
-    vec3 color2 = vec3(0.1, 0.6, 1.0);   // Cyan blue
-    vec3 color3 = vec3(0.6, 0.2, 0.9);   // Purple
-    vec3 color4 = vec3(0.9, 0.4, 0.7);   // Pink
-    vec3 color5 = vec3(0.3, 0.9, 0.6);   // Mint green
+    // Ball sizes with subtle pulsing
+    float size1 = 0.35 + sin(t * 0.7) * 0.15;
+    float size2 = 0.30 + sin(t * 0.9 + 1.0) * 0.04;
+    float size3 = 0.25 + sin(t * 0.6 + 2.0) * 0.03;
+    float size4 = 0.32 + sin(t * 0.8 + 0.5) * 0.04;
+    float size5 = 0.28 + sin(t * 0.5 + 1.5) * 0.05;
+    float size6 = 0.22 + sin(t * 1.0 + 2.5) * 0.03;
     
-    // Mix colors based on noise and position
-    vec3 aurora = vec3(0.0);
+    // Calculate lime metaballs
+    limeField += metaball(p, ball1, size1);
+    limeField += metaball(p, ball2, size2);
+    limeField += metaball(p, ball3, size3);
     
-    // Layer 1 - Main green aurora
-    float intensity1 = wave1 * verticalGrad * (0.6 + noise1 * 0.4);
-    intensity1 *= smoothstep(0.3, 0.7, noise1 + 0.5);
-    aurora += mix(color1, color5, noise2 * 0.5 + 0.5) * intensity1 * 0.8;
+    // Calculate blue metaballs
+    blueField += metaball(p, ball4, size4);
+    blueField += metaball(p, ball5, size5);
+    blueField += metaball(p, ball6, size6);
     
-    // Layer 2 - Blue/cyan streaks
-    float intensity2 = wave2 * verticalGrad2 * (0.5 + noise2 * 0.5);
-    intensity2 *= smoothstep(0.2, 0.6, noise2 + 0.4);
-    aurora += mix(color2, color3, noise1 * 0.5 + 0.5) * intensity2 * 0.6;
+    // Total field for threshold
+    field = limeField + blueField;
     
-    // Layer 3 - Purple/pink accents
-    float intensity3 = wave3 * smoothstep(-0.3, 0.5, p.y + noise3 * 0.6) * (0.4 + noise3 * 0.4);
-    intensity3 *= smoothstep(0.1, 0.5, noise3 + 0.3);
-    aurora += mix(color3, color4, noise3 * 0.5 + 0.5) * intensity3 * 0.5;
+    // Colors
+    vec3 limeColor = vec3(0.2, 1.0, 0);      // Bright lime
+    vec3 blueColor = vec3(0.2, 0.5, 1.0);      // Vibrant blue
+    vec3 bgColor = vec3(0,0,0);     // Dark gray background
     
-    // Add subtle glow/bloom effect
-    float glow = fbm(p * 0.5 + t * 0.1) * 0.3 + 0.2;
-    aurora += aurora * glow * 0.5;
+    // Metaball threshold and smoothing for soft, blurry edges
+    float threshold = 1.0;
+    float softness = 0.8;
     
-    // Add shimmer/sparkle effect
-    float shimmer = snoise(p * 20.0 + t * 2.0) * 0.5 + 0.5;
-    shimmer = pow(shimmer, 8.0) * 0.3;
-    aurora += vec3(shimmer) * verticalGrad * 0.4;
+    // Calculate color mixing based on field contributions
+    float totalField = limeField + blueField + 0.001;
+    float limeRatio = limeField / totalField;
+    float blueRatio = blueField / totalField;
     
-    // Dark background with subtle gradient
-    vec3 bgColor = mix(
-      vec3(0.02, 0.02, 0.05),
-      vec3(0.05, 0.08, 0.15),
-      uv.y * 0.5 + noise1 * 0.2
-    );
+    // Mix colors based on field dominance
+    vec3 ballColor = limeColor * limeRatio + blueColor * blueRatio;
     
-    // Final composition
-    vec3 finalColor = bgColor + aurora;
+    // Soft metaball edge with blur
+    float alpha = smoothstep(threshold - softness, threshold + softness * 0.5, field);
     
-    // Add vignette
-    float vignette = 1.0 - length(p) * 0.4;
+    // Add glow around the metaballs
+    float glow = smoothstep(threshold - softness * 2.0, threshold, field) * 0.4;
+    vec3 glowColor = ballColor * glow;
+    
+    // Inner brightness boost
+    float innerBright = smoothstep(threshold, threshold + softness * 2.0, field);
+    ballColor = mix(ballColor, ballColor * 1.4, innerBright * 0.1);
+    
+    // Compose final color
+    vec3 finalColor = mix(bgColor + glowColor, ballColor, alpha);
+    
+    // Add subtle noise texture to break up banding
+    float noise = snoise(p * 1150.0 + t * 1.5) * 0.11;
+    finalColor += noise;
+    
+    // Subtle vignette
+    float vignette = 1.0 - length(p) * 0.25;
     vignette = smoothstep(0.0, 1.0, vignette);
-    finalColor *= vignette * 0.9 + 0.1;
+    finalColor *= vignette * 0.95 + 0.01;
     
-    // Tone mapping and gamma correction
-    finalColor = finalColor / (finalColor + vec3(1.0));
-    finalColor = pow(finalColor, vec3(0.9));
+    // Gamma correction
+    finalColor = pow(finalColor, vec3(0.99));
     
-    gl_FragColor = vec4(finalColor, 0.95);
+    gl_FragColor = vec4(finalColor, 0.5);
   }
 `;
 
@@ -276,14 +337,14 @@ export default function AuroraShaderBackground({
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full pointer-events-none"
-        style={{ background: "#050510" }}
+        style={{ background: "#1e1e24" }}
       />
-      {/* Subtle overlay for better text readability */}
+      {/* Subtle overlay for depth */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.8) 100%)",
+            "radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 100%)",
         }}
       />
     </div>
