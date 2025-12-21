@@ -29,7 +29,7 @@ export default async function CaseStudyPage({
 
   return (
     <SiteWrapper channel={channel} language={language} navColor="light">
-      <div className="  min-h-screen px-1 border-3 pt-2  border-green-400 md:px-8">
+      <div className="  min-h-screen px-1 pt-2 md:px-2">
         <CaseStudyPageClient caseStudy={caseStudy} locale={locale} />
       </div>
     </SiteWrapper>

@@ -83,7 +83,7 @@ export default function CaseStudyPageClient({
         {/* Background Image with Overlay */}
         {mainVideoUrl ? (
           <HeaderImageVideoComp
-            useVideo={true} className="z-10 rounded-xl overflow-hidden "
+            useVideo={true} className="z-1 rounded-xl overflow-hidden "
             videoSrc={mainVideoUrl}
             enableParallax={true}
             opacity="opacity-70"
@@ -101,7 +101,7 @@ export default function CaseStudyPageClient({
 
         {/* Hero Content */}
         <div id={t.ids.top} className="" />
-        <div className="relative container mt-[20vh] sm:mt-[25vh] md:mt-[30vh] mx-auto px-4 sm:px-6 md:px-8 lg:px-0">
+        <div className="relative container flex flex-col justify-end  h-full z-20  mx-auto px-4 sm:px-6 md:px-8 lg:px-0">
           <StaggeredSlideUp
             delay={0.4}
             className="max-w-full flex flex-col gap-3 sm:gap-4 lg:max-w-2/3 "

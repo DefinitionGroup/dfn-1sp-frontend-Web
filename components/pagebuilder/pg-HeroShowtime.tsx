@@ -42,7 +42,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="grid grid-cols-12 z-1 mx-auto min-h-[75vh] relative font-aspekta text-white"
+      className="grid grid-cols-12 z-1 mx-auto min-h-[85vh] relative font-aspekta text-white"
     >
       {/* Background media wrapper */}
       <HeaderImageVideoComp2
@@ -54,12 +54,12 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
 
       <div className="z-1 grid col-span-12 py-24 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12">
         {/* Left column */}
-        <div className="col-span-12 md:col-span-3 flex flex-col px-4 md:px-8 justify-center  col-start-1">
+        <div className="col-span-12 md:col-span-5  col-start-1 flex flex-col px-4 md:px-8 justify-center  col-start-1">
           <StaggeredSlideUp
-            className="flex flex-col items-start justify-center"
-            delay={0.0}
-            staggerDelay={0.1}
-            duration={0.5}
+            className="flex flex-col items-start  justify-center"
+            delay={0.5}
+            staggerDelay={0.2}
+            duration={0.75}
             distance={80}
           >
             {heading ? (
@@ -68,21 +68,21 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
               </h2>
             ) : null}
             {subheading ? (
-              <p className="text-xl text-gray-100  max-w-2xs mx-auto">
+              <p className="text-xl text-gray-100  max-w-sm mx-auto">
                 {subheading}
               </p>
             ) : null}
           </StaggeredSlideUp>
         </div>
 
-        {/* Right column */}
-        <div className="col-span-12 md:col-span-9 md:col-start-4">
+        {/* [TODO] Right column */}
+        <div className="col-span-12 md:col-span-7  md:col-start-6 flex flex-col items-start  justify-center">
           {Array.isArray(paragraphs) &&
             paragraphs.length > 0 &&
-            paragraphs.map((p, idx) => <p key={`para-${idx}`}>{p}</p>)}
+            paragraphs.map((p, idx) => <p className="mb-4 text-lg" key={`para-${idx}`}>{p}</p>)}
 
           {Array.isArray(additionalContent) && additionalContent.length > 0 && (
-            <div className="mt-8 flex flex-wrap items-start justify-start gap-4 md:gap-8">
+            <div className="mt-8 flex flex-wrap min-w-[140px] items-start justify-start gap-4 md:gap-8">
               {additionalContent.map((cta: any, idx: number) => {
                 const btn = ctaToButtonProps(cta);
                 const href = resolveLink(cta?.link);
@@ -93,7 +93,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
                     key={`cta-${idx}`}
                     variant={btn.variant as any}
                     text={btn.text}
-                    className="w-fit"
+                    className="w-fit min-w-[140px] text-sm"
                     href={href}
                     aria-label={btn.text || "CTA"}
                     {...(isExternal

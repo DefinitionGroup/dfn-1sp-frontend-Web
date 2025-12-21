@@ -341,7 +341,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               <div className="relative w-full max-w-[900px] min-h-[70vh] h-full md:h-fit md:max-h-[85vh] rounded-xl flex flex-col bg-neutral-100 dark:bg-neutral-900 shadow-2xl overflow-hidden">
                 <button
                   aria-label="Close overlay"
-                  className="absolute top-2 hover:rotate-45 cursor-pointer transition duration-200 right-2 z-50 p-2"
+                  className="absolute top-8 right-8  md:top-2 hover:rotate-45 cursor-pointer transition duration-200 md:right-2 z-50 p-2"
                   onClick={() => setShowOverlay(false)}
                 >
                   <svg

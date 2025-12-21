@@ -213,16 +213,16 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
       offset: ["start end", "end start"],
     });
     // Parallax: image moves slower than scroll (creates depth effect)
-    const y = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
+    const y = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
 
     return (
-      <div ref={containerRef} className="col-span-12 md:col-span-6 w-1/2 relative">
+      <div ref={containerRef} className="col-span-12 md:col-span-6 w-full md:w-1/2 relative">
         <StaggeredFadeIn>
           <div className="relative aspect-[4/3] md:aspect-[3/4] lg:aspect-[4/3] overflow-hidden rounded-lg">
             {isVideo && mediaUrl ? (
               <motion.video
                 src={mediaUrl}
-                className="w-full h-[120%] object-cover absolute top-0 left-0"
+                className="w-full h-[150%] object-cover absolute -top-8 left-0"
                 style={{ y }}
                 autoPlay
                 muted
@@ -233,7 +233,7 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
               <motion.img
                 src={mediaUrl}
                 alt={mediaAlt || title || "Content image"}
-                className="w-full h-[120%] object-cover absolute top-0 left-0"
+                className="w-full h-[150%] object-cover absolute -top-8 left-0"
                 style={{ y }}
               />
             ) : (
@@ -249,7 +249,7 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
 
   // Content column
   const ContentColumn = () => (
-    <div className="col-span-12 md:col-span-6 w-1/2 flex flex-col   justify-start">
+    <div className="col-span-12 md:col-span-6 flex flex-col   justify-start">
       <StaggeredSlideUp className="flex-col justify-start ">
         {showTitle && title && (
           <h2 className={`text-2xl md:text-4xl  tracking-tight ${titleColorClass} mb-6 md:mb-8`}>

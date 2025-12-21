@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
+import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 
 export const revalidate = 60;
 
@@ -26,6 +27,7 @@ export default async function ServicesPage({
 
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
+      <HamburgerGradientMenu />
       <div className="min-h-screen">
         {page?.content1sp ? (
           <PageBuilder content={page.content1sp} language={language} />

@@ -4,6 +4,7 @@ import { PAGE_QUERY } from "@/sanity/lib/queries";
 import NotFound from "@/components/ui/not-found";
 import { cookies } from "next/headers";
 import SiteWrapper from "@/components/SiteWrapper";
+import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 
 export default async function Page({
   params,
@@ -24,8 +25,8 @@ export default async function Page({
   const navbarVariant = page?.navbarVariant || "light";
 
   return (
-    <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
-      <div className="  min-h-screen px-2 md:px-4">
+    <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>    <HamburgerGradientMenu />
+      <div className="  min-h-screen px-1 md:px-2">
 
         {page?.content1sp ? (
           <PageBuilder content={page.content1sp} language={language} />
