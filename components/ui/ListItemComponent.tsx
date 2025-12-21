@@ -6,22 +6,22 @@ interface ListItemProps {
   children: React.ReactNode;
   fontWeight?: "normal" | "medium" | "bold";
   color?:
-    | "gray-50"
-    | "gray-100"
-    | "gray-200"
-    | "gray-300"
-    | "gray-400"
-    | "gray-500"
-    | "gray-600"
-    | "gray-700"
-    | "white"
-    | "black";
+  | "gray-50"
+  | "gray-100"
+  | "gray-200"
+  | "gray-300"
+  | "gray-400"
+  | "gray-500"
+  | "gray-600"
+  | "gray-700"
+  | "white"
+  | "black";
   size?: "small" | "medium" | "large";
   className?: string;
 }
 
 const sizeClasses: Record<NonNullable<ListItemProps["size"]>, string> = {
-  small: "text-xs sm:text-sm",
+  small: "text sm:text",
   medium: "text-base sm:text-lg md:text-xl",
   large: "text-xl sm:text-2xl md:text-3xl",
 };
@@ -81,12 +81,12 @@ function ListItemComponent({
       >
         {children}
       </p>
-      <div 
+      <div
         className={cn(
           "w-full h-px mt-3 sm:mt-4 transition-all duration-300",
-          "group-hover:h-[2px]",
+
           lineColorClasses[color]
-        )} 
+        )}
       />
     </div>
   );

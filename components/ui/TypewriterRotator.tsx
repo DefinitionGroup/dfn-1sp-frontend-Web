@@ -2,7 +2,21 @@
 
 import { delay, wrap } from "motion";
 import { Typewriter } from "motion-plus/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
+function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    setMatches(media.matches);
+    const listener = (e: MediaQueryListEvent) => setMatches(e.matches);
+    media.addEventListener("change", listener);
+    return () => media.removeEventListener("change", listener);
+  }, [query]);
+
+  return matches;
+}
 
 export default function TypewriterRotator({
   text = [
@@ -20,6 +34,15 @@ export default function TypewriterRotator({
   text?: string[];
 }) {
   const [index, setIndex] = useState(0);
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
+  const cursor: React.CSSProperties = {
+    background: "#66ff00",
+    width: isMobile ? 4 : 8,
+    borderRadius: isMobile ? 2 : 4,
+    marginLeft: isMobile ? 2 : 4,
+    minHeight: isMobile ? "calc(24px + 4vw)" : "calc(20px + 3vw)",
+  };
 
   return (
     <h2 style={container}>
@@ -68,12 +91,4 @@ const animatingText: React.CSSProperties = {
   textTransform: "uppercase",
   color: "var(--text-primary)",
   whiteSpace: "wrap",
-};
-
-const cursor: React.CSSProperties = {
-  background: "#66ff00",
-  width: 8,
-  borderRadius: 4,
-  marginLeft: 4,
-  minHeight: "calc(12px + 3vw)",
 };

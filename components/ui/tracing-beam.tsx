@@ -74,7 +74,7 @@ export const TracingBeam = ({
       className={cn("relative top-0 left-0  mx-auto h-full w-full ", className)}
     >
       {/* Tracing beam - visible on mobile now */}
-      < div className="absolute top-0 -left-4 sm:-left-6 md:-left-10 lg:-left-20 pointer-events-none" >
+      < div className="absolute top-0 -left-10 sm:-left-6 md:-left-10 lg:-left-20 pointer-events-none" >
         <div className="sticky top-0">
           <motion.div
             transition={{

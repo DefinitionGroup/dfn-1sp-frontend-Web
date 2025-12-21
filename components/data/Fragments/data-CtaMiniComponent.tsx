@@ -52,13 +52,13 @@ function CtaMiniComponent({
       distance={distance}
     >
       <h3
-        className={`text-2xl leading-none mb-4 tracking-tight font-semibold ${textAlignClass}`}
+        className={`text-2xl leading-none mb-4 tracking-tight md:font-semibold ${textAlignClass}`}
       >
         {heading}
       </h3>
-      <p className={`text-xs mb-8 ${textAlignClass}`}>{paragraph}</p>
+      <p className={`md:text-xs mb-8 ${textAlignClass}`}>{paragraph}</p>
       {url ? (
-        <div className="text-xs mb-8 min-w-[120px] w-full">
+        <div className="md:text-xs mb-8 min-w-[120px] w-full">
           <Button2
             variant={buttonVariant}
             className="w-full"
@@ -66,8 +66,9 @@ function CtaMiniComponent({
             href={url}
           />
         </div>
-      ) : null}
-    </StaggeredSlideUp>
+      ) : null
+      }
+    </StaggeredSlideUp >
   );
 }
 

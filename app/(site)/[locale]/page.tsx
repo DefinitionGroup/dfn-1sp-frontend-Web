@@ -28,7 +28,7 @@ export default async function Home({
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
       <HamburgerGradientMenu />
-      <div className="  min-h-screen px-1 border-2 border-green-400 md:px-8">
+      <div className="  min-h-screen px-1 md:px-4 ">
 
         {page?.content1sp ? (
           <PageBuilder content={page.content1sp} language={language} />

@@ -33,11 +33,11 @@ function ScrollHighlightItem({
   const id = useId();
   return (
     <motion.li
-      className="skill-item p-2 md:p-0  flex flex-col md:flex-row   flex-grow gap-4 cursor-pointer"
+      className="skill-item md:p-0 py-6 flex flex-col  md:flex-row justify-start items-start  flex-grow  cursor-pointer"
       initial={false}
       animate={{
         opacity: isHighlighted ? 1 : 0.5,
-        scale: isHighlighted ? 1.00 : 0.8,
+        scale: isHighlighted ? 1.00 : 1,
         x: isHighlighted ? 0 : 0,
         transformOrigin: "left",
       }}
@@ -48,29 +48,27 @@ function ScrollHighlightItem({
     >
 
       <motion.div
-        className="relative   min-w-1/4 "
+        className="relative  w-full  md:w-1/3 md:pr-4"
 
       >{isHighlighted && skill.image && (
 
-        <motion.div layout initial={{ opacity: 0, y: -22 }} animate={{ opacity: 1, y: 0 }} transition={{ type: "spring", }} className="skill-image">
+        <motion.div layout initial={{ opacity: 0, y: -22 }} animate={{ opacity: 1, y: 0 }} transition={{ type: "spring", }} className="skill-image pr-4 mb-8">
           <Image
             src={skill.image}
             alt={skill.name || "Service background"}
             fill
-            className="rounded-lg object-cover"
+            className="rounded-lg  w-full object-cover "
           />
-
-
         </motion.div>)}
       </motion.div>
 
 
-      <div className=" flex  flex-col">
+      <div className=" flex  flex-col ">
         <h3 className="skill-name relative leading-none font-medium max-w-[20ch] ">{skill.name}</h3>
 
         {isHighlighted && skill.text && (
           <motion.p
-            className="skill-description mb-4  text-xs"
+            className="skill-description mb-4  text-base"
             layout
             initial={{ opacity: 0, y: 0, x: 0 }}
             animate={{ opacity: 1, y: 0, x: 0 }}
@@ -93,7 +91,7 @@ function ScrollHighlightItem({
             {skill.buttonLabel || "Learn More"}
           </motion.button>
         )}</div>
-    </motion.li>
+    </motion.li >
   );
 }
 
@@ -118,7 +116,7 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
       <AnimatePresence>
         {activeModal && (
           <motion.div
-            className="fixed inset-0 bg-black/50 backdrop-blur-lg z-50 grid place-items-center"
+            className="fixed inset-0 p-8 md:p-0bg-black/50 backdrop-blur-lg z-50 grid place-items-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.18, ease: "easeInOut" } }}
@@ -325,9 +323,9 @@ function Stylesheet() {
 
       .skill-image {
         position: relative;
-        margin-top: 1rem;
+   
         width: 100%;
-        aspect-ratio: 16 / 9;
+        aspect-ratio: 16 / 12;
         border-radius: 0.5rem;
         overflow: hidden;
       }
@@ -345,7 +343,7 @@ function Stylesheet() {
       }
 
       .skill-description {
-        font-size: 0.875rem;
+     
         font-weight: 400;
         line-height: 1.5;
         margin-top: 0.75rem;

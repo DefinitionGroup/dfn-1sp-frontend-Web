@@ -59,14 +59,14 @@ function CtaMiniComponent({
       distance={distance}
     >
       <h3
-        className={`text-2xl leading-none mb-0 md:mb-4 tracking-tight font-semibold ${textAlignClass}`}
+        className={`text-xl leading-normal mb-0 md:mb-4 tracking-tight font- ${textAlignClass}`}
       >
         {heading}
       </h3>
-      <p className={`md:text-xs mb-2 md:mb-8 ${textAlignClass}`}>{paragraph}</p>
+      <p className={`md:text-sm mb-2 md:mb-8 ${textAlignClass}`}>{paragraph}</p>
       {showButton ? (
         buttonText && finalUrl && finalUrl !== "#" ? (
-          <div className="text-xs mb-8 min-w-[140px] w-full">
+          <div className="md:text-xs mb-8 min-w-[140px] w-full">
             <Button2
               variant={buttonVariant}
               className="w-full text-xxs"
@@ -75,7 +75,7 @@ function CtaMiniComponent({
             />
           </div>
         ) : (
-          <div className="text-xs mb-8 text-red-500">
+          <div className="md:text-xs mb-8 text-red-500">
             {!buttonText && "Missing buttonText"}
             {!finalUrl && "Missing URL"}
             {finalUrl === "#" && "URL is #"}

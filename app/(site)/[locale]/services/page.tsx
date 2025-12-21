@@ -28,7 +28,7 @@ export default async function ServicesPage({
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
       <HamburgerGradientMenu />
-      <div className="min-h-screen">
+      <div className="min-h-screen px-1 md:px-2">
         {page?.content1sp ? (
           <PageBuilder content={page.content1sp} language={language} />
         ) : (

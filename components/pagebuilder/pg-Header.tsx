@@ -115,7 +115,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
       )}
 
       {/* Foreground content */}
-      <div className="absolute bottom-12 md:bottom-24 md:relative z-10  max-w-9xl container md:mt-[50vh] mx-auto">
+      <div className="absolute bottom-24 md:bottom-24 md:relative z-10  max-w-9xl container md:mt-[50vh] mx-auto">
         <StaggeredSlideUp
           className="px-4 md:px-4 space-y-1 max-w-full"
           delay={1}
@@ -184,12 +184,12 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
       {/* Corner labels */}
       {leftMark && (
-        <div className="absolute bottom-[22px] left-[24px] text-white text-xxs font-bold -rotate-90 origin-bottom-left">
+        <div className="absolute bottom-[28px] left-[14px] text-white text-[7px] font-bold -rotate-90 origin-bottom-left">
           {leftMark}
         </div>
       )}
       {rightMark && (
-        <div className="absolute bottom-[19px] right-[18px] text-white text-xxs text-eyebrow font-bold">
+        <div className="absolute bottom-[28px] right-[12px] text-white text-[7px] text-eyebrow font-bold">
           {rightMark}
         </div>
       )}

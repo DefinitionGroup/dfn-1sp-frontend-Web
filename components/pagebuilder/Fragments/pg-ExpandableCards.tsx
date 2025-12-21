@@ -141,7 +141,7 @@ function ExpandableCards({
         )}
 
         {active && typeof active === "object" ? (
-          <div className="fixed inset-0 flex items-center justify-center  z-[100]">
+          <div className="fixed inset-0 flex items-center justify-center py-8 px-4 md:p-0  z-[100]">
 
 
             <motion.div
@@ -155,7 +155,7 @@ function ExpandableCards({
             >
               {/* Media */} <motion.button
                 onClick={() => setActive(null)}
-                className="absolute top-4 right-4 z-50 cursor-pointer"
+                className="absolute top-8 right-4 md:top-4 md:right-4 z-50 cursor-pointer"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >

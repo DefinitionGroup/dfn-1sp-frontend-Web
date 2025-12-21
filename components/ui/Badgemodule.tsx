@@ -55,7 +55,7 @@ export default function Badgemodule({
       padding: "p-1 md:p-4",
       logo: "w-3.5 h-3.5 md:w-4 md:h-4",
       number: "text-[9px] md:text-[10px]",
-      text: "text-base md:text-lg lg:text-xl xl:text-2xl",
+      text: "text-2xl md:text-lg lg:text-xl xl:text-2xl",
       subtitle: "text-[10px] md:text-xxs",
     },
     lg: {

@@ -35,7 +35,7 @@ export default async function ContactPage({
 
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
-      <div className="min-h-screen">
+      <div className="min-h-screen">   <div className="  min-h-screen px-1 md:px-2">
         {page.content1sp?.length ? (
           <PageBuilder content={page.content1sp} language={language} />
         ) : null}
@@ -44,7 +44,7 @@ export default async function ContactPage({
           channel={channel}
           settings={page.contactForm}
         />
-      </div>
+      </div>  </div>
     </SiteWrapper>
   );
 }
