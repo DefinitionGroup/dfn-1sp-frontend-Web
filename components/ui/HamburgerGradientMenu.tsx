@@ -4,10 +4,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import {
   motion,
   AnimatePresence,
-  animate,
-  useMotionValue,
-  useIsPresent,
 } from "motion/react";
+import AuroraShaderBackground from "./AuroraShaderBackground";
 import { Link } from "next-view-transitions";
 import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
 import FrontNavOverlay from "../menu/FrontNavOverlay";
@@ -189,12 +187,12 @@ function OverlayRoot({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0.1 }, scale: 0 }}
-      transition={{ duration: 0.0135, ease: [0.59, 0, 0.35, 1] }}
+      transition={{ duration: 0.35, ease: [0.59, 0, 0.35, 1] }}
       aria-modal="true"
       role="dialog"
       aria-label="Main navigation overlay"
     >
-      <FullscreenGradientBackdrop onClose={onClose} />
+      <AuroraShaderBackground onClose={onClose} />
       <motion.div
         ref={innerRef}
         id={id}
@@ -427,96 +425,6 @@ function OverlayRoot({
         </motion.button>
       </motion.div>
     </motion.div>
-  );
-}
-
-function FullscreenGradientBackdrop({ onClose }: { onClose: () => void }) {
-  const breathe = useMotionValue(0);
-  const isPresent = useIsPresent();
-
-  useEffect(() => {
-    if (!isPresent) {
-      animate(breathe, 0, { duration: 0.4, ease: "easeInOut" });
-      return;
-    }
-    (async () => {
-      await animate(breathe, 1, { duration: 0.6, ease: [0, 0.55, 0.45, 1] });
-      animate(breathe, [null, 0.85, 1.05, 0.9, 1], {
-        duration: 24,
-        repeat: Infinity,
-        ease: "easeInOut",
-      });
-    })();
-  }, [isPresent, breathe]);
-
-  return (
-    <div
-      className="absolute inset-0 pointer-events-auto"
-      aria-hidden="true"
-      onClick={onClose}
-    >
-      <motion.div
-        className="absolute inset-0 bg-black pointer-events-none"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.7 }}
-        exit={{ opacity: 0, transition: { duration: 0.1 } }}
-        transition={{ duration: 0.5 }}
-      />
-      <motion.div
-        className="absolute inset-0 mix-blend-screen aspect-square"
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: [0.8, 1, 0.85, 0.95], rotate: [0, 25, -30, -20] }}
-        exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.1 } }}
-        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-        style={{
-          scale: breathe,
-          background:
-            "radial-gradient(130% 85% at 82% 6%, rgba(255,170,96,1),  rgba(30,110,240,0.4) 55%, rgba(10,40,120,1) 99%)",
-          filter: "blur(90px)",
-        }}
-      />
-      <motion.div
-        className="absolute inset-0 pointer-events-none mix-blend-screen aspect-square"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: [0.5, 0.7, 0.55, 0.65], rotate: [22, -25, 30, 0] }}
-        exit={{ opacity: 0, transition: { duration: 0.1 } }}
-        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-        style={{
-          background:
-            "radial-gradient(65% 70% at 10% 18%, rgba(70,255,175,1),  rgba(0,250,20,1) 90%)",
-          filter: "blur(80px)",
-        }}
-      />
-      <motion.div
-        className="absolute inset-0 pointer-events-none mix-blend-screen aspect-square"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: [0.45, 0.65, 0.5, 0.6], rotate: [122, 25, 130, 0] }}
-        exit={{ opacity: 0, transition: { duration: 0.1 } }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-        style={{
-          background:
-            "radial-gradient(65% 70% at 10% 18%, rgba(70,255,175,1),  rgba(0,250,20,1) 90%)",
-          filter: "blur(80px)",
-        }}
-      />
-      <motion.div
-        className="absolute inset-0 pointer-events-none mix-blend-screen"
-        initial={{ opacity: 0, rotate: [122, 75, 90, 0] }}
-        animate={{ opacity: 1, rotate: [22, -25, 30, 0] }}
-        exit={{ opacity: 0, transition: { duration: 0.1 } }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 1,
-        }}
-        style={{
-          background:
-            "radial-gradient(78% 72% at 82% 82%, rgba(85,135,255,1), rgba(40,210,255,0.6) 50%, rgba(12,40,140,0.2) 78%), radial-gradient(60% 60% at 64% 38%, rgba(255,125,210,0.6), rgba(255,255,255,0.15) 55%, rgba(120,40,140,0.1) 75%)",
-          filter: "blur(70px)",
-        }}
-      />
-    </div>
   );
 }
 
