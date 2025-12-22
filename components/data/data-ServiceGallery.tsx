@@ -228,11 +228,11 @@ export default function ServiceGalleryComponent({
                 layoutId={`card-${item.name}-${id}`}
                 key={`card-${item.name}-${id}`}
                 onClick={() => setActive(item)}
-                className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1 min-h-[400px] group/card overflow-hidden h-[300px] cursor-pointer"
+                className="col-span-1 grid grid-cols-1 grid-rows-4 row-span-1  h-[350px] group/card overflow-hidden cursor-pointer"
               >
                 <motion.div
                   layoutId={`image-${item.name}-${id}`}
-                  className="col-start-1 col-span-1  row-start-1 bg-black h-full min-h-full overflow-hidden rounded-xl"
+                  className="col-start-1 col-span-1  row-start-1 row-span-3 bg-black  overflow-hidden rounded-xl"
                 >
                   {bg ? (
                     <Image
@@ -240,14 +240,14 @@ export default function ServiceGalleryComponent({
                       height={600}
                       src={bg}
                       alt={item.name}
-                      className="w-full h-full object-cover min-h-[200px]  group-hover/card:opacity-100 object-top opacity-80 transition-all"
+                      className="w-full h-full object-cover  group-hover/card:opacity-100 object-top opacity-80 transition-all"
                     />
                   ) : (
-                    <div className="w-full h-full bg-neutral-800 opacity-80 min-h-[200px] group-hover/card:opacity-100 transition-all" />
+                    <div className="w-full h-full bg-neutral-800 border opacity-80 min-h-[200px] group-hover/card:opacity-100 transition-all" />
                   )}
                 </motion.div>
-                <div className="w-full flex  justify-between opacity-100 mb-16 z-1">
-                  <div className="flex  justify-end items-center gap-4 w-full">
+                <div className="w-full flex row-span-1  justify-start opacity-100  mb-16 z-1">
+                  <div className="flex  justify-end items-start gap-4 w-full">
                     {/* {icon && (
                       <motion.img
                         layoutId={`logo-${item.name}-${id}`}
@@ -256,7 +256,7 @@ export default function ServiceGalleryComponent({
                         className="w-10 h-10 object-contain mb-2"
                       />
                     )} */}
-                    <div className="flex flex-col   items-end">
+                    <div className="flex flex-col items-end">
                       <motion.h3
                         layoutId={`title-${item.name}-${id}`}
                         className="font-medium text-xl leading-snug tracking-tight text-neutral-700 dark:text-neutral-200 text-right"
