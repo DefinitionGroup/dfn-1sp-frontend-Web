@@ -393,7 +393,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                     key={`para-${idx}`}
                     className={[
                       sizeToClass[line.fontSize] || "text-base",
-                      "text-gray-100 max-w-2xs mx-auto",
+                      "text-gray-100  max-w-2xs mx-auto",
                       idx > 0 ? "mt-4" : "",
                     ].join(" ")}
                   >
@@ -406,21 +406,21 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
           : (header?.superText ||
             header?.mainHeadline ||
             header?.subHeadline) && (
-            <header className="col-span-12  md:col-span-4 col-start-1 md:col-start-3  md:mt-0 md:border-y border-gray-200">
+            <header className="col-span-12  md:col-span-6 col-start-1 md:col-start-3  md:mt-0 md:border-y border-gray-200">
               <div className="flex flex-col items-start justify-start w-full">
                 <div className="flex-1 flex flex-col min-w-0">
                   {header?.superText && (
-                    <h4 className=" text-neutral-900 font-bold font-aspekta">
+                    <h4 className=" text-neutral-900 font- font-aspekta">
                       {header.superText}
                     </h4>
                   )}
                   {header?.mainHeadline && (
-                    <h2 className="text-5xl md:text-7xl  text-gray-900  tracking-tight font-aspekta">
+                    <h2 className="text-5xl md:text-7xl  text-gray-900 leading-normal tracking-tight font-aspekta">
                       {header.mainHeadline}
                     </h2>
                   )}
                   {header?.subHeadline && (
-                    <h4 className=" text-gray-700 font-medium leading- font-aspekta">
+                    <h4 className=" text-gray-700 font-medium  font-aspekta">
                       {header.subHeadline}
                     </h4>
                   )}
@@ -431,7 +431,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
         {/* Right list column */}
         {Array.isArray(listItems) && listItems.length > 0 && (
-          <div className="col-span-12 md:col-span-4 col-start-1 md:col-start-1 mt-12 md:mt-0 border-gray-500 pb-8 md:row-start-2 ">
+          <div className="col-span-12 md:col-span-6  col-start-1 md:col-start-3 mt-12 md:mt-0 border-gray-500 pb-8 md:row-start-2 ">
             <ListContainerComponent>
               {listItems.map((it, i) => (
                 <ListItemComponent
@@ -480,7 +480,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
         {/* Variant A: Cards present (no buttons) */}
         {hasCards && (
-          <div className="col-span-12 md:col-span-8 col-start-1 md:col-start-3 mt-8">
+          <div className="col-span-12 md:col-span-12 lg:col-span-10 col-start-1 md:col-start-3 mt-8">
             <ExpandableCards items={cards} variant="default" />
           </div>
         )}
