@@ -116,7 +116,7 @@ export default function PeopleStep({
     >
       <GridBackground />
 
-      <div className="relative z-10 containermx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 py-16 sm:py-24 lg:py-32">
 
           {/* Badge + CTA Column */}

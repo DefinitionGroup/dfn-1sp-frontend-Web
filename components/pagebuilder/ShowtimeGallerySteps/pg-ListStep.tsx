@@ -329,7 +329,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="z-4 grid col-span-12 relative col-start-1 container mx-auto row-start-1 grid-cols-12 "
+      className="z-4 grid col-span-12 relative col-start-1   container mx-auto row-start-1 grid-cols-12 "
     >
       {/* Optional background media */}
       {mediaUrl && (
@@ -374,7 +374,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
         {/* Header area */}
         {staggered
           ? ((staggeredHeader as any)?.title || paragraphLines.length > 0) && (
-            <div className="col-span-10 col-start-3">
+            <div className="col-span-10 col-start-3 ">
               <StaggeredSlideUp
                 className="flex flex-col items-start justify-start"
                 delay={0}
@@ -406,7 +406,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
           : (header?.superText ||
             header?.mainHeadline ||
             header?.subHeadline) && (
-            <header className="col-span-12  md:col-span-4 col-start-1 md:col-start-3  md:mt-0 md:border-y border-gray-200">
+            <header className="col-span-12  md:col-span-6  col-start-1 md:col-start-3  md:mt-0 md:border-y border-gray-200">
               <div className="flex flex-col items-start justify-start w-full">
                 <div className="flex-1 flex flex-col min-w-0">
                   {header?.superText && (
@@ -420,32 +420,33 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                     </h2>
                   )}
                   {header?.subHeadline && (
-                    <h4 className=" text-gray-700 font-medium leading- font-aspekta">
+                    <h4 className=" text-gray-700 font-medium mt-4  font-aspekta">
                       {header.subHeadline}
                     </h4>
                   )}
                 </div>
               </div>
+              {/* Right list column */}
+              {Array.isArray(listItems) && listItems.length > 0 && (
+                <div className="col-span-12 md:col-span-4  col-start-1  md:col-start-1 mt-12 md:mt-8 border-gray-500 pb-8 md:row-start-2 ">
+                  <ListContainerComponent>
+                    {listItems.map((it, i) => (
+                      <ListItemComponent
+                        key={(it as any)?._key || i}
+                        size={(it?.size as any) || "small"}
+                        fontWeight={(it?.fontWeight as any) || "normal"}
+                        color={(it?.color as any) || "black"}
+                      >
+                        {it?.text}
+                      </ListItemComponent>
+                    ))}
+                  </ListContainerComponent>
+                </div>
+              )}
             </header>
           )}
 
-        {/* Right list column */}
-        {Array.isArray(listItems) && listItems.length > 0 && (
-          <div className="col-span-12 md:col-span-4 col-start-1 md:col-start-1 mt-12 md:mt-0 border-gray-500 pb-8 md:row-start-2 ">
-            <ListContainerComponent>
-              {listItems.map((it, i) => (
-                <ListItemComponent
-                  key={(it as any)?._key || i}
-                  size={(it?.size as any) || "small"}
-                  fontWeight={(it?.fontWeight as any) || "normal"}
-                  color={(it?.color as any) || "black"}
-                >
-                  {it?.text}
-                </ListItemComponent>
-              ))}
-            </ListContainerComponent>
-          </div>
-        )}
+
 
         {/* Left column when ctaMini is present */}
         {hasCtaMini && (
@@ -480,7 +481,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
         {/* Variant A: Cards present (no buttons) */}
         {hasCards && (
-          <div className="col-span-12 md:col-span-8 col-start-1 md:col-start-3 mt-8">
+          <div className="col-span-12 md:col-span-10 col-start-1 md:col-start-3 mt-8">
             <ExpandableCards items={cards} variant="default" />
           </div>
         )}
