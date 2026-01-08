@@ -77,17 +77,18 @@ const container: React.CSSProperties = {
   fontFamily: "var(--font-aspekta)",
   width: 900,
   fontWeight: 500,
-  lineHeight: 1,
+  lineHeight: 0.8,
   color: "var(--accent)",
 
 
 };
 
 const animatingText: React.CSSProperties = {
-  fontSize: "min(12vw, 5rem)",
+  fontSize: "min(10vw, 5rem)",
   fontWeight: 500,
-  lineHeight: "min(14vw, 5.5rem)",
-  letterSpacing: "calc(2px - 0.2vw)",
+  lineHeight: "min(9vw, 5rem)",
+  letterSpacing: " - 0.1rem",
+
   textTransform: "uppercase",
   color: "var(--text-primary)",
   whiteSpace: "wrap",
