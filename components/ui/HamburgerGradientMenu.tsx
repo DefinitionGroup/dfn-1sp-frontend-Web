@@ -112,7 +112,7 @@ export default function HamburgerGradientMenu({
 
   return (
     <div className="fixed top-0 left-0 w-full bg-gradient-to-b w-full from-black/70 via-black/30 to-black/0  md:hidden z-[9999] flex items-center justify-between h-24">
-      <div className="pointer-events-auto mt-2 ml-2 inline-block">
+      <div className="pointer-events-auto  mt-2 ml-2 inline-block">
         <HamburgerButton
           open={open}
           onClick={toggle}
@@ -133,7 +133,7 @@ export default function HamburgerGradientMenu({
           alt="1SP Logo"
           width={60}
           height={60}
-          className="object-contain md:hidden absolute top-6 right-6 sm:top-4 sm:right-4 w-[60px] sm:w-[60px] h-auto"
+          className="object-contain md:hidden  block mr-8 top-1 relative sm:right-4 w-[60px] h-auto"
         />
       </Link>
       <AnimatePresence>
