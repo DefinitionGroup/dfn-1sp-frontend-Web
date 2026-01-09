@@ -372,7 +372,6 @@ export default defineConfig({
           enable: '/api/draft-mode/enable',
         },
       },
-      allowOrigins: ['http://localhost:*'],
     }),
   ],
 })
