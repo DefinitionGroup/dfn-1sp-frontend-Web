@@ -120,6 +120,7 @@ export default function HighlightStep({
           videoSrc={isImage ? undefined : mediaUrl}
           imageSrc={isImage ? mediaUrl : undefined}
           enableParallax={true}
+          opacity={0.6}
         />
       )}
 

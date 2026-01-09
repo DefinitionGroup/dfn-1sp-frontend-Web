@@ -49,7 +49,7 @@ export default function TypewriterRotator({
       <Typewriter
         as="div"
         variance={2.8}
-        speed={"normal"}
+        speed={"slow"}
         backspace="character"
         cursorBlinkDuration={0.26}
         cursorStyle={cursor}

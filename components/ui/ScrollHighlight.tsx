@@ -112,7 +112,7 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
   if (!items || items.length === 0) return null;
 
   return (
-    <div className="scroll-highlight-container">
+    <div className="scroll-highlight-container ">
       <AnimatePresence>
         {activeModal && (
           <motion.div
