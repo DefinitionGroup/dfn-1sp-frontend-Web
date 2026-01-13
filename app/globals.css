@@ -9,6 +9,14 @@
   --font-aspekta: var(--font-aspekta);
 
   --font-nyghtserif: var(--font-nyghtserif);
+  --font-sans: var(--font-aspekta), system-ui, sans-serif;
+  --font-aspekta: var(--font-aspekta), system-ui, sans-serif;
+  
+  --radius-badge: 0.25rem; /* Default fallback */
+  --headline-line-height: 1.1; /* Default fallback */
+  --body-line-height: 1.5; /* Default fallback */
+  
+  --animate-fade-in-up: fadeInUp 0.6s ease-out;
   /* Brand Colors - From Figma Design */
   --color-brand-lime: #afff40; /* Primary lime from button */
   --color-brand-orange: #ff8800; /* Orange accent */
@@ -102,6 +110,17 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 :root {
