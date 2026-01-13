@@ -200,7 +200,7 @@ const IntertitleCTA = dynamic(() => import("./pagebuilder/pg-IntertitleCTA"), {
   ssr: true,
 });
 
-type PageBuilderProps = {
+type PageBuilderProps = { 
   content: NonNullable<Page["content1sp"]>;
   language?: string;
 };
