@@ -209,7 +209,7 @@ export default function CaseGalleryComponent({
               layoutId={`card-${item.title}-${id}`}
               key={`card-${item.title}-${id}`}
               onClick={() => setActive(item)}
-              className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1 px-1  h-[500px] md:min-h-500px]  group/card overflow-hidden md:h-[500px] cursor-pointer  "
+              className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1 px-1 h-[500px] md:min-h-[500px] group/card overflow-hidden md:h-[500px] cursor-pointer card-hover"
             >
               <motion.div
                 layoutId={`image-${item.title}-${id}`}

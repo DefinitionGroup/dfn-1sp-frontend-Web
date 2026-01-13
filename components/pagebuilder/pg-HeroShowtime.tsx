@@ -52,7 +52,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
         videoSrc={videoUrl}
       />
 
-      <div className="z-1 grid col-span-12 py-24 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12">
+      <div className="z-1 grid col-span-12 py-section gap-responsive col-start-1 container-responsive row-start-1 grid-cols-12">
         {/* Left column */}
         <div className="col-span-12 md:col-span-5  col-start-1 flex flex-col px-4 md:px-8 justify-center  col-start-1">
           <StaggeredSlideUp
@@ -63,7 +63,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
             distance={80}
           >
             {heading ? (
-              <h2 className="text-5xl md:text-7xl font-nyghtserif font-semibold  leading-none pb-2">
+              <h2 className="text-4xl md:text-6xl font-nyghtserif font-semibold  leading-none pb-2">
                 {heading}
               </h2>
             ) : null}

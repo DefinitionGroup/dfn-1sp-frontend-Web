@@ -9,6 +9,9 @@ import { TransitionLoader } from "@/components/TransitionLoader";
 
 // Removed localFont imports and variables — font classes should be applied in root layout
 
+import NoiseOverlay from "@/components/ui/NoiseOverlay";
+import CustomCursor from "@/components/ui/CustomCursor";
+
 export const metadata: Metadata = {
   title: "1SP Agency",
   description:
@@ -26,6 +29,8 @@ export default async function SiteLayout({
 
   return (
     <ViewTransitions>
+      <NoiseOverlay />
+      <CustomCursor />
       <TransitionLoader />
       {children}
       <SanityLive />

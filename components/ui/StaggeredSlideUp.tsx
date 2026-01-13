@@ -4,7 +4,7 @@ import React, { useRef, useId } from "react";
 import { motion, useInView } from "motion/react";
 
 const EASING_MAP = {
-  smooth: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
+  smooth: [0.33, 1, 0.68, 1] as [number, number, number, number],
   spring: [0.16, 1, 0.3, 1] as [number, number, number, number],
   "ease-out": [0, 0, 0.2, 1] as [number, number, number, number],
   bounce: [0.68, -0.55, 0.265, 1.55] as [number, number, number, number],

@@ -133,11 +133,11 @@ function CasesGalleryFiltered({
     <div
       id={sectionId}
       data-navpoint-name={navPointName}
-      className={`grid grid-cols-12 z-1 mx-auto container ${marginClass} relative font-aspekta`}
+      className={`grid grid-cols-12 z-1 container-responsive ${marginClass} relative font-aspekta`}
     >
       {showGridBackground && <GridBackground />}
       <div
-        className={`z-1 grid gap-8 col-span-12 ${paddingClass} col-start-1 container mx-auto row-start-1 grid-cols-12`}
+        className={`z-1 grid gap-responsive col-span-12 ${paddingClass} col-start-1 container-responsive row-start-1 grid-cols-12`}
       >
         <div className="z-1 col-span-12 col-start-1 px-4 md:px-0">
           {/* Filter Buttons */}
