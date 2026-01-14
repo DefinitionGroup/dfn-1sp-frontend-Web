@@ -6,6 +6,7 @@ import type { HeroShowtime as HeroShowtimeType } from "@/types/sanity.types";
 import HeaderImageVideoComp2 from "@/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import Button2 from "../ui/Button2";
+import MixedType from "@/components/ui/MixedType";
 
 import { assetUrl, resolveLink, ctaToButtonProps } from "@/utils/utils";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
@@ -63,8 +64,8 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
             distance={80}
           >
             {heading ? (
-              <h2 className="text-4xl md:text-6xl font-nyghtserif font-semibold  leading-none pb-2">
-                {heading}
+              <h2 className="text-4xl md:text-6xl font-aspekta font-semibold leading-none pb-2">
+                <MixedType text={heading} />
               </h2>
             ) : null}
             {subheading ? (

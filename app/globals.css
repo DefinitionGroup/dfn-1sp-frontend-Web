@@ -225,7 +225,6 @@
       system-ui,
       -apple-system,
       sans-serif;
-    view-transition-name: root;
   }
 
   /* Gradient Text Utilities */
@@ -269,6 +268,19 @@
   .focus-lime {
     @apply focus:outline-none focus:ring-2 focus:ring-brand-lime-500 focus:ring-offset-2;
   }
+
+  /* Hide system cursor on desktop where custom cursor is visible */
+  @media (min-width: 768px) {
+
+    *,
+    button,
+    a,
+    input,
+    textarea,
+    select {
+      cursor: none !important;
+    }
+  }
 }
 
 .diagnose * {
@@ -282,7 +294,7 @@
 
 /* View transition choreography */
 :root {
-  --vt-duration: 420ms;
+  --vt-duration: 1222ms;
   --vt-ease: cubic-bezier(0.33, 1, 0.68, 1);
 }
 
@@ -317,15 +329,15 @@
   }
 
   100% {
-    opacity: 0;
-    transform: translate3d(0, -6%, 0) scale(0.98);
+    opacity: 1;
+    transform: translate3d(0, -16%, 0) scale(0.98);
   }
 }
 
 @keyframes vt-slide-in {
   0% {
-    opacity: 0;
-    transform: translate3d(0, 12%, 0) scale(0.96);
+    opacity: 1;
+    transform: translate3d(0, 16%, 0) scale(0.96);
   }
 
   100% {
