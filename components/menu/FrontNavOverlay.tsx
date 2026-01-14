@@ -97,7 +97,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   }, [effectiveColor]);
 
   const textColor =
-    detectedTheme === "dark" ? "text-neutral-800" : "text-neutral-50";
+    detectedTheme === "dark" ? "text-neutral-800 " : "text-neutral-50 ";
   const imageLogo =
     detectedTheme === "dark"
       ? "/ci/1sp-fulllogotype-blk.svg"
@@ -148,7 +148,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               scale: 1,
               clipPath: "inset(0% 0% 0% 0% round 2rem)",
               backdropFilter: "blur(12px)",
-              backgroundColor: "rgba(111,111,111, 0.2)"
+              backgroundColor: "rgba(111,111,111, 0.4"
             }
             : {
               opacity: [0, 1, 1],
@@ -160,7 +160,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 "inset(0% 0% 0% 0% round 2rem)"          // full width menu
               ],
               backdropFilter: "blur(12px)",
-              backgroundColor: "rgba(111,111,111, 0.2)"
+              backgroundColor: "rgba(111,111,111, 0.4)"
             }
         }
         transition={
@@ -174,7 +174,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               delay: 0.7,
             }
         }
-        className={`floating-nav z-99999 shadow-xl hidden fixed top-6 left-0 backdrop-blur-md rounded-4xl w-fit h-16  px-6  right-0 md:grid items-center z-50 grid-cols-12 py-2  mx-auto ${textColor} ${className}`}
+        className={`floating-nav z-99999   hidden fixed top-6 left-0 backdrop-blur-xl rounded-4xl w-fit h-16  px-6  right-0 md:grid items-center z-50 grid-cols-12 py-2  mx-auto ${textColor} ${className}`}
       >
         <div className="col-span-2 flex items-center  pr-16  justify-start">
           <motion.div
@@ -208,7 +208,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
           {menuData?.menuItems && menuData.menuItems.length > 0 ? (
             <StaggeredSlideUp
-              className="flex items-center"
+              className="flex items-center "
               delay={1.3}
               staggerDelay={0.08}
               duration={0.5}
@@ -233,7 +233,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 .map((item) => (
                   <span key={item._key} className={itemClass}>
                     <Link
-                      className="hover:text-lime-400  transition-colors"
+                      className="hover:text-lime-400  transition-colors "
                       href={`/${item.slug}`}
                       onClick={(e) => {
                         e.preventDefault();
