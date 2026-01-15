@@ -76,14 +76,14 @@ export default function Badgemodule({
       footer: "md:bg-neutral-800 md:text-gray-200 md:rounded-b-lg",
     },
     minimal: {
-      wrapper: "border-t border-black/30 md:border md:border-black/30 md:rounded-lg",
-      content: "text-gray-400",
-      footer: "text-gray-400 border-t border-black/30",
+      wrapper: "border-t border-black/50 md:border md:border-black/50 md:rounded-lg",
+      content: "text-neutral-600",
+      footer: "text-neutral-500 border-t border-black/50",
     },
     glass: {
-      wrapper: "border border-white/20 bg-white/5 backdrop-blur-md rounded-lg shadow-lg",
+      wrapper: "border border-white/20  backdrop-blur-sm rounded-lg ",
       content: "text-gray-200",
-      footer: "bg-white/10 text-gray-200 rounded-b-lg border-t border-white/10",
+      footer: " text-gray-200 rounded-b-lg border-t border-white/10",
     },
   };
 
@@ -120,7 +120,7 @@ export default function Badgemodule({
       >
         {/* Header: Logo and Number */}
         <div className={cn("flex-1 flex flex-col ", sizes.padding)}>
-          <div className="flex items-start  justify-between w-full mb-2 md:mb-3">
+          <div className="flex items-start  justify-between w-full ">
             <motion.div
               variants={{
                 hidden: { opacity: 0, scale: 0.8 },
@@ -167,7 +167,7 @@ export default function Badgemodule({
           {/* Main Text */}
           <motion.p
             className={cn(
-              "font-medium leading-tight tracking-tight",
+              "font-medium  tracking-tighter",
               sizes.text,
               variants.content
             )}

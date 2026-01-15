@@ -294,7 +294,7 @@
 
 /* View transition choreography */
 :root {
-  --vt-duration: 1222ms;
+  --vt-duration: 1422ms;
   --vt-ease: cubic-bezier(0.33, 1, 0.68, 1);
 }
 
@@ -330,14 +330,14 @@
 
   100% {
     opacity: 1;
-    transform: translate3d(0, -16%, 0) scale(0.98);
+    transform: translate3d(0, -80%, 0) scale(1);
   }
 }
 
 @keyframes vt-slide-in {
   0% {
     opacity: 1;
-    transform: translate3d(0, 16%, 0) scale(0.96);
+    transform: translate3d(0, 80%, 0) scale(1);
   }
 
   100% {
