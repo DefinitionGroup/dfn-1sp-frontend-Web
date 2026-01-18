@@ -27,6 +27,7 @@ interface IntertitleCTAProps {
   alignment?: "center" | "left";
   paddingTop?: "0" | "12" | "24" | "48";
   navPointName?: string;
+  hideFromNav?: boolean;
 }
 
 const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
@@ -38,6 +39,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   alignment = "center",
   paddingTop = "0",
   navPointName,
+  hideFromNav = false,
 }) => {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
@@ -89,10 +91,11 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
       .toLowerCase()
     : "intertitle-section";
 
-  // Store the navPointName in a data attribute if provided
-  const navPointDataAttr = navPointName
-    ? { "data-navpoint-name": navPointName }
-    : {};
+  // Store nav-related data attributes
+  const navPointDataAttr = {
+    ...(navPointName ? { "data-navpoint-name": navPointName } : {}),
+    ...(hideFromNav ? { "data-nav-hidden": "true" } : {}),
+  };
 
   return (
     <div id={sectionId} {...navPointDataAttr} className={`${containerClassName} `}>

@@ -47,6 +47,14 @@ export default defineType({
       description: "Optional custom name for the vertical navigation minimap.",
       group: "navigation",
     }),
+    defineField({
+      name: "hideFromNav",
+      title: "Hide from Navigation",
+      type: "boolean",
+      description: "If enabled, this section will not appear in the vertical navigation minimap.",
+      initialValue: false,
+      group: "navigation",
+    }),
 
     // CONTENT FIELDS
     defineField({
@@ -213,6 +221,7 @@ type ComponentNameData = {
   showGridBackground?: boolean;
   paddingY?: string;
   navPointName?: string;
+  hideFromNav?: boolean;
 };
 
 // Helper for video detection
@@ -232,6 +241,7 @@ function ComponentName({ data }: { data: ComponentNameData }) {
     showGridBackground = true,
     paddingY = "16",
     navPointName,
+    hideFromNav = false,
   } = data || {};
 
   // Early return if no content
@@ -246,8 +256,11 @@ function ComponentName({ data }: { data: ComponentNameData }) {
     ? title.replace(/[^a-zA-Z0-9\s]/g, "").replace(/\s+/g, "-").toLowerCase()
     : "component-section";
 
-  // Navigation point data attribute
-  const navPointDataAttr = navPointName ? { "data-navpoint-name": navPointName } : {};
+  // Navigation point data attributes (including hideFromNav)
+  const navPointDataAttr = {
+    ...(navPointName ? { "data-navpoint-name": navPointName } : {}),
+    ...(hideFromNav ? { "data-nav-hidden": "true" } : {}),
+  };
 
   // Background color classes
   const bgColorMap: Record<string, string> = {

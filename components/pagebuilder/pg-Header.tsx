@@ -71,6 +71,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   const lines = Array.isArray(step.paragraphs) ? step.paragraphs : [];
   const highlight = step.highlight;
   const navPointName = step.navPointName;
+  const hideFromNav = (step as any).hideFromNav ?? false;
 
   const leftMark = step.cornerLeftText ?? "SUPER*";
   const rightMark = step.cornerRightText ?? "/ 1SP";
@@ -83,10 +84,11 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
       .toLowerCase()
     : "header-section";
 
-  // Store the navPointName in a data attribute if provided
-  const navPointDataAttr = navPointName
-    ? { "data-navpoint-name": navPointName }
-    : {};
+  // Store nav-related data attributes
+  const navPointDataAttr = {
+    ...(navPointName ? { "data-navpoint-name": navPointName } : {}),
+    ...(hideFromNav ? { "data-nav-hidden": "true" } : {}),
+  };
   const anyContainsHighlight =
     !!highlight &&
     lines.some((ln) => {

@@ -27,6 +27,7 @@ type TwoColContentSectionData = {
   showGridBackground?: boolean;
   paddingY?: string;
   navPointName?: string;
+  hideFromNav?: boolean;
 };
 
 function isVideoUrl(url?: string) {
@@ -49,6 +50,7 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
     showGridBackground = true,
     paddingY = "16",
     navPointName,
+    hideFromNav = false,
   } = data || {};
 
   if (!content || content.length === 0) return null;
@@ -66,10 +68,11 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
       .toLowerCase()
     : "two-col-content-section";
 
-  // Store the navPointName in a data attribute if provided
-  const navPointDataAttr = navPointName
-    ? { "data-navpoint-name": navPointName }
-    : {};
+  // Store nav-related data attributes
+  const navPointDataAttr = {
+    ...(navPointName ? { "data-navpoint-name": navPointName } : {}),
+    ...(hideFromNav ? { "data-nav-hidden": "true" } : {}),
+  };
 
   // Background color classes
   const bgColorMap: Record<string, string> = {
