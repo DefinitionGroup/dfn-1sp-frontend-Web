@@ -4,6 +4,7 @@ import { Link } from "next-view-transitions";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "@phosphor-icons/react";
 import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
+import MagneticButton from "./MagneticButton";
 
 interface Button2Props {
   text?: string;
@@ -81,7 +82,7 @@ function Button2({ text, className, href, variant = "default" }: Button2Props) {
   );
 
   return (
-    <div className={containerClass}>
+    <MagneticButton className={containerClass}>
       {isExternal ? (
         <>
           <Link
@@ -129,7 +130,7 @@ function Button2({ text, className, href, variant = "default" }: Button2Props) {
           </Link>
         </>
       )}
-    </div>
+    </MagneticButton>
   );
 }
 

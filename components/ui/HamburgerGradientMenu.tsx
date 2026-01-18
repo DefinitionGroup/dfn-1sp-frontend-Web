@@ -340,7 +340,7 @@ function OverlayRoot({
                   Follow us
                 </span>
                 <span className="text-xs text-neutral-300">
-                  Copyright 2025 1SP GmbH
+                  Copyright 2026 1SP GmbH
                 </span>
               </div>
               <div className="flex flex-wrap gap-3">

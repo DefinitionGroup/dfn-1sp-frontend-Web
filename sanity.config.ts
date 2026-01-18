@@ -18,197 +18,73 @@ import { schema } from './sanity/schemaTypes'
 import { structure } from './sanity/structure'
 import { locations, mainDocuments } from './sanity/presentation/resolve';
 
-// Template definitions
-const pageWithChannelTemplate = {
-  id: "page-with-channel",
-  title: "Page with Channel",
-  schemaType: "page",
-  parameters: [
-    { name: "channel", title: "Channel", type: "string" },
-    { name: "language", title: "Language", type: "string" }
-  ],
-  value: (params: { channel: string, language: string }) => ({
-    channel: params.channel,
-    language: params.language || "de",
-  }),
-};
-
-const menuWithChannelTemplate = {
-  id: "menu-with-channel",
-  title: "Menu with Channel",
-  schemaType: "menu",
-  parameters: [
-    { name: "channel", title: "Channel", type: "string" },
-    { name: "language", title: "Language", type: "string" }
-  ],
-  value: (params: { channel: string, language: string }) => ({
-    channel: params.channel,
-    language: params.language || "de",
-  }),
-};
-
-// Individual templates for each channel/language combination
-const pageTemplates = [
-  {
-    id: 'page-1spWeb-en',
-    title: 'Page (1SP - English)',
-    schemaType: 'page',
-    parameters: [
-      { name: 'channel', type: 'string' },
-      { name: 'language', type: 'string' }
-    ],
-    value: (params: any) => ({
-      channel: params.channel || '1spWeb',
-      language: params.language || 'en'
-    })
-  },
-  {
-    id: 'page-1spWeb-de',
-    title: 'Page (1SP - German)',
-    schemaType: 'page',
-    parameters: [
-      { name: 'channel', type: 'string' },
-      { name: 'language', type: 'string' }
-    ],
-    value: (params: any) => ({
-      channel: params.channel || '1spWeb',
-      language: params.language || 'de'
-    })
-  },
-  {
-    id: 'page-msmWeb-en',
-    title: 'Page (MSM - English)',
-    schemaType: 'page',
-    parameters: [
-      { name: 'channel', type: 'string' },
-      { name: 'language', type: 'string' }
-    ],
-    value: (params: any) => ({
-      channel: params.channel || 'msmWeb',
-      language: params.language || 'en'
-    })
-  },
-  {
-    id: 'page-msmWeb-de',
-    title: 'Page (MSM - German)',
-    schemaType: 'page',
-    parameters: [
-      { name: 'channel', type: 'string' },
-      { name: 'language', type: 'string' }
-    ],
-    value: (params: any) => ({
-      channel: params.channel || 'msmWeb',
-      language: params.language || 'de'
-    })
-  },
-  {
-    id: 'page-studioco2Web-en',
-    title: 'Page (Studio CO2 - English)',
-    schemaType: 'page',
-    parameters: [
-      { name: 'channel', type: 'string' },
-      { name: 'language', type: 'string' }
-    ],
-    value: (params: any) => ({
-      channel: params.channel || 'studioco2Web',
-      language: params.language || 'en'
-    })
-  },
-  {
-    id: 'page-studioco2Web-de',
-    title: 'Page (Studio CO2 - German)',
-    schemaType: 'page',
-    parameters: [
-      { name: 'channel', type: 'string' },
-      { name: 'language', type: 'string' }
-    ],
-    value: (params: any) => ({
-      channel: params.channel || 'studioco2Web',
-      language: params.language || 'de'
-    })
-  }
+// Channel Configuration
+const CHANNELS = [
+  { id: '1spWeb', title: '1SP', languages: ['en'] },
+  { id: 'msmWeb', title: 'MSM', languages: ['en', 'de'] },
+  { id: 'studioco2Web', title: 'Studio CO2', languages: ['en'] },
+  { id: 'flizrWeb', title: 'Flizr', languages: ['en', 'de', 'pl'] },
 ];
 
-const menuTemplates = [
-  {
-    id: 'menu-1spWeb-en',
-    title: 'Menu (1SP - English)',
-    schemaType: 'menu',
-    parameters: [
-      { name: 'channel', type: 'string' },
-      { name: 'language', type: 'string' }
-    ],
-    value: (params: any) => ({
-      channel: params.channel || '1spWeb',
-      language: params.language || 'en'
-    })
-  },
-  {
-    id: 'menu-1spWeb-de',
-    title: 'Menu (1SP - German)',
-    schemaType: 'menu',
-    parameters: [
-      { name: 'channel', type: 'string' },
-      { name: 'language', type: 'string' }
-    ],
-    value: (params: any) => ({
-      channel: params.channel || '1spWeb',
-      language: params.language || 'de'
-    })
-  },
-  {
-    id: 'menu-msmWeb-en',
-    title: 'Menu (MSM - English)',
-    schemaType: 'menu',
-    parameters: [
-      { name: 'channel', type: 'string' },
-      { name: 'language', type: 'string' }
-    ],
-    value: (params: any) => ({
-      channel: params.channel || 'msmWeb',
-      language: params.language || 'en'
-    })
-  },
-  {
-    id: 'menu-msmWeb-de',
-    title: 'Menu (MSM - German)',
-    schemaType: 'menu',
-    parameters: [
-      { name: 'channel', type: 'string' },
-      { name: 'language', type: 'string' }
-    ],
-    value: (params: any) => ({
-      channel: params.channel || 'msmWeb',
-      language: params.language || 'de'
-    })
-  },
-  {
-    id: 'menu-studioco2Web-en',
-    title: 'Menu (Studio CO2 - English)',
-    schemaType: 'menu',
-    parameters: [
-      { name: 'channel', type: 'string' },
-      { name: 'language', type: 'string' }
-    ],
-    value: (params: any) => ({
-      channel: params.channel || 'studioco2Web',
-      language: params.language || 'en'
-    })
-  },
-  {
-    id: 'menu-studioco2Web-de',
-    title: 'Menu (Studio CO2 - German)',
-    schemaType: 'menu',
-    parameters: [
-      { name: 'channel', type: 'string' },
-      { name: 'language', type: 'string' }
-    ],
-    value: (params: any) => ({
-      channel: params.channel || 'studioco2Web',
-      language: params.language || 'de'
-    })
+// Helper to generate templates
+const generateTemplates = (excludeBase = false) => {
+  const templates: any[] = [];
+
+  CHANNELS.forEach((channel) => {
+    channel.languages.forEach((lang) => {
+      // Page Template
+      templates.push({
+        id: `page-${channel.id}-${lang}`,
+        title: `Page (${channel.title} - ${lang.toUpperCase()})`,
+        schemaType: 'page',
+        parameters: [{ name: 'channel', type: 'string' }, { name: 'language', type: 'string' }],
+        value: (params: any) => ({ channel: params.channel || channel.id, language: params.language || lang }),
+      });
+
+      // Menu Template
+      templates.push({
+        id: `menu-${channel.id}-${lang}`,
+        title: `Menu (${channel.title} - ${lang.toUpperCase()})`,
+        schemaType: 'menu',
+        parameters: [{ name: 'channel', type: 'string' }, { name: 'language', type: 'string' }],
+        value: (params: any) => ({ channel: params.channel || channel.id, language: params.language || lang }),
+      });
+    });
+  });
+
+  // Base templates if needed
+  if (!excludeBase) {
+    templates.push({
+      id: "page-with-channel",
+      title: "Page with Channel",
+      schemaType: "page",
+      parameters: [
+        { name: "channel", title: "Channel", type: "string" },
+        { name: "language", title: "Language", type: "string" }
+      ],
+      value: (params: { channel: string, language: string }) => ({
+        channel: params.channel,
+        language: params.language || "de",
+      }),
+    });
+
+    templates.push({
+      id: "menu-with-channel",
+      title: "Menu with Channel",
+      schemaType: "menu",
+      parameters: [
+        { name: "channel", title: "Channel", type: "string" },
+        { name: "language", title: "Language", type: "string" }
+      ],
+      value: (params: { channel: string, language: string }) => ({
+        channel: params.channel,
+        language: params.language || "de",
+      }),
+    });
   }
-];
+
+  return templates;
+};
 
 export default defineConfig({
   basePath: '/studio',
@@ -219,114 +95,7 @@ export default defineConfig({
     // Add all templates to the array
     templates: (prev) => [
       ...prev,
-      pageWithChannelTemplate,
-      menuWithChannelTemplate,
-      // page templates: only EN for 1SP and Studio CO2; MSM EN/DE; FLIZR EN/DE/PL
-      {
-        id: 'page-1spWeb-en',
-        title: 'Page (1SP - English)',
-        schemaType: 'page',
-        parameters: [{ name: 'channel', type: 'string' }, { name: 'language', type: 'string' }],
-        value: (params: any) => ({ channel: params.channel || '1spWeb', language: params.language || 'en' }),
-      },
-      {
-        id: 'page-msmWeb-en',
-        title: 'Page (MSM - English)',
-        schemaType: 'page',
-        parameters: [{ name: 'channel', type: 'string' }, { name: 'language', type: 'string' }],
-        value: (params: any) => ({ channel: params.channel || 'msmWeb', language: params.language || 'en' }),
-      },
-      {
-        id: 'page-msmWeb-de',
-        title: 'Page (MSM - German)',
-        schemaType: 'page',
-        parameters: [{ name: 'channel', type: 'string' }, { name: 'language', type: 'string' }],
-        value: (params: any) => ({ channel: params.channel || 'msmWeb', language: params.language || 'de' }),
-      },
-      {
-        id: 'page-studioco2Web-en',
-        title: 'Page (Studio CO2 - English)',
-        schemaType: 'page',
-        parameters: [{ name: 'channel', type: 'string' }, { name: 'language', type: 'string' }],
-        value: (params: any) => ({ channel: params.channel || 'studioco2Web', language: params.language || 'en' }),
-      },
-
-      // FLIZR page templates (en, de, pl)
-      {
-        id: 'page-flizrWeb-en',
-        title: 'Page (Flizr - English)',
-        schemaType: 'page',
-        parameters: [{ name: 'channel', type: 'string' }, { name: 'language', type: 'string' }],
-        value: (params: any) => ({ channel: params.channel || 'flizrWeb', language: params.language || 'en' }),
-      },
-      {
-        id: 'page-flizrWeb-de',
-        title: 'Page (Flizr - German)',
-        schemaType: 'page',
-        parameters: [{ name: 'channel', type: 'string' }, { name: 'language', type: 'string' }],
-        value: (params: any) => ({ channel: params.channel || 'flizrWeb', language: params.language || 'de' }),
-      },
-      {
-        id: 'page-flizrWeb-pl',
-        title: 'Page (Flizr - Polish)',
-        schemaType: 'page',
-        parameters: [{ name: 'channel', type: 'string' }, { name: 'language', type: 'string' }],
-        value: (params: any) => ({ channel: params.channel || 'flizrWeb', language: params.language || 'pl' }),
-      },
-
-      // menu templates: only EN for 1SP and Studio CO2; MSM EN/DE; FLIZR EN/DE/PL
-      {
-        id: 'menu-1spWeb-en',
-        title: 'Menu (1SP - English)',
-        schemaType: 'menu',
-        parameters: [{ name: 'channel', type: 'string' }, { name: 'language', type: 'string' }],
-        value: (params: any) => ({ channel: params.channel || '1spWeb', language: params.language || 'en' }),
-      },
-      {
-        id: 'menu-msmWeb-en',
-        title: 'Menu (MSM - English)',
-        schemaType: 'menu',
-        parameters: [{ name: 'channel', type: 'string' }, { name: 'language', type: 'string' }],
-        value: (params: any) => ({ channel: params.channel || 'msmWeb', language: params.language || 'en' }),
-      },
-      {
-        id: 'menu-msmWeb-de',
-        title: 'Menu (MSM - German)',
-        schemaType: 'menu',
-        parameters: [{ name: 'channel', type: 'string' }, { name: 'language', type: 'string' }],
-        value: (params: any) => ({ channel: params.channel || 'msmWeb', language: params.language || 'de' }),
-      },
-      {
-        id: 'menu-studioco2Web-en',
-        title: 'Menu (Studio CO2 - English)',
-        schemaType: 'menu',
-        parameters: [{ name: 'channel', type: 'string' }, { name: 'language', type: 'string' }],
-        value: (params: any) => ({ channel: params.channel || 'studioco2Web', language: params.language || 'en' }),
-      },
-      // FLIZR menus
-      {
-        id: 'menu-flizrWeb-en',
-        title: 'Menu (Flizr - English)',
-        schemaType: 'menu',
-        parameters: [{ name: 'channel', type: 'string' }, { name: 'language', type: 'string' }],
-        value: (params: any) => ({ channel: params.channel || 'flizrWeb', language: params.language || 'en' }),
-      },
-      {
-        id: 'menu-flizrWeb-de',
-        title: 'Menu (Flizr - German)',
-        schemaType: 'menu',
-        parameters: [{ name: 'channel', type: 'string' }, { name: 'language', type: 'string' }],
-        value: (params: any) => ({ channel: params.channel || 'flizrWeb', language: params.language || 'de' }),
-      },
-      {
-        id: 'menu-flizrWeb-pl',
-        title: 'Menu (Flizr - Polish)',
-        schemaType: 'menu',
-        parameters: [{ name: 'channel', type: 'string' }, { name: 'language', type: 'string' }],
-        value: (params: any) => ({ channel: params.channel || 'flizrWeb', language: params.language || 'pl' }),
-      },
-
-      ...menuTemplates,
+      ...generateTemplates(),
     ],
   },
   document: {
@@ -372,7 +141,6 @@ export default defineConfig({
           enable: '/api/draft-mode/enable',
         },
       },
-      allowOrigins: ['http://localhost:*'],
     }),
   ],
 })

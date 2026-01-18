@@ -101,7 +101,7 @@ export default function CaseGalleryMenu({
           distance={10}
           duration={0.6}
           threshold={0.2}
-          rootMargin="0px 0px -100px 0px"
+          rootMargin="0px 0px 0px 0px"
           once={true}
           className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 "
         >

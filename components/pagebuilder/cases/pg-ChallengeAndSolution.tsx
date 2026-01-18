@@ -24,17 +24,23 @@ interface ChallengeAndSolutionProps {
   badgeSubtitle?: string;
   badgeNumber?: string;
   contentType?: "challenges" | "services";
+  showContent?: boolean;
+  challengeDescription?: string;
   challenges?: string[];
   services?: Service[];
+  showCta?: boolean;
   ctaHeading?: string;
   ctaParagraph?: string;
   ctaButton?: CTA;
   showButton?: boolean;
+  showSolution?: boolean;
+  solutionHeadline?: string;
   solution?: string;
   showGridBackground?: boolean;
   backgroundColor?: string;
   paddingY?: string;
   navPointName?: string;
+  hideFromNav?: boolean;
 }
 
 export default function ChallengeAndSolution({
@@ -44,17 +50,23 @@ export default function ChallengeAndSolution({
   badgeSubtitle,
   badgeNumber = "001",
   contentType = "challenges",
+  showContent = true,
+  challengeDescription,
   challenges = [],
   services = [],
+  showCta = true,
   ctaHeading,
   ctaParagraph,
   ctaButton,
   showButton = true,
+  showSolution = true,
+  solutionHeadline,
   solution,
   showGridBackground = true,
   backgroundColor = "bg-neutral-50",
   paddingY = "32",
   navPointName,
+  hideFromNav = false,
 }: ChallengeAndSolutionProps) {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
@@ -67,12 +79,34 @@ export default function ChallengeAndSolution({
 
   const sectionId = t.ids.content;
 
+  // Check if we have content to display
+  const hasContentItems =
+    (contentType === "services" && services.length > 0) ||
+    (contentType === "challenges" && challenges.length > 0);
+
+  // Determine if CTA section should be rendered
+  const shouldShowCta = showCta && showContent && hasContentItems;
+
+  // Determine if content list should be rendered
+  const shouldShowContent = showContent && hasContentItems;
+
+  // Determine list column classes based on whether CTA is shown
+  const listColumnClasses = shouldShowCta
+    ? "col-span-4 sm:col-span-6 md:col-span-5 md:col-start-5"
+    : "col-span-4 sm:col-span-6 md:col-span-5 md:col-start-3";
+
+  // Store nav-related data attributes
+  const navPointDataAttr = {
+    ...(navPointName ? { "data-navpoint-name": navPointName } : {}),
+    ...(hideFromNav ? { "data-nav-hidden": "true" } : {}),
+  };
+
   return (
     <section className="relative overflow-hidden">
       <div
         id={sectionId}
-        data-navpoint-name={navPointName}
-        className={`${backgroundColor} mt-8 min-h-[80vh] md:min-h-[90vh] relative font-aspekta`}
+        {...navPointDataAttr}
+        className={`${backgroundColor} mt-8 relative font-aspekta`}
       >
         {showGridBackground && <GridBackground />}
 
@@ -102,19 +136,19 @@ export default function ChallengeAndSolution({
                   {title}
                 </h2>
                 {description && (
-                  <p className="text-base sm:text-lg text-gray-700 font-medium max-w-lg leading-relaxed">
+                  <p className="text-base sm:text-lg text-gray-800 max-w-lg leading-relaxed">
                     {description}
                   </p>
                 )}
               </StaggeredSlideUp>
             </div>
 
-            {/* Challenge and Solution section */}
-            {((contentType === "services" && services.length > 0) ||
-              (contentType === "challenges" && challenges.length > 0)) && (
-                <>
-                  {/* CTA Mini - Responsive */}
-                  <div className="col-span-4 sm:col-span-3 md:col-span-3 md:col-start-3 mt-6 md:mt-8">
+            {/* Challenge/Services and Solution section */}
+            {shouldShowContent && (
+              <>
+                {/* CTA Mini - Responsive (only show if showCta is true) */}
+                {shouldShowCta && (
+                  <div className="col-span-4 sm:col-span-3 md:col-span-2 md:col-start-3 mt-6 md:mt-8">
                     <CtaMiniComponent
                       heading={
                         ctaHeading ||
@@ -125,7 +159,7 @@ export default function ChallengeAndSolution({
                       paragraph={
                         ctaParagraph ||
                         (contentType === "challenges"
-                          ? t.caseStudy.challengeDescription
+                          ? (challengeDescription || t.caseStudy.challengeDescription)
                           : `${t.caseStudy.servicesDescription} ${services?.map((s) => s.name).join(", ")}`)
                       }
                       buttonText={ctaButton?.text || ""}
@@ -137,53 +171,74 @@ export default function ChallengeAndSolution({
                       align="left"
                     />
                   </div>
+                )}
 
-                  {/* List Items - Responsive */}
-                  <div className="col-span-4 sm:col-span-6 md:col-span-6 md:col-start-6 mt-6 md:mt-8">
-                    <ListContainerComponent>
-                      {contentType === "challenges"
-                        ? challenges.map((challenge, idx) => (
-                          <ListItemComponent
-                            key={idx}
-                            size="small"
-                            fontWeight="normal"
-                            color="gray-700"
-                          >
-                            {challenge}
-                          </ListItemComponent>
-                        ))
-                        : services.map((service) => (
-                          <ListItemComponent
-                            key={service._id}
-                            size="small"
-                            fontWeight="normal"
-                            color="gray-700"
-                          >
-                            {service.name}
-                          </ListItemComponent>
-                        ))}
-                    </ListContainerComponent>
+                {/* List Items - Responsive (adjusts width based on CTA visibility) */}
+                <div className={`${listColumnClasses}   mt-6 md:mt-8 `}>
+                  <ListContainerComponent>
+                    {contentType === "challenges"
+                      ? challenges.map((challenge, idx) => (
+                        <ListItemComponent
+                          key={idx}
+                          size="small"
+                          fontWeight="normal"
+                          color="gray-700"
+                        >
+                          {challenge}
+                        </ListItemComponent>
+                      ))
+                      : services.map((service) => (
+                        <ListItemComponent
+                          key={service._id}
+                          size="small"
+                          fontWeight="normal"
+                          color="gray-700"
+                        >
+                          {service.name}
+                        </ListItemComponent>
+                      ))}
+                  </ListContainerComponent>
 
-                    {/* Solution */}
-                    {solution && (
-                      <StaggeredSlideUp
-                        className="flex flex-col  mt-8 md:mt-10 items-start justify-start"
-                        delay={0.7}
-                        staggerDelay={0.1}
-                        duration={0.5}
-                        distance={80}
-                      >
-                        <h3 className="text-xl sm:text-2xl leading-tight text-gray-900 max-w-lg font-semibold tracking-tight mb-4 md:mb-6">
-                          {t.caseStudy.solution}
-                        </h3>
-                        <p className="text-sm sm:text-base text-gray-800 max-w-lg leading-relaxed">
-                          {solution}
-                        </p>
-                      </StaggeredSlideUp>
-                    )}
-                  </div>
-                </>
-              )}
+                  {/* Solution */}
+                  {showSolution && solution && (
+                    <StaggeredSlideUp
+                      className="flex flex-col  mt-8 md:mt-10 items-start justify-start"
+                      delay={0.7}
+                      staggerDelay={0.1}
+                      duration={0.5}
+                      distance={80}
+                    >
+                      <h3 className="text-xl sm:text-2xl leading-tight text-gray-900 max-w-lg font-semibold tracking-tight mb-4 md:mb-6">
+                        {solutionHeadline || t.caseStudy.solution}
+                      </h3>
+                      <p className="text-sm sm:text-base text-gray-800 max-w-lg leading-relaxed">
+                        {solution}
+                      </p>
+                    </StaggeredSlideUp>
+                  )}
+                </div>
+              </>
+            )}
+
+            {/* Solution only (when content is hidden but solution is enabled) */}
+            {!shouldShowContent && showSolution && solution && (
+              <div className="col-span-4 sm:col-span-6 md:col-span-10 md:col-start-3 mt-6 md:mt-8">
+                <StaggeredSlideUp
+                  className="flex flex-col items-start justify-start"
+                  delay={0.3}
+                  staggerDelay={0.1}
+                  duration={0.5}
+                  distance={80}
+                >
+                  <h3 className="text-xl sm:text-2xl leading-tight text-gray-900 max-w-lg font-semibold tracking-tight mb-4 md:mb-6">
+                    {solutionHeadline || t.caseStudy.solution}
+                  </h3>
+                  <p className="text-sm sm:text-base text-gray-800 max-w-lg leading-relaxed">
+                    {solution}
+                  </p>
+                </StaggeredSlideUp>
+              </div>
+            )}
           </div>
         </div>
       </div>

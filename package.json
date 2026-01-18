@@ -31,8 +31,8 @@
     "react-dom": "19.2.0",
     "react-icons": "^5.5.0",
     "sanity": "^4.12.0",
-    "sanity-plugin-cloudinary": "^1.4.0",
     "styled-components": "^6.1.19",
+    "sanity-plugin-cloudinary": "^1.4.0",
     "tailwind-merge": "^3.3.1",
     "three": "^0.181.2",
     "three-globe": "^2.45.0"

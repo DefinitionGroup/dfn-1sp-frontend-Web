@@ -20,11 +20,19 @@ export default defineType({
             group: 'navigation',
         }),
         defineField({
-            name: 'sectionTitle',
-            title: 'Section Title (for ID generation)',
-            type: 'string',
-            description: 'Used to generate the section ID. If you want a custom nav name, use Navigation Point Name above.',
+            name: 'hideFromNav',
+            title: 'Hide from Navigation',
+            type: 'boolean',
+            description: 'If enabled, this section will not appear in the vertical navigation minimap.',
+            initialValue: false,
             group: 'navigation',
+        }),
+        defineField({
+            name: 'sectionTitle',
+            title: 'Section Title',
+            type: 'string',
+            description: 'The title displayed above the globe. Also used to generate the section ID for navigation.',
+            group: 'content',
         }),
         defineField({
             name: 'locations',

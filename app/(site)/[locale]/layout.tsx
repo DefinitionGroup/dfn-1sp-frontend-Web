@@ -4,10 +4,12 @@ import { VisualEditing } from "next-sanity/visual-editing";
 import { SanityLive } from "@/sanity/lib/live";
 import { DisableDraftMode } from "@/components/DisableDraftMode";
 import { StegaErrorHandler } from "@/components/StegaErrorHandler";
-import { ViewTransitions } from "next-view-transitions";
 import { TransitionLoader } from "@/components/TransitionLoader";
 
 // Removed localFont imports and variables — font classes should be applied in root layout
+
+import NoiseOverlay from "@/components/ui/NoiseOverlay";
+
 
 export const metadata: Metadata = {
   title: "1SP Agency",
@@ -25,7 +27,9 @@ export default async function SiteLayout({
   const { isEnabled } = await draftMode();
 
   return (
-    <ViewTransitions>
+    <>
+      <NoiseOverlay />
+
       <TransitionLoader />
       {children}
       <SanityLive />
@@ -36,6 +40,6 @@ export default async function SiteLayout({
           <DisableDraftMode />
         </>
       )}
-    </ViewTransitions>
+    </>
   );
 }

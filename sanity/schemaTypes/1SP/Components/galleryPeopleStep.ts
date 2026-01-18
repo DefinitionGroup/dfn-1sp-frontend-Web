@@ -20,6 +20,14 @@ export default defineType({
             description: 'Optional custom name to display in the vertical navigation minimap.',
             group: 'navigation'
         }),
+        defineField({
+            name: 'hideFromNav',
+            title: 'Hide from Navigation',
+            type: 'boolean',
+            description: 'If enabled, this section will not appear in the vertical navigation minimap.',
+            initialValue: false,
+            group: 'navigation'
+        }),
         defineField({ name: 'badge', title: 'Badge', type: 'badgeModule', group: 'badge' }),
         defineField({
             name: 'showBadgeMiniCta',

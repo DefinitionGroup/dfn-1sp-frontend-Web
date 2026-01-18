@@ -6,6 +6,7 @@ import type { HeroShowtime as HeroShowtimeType } from "@/types/sanity.types";
 import HeaderImageVideoComp2 from "@/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import Button2 from "../ui/Button2";
+import MixedType from "@/components/ui/MixedType";
 
 import { assetUrl, resolveLink, ctaToButtonProps } from "@/utils/utils";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
@@ -20,7 +21,8 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
     paragraphs = [],
     additionalContent = [],
     navPointName,
-  } = (data || {}) as HeroShowtimeType;
+    hideFromNav = false,
+  } = (data || {}) as HeroShowtimeType & { hideFromNav?: boolean };
 
   const imageUrl = assetUrl(backgroundImage) || "/hr.png";
   const videoUrl = assetUrl(backgroundVideo);
@@ -33,10 +35,11 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
       .toLowerCase()
     : "hero-section";
 
-  // Store the navPointName in a data attribute if provided
-  const navPointDataAttr = navPointName
-    ? { "data-navpoint-name": navPointName }
-    : {};
+  // Store nav-related data attributes
+  const navPointDataAttr = {
+    ...(navPointName ? { "data-navpoint-name": navPointName } : {}),
+    ...(hideFromNav ? { "data-nav-hidden": "true" } : {}),
+  };
 
   return (
     <section
@@ -52,9 +55,9 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
         videoSrc={videoUrl}
       />
 
-      <div className="z-1 grid col-span-12 py-24 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12">
+      <div className="z-1 grid col-span-12 py-section gap-responsive col-start-1 container-responsive row-start-1 grid-cols-12">
         {/* Left column */}
-        <div className="col-span-12 md:col-span-5  col-start-1 flex flex-col px-4 md:px-8 justify-center  col-start-1">
+        <div className="col-span-12 md:col-span-8 lg:col-span-5  col-start-1 flex flex-col px-4 md:px-8 justify-center  ">
           <StaggeredSlideUp
             className="flex flex-col items-start  justify-center"
             delay={0.5}
@@ -63,8 +66,8 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
             distance={80}
           >
             {heading ? (
-              <h2 className="text-5xl md:text-7xl font-nyghtserif font-semibold  leading-none pb-2">
-                {heading}
+              <h2 className="text-4xl md:text-6xl font-aspekta  leading-none pb-2">
+                <MixedType text={heading} />
               </h2>
             ) : null}
             {subheading ? (

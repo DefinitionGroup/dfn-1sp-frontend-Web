@@ -38,7 +38,7 @@ function getChannelFromCookie(): "1spWeb" | "msmWeb" | "studioco2Web" | null {
 
 interface CaseStudy {
   _id: string;
-  title: string;
+  title?: string;
   subtitle?: string;
   description?: string;
   services?: { _id: string; name: string }[];
@@ -68,12 +68,16 @@ interface SmartCarouselProps {
   maxItems?: number;
   language?: string;
   channel?: "1spWeb" | "msmWeb" | "studioco2Web";
+  selectionMode?: "auto" | "manual";
+  selectedCases?: CaseStudy[];
 }
 
 export default function SmartCarousel({
   maxItems = 6,
   language = "en",
   channel,
+  selectionMode = "auto",
+  selectedCases: preSelectedCases,
 }: SmartCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
@@ -94,11 +98,18 @@ export default function SmartCarousel({
     setMounted(true);
   }, []);
 
-  // Fetch case studies on mount
+  // Fetch case studies on mount (only for auto mode)
   useEffect(() => {
     const fetchCaseStudies = async () => {
       try {
-        // Use channel from cookie if not provided as prop (client-side only)
+        // Manual mode: use pre-fetched cases directly
+        if (selectionMode === "manual" && preSelectedCases && preSelectedCases.length > 0) {
+          setCaseStudies(preSelectedCases);
+          setLoading(false);
+          return;
+        }
+
+        // Auto mode: fetch cases with the carousel promo flag
         const effectiveChannel =
           channel || (mounted ? getChannelFromCookie() : null) || "1spWeb";
         const carouselField = CHANNEL_FIELD_MAP[effectiveChannel];
@@ -108,6 +119,7 @@ export default function SmartCarousel({
           language,
           maxItems,
         });
+        
         setCaseStudies(results);
       } catch (error) {
         console.error("Error fetching case studies:", error);
@@ -116,7 +128,7 @@ export default function SmartCarousel({
       }
     };
     fetchCaseStudies();
-  }, [maxItems, language, channel, mounted]);
+  }, [maxItems, language, channel, mounted, selectionMode, preSelectedCases]);
 
   const carouselItems: UIItem[] = useMemo(() => {
     const list = caseStudies

@@ -17,6 +17,7 @@ type ContentSectionData = {
   showGridBackground?: boolean;
   paddingY?: string;
   navPointName?: string;
+  hideFromNav?: boolean;
 };
 
 function ContentSection({ data }: { data: ContentSectionData }) {
@@ -30,6 +31,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
     showGridBackground = true,
     paddingY = "16",
     navPointName,
+    hideFromNav = false,
   } = data || {};
 
   if (!content || content.length === 0) return null;
@@ -48,10 +50,11 @@ function ContentSection({ data }: { data: ContentSectionData }) {
         .toLowerCase()
       : "content-section";
 
-  // Store the navPointName in a data attribute if provided
-  const navPointDataAttr = navPointName
-    ? { "data-navpoint-name": navPointName }
-    : {};
+  // Store nav-related data attributes
+  const navPointDataAttr = {
+    ...(navPointName ? { "data-navpoint-name": navPointName } : {}),
+    ...(hideFromNav ? { "data-nav-hidden": "true" } : {}),
+  };
 
   const getContentClass = (size?: string) => {
     switch (size) {

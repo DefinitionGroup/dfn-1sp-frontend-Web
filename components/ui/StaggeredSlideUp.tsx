@@ -4,7 +4,7 @@ import React, { useRef, useId } from "react";
 import { motion, useInView } from "motion/react";
 
 const EASING_MAP = {
-  smooth: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
+  smooth: [0.33, 1, 0.68, 1] as [number, number, number, number],
   spring: [0.16, 1, 0.3, 1] as [number, number, number, number],
   "ease-out": [0, 0, 0.2, 1] as [number, number, number, number],
   bounce: [0.68, -0.55, 0.265, 1.55] as [number, number, number, number],
@@ -103,10 +103,10 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
   delay = 0.1,
   staggerDelay = 0.06,
   duration = 0.4,
-  distance = 20,
+  distance = 10,
   easing = "spring",
   threshold = 0.15,
-  rootMargin = "0px 0px -30px 0px",
+  rootMargin = "0px 0px -10px 0px",
   once = true,
   debug = false,
   animateImmediately = false,

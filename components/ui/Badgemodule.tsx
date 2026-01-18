@@ -49,14 +49,24 @@ export default function Badgemodule({
       number: "text-[8px]",
       text: "text-sm md:text-base lg:text-lg",
       subtitle: "text-[9px] md:text-[10px]",
+      // Mobile pill styles
+      mobilePill: "px-2 py-1",
+      mobileNumber: "text-[10px]",
+      mobileText: "text-base",
+      mobileSubtitle: "text-[9px]",
     },
     md: {
-      container: "min-w-[110px]  ",
+      container: "min-w-[110px]",
       padding: "p-1 md:p-4",
       logo: "w-3.5 h-3.5 md:w-4 md:h-4",
       number: "text-[9px] md:text-[10px]",
       text: "text-2xl md:text-lg lg:text-xl xl:text-2xl",
       subtitle: "text-[10px] md:text-xxs",
+      // Mobile pill styles
+      mobilePill: "px-2.5 py-1",
+      mobileNumber: "text-[11px]",
+      mobileText: "text-lg",
+      mobileSubtitle: "text-[10px]",
     },
     lg: {
       container: "min-w-[180px] max-w-[260px]",
@@ -64,7 +74,12 @@ export default function Badgemodule({
       logo: "w-4 h-4 md:w-5 md:h-5",
       number: "text-[10px] md:text-xs",
       text: "text-lg md:text-xl lg:text-2xl xl:text-3xl",
-      subtitle: "text-xs md:text-sm ",
+      subtitle: "text-xs md:text-sm",
+      // Mobile pill styles
+      mobilePill: "px-3 py-1.5",
+      mobileNumber: "text-xs",
+      mobileText: "text-xl",
+      mobileSubtitle: "text-[11px]",
     },
   };
 
@@ -74,16 +89,28 @@ export default function Badgemodule({
       wrapper: "border-t border-black/20 md:border-0 md:bg-black md:rounded-lg md:shadow-xl",
       content: "md:text-gray-100",
       footer: "md:bg-neutral-800 md:text-gray-200 md:rounded-b-lg",
+      // Mobile pill variant
+      mobilePill: "bg-black/90 text-white",
+      mobileContent: "text-gray-900",
+      mobileSubtitle: "text-gray-500",
     },
     minimal: {
-      wrapper: "border-t border-black/30 md:border md:border-black/30 md:rounded-lg",
-      content: "text-gray-400",
-      footer: "text-gray-400 border-t border-black/30",
+      wrapper: "border-t border-black/50 md:border md:border-black/50 md:rounded-lg",
+      content: "text-neutral-600",
+      footer: "text-neutral-500 border-t border-black/50",
+      // Mobile pill variant
+      mobilePill: "bg-gray-900/10 backdrop-blur-sm border border-gray-400/30 text-gray-700",
+      mobileContent: "text-gray-800",
+      mobileSubtitle: "text-gray-500",
     },
     glass: {
-      wrapper: "border border-white/20 bg-white/5 backdrop-blur-md rounded-lg shadow-lg",
+      wrapper: "border border-white/20 backdrop-blur-sm rounded-lg",
       content: "text-gray-200",
-      footer: "bg-white/10 text-gray-200 rounded-b-lg border-t border-white/10",
+      footer: "text-gray-200 rounded-b-lg border-t border-white/10",
+      // Mobile pill variant
+      mobilePill: "bg-white/15 backdrop-blur-md border border-white/30 text-white",
+      mobileContent: "text-gray-100",
+      mobileSubtitle: "text-gray-300",
     },
   };
 
@@ -91,11 +118,87 @@ export default function Badgemodule({
   const variants = variantClasses[variant];
 
   return (
-    <div className={cn("w-full", className)}>
+    <div ref={ref} className={cn("w-full", className)}>
+      {/* Mobile Layout - Horizontal Pill Style */}
       <motion.div
-        ref={ref}
+        className="md:hidden flex items-center gap-3 py-3"
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        variants={{
+          hidden: { opacity: 0, x: -20 },
+          visible: {
+            opacity: 1,
+            x: 0,
+            transition: {
+              duration: 0.5,
+              ease: [0.25, 0.46, 0.45, 0.94],
+              staggerChildren: 0.1,
+            },
+          },
+        }}
+      >
+        {/* Number Pill */}
+        <motion.div
+          className={cn(
+            "rounded-full font-bold tabular-nums tracking-tight shrink-0",
+            sizes.mobilePill,
+            sizes.mobileNumber,
+            variants.mobilePill
+          )}
+          variants={{
+            hidden: { opacity: 0, scale: 0.8 },
+            visible: {
+              opacity: 1,
+              scale: 1,
+              transition: { duration: 0.4, ease: "easeOut" },
+            },
+          }}
+        >
+          <AnimateNumber
+            format={{ minimumIntegerDigits: 3 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+          >
+            {animateNumberValue}
+          </AnimateNumber>
+        </motion.div>
+
+        {/* Text and Subtitle Container */}
+        <motion.div
+          className="flex flex-col gap-0.5"
+          variants={{
+            hidden: { opacity: 0, y: 10 },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.4, ease: "easeOut", delay: 0.1 },
+            },
+          }}
+        >
+          <span
+            className={cn(
+              "font-semibold tracking-tight leading-tight",
+              sizes.mobileText,
+              variants.mobileContent
+            )}
+          >
+            {text}
+          </span>
+          <span
+            className={cn(
+              "font-medium uppercase tracking-widest",
+              sizes.mobileSubtitle,
+              variants.mobileSubtitle
+            )}
+          >
+            {subtitle}
+          </span>
+        </motion.div>
+      </motion.div>
+
+      {/* Desktop Layout - Original Card Style */}
+      <motion.div
         className={cn(
-          "relative flex flex-col justify-between",
+          "hidden md:flex relative flex-col justify-between",
           "aspect-auto md:aspect-square",
           "transition-all duration-300",
           sizes.container,
@@ -119,8 +222,8 @@ export default function Badgemodule({
         }}
       >
         {/* Header: Logo and Number */}
-        <div className={cn("flex-1 flex flex-col ", sizes.padding)}>
-          <div className="flex items-start  justify-between w-full mb-2 md:mb-3">
+        <div className={cn("flex-1 flex flex-col", sizes.padding)}>
+          <div className="flex items-start justify-between w-full">
             <motion.div
               variants={{
                 hidden: { opacity: 0, scale: 0.8 },
@@ -167,7 +270,7 @@ export default function Badgemodule({
           {/* Main Text */}
           <motion.p
             className={cn(
-              "font-medium leading-tight tracking-tight",
+              "font-medium tracking-tighter",
               sizes.text,
               variants.content
             )}

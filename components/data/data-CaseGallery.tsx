@@ -8,6 +8,7 @@ import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-r
 import Button2 from "../ui/Button2";
 import Image from "next/image";
 import StaggeredFadeIn from "../ui/StaggeredFadeIn";
+import CaseGalleryCard from "./CaseGalleryCard";
 
 interface CaseStudy {
   _id: string;
@@ -205,72 +206,14 @@ export default function CaseGalleryComponent({
           className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3  mx-auto w-full min-h-full"
         >
           {filteredItems.map((item) => (
-            <motion.div
-              layoutId={`card-${item.title}-${id}`}
+            <CaseGalleryCard
               key={`card-${item.title}-${id}`}
+              item={item}
+              id={id}
+              variant={variant}
+              activeFilter={activeFilter}
               onClick={() => setActive(item)}
-              className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1 px-1  h-[500px] md:min-h-500px]  group/card overflow-hidden md:h-[500px] cursor-pointer  "
-            >
-              <motion.div
-                layoutId={`image-${item.title}-${id}`}
-                className="col-start-1 col-span-1 row-start-1 bg-black h-[300px] min-h-full  rounded-xl  shadow-lg"
-              >
-                {item.mainVideoUrl ? (
-                  <video
-                    src={item.mainVideoUrl}
-                    autoPlay
-                    muted
-                    loop
-                    className="w-full  object-cover h-[full] group-hover/card:opacity-100 overflow-hidden   object-top opacity-80 transition-all"
-                  />
-                ) : (
-                  <Image
-                    width={1000}
-                    height={1000}
-                    src={item.mainImageUrl || "/placeholder.png"}
-                    alt={item.title}
-                    className="w-full  object-cover h-full group-hover/card:opacity-100 object-top rounded-xl  overflow-hidden opacity-80 transition-all"
-                  />
-                )}
-              </motion.div>
-
-
-              <StaggeredSlideUp
-                key={activeFilter}
-                staggerDelay={0.2}
-                distance={10} delay={0.4}
-                duration={1} className={`col-start-1 col-span-1 md:flex ${item.client?.logoUrl ? "justify-between" : "justify-end"
-                  } opacity-100 row-start-2 p-2 mb-8 md:mb-16 z-1   h-[130px]`}
-              >
-                {item.client?.logoUrl ? (
-                  <motion.img
-                    layoutId={`logo-${item.title}-${id}`}
-                    src={item.client?.logoUrl}
-                    alt={item.title}
-                    className={`w-24 h-8 object-contain object-left mb-4 ${variant !== "light" ? "" : "invert"
-                      }`}
-                  />
-                ) : null}
-                <div className="flex flex-col items-start md:items-end">
-                  <motion.h3
-                    layoutId={`title-${item.title}-${id}`}
-                    className={`font-medium md:ext-lg leading-snug max-w-[250px] tracking-tight ${variant !== "light" ? "" : "invert"
-                      } text-neutral-600 dark:text-neutral-200 md:text-right`}
-                  >
-                    {item.title}
-                  </motion.h3>
-                  {item.services && item.services.length > 0 && (
-                    <motion.p
-                      layoutId={`description-${item.description}-${id}`}
-                      className="text-neutral-400 md:text-right text-xxs font-medium md:text-xs mt-1  dark:text-neutral-400"
-                    >
-                      {item.services.map((s) => s.name).join(", ")}
-                    </motion.p>
-                  )}
-                </div>
-              </StaggeredSlideUp>
-
-            </motion.div>
+            />
           ))}
         </StaggeredFadeIn>
       </ul>

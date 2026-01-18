@@ -23,18 +23,23 @@ export default function PageWithMapVertical({
         // Check if element is inside a footer
         const isInFooter = element.closest("footer") !== null;
 
+        // Check if element should be hidden from nav
+        const isHiddenFromNav = element.getAttribute("data-nav-hidden") === "true";
+
         if (
           id &&
           !id.startsWith("headlessui-") &&
           !id.startsWith("radix-") &&
           !id.startsWith("__") &&
+          !id.startsWith("gradient") &&
           !id.startsWith("_") &&
           id !== "_R_" &&
           id.length > 2 &&
           !/^\d+$/.test(id) &&
           !/^\d+-\d+$/.test(id) && // Exclude timestamp-like IDs (e.g., 1762951177499-0)
           id !== "root" &&
-          !isInFooter // Exclude footer elements
+          !isInFooter && // Exclude footer elements
+          !isHiddenFromNav // Exclude elements marked as hidden from nav
         ) {
           // Check for custom navpoint name in data attribute
           const customName = element.getAttribute("data-navpoint-name");

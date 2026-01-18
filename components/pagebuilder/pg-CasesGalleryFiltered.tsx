@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams } from "next/navigation";
 import { client } from "@/sanity/lib/client";
-import { CASE_STUDIES_QUERY } from "@/sanity/lib/queries";
+import { CASE_STUDIES_QUERY, CASE_STUDIES_BY_IDS_QUERY } from "@/sanity/lib/queries";
 import GridBackground from "@/components/ui/GridBackground";
 import CaseGalleryComponent from "@/components/data/data-CaseGallery";
 import { getTranslations } from "@/lib/translations";
@@ -28,12 +28,20 @@ interface CaseStudy {
   websiteUrlText?: string;
 }
 
+interface SelectedCaseReference {
+  _ref: string;
+  _type: "reference";
+  _key?: string;
+}
+
 interface CasesGalleryFilteredProps {
   showGridBackground?: boolean;
   showFilters?: boolean;
   paddingY?: string;
   marginBottom?: string;
   navPointName?: string;
+  selectionMode?: "auto" | "manual";
+  selectedCases?: SelectedCaseReference[];
 }
 
 function CasesGalleryFiltered({
@@ -42,6 +50,8 @@ function CasesGalleryFiltered({
   paddingY = "16",
   marginBottom = "16",
   navPointName,
+  selectionMode = "auto",
+  selectedCases = [],
 }: CasesGalleryFilteredProps) {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
@@ -52,30 +62,56 @@ function CasesGalleryFiltered({
   const [isLoading, setIsLoading] = useState(true);
   const [filterAllText, setFilterAllText] = useState<string>("");
 
+  // Create a stable primitive string from selectedCases to use as dependency
+  // This prevents infinite loops since primitives are compared by value
+  const selectedCasesRaw = selectedCases?.map((ref) => ref._ref).filter(Boolean) || [];
+  const selectedCaseIdsKey = selectedCasesRaw.join(",");
+
+  // Parse the stable key to an array for use in fetch
+  const selectedCaseIds = useMemo(() => {
+    if (!selectedCaseIdsKey) return [];
+    return selectedCaseIdsKey.split(",");
+  }, [selectedCaseIdsKey]);
+
   // Set the "All" filter text once translations are loaded
   useEffect(() => {
     setFilterAllText(t.casesList.filterAll);
     setActiveFilter(t.casesList.filterAll);
   }, [t.casesList.filterAll]);
 
-  // Fetch case studies
+  // Fetch case studies based on selection mode
   useEffect(() => {
     const fetchCaseStudies = async () => {
       try {
         setIsLoading(true);
-        // Get channel from cookie or default
-        const channel =
-          document.cookie
-            .split("; ")
-            .find((row) => row.startsWith("channel="))
-            ?.split("=")[1] || "1spWeb";
 
-        const data = await client.fetch(CASE_STUDIES_QUERY, {
-          channel,
-          language: locale,
-        });
+        if (selectionMode === "manual" && selectedCaseIds.length > 0) {
+          // Manual mode: fetch only selected cases by IDs
+          const data = await client.fetch(CASE_STUDIES_BY_IDS_QUERY, {
+            ids: selectedCaseIds,
+          });
 
-        setCaseStudies(data || []);
+          // Preserve the order from Sanity (drag-and-drop order)
+          const orderedData = selectedCaseIds
+            .map((id) => data?.find((c: CaseStudy) => c._id === id))
+            .filter(Boolean) as CaseStudy[];
+
+          setCaseStudies(orderedData);
+        } else {
+          // Auto mode: fetch all published cases
+          const channel =
+            document.cookie
+              .split("; ")
+              .find((row) => row.startsWith("channel="))
+              ?.split("=")[1] || "1spWeb";
+
+          const data = await client.fetch(CASE_STUDIES_QUERY, {
+            channel,
+            language: locale,
+          });
+
+          setCaseStudies(data || []);
+        }
       } catch (error) {
         console.error("Error fetching case studies:", error);
       } finally {
@@ -84,7 +120,8 @@ function CasesGalleryFiltered({
     };
 
     fetchCaseStudies();
-  }, [locale]);
+    // Use the stable string key instead of the array to prevent infinite loops
+  }, [locale, selectionMode, selectedCaseIdsKey]);
 
   // Extract unique services with both name and taglabel
   const serviceMap = new Map<string, { name: string; taglabel: string }>();
@@ -133,11 +170,11 @@ function CasesGalleryFiltered({
     <div
       id={sectionId}
       data-navpoint-name={navPointName}
-      className={`grid grid-cols-12 z-1 mx-auto container ${marginClass} relative font-aspekta`}
+      className={`grid grid-cols-12 z-1 mx-auto  container ${marginClass} relative font-aspekta`}
     >
       {showGridBackground && <GridBackground />}
       <div
-        className={`z-1 grid gap-8 col-span-12 ${paddingClass} col-start-1 container mx-auto row-start-1 grid-cols-12`}
+        className={`z-1 grid gap-responsive col-span-12 ${paddingClass} col-start-1 container row-start-1 grid-cols-12`}
       >
         <div className="z-1 col-span-12 col-start-1 px-4 md:px-0">
           {/* Filter Buttons */}

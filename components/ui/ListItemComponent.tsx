@@ -58,7 +58,7 @@ const lineColorClasses: Record<NonNullable<ListItemProps["color"]>, string> = {
   "gray-600": "bg-gray-600/40",
   "gray-700": "bg-gray-700/40",
   white: "bg-white/30",
-  black: "bg-gray-300",
+  black: "bg-gray-200",
 };
 
 function ListItemComponent({

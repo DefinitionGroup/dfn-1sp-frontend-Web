@@ -16,26 +16,19 @@ import type { Page } from "@/types/sanity.types";
 import { HeroShowtime as HeroShowtimeType } from "@/types/sanity.types";
 import ErrorBoundary from "./ErrorBoundary";
 import HeadlineChallenge from "./pagebuilder/cases/pg-HeadlineChallenge";
+import ComponentLoader from "./ui/ComponentLoader";
 
 // Dynamically import heavy components to reduce initial bundle size
 const ShowtimeGallery = dynamic(
   () => import("./pagebuilder/pg-ShowtimeGallery"),
   {
-    loading: () => (
-      <div className="w-full h-64 flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
-      </div>
-    ),
+    loading: () => <ComponentLoader />,
     ssr: true,
   }
 );
 
 const HeroShowtime = dynamic(() => import("./pagebuilder/pg-HeroShowtime"), {
-  loading: () => (
-    <div className="w-full h-64 flex items-center justify-center">
-      <div className="text-gray-400">Loading...</div>
-    </div>
-  ),
+  loading: () => <ComponentLoader />,
   ssr: true,
 });
 
@@ -48,22 +41,14 @@ const SublineComponent = dynamic(
 );
 
 const OneSPHeaderStep = dynamic(() => import("./pagebuilder/pg-Header"), {
-  loading: () => (
-    <div className="w-full h-32 flex items-center justify-center">
-      <div className="text-gray-400">Loading...</div>
-    </div>
-  ),
+  loading: () => <ComponentLoader height="h-32" />,
   ssr: true,
 });
 
 const ContentSection = dynamic(
   () => import("./pagebuilder/pg-ContentSection"),
   {
-    loading: () => (
-      <div className="w-full h-64 flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
-      </div>
-    ),
+    loading: () => <ComponentLoader />,
     ssr: true,
   }
 );
@@ -71,11 +56,7 @@ const ContentSection = dynamic(
 const TwoColContentSection = dynamic(
   () => import("./pagebuilder/pg-2ColContentSection"),
   {
-    loading: () => (
-      <div className="w-full h-64 flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
-      </div>
-    ),
+    loading: () => <ComponentLoader />,
     ssr: true,
   }
 );
@@ -84,11 +65,7 @@ const TwoColContentSection = dynamic(
 const GalleryHeroStep = dynamic(
   () => import("./pagebuilder/pg-GalleryHeroStep"),
   {
-    loading: () => (
-      <div className="w-full h-64 flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
-      </div>
-    ),
+    loading: () => <ComponentLoader />,
     ssr: true,
   }
 );
@@ -96,11 +73,7 @@ const GalleryHeroStep = dynamic(
 const GalleryCardsStep = dynamic(
   () => import("./pagebuilder/pg-GalleryCardsStep"),
   {
-    loading: () => (
-      <div className="w-full h-64 flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
-      </div>
-    ),
+    loading: () => <ComponentLoader />,
     ssr: true,
   }
 );
@@ -108,11 +81,7 @@ const GalleryCardsStep = dynamic(
 const GalleryListStep = dynamic(
   () => import("./pagebuilder/pg-GalleryListStep"),
   {
-    loading: () => (
-      <div className="w-full h-64 flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
-      </div>
-    ),
+    loading: () => <ComponentLoader />,
     ssr: true,
   }
 );
@@ -120,11 +89,7 @@ const GalleryListStep = dynamic(
 const GalleryPeopleStep = dynamic(
   () => import("./pagebuilder/pg-GalleryPeopleStep"),
   {
-    loading: () => (
-      <div className="w-full h-64 flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
-      </div>
-    ),
+    loading: () => <ComponentLoader />,
     ssr: true,
   }
 );
@@ -132,11 +97,7 @@ const GalleryPeopleStep = dynamic(
 const GalleryHighlightStep = dynamic(
   () => import("./pagebuilder/pg-GalleryHighlightStep"),
   {
-    loading: () => (
-      <div className="w-full h-64 flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
-      </div>
-    ),
+    loading: () => <ComponentLoader />,
     ssr: true,
   }
 );
@@ -144,11 +105,7 @@ const GalleryHighlightStep = dynamic(
 const GalleryRevealStep = dynamic(
   () => import("./pagebuilder/pg-GalleryRevealStep"),
   {
-    loading: () => (
-      <div className="w-full h-64 flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
-      </div>
-    ),
+    loading: () => <ComponentLoader />,
     ssr: true,
   }
 );
@@ -156,11 +113,7 @@ const GalleryRevealStep = dynamic(
 const GalleryOverviewStep = dynamic(
   () => import("./pagebuilder/pg-GalleryOverviewStep"),
   {
-    loading: () => (
-      <div className="w-full h-64 flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
-      </div>
-    ),
+    loading: () => <ComponentLoader />,
     ssr: true,
   }
 );
@@ -169,83 +122,51 @@ const GalleryOverviewStep = dynamic(
 const InteractiveCarousel = dynamic(
   () => import("./pagebuilder/pg-InteractiveCarousel"),
   {
-    loading: () => (
-      <div className="w-full h-64 flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
-      </div>
-    ),
+    loading: () => <ComponentLoader />,
     ssr: true,
   }
 );
 
 const SmartCarousel = dynamic(() => import("./pagebuilder/pg-SmartCarousel"), {
-  loading: () => (
-    <div className="w-full h-64 flex items-center justify-center">
-      <div className="text-gray-400">Loading...</div>
-    </div>
-  ),
+  loading: () => <ComponentLoader />,
   ssr: true,
 });
 
 const SmartPeople = dynamic(() => import("./data/data-SmartPeople"), {
-  loading: () => (
-    <div className="w-full h-64 flex items-center justify-center">
-      <div className="text-gray-400">Loading...</div>
-    </div>
-  ),
+  loading: () => <ComponentLoader />,
   ssr: true,
 });
 
 const SmartUnitsGallery = dynamic(
   () => import("./data/data-UnitsExpandableCards"),
   {
-    loading: () => (
-      <div className="w-full h-64 flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
-      </div>
-    ),
+    loading: () => <ComponentLoader />,
     ssr: true,
   }
 );
 
 const SmartUnitsGlobe = dynamic(() => import("./data/data-SmartUnitsGlobe"), {
-  loading: () => (
-    <div className="w-full h-64 flex items-center justify-center">
-      <div className="text-gray-400">Loading...</div>
-    </div>
-  ),
+  loading: () => <ComponentLoader />,
   ssr: true,
 });
 
 const GlobeComponent = dynamic(
   () => import("./pagebuilder/pg-GlobeComponent"),
   {
-    loading: () => (
-      <div className="w-full h-64 flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
-      </div>
-    ),
+    loading: () => <ComponentLoader />,
     ssr: true,
   }
 );
 
 const CasesIntro = dynamic(() => import("./pagebuilder/pg-CasesIntro"), {
-  loading: () => (
-    <div className="w-full h-64 flex items-center justify-center">
-      <div className="text-gray-400">Loading...</div>
-    </div>
-  ),
+  loading: () => <ComponentLoader />,
   ssr: true,
 });
 
 const CasesGalleryFiltered = dynamic(
   () => import("./pagebuilder/pg-CasesGalleryFiltered"),
   {
-    loading: () => (
-      <div className="w-full h-64 flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
-      </div>
-    ),
+    loading: () => <ComponentLoader />,
     ssr: true,
   }
 );
@@ -253,11 +174,7 @@ const CasesGalleryFiltered = dynamic(
 const CasesGalleryFilteredWithPagination = dynamic(
   () => import("./pagebuilder/pg-CasesGalleryFilteredWithPagination"),
   {
-    loading: () => (
-      <div className="w-full h-64 flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
-      </div>
-    ),
+    loading: () => <ComponentLoader />,
     ssr: true,
   }
 );
@@ -265,11 +182,7 @@ const CasesGalleryFilteredWithPagination = dynamic(
 const ServicesGalleryFiltered = dynamic(
   () => import("./pagebuilder/pg-ServicesGalleryFiltered"),
   {
-    loading: () => (
-      <div className="w-full h-64 flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
-      </div>
-    ),
+    loading: () => <ComponentLoader />,
     ssr: true,
   }
 );
@@ -277,25 +190,17 @@ const ServicesGalleryFiltered = dynamic(
 const ServicesHeroWithBadge = dynamic(
   () => import("./pagebuilder/pg-ServicesHeroWithBadge"),
   {
-    loading: () => (
-      <div className="w-full h-64 flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
-      </div>
-    ),
+    loading: () => <ComponentLoader />,
     ssr: true,
   }
 );
 
 const IntertitleCTA = dynamic(() => import("./pagebuilder/pg-IntertitleCTA"), {
-  loading: () => (
-    <div className="w-full h-32 flex items-center justify-center">
-      <div className="text-gray-400">Loading...</div>
-    </div>
-  ),
+  loading: () => <ComponentLoader height="h-32" />,
   ssr: true,
 });
 
-type PageBuilderProps = {
+type PageBuilderProps = { 
   content: NonNullable<Page["content1sp"]>;
   language?: string;
 };
@@ -444,13 +349,7 @@ export function PageBuilder({ content, language = "de" }: PageBuilderProps) {
           case "smartUnitsGlobe":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <Suspense
-                  fallback={
-                    <div className="w-full h-64 flex items-center justify-center">
-                      <div className="text-gray-400">Loading...</div>
-                    </div>
-                  }
-                >
+                <Suspense fallback={<ComponentLoader />}>
                   <SmartUnitsGlobe
                     key={key}
                     language={language}
@@ -515,3 +414,4 @@ export function PageBuilder({ content, language = "de" }: PageBuilderProps) {
     </>
   );
 }
+
