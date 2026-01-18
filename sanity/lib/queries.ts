@@ -229,6 +229,24 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
           }
         }
       }
+    },
+    _type == 'smartCarousel' => {
+      ...,
+      selectedCases[]->{
+        _id,
+        title,
+        subtitle,
+        description,
+        services[]->{_id, name},
+        mainImage,
+        mainVideo,
+        client->{
+          _id,
+          name,
+          logo
+        },
+        slug
+      }
     }
   }
 }`);
@@ -389,6 +407,24 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
             cta
           }
         }
+      }
+    },
+    _type == 'smartCarousel' => {
+      ...,
+      selectedCases[]->{
+        _id,
+        title,
+        subtitle,
+        description,
+        services[]->{_id, name},
+        mainImage,
+        mainVideo,
+        client->{
+          _id,
+          name,
+          logo
+        },
+        slug
       }
     }
   }
