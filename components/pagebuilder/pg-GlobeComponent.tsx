@@ -88,7 +88,8 @@ function GlobeComponent({ data }: GlobeComponentProps) {
         arcs={arcs}
         globeConfig={globeConfig}
         title={sectionTitle || "Our Locations"}
-        description={`Connecting ${locations.length} location${locations.length !== 1 ? "s" : ""} around the world.`}
+        //description={`Connecting ${locations.length} location${locations.length !== 1 ? "s" : ""} around the world.`}
+        description="" 
       />
     </section>
   );

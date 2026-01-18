@@ -472,6 +472,36 @@ export const CASE_STUDIES_QUERY = defineQuery(`
 }
 `);
 
+// Query for fetching specific case studies by IDs (for manual selection mode)
+export const CASE_STUDIES_BY_IDS_QUERY = defineQuery(`
+*[_type == "caseStudy" && _id in $ids && isPublished == true]{
+  _id,
+  title,
+  subtitle,
+  slug,
+  description,
+  services[]->{
+    _id,
+    name,
+    taglabel
+  },
+  mainImage,
+  isVerticalVideo,
+  mainVideo,
+  "mainImageUrl": mainImage.secure_url,
+  "mainVideoUrl": mainVideo.asset->url,
+  client->{
+    _id,
+    name,
+    logo,
+    "logoUrl": logo.secure_url
+  },
+  websiteUrl,
+  websiteUrlText,
+  publishedAt
+}
+`);
+
 export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
 *[_type == "caseStudy" && slug.current == $slug && channel match $channel && language == $language && isPublished == true][0]{
   _id,

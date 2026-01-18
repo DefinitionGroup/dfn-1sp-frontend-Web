@@ -27,6 +27,46 @@ export default defineType({
             group: "layout",
         }),
         defineField({
+            name: "selectionMode",
+            title: "Case Selection Mode",
+            type: "string",
+            description: "Choose how cases are selected for this gallery",
+            initialValue: "auto",
+            group: "content",
+            options: {
+                list: [
+                    { title: "Auto (All published cases)", value: "auto" },
+                    { title: "Manual Selection (Drag & Drop order)", value: "manual" },
+                ],
+                layout: "radio",
+            },
+        }),
+        defineField({
+            name: "selectedCases",
+            title: "Selected Cases",
+            type: "array",
+            description: "Drag and drop to reorder cases. Only used when 'Manual Selection' mode is active.",
+            group: "content",
+            hidden: ({ parent }) => parent?.selectionMode !== "manual",
+            of: [
+                {
+                    type: "reference",
+                    to: [{ type: "caseStudy" }],
+                    options: {
+                        filter: "isPublished == true",
+                    },
+                },
+            ],
+            validation: (Rule) =>
+                Rule.custom((value, context) => {
+                    const parent = context.parent as { selectionMode?: string };
+                    if (parent?.selectionMode === "manual" && (!value || value.length === 0)) {
+                        return "Please select at least one case study when using manual selection mode";
+                    }
+                    return true;
+                }),
+        }),
+        defineField({
             name: "showFilters",
             title: "Show Filter Buttons",
             type: "boolean",
@@ -69,10 +109,19 @@ export default defineType({
         }),
     ],
     preview: {
-        prepare() {
+        select: {
+            selectionMode: "selectionMode",
+            selectedCases: "selectedCases",
+        },
+        prepare({ selectionMode, selectedCases }) {
+            const mode = selectionMode === "manual" ? "Manual" : "Auto";
+            const count = selectedCases?.length || 0;
+            const subtitle = selectionMode === "manual"
+                ? `${mode} - ${count} case${count !== 1 ? "s" : ""} selected`
+                : `${mode} - All published cases`;
             return {
                 title: "Cases Gallery with Filters",
-                subtitle: "Displays all case studies with service filtering",
+                subtitle,
                 media: FiGrid,
             };
         },

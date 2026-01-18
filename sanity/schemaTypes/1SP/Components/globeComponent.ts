@@ -21,10 +21,10 @@ export default defineType({
         }),
         defineField({
             name: 'sectionTitle',
-            title: 'Section Title (for ID generation)',
+            title: 'Section Title',
             type: 'string',
-            description: 'Used to generate the section ID. If you want a custom nav name, use Navigation Point Name above.',
-            group: 'navigation',
+            description: 'The title displayed above the globe. Also used to generate the section ID for navigation.',
+            group: 'content',
         }),
         defineField({
             name: 'locations',

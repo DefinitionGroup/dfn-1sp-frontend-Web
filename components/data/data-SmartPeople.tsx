@@ -1,7 +1,8 @@
-import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import { client } from "@/sanity/lib/client";
 import { SMART_PEOPLE_QUERY } from "@/sanity/lib/queries";
-import PersonCard from "../ui/PersonCard";
+import PeopleShowcaseHero, {
+  type MemberItem,
+} from "@/components/pagebuilder/Fragments/pg-PeopleShowcaseHero";
 
 type CloudinaryAsset = {
   _type?: string;
@@ -60,26 +61,21 @@ export default async function SmartPeople({
     );
   }
 
-  // Determine grid layout based on number of people
-  const getGridClass = () => {
-    const count = people.length;
-    if (count === 1) return "grid-cols-1";
-    if (count === 2) return "grid-cols-2";
-    if (count === 3) return "grid-cols-3";
-    if (count === 4) return "grid-cols-2 md:grid-cols-4";
-    if (count === 5) return "grid-cols-3 md:grid-cols-5";
-    // 6 or more
-    return "grid-cols-3 md:grid-cols-4 lg:grid-cols-6";
-  };
+  // Transform Person[] to MemberItem[] for PeopleShowcaseHero
+  const members: MemberItem[] = people.map((person) => ({
+    name: person.name,
+    media: (person.video || person.image) as MemberItem["media"],
+    altText: person.altText,
+    fullname: person.fullname,
+    email: person.email,
+    profileUrl: person.profileUrl,
+    position: person.position,
+  }));
 
   return (
-    <section className="w-full  py-8" data-component="smart-people">
-      <div className="container mx-auto px-4 ">
-        <StaggeredSlideUp className={`grid ${getGridClass()} gap-[2px] `}>
-          {people.map((person, index) => (
-            <PersonCard key={person._id} person={person} index={index} />
-          ))}
-        </StaggeredSlideUp>
+    <section className="w-full py-8" data-component="smart-people">
+      <div className="container mx-auto px-4">
+        <PeopleShowcaseHero members={members} />
       </div>
     </section>
   );
