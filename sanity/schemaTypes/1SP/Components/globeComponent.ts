@@ -20,6 +20,14 @@ export default defineType({
             group: 'navigation',
         }),
         defineField({
+            name: 'hideFromNav',
+            title: 'Hide from Navigation',
+            type: 'boolean',
+            description: 'If enabled, this section will not appear in the vertical navigation minimap.',
+            initialValue: false,
+            group: 'navigation',
+        }),
+        defineField({
             name: 'sectionTitle',
             title: 'Section Title',
             type: 'string',
