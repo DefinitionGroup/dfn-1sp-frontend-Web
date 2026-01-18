@@ -13,13 +13,6 @@ const aspekta = localFont({
   weight: "50 1000",
 });
 
-const nyghtserif = localFont({
-  src: [{ path: "./fonts/NyghtSerif-Regular.woff2", style: "normal" }],
-  variable: "--font-nyghtserif",
-  display: "swap",
-  weight: "400 700",
-});
-
 export const metadata: Metadata = {
   title: "Rotpunkt Küchen AI Image Generator",
   description: "Generate your dream kitchen images with AI",
@@ -34,7 +27,7 @@ export default function RootLayout({
     <ViewTransitions>
       <html
         lang="en"
-        className={`${aspekta.variable} ${nyghtserif.variable}`}
+        className={`${aspekta.variable} `}
         suppressHydrationWarning
       >
         <body className="antialiased" suppressHydrationWarning>

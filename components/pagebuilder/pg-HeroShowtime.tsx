@@ -55,7 +55,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
 
       <div className="z-1 grid col-span-12 py-section gap-responsive col-start-1 container-responsive row-start-1 grid-cols-12">
         {/* Left column */}
-        <div className="col-span-12 md:col-span-5  col-start-1 flex flex-col px-4 md:px-8 justify-center  col-start-1">
+        <div className="col-span-12 md:col-span-8 lg:col-span-5  col-start-1 flex flex-col px-4 md:px-8 justify-center  ">
           <StaggeredSlideUp
             className="flex flex-col items-start  justify-center"
             delay={0.5}
@@ -64,7 +64,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
             distance={80}
           >
             {heading ? (
-              <h2 className="text-4xl md:text-6xl font-aspekta font-semibold leading-none pb-2">
+              <h2 className="text-4xl md:text-6xl font-aspekta  leading-none pb-2">
                 <MixedType text={heading} />
               </h2>
             ) : null}

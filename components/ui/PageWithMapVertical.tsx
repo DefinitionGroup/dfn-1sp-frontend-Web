@@ -28,6 +28,7 @@ export default function PageWithMapVertical({
           !id.startsWith("headlessui-") &&
           !id.startsWith("radix-") &&
           !id.startsWith("__") &&
+          !id.startsWith("gradient") &&
           !id.startsWith("_") &&
           id !== "_R_" &&
           id.length > 2 &&

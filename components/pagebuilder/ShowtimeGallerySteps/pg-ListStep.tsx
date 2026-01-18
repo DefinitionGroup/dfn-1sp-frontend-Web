@@ -383,7 +383,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                 distance={80}
               >
                 {(staggeredHeader as any)?.title && (
-                  <h2 className="text-9xl text-gray-100 max-w-xl font-nyghtserif font-semibold tracking-tight leading-compress mb-4 pb-8">
+                  <h2 className="text-9xl text-gray-100 max-w-xl tracking-tight border border-red-500 leading-compress mb-4 pb-8">
                     {(staggeredHeader as any).title}
                   </h2>
                 )}
