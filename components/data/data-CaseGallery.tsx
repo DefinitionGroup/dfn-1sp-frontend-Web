@@ -153,7 +153,7 @@ export default function CaseGalleryComponent({
                       layoutId={`logo-${active.title}-${id}`}
                       src={active.client.logoUrl}
                       alt={active.title}
-                      className={`w-24 h-20 object-contain invert ${variant === "light" ? "invert" : ""}`}
+                      className={`w-32 h-20 object-contain invert ${variant === "light" ? "invert" : ""}`}
                     />
                   )}
 
