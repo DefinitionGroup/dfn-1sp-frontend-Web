@@ -135,7 +135,8 @@ export default defineConfig({
     presentationTool({
       resolve: { locations, mainDocuments },
       previewUrl: {
-        initial: process.env.SANITY_STUDIO_PREVIEW_ORIGIN,
+        origin: process.env.SANITY_STUDIO_PREVIEW_ORIGIN ||
+          (typeof window === 'undefined' ? undefined : window.location.origin),
         preview: '/',
         previewMode: {
           enable: '/api/draft-mode/enable',
