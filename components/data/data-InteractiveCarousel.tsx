@@ -282,9 +282,9 @@ export default function SmartCarousel({
     <section className="px-2 sm:px-4 md:px-0">
       <div
         ref={containerRef}
-        className="container relative top-0 mx-auto w-full"
+        className=" relative top-0 mx-auto w-full"
       >
-        <div className="relative h-[60vh] sm:h-[70vh] md:h-[800px] flex items-start">
+        <div className="relative h-[60vh] sm:h-[70vh]  md:h-[800px] flex items-start">
           {/* Main Carousel */}
           <div className="relative w-full rounded-xl overflow-hidden h-full perspective-1000">
             <AnimatePresence initial={false} custom={direction}>
@@ -384,6 +384,7 @@ export default function SmartCarousel({
                             variant="limesmall"
                             href={active.linkHref}
                             text="View Case Study"
+                            magnetic={false}
                           />
                         )}
                       </motion.div>
@@ -415,7 +416,7 @@ export default function SmartCarousel({
 
           {/* Navigation Arrows (match Plaintext classes) */}
           <motion.button
-            className="hidden md:flex absolute -left-12 top-1/2 -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm rounded-xs items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
+            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm rounded-xs items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => paginate(-1)}
@@ -436,7 +437,7 @@ export default function SmartCarousel({
           </motion.button>
 
           <motion.button
-            className="hidden md:flex absolute -right-12 top-1/2 -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm rounded-xs items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
+            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm rounded-xs items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => paginate(1)}

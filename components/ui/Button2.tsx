@@ -11,6 +11,7 @@ interface Button2Props {
   className?: string;
   href?: string;
   variant?: "default" | "black" | "lime" | "limesmall" | "limesmallrounded";
+  magnetic?: boolean;
 }
 
 const variantStyles: Record<
@@ -45,7 +46,7 @@ const variantStyles: Record<
   },
 };
 
-function Button2({ text, className, href, variant = "default" }: Button2Props) {
+function Button2({ text, className, href, variant = "default", magnetic = true }: Button2Props) {
   const isExternal = !!href && /^(https?:|mailto:|tel:)/.test(href);
   const router = useOptimizedTransitionRouter();
   const safeVariant: NonNullable<Button2Props["variant"]> =
@@ -81,8 +82,10 @@ function Button2({ text, className, href, variant = "default" }: Button2Props) {
     </div>
   );
 
+  const Wrapper = magnetic ? MagneticButton : "div";
+
   return (
-    <MagneticButton className={containerClass}>
+    <Wrapper className={containerClass}>
       {isExternal ? (
         <>
           <Link
@@ -130,7 +133,7 @@ function Button2({ text, className, href, variant = "default" }: Button2Props) {
           </Link>
         </>
       )}
-    </MagneticButton>
+    </Wrapper>
   );
 }
 
