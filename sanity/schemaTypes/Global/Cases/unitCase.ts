@@ -95,6 +95,20 @@ export default defineType({
             group: 'media',
         },
         {
+            name: "logoColor",
+            title: "Logo Color",
+            type: "cloudinary.asset",
+            description: "Upload a colored version of the unit's logo",
+            group: 'media',
+        },
+        {
+            name: "logoSignet",
+            title: "Logo Signet",
+            type: "cloudinary.asset",
+            description: "Upload the unit's logo signet/icon",
+            group: 'media',
+        },
+        {
             name: "backgroundImage",
             title: "Unit Background Image",
             type: "cloudinary.asset",

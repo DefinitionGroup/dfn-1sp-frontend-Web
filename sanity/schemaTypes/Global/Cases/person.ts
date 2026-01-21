@@ -206,6 +206,23 @@ export default defineType({
             group: 'relations'
         },
         {
+            name: 'unit',
+            title: 'Business Unit',
+            type: 'reference',
+            to: [{ type: 'unit' }],
+            options: {
+                filter: ({ document }: { document: any }) => {
+                    const currentLanguage = document?.language || 'de';
+                    return {
+                        filter: '_type == "unit" && language == $language',
+                        params: { language: currentLanguage }
+                    };
+                }
+            },
+            description: 'The business unit this person belongs to. The unit\'s logo signet will be displayed on their profile.',
+            group: 'relations'
+        },
+        {
             name: 'channel',
             title: 'Channel',
             type: 'array',

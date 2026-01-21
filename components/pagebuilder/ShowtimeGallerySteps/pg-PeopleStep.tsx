@@ -21,6 +21,11 @@ type Member = {
   profileUrl?: string;
   tagline?: string;
   channel?: string[];
+  unit?: {
+    _id?: string;
+    name?: string;
+    logoSignet?: CloudinaryAsset | null;
+  } | null;
 };
 
 type PeopleHeader = {
