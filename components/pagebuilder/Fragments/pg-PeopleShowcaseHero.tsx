@@ -16,6 +16,11 @@ export interface MemberItem {
   email?: string;
   profileUrl?: string;
   position?: string;
+  unit?: {
+    _id?: string;
+    name?: string;
+    logoSignet?: CloudinaryAsset | null;
+  } | null;
 }
 
 function isVideoUrl(url?: string) {
@@ -92,6 +97,18 @@ function PeopleShowcaseHero({
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
                     className="object-cover transition-all duration-300 group-hover:brightness-110 "
                   />
+                )}
+                {/* Unit Logo Signet */}
+                {member.unit?.logoSignet && (
+                  <div className="absolute top-3 left-3 w-14 h-14 z-10">
+                    <Image
+                      src={assetUrl(member.unit.logoSignet as any) || ""}
+                      alt={member.unit.name || "Unit logo"}
+                      fill
+                      sizes="40px"
+                      className="object-contain drop-shadow-lg"
+                    />
+                  </div>
                 )}
                 <div className="absolute inset-0 hidden bg-gradient-to-t from-black/70 via-black/60 to-black/65 opacity-0 md:flex md:opacity-0 md:group-hover:opacity-100 rounded-xs transition-opacity duration-300 flex-col justify-end p-4">
                   <StaggeredFadeIn

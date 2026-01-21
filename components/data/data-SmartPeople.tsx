@@ -32,6 +32,11 @@ type Person = {
   tagline?: string;
   channel?: string[];
   language?: string;
+  unit?: {
+    _id?: string;
+    name?: string;
+    logoSignet?: CloudinaryAsset | null;
+  } | null;
 };
 
 interface SmartPeopleProps {
@@ -70,6 +75,7 @@ export default async function SmartPeople({
     email: person.email,
     profileUrl: person.profileUrl,
     position: person.position,
+    unit: person.unit,
   }));
 
   return (

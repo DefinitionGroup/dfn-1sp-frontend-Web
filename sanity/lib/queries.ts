@@ -73,7 +73,12 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
             email,
             profileUrl,
             tagline,
-            channel
+            channel,
+            unit->{
+              _id,
+              name,
+              logoSignet
+            }
           }
         },
         _type == 'galleryScrollHighlightStep' => {
@@ -173,7 +178,12 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
         email,
         profileUrl,
         tagline,
-        channel
+        channel,
+        unit->{
+          _id,
+          name,
+          logoSignet
+        }
       }
     },
     _type == 'galleryScrollHighlightStep' => {
@@ -306,7 +316,12 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
             email,
             profileUrl,
             tagline,
-            channel
+            channel,
+            unit->{
+              _id,
+              name,
+              logoSignet
+            }
           }
         },
         _type == 'galleryScrollHighlightStep' => {
@@ -370,7 +385,12 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
         email,
         profileUrl,
         tagline,
-        channel
+        channel,
+        unit->{
+          _id,
+          name,
+          logoSignet
+        }
       }
     },
     _type == 'galleryScrollHighlightStep' => {
@@ -676,7 +696,12 @@ export const SMART_PEOPLE_QUERY = defineQuery(`
   tagline,
   channel,
   language,
-  smartPeoplePromo1SP
+  smartPeoplePromo1SP,
+  unit->{
+    _id,
+    name,
+    logoSignet
+  }
 }
 `);
 
