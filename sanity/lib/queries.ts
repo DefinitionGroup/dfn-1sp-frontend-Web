@@ -257,6 +257,30 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
         },
         slug
       }
+    },
+    _type == 'unitLogoGrid' => {
+      ...,
+      selectedUnits[]->{
+        _id,
+        _type,
+        name,
+        slug,
+        logo,
+        logoColor,
+        logoSignet,
+        cta{
+          ...,
+          link{
+            ...,
+            linkType,
+            externalUrl,
+            page->{
+              _id,
+              slug
+            }
+          }
+        }
+      }
     }
   }
 }`);
@@ -445,6 +469,30 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
           logo
         },
         slug
+      }
+    },
+    _type == 'unitLogoGrid' => {
+      ...,
+      selectedUnits[]->{
+        _id,
+        _type,
+        name,
+        slug,
+        logo,
+        logoColor,
+        logoSignet,
+        cta{
+          ...,
+          link{
+            ...,
+            linkType,
+            externalUrl,
+            page->{
+              _id,
+              slug
+            }
+          }
+        }
       }
     }
   }
