@@ -764,3 +764,32 @@ export const getInteractiveCarouselQuery = (carouselField: string) => `
   slug
 }
 `;
+
+export const UNIT_LOGO_GRID_QUERY = defineQuery(`
+*[
+  _type == "unit" && 
+  isActive == true &&
+  language == $language &&
+  defined(cta.link)
+] | order(name asc) [0...$maxItems] {
+  _id,
+  _type,
+  name,
+  slug,
+  logo,
+  logoColor,
+  logoSignet,
+  cta{
+    ...,
+    link{
+      ...,
+      linkType,
+      externalUrl,
+      page->{
+        _id,
+        slug
+      }
+    }
+  }
+}
+`);
