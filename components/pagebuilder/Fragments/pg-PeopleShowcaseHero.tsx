@@ -100,13 +100,13 @@ function PeopleShowcaseHero({
                 )}
                 {/* Unit Logo Signet */}
                 {member.unit?.logoSignet && (
-                  <div className="absolute top-3 left-2 w-32 h-10 z-10">
+                  <div className="absolute top-4 left-4  w-32 h-7 z-10">
                     <Image
                       src={assetUrl(member.unit.logoSignet as any) || ""}
                       alt={member.unit.name || "Unit logo"}
                       fill
                       sizes="40px"
-                      className="object-contain object-position-left relative border block left-0"
+                      className="object-contain object-left border  relative border block left-0"
                     />
                   </div>
                 )}

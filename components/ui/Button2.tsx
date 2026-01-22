@@ -19,8 +19,8 @@ const variantStyles: Record<
   { top: string; bottom: string; container: string }
 > = {
   default: {
-    top: "border-white/20 text-white  fill-white p-4",
-    bottom: "border-slate-100 bg-slate-100  text-slate-900 ",
+    top: "border-white/20 text-white!  fill-white p-4",
+    bottom: "border-slate-100 bg-slate-100  text-white! text-slate-900 ",
     container: "h-15",
   },
   black: {
@@ -34,14 +34,14 @@ const variantStyles: Record<
     container: "h-12",
   },
   limesmall: {
-    top: "border-lime-500/30 bg-lime-400 text-neutral-900  px-4 py-2 ",
-    bottom: "border-neutral-800 bg-neutral-800 text-white px-4  py-2 ",
+    top: "border-lime-500/30 bg-lime-400 text-neutral-900! px-4 py-2 ",
+    bottom: "border-neutral-800 bg-neutral-800 text-white! px-4  py-2 ",
     container: "h-9",
   },
   limesmallrounded: {
-    top: "border-lime-500/30 text-xxs rounded-full bg-lime-400 text-neutral-900 px-2 py-1 ",
+    top: "border-lime-500/30 text-xxs rounded-full bg-lime-400 text-black! px-2 py-1 ",
     bottom:
-      "border-neutral-800 text-xxs rounded-full  bg-neutral-800   text-white px-2 py-1 ",
+      "border-neutral-800 text-xxs rounded-full  bg-neutral-800   text-white! px-2 py-1 ",
     container: "h-9",
   },
 };

@@ -37,13 +37,16 @@ function ScrollHighlightItem({
       initial={false}
       animate={{
         opacity: isHighlighted ? 1 : 0.5,
-        scale: isHighlighted ? 1.00 : 1,
+        scale: isHighlighted ? 1.20 : 1,
         x: isHighlighted ? 0 : 0,
         transformOrigin: "left",
       }}
-      transition={{ type: "spring", duration: 0.15, }}
+      transition={{ type: "spring", duration: 0.5, }}
       onViewportEnter={() => onHighlight(index)}
-      onClick={() => onHighlight(index)}
+      onClick={(e) => {
+        e.stopPropagation();
+        onOpenModal(skill);
+      }}
       viewport={{ margin: "-35% 0px -40% 0px", amount: "some", once: false }}
     >
 

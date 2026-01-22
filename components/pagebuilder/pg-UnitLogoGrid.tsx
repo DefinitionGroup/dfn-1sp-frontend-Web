@@ -201,14 +201,14 @@ function UnitLogoGrid({ data, language: propLanguage }: UnitLogoGridProps) {
                     href={href}
                     target={unit.cta?.link?.linkType === "external" ? "_blank" : undefined}
                     rel={unit.cta?.link?.linkType === "external" ? "noopener noreferrer" : undefined}
-                    className={`group flex items-center justify-center p-4 md:p-4  ${bgClass} transition-all duration-300`}
+                    className={`group flex items-center justify-center hover:bg-black/10  cursor-pointer p-4 md:p-4  ${bgClass} transition-all duration-300`}
                   >
                     <div className="relative w-full aspect-[3/2] flex cursor-pointer items-center justify-center overflow-hidden">
                       <Image
                         src={logoUrl}
                         alt={unit.name || "Unit logo"}
                         fill
-                        className={`object-contain object-left transition-all duration-300 group-hover:scale-95 ${
+                        className={`object-contain transition-all duration-300   group-hover:scale-80 ${
                           isDarkBg
                             ? "opacity-90 group-hover:opacity-100"
                             : "opacity-90 group-hover:opacity-100 dark:brightness-0 dark:invert"
