@@ -168,7 +168,8 @@ export default defineType({
                 { type: 'smartPeople' },
                 { type: 'smartUnitsGallery' },
                 { type: 'smartUnitsGlobe' },
-                { type: 'globeComponent' }
+                { type: 'globeComponent' },
+                { type: 'unitLogoGrid' }
             ],
             hidden: ({ parent }: any) => parent?.channel !== '1spWeb',
         }),

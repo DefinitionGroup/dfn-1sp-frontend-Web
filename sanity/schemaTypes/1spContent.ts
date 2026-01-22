@@ -23,6 +23,7 @@ import smartPeople from "./1SP/Components/smartPeople";
 import smartUnitsGallery from "./1SP/Components/smartUnitsGallery";
 import smartUnitsGlobe from "./1SP/Components/smartUnitsGlobe";
 import globeComponent from "./1SP/Components/globeComponent";
+import unitLogoGrid from "./1SP/Components/unitLogoGrid";
 import heroAdditionalContent from "./1SP/Objects/heroAdditionalContent";
 import slideUpContent from "./1SP/Objects/slideUpContent";
 import galleryStep from "./1SP/Objects/galleryStep";
@@ -72,7 +73,8 @@ const oneSPComponents = [
     smartPeople,
     smartUnitsGallery,
     smartUnitsGlobe,
-    globeComponent
+    globeComponent,
+    unitLogoGrid
 ];
 const oneSPItems = [
     badgeModule,

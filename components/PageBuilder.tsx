@@ -200,6 +200,11 @@ const IntertitleCTA = dynamic(() => import("./pagebuilder/pg-IntertitleCTA"), {
   ssr: true,
 });
 
+const UnitLogoGrid = dynamic(() => import("./pagebuilder/pg-UnitLogoGrid"), {
+  loading: () => <ComponentLoader />,
+  ssr: true,
+});
+
 type PageBuilderProps = { 
   content: NonNullable<Page["content1sp"]>;
   language?: string;
@@ -404,6 +409,12 @@ export function PageBuilder({ content, language = "de" }: PageBuilderProps) {
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <HeadlineChallenge key={key} {...block} />
+              </ErrorBoundary>
+            );
+          case "unitLogoGrid":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <UnitLogoGrid key={key} data={block as any} language={language} />
               </ErrorBoundary>
             );
 
