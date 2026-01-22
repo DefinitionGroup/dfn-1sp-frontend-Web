@@ -125,7 +125,7 @@ export default function HighlightStep({
       )}
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 pt-16 sm:pt-32 md:pt-64 pb-24 sm:pb-48 md:pb-96">
+        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 pt-16 pb-16">
           {/* Left column: sticky badge + controls */}
           <div className="col-span-4 sm:col-span-3 md:col-span-2 mb-8 md:mb-0 md:sticky md:top-24 self-start flex flex-col gap-4">
             {step.badge && (
@@ -148,7 +148,7 @@ export default function HighlightStep({
                 />
                 <CtaMiniComponent
                   {...({
-                    className: "text-white",
+                    className: "text-white ",
                     heading: cta?.heading,
                     paragraph: cta?.paragraph,
                     buttonText: cta?.buttonText,
@@ -175,7 +175,7 @@ export default function HighlightStep({
 
                 <CtaMiniComponent
                   {...({
-                    className: "text-white font-regular line-height-normal",
+                    className: "font-regular line-height-normal",
                     heading: cta?.paragraph,
 
                     buttonText: cta?.buttonText,
