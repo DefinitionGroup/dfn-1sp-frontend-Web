@@ -30,6 +30,8 @@ interface UnitLogoGridProps {
     columns?: 3 | 4 | 5 | 6;
     maxItems?: number;
     navPointName?: string;
+    selectionMode?: "auto" | "manual";
+    selectedUnits?: Unit[];
   };
   language?: string;
 }
@@ -45,6 +47,8 @@ function UnitLogoGrid({ data, language: propLanguage }: UnitLogoGridProps) {
     columns = 4,
     maxItems = 20,
     navPointName,
+    selectionMode = "auto",
+    selectedUnits: preSelectedUnits,
   } = data || {};
 
   const [units, setUnits] = React.useState<Unit[]>([]);
@@ -53,6 +57,14 @@ function UnitLogoGrid({ data, language: propLanguage }: UnitLogoGridProps) {
   React.useEffect(() => {
     async function fetchUnits() {
       try {
+        // Manual mode: use pre-selected units directly
+        if (selectionMode === "manual" && preSelectedUnits && preSelectedUnits.length > 0) {
+          setUnits(preSelectedUnits);
+          setIsLoading(false);
+          return;
+        }
+
+        // Auto mode: fetch units from database
         const fetchedUnits = await client.fetch<Unit[]>(
           UNIT_LOGO_GRID_QUERY,
           { language, maxItems: maxItems - 1 },
@@ -67,7 +79,7 @@ function UnitLogoGrid({ data, language: propLanguage }: UnitLogoGridProps) {
       }
     }
     fetchUnits();
-  }, [language, maxItems]);
+  }, [language, maxItems, selectionMode, preSelectedUnits]);
 
   if (!headline) return null;
 
@@ -189,17 +201,17 @@ function UnitLogoGrid({ data, language: propLanguage }: UnitLogoGridProps) {
                     href={href}
                     target={unit.cta?.link?.linkType === "external" ? "_blank" : undefined}
                     rel={unit.cta?.link?.linkType === "external" ? "noopener noreferrer" : undefined}
-                    className={`group flex items-center justify-center p-4 md:p-2  ${bgClass} transition-all duration-300`}
+                    className={`group flex items-center justify-center p-4 md:p-4  ${bgClass} transition-all duration-300`}
                   >
                     <div className="relative w-full aspect-[3/2] flex cursor-pointer items-center justify-center overflow-hidden">
                       <Image
                         src={logoUrl}
                         alt={unit.name || "Unit logo"}
                         fill
-                        className={`object-contain object-left transition-all duration-300 group-hover:scale-110 ${
+                        className={`object-contain object-left transition-all duration-300 group-hover:scale-95 ${
                           isDarkBg
-                            ? "opacity-50 group-hover:opacity-100"
-                            : "opacity-70 group-hover:opacity-100 dark:brightness-0 dark:invert"
+                            ? "opacity-90 group-hover:opacity-100"
+                            : "opacity-90 group-hover:opacity-100 dark:brightness-0 dark:invert"
                         }`}
                         sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 16vw"
                         unoptimized
