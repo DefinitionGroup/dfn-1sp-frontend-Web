@@ -7,25 +7,36 @@ export default defineType({
     type: 'object',
     icon: BsGrid,
     description: 'Displays a grid of unit logos with links to their websites',
+    groups: [
+        { name: 'content', title: 'Content', default: true },
+        { name: 'layout', title: 'Layout' },
+        { name: 'selection', title: 'Selection' },
+        { name: 'navigation', title: 'Navigation' },
+    ],
     fields: [
+        // CONTENT
         defineField({
             name: 'headline',
             title: 'Headline',
             type: 'string',
             description: 'Main headline for this section',
+            group: 'content',
             validation: (Rule) => Rule.required().min(1).max(100)
         }),
         defineField({
             name: 'subheadline',
             title: 'Subheadline',
             type: 'string',
-            description: 'Optional supporting subheadline text'
+            description: 'Optional supporting subheadline text',
+            group: 'content',
         }),
+        // LAYOUT
         defineField({
             name: 'logoVariant',
             title: 'Logo Variant',
             type: 'string',
             description: 'Which logo version to display',
+            group: 'layout',
             options: {
                 list: [
                     { title: 'Logo Color', value: 'logoColor' },
@@ -41,6 +52,7 @@ export default defineType({
             title: 'Grid Columns',
             type: 'number',
             description: 'Number of columns in the grid',
+            group: 'layout',
             options: {
                 list: [
                     { title: '3 Columns', value: 3 },
@@ -51,11 +63,13 @@ export default defineType({
             },
             initialValue: 4
         }),
+        // SELECTION
         defineField({
             name: 'selectionMode',
             title: 'Unit Selection Mode',
             type: 'string',
             description: 'Choose how units are selected for this grid',
+            group: 'selection',
             initialValue: 'auto',
             options: {
                 list: [
@@ -70,6 +84,7 @@ export default defineType({
             title: 'Maximum Items',
             type: 'number',
             description: 'Maximum number of units to display',
+            group: 'selection',
             initialValue: 20,
             hidden: ({ parent }) => parent?.selectionMode === 'manual',
             validation: (Rule) => Rule.min(1).max(50)
@@ -79,6 +94,7 @@ export default defineType({
             title: 'Selected Units',
             type: 'array',
             description: 'Drag and drop to reorder units. Only used when "Manual Selection" mode is active.',
+            group: 'selection',
             hidden: ({ parent }) => parent?.selectionMode !== 'manual',
             of: [
                 {
@@ -98,11 +114,21 @@ export default defineType({
                     return true;
                 }),
         }),
+        // NAVIGATION
         defineField({
             name: 'navPointName',
             title: 'Navigation Point Name',
             type: 'string',
-            description: 'Optional name for navigation anchor links'
+            description: 'Optional name for navigation anchor links',
+            group: 'navigation',
+        }),
+        defineField({
+            name: 'hideFromNav',
+            title: 'Hide from Navigation',
+            type: 'boolean',
+            description: 'If enabled, this section will not appear in the vertical navigation minimap.',
+            group: 'navigation',
+            initialValue: false,
         })
     ],
     preview: {
