@@ -108,6 +108,14 @@ export default defineType({
             group: "content",
         }),
         defineField({
+            name: "challengeTitle",
+            title: "Challenge Title",
+            type: "string",
+            description: "Custom title for the Challenge section. If empty, defaults to 'Challenge'.",
+            hidden: ({ parent }) => parent?.contentType !== "challenges" || !parent?.showContent,
+            group: "content",
+        }),
+        defineField({
             name: "services",
             title: "Services",
             type: "array",
@@ -149,9 +157,25 @@ export default defineType({
         defineField({
             name: "solution",
             title: "Solution Text",
-            type: "text",
-            description: "Solution description text",
-            rows: 6,
+            type: "array",
+            of: [
+                {
+                    type: "block",
+                    styles: [
+                        { title: "Normal", value: "normal" },
+                    ],
+                    lists: [
+                        { title: "Bullet", value: "bullet" },
+                    ],
+                    marks: {
+                        decorators: [
+                            { title: "Bold", value: "strong" },
+                            { title: "Italic", value: "em" },
+                        ],
+                    },
+                },
+            ],
+            description: "Solution description text (rich text)",
             hidden: ({ parent }) => !parent?.showSolution,
             group: "content",
         }),

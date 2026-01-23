@@ -30,6 +30,7 @@ interface UnitLogoGridProps {
     columns?: 3 | 4 | 5 | 6;
     maxItems?: number;
     navPointName?: string;
+    hideFromNav?: boolean;
     selectionMode?: "auto" | "manual";
     selectedUnits?: Unit[];
   };
@@ -47,6 +48,7 @@ function UnitLogoGrid({ data, language: propLanguage }: UnitLogoGridProps) {
     columns = 4,
     maxItems = 20,
     navPointName,
+    hideFromNav = false,
     selectionMode = "auto",
     selectedUnits: preSelectedUnits,
   } = data || {};
@@ -140,6 +142,7 @@ function UnitLogoGrid({ data, language: propLanguage }: UnitLogoGridProps) {
     <section
       id={sectionId}
       {...navPointDataAttr}
+      {...(hideFromNav ? { "data-nav-hidden": "true" } : {})}
       className="relative py-16 md:py-24"
     >
       <div className="container mx-auto px-4">

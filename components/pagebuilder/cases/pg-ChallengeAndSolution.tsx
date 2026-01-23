@@ -11,6 +11,8 @@ import { getTranslations } from "@/lib/translations";
 import { useParams } from "next/navigation";
 import { resolveLink } from "@/utils/utils";
 import type { CTA } from "@/types/sanity.types";
+import { PortableText } from "@portabletext/react";
+import type { PortableTextBlock } from "@portabletext/types";
 
 interface Service {
   _id: string;
@@ -26,6 +28,7 @@ interface ChallengeAndSolutionProps {
   contentType?: "challenges" | "services";
   showContent?: boolean;
   challengeDescription?: string;
+  challengeTitle?: string;
   challenges?: string[];
   services?: Service[];
   showCta?: boolean;
@@ -35,12 +38,48 @@ interface ChallengeAndSolutionProps {
   showButton?: boolean;
   showSolution?: boolean;
   solutionHeadline?: string;
-  solution?: string;
+  solution?: PortableTextBlock[] | string;
   showGridBackground?: boolean;
   backgroundColor?: string;
   paddingY?: string;
   navPointName?: string;
   hideFromNav?: boolean;
+}
+
+// Helper to check if solution is Portable Text array
+function isPortableText(value: unknown): value is PortableTextBlock[] {
+  return Array.isArray(value) && value.length > 0 && typeof value[0] === 'object' && '_type' in value[0];
+}
+
+// Render solution content - handles both string and Portable Text
+function SolutionContent({ solution }: { solution: PortableTextBlock[] | string }) {
+  if (isPortableText(solution)) {
+    return (
+      <div className="text-sm sm:text-base text-gray-800 max-w-lg leading-relaxed prose prose-sm prose-gray">
+        <PortableText value={solution} />
+      </div>
+    );
+  }
+  
+  // Handle legacy string format - split by newlines and render as list if bullet points detected
+  const lines = String(solution).split('\n').filter(line => line.trim());
+  const hasBullets = lines.some(line => line.trim().startsWith('•'));
+  
+  if (hasBullets) {
+    return (
+      <ul className="text-sm sm:text-base text-gray-800 max-w-lg leading-relaxed space-y-2 list-disc list-inside">
+        {lines.map((line, idx) => (
+          <li key={idx}>{line.replace(/^•\s*/, '')}</li>
+        ))}
+      </ul>
+    );
+  }
+  
+  return (
+    <p className="text-sm sm:text-base text-gray-800 max-w-lg leading-relaxed">
+      {solution}
+    </p>
+  );
 }
 
 export default function ChallengeAndSolution({
@@ -52,6 +91,7 @@ export default function ChallengeAndSolution({
   contentType = "challenges",
   showContent = true,
   challengeDescription,
+  challengeTitle,
   challenges = [],
   services = [],
   showCta = true,
@@ -81,8 +121,8 @@ export default function ChallengeAndSolution({
 
   // Check if we have content to display
   const hasContentItems =
-    (contentType === "services" && services.length > 0) ||
-    (contentType === "challenges" && challenges.length > 0);
+    (contentType === "services" && (services ?? []).length > 0) ||
+    (contentType === "challenges" && (challenges ?? []).length > 0);
 
   // Determine if CTA section should be rendered
   const shouldShowCta = showCta && showContent && hasContentItems;
@@ -153,7 +193,7 @@ export default function ChallengeAndSolution({
                       heading={
                         ctaHeading ||
                         (contentType === "challenges"
-                          ? t.caseStudy.challenge
+                          ? (challengeTitle || t.caseStudy.challenge)
                           : t.caseStudy.services)
                       }
                       paragraph={
@@ -211,9 +251,7 @@ export default function ChallengeAndSolution({
                       <h3 className="text-xl sm:text-2xl leading-tight text-gray-900 max-w-lg font-semibold tracking-tight mb-4 md:mb-6">
                         {solutionHeadline || t.caseStudy.solution}
                       </h3>
-                      <p className="text-sm sm:text-base text-gray-800 max-w-lg leading-relaxed">
-                        {solution}
-                      </p>
+                      <SolutionContent solution={solution} />
                     </StaggeredSlideUp>
                   )}
                 </div>
@@ -233,9 +271,7 @@ export default function ChallengeAndSolution({
                   <h3 className="text-xl sm:text-2xl leading-tight text-gray-900 max-w-lg font-semibold tracking-tight mb-4 md:mb-6">
                     {solutionHeadline || t.caseStudy.solution}
                   </h3>
-                  <p className="text-sm sm:text-base text-gray-800 max-w-lg leading-relaxed">
-                    {solution}
-                  </p>
+                  <SolutionContent solution={solution} />
                 </StaggeredSlideUp>
               </div>
             )}
