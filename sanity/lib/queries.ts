@@ -655,6 +655,7 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
     contentType,
     showContent,
     challengeDescription,
+    challengeTitle,
     challenges,
     services[]->{_id, name},
     showCta,
