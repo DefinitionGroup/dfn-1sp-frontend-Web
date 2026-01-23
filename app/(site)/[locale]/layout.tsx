@@ -9,7 +9,7 @@ import { TransitionLoader } from "@/components/TransitionLoader";
 // Removed localFont imports and variables — font classes should be applied in root layout
 
 import NoiseOverlay from "@/components/ui/NoiseOverlay";
-
+import ScrollToTop from "@/components/ui/ScrollToTop";
 
 export const metadata: Metadata = {
   title: "1SP Agency",
@@ -31,6 +31,7 @@ export default async function SiteLayout({
       <NoiseOverlay />
 
       <TransitionLoader />
+      <ScrollToTop />
       {children}
       <SanityLive />
       <StegaErrorHandler />

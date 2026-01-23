@@ -81,7 +81,7 @@ function GalleryHeroStepComponent(props: Props) {
         {/* Background grid (optional visual helper) */}
         <GridBackground delay={0.2} staggerDelay={0.06} />
 
-        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 py-16 sm:py-24 lg:py-32">
+        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 pt-16 sm:pt-24 lg:pt-32 pb-6 sm:pb-8 lg:pb-12">
           {/* Badge - Responsive positioning */}
           {step.badge && (
             <div className="col-span-4 sm:col-span-3 md:col-span-2 mb-6 md:mb-0">
