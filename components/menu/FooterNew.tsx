@@ -25,16 +25,16 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
       <footer className={`bg-neutral-900 text-neutral-200 mt-5 md:mt-12 py-6 sm:py-8 ${className}`}>
         <div className="container mx-auto px-4 sm:px-6">
           {/* Top border line */}
-          <div className="w-full h-px bg-neutral-600 mb-6 sm:mb-8"></div>
+       
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-12 gap-6 sm:gap-8 min-h-[120px] lg:min-h-[163px]">
             {/* Company Logo */}
             <div className="col-span-2 sm:col-span-4 lg:col-span-3 flex flex-col justify-center gap-3 mb-4 lg:mb-0">
               <Image
                 src={menuData?.imageCloud?.secure_url || "/1sp-fallback.svg"}
                 alt="Logo"
-                width={146}
-                height={79}
-                className="w-[80px] h-auto sm:w-[120px] lg:w-[146px]"
+                width={120}
+                height={64}
+                className="  w-[120px] h-[64px]"
               />
             </div>
 
@@ -42,7 +42,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
             {menuData?.footerColumns && menuData.footerColumns.length > 0 ? (
               menuData.footerColumns.map((column) => (
                 <div key={column._key} className="col-span-1 sm:col-span-2 lg:col-span-2">
-                  <h3 className="text-xs sm:text-sm text-neutral-300 mb-3 sm:mb-4">
+                  <h3 className="text-xs sm:text-sm font-bold text-neutral-300 mb-3 sm:mb-4">
                     {column.title}
                   </h3>
                   <div className="space-y-1.5 sm:space-y-2">
@@ -154,48 +154,18 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
       </footer>
 
       {/* Footer Bottom */}
-      <div className="bg-neutral-900 text-gray-400 border-t pb-6 sm:pb-8 border-gray-800">
+      <div className="bg-neutral-900 text-gray-400 border-t pb-6 sm:pb-8 border-neutral-800">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
           <div className="flex flex-col gap-6 sm:gap-3 lg:flex-row lg:justify-between lg:items-start lg:gap-20">
 
 
             {/* Main Content */}
-            <div className="flex  sm:grid-cols-2 gap-6 sm:gap-8 lg:flex lg:gap-16 flex-1">
+            <div className="flex  sm:grid-cols-2  flex-1">
               {/* Company Info */}
-              <div className=" flex  gap-2  w-full lg:w-auto">
+              <div className=" flex w-full lg:w-auto">
 
-                <div className="space-y-3 sm:space-y-4 w-2/3 max-w-1/2 md:w-2/3   ">
-
-                  <React.Fragment >
-                    <h3 className="text-gray-400 text-[13px] sm:text-[15px] font-medium mb-3 sm:mb-4">
-                      1SP Agency Holding GmbH
-                    </h3>
-                    <div className="mb-3">
-                      <p className="text-gray-400 text-[11px] sm:text-[13px] leading-relaxed">
-
-                        represented by the Managing Directors  <br />Markus Ernst Oeller and Torsten Oppermann
-                        <br />
-                        Hamburger Straße 11 <br />22083 Hamburg
-
-                      </p>
-                    </div>
-
-                    <div className="pb-2 sm:pb-3">
-                      <p className="text-gray-400 text-[10px] sm:text-[11px] leading-relaxed whitespace-pre-line">
-
-                        Telephone: +49 (451) 160 83 500<br />
-
-                        Fax: +49 (451) 30 50 988<br />
-
-                        Mail: info@msm.digital
-                      </p>
-                    </div>
-
-                  </React.Fragment>
-
-
-                </div>
-                <div className="flex gap-4 w-1/3   ">
+        
+                <div className="flex gap-4 w-1/2 items-center justify-center  ">
                   {menuData?.socialLinks && menuData.socialLinks.length > 0 ? (
                     menuData.socialLinks
                       .filter((s) => !!s?.url)
@@ -209,13 +179,16 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                           aria-label={social.name || "social"}
                         >
                           {social.icon?.secure_url && (
+                            <div className="flex items-center gap-2">
                             <Image
                               src={social.icon.secure_url}
                               alt={social.name || "social"}
-                              width={24}
-                              height={24}
+                              width={64}
+                              height={64}
                               className="w-full h-full object-contain"
                             />
+                            <p className="text-xs text-white">{social.name || "social"}</p>
+                            </div>
                           )}
                         </Link>
                       ))
@@ -285,8 +258,8 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
 
           {/* Copyright */}
           {menuData?.copyright && (
-            <div className="mt-6 sm:mt-8 pt-4 border-t border-gray-800">
-              <p className="text-gray-500 text-[10px] sm:text-xs text-center">
+            <div className="mt-2  ">
+              <p className="text-gray-500 text-[10px] sm:text-xs text-left">
                 {menuData.copyright}
               </p>
             </div>
