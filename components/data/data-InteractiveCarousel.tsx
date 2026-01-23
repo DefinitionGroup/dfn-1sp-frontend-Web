@@ -351,11 +351,11 @@ export default function SmartCarousel({
                       }}
                     >
                       <div>
-                        {(active.logosrc || "/logos/Amazon_logo.svg") && (
+                        {(active.logosrc || "") && (
                           <motion.div className="mb-2 sm:mb-4 max-h-6 sm:max-h-8 w-auto text-black flex items-start text-xs rounded-xs">
                             <Image
                               className="invert h-5 sm:h-6 md:h-8 w-auto"
-                              src={active.logosrc || "/logos/Amazon_logo.svg"}
+                              src={active.logosrc || ""}
                               alt="Logo"
                               width={120}
                               height={32}
