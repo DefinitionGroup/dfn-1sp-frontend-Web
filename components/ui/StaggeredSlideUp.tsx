@@ -134,7 +134,7 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
     <div ref={ref} className={className} data-stagger-id={id}>
       {debug && (
         <div
-          className={`fixed top-4 right-4 z-50 px-3 py-1 rounded text-xs font-mono ${shouldAnimate ? "bg-green-500" : "bg-red-500"
+          className={`fixed top-4 right-4 z-50 px-3 py-1  text-xs font-mono ${shouldAnimate ? "bg-green-500" : "bg-red-500"
             } text-white`}
         >
           {shouldAnimate ? "IN VIEW" : "OUT OF VIEW"}

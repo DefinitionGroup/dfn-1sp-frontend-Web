@@ -50,17 +50,17 @@ export default function HeadlineChallenge({
               <StaggeredSlideUp
                 delay={0.59}
                 staggerDelay={0.03}
-                distance={100}
-                className="max-w-full md:max-w-2/3 lg:max-w-3/4 py-16 "
+                distance={12}
+                className="max-w-full md:max-w-2/3  lg:max-w-3/4 py-16 "
               >
-                <h2 className="text-sm sm:text-base lg:text-lg tracking-tight leading-none text-neutral-400  font-medium font-aspekta">
+                <h2 className="text-sm sm:text-base lg:text-lg tracking-tight leading-tighter text-neutral-400  font-medium font-aspekta">
                   {headline}
                 </h2>
-                <h3 className="text-4xl md:text-4xl tracking-tight lg:text-5xl text-neutral-700 leading-tight sm:leading-none font-aspekta">
+                <h3 className="text-4xl md:text-4xl tracking-tight leading-tight lg:text-5xl text-neutral-700   font-aspekta">
                   {title}
                 </h3>
                 {description && (
-                  <h2 className="text-4xl md:text-4xl lg:text-5xl tracking-tight text-neutral-300 pb-2 sm:pb-3 leading-none font-aspekta">
+                  <h2 className="text-4xl md:text-4xl lg:text-5xl tracking-tight leading-tighter text-neutral-300 pb-2 sm:pb-3 leading-none font-aspekta">
                     {description}
                   </h2>
                 )}

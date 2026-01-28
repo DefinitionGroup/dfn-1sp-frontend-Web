@@ -133,7 +133,7 @@ export default function CaseGalleryComponent({
 
               </motion.div>
 
-              <div className="flex justify-between absolute items-start m-8 pt-8 z-10 ">
+              <div className="flex justify-between w-full  absolute items-start p-8 pt-8 z-10 ">
 
                 <motion.button
                   key={`button-${active.title}-${id}`}
@@ -141,7 +141,7 @@ export default function CaseGalleryComponent({
                   initial={{ opacity: 1 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 1, transition: { duration: 0.05 } }}
-                  className="flex absolute top-2  right-2 lg items-center hover:cursor-pointer overflow-hidden justify-around rounded-full h-6 w-6 z-100"
+                  className="flex absolute top-4  right-4 lg items-center hover:cursor-pointer overflow-hidden justify-around rounded-full h-6 w-6 z-100"
                   onClick={() => setActive(null)}
                   aria-label="Close"
                 >
