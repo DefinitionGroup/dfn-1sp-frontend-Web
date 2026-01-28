@@ -51,7 +51,7 @@ function ScrollHighlightItem({
     >
 
       <motion.div
-        className="relative  w-full  md:w-1/3 md:pr-4"
+        className="relative  w-3/4  md:w-1/3 md:pr-4"
 
       >{isHighlighted && skill.image && (
 
@@ -60,7 +60,7 @@ function ScrollHighlightItem({
             src={skill.image}
             alt={skill.name || "Service background"}
             fill
-            className="rounded-lg  w-full object-cover "
+            className="rounded-lg  w-3/4 md:w-full object-cover "
           />
         </motion.div>)}
       </motion.div>
@@ -71,7 +71,7 @@ function ScrollHighlightItem({
 
         {isHighlighted && skill.text && (
           <motion.p
-            className="skill-description mb-4  text-base"
+            className="skill-description mb-4  text-xs  md:text-base w-3/4  "
             layout
             initial={{ opacity: 0, y: 0, x: 0 }}
             animate={{ opacity: 1, y: 0, x: 0 }}
