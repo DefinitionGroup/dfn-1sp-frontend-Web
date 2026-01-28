@@ -478,7 +478,7 @@ export default function SmartCarousel({
         </div>
 
         {/* Thumbnail Strip (match Plaintext absolute positioning) */}
-        <div className="absolute flex justify-center w-full  bottom-16 md:bottom-[64px] z-30 px-2">
+        <div className="absolute flex justify-center w-full hidden md:block bottom-16 max-w-[100%] overflow-x-scroll   md:bottom-[64px] z-30 px-2">
           <div
             ref={stripRef}
             className={`flex justify-center mt-4 sm:mt-8 space-x-1.5 sm:space-x-2 md:space-x-4 pt-2 sm:pt-4 md:pb-4 ${isScrollable ? "overflow-x-auto scrollbar-hide" : ""}`}
