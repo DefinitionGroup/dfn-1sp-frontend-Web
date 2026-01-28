@@ -100,7 +100,7 @@ function PeopleShowcaseHero({
                 )}
                 {/* Unit Logo Signet */}
                 {member.unit?.logoSignet && (
-                  <div className="absolute top-4 left-4  w-32 h-7 z-10">
+                  <div className="absolute top-4 left-4  w-12 h-12 z-10">
                     <Image
                       src={assetUrl(member.unit.logoSignet as any) || ""}
                       alt={member.unit.name || "Unit logo"}
@@ -115,7 +115,7 @@ function PeopleShowcaseHero({
                     className="flex flex-col"
                     triggerOnView={false}
                     delay={0}
-                    staggerDelay={0.1}
+                    staggerDelay={0.05}
                     animate={
                       hoveredMember ===
                         (member.name || member.fullname || String(index))

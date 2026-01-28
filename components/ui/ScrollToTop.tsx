@@ -58,6 +58,7 @@ export default function ScrollToTop({
             transition-all duration-200 ease-out
             cursor-pointer
             ${className}`}
+          style={{ zIndex: 9999 }}
           aria-label="Scroll to top"
         >
           <ArrowUp size={16} weight="regular" />
