@@ -5,6 +5,20 @@ import { useState, useRef, useId, useEffect } from "react";
 import Image from "next/image";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 
+// Hook to detect mobile screen
+function useIsMobile(breakpoint: number = 768) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < breakpoint);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, [breakpoint]);
+
+  return isMobile;
+}
+
 export interface SkillItem {
   name?: string;
   text?: string;
@@ -23,12 +37,14 @@ function ScrollHighlightItem({
   isHighlighted,
   onHighlight,
   onOpenModal,
+  isMobile,
 }: {
   skill: SkillItem;
   index: number;
   isHighlighted: boolean;
   onHighlight: (index: number) => void;
   onOpenModal: (skill: SkillItem) => void;
+  isMobile: boolean;
 }) {
   const id = useId();
   return (
@@ -37,7 +53,7 @@ function ScrollHighlightItem({
       initial={false}
       animate={{
         opacity: isHighlighted ? 1 : 0.5,
-        scale: isHighlighted ? 1.20 : 1,
+        scale: isMobile ? 1 : (isHighlighted ? 1.20 : 1),
         x: isHighlighted ? 0 : 0,
         transformOrigin: "left",
       }}
@@ -47,15 +63,21 @@ function ScrollHighlightItem({
         e.stopPropagation();
         onOpenModal(skill);
       }}
-      viewport={{ margin: "-35% 0px -40% 0px", amount: "some", once: false }}
+      viewport={{ margin: isMobile ? "-20% 0px -20% 0px" : "-35% 0px -40% 0px", amount: "some", once: false }}
     >
 
       <motion.div
         className="relative  w-3/4  md:w-1/3 md:pr-4"
 
-      >{isHighlighted && skill.image && (
+      >{skill.image && (isMobile || isHighlighted) && (
 
-        <motion.div layout initial={{ opacity: 0, y: -22 }} animate={{ opacity: 1, y: 0 }} transition={{ type: "spring", }} className="skill-image pr-4 mb-8">
+        <motion.div
+          layout={!isMobile}
+          initial={isMobile ? { opacity: 0.3, scale: 0.8 } : { opacity: 0, y: -22 }}
+          animate={isMobile ? { opacity: isHighlighted ? 1 : 0.3, scale: isHighlighted ? 1 : 0.8 } : { opacity: 1, y: 0 }}
+          transition={{ type: "spring", duration: isMobile ? 2.5 : 1.5 }}
+          className="skill-image pr-4 mb-8"
+        >
           <Image
             src={skill.image}
             alt={skill.name || "Service background"}
@@ -103,6 +125,7 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
   const [activeModal, setActiveModal] = useState<SkillItem | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const id = useId();
+  const isMobile = useIsMobile();
 
   useOutsideClick(modalRef, () => setActiveModal(null));
 
@@ -235,6 +258,7 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
             isHighlighted={activeSkill === index}
             onHighlight={() => setActiveSkill(index)}
             onOpenModal={(skill) => setActiveModal(skill)}
+            isMobile={isMobile}
           />
         ))}
       </ul>
