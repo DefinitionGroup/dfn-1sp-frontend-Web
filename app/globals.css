@@ -69,9 +69,9 @@
   --color-blue-600: oklch(0.6 0.22 240);
 
   /* Typography Scale - From Figma Design */
-  --font-size-xxs: 0.5rem;
-  --font-size-xs: 0.75rem;
-  --font-size-sm: 0.875rem;
+  --font-size-xxs: 0.64rem;
+  --font-size-xs: 0.875rem;
+  --font-size-sm: 0.9375rem;
   --font-size-base: 1rem;
   --font-size-md: 1.125rem;
   --font-size-lg: 1.25rem;
@@ -85,8 +85,8 @@
   --font-size-8xl: 9rem;
   --font-size-9xl: 10rem;
 
-  --text-xxs: 0.625rem;
-  --text-xs: 0.75rem;
+  --text-xxs: 0.64rem;
+  --text-xs: 0.875rem;
 
   /* Line Heights - From Figma Design */
   --line-height-tight: 0.87;
