@@ -174,7 +174,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
                 className={[
                   "text-neutral-50",
                   sizeToClass[size] || "text-base",
-                  i === 0 ? "lg:max-w-1/2 text-sm " : "",
+                  i === 0 ? "lg:max-w-1/2 " : "",
                 ].join(" ")}
               >
                 {highlightInline(text, highlight)}
