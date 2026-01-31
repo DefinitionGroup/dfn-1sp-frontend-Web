@@ -1,12 +1,30 @@
-import { sanityFetch } from "@/sanity/lib/live";
-import {
-  NAVBAR_QUERY,
-  FOOTER_QUERY,
-  HAS_CASE_STUDIES_QUERY,
-  CASE_STUDIES_QUERY,
-  HAS_SERVICES_QUERY,
-  SERVICES_QUERY,
-} from "@/sanity/lib/queries";
+/**
+ * SiteWrapper Component
+ * =====================
+ *
+ * This component wraps all pages and provides:
+ * - Navigation (FrontNavOverlay)
+ * - Footer
+ * - Page layout (PageWithMapVertical)
+ * - Footer context for child components
+ *
+ * ## Performance Optimization (January 2026)
+ *
+ * Previously: Made 6 separate Sanity API calls:
+ * - NAVBAR_QUERY
+ * - FOOTER_QUERY
+ * - HAS_CASE_STUDIES_QUERY
+ * - CASE_STUDIES_QUERY
+ * - HAS_SERVICES_QUERY
+ * - SERVICES_QUERY
+ *
+ * Now: Makes 1 consolidated API call via `getGlobalData()`.
+ * This reduces network round trips by ~83%.
+ *
+ * The `hasCaseStudies` and `hasServices` flags are now derived
+ * from the array lengths (cases.length > 0).
+ */
+import { getGlobalData } from "@/lib/sanity/queries";
 import FrontNavOverlay from "./menu/FrontNavOverlay";
 import Footer from "./menu/FooterNew";
 import { NavbarMenu, FooterMenu } from "@/types/menu.types";
@@ -26,56 +44,36 @@ export default async function SiteWrapper({
   language = "en",
   navColor = "light",
 }: SiteWrapperProps) {
-  // Fetch navbar data
-  const { data: navbarData } = await sanityFetch({
-    query: NAVBAR_QUERY,
-    params: { channel, language },
-  });
+  // ==========================================================================
+  // SINGLE CONSOLIDATED FETCH
+  // ==========================================================================
+  // This replaces 6 separate queries with 1 optimized query.
+  // The `getGlobalData` function uses React's cache() for deduplication,
+  // so if this component is rendered multiple times in the same request,
+  // only 1 API call is made.
+  const { nav, footer, cases, services } = await getGlobalData(
+    channel,
+    language
+  );
 
-  // Fetch footer data
-  const { data: footerData } = await sanityFetch({
-    query: FOOTER_QUERY,
-    params: { channel, language },
-  });
-
-  // Check if case studies exist for this channel and language
-  const { data: hasCaseStudies } = await sanityFetch({
-    query: HAS_CASE_STUDIES_QUERY,
-    params: { channel, language },
-  });
-
-  // Fetch case studies for the navigation overlay
-  const { data: caseStudies } = await sanityFetch({
-    query: CASE_STUDIES_QUERY,
-    params: { channel, language },
-  });
-
-  // Check if services exist for this language
-  const { data: hasServices } = await sanityFetch({
-    query: HAS_SERVICES_QUERY,
-    params: { language },
-  });
-
-  // Fetch services for the navigation overlay
-  const { data: services } = await sanityFetch({
-    query: SERVICES_QUERY,
-    params: { language },
-  });
+  // Derive boolean flags from array lengths (replaces HAS_* queries)
+  const hasCaseStudies = cases.length > 0;
+  const hasServices = services.length > 0;
 
   return (
-    <FooterMenuProvider menu={footerData as FooterMenu}>
+    <FooterMenuProvider menu={footer as FooterMenu}>
       <PageWithMapVertical>
         <FrontNavOverlay
-          menuData={navbarData as NavbarMenu}
+          menuData={nav as NavbarMenu}
           color={navColor}
           locale={language}
-          hasCaseStudies={hasCaseStudies || false}
-          caseStudies={caseStudies || []}
-          hasServices={hasServices || false}
+          hasCaseStudies={hasCaseStudies}
+          caseStudies={cases || []}
+          hasServices={hasServices}
           services={services || []}
         />
         {children}
-        <Footer menuData={footerData as FooterMenu} />
+        <Footer menuData={footer as FooterMenu} />
       </PageWithMapVertical>
     </FooterMenuProvider>
   );

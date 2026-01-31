@@ -1,5 +1,14 @@
-import { sanityFetch } from "@/sanity/lib/live";
-import { PAGE_QUERY } from "@/sanity/lib/queries";
+/**
+ * Services Page
+ * =============
+ *
+ * Displays the services overview page with PageBuilder content.
+ *
+ * ## Performance Optimization (January 2026)
+ *
+ * Uses `getPageBySlug()` for cached data fetching.
+ */
+import { getPageBySlug } from "@/lib/sanity/queries";
 import { cookies } from "next/headers";
 import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
@@ -18,10 +27,8 @@ export default async function ServicesPage({
   const { locale } = await params;
   const language = locale || "en";
 
-  const { data: page } = await sanityFetch({
-    query: PAGE_QUERY,
-    params: { slug: "services", channel, language },
-  });
+  // Uses cached fetch from centralized data layer
+  const page = await getPageBySlug("services", channel, language);
 
   const navbarVariant = page?.navbarVariant || "light";
 

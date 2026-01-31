@@ -1,10 +1,19 @@
+/**
+ * Contact Page
+ * ============
+ *
+ * Displays the contact page with PageBuilder content and contact form.
+ *
+ * ## Performance Optimization (January 2026)
+ *
+ * Uses `getPageBySlug()` for cached data fetching.
+ */
 import { cookies } from "next/headers";
 import { PageBuilder } from "@/components/PageBuilder";
 import SiteWrapper from "@/components/SiteWrapper";
 import NotFound from "@/components/ui/not-found";
 import ContactForm from "@/components/ui/ContactForm";
-import { sanityFetch } from "@/sanity/lib/live";
-import { PAGE_QUERY } from "@/sanity/lib/queries";
+import { getPageBySlug } from "@/lib/sanity/queries";
 
 export const revalidate = 60;
 
@@ -18,10 +27,8 @@ export default async function ContactPage({
   const channel = cookieStore.get("channel")?.value || "1spWeb";
   const language = locale || "en";
 
-  const { data: page } = await sanityFetch({
-    query: PAGE_QUERY,
-    params: { slug: "contact", channel, language },
-  });
+  // Uses cached fetch from centralized data layer
+  const page = await getPageBySlug("contact", channel, language);
 
   if (!page) {
     return (

@@ -1,3 +1,40 @@
+/**
+ * Sanity Revalidation Webhook Handler
+ * ====================================
+ *
+ * This endpoint receives webhooks from Sanity when content changes,
+ * and invalidates the appropriate cached data.
+ *
+ * ## How Revalidation Works in Next.js
+ *
+ * Next.js has two main revalidation strategies:
+ *
+ * ### 1. Path-based (`revalidatePath`)
+ * - Invalidates a specific URL
+ * - Good for: "The /en/about page changed"
+ * - Limitation: Doesn't invalidate shared data used across multiple pages
+ *
+ * ### 2. Tag-based (`revalidateTag`)
+ * - Invalidates all cached fetches with a specific tag
+ * - Good for: "All data tagged 'global' should be refreshed"
+ * - Benefits: More surgical, works for shared data
+ *
+ * ## Our Tag Strategy
+ *
+ * | Tag | What it covers |
+ * |-----|----------------|
+ * | `global` | Nav, footer, cases for nav, services for nav |
+ * | `pages` | All page content |
+ * | `page:${slug}` | Specific page by slug |
+ * | `cases` | All case study content |
+ * | `case:${slug}` | Specific case study |
+ * | `services` | All services |
+ *
+ * ## Performance Optimization (January 2026)
+ *
+ * Changed from broad `revalidatePath("/", "layout")` calls to
+ * targeted `revalidateTag()` calls for better performance.
+ */
 import { revalidatePath, revalidateTag } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
 import { parseBody } from "next-sanity/webhook";
@@ -89,92 +126,150 @@ export async function POST(req: NextRequest) {
 }
 
 async function handleRevalidation(body: SanityWebhookBody) {
-    const { _type, slug, language, channel } = body;
+    const { _type, slug, language } = body;
+    const revalidatedTags: string[] = [];
+    const revalidatedPaths: string[] = [];
 
-    console.log(`Revalidating content: ${_type} (${language}/${channel})`);
+    console.log(`[Revalidate] Processing: ${_type}${slug?.current ? ` (${slug.current})` : ""} [${language || "all"}]`);
 
-    // Revalidate based on document type
+    // ==========================================================================
+    // TAG-BASED REVALIDATION
+    // ==========================================================================
+    // Tags are more surgical than paths - they invalidate only fetches that
+    // were tagged with that specific tag, regardless of which page they're on.
+
     switch (_type) {
         case "page":
-            // Revalidate specific page if slug is available
+            // Invalidate page-specific cache
+            revalidateTag("pages");
+            revalidatedTags.push("pages");
+
+            if (slug?.current) {
+                revalidateTag(`page:${slug.current}`);
+                revalidatedTags.push(`page:${slug.current}`);
+            }
+
+            // Also invalidate path for this specific page
             if (slug?.current && language) {
                 revalidatePath(`/${language}/${slug.current}`);
-                console.log(`Revalidated page: /${language}/${slug.current}`);
-            }
-            // Also revalidate the locale home page
-            if (language) {
-                revalidatePath(`/${language}`);
+                revalidatedPaths.push(`/${language}/${slug.current}`);
             }
             break;
 
         case "case":
-            // Revalidate cases pages
-            if (slug?.current && language) {
-                revalidatePath(`/${language}/cases/${slug.current}`);
-                console.log(`Revalidated case: /${language}/cases/${slug.current}`);
+        case "caseStudy":
+            // Case studies affect: their own page + nav overlay + any page showing cases
+            revalidateTag("cases");
+            revalidateTag("global"); // Cases appear in nav overlay
+            revalidatedTags.push("cases", "global");
+
+            if (slug?.current) {
+                revalidateTag(`case:${slug.current}`);
+                revalidatedTags.push(`case:${slug.current}`);
+
+                if (language) {
+                    revalidatePath(`/${language}/cases/${slug.current}`);
+                    revalidatedPaths.push(`/${language}/cases/${slug.current}`);
+                }
             }
-            // Revalidate cases overview
+
+            // Invalidate cases listing page
             if (language) {
                 revalidatePath(`/${language}/cases`);
+                revalidatedPaths.push(`/${language}/cases`);
             }
             break;
 
         case "person":
-            // Revalidate people pages
+            // Team members appear on pages via PageBuilder components
+            revalidateTag("people");
+            revalidatedTags.push("people");
+
             if (slug?.current && language) {
                 revalidatePath(`/${language}/people/${slug.current}`);
-                console.log(`Revalidated person: /${language}/people/${slug.current}`);
-            }
-            // Revalidate people overview
-            if (language) {
-                revalidatePath(`/${language}/people`);
+                revalidatedPaths.push(`/${language}/people/${slug.current}`);
             }
             break;
 
         case "service":
-            // Revalidate service pages
-            if (slug?.current && language) {
-                revalidatePath(`/${language}/services/${slug.current}`);
-                console.log(`Revalidated service: /${language}/services/${slug.current}`);
-            }
-            // Revalidate services overview
+        case "services":
+            // Services affect: their own page + nav overlay + any page showing services
+            revalidateTag("services");
+            revalidateTag("global"); // Services appear in nav overlay
+            revalidatedTags.push("services", "global");
+
             if (language) {
                 revalidatePath(`/${language}/services`);
+                revalidatedPaths.push(`/${language}/services`);
             }
             break;
 
         case "serviceGroup":
-            // Service groups affect multiple pages
+            // Service groups affect service listings
+            revalidateTag("services");
+            revalidatedTags.push("services");
+
             if (language) {
                 revalidatePath(`/${language}/services`);
+                revalidatedPaths.push(`/${language}/services`);
             }
             break;
 
         case "menu":
-            // Menu changes affect all pages
+            // Menu changes affect navigation across ALL pages
+            // This is the one case where we need broad invalidation
+            revalidateTag("global");
+            revalidatedTags.push("global");
+
+            // Also invalidate layout to refresh nav/footer everywhere
             if (language) {
                 revalidatePath(`/${language}`, "layout");
+                revalidatedPaths.push(`/${language} (layout)`);
+            } else {
+                revalidatePath("/", "layout");
+                revalidatedPaths.push("/ (layout)");
             }
             break;
 
         case "siteSettings":
         case "globalSettings":
-            // Global changes - revalidate everything
+            // Global changes affect everything - this is the nuclear option
+            revalidateTag("global");
+            revalidateTag("pages");
+            revalidateTag("cases");
+            revalidateTag("services");
+            revalidatedTags.push("global", "pages", "cases", "services");
+
             revalidatePath("/", "layout");
-            console.log("Revalidated all pages (global settings changed)");
+            revalidatedPaths.push("/ (layout)");
+            break;
+
+        case "unit":
+            // Units appear in various components
+            revalidateTag("units");
+            revalidatedTags.push("units");
+            break;
+
+        case "client":
+            // Clients are referenced in case studies
+            revalidateTag("cases");
+            revalidatedTags.push("cases");
             break;
 
         default:
-            // For any other document type, revalidate all pages of that language
+            // For unknown document types, be conservative and invalidate pages
+            revalidateTag("pages");
+            revalidatedTags.push("pages");
+
             if (language) {
                 revalidatePath(`/${language}`, "layout");
-            } else {
-                // If no language specified, revalidate everything
-                revalidatePath("/", "layout");
+                revalidatedPaths.push(`/${language} (layout)`);
             }
     }
 
-    // Always revalidate the home page as many documents can affect it
-    revalidatePath("/en");
-    revalidatePath("/de");
+    // Log what was revalidated for debugging
+    console.log(`[Revalidate] Tags: [${revalidatedTags.join(", ")}]`);
+    if (revalidatedPaths.length > 0) {
+        console.log(`[Revalidate] Paths: [${revalidatedPaths.join(", ")}]`);
+    }
 }
