@@ -32,12 +32,7 @@ export default function RootLayout({
       >      
       
       <head>
-        {process.env.DEVMODE === "true" && (
-          <script
-            crossOrigin="anonymous"
-            src="//unpkg.com/react-scan/dist/auto.global.js"
-          />
-        )}
+   
      
       </head>
         <body className="antialiased" suppressHydrationWarning>
