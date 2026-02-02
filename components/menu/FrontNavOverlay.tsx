@@ -96,6 +96,31 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
     setDetectedTheme(effectiveColor);
   }, [effectiveColor]);
 
+  // Disable body scroll when overlay is open
+  React.useEffect(() => {
+    if (showOverlay) {
+      // Get current scroll position
+      const scrollY = window.scrollY;
+      
+      // Prevent scrolling on both html and body
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+      
+      // Cleanup: restore scroll when overlay closes
+      return () => {
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [showOverlay]);
+
   const textColor =
     detectedTheme === "dark" ? "text-neutral-800 " : "text-neutral-50 ";
   const imageLogo =
@@ -326,7 +351,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       </motion.nav>
       {/* Cases overlay */}
       {showOverlay && (
-        <div className="fixed inset-0  grid  place-items-center backdrop-blur-lg z-[100] bg-black/20">
+        <div className="fixed inset-0 flex items-center justify-center p-8 backdrop-blur-lg z-[100] bg-black/20 overflow-hidden">
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -336,34 +361,31 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               transition: { duration: 0.4, type: "spring", bounce: 0.06 },
             }}
             transition={{ type: "spring", visualDuration: 0.25, bounce: 0.56 }}
+            className="relative w-full max-w-[900px] max-h-[calc(100vh-4rem)] rounded-xl flex flex-col bg-neutral-100 dark:bg-neutral-900 shadow-2xl overflow-y-auto"
           >
-            <div className="flex  justify-center items-center">
-              <div className="relative w-full max-w-[900px] min-h-[70vh] h-full md:h-fit md:max-h-[85vh] rounded-xl flex flex-col bg-neutral-100 dark:bg-neutral-900 shadow-2xl overflow-hidden">
-                <button
-                  aria-label="Close overlay"
-                  className="absolute top-8 right-8  md:top-2 hover:rotate-45 cursor-pointer transition duration-200 md:right-2 z-50 p-2"
-                  onClick={() => setShowOverlay(false)}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-6 w-6 text-black"
-                  >
-                    <path d="M18 6l-12 12" />
-                    <path d="M6 6l12 12" />
-                  </svg>
-                </button>
-                <div>
-                  <CaseGalleryMenu caseStudies={caseStudies} locale={locale} />
-                </div>
-              </div>
+            <button
+              aria-label="Close overlay"
+              className="sticky top-2 ml-auto mr-2 hover:rotate-45 cursor-pointer transition duration-200 z-50 p-2"
+              onClick={() => setShowOverlay(false)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-6 w-6 text-black"
+              >
+                <path d="M18 6l-12 12" />
+                <path d="M6 6l12 12" />
+              </svg>
+            </button>
+            <div className="pb-8">
+              <CaseGalleryMenu caseStudies={caseStudies} locale={locale} />
             </div>
           </motion.div>
         </div>

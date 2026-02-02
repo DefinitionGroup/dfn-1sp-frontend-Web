@@ -393,14 +393,15 @@ export const getHomePage = cache(async (channel: string, language: string) => {
  * Fetch a case study by its slug.
  *
  * @param slug - The case study slug
+ * @param channel - The channel (e.g., "1spWeb")
  * @param language - The language code
  */
-export const getCaseBySlug = cache(async (slug: string, language: string) => {
+export const getCaseBySlug = cache(async (slug: string, channel: string, language: string) => {
   const { CASE_STUDY_BY_SLUG_QUERY } = await import("@/sanity/lib/queries");
 
   const { data } = await sanityFetch({
     query: CASE_STUDY_BY_SLUG_QUERY,
-    params: { slug, language },
+    params: { slug, channel, language },
   });
 
   return data;

@@ -228,7 +228,7 @@ function ExpandableCards({
       {/* Grid */}
       <ul className="w-full  ">
         <StaggeredSlideUp
-          className={`grid grid-cols-2  lg:${colsClass(columns)} grid ${gap} mx-auto h-full min-h-full w-full`}
+          className={`grid grid-cols-2   lg:${colsClass(columns)} grid ${gap} mx-auto h-full min-h-full w-full`}
         >
           {sourceCards.map((card) => (
             <motion.div

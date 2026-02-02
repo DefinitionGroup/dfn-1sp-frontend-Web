@@ -57,7 +57,7 @@ export default async function CaseStudyPage({
   const language = locale || "en";
 
   // Uses cached fetch from centralized data layer
-  const caseStudy = await getCaseBySlug(slug, language);
+  const caseStudy = await getCaseBySlug(slug, channel, language);
 
   if (!caseStudy) {
     notFound();
