@@ -153,7 +153,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
       {(introHeading || introSubheading) && (
         <div className="grid grid-cols-12 z-1 mx-auto container relative font-aspekta">
           {showGridBackground && <GridBackground />}
-          <div className="z-1 grid gap-8 col-span-12 pt-12 col-start-1 container mx-auto row-start-1 grid-cols-12">
+          <div className="z-1 grid gap-8 col-span-12 pt-12 mt-24 col-start-1 container mx-auto row-start-1 grid-cols-12">
             <div className="z-1 col-span-12 col-start-1">
               <div className="flex flex-col items-start gap-2  justify-center w-full">
                 {introHeading && (
@@ -161,7 +161,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
                     delay={0.59}
                     staggerDelay={0.03}
                     distance={100}
-                    className="max-w-2/4"
+                    className="max-w-full md:max-w-2/4"
                   >
                     <h2 className="text-5xl leading-none text-neutral-700 font-aspekta">
                       {introHeading}
@@ -173,7 +173,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
                     delay={0.65}
                     staggerDelay={0.03}
                     distance={100}
-                    className="max-w-2/4"
+                    className="max-w-full md:max-w-2/4"
                   >
                     <h2 className="text-5xl leading-none text-neutral-400 font-aspekta">
                       {introSubheading}
@@ -206,7 +206,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
 
             {/* Content */}
             <StaggeredFadeIn>
-              <div className="w-full">
+              <div className="w-full md:w-2/4">
                 <PortableText
                   value={content}
                   components={portableTextComponents}
