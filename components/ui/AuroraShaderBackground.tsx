@@ -151,16 +151,16 @@ const fragmentShaderSource = `
     blueField += metaball(p, ball6, size6);
     
     // Total field for threshold
-    field = limeField + blueField;
+    field = limeField * blueField;
     
     // Colors
-    vec3 limeColor = vec3(0.2, 1.0, 0);      // Bright lime
-    vec3 blueColor = vec3(0.2, 0.5, 1.0);      // Vibrant blue
-    vec3 bgColor = vec3(0,0,0);     // Dark gray background
+    vec3 limeColor = vec3(0, 1.0, 0.5);      // Bright lime
+    vec3 blueColor = vec3(0, 2, 0);      // Vibrant blue
+    vec3 bgColor = vec3(0,0,1);     // Dark gray background
     
     // Metaball threshold and smoothing for soft, blurry edges
-    float threshold = 1.0;
-    float softness = 0.8;
+    float threshold = 5.0;
+    float softness = 3.2;
     
     // Calculate color mixing based on field contributions
     float totalField = limeField + blueField + 0.001;
@@ -171,15 +171,15 @@ const fragmentShaderSource = `
     vec3 ballColor = limeColor * limeRatio + blueColor * blueRatio;
     
     // Soft metaball edge with blur
-    float alpha = smoothstep(threshold - softness, threshold + softness * 0.5, field);
+    float alpha = smoothstep(threshold - softness, threshold + softness * 11.5, field);
     
     // Add glow around the metaballs
-    float glow = smoothstep(threshold - softness * 2.0, threshold, field) * 0.4;
+    float glow = smoothstep(threshold - softness * 2.5, threshold, field) * 0.814;
     vec3 glowColor = ballColor * glow;
     
     // Inner brightness boost
     float innerBright = smoothstep(threshold, threshold + softness * 2.0, field);
-    ballColor = mix(ballColor, ballColor * 1.4, innerBright * 0.1);
+    ballColor = mix(ballColor, ballColor * 1.4, innerBright * 1.2);
     
     // Compose final color
     vec3 finalColor = mix(bgColor + glowColor, ballColor, alpha);
