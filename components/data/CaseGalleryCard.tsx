@@ -84,21 +84,21 @@ export default function CaseGalleryCard({
         distance={10}
         delay={0.4}
         duration={1}
-        className={`col-start-1 col-span-1 md:flex ${
-          item.client?.logoUrl ? "justify-between" : "justify-end"
-        } opacity-100 row-start-2 p-2 mb-8 md:mb-16 z-1 h-[130px]`}
+        className={`col-start-1 col-span-1 flex flex-col opacity-100 row-start-2 p-2 mb-8 md:mb-16 z-1 h-[230px]`}
       >
-        {item.client?.logoUrl ? (
-          <motion.img
-            layoutId={`logo-${item.title}-${id}`}
-            src={item.client?.logoUrl}
-            alt={item.title}
-            className={`w-128 min-w-[164px] h-7  object-contain object-left mb-4 ${
-              variant !== "light" ? "" : "invert"
-            }`}
-          />
-        ) : null}
-        <div className="flex flex-col items-start md:items-end">
+        <div className={`flex-col flex md:flex-row ${
+          item.client?.logoUrl ? "justify-between" : "justify-end"
+        } mb-4`}>
+          {item.client?.logoUrl ? (
+            <motion.img
+              layoutId={`logo-${item.title}-${id}`}
+              src={item.client?.logoUrl}
+              alt={item.title}
+              className={`w-128 min-w-[164px] h-7 object-contain object-left ${
+                variant !== "light" ? "" : "invert"
+              }`}
+            />
+          ) : null}
           <motion.h3
             layoutId={`title-${item.title}-${id}`}
             className={`font-medium md:ext-lg leading-snug max-w-[250px] tracking-tight ${
@@ -107,15 +107,18 @@ export default function CaseGalleryCard({
           >
             {item.title}
           </motion.h3>
-          {item.services && item.services.length > 0 && (
+        </div>
+        
+        {item.services && item.services.length > 0 && (
+          <div className="flex justify-end">
             <motion.p
               layoutId={`description-${item.description}-${id}`}
-              className="text-neutral-400 md:text-right text-xxs font-medium md:text-xs mt-1 dark:text-neutral-400"
+              className="text-neutral-400  md:text-right text-xxs font-medium md:text-xs dark:text-neutral-400"
             >
               {item.services.map((s) => s.name).join(", ")}
             </motion.p>
-          )}
-        </div>
+          </div>
+        )}
       </StaggeredSlideUp>
     </motion.div>
   );

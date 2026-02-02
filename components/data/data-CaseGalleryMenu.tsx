@@ -94,7 +94,7 @@ export default function CaseGalleryMenu({
           subtitle={"Explore our projects"}
         />
       </div>
-      <ul className="w-full  flex p-8 ">
+      <ul className="w-full p-8  ">
         <StaggeredSlideUp
           staggerDelay={0.1}
           easing="ease-out"
@@ -103,7 +103,7 @@ export default function CaseGalleryMenu({
           threshold={0.2}
           rootMargin="0px 0px 0px 0px"
           once={true}
-          className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 "
+          className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full"
         >
           {filteredItems.map((item, index) => (
             <motion.div

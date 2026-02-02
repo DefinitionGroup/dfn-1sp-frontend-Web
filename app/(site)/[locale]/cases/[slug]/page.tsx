@@ -1,11 +1,49 @@
-import { sanityFetch } from "@/sanity/lib/live";
-import { CASE_STUDY_BY_SLUG_QUERY } from "@/sanity/lib/queries";
+/**
+ * Case Study Detail Page
+ * ======================
+ *
+ * Displays individual case study content.
+ *
+ * ## Performance Optimization (January 2026)
+ *
+ * - Uses `getCaseBySlug()` for cached data fetching
+ * - Implements `generateStaticParams()` for build-time pre-rendering
+ *
+ * ## Static Generation
+ *
+ * `generateStaticParams()` tells Next.js to pre-render these pages at build time.
+ * This means:
+ * - First visitor gets instant HTML (no API call)
+ * - ISR still works for new case studies (dynamicParams = true)
+ * - Significantly reduces Sanity API usage
+ */
+import { getCaseBySlug, getAllCaseSlugs } from "@/lib/sanity/queries";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import CaseStudyPageClient from "./CaseStudyPageClient";
 import SiteWrapper from "@/components/SiteWrapper";
 
 export const revalidate = 60;
+
+// Allow new case studies to be rendered on-demand (ISR)
+export const dynamicParams = true;
+
+/**
+ * Generate static params for all case studies at build time.
+ *
+ * This function runs during `next build` and tells Next.js which
+ * case study pages to pre-render.
+ *
+ * @returns Array of { locale, slug } params for each case study
+ */
+export async function generateStaticParams() {
+  const caseSlugs = await getAllCaseSlugs();
+
+  return caseSlugs.map((caseStudy) => ({
+    locale: caseStudy.language || "en",
+    slug: caseStudy.slug,
+  }));
+}
 
 export default async function CaseStudyPage({
   params,
@@ -18,10 +56,8 @@ export default async function CaseStudyPage({
   const channel = cookieStore.get("channel")?.value || "1spWeb";
   const language = locale || "en";
 
-  const { data: caseStudy } = await sanityFetch({
-    query: CASE_STUDY_BY_SLUG_QUERY,
-    params: { slug, channel, language },
-  });
+  // Uses cached fetch from centralized data layer
+  const caseStudy = await getCaseBySlug(slug, channel, language);
 
   if (!caseStudy) {
     notFound();

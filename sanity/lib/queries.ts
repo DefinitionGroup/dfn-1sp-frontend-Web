@@ -758,7 +758,9 @@ export const SMART_UNITS_QUERY = defineQuery(`
 *[
   _type == "unit" && 
   isActive == true &&
-  language == $language
+  language == $language &&
+  slug.current != "1sp" &&
+  !(lower(name) match "*1sp*")
 ] | order(_createdAt desc) [0...$maxItems] {
   _id,
   _type,
