@@ -86,7 +86,7 @@ export default function CaseGalleryCard({
         duration={1}
         className={`col-start-1 col-span-1 flex flex-col opacity-100 row-start-2 p-2 mb-8 md:mb-16 z-1 h-[230px]`}
       >
-        <div className={`flex ${
+        <div className={`flex-col flex md:flex-row ${
           item.client?.logoUrl ? "justify-between" : "justify-end"
         } mb-4`}>
           {item.client?.logoUrl ? (
