@@ -29,7 +29,12 @@ export default function RootLayout({
         lang="en"
         className={`${aspekta.variable} `}
         suppressHydrationWarning
-      >
+      >      
+      
+      <head>
+   
+     
+      </head>
         <body className="antialiased" suppressHydrationWarning>
           {children} <SpeedInsights />
         </body>

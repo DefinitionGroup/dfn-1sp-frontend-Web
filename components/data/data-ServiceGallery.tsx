@@ -240,7 +240,8 @@ export default function ServiceGalleryComponent({
                       height={600}
                       src={bg}
                       alt={item.name}
-                      className="w-full h-full object-cover  group-hover/card:opacity-100 object-top opacity-80 transition-all"
+                      className="w-full h-full object-cover min-h-[32
+                      0px]  group-hover/card:opacity-100 object-top opacity-80 transition-all"
                     />
                   ) : (
                     <div className="w-full h-full bg-neutral-800 border opacity-80 min-h-[200px] group-hover/card:opacity-100 transition-all" />
