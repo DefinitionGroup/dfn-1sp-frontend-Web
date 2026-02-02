@@ -4,6 +4,7 @@ import sublineComponent from "./1SP/Components/sublineComponent";
 import Header from "./1SP/Components/Header";
 import contentSection from "./1SP/Components/contentSection";
 import twoColContentSection from "./1SP/Components/twoColContentSection";
+import tabbedContentSection from "./1SP/Components/tabbedContentSection";
 import casesIntro from "./1SP/Components/casesIntro";
 import casesGalleryFiltered from "./1SP/Components/casesGalleryFiltered";
 import casesGalleryFilteredWithPagination from "./1SP/Components/casesGalleryFilteredWithPagination";
@@ -53,6 +54,7 @@ const oneSPComponents = [
     Header,
     contentSection,
     twoColContentSection,
+    tabbedContentSection,
     casesIntro,
     casesGalleryFiltered,
     casesGalleryFilteredWithPagination,

@@ -148,6 +148,7 @@ export default defineType({
                 { type: 'oneSPHeader' },
                 { type: 'contentSection' },
                 { type: 'twoColContentSection' },
+                { type: 'tabbedContentSection' },
                 { type: 'casesIntro' },
                 { type: 'casesGalleryFiltered' },
                 { type: 'casesGalleryFilteredWithPagination' },
