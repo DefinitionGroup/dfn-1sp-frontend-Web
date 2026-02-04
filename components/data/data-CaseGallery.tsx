@@ -90,14 +90,14 @@ export default function CaseGalleryComponent({
               transition: { type: "spring", stiffness: 110, duration: 0.2 },
             }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 top-0 cl-overlay backdrop-blur-2xl bg-black w-full min-h-[100vh] z-100"
+            className="fixed inset-0  top-0 cl-overlay backdrop-blur-2xl bg-black w-full min-h-[100vh] z-100"
           />
         )}
       </AnimatePresence>
 
       <>
         {active ? (
-          <div className="fixed inset-0 grid place-items-center  w-full  z-[100]">
+          <div className="fixed inset-0  grid place-items-center  w-full  z-[100]">
 
 
             <motion.div
@@ -107,10 +107,10 @@ export default function CaseGalleryComponent({
               exit={{ opacity: 0, transition: { duration: 0.05 } }}
               transition={{ type: "spring", visualDuration: 0.3, bounce: 0.2 }}
               ref={ref}
-              className="w-full max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
+              className="w-full max-w-[900px]   min-h-[70vh] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
             >
               <motion.div
-                className="w-full h-100 sm:rounded-t-xl opacity-80 object-cover object-top"
+                className="w-full h-100 sm:rounded-t-xl  opacity-80 object-cover object-top"
                 layoutId={`image-${active.title}-${id}`}
               >
                 {active.mainVideoUrl ? (
@@ -133,7 +133,7 @@ export default function CaseGalleryComponent({
 
               </motion.div>
 
-              <div className="flex justify-between w-full  absolute items-start p-8 pt-8 z-10 ">
+              <div className="flex justify-between w-full  absolute items-start p-8 pt-24 z-10 ">
 
                 <motion.button
                   key={`button-${active.title}-${id}`}
@@ -141,7 +141,7 @@ export default function CaseGalleryComponent({
                   initial={{ opacity: 1 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 1, transition: { duration: 0.05 } }}
-                  className="flex absolute top-4  right-4 lg items-center hover:cursor-pointer overflow-hidden justify-around rounded-full h-6 w-6 z-100"
+                  className="flex absolute top-20  right-4 lg items-center hover:cursor-pointer overflow-hidden justify-around rounded-full h-6 w-6 z-100"
                   onClick={() => setActive(null)}
                   aria-label="Close"
                 >
@@ -161,7 +161,7 @@ export default function CaseGalleryComponent({
 
                     <motion.h3
                       layoutId={`title-${active.title}-${id}`}
-                      className="text-white text-5xl max-w-2/3 dark:text-neutral-200"
+                      className="text-white mt-8 text-3xl md:text-5xl md:max-w-2/3 dark:text-neutral-200"
                     >
                       {active.title}
                     </motion.h3>
@@ -172,7 +172,7 @@ export default function CaseGalleryComponent({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="text-white text-sm md:text-sm lg:text-base mt-8 max-w-1/2 mb-2 md:h-fit pb-8 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
+                    className="text-white text-sm md:text-sm lg:text-base mt-8 md:max-w-1/2 mb-8 md:h-fit pb-8 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
                   >
                     {active.description}
                   </motion.div>
