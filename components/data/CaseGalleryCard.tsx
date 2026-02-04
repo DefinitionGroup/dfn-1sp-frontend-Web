@@ -51,13 +51,13 @@ export default function CaseGalleryCard({
       key={`card-${item.title}-${id}`}
       onClick={onClick}
       ref={ref}
-      className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1 px-1 h-[500px] md:min-h-[500px] group/card overflow-hidden md:h-[500px] cursor-pointer card-hover"
+      className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1 px-1 md:min-h-[500px] group/card overflow-hidden md:h-[500px] cursor-pointer card-hover"
     >
       <motion.div
         layoutId={`image-${item.title}-${id}`}
-        className="col-start-1 col-span-1 row-start-1 bg-black h-[300px] min-h-full rounded-xl shadow-lg overflow-hidden relative"
+        className="col-start-1 col-span-1 row-start-1 bg-black   min-h-[260px] md:h-[300px] md:min-h-full rounded-xl shadow-lg overflow-hidden relative"
       >
-        <motion.div style={{ y: springY }} className="w-full h-[120%] relative -top-[10%]">
+        <motion.div style={{ y: springY }} className="w-full h-[120%]   relative -top-[10%]">
           {item.mainVideoUrl ? (
             <video
               src={item.mainVideoUrl}
@@ -84,7 +84,7 @@ export default function CaseGalleryCard({
         distance={10}
         delay={0.4}
         duration={1}
-        className={`col-start-1 col-span-1 flex flex-col opacity-100 row-start-2 p-2 mb-8 md:mb-16 z-1 h-[230px]`}
+        className={`col-start-1  col-span-1 flex flex-col opacity-100 row-start-2 p-2  mt-4 mb-8 md:mb-16 z-1 h-[250px]`}
       >
         <div className={`flex-col flex md:flex-row ${
           item.client?.logoUrl ? "justify-between" : "justify-end"
@@ -94,14 +94,14 @@ export default function CaseGalleryCard({
               layoutId={`logo-${item.title}-${id}`}
               src={item.client?.logoUrl}
               alt={item.title}
-              className={`w-128 min-w-[164px] h-7 object-contain object-left ${
+              className={` min-w-[144px] max-w-[144px] h-7 object-contain object-left ${
                 variant !== "light" ? "" : "invert"
               }`}
             />
           ) : null}
           <motion.h3
             layoutId={`title-${item.title}-${id}`}
-            className={`font-medium md:ext-lg leading-snug max-w-[250px] tracking-tight ${
+            className={`font-medium md:ext-lg leading-snug max-w-[350px] tracking-tight ${
               variant !== "light" ? "" : "invert"
             } text-neutral-600 dark:text-neutral-200 md:text-right`}
           >
@@ -110,10 +110,10 @@ export default function CaseGalleryCard({
         </div>
         
         {item.services && item.services.length > 0 && (
-          <div className="flex justify-end">
+          <div className="flex justify-end   ">
             <motion.p
               layoutId={`description-${item.description}-${id}`}
-              className="text-neutral-400  md:text-right text-xxs font-medium md:text-xs dark:text-neutral-400"
+              className="text-neutral-400   md:text-right text-xxs font-medium md:text-xs dark:text-neutral-400"
             >
               {item.services.map((s) => s.name).join(", ")}
             </motion.p>
