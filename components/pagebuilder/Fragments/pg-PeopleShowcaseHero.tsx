@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import React, { useRef, useState } from "react";
+import { AnimatePresence, motion, useInView } from "motion/react";
 import type { CloudinaryAsset } from "@/types/sanity.types";
 import { assetUrl } from "@/utils/utils";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
@@ -27,6 +27,29 @@ function isVideoUrl(url?: string) {
   if (!url) return false;
   const lowered = url.toLowerCase();
   return lowered.endsWith(".mp4") || lowered.includes("/video/");
+}
+
+function LazyVideo({ src, className }: { src: string; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "200px" });
+
+  return (
+    <div ref={ref} className={`w-full h-full ${className ?? ""}`}>
+      {isInView ? (
+        <video
+          src={src}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="none"
+          className="w-full h-full object-cover transition-all duration-300 group-hover:brightness-110"
+        />
+      ) : (
+        <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800" />
+      )}
+    </div>
+  );
 }
 
 function PeopleShowcaseHero({
@@ -81,14 +104,7 @@ function PeopleShowcaseHero({
                 onMouseLeave={() => setHoveredMember(null)}
               >
                 {isVideo ? (
-                  <video
-                    src={src ?? ""}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="w-full h-full object-cover transition-all duration-300 group-hover:brightness-110 "
-                  />
+                  <LazyVideo src={src ?? ""} />
                 ) : (
                   <Image
                     src={src}
