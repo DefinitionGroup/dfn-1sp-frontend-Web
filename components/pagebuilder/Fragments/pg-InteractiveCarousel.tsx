@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, AnimatePresence, PanInfo } from "motion/react";
-import { useState, useEffect, useMemo, useRef } from "react";
+import { motion, AnimatePresence, PanInfo, useInView } from "motion/react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import Image from "next/image";
 import Button2 from "@/components/ui/Button2";
 import type {
@@ -35,6 +35,9 @@ function InteractiveCarousel({
   const [isScrollable, setIsScrollable] = useState(false);
   const stripRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "200px" });
+  const [preloadedVideos, setPreloadedVideos] = useState<Set<number>>(new Set());
 
   const carouselItems: UIItem[] = useMemo(() => {
     const list = (items ?? []).map((it, i) => {
@@ -58,6 +61,23 @@ function InteractiveCarousel({
     });
     return list.filter((x) => !!x.image || !!x.video);
   }, [items]);
+
+  // Preload active + next video when carousel is in view
+  useEffect(() => {
+    if (!isInView || !carouselItems.length) return;
+    const nextIndex = (currentIndex + 1) % carouselItems.length;
+    setPreloadedVideos((prev) => {
+      const next = new Set(prev);
+      next.add(currentIndex);
+      next.add(nextIndex);
+      return next;
+    });
+  }, [isInView, currentIndex, carouselItems.length]);
+
+  const shouldLoadVideo = useCallback(
+    (index: number) => isInView && preloadedVideos.has(index),
+    [isInView, preloadedVideos]
+  );
 
   useEffect(() => {
     if (!isAutoPlaying || !carouselItems.length) return;
@@ -132,7 +152,7 @@ function InteractiveCarousel({
   const active = carouselItems[currentIndex];
 
   return (
-    <section>
+    <section ref={sectionRef}>
       <div
         ref={containerRef}
         className="container relative top-0 left-0 mx-auto w-full"
@@ -163,7 +183,7 @@ function InteractiveCarousel({
               >
                 <div className="relative w-full h-full overflow-hidden bg-gradient-to-brshadow-2xl">
                   {/* Background media */}
-                  {active.video ? (
+                  {active.video && shouldLoadVideo(currentIndex) ? (
                     <motion.video
                       src={active.video}
                       className="absolute inset-0 w-full h-full overflow-hidden object-cover"
@@ -173,6 +193,15 @@ function InteractiveCarousel({
                       loop
                       autoPlay
                       muted
+                      preload="auto"
+                    />
+                  ) : active.video ? (
+                    /* Poster fallback while video hasn't been preloaded yet */
+                    <motion.div
+                      className="absolute inset-0 w-full h-full bg-neutral-900"
+                      initial={{ scale: 1.3, opacity: 1 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 1.6 }}
                     />
                   ) : (
                     <motion.img
@@ -182,7 +211,22 @@ function InteractiveCarousel({
                       initial={{ scale: 1.3, opacity: 1 }}
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ duration: 1.6 }}
+                      loading="lazy"
                     />
+                  )}
+
+                  {/* Hidden preload for next video */}
+                  {carouselItems.map((item, idx) =>
+                    item.video && preloadedVideos.has(idx) && idx !== currentIndex ? (
+                      <video
+                        key={`preload-${idx}`}
+                        src={item.video}
+                        preload="auto"
+                        muted
+                        className="hidden"
+                        aria-hidden="true"
+                      />
+                    ) : null
                   )}
 
                   {/* Overlay (match Plaintext: gradient from top) */}
@@ -244,24 +288,6 @@ function InteractiveCarousel({
                     </motion.div>
                   </div>
 
-                  {/* Top-right icon */}
-                  {/* <motion.div
-                    className="absolute top-4 right-4"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <button className="w-6 h-6 cursor-pointer bg-black/50 backdrop-blur-sm rounded-xs flex items-center justify-center text-lime-400 hover:bg-white/100 hover:text-black transition-colors">
-                      <svg
-                        width="11"
-                        height="113"
-                        viewBox="0 0 14 14"
-                        fill="currentColor"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path d="M14 1.00696V10.757C14 10.9061 13.9407 11.0492 13.8353 11.1547C13.7298 11.2602 13.5867 11.3195 13.4375 11.3195C13.2883 11.3195 13.1452 11.2602 13.0398 11.1547C12.9343 11.0492 12.875 10.9061 12.875 10.757V2.36446L1.83501 13.4045C1.72838 13.5038 1.58734 13.5579 1.44162 13.5553C1.29589 13.5528 1.15685 13.4937 1.05379 13.3907C0.950731 13.2876 0.891697 13.1486 0.889126 13.0028C0.886555 12.8571 0.940647 12.7161 1.04001 12.6095L12.08 1.56946H3.68751C3.53832 1.56946 3.39525 1.51019 3.28976 1.40471C3.18427 1.29922 3.12501 1.15614 3.12501 1.00696C3.12501 0.857774 3.18427 0.7147 3.28976 0.60921C3.39525 0.503721 3.53832 0.444458 3.68751 0.444458H13.4375C13.5867 0.444458 13.7298 0.503721 13.8353 0.60921C13.9407 0.7147 14 0.857774 14 1.00696Z" />
-                      </svg>
-                    </button>
-                  </motion.div> */}
                 </div>
               </motion.div>
             </AnimatePresence>
