@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform, useInView } from "motion/react";
 import bg from "@/public/dot-background.png";
+import { optimizedVideoUrl } from "@/utils/utils";
 
 interface HeaderImageVideoCompProps {
   useVideo?: boolean;
@@ -68,7 +69,7 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
       >
         {useVideo ? (
           <video
-            src={videoSrc}
+            src={optimizedVideoUrl(videoSrc, { maxWidth: 1920 })}
             autoPlay
             loop
             muted

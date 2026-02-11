@@ -7,6 +7,7 @@ import { useOutsideClick } from "@/hooks/use-outside-click";
 import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
 import IntertitleCTA from "./Fragments/data-IntertitleCTA";
 import Image from "next/image";
+import { optimizedVideoUrl } from "@/utils/utils";
 interface CaseStudy {
   _id: string;
   title: string;
@@ -118,7 +119,7 @@ export default function CaseGalleryMenu({
               >
                 {item.mainVideoUrl ? (
                   <video
-                    src={item.mainVideoUrl}
+                    src={optimizedVideoUrl(item.mainVideoUrl, { maxWidth: 480 })}
                     autoPlay
                     muted playsInline
                     loop

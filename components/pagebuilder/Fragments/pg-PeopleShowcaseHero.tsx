@@ -2,7 +2,7 @@
 import React, { useRef, useState } from "react";
 import { AnimatePresence, motion, useInView } from "motion/react";
 import type { CloudinaryAsset } from "@/types/sanity.types";
-import { assetUrl } from "@/utils/utils";
+import { assetUrl, optimizedVideoUrl } from "@/utils/utils";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import StaggeredFadeIn from "@/components/ui/StaggeredFadeIn";
 import Image from "next/image";
@@ -37,7 +37,7 @@ function LazyVideo({ src, className }: { src: string; className?: string }) {
     <div ref={ref} className={`w-full h-full ${className ?? ""}`}>
       {isInView ? (
         <video
-          src={src}
+          src={optimizedVideoUrl(src, { maxWidth: 640 })}
           autoPlay
           muted
           loop
@@ -255,7 +255,7 @@ function PeopleShowcaseHero({
                   <div className="relative h-14 w-14 overflow-hidden rounded-full bg-neutral-800">
                     {isVideoUrl(activeModal.media.secure_url) ? (
                       <video
-                        src={activeModal.media.secure_url}
+                        src={optimizedVideoUrl(activeModal.media.secure_url, { maxWidth: 112 })}
                         autoPlay
                         muted
                         loop

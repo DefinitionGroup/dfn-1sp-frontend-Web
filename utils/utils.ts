@@ -1,6 +1,42 @@
 export const assetUrl = (a?: { secure_url?: string; url?: string } | null) =>
     a?.secure_url || a?.url || undefined;
 
+/**
+ * Optimizes a Cloudinary video URL by injecting transformation parameters.
+ *
+ * Transformations applied:
+ * - `q_auto`  — intelligent quality compression (40-70% smaller files)
+ * - `f_auto`  — best format per browser (WebM/VP9 for Chrome, HEVC for Safari, H.264 fallback)
+ * - `ac_none` — strips audio track (saves ~20-30% for muted background videos)
+ * - `w_{n}`   — optional max width for responsive delivery
+ *
+ * Only transforms Cloudinary `/upload/` URLs. Non-Cloudinary URLs are returned unchanged.
+ *
+ * @example
+ * optimizedVideoUrl("https://res.cloudinary.com/.../upload/v123/video.mp4")
+ * // → "https://res.cloudinary.com/.../upload/q_auto,f_auto,ac_none/v123/video.mp4"
+ *
+ * optimizedVideoUrl(url, { maxWidth: 1280, withAudio: true })
+ * // → "https://res.cloudinary.com/.../upload/q_auto,f_auto,w_1280/v123/video.mp4"
+ */
+export const optimizedVideoUrl = (
+    url?: string,
+    options?: { maxWidth?: number; withAudio?: boolean }
+): string | undefined => {
+    if (!url) return url;
+
+    // Only transform Cloudinary upload URLs
+    if (!url.includes("/upload/")) return url;
+
+    const transforms = ["q_auto", "f_auto"];
+    if (!options?.withAudio) transforms.push("ac_none");
+    if (options?.maxWidth) transforms.push(`w_${options.maxWidth}`);
+
+    const transformStr = transforms.join(",");
+
+    // Insert transformations between /upload/ and the next path segment (e.g. v1234/)
+    return url.replace(/\/upload\//, `/upload/${transformStr}/`);
+};
 
 import type { CTA, Link } from "@/types/sanity.types";
 import { client } from "@/sanity/lib/client";

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Link } from "next-view-transitions";
-import { assetUrl } from "@/utils/utils";
+import { assetUrl, optimizedVideoUrl } from "@/utils/utils";
 import StaggeredFadeIn from "@/components/ui/StaggeredFadeIn";
 
 type CloudinaryAsset = {
@@ -70,7 +70,7 @@ export default function PersonCard({ person, index }: PersonCardProps) {
     >
       {isVideo ? (
         <video
-          src={src ?? ""}
+          src={optimizedVideoUrl(src ?? "", { maxWidth: 320 })}
           autoPlay
           muted
           loop

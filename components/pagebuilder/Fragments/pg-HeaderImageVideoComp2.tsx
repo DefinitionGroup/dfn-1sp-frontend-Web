@@ -4,6 +4,7 @@ import React, { useRef, useEffect } from "react";
 import Image from "next/image";
 import { motion, useInView } from "motion/react";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
+import { optimizedVideoUrl } from "@/utils/utils";
 
 interface HeaderImageVideoCompProps {
   useVideo?: boolean;
@@ -68,7 +69,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
         {useVideo ? (
           <video
             ref={videoRef}
-            src={videoSrc}
+            src={optimizedVideoUrl(videoSrc, { maxWidth: 1920 })}
             loop
             muted
             playsInline

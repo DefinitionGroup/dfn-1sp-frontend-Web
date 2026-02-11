@@ -9,6 +9,7 @@ import Button2 from "../ui/Button2";
 import Image from "next/image";
 import StaggeredFadeIn from "../ui/StaggeredFadeIn";
 import CaseGalleryCard from "./CaseGalleryCard";
+import { optimizedVideoUrl } from "@/utils/utils";
 
 interface CaseStudy {
   _id: string;
@@ -115,7 +116,7 @@ export default function CaseGalleryComponent({
               >
                 {active.mainVideoUrl ? (
                   <video
-                    src={active.mainVideoUrl}
+                    src={optimizedVideoUrl(active.mainVideoUrl, { maxWidth: 900 })}
                     autoPlay
                     muted playsInline
                     loop

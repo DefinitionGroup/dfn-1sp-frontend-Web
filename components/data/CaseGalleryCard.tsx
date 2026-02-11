@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "motion/react";
 import Image from "next/image";
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
+import { optimizedVideoUrl } from "@/utils/utils";
 
 interface CaseStudy {
   _id: string;
@@ -60,7 +61,7 @@ export default function CaseGalleryCard({
         <motion.div style={{ y: springY }} className="w-full h-[120%]   relative -top-[10%]">
           {item.mainVideoUrl ? (
             <video
-              src={item.mainVideoUrl}
+              src={optimizedVideoUrl(item.mainVideoUrl, { maxWidth: 640 })}
               autoPlay
               muted
               loop

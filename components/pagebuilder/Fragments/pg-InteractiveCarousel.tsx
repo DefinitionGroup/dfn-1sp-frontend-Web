@@ -8,7 +8,7 @@ import type {
   CarouselItem as SanityCarouselItem,
   CTA,
 } from "@/types/sanity.types";
-import { assetUrl, ctaToButtonProps } from "@/utils/utils";
+import { assetUrl, ctaToButtonProps, optimizedVideoUrl } from "@/utils/utils";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
 
 interface UIItem {
@@ -185,7 +185,7 @@ function InteractiveCarousel({
                   {/* Background media */}
                   {active.video && shouldLoadVideo(currentIndex) ? (
                     <motion.video
-                      src={active.video}
+                      src={optimizedVideoUrl(active.video, { maxWidth: 1920 })}
                       className="absolute inset-0 w-full h-full overflow-hidden object-cover"
                       initial={{ scale: 1.3, opacity: 1 }}
                       animate={{ scale: 1, opacity: 1 }}
@@ -220,7 +220,7 @@ function InteractiveCarousel({
                     item.video && preloadedVideos.has(idx) && idx !== currentIndex ? (
                       <video
                         key={`preload-${idx}`}
-                        src={item.video}
+                        src={optimizedVideoUrl(item.video, { maxWidth: 1920 })}
                         preload="auto"
                         muted
                         className="hidden"
