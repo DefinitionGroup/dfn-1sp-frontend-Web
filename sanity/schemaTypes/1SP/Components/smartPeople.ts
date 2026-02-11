@@ -1,11 +1,11 @@
 import { defineType, defineField } from 'sanity'
-import { FiUsers } from 'react-icons/fi'
+import { UsersThree } from '@phosphor-icons/react'
 
 export default defineType({
     name: 'smartPeople',
     title: 'Smart People',
     type: 'object',
-    icon: FiUsers,
+    icon: UsersThree,
     description: 'Automatically displays people marked with "Smart People Promo 1SP" channel',
     fields: [
         defineField({
@@ -25,7 +25,7 @@ export default defineType({
             return {
                 title: 'Smart People',
                 subtitle: `Max ${maxItems || 6} items (Auto-populated from People)`,
-                media: FiUsers
+                media: UsersThree
             }
         }
     }

@@ -1,5 +1,5 @@
 import { defineType, defineField } from "sanity";
-import { FiColumns } from "react-icons/fi";
+import { Columns } from "@phosphor-icons/react";
 
 type MediaParent = { useVideo?: boolean };
 
@@ -7,7 +7,7 @@ export default defineType({
   name: "twoColContentSection",
   title: "2-Column Content Section",
   type: "object",
-  icon: FiColumns,
+  icon: Columns,
   groups: [
     { name: "content", title: "Content", default: true },
     { name: "media", title: "Media" },

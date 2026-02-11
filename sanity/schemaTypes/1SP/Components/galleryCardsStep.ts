@@ -1,11 +1,11 @@
 import { defineType, defineField } from 'sanity'
-import { FiGrid } from 'react-icons/fi'
+import { GridFour } from '@phosphor-icons/react'
 
 export default defineType({
     name: 'galleryCardsStep',
     title: 'Gallery Cards Step',
     type: 'object',
-    icon: FiGrid,
+    icon: GridFour,
     groups: [
         { name: 'badge', title: 'Badge' },
         { name: 'content', title: 'Content', default: true },

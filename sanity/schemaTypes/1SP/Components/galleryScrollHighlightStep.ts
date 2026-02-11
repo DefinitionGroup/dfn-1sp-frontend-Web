@@ -1,11 +1,11 @@
 import { defineType, defineField } from 'sanity'
-import { FiZap } from 'react-icons/fi'
+import { Lightning } from '@phosphor-icons/react'
 
 export default defineType({
     name: 'galleryScrollHighlightStep',
     title: 'Gallery Scroll Highlight Step',
     type: 'object',
-    icon: FiZap,
+    icon: Lightning,
     groups: [
         { name: 'badge', title: 'Badge' },
         { name: 'content', title: 'Content', default: true },

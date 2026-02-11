@@ -1,6 +1,6 @@
 import React from "react";
 import { defineType, defineField, defineArrayMember } from "sanity";
-import { FiType } from "react-icons/fi";
+import { TextT } from "@phosphor-icons/react";
 
 type MediaParent = {
   /* nothing needed; we infer video/image from asset */
@@ -10,7 +10,7 @@ export default defineType({
   name: "oneSPHeader",
   title: "Header",
   type: "object",
-  icon: FiType,
+  icon: TextT,
   groups: [
     { name: "media", title: "Media" },
     { name: "content", title: "Content", default: true },

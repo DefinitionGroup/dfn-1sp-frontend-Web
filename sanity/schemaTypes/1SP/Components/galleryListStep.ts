@@ -1,11 +1,11 @@
 import { defineType, defineField, defineArrayMember } from 'sanity'
-import { FiList } from 'react-icons/fi'
+import { List } from '@phosphor-icons/react'
 
 export default defineType({
     name: 'galleryListStep',
     title: 'Gallery List Step',
     type: 'object',
-    icon: FiList,
+    icon: List,
     groups: [
         { name: 'badge', title: 'Badge' },
         { name: 'content', title: 'Content', default: true },

@@ -1,11 +1,11 @@
 import { defineType, defineField } from 'sanity'
-import { BsGrid } from 'react-icons/bs'
+import { GridFour } from '@phosphor-icons/react'
 
 export default defineType({
     name: 'unitLogoGrid',
     title: 'Unit Logo Grid',
     type: 'object',
-    icon: BsGrid,
+    icon: GridFour,
     description: 'Displays a grid of unit logos with links to their websites',
     groups: [
         { name: 'content', title: 'Content', default: true },
@@ -149,7 +149,7 @@ export default defineType({
             return {
                 title: headline || 'Unit Logo Grid',
                 subtitle: `${columns || 4} cols | ${modeInfo}`,
-                media: BsGrid
+                media: GridFour
             }
         }
     }

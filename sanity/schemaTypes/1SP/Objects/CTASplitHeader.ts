@@ -1,11 +1,11 @@
 import { defineType, defineField } from "sanity";
-import { FiColumns } from "react-icons/fi";
+import { Columns } from "@phosphor-icons/react";
 
 export default defineType({
     name: "ctaSplitHeader",
     title: "CTA + Split Header",
     type: "object",
-    icon: FiColumns,
+    icon: Columns,
     groups: [
         { name: "content", title: "Content", default: true },
         { name: "layout", title: "Layout" },

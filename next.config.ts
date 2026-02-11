@@ -24,36 +24,7 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
-  // Optimize bundle
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.optimization = {
-        ...config.optimization,
-        splitChunks: {
-          chunks: "all",
-          cacheGroups: {
-            default: false,
-            vendors: false,
-            commons: {
-              name: "commons",
-              chunks: "all",
-              minChunks: 2,
-            },
-            lib: {
-              test: /[\\/]node_modules[\\/]/,
-              name(module: any) {
-                const packageName = module.context.match(
-                  /[\\/]node_modules[\\/](.*?)([\\/]|$)/
-                )?.[1];
-                return `npm.${packageName?.replace("@", "")}`;
-              },
-            },
-          },
-        },
-      };
-    }
-    return config;
-  },
+
 };
 
 export default nextConfig;

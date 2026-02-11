@@ -1,11 +1,11 @@
 import { defineType, defineField } from "sanity";
-import { FiFileText } from "react-icons/fi";
+import { FileText } from "@phosphor-icons/react";
 
 export default defineType({
     name: "casesIntro",
     title: "Cases Intro Section",
     type: "object",
-    icon: FiFileText,
+    icon: FileText,
     groups: [
         { name: "content", title: "Content", default: true },
         { name: "layout", title: "Layout & Style" },
@@ -82,7 +82,7 @@ export default defineType({
             return {
                 title: title || "Cases Intro Section",
                 subtitle: subtitle || "No subtitle",
-                media: FiFileText,
+                media: FileText,
             };
         },
     },

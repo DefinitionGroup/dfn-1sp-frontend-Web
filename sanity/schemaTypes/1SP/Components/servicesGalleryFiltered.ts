@@ -1,11 +1,11 @@
 import { defineType, defineField } from "sanity";
-import { FiGrid } from "react-icons/fi";
+import { GridFour } from "@phosphor-icons/react";
 
 export default defineType({
     name: "servicesGalleryFiltered",
     title: "Services Gallery with Filters",
     type: "object",
-    icon: FiGrid,
+    icon: GridFour,
     groups: [
         { name: "content", title: "Content", default: true },
         { name: "layout", title: "Layout & Style" },
@@ -80,7 +80,7 @@ export default defineType({
             return {
                 title: "Services Gallery with Filters",
                 subtitle: "Displays all services with group filtering",
-                media: FiGrid,
+                media: GridFour,
             };
         },
     },

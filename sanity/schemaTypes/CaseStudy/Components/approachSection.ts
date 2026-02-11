@@ -1,11 +1,11 @@
 import { defineType, defineField } from "sanity";
-import { FiCompass } from "react-icons/fi";
+import { Compass } from "@phosphor-icons/react";
 
 export default defineType({
     name: "approachSection",
     title: "Approach Section",
     type: "object",
-    icon: FiCompass,
+    icon: Compass,
     groups: [
         { name: "content", title: "Content", default: true },
         { name: "media", title: "Media" },
@@ -146,7 +146,7 @@ export default defineType({
             return {
                 title: mainHeadline || "Approach Section",
                 subtitle: `${badgeText || "Badge"} - ${mediaType === "video" ? "Video" : "Image"}`,
-                media: FiCompass,
+                media: Compass,
             };
         },
     },

@@ -1,11 +1,11 @@
 import { defineType, defineField } from 'sanity'
-import { BsGrid3X3 } from "react-icons/bs";
+import { GridNine } from "@phosphor-icons/react";
 
 export default defineType({
     name: 'unitCards',
     title: 'Unit Cards',
     type: 'object',
-    icon: BsGrid3X3,
+    icon: GridNine,
     fields: [
         defineField({
             name: 'units',

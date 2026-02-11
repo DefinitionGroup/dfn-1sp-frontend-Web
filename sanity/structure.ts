@@ -3,16 +3,16 @@ import type {
   ListItemBuilder,
 } from "sanity/structure";
 import {
-  MdWeb,
-  MdBusiness,
-  MdMenu,
-  MdCategory,
-  MdTranslate,
-  MdCases,
-  MdPeople,
-  MdApps,
-  MdEmojiPeople
-} from "react-icons/md";
+  Globe,
+  Buildings,
+  ListBullets,
+  Tag,
+  Translate,
+  Briefcase,
+  Users,
+  SquaresFour,
+  UserCircle,
+} from "@phosphor-icons/react";
 
 // Define language type
 type Language = {
@@ -64,14 +64,14 @@ const createChannelStructure = (
           CHANNEL_LANGUAGES[channelValue].map((lang: Language) =>
             S.listItem()
               .title(`${lang.title} (${lang.id.toUpperCase()})`)
-              .icon(MdTranslate)
+              .icon(Translate)
               .child(
                 S.list()
                   .title(`${channelTitle} - ${lang.title}`)
                   .items([
                     S.listItem()
                       .title("Pages")
-                      .icon(MdWeb)
+                      .icon(Globe)
                       .child(
                         S.documentTypeList("page")
                           .title(`Pages (${lang.title})`)
@@ -93,7 +93,7 @@ const createChannelStructure = (
                       ),
                     S.listItem()
                       .title("Menus")
-                      .icon(MdMenu)
+                      .icon(ListBullets)
                       .child(
                         S.documentTypeList("menu")
                           .title(`Menus (${lang.title})`)
@@ -128,21 +128,21 @@ export const structure: StructureResolver = (S) =>
       // --- Globals section at the top ---
       S.listItem()
         .title("Globals")
-        .icon(MdCategory)
+        .icon(Tag)
         .child(
           S.list()
             .title("Global Content")
             .items([
               S.listItem()
                 .title("Case Studies")
-                .icon(MdCases)
+                .icon(Briefcase)
                 .child(
                   S.list()
                     .title("Case Studies by Language")
                     .items([
                       S.listItem()
                         .title("English (EN)")
-                        .icon(MdTranslate)
+                        .icon(Translate)
                         .child(
                           S.documentTypeList("caseStudy")
                             .title("English Case Studies")
@@ -155,7 +155,7 @@ export const structure: StructureResolver = (S) =>
                         ),
                       S.listItem()
                         .title("German (DE)")
-                        .icon(MdTranslate)
+                        .icon(Translate)
                         .child(
                           S.documentTypeList("caseStudy")
                             .title("German Case Studies")
@@ -170,14 +170,14 @@ export const structure: StructureResolver = (S) =>
                 ),
               S.listItem()
                 .title("Units")
-                .icon(MdApps)
+                .icon(SquaresFour)
                 .child(
                   S.list()
                     .title("Units by Language")
                     .items([
                       S.listItem()
                         .title("English (EN)")
-                        .icon(MdTranslate)
+                        .icon(Translate)
                         .child(
                           S.documentTypeList("unit")
                             .title("English Units")
@@ -190,7 +190,7 @@ export const structure: StructureResolver = (S) =>
                         ),
                       S.listItem()
                         .title("German (DE)")
-                        .icon(MdTranslate)
+                        .icon(Translate)
                         .child(
                           S.documentTypeList("unit")
                             .title("German Units")
@@ -205,14 +205,14 @@ export const structure: StructureResolver = (S) =>
                 ),
               S.listItem()
                 .title("Clients")
-                .icon(MdPeople)
+                .icon(Users)
                 .child(
                   S.list()
                     .title("Clients by Language")
                     .items([
                       S.listItem()
                         .title("English (EN)")
-                        .icon(MdTranslate)
+                        .icon(Translate)
                         .child(
                           S.documentTypeList("client")
                             .title("English Clients")
@@ -225,7 +225,7 @@ export const structure: StructureResolver = (S) =>
                         ),
                       S.listItem()
                         .title("German (DE)")
-                        .icon(MdTranslate)
+                        .icon(Translate)
                         .child(
                           S.documentTypeList("client")
                             .title("German Clients")
@@ -240,14 +240,14 @@ export const structure: StructureResolver = (S) =>
                 ),
               S.listItem()
                 .title("People")
-                .icon(MdEmojiPeople)
+                .icon(UserCircle)
                 .child(
                   S.list()
                     .title("People by Language")
                     .items([
                       S.listItem()
                         .title("English (EN)")
-                        .icon(MdTranslate)
+                        .icon(Translate)
                         .child(
                           S.documentTypeList("person")
                             .title("English People")
@@ -260,7 +260,7 @@ export const structure: StructureResolver = (S) =>
                         ),
                       S.listItem()
                         .title("German (DE)")
-                        .icon(MdTranslate)
+                        .icon(Translate)
                         .child(
                           S.documentTypeList("person")
                             .title("German People")
@@ -275,14 +275,14 @@ export const structure: StructureResolver = (S) =>
                 ),
               S.listItem()
                 .title("Services")
-                .icon(MdApps)
+                .icon(SquaresFour)
                 .child(
                   S.list()
                     .title("Services by Language")
                     .items([
                       S.listItem()
                         .title("English (EN)")
-                        .icon(MdTranslate)
+                        .icon(Translate)
                         .child(
                           S.documentTypeList("services")
                             .title("English Services")
@@ -295,7 +295,7 @@ export const structure: StructureResolver = (S) =>
                         ),
                       S.listItem()
                         .title("German (DE)")
-                        .icon(MdTranslate)
+                        .icon(Translate)
                         .child(
                           S.documentTypeList("services")
                             .title("German Services")
@@ -310,14 +310,14 @@ export const structure: StructureResolver = (S) =>
                 ),
               S.listItem()
                 .title("Service Groups")
-                .icon(MdCategory)
+                .icon(Tag)
                 .child(
                   S.list()
                     .title("Service Groups by Language")
                     .items([
                       S.listItem()
                         .title("English (EN)")
-                        .icon(MdTranslate)
+                        .icon(Translate)
                         .child(
                           S.documentTypeList("serviceGroup")
                             .title("English Service Groups")
@@ -330,7 +330,7 @@ export const structure: StructureResolver = (S) =>
                         ),
                       S.listItem()
                         .title("German (DE)")
-                        .icon(MdTranslate)
+                        .icon(Translate)
                         .child(
                           S.documentTypeList("serviceGroup")
                             .title("German Service Groups")
@@ -347,10 +347,10 @@ export const structure: StructureResolver = (S) =>
         ),
 
       // --- Per-channel sections ---
-      createChannelStructure(S, "1SP", "1spWeb", MdBusiness),
-      createChannelStructure(S, "MSM", "msmWeb", MdBusiness),
-      createChannelStructure(S, "Studio CO2", "studioco2Web", MdBusiness),
-      createChannelStructure(S, "Flizr", "flizrWeb", MdBusiness),
+      createChannelStructure(S, "1SP", "1spWeb", Buildings),
+      createChannelStructure(S, "MSM", "msmWeb", Buildings),
+      createChannelStructure(S, "Studio CO2", "studioco2Web", Buildings),
+      createChannelStructure(S, "Flizr", "flizrWeb", Buildings),
       S.divider(),
 
       // Hide these types from "all documents"

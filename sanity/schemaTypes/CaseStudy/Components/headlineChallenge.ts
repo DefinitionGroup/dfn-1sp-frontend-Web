@@ -1,11 +1,11 @@
 import { defineType, defineField } from "sanity";
-import { FiTarget } from "react-icons/fi";
+import { Crosshair } from "@phosphor-icons/react";
 
 export default defineType({
     name: "headlineChallenge",
     title: "Headline Challenge",
     type: "object",
-    icon: FiTarget,
+    icon: Crosshair,
     groups: [
         { name: "content", title: "Content", default: true },
         { name: "layout", title: "Layout & Style" },
@@ -84,7 +84,7 @@ export default defineType({
             return {
                 title: title || "Headline Challenge",
                 subtitle: description || "Challenge section",
-                media: FiTarget,
+                media: Crosshair,
             };
         },
     },

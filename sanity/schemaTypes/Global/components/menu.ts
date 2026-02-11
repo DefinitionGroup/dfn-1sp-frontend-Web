@@ -1,7 +1,4 @@
-import { IoShareSocialOutline } from 'react-icons/io5'
-import {
-    FaElementor,
-} from "react-icons/fa";
+import { ShareNetwork, SquaresFour } from "@phosphor-icons/react";
 import React from "react";
 
 export default {
@@ -89,7 +86,7 @@ export default {
             of: [
                 {
                     type: "object",
-                    icon: FaElementor,
+                    icon: SquaresFour,
                     fields: [
                         {
                             name: "page",
@@ -153,7 +150,7 @@ export default {
             of: [
                 {
                     type: "object",
-                    icon: FaElementor,
+                    icon: SquaresFour,
                     fields: [
                         {
                             name: "title",
@@ -319,7 +316,7 @@ export default {
         {
             name: "socialLinks",
             title: "Social Media Links",
-            icon: IoShareSocialOutline,
+            icon: ShareNetwork,
             type: "array",
             group: 'social',
             of: [
@@ -366,7 +363,7 @@ export default {
             group: 'footer',
             hidden: ({ parent }: { parent?: any }) => parent?.menuType !== "Footer",
         },
-         /* Footer Fields */
+        /* Footer Fields */
         {
             name: "addressTitle",
             title: "Address Section Title",

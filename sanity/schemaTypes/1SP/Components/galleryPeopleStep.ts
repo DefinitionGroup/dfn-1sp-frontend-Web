@@ -1,11 +1,11 @@
 import { defineType, defineField } from 'sanity'
-import { FiUsers } from 'react-icons/fi'
+import { UsersThree } from '@phosphor-icons/react'
 
 export default defineType({
     name: 'galleryPeopleStep',
     title: 'Gallery People Step',
     type: 'object',
-    icon: FiUsers,
+    icon: UsersThree,
     groups: [
         { name: 'badge', title: 'Badge' },
         { name: 'content', title: 'Content', default: true },

@@ -1,11 +1,11 @@
 import { defineType, defineField } from "sanity";
-import { FiFileText } from "react-icons/fi";
+import { FileText } from "@phosphor-icons/react";
 
 export default defineType({
     name: "contentItem",
     title: "Content Item",
     type: "object",
-    icon: FiFileText,
+    icon: FileText,
     fields: [
         defineField({
             name: "heading",
@@ -115,7 +115,7 @@ export default defineType({
             return {
                 title: heading || "Untitled Content Item",
                 subtitle: preview || "No content",
-                media: FiFileText,
+                media: FileText,
             };
         },
     },

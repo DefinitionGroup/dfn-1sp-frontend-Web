@@ -1,11 +1,11 @@
 import { defineType, defineField } from "sanity";
-import { FiType } from "react-icons/fi";
+import { TextT } from "@phosphor-icons/react";
 
 export default defineType({
     name: "intertitleCTA",
     title: "Intertitle CTA",
     type: "object",
-    icon: FiType,
+    icon: TextT,
     groups: [
         { name: "content", title: "Content", default: true },
         { name: "button", title: "Button" },

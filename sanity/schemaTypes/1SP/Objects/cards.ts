@@ -1,11 +1,11 @@
 import { defineType, defineField } from 'sanity'
-import { BsCardHeading } from "react-icons/bs";
+import { Cards } from "@phosphor-icons/react";
 
 export default defineType({
     name: 'cards',
     title: 'Cards',
     type: 'object',
-    icon: BsCardHeading,
+    icon: Cards,
     fields: [
         defineField({
             name: 'items',

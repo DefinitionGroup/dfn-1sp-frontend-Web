@@ -1,11 +1,11 @@
 import { defineType, defineField } from 'sanity'
-import { FiVideo } from 'react-icons/fi'
+import { VideoCamera } from '@phosphor-icons/react'
 
 export default defineType({
     name: 'galleryHeroStep',
     title: 'Gallery Hero Step',
     type: 'object',
-    icon: FiVideo,
+    icon: VideoCamera,
     groups: [
         { name: 'badge', title: 'Badge' },
         { name: 'content', title: 'Content', default: true },

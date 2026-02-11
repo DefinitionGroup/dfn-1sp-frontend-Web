@@ -1,11 +1,11 @@
 import { defineType, defineField, defineArrayMember } from 'sanity'
-import { TbWorldPin } from 'react-icons/tb'
+import { GlobeHemisphereWest } from '@phosphor-icons/react'
 
 export default defineType({
     name: 'globeComponent',
     title: 'Globe Component',
     type: 'object',
-    icon: TbWorldPin,
+    icon: GlobeHemisphereWest,
     description: 'Display custom locations on an interactive globe',
     groups: [
         { name: 'content', title: 'Content' },

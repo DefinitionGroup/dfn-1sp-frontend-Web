@@ -8,7 +8,7 @@ import GridBackground from "@/components/ui/GridBackground";
 import CaseGalleryComponent from "@/components/data/data-CaseGallery";
 import { getTranslations } from "@/lib/translations";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 
 interface CaseStudy {
   _id: string;
@@ -224,7 +224,7 @@ function CasesGalleryFilteredWithPagination({
                 }`}
                 aria-label="Previous page"
               >
-                <FiChevronLeft size={24} />
+                <CaretLeft size={24} />
               </button>
               
               <div className="flex gap-2">
@@ -253,7 +253,7 @@ function CasesGalleryFilteredWithPagination({
                 }`}
                 aria-label="Next page"
               >
-                <FiChevronRight size={24} />
+                <CaretRight size={24} />
               </button>
             </div>
           )}
