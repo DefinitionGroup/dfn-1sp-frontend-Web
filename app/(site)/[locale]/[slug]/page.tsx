@@ -16,6 +16,11 @@
  *
  * `generateStaticParams()` pre-renders known pages at build time.
  * `dynamicParams = true` allows new pages to be rendered on-demand.
+ *
+ * ## SEO (February 2026)
+ *
+ * - Canonical URLs prevent duplicate content across locales
+ * - Full OpenGraph + Twitter card metadata for social sharing
  */
 import { PageBuilder } from "@/components/PageBuilder";
 import { getPageBySlug, getAllPageSlugs } from "@/lib/sanity/queries";
@@ -60,13 +65,38 @@ export async function generateMetadata({
     };
   }
 
+  const title = page.metadata?.title || page.title;
+  const description = page.metadata?.description;
+
+  const ogImages = page.metadata?.image
+    ? [
+        {
+          url: urlFor(page.metadata.image).width(1200).height(630).url(),
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ]
+    : [];
+
   return {
-    title: page.metadata?.title || page.title,
-    description: page.metadata?.description,
+    title,
+    description,
+    alternates: {
+      canonical: `/${language}/${slug}`,
+    },
     openGraph: {
-      images: page.metadata?.image
-        ? [urlFor(page.metadata.image).width(1200).height(630).url()]
-        : [],
+      title,
+      description: description || undefined,
+      locale: language,
+      type: "website",
+      images: ogImages,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: description || undefined,
+      images: ogImages.map((img) => img.url),
     },
   };
 }
@@ -100,4 +130,3 @@ export default async function Page({
     </SiteWrapper>
   );
 }
-

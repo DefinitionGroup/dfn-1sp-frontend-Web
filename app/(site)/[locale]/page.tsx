@@ -13,12 +13,11 @@
  * wraps the fetch in React's `cache()`. This means only 1 API call is made,
  * even though `getHomePage()` is called twice.
  *
- * ## How This Works
+ * ## SEO (February 2026)
  *
- * React's `cache()` function memoizes results within a single server render.
- * When `generateMetadata()` calls `getHomePage('1spWeb', 'en')` and then the
- * page component calls the same function with the same args, React returns
- * the cached result without making another API call.
+ * - Canonical URLs with locale alternates for multi-language support
+ * - OpenGraph + Twitter card metadata for social sharing
+ * - Proper title template integration with root layout
  */
 import { getHomePage } from "@/lib/sanity/queries";
 import { PageBuilder } from "@/components/PageBuilder";
@@ -30,6 +29,8 @@ import type { Metadata } from "next";
 
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 export const revalidate = 60;
+
+const SUPPORTED_LOCALES = ["en", "de", "es"];
 
 export async function generateMetadata({
   params,
@@ -50,13 +51,43 @@ export async function generateMetadata({
     };
   }
 
+  const title = page.metadata?.title || page.title || "Home";
+  const description =
+    page.metadata?.description ||
+    "1SP is a full-service agency specializing in brand engagement, experiential marketing, creative content, and talent management.";
+
+  const ogImages = page.metadata?.image
+    ? [
+        {
+          url: urlFor(page.metadata.image).width(1200).height(630).url(),
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ]
+    : [];
+
   return {
-    title: page.metadata?.title || page.title,
-    description: page.metadata?.description,
+    title,
+    description,
+    alternates: {
+      canonical: `/${language}`,
+      languages: Object.fromEntries(
+        SUPPORTED_LOCALES.map((l) => [l, `/${l}`])
+      ),
+    },
     openGraph: {
-      images: page.metadata?.image
-        ? [urlFor(page.metadata.image).width(1200).height(630).url()]
-        : [],
+      title,
+      description,
+      locale: language,
+      type: "website",
+      images: ogImages,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ogImages.map((img) => img.url),
     },
   };
 }
@@ -89,4 +120,3 @@ export default async function Home({
     </SiteWrapper>
   );
 }
-
