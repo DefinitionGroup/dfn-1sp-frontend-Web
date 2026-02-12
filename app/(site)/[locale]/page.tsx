@@ -26,9 +26,29 @@ import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
 import { urlFor } from "@/sanity/lib/image";
 import type { Metadata } from "next";
+import { cloudinaryPosterUrl } from "@/utils/utils";
 
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 export const revalidate = 60;
+
+/**
+ * Extract the hero video URL from page builder content to generate
+ * a <link rel="preload"> hint so the browser starts downloading
+ * the LCP poster image during HTML parse, before any JS executes.
+ */
+function extractHeroVideoUrl(content: any[]): string | undefined {
+  if (!Array.isArray(content)) return undefined;
+  for (const block of content) {
+    if (block?._type === "oneSPHeader") {
+      const media = block?.media;
+      const url = media?.secure_url || media?.url;
+      if (url && (/\/video\//.test(url) || /\.(mp4|webm|ogg)$/i.test(url))) {
+        return url;
+      }
+    }
+  }
+  return undefined;
+}
 
 const SUPPORTED_LOCALES = ["en", "de", "es"];
 
@@ -107,8 +127,41 @@ export default async function Home({
 
   const navbarVariant = page?.navbarVariant || "light";
 
+  // LCP optimization: preload hero poster image so the browser discovers it
+  // during HTML parsing, well before JavaScript mounts the client component.
+  const heroVideoUrl = page?.content1sp
+    ? extractHeroVideoUrl(page.content1sp as any[])
+    : undefined;
+  const heroPosterDesktop = heroVideoUrl
+    ? cloudinaryPosterUrl(heroVideoUrl, { maxWidth: 1280 })
+    : undefined;
+  const heroPosterMobile = heroVideoUrl
+    ? cloudinaryPosterUrl(heroVideoUrl, { maxWidth: 640 })
+    : undefined;
+
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
+      {/* Preload the hero poster for fast LCP */}
+      {heroPosterDesktop && (
+        <link
+          rel="preload"
+          as="image"
+          href={heroPosterDesktop}
+          // @ts-expect-error — fetchpriority is valid HTML but not yet in React types
+          fetchpriority="high"
+          media="(min-width: 769px)"
+        />
+      )}
+      {heroPosterMobile && (
+        <link
+          rel="preload"
+          as="image"
+          href={heroPosterMobile}
+          // @ts-expect-error — fetchpriority is valid HTML but not yet in React types
+          fetchpriority="high"
+          media="(max-width: 768px)"
+        />
+      )}
       <HamburgerGradientMenu />
       <div className="  min-h-screen px-1 md:px-4 ">
         {page?.content1sp ? (

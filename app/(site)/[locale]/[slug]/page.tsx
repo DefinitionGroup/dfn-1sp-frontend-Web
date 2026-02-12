@@ -30,6 +30,22 @@ import SiteWrapper from "@/components/SiteWrapper";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 import { urlFor } from "@/sanity/lib/image";
 import type { Metadata } from "next";
+import { cloudinaryPosterUrl } from "@/utils/utils";
+
+/** Extract hero video URL from page builder content for preload hint */
+function extractHeroVideoUrl(content: any[]): string | undefined {
+  if (!Array.isArray(content)) return undefined;
+  for (const block of content) {
+    if (block?._type === "oneSPHeader") {
+      const media = block?.media;
+      const url = media?.secure_url || media?.url;
+      if (url && (/\/video\//.test(url) || /\.(mp4|webm|ogg)$/i.test(url))) {
+        return url;
+      }
+    }
+  }
+  return undefined;
+}
 
 // Allow new pages to be rendered on-demand (ISR)
 export const dynamicParams = true;
@@ -117,8 +133,40 @@ export default async function Page({
 
   const navbarVariant = page?.navbarVariant || "light";
 
+  // LCP optimization: preload hero poster image
+  const heroVideoUrl = page?.content1sp
+    ? extractHeroVideoUrl(page.content1sp as any[])
+    : undefined;
+  const heroPosterDesktop = heroVideoUrl
+    ? cloudinaryPosterUrl(heroVideoUrl, { maxWidth: 1280 })
+    : undefined;
+  const heroPosterMobile = heroVideoUrl
+    ? cloudinaryPosterUrl(heroVideoUrl, { maxWidth: 640 })
+    : undefined;
+
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
+      {/* Preload the hero poster for fast LCP */}
+      {heroPosterDesktop && (
+        <link
+          rel="preload"
+          as="image"
+          href={heroPosterDesktop}
+          // @ts-expect-error — fetchpriority is valid HTML but not yet in React types
+          fetchpriority="high"
+          media="(min-width: 769px)"
+        />
+      )}
+      {heroPosterMobile && (
+        <link
+          rel="preload"
+          as="image"
+          href={heroPosterMobile}
+          // @ts-expect-error — fetchpriority is valid HTML but not yet in React types
+          fetchpriority="high"
+          media="(max-width: 768px)"
+        />
+      )}
       <HamburgerGradientMenu />
       <div className="  min-h-screen px-1 md:px-2">
         {page?.content1sp ? (
