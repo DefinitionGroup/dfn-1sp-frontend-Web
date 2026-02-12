@@ -31,6 +31,13 @@ import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 import { urlFor } from "@/sanity/lib/image";
 import type { Metadata } from "next";
 import { cloudinaryPosterUrl } from "@/utils/utils";
+import {
+  JsonLdScript,
+  generateWebPageJsonLd,
+  generateBreadcrumbJsonLd,
+  getBreadcrumbLabel,
+  CANONICAL_URL,
+} from "@/lib/structured-data";
 
 /** Extract hero video URL from page builder content for preload hint */
 function extractHeroVideoUrl(content: any[]): string | undefined {
@@ -146,6 +153,35 @@ export default async function Page({
 
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
+      {/* Structured Data (JSON-LD) */}
+      {page && (
+        <>
+          <JsonLdScript
+            data={generateWebPageJsonLd({
+              title: page.metadata?.title || page.title || slug,
+              slug,
+              description: page.metadata?.description,
+              locale: language,
+              imageUrl: page.metadata?.image
+                ? urlFor(page.metadata.image).width(1200).height(630).url()
+                : undefined,
+            })}
+          />
+          <JsonLdScript
+            data={generateBreadcrumbJsonLd([
+              {
+                name: getBreadcrumbLabel(language, "home"),
+                url: `${CANONICAL_URL}/${language}`,
+              },
+              {
+                name: page.title || slug,
+                url: `${CANONICAL_URL}/${language}/${slug}`,
+              },
+            ])}
+          />
+        </>
+      )}
+
       {/* Preload the hero poster for fast LCP */}
       {heroPosterDesktop && (
         <link

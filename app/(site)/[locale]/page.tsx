@@ -19,7 +19,7 @@
  * - OpenGraph + Twitter card metadata for social sharing
  * - Proper title template integration with root layout
  */
-import { getHomePage } from "@/lib/sanity/queries";
+import { getHomePage, getGlobalData } from "@/lib/sanity/queries";
 import { PageBuilder } from "@/components/PageBuilder";
 import { cookies } from "next/headers";
 import NotFound from "@/components/ui/not-found";
@@ -27,6 +27,13 @@ import SiteWrapper from "@/components/SiteWrapper";
 import { urlFor } from "@/sanity/lib/image";
 import type { Metadata } from "next";
 import { cloudinaryPosterUrl } from "@/utils/utils";
+import {
+  JsonLdScript,
+  generateHomepageJsonLd,
+  generateBreadcrumbJsonLd,
+  getBreadcrumbLabel,
+  CANONICAL_URL,
+} from "@/lib/structured-data";
 
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 export const revalidate = 60;
@@ -127,6 +134,9 @@ export default async function Home({
 
   const navbarVariant = page?.navbarVariant || "light";
 
+  // Structured data: get social links & logo (cached — deduped with SiteWrapper)
+  const globalData = await getGlobalData(channel, language);
+
   // LCP optimization: preload hero poster image so the browser discovers it
   // during HTML parsing, well before JavaScript mounts the client component.
   const heroVideoUrl = page?.content1sp
@@ -141,6 +151,23 @@ export default async function Home({
 
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
+      {/* Structured Data (JSON-LD) */}
+      <JsonLdScript
+        data={generateHomepageJsonLd({
+          locale: language,
+          logoUrl: globalData.nav?.logoUrl,
+          socialLinks: globalData.footer?.socialLinks,
+        })}
+      />
+      <JsonLdScript
+        data={generateBreadcrumbJsonLd([
+          {
+            name: getBreadcrumbLabel(language, "home"),
+            url: `${CANONICAL_URL}/${language}`,
+          },
+        ])}
+      />
+
       {/* Preload the hero poster for fast LCP */}
       {heroPosterDesktop && (
         <link
