@@ -15,6 +15,8 @@ interface HeaderImageVideoCompProps {
   enableParallax?: boolean;
   opacity?: number; // overlay target opacity when in view
   videoDelay?: number; // delay before video starts (seconds)
+  /** Mark as above-the-fold hero — adds fetchpriority="high" and priority to images */
+  isHero?: boolean;
 }
 
 const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
@@ -26,6 +28,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   enableParallax = true,
   opacity = 0.6, // default overlay opacity
   videoDelay = 0.5, // default delay after animation starts
+  isHero = false,
 }) => {
   // Create ref for the component
   const ref = useRef(null);
@@ -93,6 +96,8 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
               <img
                 src={posterUrl}
                 alt={imageAlt}
+                // eslint-disable-next-line react/no-unknown-property
+                fetchPriority={isHero ? "high" : undefined}
                 className={`object-cover w-full h-full absolute inset-0 transition-opacity duration-500 ${videoReady ? "opacity-0" : "opacity-100"}`}
                 style={{ zIndex: 1 }}
               />
@@ -117,7 +122,8 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
             alt={imageAlt}
             fill
             className="object-cover object-top"
-            priority
+            priority={isHero}
+            fetchPriority={isHero ? "high" : undefined}
           />
         )}
         <div

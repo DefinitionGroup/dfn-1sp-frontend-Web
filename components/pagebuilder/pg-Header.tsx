@@ -113,6 +113,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           videoSrc={useVideo ? mediaUrl : undefined}
           imageSrc={!useVideo ? mediaUrl : undefined}
           enableParallax={!!step.enableParallax}
+          isHero
         />
       )}
 
