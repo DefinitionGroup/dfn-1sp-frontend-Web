@@ -53,7 +53,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
     if (!useVideo) return;
     const timer = setTimeout(() => {
       setShouldMountVideo(true);
-    }, 1222);
+    }, 3333);
     return () => clearTimeout(timer);
   }, [useVideo]);
 
@@ -106,7 +106,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
             {shouldMountVideo && (
               <video
                 ref={videoRef}
-                src={optimizedVideoUrl(videoSrc, { maxWidth: 1920 })}
+                src={optimizedVideoUrl(videoSrc, { maxWidth: 1440 })}
                 loop
                 muted
                 playsInline
