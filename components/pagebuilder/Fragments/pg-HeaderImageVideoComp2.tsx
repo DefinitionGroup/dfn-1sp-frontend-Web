@@ -4,7 +4,7 @@ import React, { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, useInView } from "motion/react";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
-import { optimizedVideoUrl, cloudinaryPosterUrl } from "@/utils/utils";
+import { optimizedVideoUrl, optimizedPortraitVideoUrl, cloudinaryPosterUrl } from "@/utils/utils";
 
 /**
  * Helper to compute the hero poster URL for server-side <link rel="preload"> hints.
@@ -15,9 +15,10 @@ export function getHeroPosterUrl(
   opts?: { mobile?: boolean }
 ): string | undefined {
   if (!videoSrc) return undefined;
-  // Use a smaller width for mobile preload (matches responsive poster below)
-  const maxWidth = opts?.mobile ? 640 : 1280;
-  return cloudinaryPosterUrl(videoSrc, { maxWidth });
+  if (opts?.mobile) {
+    return cloudinaryPosterUrl(videoSrc, { maxWidth: 480, portrait: true });
+  }
+  return cloudinaryPosterUrl(videoSrc, { maxWidth: 1280 });
 }
 
 interface HeaderImageVideoCompProps {
@@ -56,18 +57,39 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   // LCP optimization: defer video mount, show poster image first
   const [shouldMountVideo, setShouldMountVideo] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Derive poster from Cloudinary video URL
-  // Use a responsive width: 640px covers most mobile screens, 1280px for desktop
+  // Detect mobile on mount for responsive video source
+  useEffect(() => {
+    const mql = window.matchMedia("(max-width: 768px)");
+    setIsMobile(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
+
+  // Derive poster from Cloudinary video URL — portrait for mobile, landscape for desktop
   const posterUrl = useVideo
     ? cloudinaryPosterUrl(videoSrc, { maxWidth: 1280 })
     : undefined;
-  // Tiny srcset-like approach: mobile devices get a smaller poster
   const posterUrlMobile = useVideo
-    ? cloudinaryPosterUrl(videoSrc, { maxWidth: 640 })
+    ? cloudinaryPosterUrl(videoSrc, { maxWidth: 480, portrait: true })
     : undefined;
 
-  // Mount video after 300ms to let the poster image become the LCP element
+  // Responsive video URLs:
+  // - Mobile: portrait 9:16 crop, 480px wide, aggressive compression
+  // - Desktop: landscape, 960px wide, good compression with vc_auto
+  const videoUrlDesktop = optimizedVideoUrl(videoSrc, {
+    maxWidth: 960,
+    quality: "eco",
+    autoCodec: true,
+  });
+  const videoUrlMobile = optimizedPortraitVideoUrl(videoSrc, {
+    maxWidth: 480,
+    quality: "eco",
+  });
+
+  // Mount video after delay to let the poster image become the LCP element
   useEffect(() => {
     if (!useVideo) return;
     const timer = setTimeout(() => {
@@ -119,7 +141,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
             {/* Poster image — lightweight, loads immediately, becomes LCP element */}
             {posterUrl && (
               <picture>
-                {/* Serve smaller poster to mobile devices for faster LCP */}
+                {/* Portrait poster for mobile — matches the portrait video crop */}
                 {posterUrlMobile && (
                   <source
                     media="(max-width: 768px)"
@@ -140,11 +162,11 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
                 />
               </picture>
             )}
-            {/* Video — mounted after 300ms delay, fades in once ready */}
+            {/* Video — responsive: portrait (9:16) on mobile, landscape on desktop */}
             {shouldMountVideo && (
               <video
                 ref={videoRef}
-                src={optimizedVideoUrl(videoSrc, { maxWidth: 960 })}
+                src={isMobile ? videoUrlMobile : videoUrlDesktop}
                 loop
                 muted
                 playsInline

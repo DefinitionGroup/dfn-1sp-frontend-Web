@@ -141,7 +141,7 @@ export default async function Page({
     ? cloudinaryPosterUrl(heroVideoUrl, { maxWidth: 1280 })
     : undefined;
   const heroPosterMobile = heroVideoUrl
-    ? cloudinaryPosterUrl(heroVideoUrl, { maxWidth: 640 })
+    ? cloudinaryPosterUrl(heroVideoUrl, { maxWidth: 480, portrait: true })
     : undefined;
 
   return (
