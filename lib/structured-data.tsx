@@ -341,3 +341,135 @@ export function generateBusinessUnitJsonLd(options: {
     }),
   };
 }
+
+// =============================================================================
+// ITEM LIST / CAROUSEL
+// =============================================================================
+
+/**
+ * A single case study item extracted from page builder content blocks.
+ */
+export interface CaseItemForList {
+  title: string;
+  slug: string;
+  description?: string | null;
+  imageUrl?: string | null;
+}
+
+/**
+ * ItemList structured data for case study carousels and galleries.
+ *
+ * Google's ItemList type can generate a **scrollable carousel** in search
+ * results when the page contains a list of items with individual URLs.
+ * Each ListItem points to a case study detail page (which already has
+ * full Article structured data).
+ *
+ * SEO Impact: Carousel rich results in Google Search
+ *
+ * @see https://developers.google.com/search/docs/appearance/structured-data/carousel
+ */
+export function generateItemListJsonLd(options: {
+  items: CaseItemForList[];
+  locale: string;
+  listName?: string;
+}): JsonLdEntity {
+  const { items, locale, listName } = options;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    ...(listName && { name: listName }),
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `${CANONICAL_URL}/${locale}/cases/${item.slug}`,
+      name: item.title,
+      ...(item.description && { description: item.description }),
+      ...(item.imageUrl && {
+        image: { "@type": "ImageObject", url: item.imageUrl },
+      }),
+    })),
+  };
+}
+
+/**
+ * Extract case study items from page builder content blocks for ItemList
+ * structured data. Scans blocks of type `smartCarousel`,
+ * `casesGalleryFiltered`, and `casesGalleryFilteredWithPagination`.
+ *
+ * ## Data Sources
+ *
+ * - **smartCarousel** (manual mode): `selectedCases` are dereferenced in GROQ
+ *   with full data (title, slug, description, image, client, services).
+ *
+ * - **casesGalleryFiltered** / **casesGalleryFilteredWithPagination**:
+ *   `selectedCases` are dereferenced via GROQ projection with title + slug
+ *   (lightweight). Auto-mode galleries use `allCases` fallback data.
+ *
+ * @param contentBlocks - The page builder content array from Sanity
+ * @param allCases - Optional fallback: all published cases (for auto-mode galleries)
+ * @returns Deduplicated array of case items ready for `generateItemListJsonLd()`
+ */
+export function extractCaseItemsFromContent(
+  contentBlocks: any[] | null | undefined,
+  allCases?: CaseItemForList[],
+): CaseItemForList[] {
+  if (!contentBlocks || !Array.isArray(contentBlocks)) return [];
+
+  const seen = new Set<string>();
+  const items: CaseItemForList[] = [];
+
+  const addItem = (item: CaseItemForList) => {
+    if (seen.has(item.slug)) return;
+    seen.add(item.slug);
+    items.push(item);
+  };
+
+  for (const block of contentBlocks) {
+    if (!block?._type) continue;
+
+    switch (block._type) {
+      // SmartCarousel: selectedCases are fully dereferenced in GROQ
+      case "smartCarousel": {
+        if (block.selectionMode === "manual" && Array.isArray(block.selectedCases)) {
+          for (const cs of block.selectedCases) {
+            if (!cs?.title || !cs?.slug?.current) continue;
+            addItem({
+              title: cs.title,
+              slug: cs.slug.current,
+              description: cs.description || null,
+              imageUrl: cs.mainImage?.secure_url || null,
+            });
+          }
+        } else if (allCases) {
+          // Auto mode: use the fallback list
+          for (const cs of allCases) addItem(cs);
+        }
+        break;
+      }
+
+      // CasesGalleryFiltered / WithPagination: selectedCases dereferenced via GROQ projection
+      case "casesGalleryFiltered":
+      case "casesGalleryFilteredWithPagination": {
+        if (block.selectionMode === "manual" && Array.isArray(block.selectedCases)) {
+          for (const cs of block.selectedCases) {
+            // Dereferenced via GROQ: { _id, title, slug: { current }, description, mainImageUrl }
+            if (!cs?.title || !cs?.slug?.current) continue;
+            addItem({
+              title: cs.title,
+              slug: cs.slug.current,
+              description: cs.description || null,
+              imageUrl: cs.mainImageUrl || cs.mainImage?.secure_url || null,
+            });
+          }
+        } else if (allCases) {
+          // Auto mode: use the fallback list
+          for (const cs of allCases) addItem(cs);
+        }
+        break;
+      }
+    }
+  }
+
+  return items;
+}

@@ -31,6 +31,8 @@ import {
   JsonLdScript,
   generateHomepageJsonLd,
   generateBreadcrumbJsonLd,
+  generateItemListJsonLd,
+  extractCaseItemsFromContent,
   getBreadcrumbLabel,
   CANONICAL_URL,
 } from "@/lib/structured-data";
@@ -167,6 +169,21 @@ export default async function Home({
           },
         ])}
       />
+      {/* ItemList for case carousels / galleries on the homepage */}
+      {(() => {
+        const caseItems = extractCaseItemsFromContent(
+          page?.content1sp as any[] | undefined,
+        );
+        return caseItems.length > 0 ? (
+          <JsonLdScript
+            data={generateItemListJsonLd({
+              items: caseItems,
+              locale: language,
+              listName: "Featured Case Studies",
+            })}
+          />
+        ) : null;
+      })()}
 
       {/* Preload the hero poster for fast LCP */}
       {heroPosterDesktop && (
