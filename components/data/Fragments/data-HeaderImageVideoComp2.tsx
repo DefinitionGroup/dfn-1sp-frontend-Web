@@ -100,6 +100,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
             src={imageSrc}
             alt={imageAlt}
             fill
+            sizes="100vw"
             className="object-cover object-top"
             priority
             unoptimized={imageSrc.includes("cloudinary")}

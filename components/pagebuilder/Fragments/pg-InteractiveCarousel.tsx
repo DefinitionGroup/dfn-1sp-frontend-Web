@@ -252,11 +252,12 @@ function InteractiveCarousel({
                         {(active.logosrc || "/logos/Amazon_logo.svg") && (
                           <motion.div className="w-fit px-3 text-black flex text-xs rounded-xs">
                             <Image
-                              className="mb-8 invert"
+                              className="mb-8 invert  "
                               src={active.logosrc || "/logos/Amazon_logo.svg"}
                               alt="Logo"
                               width={96}
                               height={44}
+                              style={{ height: "auto" }}
                             />
                           </motion.div>
                         )}
@@ -378,6 +379,7 @@ function InteractiveCarousel({
                   src={item.image}
                   alt={item.title}
                   fill
+                  sizes="88px"
                   className="w-full h-full object-cover"
                 />
               </motion.button>

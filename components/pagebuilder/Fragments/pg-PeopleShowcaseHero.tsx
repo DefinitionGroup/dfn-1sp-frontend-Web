@@ -204,6 +204,7 @@ function PeopleShowcaseHero({
                           width={16}
                           height={16}
                           className="w-4 h-4 mr-2"
+                          style={{ height: "auto" }}
                         />
                         LinkedIn Profile
                       </Link>
@@ -296,6 +297,7 @@ function PeopleShowcaseHero({
                         src={assetUrl(activeModal.media as any) || activeModal.media.secure_url}
                         alt={activeModal.altText || activeModal.fullname || activeModal.name || "Profile image"}
                         fill
+                        sizes="56px"
                         className="object-cover"
                       />
                     )}
@@ -337,6 +339,7 @@ function PeopleShowcaseHero({
                       width={16}
                       height={16}
                       className="h-5 w-5"
+                      style={{ height: "auto" }}
                     />
                     <span>LinkedIn profile</span>
                   </Link>

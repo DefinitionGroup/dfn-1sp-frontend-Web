@@ -131,9 +131,9 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           animateImmediately={true}
         >
           {eyebrow && (
-            <h1 className="text-neutral-50 uppercase  text-xs border-b pb-1 border-white/50 font-medium max-w-1/4">
+            <h3 className="text-neutral-50 uppercase  text-xs border-b pb-1 border-white/50 font-medium max-w-1/4">
               {eyebrow}
-            </h1>
+            </h3>
           )}
 
           {/* Typewriter words */}
@@ -153,7 +153,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
             if (!anyContainsHighlight && highlight && i === lines.length - 1) {
               const highlightText = highlight.trim();
               return (
-                <p
+                <h1
                   key={`p-${i}`}
                   className={[
                     "text-neutral-50  pt-2",
@@ -165,7 +165,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
                   <span className="bg-gradient-to-r from-lime-300 to-lime-500 bg-clip-text text-transparent font-">
                     {highlightText}
                   </span>
-                </p>
+                </h1>
               );
             }
 

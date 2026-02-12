@@ -359,6 +359,7 @@ export default function SmartCarousel({
                               alt="Logo"
                               width={120}
                               height={32}
+                   
                             />
                           </motion.div>
                         )}
@@ -500,6 +501,7 @@ export default function SmartCarousel({
                     src={item.image}
                     alt={item.title}
                     fill
+                    sizes="88px"
                     className="object-cover"
                   />
                 )}

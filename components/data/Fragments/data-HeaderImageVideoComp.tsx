@@ -119,6 +119,7 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
             src={imageSrc}
             alt={imageAlt}
             fill
+            sizes="100vw"
             className="object-cover"
             priority
           />

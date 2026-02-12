@@ -45,7 +45,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
 
   // Derive poster from Cloudinary video URL
   const posterUrl = useVideo
-    ? cloudinaryPosterUrl(videoSrc, { maxWidth: 1920 })
+    ? cloudinaryPosterUrl(videoSrc, { maxWidth: 1222 })
     : undefined;
 
   // Mount video after 300ms to let the poster image become the LCP element
@@ -53,7 +53,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
     if (!useVideo) return;
     const timer = setTimeout(() => {
       setShouldMountVideo(true);
-    }, 300);
+    }, 1222);
     return () => clearTimeout(timer);
   }, [useVideo]);
 
@@ -121,6 +121,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
             src={imageSrc}
             alt={imageAlt}
             fill
+            sizes="100vw"
             className="object-cover object-top"
             priority={isHero}
             fetchPriority={isHero ? "high" : undefined}
