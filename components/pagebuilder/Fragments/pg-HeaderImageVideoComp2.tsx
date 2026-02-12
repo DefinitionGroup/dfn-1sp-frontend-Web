@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, useInView } from "motion/react";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
-import { optimizedVideoUrl } from "@/utils/utils";
+import { optimizedVideoUrl, cloudinaryPosterUrl } from "@/utils/utils";
 
 interface HeaderImageVideoCompProps {
   useVideo?: boolean;
@@ -36,15 +36,35 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
     margin: "100px 0px 0px 0px", // Trigger before element enters viewport
   });
 
-  // Play video after animation completes
+  // LCP optimization: defer video mount, show poster image first
+  const [shouldMountVideo, setShouldMountVideo] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
+
+  // Derive poster from Cloudinary video URL
+  const posterUrl = useVideo
+    ? cloudinaryPosterUrl(videoSrc, { maxWidth: 1920 })
+    : undefined;
+
+  // Mount video after 300ms to let the poster image become the LCP element
   useEffect(() => {
-    if (isInView && useVideo && videoRef.current) {
+    if (!useVideo) return;
+    const timer = setTimeout(() => {
+      setShouldMountVideo(true);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [useVideo]);
+
+  // Play video after animation completes + mount delay
+  useEffect(() => {
+    if (isInView && useVideo && shouldMountVideo && videoRef.current) {
       const timer = setTimeout(() => {
-        videoRef.current?.play();
+        videoRef.current?.play().catch(() => {
+          // Autoplay may be blocked on some browsers — poster stays visible
+        });
       }, videoDelay * 1000);
       return () => clearTimeout(timer);
     }
-  }, [isInView, useVideo, videoDelay]);
+  }, [isInView, useVideo, videoDelay, shouldMountVideo]);
 
   return (
     <div
@@ -67,14 +87,30 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
 
       >
         {useVideo ? (
-          <video
-            ref={videoRef}
-            src={optimizedVideoUrl(videoSrc, { maxWidth: 1920 })}
-            loop
-            muted
-            playsInline
-            className="object-cover w-full h-full overflow-hidden"
-          />
+          <div className="relative w-full h-full">
+            {/* Poster image — lightweight, loads immediately, becomes LCP element */}
+            {posterUrl && (
+              <img
+                src={posterUrl}
+                alt={imageAlt}
+                className={`object-cover w-full h-full absolute inset-0 transition-opacity duration-500 ${videoReady ? "opacity-0" : "opacity-100"}`}
+                style={{ zIndex: 1 }}
+              />
+            )}
+            {/* Video — mounted after 300ms delay, fades in once ready */}
+            {shouldMountVideo && (
+              <video
+                ref={videoRef}
+                src={optimizedVideoUrl(videoSrc, { maxWidth: 1920 })}
+                loop
+                muted
+                playsInline
+                onCanPlay={() => setVideoReady(true)}
+                className={`object-cover w-full h-full transition-opacity duration-500 ${videoReady ? "opacity-100" : "opacity-0"}`}
+                style={{ zIndex: 0 }}
+              />
+            )}
+          </div>
         ) : (
           <Image
             src={imageSrc}
@@ -86,7 +122,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
         )}
         <div
           className="absolute inset-0 bg-black"
-          style={{ opacity }}
+          style={{ opacity, zIndex: 2 }}
         />
       </motion.div>
     </div>

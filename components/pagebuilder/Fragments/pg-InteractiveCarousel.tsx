@@ -8,7 +8,7 @@ import type {
   CarouselItem as SanityCarouselItem,
   CTA,
 } from "@/types/sanity.types";
-import { assetUrl, ctaToButtonProps, optimizedVideoUrl } from "@/utils/utils";
+import { assetUrl, ctaToButtonProps, optimizedVideoUrl, cloudinaryPosterUrl } from "@/utils/utils";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
 
 interface UIItem {
@@ -196,9 +196,11 @@ function InteractiveCarousel({
                       preload="auto"
                     />
                   ) : active.video ? (
-                    /* Poster fallback while video hasn't been preloaded yet */
-                    <motion.div
-                      className="absolute inset-0 w-full h-full bg-neutral-900"
+                    /* Cloudinary poster fallback while video hasn't been preloaded yet */
+                    <motion.img
+                      src={cloudinaryPosterUrl(active.video, { maxWidth: 1920 }) || ""}
+                      alt={active.title}
+                      className="absolute inset-0 w-full h-full object-cover"
                       initial={{ scale: 1.3, opacity: 1 }}
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ duration: 1.6 }}

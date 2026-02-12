@@ -19,6 +19,44 @@ export const assetUrl = (a?: { secure_url?: string; url?: string } | null) =>
  * optimizedVideoUrl(url, { maxWidth: 1280, withAudio: true })
  * // → "https://res.cloudinary.com/.../upload/q_auto,f_auto,w_1280/v123/video.mp4"
  */
+/**
+ * Generates a poster image URL from a Cloudinary video URL.
+ *
+ * Cloudinary can extract a frame from any video by changing the file extension
+ * to an image format (e.g., .jpg, .webp). We inject optimization transforms
+ * and use `so_0` (first frame) or `so_auto` (AI-selected best frame).
+ *
+ * This is used for LCP optimization: showing a lightweight poster image
+ * immediately while deferring the heavy video load.
+ *
+ * @example
+ * cloudinaryPosterUrl("https://res.cloudinary.com/.../upload/v123/video.mp4")
+ * // → "https://res.cloudinary.com/.../upload/q_auto,f_auto,so_0,w_1920/v123/video.jpg"
+ *
+ * cloudinaryPosterUrl(url, { maxWidth: 640, frame: "auto" })
+ * // → "https://res.cloudinary.com/.../upload/q_auto,f_auto,so_auto,w_640/v123/video.jpg"
+ */
+export const cloudinaryPosterUrl = (
+    url?: string,
+    options?: { maxWidth?: number; frame?: "0" | "auto" | string }
+): string | undefined => {
+    if (!url) return undefined;
+
+    // Only transform Cloudinary upload URLs
+    if (!url.includes("/upload/")) return undefined;
+
+    const frame = options?.frame ?? "0";
+    const transforms = ["q_auto", "f_auto", `so_${frame}`];
+    if (options?.maxWidth) transforms.push(`w_${options.maxWidth}`);
+
+    const transformStr = transforms.join(",");
+
+    // Insert transforms and change extension to .jpg
+    const withTransforms = url.replace(/\/upload\//, `/upload/${transformStr}/`);
+    // Replace video extension with .jpg
+    return withTransforms.replace(/\.(mp4|mov|webm|avi|mkv)(\?.*)?$/i, ".jpg$2");
+};
+
 export const optimizedVideoUrl = (
     url?: string,
     options?: { maxWidth?: number; withAudio?: boolean }

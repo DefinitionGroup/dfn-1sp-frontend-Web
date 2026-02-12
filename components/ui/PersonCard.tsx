@@ -2,7 +2,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Link } from "next-view-transitions";
-import { assetUrl, optimizedVideoUrl } from "@/utils/utils";
+import { assetUrl } from "@/utils/utils";
+import DeferredVideo from "@/components/ui/DeferredVideo";
 import StaggeredFadeIn from "@/components/ui/StaggeredFadeIn";
 
 type CloudinaryAsset = {
@@ -69,13 +70,12 @@ export default function PersonCard({ person, index }: PersonCardProps) {
       onMouseLeave={() => setIsHovered(false)}
     >
       {isVideo ? (
-        <video
-          src={optimizedVideoUrl(src ?? "", { maxWidth: 320 })}
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="w-full  h-full object-cover object-bottom transition-transform duration-500 ease-out group-hover:scale-105"
+        <DeferredVideo
+          src={src ?? ""}
+          maxWidth={320}
+          className="w-full h-full object-cover object-bottom transition-transform duration-500 ease-out group-hover:scale-105"
+          mountDelay={300}
+          posterFrame="0"
         />
       ) : (
         <Image

@@ -7,7 +7,7 @@ import { useOutsideClick } from "@/hooks/use-outside-click";
 import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
 import IntertitleCTA from "./Fragments/data-IntertitleCTA";
 import Image from "next/image";
-import { optimizedVideoUrl } from "@/utils/utils";
+import DeferredVideo from "@/components/ui/DeferredVideo";
 interface CaseStudy {
   _id: string;
   title: string;
@@ -118,12 +118,12 @@ export default function CaseGalleryMenu({
                 className="col-start-1 h-1/2 col-span-1 row-start-1 bg-black overflow-hidden"
               >
                 {item.mainVideoUrl ? (
-                  <video
-                    src={optimizedVideoUrl(item.mainVideoUrl, { maxWidth: 480 })}
-                    autoPlay
-                    muted playsInline
-                    loop
-                    className="w-full object-cover group-hover/card:opacity-100 object-top opacity-80 transition-all h-full"
+                  <DeferredVideo
+                    src={item.mainVideoUrl}
+                    maxWidth={480}
+                    className="w-full object-cover object-top opacity-80 transition-all h-full group-hover/card:opacity-100"
+                    mountDelay={300}
+                    posterFrame="0"
                   />
                 ) : (
                   <Image

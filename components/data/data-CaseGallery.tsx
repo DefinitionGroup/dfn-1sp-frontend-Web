@@ -9,7 +9,7 @@ import Button2 from "../ui/Button2";
 import Image from "next/image";
 import StaggeredFadeIn from "../ui/StaggeredFadeIn";
 import CaseGalleryCard from "./CaseGalleryCard";
-import { optimizedVideoUrl } from "@/utils/utils";
+import DeferredVideo from "@/components/ui/DeferredVideo";
 
 interface CaseStudy {
   _id: string;
@@ -115,12 +115,12 @@ export default function CaseGalleryComponent({
                 layoutId={`image-${active.title}-${id}`}
               >
                 {active.mainVideoUrl ? (
-                  <video
-                    src={optimizedVideoUrl(active.mainVideoUrl, { maxWidth: 900 })}
-                    autoPlay
-                    muted playsInline
-                    loop
+                  <DeferredVideo
+                    src={active.mainVideoUrl}
+                    maxWidth={900}
                     className="w-full h-full absolute min-h-[70vh] sm:rounded-t-xl opacity-50 object-cover object-top"
+                    mountDelay={100}
+                    posterFrame="0"
                   />
                 ) : (
                   <Image
