@@ -1,11 +1,11 @@
 import { defineType, defineField, defineArrayMember } from "sanity";
-import { FiSidebar } from "react-icons/fi";
+import { Sidebar } from "@phosphor-icons/react";
 
 export default defineType({
     name: "sublineComponent",
     title: "Subline Component",
     type: "object",
-    icon: FiSidebar,
+    icon: Sidebar,
     groups: [
         { name: "content", title: "Content", default: true },
         { name: "layout", title: "Layout" },

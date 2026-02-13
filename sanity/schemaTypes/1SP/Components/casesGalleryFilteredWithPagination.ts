@@ -1,11 +1,11 @@
 import { defineType, defineField } from "sanity";
-import { FiGrid } from "react-icons/fi";
+import { GridFour } from "@phosphor-icons/react";
 
 export default defineType({
     name: "casesGalleryFilteredWithPagination",
     title: "Cases Gallery with Filters & Pagination",
     type: "object",
-    icon: FiGrid,
+    icon: GridFour,
     groups: [
         { name: "content", title: "Content", default: true },
         { name: "layout", title: "Layout & Style" },
@@ -89,7 +89,7 @@ export default defineType({
             return {
                 title: "Cases Gallery with Filters & Pagination",
                 subtitle: "Displays all case studies with service filtering and pagination",
-                media: FiGrid,
+                media: GridFour,
             };
         },
     },

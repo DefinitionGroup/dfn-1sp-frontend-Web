@@ -1,11 +1,11 @@
 import { defineType, defineField } from 'sanity'
-import { FiChevronUp } from 'react-icons/fi'
+import { CaretUp } from '@phosphor-icons/react'
 
 export default defineType({
     name: 'slideUpText',
     title: 'Slide Up Text',
     type: 'object',
-    icon: FiChevronUp,
+    icon: CaretUp,
     fields: [
         defineField({ name: 'name', title: 'Name', type: 'string' }),
         defineField({ name: 'text', title: 'Text', type: 'text' })
@@ -20,7 +20,7 @@ export default defineType({
             return {
                 title: title || 'Untitled slide',
                 subtitle: short,
-                media: FiChevronUp
+                media: CaretUp
             }
         }
     }

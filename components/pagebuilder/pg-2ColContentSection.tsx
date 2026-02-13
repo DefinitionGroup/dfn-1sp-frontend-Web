@@ -7,7 +7,7 @@ import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import { Link } from "next-view-transitions";
-import { assetUrl } from "@/utils/utils";
+import { assetUrl, optimizedVideoUrl } from "@/utils/utils";
 import type { CloudinaryAsset } from "@/types/sanity.types";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
 import { motion, useScroll, useTransform } from "motion/react";
@@ -224,7 +224,7 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
           <div className="relative aspect-[4/3] md:aspect-[3/4] lg:aspect-[4/3] overflow-hidden rounded-lg">
             {isVideo && mediaUrl ? (
               <motion.video
-                src={mediaUrl}
+                src={optimizedVideoUrl(mediaUrl, { maxWidth: 960 })}
                 className="w-full h-[150%] object-cover absolute -top-8 left-0"
                 style={{ y }}
                 autoPlay

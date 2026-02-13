@@ -1,7 +1,7 @@
 import { defineType, defineField } from 'sanity'
-import { LuChartBarDecreasing } from 'react-icons/lu'
-import { GiNetworkBars } from 'react-icons/gi'
-import { CgLoadbarAlt } from 'react-icons/cg'
+import { ChartBarHorizontal } from '@phosphor-icons/react'
+import { ChartBar } from '@phosphor-icons/react'
+import { Equalizer } from '@phosphor-icons/react'
 
 export default defineType({
     name: 'caseStudy',

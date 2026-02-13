@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "motion/react";
 import Image from "next/image";
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
+import DeferredVideo from "@/components/ui/DeferredVideo";
 
 interface CaseStudy {
   _id: string;
@@ -59,12 +60,12 @@ export default function CaseGalleryCard({
       >
         <motion.div style={{ y: springY }} className="w-full h-[120%]   relative -top-[10%]">
           {item.mainVideoUrl ? (
-            <video
+            <DeferredVideo
               src={item.mainVideoUrl}
-              autoPlay
-              muted
-              loop
-              className="w-full h-full object-cover group-hover/card:opacity-100 object-top opacity-80 transition-all"
+              maxWidth={640}
+              className="w-full h-full object-cover object-top opacity-80 transition-all group-hover/card:opacity-100"
+              mountDelay={300}
+              posterFrame="0"
             />
           ) : (
             <Image

@@ -1,11 +1,11 @@
 import { defineType, defineField } from 'sanity'
-import { FiSliders } from 'react-icons/fi'
+import { SlidersHorizontal } from '@phosphor-icons/react'
 
 export default defineType({
     name: 'smartCarousel',
     title: 'Smart Carousel',
     type: 'object',
-    icon: FiSliders,
+    icon: SlidersHorizontal,
     description: 'Interactive carousel displaying case studies - auto-populate or manually select',
     groups: [
         { name: 'content', title: 'Content', default: true },

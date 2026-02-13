@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import React, { useRef, useState } from "react";
+import { AnimatePresence, motion, useInView } from "motion/react";
 import type { CloudinaryAsset } from "@/types/sanity.types";
-import { assetUrl } from "@/utils/utils";
+import { assetUrl, optimizedVideoUrl, cloudinaryPosterUrl } from "@/utils/utils";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import StaggeredFadeIn from "@/components/ui/StaggeredFadeIn";
 import Image from "next/image";
@@ -27,6 +27,58 @@ function isVideoUrl(url?: string) {
   if (!url) return false;
   const lowered = url.toLowerCase();
   return lowered.endsWith(".mp4") || lowered.includes("/video/");
+}
+
+function LazyVideo({ src, className }: { src: string; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "200px" });
+  const [shouldMountVideo, setShouldMountVideo] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
+
+  // Derive poster image from Cloudinary video URL
+  const posterUrl = cloudinaryPosterUrl(src, { maxWidth: 640 });
+
+  // Mount video after 300ms delay once in view
+  React.useEffect(() => {
+    if (!isInView) return;
+    const timer = setTimeout(() => setShouldMountVideo(true), 300);
+    return () => clearTimeout(timer);
+  }, [isInView]);
+
+  return (
+    <div ref={ref} className={`w-full h-full relative ${className ?? ""}`}>
+      {isInView ? (
+        <>
+          {/* Poster image — lightweight, loads immediately */}
+          {posterUrl && (
+            <img
+              src={posterUrl}
+              alt=""
+              aria-hidden="true"
+              className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-500 group-hover:brightness-110 ${videoReady ? "opacity-0" : "opacity-100"}`}
+              style={{ zIndex: 1 }}
+            />
+          )}
+          {/* Video — mounted after 300ms, fades in once ready */}
+          {shouldMountVideo && (
+            <video
+              src={optimizedVideoUrl(src, { maxWidth: 640 })}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="none"
+              onCanPlay={() => setVideoReady(true)}
+              className={`w-full h-full object-cover transition-all duration-300 group-hover:brightness-110 ${videoReady ? "opacity-100" : "opacity-0"}`}
+              style={{ zIndex: 0 }}
+            />
+          )}
+        </>
+      ) : (
+        <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800" />
+      )}
+    </div>
+  );
 }
 
 function PeopleShowcaseHero({
@@ -81,14 +133,7 @@ function PeopleShowcaseHero({
                 onMouseLeave={() => setHoveredMember(null)}
               >
                 {isVideo ? (
-                  <video
-                    src={src ?? ""}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="w-full h-full object-cover transition-all duration-300 group-hover:brightness-110 "
-                  />
+                  <LazyVideo src={src ?? ""} />
                 ) : (
                   <Image
                     src={src}
@@ -159,6 +204,7 @@ function PeopleShowcaseHero({
                           width={16}
                           height={16}
                           className="w-4 h-4 mr-2"
+                          style={{ height: "auto" }}
                         />
                         LinkedIn Profile
                       </Link>
@@ -239,7 +285,7 @@ function PeopleShowcaseHero({
                   <div className="relative h-14 w-14 overflow-hidden rounded-full bg-neutral-800">
                     {isVideoUrl(activeModal.media.secure_url) ? (
                       <video
-                        src={activeModal.media.secure_url}
+                        src={optimizedVideoUrl(activeModal.media.secure_url, { maxWidth: 112 })}
                         autoPlay
                         muted
                         loop
@@ -251,6 +297,7 @@ function PeopleShowcaseHero({
                         src={assetUrl(activeModal.media as any) || activeModal.media.secure_url}
                         alt={activeModal.altText || activeModal.fullname || activeModal.name || "Profile image"}
                         fill
+                        sizes="56px"
                         className="object-cover"
                       />
                     )}
@@ -292,6 +339,7 @@ function PeopleShowcaseHero({
                       width={16}
                       height={16}
                       className="h-5 w-5"
+                      style={{ height: "auto" }}
                     />
                     <span>LinkedIn profile</span>
                   </Link>

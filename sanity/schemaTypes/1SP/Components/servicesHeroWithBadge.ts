@@ -1,11 +1,11 @@
 import { defineType, defineField } from "sanity";
-import { FiLayout } from "react-icons/fi";
+import { Layout } from "@phosphor-icons/react";
 
 export default defineType({
     name: "servicesHeroWithBadge",
     title: "Services Hero with Badge",
     type: "object",
-    icon: FiLayout,
+    icon: Layout,
     groups: [
         { name: "content", title: "Content", default: true },
         { name: "badge", title: "Badge" },
@@ -163,7 +163,7 @@ export default defineType({
             return {
                 title: title || "Services Hero with Badge",
                 subtitle: badgeText || "No badge text",
-                media: FiLayout,
+                media: Layout,
             };
         },
     },

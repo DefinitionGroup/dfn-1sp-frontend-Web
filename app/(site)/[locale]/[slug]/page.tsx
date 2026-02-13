@@ -16,6 +16,11 @@
  *
  * `generateStaticParams()` pre-renders known pages at build time.
  * `dynamicParams = true` allows new pages to be rendered on-demand.
+ *
+ * ## SEO (February 2026)
+ *
+ * - Canonical URLs prevent duplicate content across locales
+ * - Full OpenGraph + Twitter card metadata for social sharing
  */
 import { PageBuilder } from "@/components/PageBuilder";
 import { getPageBySlug, getAllPageSlugs } from "@/lib/sanity/queries";
@@ -25,6 +30,31 @@ import SiteWrapper from "@/components/SiteWrapper";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 import { urlFor } from "@/sanity/lib/image";
 import type { Metadata } from "next";
+import { cloudinaryPosterUrl } from "@/utils/utils";
+import {
+  JsonLdScript,
+  generateWebPageJsonLd,
+  generateBreadcrumbJsonLd,
+  generateItemListJsonLd,
+  extractCaseItemsFromContent,
+  getBreadcrumbLabel,
+  CANONICAL_URL,
+} from "@/lib/structured-data";
+
+/** Extract hero video URL from page builder content for preload hint */
+function extractHeroVideoUrl(content: any[]): string | undefined {
+  if (!Array.isArray(content)) return undefined;
+  for (const block of content) {
+    if (block?._type === "oneSPHeader") {
+      const media = block?.media;
+      const url = media?.secure_url || media?.url;
+      if (url && (/\/video\//.test(url) || /\.(mp4|webm|ogg)$/i.test(url))) {
+        return url;
+      }
+    }
+  }
+  return undefined;
+}
 
 // Allow new pages to be rendered on-demand (ISR)
 export const dynamicParams = true;
@@ -60,13 +90,38 @@ export async function generateMetadata({
     };
   }
 
+  const title = page.metadata?.title || page.title;
+  const description = page.metadata?.description;
+
+  const ogImages = page.metadata?.image
+    ? [
+        {
+          url: urlFor(page.metadata.image).width(1200).height(630).url(),
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ]
+    : [];
+
   return {
-    title: page.metadata?.title || page.title,
-    description: page.metadata?.description,
+    title,
+    description,
+    alternates: {
+      canonical: `/${language}/${slug}`,
+    },
     openGraph: {
-      images: page.metadata?.image
-        ? [urlFor(page.metadata.image).width(1200).height(630).url()]
-        : [],
+      title,
+      description: description || undefined,
+      locale: language,
+      type: "website",
+      images: ogImages,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: description || undefined,
+      images: ogImages.map((img) => img.url),
     },
   };
 }
@@ -87,8 +142,83 @@ export default async function Page({
 
   const navbarVariant = page?.navbarVariant || "light";
 
+  // LCP optimization: preload hero poster image
+  const heroVideoUrl = page?.content1sp
+    ? extractHeroVideoUrl(page.content1sp as any[])
+    : undefined;
+  const heroPosterDesktop = heroVideoUrl
+    ? cloudinaryPosterUrl(heroVideoUrl, { maxWidth: 1280 })
+    : undefined;
+  const heroPosterMobile = heroVideoUrl
+    ? cloudinaryPosterUrl(heroVideoUrl, { maxWidth: 480, portrait: true })
+    : undefined;
+
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
+      {/* Structured Data (JSON-LD) */}
+      {page && (
+        <>
+          <JsonLdScript
+            data={generateWebPageJsonLd({
+              title: page.metadata?.title || page.title || slug,
+              slug,
+              description: page.metadata?.description,
+              locale: language,
+              imageUrl: page.metadata?.image
+                ? urlFor(page.metadata.image).width(1200).height(630).url()
+                : undefined,
+            })}
+          />
+          <JsonLdScript
+            data={generateBreadcrumbJsonLd([
+              {
+                name: getBreadcrumbLabel(language, "home"),
+                url: `${CANONICAL_URL}/${language}`,
+              },
+              {
+                name: page.title || slug,
+                url: `${CANONICAL_URL}/${language}/${slug}`,
+              },
+            ])}
+          />
+          {/* ItemList for case carousels / galleries on this page */}
+          {(() => {
+            const caseItems = extractCaseItemsFromContent(
+              page.content1sp as any[] | undefined,
+            );
+            return caseItems.length > 0 ? (
+              <JsonLdScript
+                data={generateItemListJsonLd({
+                  items: caseItems,
+                  locale: language,
+                })}
+              />
+            ) : null;
+          })()}
+        </>
+      )}
+
+      {/* Preload the hero poster for fast LCP */}
+      {heroPosterDesktop && (
+        <link
+          rel="preload"
+          as="image"
+          href={heroPosterDesktop}
+          // @ts-expect-error — fetchpriority is valid HTML but not yet in React types
+          fetchpriority="high"
+          media="(min-width: 769px)"
+        />
+      )}
+      {heroPosterMobile && (
+        <link
+          rel="preload"
+          as="image"
+          href={heroPosterMobile}
+          // @ts-expect-error — fetchpriority is valid HTML but not yet in React types
+          fetchpriority="high"
+          media="(max-width: 768px)"
+        />
+      )}
       <HamburgerGradientMenu />
       <div className="  min-h-screen px-1 md:px-2">
         {page?.content1sp ? (
@@ -100,4 +230,3 @@ export default async function Page({
     </SiteWrapper>
   );
 }
-

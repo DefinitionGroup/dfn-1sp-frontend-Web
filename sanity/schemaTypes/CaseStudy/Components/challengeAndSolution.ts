@@ -1,11 +1,11 @@
 import { defineType, defineField } from "sanity";
-import { FiList } from "react-icons/fi";
+import { List } from "@phosphor-icons/react";
 
 export default defineType({
     name: "challengeAndSolution",
     title: "Challenge & Solution",
     type: "object",
-    icon: FiList,
+    icon: List,
     groups: [
         { name: "content", title: "Content", default: true },
         { name: "layout", title: "Layout & Style" },
@@ -270,7 +270,7 @@ export default defineType({
             return {
                 title: title || "Challenge & Solution",
                 subtitle: `${badgeText || "Badge"} - ${contentType === "challenges" ? "Challenges" : "Services"}`,
-                media: FiList,
+                media: List,
             };
         },
     },

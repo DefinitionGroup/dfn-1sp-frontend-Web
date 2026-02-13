@@ -1,11 +1,11 @@
 import { defineType, defineField } from "sanity";
-import { FiColumns } from "react-icons/fi";
+import { Columns } from "@phosphor-icons/react";
 
 export default defineType({
     name: "tabbedContentSection",
     title: "Tabbed Content Section",
     type: "object",
-    icon: FiColumns,
+    icon: Columns,
     groups: [
         { name: "content", title: "Content", default: true },
         { name: "tabs", title: "Tab Settings" },
@@ -254,7 +254,7 @@ export default defineType({
             return {
                 title: displayTitle,
                 subtitle: `Tabs: ${tab1Label || "Tab 1"} | ${tab2Label || "Tab 2"}`,
-                media: FiColumns,
+                media: Columns,
             };
         },
     },

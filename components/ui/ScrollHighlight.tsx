@@ -82,6 +82,7 @@ function ScrollHighlightItem({
             src={skill.image}
             alt={skill.name || "Service background"}
             fill
+            sizes="(max-width: 640px) 75vw, 400px"
             className="rounded-lg  w-3/4 md:w-full object-cover "
           />
         </motion.div>)}

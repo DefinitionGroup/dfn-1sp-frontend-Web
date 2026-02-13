@@ -1,11 +1,11 @@
 import { defineType, defineField } from "sanity";
-import { FiLayout } from "react-icons/fi";
+import { Layout } from "@phosphor-icons/react";
 
 export default defineType({
     name: "galleryOverview",
     title: "Gallery Overview",
     type: "object",
-    icon: FiLayout,
+    icon: Layout,
     groups: [
         { name: "content", title: "Content", default: true },
         { name: "layout", title: "Layout" },

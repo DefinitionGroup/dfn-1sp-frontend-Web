@@ -1,11 +1,11 @@
 import { defineType, defineField, defineArrayMember } from "sanity";
-import { FiList } from "react-icons/fi";
+import { List } from "@phosphor-icons/react";
 
 export default defineType({
     name: "contentSection",
     title: "Content Section",
     type: "object",
-    icon: FiList,
+    icon: List,
     groups: [
         { name: "content", title: "Content", default: true },
         { name: "layout", title: "Layout & Style" },
@@ -181,7 +181,7 @@ export default defineType({
             return {
                 title: displayTitle,
                 subtitle: preview || "No content",
-                media: FiList,
+                media: List,
             };
         },
     },

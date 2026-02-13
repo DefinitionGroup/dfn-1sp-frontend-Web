@@ -16,12 +16,26 @@
  * - First visitor gets instant HTML (no API call)
  * - ISR still works for new case studies (dynamicParams = true)
  * - Significantly reduces Sanity API usage
+ *
+ * ## SEO (February 2026)
+ *
+ * - Full generateMetadata with title, description, and OG image
+ * - Canonical URLs to prevent duplicate content
+ * - Twitter card metadata for social sharing
  */
 import { getCaseBySlug, getAllCaseSlugs } from "@/lib/sanity/queries";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import CaseStudyPageClient from "./CaseStudyPageClient";
 import SiteWrapper from "@/components/SiteWrapper";
+import type { Metadata } from "next";
+import {
+  JsonLdScript,
+  generateCaseStudyJsonLd,
+  generateBreadcrumbJsonLd,
+  getBreadcrumbLabel,
+  CANONICAL_URL,
+} from "@/lib/structured-data";
 
 export const revalidate = 60;
 
@@ -45,6 +59,74 @@ export async function generateStaticParams() {
   }));
 }
 
+/**
+ * Generate metadata for case study pages.
+ *
+ * Pulls title, description, and main image from the Sanity case study data.
+ * Uses the same cached `getCaseBySlug` as the page component,
+ * so only one API call is made per render.
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}): Promise<Metadata> {
+  const { locale, slug } = await params;
+
+  const cookieStore = await cookies();
+  const channel = cookieStore.get("channel")?.value || "1spWeb";
+  const language = locale || "en";
+
+  const caseStudy = await getCaseBySlug(slug, channel, language);
+
+  if (!caseStudy) {
+    return {
+      title: "Case Study not found",
+    };
+  }
+
+  const title = caseStudy.title;
+  const description =
+    caseStudy.description ||
+    `${caseStudy.title}${caseStudy.client?.name ? ` — ${caseStudy.client.name}` : ""} | Case Study`;
+
+  // Use mainImageUrl (Cloudinary secure_url) for OG image
+  const ogImages = caseStudy.mainImageUrl
+    ? [
+        {
+          url: caseStudy.mainImageUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ]
+    : [];
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `/${language}/cases/${slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      locale: language,
+      type: "article",
+      images: ogImages,
+      ...(caseStudy.publishedAt && {
+        publishedTime: caseStudy.publishedAt,
+      }),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ogImages.map((img) => img.url),
+    },
+  };
+}
+
 export default async function CaseStudyPage({
   params,
 }: {
@@ -65,6 +147,37 @@ export default async function CaseStudyPage({
 
   return (
     <SiteWrapper channel={channel} language={language} navColor="light">
+      {/* Structured Data (JSON-LD) */}
+      <JsonLdScript
+        data={generateCaseStudyJsonLd({
+          title: caseStudy.title,
+          slug,
+          description: caseStudy.description,
+          locale: language,
+          imageUrl: caseStudy.mainImageUrl,
+          publishedAt: caseStudy.publishedAt,
+          clientName: caseStudy.client?.name,
+          services: caseStudy.services,
+          units: caseStudy.units,
+        })}
+      />
+      <JsonLdScript
+        data={generateBreadcrumbJsonLd([
+          {
+            name: getBreadcrumbLabel(language, "home"),
+            url: `${CANONICAL_URL}/${language}`,
+          },
+          {
+            name: getBreadcrumbLabel(language, "cases"),
+            url: `${CANONICAL_URL}/${language}/cases`,
+          },
+          {
+            name: caseStudy.title,
+            url: `${CANONICAL_URL}/${language}/cases/${slug}`,
+          },
+        ])}
+      />
+
       <div className="  min-h-screen px-1 pt-2 md:px-2">
         <CaseStudyPageClient caseStudy={caseStudy} locale={locale} />
       </div>

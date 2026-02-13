@@ -1,14 +1,11 @@
 import { defineType, defineField } from "sanity";
-import { FiTrendingUp } from "react-icons/fi";
-import { LuChartBarDecreasing } from "react-icons/lu";
-import { GiNetworkBars } from "react-icons/gi";
-import { CgLoadbarAlt } from "react-icons/cg";
+import { TrendUp, ChartBar, ChartBarHorizontal, Equalizer } from "@phosphor-icons/react";
 
 export default defineType({
     name: "resultsMetrics",
     title: "Results & Metrics",
     type: "object",
-    icon: FiTrendingUp,
+    icon: TrendUp,
     groups: [
         { name: "content", title: "Content", default: true },
         { name: "metrics", title: "Metrics" },
@@ -79,7 +76,7 @@ export default defineType({
                     type: "object",
                     name: "metric",
                     title: "Metric",
-                    icon: GiNetworkBars,
+                    icon: ChartBar,
                     fields: [
                         {
                             name: "type",
@@ -159,23 +156,23 @@ export default defineType({
 
                             switch (type) {
                                 case "vertical":
-                                    icon = GiNetworkBars;
+                                    icon = ChartBar;
                                     typeLabel = "Vertical";
                                     break;
                                 case "horizontal":
-                                    icon = LuChartBarDecreasing;
+                                    icon = ChartBarHorizontal;
                                     typeLabel = "Horizontal";
                                     break;
                                 case "posNeg":
-                                    icon = CgLoadbarAlt;
+                                    icon = Equalizer;
                                     typeLabel = "Pos/Neg";
                                     break;
                                 case "animatedNumber":
-                                    icon = FiTrendingUp;
+                                    icon = TrendUp;
                                     typeLabel = "Animated";
                                     break;
                                 default:
-                                    icon = GiNetworkBars;
+                                    icon = ChartBar;
                                     typeLabel = "Unknown";
                             }
 
@@ -241,7 +238,7 @@ export default defineType({
             return {
                 title: title || "Results & Metrics",
                 subtitle: `${badgeText || "Badge"} - ${metricsCount || 0} metrics`,
-                media: FiTrendingUp,
+                media: TrendUp,
             };
         },
     },

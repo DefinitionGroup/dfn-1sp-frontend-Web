@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform, useInView } from "motion/react";
 import { useRef } from "react";
+import { optimizedVideoUrl, cloudinaryPosterUrl } from "@/utils/utils";
 
 interface HeaderImageVideoCompProps {
   useVideo?: boolean;
@@ -34,6 +35,24 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
     amount: 0.6,
   });
 
+  // LCP optimization: defer video mount, show poster image first
+  const [shouldMountVideo, setShouldMountVideo] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
+
+  // Derive poster from Cloudinary video URL
+  const posterUrl = useVideo
+    ? cloudinaryPosterUrl(videoSrc, { maxWidth: 1920 })
+    : undefined;
+
+  // Mount video after 300ms to let the poster image become the LCP element
+  useEffect(() => {
+    if (!useVideo) return;
+    const timer = setTimeout(() => {
+      setShouldMountVideo(true);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [useVideo]);
+
   return (
     <motion.div className={`absolute inset-0   mx-auto ${className}`}>
       <motion.div
@@ -52,18 +71,36 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
         className="absolute mx-auto rounded-xl inset-0 overflow-hidden "
       >
         {useVideo ? (
-          <video
-            src={videoSrc}
-            autoPlay
-            loop
-            muted
-            className="object-cover w-full h-full overflow-hidden "
-          />
+          <div className="relative w-full h-full">
+            {/* Poster image — lightweight, loads immediately, becomes LCP element */}
+            {posterUrl && (
+              <img
+                src={posterUrl}
+                alt={imageAlt}
+                className={`object-cover w-full h-full absolute inset-0 transition-opacity duration-500 ${videoReady ? "opacity-0" : "opacity-100"}`}
+                style={{ zIndex: 1 }}
+              />
+            )}
+            {/* Video — mounted after 300ms delay, fades in once ready */}
+            {shouldMountVideo && (
+              <video
+                src={optimizedVideoUrl(videoSrc, { maxWidth: 1920 })}
+                autoPlay
+                loop
+                muted
+                playsInline
+                onCanPlay={() => setVideoReady(true)}
+                className={`object-cover w-full h-full transition-opacity duration-500 ${videoReady ? "opacity-100" : "opacity-0"}`}
+                style={{ zIndex: 0 }}
+              />
+            )}
+          </div>
         ) : imageSrc ? (
           <Image
             src={imageSrc}
             alt={imageAlt}
             fill
+            sizes="100vw"
             className="object-cover object-top"
             priority
             unoptimized={imageSrc.includes("cloudinary")}
@@ -78,6 +115,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
             delay: 0.3,
             ease: [0.16, 1, 0.3, 1],
           }}
+          style={{ zIndex: 2 }}
         />
       </motion.div>
     </motion.div>

@@ -1,11 +1,11 @@
 import { defineType, defineField } from 'sanity'
-import { FiGrid } from 'react-icons/fi'
+import { GridFour } from '@phosphor-icons/react'
 
 export default defineType({
     name: 'showtimeGallery',
     title: 'Showtime Gallery',
     type: 'object',
-    icon: FiGrid,
+    icon: GridFour,
     fields: [
         defineField({
             name: 'steps',
@@ -31,7 +31,7 @@ export default defineType({
             const stepCount = Array.isArray(count) ? count.length : (count ? 1 : 0);
             return {
                 title: `Gallery items ${stepCount}`,
-                media: FiGrid
+                media: GridFour
             };
         }
     }

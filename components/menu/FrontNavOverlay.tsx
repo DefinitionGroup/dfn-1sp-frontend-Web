@@ -173,7 +173,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               scale: 1,
               clipPath: "inset(0% 0% 0% 0% round 2rem)",
               backdropFilter: "blur(12px)",
-              backgroundColor: "rgba(111,111,111, 0.4"
+              backgroundColor: "rgba(111,111,111, 0.4)"
             }
             : {
               opacity: [0, 1, 1],
@@ -220,6 +220,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 width={64}
                 height={64}
                 className="object-contain transition-all duration-300"
+                style={{ height: "auto" }}
               />
             </Link>
           </motion.div>

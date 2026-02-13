@@ -1,11 +1,11 @@
 import { defineType, defineField } from 'sanity'
-import { BsGrid3X3 } from 'react-icons/bs'
+import { GridNine } from '@phosphor-icons/react'
 
 export default defineType({
     name: 'smartUnitsGallery',
     title: 'Smart Units Gallery',
     type: 'object',
-    icon: BsGrid3X3,
+    icon: GridNine,
     description: 'Automatically displays active units with smart sorting',
     fields: [
         defineField({
@@ -45,7 +45,7 @@ export default defineType({
             return {
                 title: 'Smart Units Gallery',
                 subtitle: `Max ${maxItems || 6} units • Sort: ${sortLabel}`,
-                media: BsGrid3X3
+                media: GridNine
             }
         }
     }

@@ -258,6 +258,26 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
         slug
       }
     },
+    _type == 'casesGalleryFiltered' => {
+      ...,
+      selectedCases[]->{
+        _id,
+        title,
+        slug,
+        description,
+        "mainImageUrl": mainImage.secure_url
+      }
+    },
+    _type == 'casesGalleryFilteredWithPagination' => {
+      ...,
+      selectedCases[]->{
+        _id,
+        title,
+        slug,
+        description,
+        "mainImageUrl": mainImage.secure_url
+      }
+    },
     _type == 'unitLogoGrid' => {
       ...,
       selectedUnits[]->{
@@ -469,6 +489,26 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
           logo
         },
         slug
+      }
+    },
+    _type == 'casesGalleryFiltered' => {
+      ...,
+      selectedCases[]->{
+        _id,
+        title,
+        slug,
+        description,
+        "mainImageUrl": mainImage.secure_url
+      }
+    },
+    _type == 'casesGalleryFilteredWithPagination' => {
+      ...,
+      selectedCases[]->{
+        _id,
+        title,
+        slug,
+        description,
+        "mainImageUrl": mainImage.secure_url
       }
     },
     _type == 'unitLogoGrid' => {

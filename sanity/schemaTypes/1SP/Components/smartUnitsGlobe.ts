@@ -1,11 +1,11 @@
 import { defineType, defineField } from 'sanity'
-import { TbWorld } from 'react-icons/tb'
+import { Globe } from '@phosphor-icons/react'
 
 export default defineType({
     name: 'smartUnitsGlobe',
     title: 'Smart Units Globe',
     type: 'object',
-    icon: TbWorld,
+    icon: Globe,
     description: 'Displays units on an interactive 3D globe using their coordinates',
     groups: [
         { name: 'content', title: 'Content' },
@@ -133,7 +133,7 @@ export default defineType({
             return {
                 title: 'Smart Units Globe',
                 subtitle: `Center: ${initialLat?.toFixed(2)}°, ${initialLng?.toFixed(2)}° • ${autoRotate ? 'Auto-rotating' : 'Static'}`,
-                media: TbWorld
+                media: Globe
             }
         }
     }

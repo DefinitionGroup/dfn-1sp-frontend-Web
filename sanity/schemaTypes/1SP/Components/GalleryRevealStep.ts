@@ -1,11 +1,11 @@
 import { defineType, defineField } from "sanity";
-import { FiEye } from "react-icons/fi";
+import { Eye } from "@phosphor-icons/react";
 
 export default defineType({
     name: "galleryRevealStep",
     title: "Gallery Reveal Step",
     type: "object",
-    icon: FiEye,
+    icon: Eye,
     groups: [
         { name: "badge", title: "Badge" },
         { name: "content", title: "Content", default: true },

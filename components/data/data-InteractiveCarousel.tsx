@@ -5,7 +5,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import Button2 from "@/components/ui/Button2";
 import type { CTA, CloudinaryAsset } from "@/types/sanity.types";
-import { assetUrl } from "@/utils/utils";
+import { assetUrl, optimizedVideoUrl } from "@/utils/utils";
 import { client } from "@/sanity/lib/client";
 import { getInteractiveCarouselQuery } from "@/sanity/lib/queries";
 
@@ -313,7 +313,7 @@ export default function SmartCarousel({
                   {/* Background media */}
                   {active.video ? (
                     <motion.video
-                      src={active.video}
+                      src={optimizedVideoUrl(active.video, { maxWidth: 1920 })}
                       className="absolute inset-0 w-full h-full overflow-hidden object-cover"
                       initial={{ scale: 1.3, opacity: 0.7 }}
                       animate={{ scale: 1, opacity: 0.7 }}
@@ -359,6 +359,7 @@ export default function SmartCarousel({
                               alt="Logo"
                               width={120}
                               height={32}
+                   
                             />
                           </motion.div>
                         )}
@@ -500,6 +501,7 @@ export default function SmartCarousel({
                     src={item.image}
                     alt={item.title}
                     fill
+                    sizes="88px"
                     className="object-cover"
                   />
                 )}
