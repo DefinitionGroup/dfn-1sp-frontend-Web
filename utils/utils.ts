@@ -41,8 +41,10 @@ export const cloudinaryPosterUrl = (
     options?: {
         maxWidth?: number;
         frame?: "0" | "auto" | string;
-        /** Crop poster to portrait (9:16) with AI subject detection */
+        /** Crop poster to portrait with AI subject detection. Defaults to 9:16 unless aspectRatio is set. */
         portrait?: boolean;
+        /** Custom aspect ratio (e.g. "9:16", "16:9", "4:5"). Overrides default 9:16 for portrait. */
+        aspectRatio?: string;
     }
 ): string | undefined => {
     if (!url) return undefined;
@@ -54,8 +56,9 @@ export const cloudinaryPosterUrl = (
     const transforms = ["q_auto", "f_auto", `so_${frame}`];
 
     // Portrait mode — match the video crop
-    if (options?.portrait) {
-        transforms.push("c_fill", "g_auto", "ar_9:16");
+    if (options?.portrait || options?.aspectRatio) {
+        transforms.push("c_fill", "g_auto");
+        transforms.push(`ar_${options?.aspectRatio ?? "9:16"}`);
     }
 
     if (options?.maxWidth) transforms.push(`w_${options.maxWidth}`);
@@ -74,10 +77,12 @@ export const optimizedVideoUrl = (
         maxWidth?: number;
         withAudio?: boolean;
         /**
-         * Crop to portrait (9:16) for mobile.
+         * Crop to portrait (default 9:16) for mobile.
          * Uses `c_fill,g_auto,ar_9:16` so Cloudinary AI-crops around the subject.
          */
         portrait?: boolean;
+        /** Custom aspect ratio (e.g. "9:16", "16:9"). Overrides default 9:16 for portrait. */
+        aspectRatio?: string;
         /**
          * Quality tier:
          * - "auto"  — balanced (default)
@@ -116,9 +121,10 @@ export const optimizedVideoUrl = (
     // Audio — strip for muted background videos
     if (!options?.withAudio) transforms.push("ac_none");
 
-    // Portrait mode — crop to 9:16 with AI subject detection
-    if (options?.portrait) {
-        transforms.push("c_fill", "g_auto", "ar_9:16");
+    // Portrait mode or custom aspect ratio — crop to aspect ratio with AI subject detection
+    if (options?.portrait || options?.aspectRatio) {
+        transforms.push("c_fill", "g_auto");
+        transforms.push(`ar_${options?.aspectRatio ?? "9:16"}`);
     }
 
     // Width constraint
@@ -134,7 +140,7 @@ export const optimizedVideoUrl = (
  * Convenience: generate a mobile-optimized portrait video URL.
  *
  * Applies:
- * - 9:16 aspect ratio (`ar_9:16`)
+ * - 9:16 aspect ratio (`ar_9:16`), or custom via `aspectRatio`
  * - AI subject-aware crop (`c_fill,g_auto`)
  * - Aggressive but high-quality compression (`q_auto:eco`)
  * - Best codec per browser (`vc_auto`)
@@ -147,13 +153,14 @@ export const optimizedVideoUrl = (
  */
 export const optimizedPortraitVideoUrl = (
     url?: string,
-    options?: { maxWidth?: number; quality?: "auto" | "eco" | "good" | "best" }
+    options?: { maxWidth?: number; quality?: "auto" | "eco" | "good" | "best"; aspectRatio?: string }
 ): string | undefined =>
     optimizedVideoUrl(url, {
         portrait: true,
         maxWidth: options?.maxWidth ?? 480,
         quality: options?.quality ?? "eco",
         autoCodec: true,
+        aspectRatio: options?.aspectRatio,
     });
 
 
