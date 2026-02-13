@@ -134,6 +134,13 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
           ease: [0.16, 1, 0.3, 1],
         }}
         className="absolute mx-auto rounded-xl inset-0 overflow-hidden"
+        style={{
+          clipPath: isInView ? undefined : (isHero
+            ? "inset(20% 10% 20% 10% round 2rem)"
+            : "inset(55% 44% 55% 44% round 2rem)"),
+            willChange: "clip-path",
+            transform: "translateZ(0)"
+        }}
 
       >
         {useVideo ? (

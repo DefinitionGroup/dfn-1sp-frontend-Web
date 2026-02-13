@@ -40,10 +40,7 @@ const SublineComponent = dynamic(
   }
 );
 
-const OneSPHeaderStep = dynamic(() => import("./pagebuilder/pg-Header"), {
-  loading: () => <ComponentLoader height="h-32" />,
-  ssr: true,
-});
+import OneSPHeaderStep from "./pagebuilder/pg-Header";
 
 const ContentSection = dynamic(
   () => import("./pagebuilder/pg-ContentSection"),
