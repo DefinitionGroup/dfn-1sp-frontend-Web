@@ -80,12 +80,12 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   // - Mobile: portrait 9:16 crop, 480px wide, aggressive compression
   // - Desktop: landscape, 960px wide, good compression with vc_auto
   const videoUrlDesktop = optimizedVideoUrl(videoSrc, {
-    maxWidth: 960,
-    quality: "eco",
+    maxWidth: 1440,
+    quality: "auto",
     autoCodec: true,
   });
   const videoUrlMobile = optimizedPortraitVideoUrl(videoSrc, {
-    maxWidth: 480,
+    maxWidth: 360,
     quality: "eco",
   });
 
@@ -94,7 +94,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
     if (!useVideo) return;
     const timer = setTimeout(() => {
       setShouldMountVideo(true);
-    }, 3333);
+    }, 2222);
     return () => clearTimeout(timer);
   }, [useVideo]);
 
@@ -130,7 +130,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
             : { clipPath: isHero ? "inset(20% 10% 20% 10% round 2rem)" : "inset(55% 0% 0% 0% round 2rem)" }
         }
         transition={{
-          duration: 1,
+          duration: 0.5,
           ease: [0.16, 1, 0.3, 1],
         }}
         className="absolute mx-auto rounded-xl inset-0 overflow-hidden"
