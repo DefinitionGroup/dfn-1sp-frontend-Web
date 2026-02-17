@@ -58,7 +58,7 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
 
   const videoClassName = enableVertical
     ? "absolute right-0 top-0 w-1/2 h-full object-cover"
-    : `object-cover w-full h-full ${opacity}`;
+    : "object-cover w-full h-full";
 
   return (
     <motion.div
@@ -90,7 +90,7 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
         style={enableParallax ? { y } : {}}
       >
         {useVideo ? (
-          <div className="relative w-full h-full">
+          <div className={`relative w-full h-full ${opacity}`}>
             {/* Poster image — lightweight, loads immediately, becomes LCP element */}
             {posterUrl && (
               <img

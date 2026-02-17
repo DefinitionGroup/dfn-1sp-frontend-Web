@@ -119,10 +119,13 @@ export default function ChallengeAndSolution({
 
   const sectionId = t.ids.content;
 
+  // Sanity returns null (not undefined) for unset fields — default params won't catch it
+  const effectiveContentType = contentType ?? "challenges";
+
   // Check if we have content to display
   const hasContentItems =
-    (contentType === "services" && (services ?? []).length > 0) ||
-    (contentType === "challenges" && (challenges ?? []).length > 0);
+    (effectiveContentType === "services" && (services ?? []).length > 0) ||
+    (effectiveContentType === "challenges" && (challenges ?? []).length > 0);
 
   // Determine if CTA section should be rendered
   const shouldShowCta = showCta && showContent && hasContentItems;
@@ -192,13 +195,13 @@ export default function ChallengeAndSolution({
                     <CtaMiniComponent
                       heading={
                         ctaHeading ||
-                        (contentType === "challenges"
+                        (effectiveContentType === "challenges"
                           ? (challengeTitle || t.caseStudy.challenge)
                           : t.caseStudy.services)
                       }
                       paragraph={
                         ctaParagraph ||
-                        (contentType === "challenges"
+                        (effectiveContentType === "challenges"
                           ? (challengeDescription || t.caseStudy.challengeDescription)
                           : `${t.caseStudy.servicesDescription} ${services?.map((s) => s.name).join(", ")}`)
                       }
@@ -216,7 +219,7 @@ export default function ChallengeAndSolution({
                 {/* List Items - Responsive (adjusts width based on CTA visibility) */}
                 <div className={`${listColumnClasses}   mt-6 md:mt-8 `}>
                   <ListContainerComponent>
-                    {contentType === "challenges"
+                    {effectiveContentType === "challenges"
                       ? challenges.map((challenge, idx) => (
                         <ListItemComponent
                           key={idx}

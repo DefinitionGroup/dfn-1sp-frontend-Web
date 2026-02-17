@@ -65,11 +65,11 @@ const StyleSheet = () => {
         }
 
         .number-section-post {
-          font-size: 16px; /* match Plaintext */
+          font-size: 96px; /* match Plaintext */
           opacity: 1; /* match Plaintext */
           color: var(--color-lime-500); /* match Plaintext */
           position: relative;
-          bottom:18px; /* match Plaintext */
+          bottom:0px; /* match Plaintext */
           align-self: flex-end;
           margin-left: 5px;
           letter-spacing: -0.02em;

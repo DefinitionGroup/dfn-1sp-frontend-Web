@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useState, useRef, useId, useEffect } from "react";
 import Image from "next/image";
+import DeferredVideo from "@/components/ui/DeferredVideo";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 
 // Hook to detect mobile screen
@@ -23,6 +24,8 @@ export interface SkillItem {
   name?: string;
   text?: string;
   image?: string;
+  /** Cloudinary video URL — takes precedence over image when set */
+  video?: string;
   buttonLabel?: string;
   modalContent?: {
     title?: string;
@@ -69,7 +72,7 @@ function ScrollHighlightItem({
       <motion.div
         className="relative  w-3/4  md:w-1/3 md:pr-4"
 
-      >{skill.image && (isMobile || isHighlighted) && (
+      >{(skill.video || skill.image) && (isMobile || isHighlighted) && (
 
         <motion.div
           layout={!isMobile}
@@ -78,13 +81,22 @@ function ScrollHighlightItem({
           transition={{ type: "spring", duration: isMobile ? 2.5 : 1.5 }}
           className="skill-image pr-4 mb-8"
         >
-          <Image
-            src={skill.image}
-            alt={skill.name || "Service background"}
-            fill
-            sizes="(max-width: 640px) 75vw, 400px"
-            className="rounded-lg  w-3/4 md:w-full object-cover "
-          />
+          {skill.video ? (
+            <DeferredVideo
+              src={skill.video}
+              maxWidth={400}
+              className="rounded-lg w-3/4 md:w-full object-cover absolute inset-0 w-full h-full"
+              mountDelay={200}
+            />
+          ) : (
+            <Image
+              src={skill.image!}
+              alt={skill.name || "Service background"}
+              fill
+              sizes="(max-width: 640px) 75vw, 400px"
+              className="rounded-lg w-3/4 md:w-full object-cover"
+            />
+          )}
         </motion.div>)}
       </motion.div>
 
@@ -94,7 +106,7 @@ function ScrollHighlightItem({
 
         {isHighlighted && skill.text && (
           <motion.p
-            className="skill-description mb-4  text-xs  md:text-base w-3/4  "
+            className="skill-description mb-4  text-xs  md:text-base w-3/4 [hyphens:none]  "
             layout
             initial={{ opacity: 0, y: 0, x: 0 }}
             animate={{ opacity: 1, y: 0, x: 0 }}
@@ -183,13 +195,22 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
                 className="w-full sm:rounded-t-xl relative overflow-hidden h-full"
                 layoutId={`modal-image-${activeModal.name}-${id}`}
               >
-                {activeModal.image ? (
+                {activeModal.video ? (
+                  <div className="w-full h-[400px] opacity-50">
+                    <DeferredVideo
+                      src={activeModal.video}
+                      maxWidth={1000}
+                      className="w-full h-full sm:rounded-t-xl object-cover object-top"
+                      mountDelay={100}
+                    />
+                  </div>
+                ) : activeModal.image ? (
                   <Image
                     width={1000}
                     height={400}
                     src={activeModal.image}
                     alt={activeModal.name || "Service background"}
-                    className="w-full min-h-full  sm:rounded-t-xl opacity-50 object-cover object-top"
+                    className="w-full min-h-full sm:rounded-t-xl opacity-50 object-cover object-top"
                   />
                 ) : (
                   <div className="w-full h-[400px] sm:rounded-t-xl bg-neutral-800 opacity-50" />
@@ -381,7 +402,7 @@ function Stylesheet() {
         white-space: normal;
         overflow-wrap: break-word;
         word-break: break-word;
-        hyphens: auto;
+       
       }
 
       @media (min-width: 640px) {

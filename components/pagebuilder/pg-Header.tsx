@@ -5,11 +5,11 @@ import HeaderImageVideoComp2 from "@/components/pagebuilder/Fragments/pg-HeaderI
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import { assetUrl } from "@/utils/utils";
 import TypewriterRotator from "../ui/TypewriterRotator";
+import { PortableText } from "@portabletext/react";
+import type { PortableTextBlock } from "@portabletext/types";
 import type {
   OneSPHeader,
   CloudinaryAsset,
-  ParagraphLine,
-  FontSize,
 } from "@/types/sanity.types";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
 
@@ -18,23 +18,7 @@ function isVideoUrl(url?: string) {
   return !!url && (/\/video\//.test(url) || /\.(mp4|webm|ogg)$/i.test(url));
 }
 
-const sizeToClass: Record<FontSize | string, string> = {
-  xs: "text-xs",
-  sm: "text-sm",
-  base: "text-base",
-  lg: "text-lg",
-  xl: "text-xl",
-  "2xl": "text-2xl",
-  "3xl": "text-3xl",
-};
-
-function pickFontSize(fs?: ParagraphLine["fontSize"]): FontSize {
-  if (!fs) return "base";
-  if (typeof fs === "string") return fs as FontSize;
-  return (fs.size as FontSize) || "base";
-}
-
-function highlightInline(text: string, highlight?: string) {
+function highlightInline(text: string, highlight?: string): React.ReactNode {
   if (!highlight || !text) return text;
 
   const normalized = highlight.trim().replace(/^[^\w]+|[^\w]+$/g, "");
@@ -68,7 +52,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
   const eyebrow = step.eyebrow ?? "Welcome at 1SP";
   const words = Array.isArray(step.rotatingText) ? step.rotatingText : [];
-  const lines = Array.isArray(step.paragraphs) ? step.paragraphs : [];
+  const paragraphs = (step.paragraphs ?? []) as PortableTextBlock[];
   const highlight = step.highlight;
   const navPointName = step.navPointName;
   const hideFromNav = (step as any).hideFromNav ?? false;
@@ -89,16 +73,49 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     ...(navPointName ? { "data-navpoint-name": navPointName } : {}),
     ...(hideFromNav ? { "data-nav-hidden": "true" } : {}),
   };
-  const anyContainsHighlight =
-    !!highlight &&
-    lines.some((ln) => {
-      const t = typeof ln === "string" ? ln : ln?.text || "";
-      const normalizedHighlight = highlight
-        .trim()
-        .replace(/^[^\w]+|[^\w]+$/g, "");
-      if (!normalizedHighlight) return false;
-      return t.toLowerCase().includes(normalizedHighlight.toLowerCase());
-    });
+
+  const portableTextComponents = {
+    block: {
+      normal: ({ children }: { children?: React.ReactNode }) => (
+        <p className="text-neutral-50 text-base lg:max-w-1/2">{children}</p>
+      ),
+    },
+    marks: {
+      strong: ({ children }: { children?: React.ReactNode }) => (
+        <strong className="font-bold">{children}</strong>
+      ),
+      em: ({ children }: { children?: React.ReactNode }) => (
+        <em className="italic">{children}</em>
+      ),
+    },
+  };
+
+  const portableTextComponentsWithHighlight = highlight
+    ? {
+      ...portableTextComponents,
+      block: {
+        normal: ({ children, value }: { children?: React.ReactNode; value?: PortableTextBlock }) => {
+          const plainText = value?.children
+            ?.map((c: any) => c.text)
+            .join("") ?? "";
+          const highlighted = highlightInline(plainText, highlight);
+          // If highlight matched, render the highlighted version
+          if (highlighted !== plainText) {
+            return (
+              <p className="text-neutral-50 text-base lg:max-w-1/2">
+                {highlighted}
+              </p>
+            );
+          }
+          return (
+            <p className="text-neutral-50 text-base lg:max-w-1/2">
+              {children}
+            </p>
+          );
+        },
+      },
+    }
+    : portableTextComponents;
 
   return (
     <section
@@ -139,49 +156,15 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           {/* Typewriter words */}
           {words.length > 0 && <TypewriterRotator text={words} />}
 
-          {/* Paragraph lines with optional highlight + sizes */}
-          {lines.map((ln, i) => {
-            const text = typeof ln === "string" ? ln : ln?.text || "";
-            const size =
-              typeof ln === "string"
-                ? i === 0
-                  ? "lg"
-                  : "base"
-                : pickFontSize(ln?.fontSize);
-
-            // If no paragraph contains the highlight, append it to the last paragraph
-            if (!anyContainsHighlight && highlight && i === lines.length - 1) {
-              const highlightText = highlight.trim();
-              return (
-                <h1
-                  key={`p-${i}`}
-                  className={[
-                    "text-neutral-50  pt-2",
-                    sizeToClass[size] || "text-base",
-                    i === 0 ? "max-w-2/3" : "",
-                  ].join(" ")}
-                >
-                  {text}{" "}
-                  <span className="bg-gradient-to-r from-lime-300 to-lime-500 bg-clip-text text-transparent font-">
-                    {highlightText}
-                  </span>
-                </h1>
-              );
-            }
-
-            return (
-              <p
-                key={`p-${i}`}
-                className={[
-                  "text-neutral-50",
-                  sizeToClass[size] || "text-base",
-                  i === 0 ? "lg:max-w-1/2 " : "",
-                ].join(" ")}
-              >
-                {highlightInline(text, highlight)}
-              </p>
-            );
-          })}
+          {/* Paragraphs (rich text) */}
+          {paragraphs.length > 0 && (
+            <div className="space-y-4 text-neutral-50 lg:max-w-3/4">
+              <PortableText
+                value={paragraphs}
+                components={portableTextComponentsWithHighlight}
+              />
+            </div>
+          )}
         </StaggeredSlideUp>
       </div>
 

@@ -71,10 +71,23 @@ export default defineType({
     }),
     defineField({
       name: "paragraphs",
-      title: "Paragraph Lines",
-      description: "Each item renders as a <p> under the typewriter",
+      title: "Paragraphs",
+      description: "Rich text content below the typewriter. Use paragraphs for spacing.",
       type: "array",
-      of: [{ type: "paragraphLine" }],
+      of: [
+        defineArrayMember({
+          type: "block",
+          styles: [{ title: "Normal", value: "normal" }],
+          lists: [],
+          marks: {
+            decorators: [
+              { title: "Bold", value: "strong" },
+              { title: "Italic", value: "em" },
+            ],
+            annotations: [],
+          },
+        }),
+      ],
       group: "content",
     }),
     defineField({
