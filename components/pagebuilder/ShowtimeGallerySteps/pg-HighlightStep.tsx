@@ -59,11 +59,15 @@ export default function HighlightStep({
       }
       // Handle Services references
       if (it?._type === "services") {
-        console.log("🖼️ Service item:", it.name, "serviceBackground:", it.serviceBackground);
+        const url = assetUrl((it.serviceBackground as any)?.asset);
+        const isVideo = url
+          ? /\.(mp4|webm|mov|ogg)$/i.test(url) || url.includes("/video/")
+          : false;
         return {
           name: it.name || it.taglabel || "",
           text: it.introText || "",
-          image: assetUrl((it.serviceBackground as any)?.asset),
+          image: isVideo ? undefined : url,
+          video: isVideo ? url : undefined,
         };
       }
       // Handle slideUpText
