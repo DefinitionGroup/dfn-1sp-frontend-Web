@@ -3,6 +3,7 @@
 import { motion, AnimatePresence, PanInfo } from "motion/react";
 import { useState, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
+import { Link } from "next-view-transitions";
 import Button2 from "@/components/ui/Button2";
 import type { CTA, CloudinaryAsset } from "@/types/sanity.types";
 import { assetUrl, optimizedVideoUrl } from "@/utils/utils";
@@ -485,16 +486,10 @@ export default function SmartCarousel({
             className={`flex justify-center mt-4 sm:mt-8 space-x-1.5 sm:space-x-2 md:space-x-4 pt-2 sm:pt-4 md:pb-4 ${isScrollable ? "overflow-x-auto scrollbar-hide" : ""}`}
           >
             {carouselItems.map((item, index) => (
-              <motion.button
+              <Link
                 key={item.id}
-                className={`relative flex-shrink-0 w-10 sm:w-12 md:w-22 h-8 sm:h-12 md:h-18 rounded-xl overflow-hidden outline-1 sm:outline-2 md:outline-3 transition-colors ${index === currentIndex ? "outline-lime-500" : "outline-transparent"}`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  setDirection(index > currentIndex ? 1 : -1);
-                  setCurrentIndex(index);
-                  resetAutoPlayTimer();
-                }}
+                href={item.linkHref || "#"}
+                className={`relative flex-shrink-0 w-10 sm:w-12 md:w-22 h-8 sm:h-12 md:h-18 rounded-xl overflow-hidden outline-1 sm:outline-2 md:outline-3 transition-all hover:scale-105 active:scale-95 ${index === currentIndex ? "outline-lime-500" : "outline-transparent"}`}
               >
                 {item.image && (
                   <Image
@@ -505,7 +500,7 @@ export default function SmartCarousel({
                     className="object-cover"
                   />
                 )}
-              </motion.button>
+              </Link>
             ))}
           </div>
         </div>
