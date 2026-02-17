@@ -3,6 +3,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, useInView } from "motion/react";
+import { usePathname } from "next/navigation";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
 import { optimizedVideoUrl, optimizedPortraitVideoUrl, cloudinaryPosterUrl } from "@/utils/utils";
 
@@ -48,10 +49,11 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   // Create ref for the component
   const ref = useRef(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const pathname = usePathname();
   const isInView = useInView(ref, {
-    once: true, // Only animate once - prevent re-triggering
-    amount: 0.1, // Lower threshold to trigger earlier
-    margin: "100px 0px 0px 0px", // Trigger before element enters viewport
+    once: true,
+    amount: 0.1,
+    margin: "100px 0px 0px 0px",
   });
 
   // LCP optimization: defer video mount, show poster image first
@@ -112,6 +114,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
 
   return (
     <div
+      key={pathname}
       ref={ref}
       className={`absolute mt-4 inset-0 overflow-visible mx-auto ${className}`}
 
