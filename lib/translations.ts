@@ -30,6 +30,10 @@ interface Translations {
         ctaText: string;
         ctaDescription: string;
         ctaButton: string;
+        poweredBy: string;
+        wantToKnowMore: string;
+        contactPrefix: string;
+        linkedInProfile: string;
     };
     // Cases List Page
     casesList: {
@@ -101,6 +105,10 @@ const translations: Record<Locale, Translations> = {
             ctaText: 'Touch the hearts and minds of audiences.',
             ctaDescription: 'Use the newest tools. Bring in your ideas. Work with top tier clients.',
             ctaButton: 'Join us for a ride',
+            poweredBy: 'Powered by',
+            wantToKnowMore: 'Want to know more?',
+            contactPrefix: 'Contact',
+            linkedInProfile: 'LinkedIn Profile',
         },
         casesList: {
             title: 'At 1SP, our passionate team thrives on creativity.',
@@ -167,6 +175,10 @@ const translations: Record<Locale, Translations> = {
             ctaText: 'Berühren Sie Herzen und Köpfe des Publikums.',
             ctaDescription: 'Nutzen Sie die neuesten Tools. Bringen Sie Ihre Ideen ein. Arbeiten Sie mit erstklassigen Kunden.',
             ctaButton: 'Begleiten Sie uns',
+            poweredBy: 'Powered by',
+            wantToKnowMore: 'Mehr erfahren?',
+            contactPrefix: 'Kontakt',
+            linkedInProfile: 'LinkedIn Profil',
         },
         casesList: {
             title: 'Bei 1SP lebt unser leidenschaftliches Team von Kreativität.',

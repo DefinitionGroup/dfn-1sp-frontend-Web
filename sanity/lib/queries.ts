@@ -669,9 +669,31 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
     name,
     slug,
     tagline,
+    logo,
+    logoColor,
+    logoSignet,
     "logoUrl": logo.secure_url,
     backgroundImage,
     cta
+  },
+  people[]{
+    isPrimary,
+    person->{
+      _id,
+      name,
+      fullname,
+      altText,
+      position,
+      email,
+      profileUrl,
+      image,
+      video,
+      unit->{
+        _id,
+        name,
+        logoSignet
+      }
+    }
   },
   client->{
     _id,

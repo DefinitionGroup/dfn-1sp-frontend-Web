@@ -1,0 +1,180 @@
+"use client";
+
+import Image from "next/image";
+import DeferredVideo from "@/components/ui/DeferredVideo";
+import { getTranslations } from "@/lib/translations";
+import type { CaseStudyData, CloudinaryAsset } from "@/types/sanity.types";
+import { assetUrl } from "@/utils/utils";
+
+type CaseUnit = NonNullable<CaseStudyData["units"]>[number];
+type CasePersonRelation = NonNullable<CaseStudyData["people"]>[number];
+type CasePerson = NonNullable<CasePersonRelation["person"]>;
+
+interface CasePoweredByContactProps {
+  caseStudy: CaseStudyData;
+  locale: string;
+}
+
+function isVideoMedia(url?: string, media?: CloudinaryAsset | null) {
+  if (!url) return false;
+  const lowered = url.toLowerCase();
+  return (
+    lowered.endsWith(".mp4") ||
+    lowered.endsWith(".webm") ||
+    lowered.endsWith(".mov") ||
+    lowered.endsWith(".ogg") ||
+    lowered.includes("/video/") ||
+    (media as any)?.resource_type === "video" ||
+    media?.metadata?.resource_type === "video"
+  );
+}
+
+function pickPrimaryPerson(people: CaseStudyData["people"]): CasePerson | null {
+  if (!people || people.length === 0) return null;
+
+  return (
+    people.find((entry) => entry?.isPrimary && entry?.person)?.person ||
+    people.find((entry) => entry?.person)?.person ||
+    null
+  );
+}
+
+function getUnitLogoUrl(unit: CaseUnit): string | undefined {
+  return (
+    assetUrl(unit.logoColor) ||
+    assetUrl(unit.logo) ||
+    assetUrl(unit.logoSignet) ||
+    unit.logoUrl
+  );
+}
+
+export default function CasePoweredByContact({
+  caseStudy,
+  locale,
+}: CasePoweredByContactProps) {
+  const t = getTranslations(locale);
+  const units = caseStudy.units || [];
+  const relatedPerson = pickPrimaryPerson(caseStudy.people);
+
+  const unitLogos = units
+    .map((unit) => ({
+      unit,
+      logoUrl: getUnitLogoUrl(unit),
+    }))
+    .filter((entry): entry is { unit: CaseUnit; logoUrl: string } =>
+      Boolean(entry.logoUrl)
+    );
+
+  if (unitLogos.length === 0 && !relatedPerson) {
+    return null;
+  }
+
+  const personName = relatedPerson?.fullname || relatedPerson?.name || "";
+  const personUnit = relatedPerson?.unit?.name || units[0]?.name || "";
+  const personMedia = relatedPerson?.video || relatedPerson?.image || null;
+  const personMediaUrl = assetUrl(personMedia);
+  const personLabel =
+    relatedPerson?.altText || relatedPerson?.fullname || relatedPerson?.name || "Team member";
+  const personIsVideo = isVideoMedia(personMediaUrl, personMedia);
+
+  return (
+    <section
+      className="relative bg-neutral-100 py-16 sm:py-20 lg:py-24 font-aspekta"
+      data-component="case-powered-by-contact"
+    >
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {unitLogos.length > 0 && (
+          <div className="mx-auto w-full max-w-3xl">
+            <h2 className="text-center text-2xl sm:text-3xl tracking-tight text-neutral-900">
+              {t.caseStudy.poweredBy}
+            </h2>
+
+            <div className="mt-6 sm:mt-8 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+              {unitLogos.map(({ unit, logoUrl }) => (
+                <div
+                  key={unit._id}
+                  className="relative aspect-[3/2] rounded-sm border border-neutral-300/70 bg-white"
+                >
+                  <Image
+                    src={logoUrl}
+                    alt={unit.name || "Unit logo"}
+                    fill
+                    sizes="(max-width: 640px) 50vw, 240px"
+                    className="object-contain p-5 sm:p-6"
+                    unoptimized
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {relatedPerson && (
+          <div className="mt-14 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 items-end gap-8 lg:gap-10">
+            <div className="lg:col-span-7">
+              <h3 className="text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-tight text-neutral-900">
+                {t.caseStudy.wantToKnowMore}
+              </h3>
+
+              <p className="mt-2 text-2xl sm:text-3xl lg:text-5xl tracking-tight leading-tight font-semibold text-lime-500">
+                {`${t.caseStudy.contactPrefix} ${personName}${personUnit ? ` @ ${personUnit}` : ""}`}
+              </p>
+
+              <div className="mt-5 sm:mt-6 flex flex-col gap-2 text-sm sm:text-base text-neutral-700">
+                {relatedPerson.position && (
+                  <p className="font-medium text-neutral-800">{relatedPerson.position}</p>
+                )}
+                {relatedPerson.email && (
+                  <a
+                    href={`mailto:${relatedPerson.email}`}
+                    className="hover:text-neutral-900 transition-colors break-all"
+                  >
+                    {relatedPerson.email}
+                  </a>
+                )}
+                {relatedPerson.profileUrl && (
+                  <a
+                    href={relatedPerson.profileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-neutral-900 transition-colors"
+                  >
+                    {t.caseStudy.linkedInProfile}
+                  </a>
+                )}
+              </div>
+            </div>
+
+            <div className="lg:col-span-5">
+              <div className="relative ml-auto w-full max-w-[440px] overflow-hidden rounded-sm bg-neutral-200 aspect-[5/4]">
+                {personMediaUrl ? (
+                  personIsVideo ? (
+                    <DeferredVideo
+                      src={personMediaUrl}
+                      maxWidth={640}
+                      mountDelay={300}
+                      posterFrame="0"
+                      className="h-full w-full object-cover object-bottom"
+                    />
+                  ) : (
+                    <Image
+                      src={personMediaUrl}
+                      alt={personLabel}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 440px"
+                      className="object-cover object-bottom"
+                    />
+                  )
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center bg-neutral-200 text-neutral-500">
+                    {personName || "Contact"}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
