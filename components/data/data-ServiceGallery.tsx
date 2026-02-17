@@ -6,7 +6,14 @@ import StaggeredSlideUp from "../ui/StaggeredSlideUp";
 import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import Image from "next/image";
+import DeferredVideo from "@/components/ui/DeferredVideo";
+import { cloudinaryPosterUrl } from "@/utils/utils";
 import { Service } from "@/types/sanity.types";
+
+function isVideoUrl(url: string | undefined): boolean {
+  if (!url) return false;
+  return /\.(mp4|webm|mov|ogg)$/i.test(url) || url.includes("/video/");
+}
 
 interface ServiceGalleryProps {
   services: Service[];
@@ -128,7 +135,16 @@ export default function ServiceGalleryComponent({
                 className="w-full sm:rounded-t-xl relative overflow-hidden h-full"
                 layoutId={`image-${active.name}-${id}`}
               >
-                {activeBg ? (
+                {activeBg && isVideoUrl(activeBg) ? (
+                  <div className="w-full min-h-full opacity-50">
+                    <DeferredVideo
+                      src={activeBg}
+                      maxWidth={1000}
+                      className="w-full min-h-[1000px]   sm:rounded-t-xl object-cover object-top"
+                      mountDelay={100}
+                    />
+                  </div>
+                ) : activeBg ? (
                   <Image
                     width={1000}
                     height={400}
@@ -234,14 +250,19 @@ export default function ServiceGalleryComponent({
                   layoutId={`image-${item.name}-${id}`}
                   className="col-start-1 col-span-1  row-start-1 row-span-3 bg-black  overflow-hidden rounded-xl"
                 >
-                  {bg ? (
+                  {bg && isVideoUrl(bg) ? (
+                    <img
+                      src={cloudinaryPosterUrl(bg, { maxWidth: 600, frame: "0" })}
+                      alt={item.name}
+                      className="w-full h-full object-cover min-h-[320px] group-hover/card:opacity-100 object-top opacity-80 transition-all"
+                    />
+                  ) : bg ? (
                     <Image
                       width={1000}
                       height={600}
                       src={bg}
                       alt={item.name}
-                      className="w-full h-full object-cover min-h-[32
-                      0px]  group-hover/card:opacity-100 object-top opacity-80 transition-all"
+                      className="w-full h-full object-cover min-h-[320px] group-hover/card:opacity-100 object-top opacity-80 transition-all"
                     />
                   ) : (
                     <div className="w-full h-full bg-neutral-800 border opacity-80 min-h-[200px] group-hover/card:opacity-100 transition-all" />
