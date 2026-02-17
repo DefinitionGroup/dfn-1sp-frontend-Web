@@ -195,7 +195,7 @@ export default function ResultsMetrics({
                                 number={Math.abs(metric.value)}
                                 format={{ minimumIntegerDigits: 2 }}
                                 suffix="%"
-                                className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tighter"
+                                className="text-2xl sm:text-3xl md:text-[96px] font-light tracking-tighter"
                                 delay={300}
                               />
                             </motion.div>
