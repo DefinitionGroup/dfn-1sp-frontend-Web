@@ -136,14 +136,13 @@ export default function ServiceGalleryComponent({
                 layoutId={`image-${active.name}-${id}`}
               >
                 {activeBg && isVideoUrl(activeBg) ? (
-                  <div className="w-full min-h-full opacity-50">
-                    <DeferredVideo
-                      src={activeBg}
-                      maxWidth={1000}
-                      className="w-full min-h-[1000px]   sm:rounded-t-xl object-cover object-top"
-                      mountDelay={100}
-                    />
-                  </div>
+                  <DeferredVideo
+                    src={activeBg}
+                    maxWidth={1000}
+                    className="w-full min-h-[1000px] sm:rounded-t-xl object-cover object-top"
+                    mountDelay={100}
+                    style={{ opacity: 0.5 }}
+                  />
                 ) : activeBg ? (
                   <Image
                     width={1000}
@@ -251,10 +250,13 @@ export default function ServiceGalleryComponent({
                   className="col-start-1 col-span-1  row-start-1 row-span-3 bg-black  overflow-hidden rounded-xl"
                 >
                   {bg && isVideoUrl(bg) ? (
-                    <img
-                      src={cloudinaryPosterUrl(bg, { maxWidth: 600, frame: "0" })}
-                      alt={item.name}
-                      className="w-full h-full object-cover min-h-[320px] group-hover/card:opacity-100 object-top opacity-80 transition-all"
+                    <DeferredVideo
+                      src={bg}
+                      maxWidth={600}
+                      className="w-full h-full object-cover min-h-[320px] object-top"
+                      posterUrl={cloudinaryPosterUrl(bg, { maxWidth: 600, frame: "0" })}
+                      mountDelay={200}
+                      style={{ opacity: 0.8 }}
                     />
                   ) : bg ? (
                     <Image
