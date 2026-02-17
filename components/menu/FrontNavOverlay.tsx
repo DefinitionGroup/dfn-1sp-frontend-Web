@@ -101,14 +101,14 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
     if (showOverlay) {
       // Get current scroll position
       const scrollY = window.scrollY;
-      
+
       // Prevent scrolling on both html and body
       document.documentElement.style.overflow = 'hidden';
       document.body.style.overflow = 'hidden';
       document.body.style.position = 'fixed';
       document.body.style.top = `-${scrollY}px`;
       document.body.style.width = '100%';
-      
+
       // Cleanup: restore scroll when overlay closes
       return () => {
         document.documentElement.style.overflow = '';
@@ -199,9 +199,9 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               delay: 0.7,
             }
         }
-        className={`floating-nav z-99999   hidden fixed top-6 left-0 backdrop-blur-xl rounded-4xl w-fit h-16  px-6  right-0 md:grid items-center z-50 grid-cols-12 py-2  mx-auto ${textColor} ${className}`}
+        className={`floating-nav z-99999   hidden fixed top-6 left-0 backdrop-blur-xl rounded-4xl border border-white/20 w-fit h-16  px-6  right-0 md:grid items-center z-50 grid-cols-12 py-2  mx-auto ${textColor} ${className}`}
       >
-        <div className="col-span-2 flex items-center  pr-16  justify-start">
+        <div className="col-span-2 flex items-center pr-16  justify-start">
           <motion.div
 
             className=" flex items-start  justify-center">
