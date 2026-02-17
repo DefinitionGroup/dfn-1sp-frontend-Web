@@ -442,7 +442,29 @@ export interface CaseStudyData {
         name: string;
         slug: { current: string };
         tagline?: string;
+        logo?: CloudinaryAsset;
+        logoColor?: CloudinaryAsset;
+        logoSignet?: CloudinaryAsset;
         logoUrl?: string;
+    }>;
+    people?: Array<{
+        isPrimary?: boolean;
+        person?: {
+            _id: string;
+            name?: string;
+            fullname?: string;
+            altText?: string;
+            position?: string;
+            email?: string;
+            profileUrl?: string;
+            image?: CloudinaryAsset | null;
+            video?: CloudinaryAsset | null;
+            unit?: {
+                _id?: string;
+                name?: string;
+                logoSignet?: CloudinaryAsset | null;
+            } | null;
+        } | null;
     }>;
     client?: {
         _id: string;

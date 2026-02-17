@@ -5,6 +5,7 @@ import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 import LineMinimap, { NavPoint } from "@/components/ui/MapVertical";
 import { CasePageBuilder } from "@/components/CasePageBuilder";
+import CasePoweredByContact from "@/components/pagebuilder/cases/pg-CasePoweredByContact";
 import { getTranslations } from "@/lib/translations";
 import type { CaseStudyData } from "@/types/sanity.types";
 
@@ -152,6 +153,8 @@ export default function CaseStudyPageClient({
         caseStudy.casesPageBuilder.length > 0 && (
           <CasePageBuilder content={caseStudy.casesPageBuilder} />
         )}
+
+      <CasePoweredByContact caseStudy={caseStudy} locale={locale} />
     </>
   );
 }

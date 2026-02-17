@@ -126,7 +126,7 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
                 _type,
                 name,
                 slug,
-                logo,
+                logoColor,
                 backgroundImage,
                 description,
                 tagline,
@@ -231,7 +231,7 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
             _type,
             name,
             slug,
-            logo,
+            logoColor,
             backgroundImage,
             description,
             tagline,
@@ -300,6 +300,18 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
             }
           }
         }
+      }
+    },
+    _type == 'pageBuilderLogoFloat' => {
+      ...,
+      selectedUnits[]->{
+        _id,
+        _type,
+        name,
+        slug,
+        logo,
+        logoColor,
+        logoSignet
       }
     }
   }
@@ -395,7 +407,7 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
                 _type,
                 name,
                 slug,
-                logo,
+                logoColor,
                 backgroundImage,
                 description,
                 tagline,
@@ -464,7 +476,7 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
             _type,
             name,
             slug,
-            logo,
+            logoColor,
             backgroundImage,
             description,
             tagline,
@@ -533,6 +545,18 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
             }
           }
         }
+      }
+    },
+    _type == 'pageBuilderLogoFloat' => {
+      ...,
+      selectedUnits[]->{
+        _id,
+        _type,
+        name,
+        slug,
+        logo,
+        logoColor,
+        logoSignet
       }
     }
   }
@@ -669,9 +693,31 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
     name,
     slug,
     tagline,
+    logo,
+    logoColor,
+    logoSignet,
     "logoUrl": logo.secure_url,
     backgroundImage,
     cta
+  },
+  people[]{
+    isPrimary,
+    person->{
+      _id,
+      name,
+      fullname,
+      altText,
+      position,
+      email,
+      profileUrl,
+      image,
+      video,
+      unit->{
+        _id,
+        name,
+        logoSignet
+      }
+    }
   },
   client->{
     _id,
@@ -882,5 +928,21 @@ export const UNIT_LOGO_GRID_QUERY = defineQuery(`
       }
     }
   }
+}
+`);
+
+export const UNIT_LOGO_FLOAT_QUERY = defineQuery(`
+*[
+  _type == "unit" &&
+  isActive == true &&
+  language == $language
+] | order(name asc) [0...$maxItems] {
+  _id,
+  _type,
+  name,
+  slug,
+  logo,
+  logoColor,
+  logoSignet
 }
 `);

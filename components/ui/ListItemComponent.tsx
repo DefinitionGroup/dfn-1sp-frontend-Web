@@ -69,7 +69,7 @@ function ListItemComponent({
   className,
 }: ListItemProps) {
   return (
-    <div className="pb-3 sm:pb-4 group">
+    <div className="pb-3 sm:pb-4 group  ">
       <p
         className={cn(
           "leading-relaxed transition-colors duration-200",

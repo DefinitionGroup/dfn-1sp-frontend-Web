@@ -71,6 +71,43 @@ export const cloudinaryPosterUrl = (
     return withTransforms.replace(/\.(mp4|mov|webm|avi|mkv)(\?.*)?$/i, ".jpg$2");
 };
 
+/**
+ * Generates a responsive srcset string for Cloudinary video posters.
+ *
+ * @example
+ * cloudinaryPosterSrcSet(url, [480, 768, 1280])
+ * // → "...w_480...jpg 480w, ...w_768...jpg 768w, ...w_1280...jpg 1280w"
+ */
+export const cloudinaryPosterSrcSet = (
+    url?: string,
+    widths: number[] = [480, 768, 960, 1280, 1600, 1920],
+    options?: {
+        frame?: "0" | "auto" | string;
+        portrait?: boolean;
+        aspectRatio?: string;
+    }
+): string | undefined => {
+    if (!url) return undefined;
+
+    const normalizedWidths = Array.from(
+        new Set(widths.filter((w) => Number.isFinite(w) && w > 0))
+    ).sort((a, b) => a - b);
+
+    if (normalizedWidths.length === 0) return undefined;
+
+    const candidates = normalizedWidths
+        .map((maxWidth) => {
+            const candidateUrl = cloudinaryPosterUrl(url, {
+                ...options,
+                maxWidth,
+            });
+            return candidateUrl ? `${candidateUrl} ${maxWidth}w` : undefined;
+        })
+        .filter((value): value is string => Boolean(value));
+
+    return candidates.length > 0 ? candidates.join(", ") : undefined;
+};
+
 export const optimizedVideoUrl = (
     url?: string,
     options?: {

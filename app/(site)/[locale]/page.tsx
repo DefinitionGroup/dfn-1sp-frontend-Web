@@ -26,7 +26,7 @@ import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
 import { urlFor } from "@/sanity/lib/image";
 import type { Metadata } from "next";
-import { cloudinaryPosterUrl } from "@/utils/utils";
+import { cloudinaryPosterUrl, cloudinaryPosterSrcSet } from "@/utils/utils";
 import {
   JsonLdScript,
   generateHomepageJsonLd,
@@ -150,6 +150,14 @@ export default async function Home({
   const heroPosterMobile = heroVideoUrl
     ? cloudinaryPosterUrl(heroVideoUrl, { maxWidth: 480, portrait: true })
     : undefined;
+  const heroPosterDesktopSrcSet = heroVideoUrl
+    ? cloudinaryPosterSrcSet(heroVideoUrl, [960, 1280, 1600, 1920])
+    : undefined;
+  const heroPosterMobileSrcSet = heroVideoUrl
+    ? cloudinaryPosterSrcSet(heroVideoUrl, [360, 480, 640, 750], {
+        portrait: true,
+      })
+    : undefined;
 
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
@@ -186,6 +194,12 @@ export default async function Home({
       })()}
 
       {/* Preload the hero poster for fast LCP */}
+      {heroVideoUrl && (
+        <>
+          <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="" />
+          <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        </>
+      )}
       {heroPosterDesktop && (
         <link
           rel="preload"
@@ -193,6 +207,8 @@ export default async function Home({
           href={heroPosterDesktop}
           // @ts-expect-error — fetchpriority is valid HTML but not yet in React types
           fetchpriority="high"
+          imageSrcSet={heroPosterDesktopSrcSet}
+          imageSizes="100vw"
           media="(min-width: 769px)"
         />
       )}
@@ -203,6 +219,8 @@ export default async function Home({
           href={heroPosterMobile}
           // @ts-expect-error — fetchpriority is valid HTML but not yet in React types
           fetchpriority="high"
+          imageSrcSet={heroPosterMobileSrcSet}
+          imageSizes="100vw"
           media="(max-width: 768px)"
         />
       )}

@@ -25,6 +25,7 @@ import smartUnitsGallery from "./1SP/Components/smartUnitsGallery";
 import smartUnitsGlobe from "./1SP/Components/smartUnitsGlobe";
 import globeComponent from "./1SP/Components/globeComponent";
 import unitLogoGrid from "./1SP/Components/unitLogoGrid";
+import pageBuilderLogoFloat from "./1SP/Components/pageBuilderLogoFloat";
 import heroAdditionalContent from "./1SP/Objects/heroAdditionalContent";
 import slideUpContent from "./1SP/Objects/slideUpContent";
 import galleryStep from "./1SP/Objects/galleryStep";
@@ -76,7 +77,8 @@ const oneSPComponents = [
     smartUnitsGallery,
     smartUnitsGlobe,
     globeComponent,
-    unitLogoGrid
+    unitLogoGrid,
+    pageBuilderLogoFloat
 ];
 const oneSPItems = [
     badgeModule,

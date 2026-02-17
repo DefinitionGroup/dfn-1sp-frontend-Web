@@ -136,7 +136,7 @@ function ExpandableCards({
             animate={{ opacity: 0.2 }}
             exit={{ opacity: 0, transition: { duration: 0.14, ease: "easeInOut" } }}
             transition={{ duration: 0.18, ease: "easeOut" }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-lg h-full w-full z-10"
+            className="fixed inset-0 bg-black/50 backdrop-blur-lg h-full w-full z-[100]"
           />
         )}
 
@@ -182,12 +182,12 @@ function ExpandableCards({
                       layoutId={`logo-${active.title}-${id}`}
                       src={active.logo}
                       alt={active.title}
-                      className="w-24 h-20 object-contain"
+                      className="w-40 h-32 -left-3 relative invert object-contain"
                     />
                   )}
                   <motion.h3
                     layoutId={`title-${active.title}-${id}`}
-                    className="text-white text-xl dark:text-neutral-200"
+                    className="text-white text-2xl md:mt-32 dark:text-neutral-200"
                   >
                     {active.title}
                   </motion.h3>
@@ -256,7 +256,7 @@ function ExpandableCards({
                     layoutId={`logo-${card.title}-${id}`}
                     src={card.logo}
                     alt={card.title}
-                    className="w-full h-8 object-contain object-left"
+                    className="w-full h-12 -left-2 relative object-contain invert object-left"
                   />
                 )}
                 {/* Old tile only showed title; keep that for parity */}

@@ -209,6 +209,13 @@ const UnitLogoGrid = dynamic(() => import("./pagebuilder/pg-UnitLogoGrid"), {
   loading: () => <ComponentLoader />,
   ssr: true,
 });
+const PageBuilderLogoFloat = dynamic(
+  () => import("./pagebuilder/pg-PageBuilderLogoFloat"),
+  {
+    loading: () => <ComponentLoader />,
+    ssr: true,
+  }
+);
 
 type PageBuilderProps = { 
   content: NonNullable<Page["content1sp"]>;
@@ -428,6 +435,16 @@ export function PageBuilder({ content, language = "de" }: PageBuilderProps) {
                 <UnitLogoGrid key={key} data={block as any} language={language} />
               </ErrorBoundary>
             );
+          case "pageBuilderLogoFloat":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <PageBuilderLogoFloat
+                  key={key}
+                  data={block as any}
+                  language={language}
+                />
+              </ErrorBoundary>
+            );
 
           default:
             return null;
@@ -436,4 +453,3 @@ export function PageBuilder({ content, language = "de" }: PageBuilderProps) {
     </>
   );
 }
-

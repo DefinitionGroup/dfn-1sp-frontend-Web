@@ -77,7 +77,7 @@ type UnitReference = {
   _type: string;
   name?: string;
   slug?: { current: string };
-  logo?: CloudinaryAsset;
+  logoColor?: CloudinaryAsset;
   backgroundImage?: CloudinaryAsset;
   description?: string;
   tagline?: string;
@@ -141,8 +141,8 @@ function transformUnitsToCards(
         _type: "cardItem" as const,
         title: unit.name || "",
         description: unit.tagline || unit.description || "",
-        src: unit.backgroundImage || unit.logo,
-        logo: unit.logo,
+        src: unit.backgroundImage || unit.logoColor,
+        logo: unit.logoColor,
         content: unit.description || "",
         ctaButton: unit.cta || undefined,
       }) as CardItem
@@ -329,7 +329,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="z-4 grid col-span-12 relative col-start-1   container mx-auto row-start-1 grid-cols-12 "
+      className="z-4 grid col-span-12 relative col-start-1  z-[100] container mx-auto row-start-1 grid-cols-12 "
     >
       {/* Optional background media */}
       {mediaUrl && (
@@ -488,7 +488,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
         {/* Variant B (fallback): No cards, no ctaMini → plain CTA buttons */}
         {!hasCards && !hasCtaMini && hasCtas && (
-          <div className="col-span-2 col-start-3 mt-8 pr-8">
+          <div className="col-span-2 col-start-3 mt-8 pr-8 ">
             <div className="flex flex-col gap-4">
               {ctas.map((cta, idx) => {
                 const btn = ctaToButtonProps(cta);
