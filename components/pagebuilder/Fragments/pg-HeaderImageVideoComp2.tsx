@@ -50,11 +50,20 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   const ref = useRef(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const pathname = usePathname();
-  const isInView = useInView(ref, {
-    once: true,
+  const rawInView = useInView(ref, {
+    once: false,
     amount: 0.1,
     margin: "100px 0px 0px 0px",
   });
+
+  // "once per route" — reset on navigation, latch on first intersection
+  const [animatedForPath, setAnimatedForPath] = useState<string | null>(null);
+  useEffect(() => {
+    if (rawInView && animatedForPath !== pathname) {
+      setAnimatedForPath(pathname);
+    }
+  }, [rawInView, pathname, animatedForPath]);
+  const isInView = animatedForPath === pathname;
 
   // LCP optimization: defer video mount, show poster image first
   const [shouldMountVideo, setShouldMountVideo] = useState(false);
@@ -114,10 +123,8 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
 
   return (
     <div
-      key={pathname}
       ref={ref}
       className={`absolute mt-4 inset-0 overflow-visible mx-auto ${className}`}
-
     >
       <motion.div
         initial={{
