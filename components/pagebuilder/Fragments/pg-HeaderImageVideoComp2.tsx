@@ -5,7 +5,12 @@ import Image from "next/image";
 import { motion, useInView } from "motion/react";
 import { usePathname } from "next/navigation";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
-import { optimizedVideoUrl, optimizedPortraitVideoUrl, cloudinaryPosterUrl } from "@/utils/utils";
+import {
+  optimizedVideoUrl,
+  optimizedPortraitVideoUrl,
+  cloudinaryPosterUrl,
+  cloudinaryPosterSrcSet,
+} from "@/utils/utils";
 
 /**
  * Helper to compute the hero poster URL for server-side <link rel="preload"> hints.
@@ -48,6 +53,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
 }) => {
   // Create ref for the component
   const ref = useRef(null);
+  const posterImgRef = useRef<HTMLImageElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const pathname = usePathname();
   const rawInView = useInView(ref, {
@@ -59,15 +65,17 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   // "once per route" — reset on navigation, latch on first intersection
   const [animatedForPath, setAnimatedForPath] = useState<string | null>(null);
   useEffect(() => {
+    if (isHero) return;
     if (rawInView && animatedForPath !== pathname) {
       setAnimatedForPath(pathname);
     }
-  }, [rawInView, pathname, animatedForPath]);
-  const isInView = animatedForPath === pathname;
+  }, [rawInView, pathname, animatedForPath, isHero]);
+  const hasEnteredViewport = isHero || animatedForPath === pathname;
 
   // LCP optimization: defer video mount, show poster image first
   const [shouldMountVideo, setShouldMountVideo] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
+  const [posterLoaded, setPosterLoaded] = useState(!useVideo);
   const [isMobile, setIsMobile] = useState(false);
 
   // Detect mobile on mount for responsive video source
@@ -86,6 +94,13 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   const posterUrlMobile = useVideo
     ? cloudinaryPosterUrl(videoSrc, { maxWidth: 480, portrait: true })
     : undefined;
+  const posterSrcSetDesktop = useVideo
+    ? cloudinaryPosterSrcSet(videoSrc, [960, 1280, 1600, 1920])
+    : undefined;
+  const posterSrcSetMobile = useVideo
+    ? cloudinaryPosterSrcSet(videoSrc, [360, 480, 640, 750], { portrait: true })
+    : undefined;
+  const posterFallback = posterUrl || posterUrlMobile;
 
   // Responsive video URLs:
   // - Mobile: portrait 9:16 crop, 480px wide, aggressive compression
@@ -100,18 +115,63 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
     quality: "eco",
   });
 
-  // Mount video after delay to let the poster image become the LCP element
   useEffect(() => {
-    if (!useVideo) return;
-    const timer = setTimeout(() => {
-      setShouldMountVideo(true);
-    }, 2222);
-    return () => clearTimeout(timer);
-  }, [useVideo]);
+    // Reset visual/video state when media changes
+    setShouldMountVideo(false);
+    setVideoReady(false);
+    setPosterLoaded(!useVideo || !posterFallback);
+  }, [useVideo, posterFallback]);
+
+  useEffect(() => {
+    if (!useVideo || posterLoaded) return;
+
+    // If poster came from cache, mark immediately.
+    if (posterImgRef.current?.complete) {
+      setPosterLoaded(true);
+      return;
+    }
+
+    // Safety valve: never block video mount forever if image load events are missed.
+    const fallbackTimer = window.setTimeout(() => {
+      setPosterLoaded(true);
+    }, 1500);
+
+    return () => window.clearTimeout(fallbackTimer);
+  }, [useVideo, posterLoaded]);
+
+  // Mount video after poster paint + idle time so the poster can win LCP
+  useEffect(() => {
+    if (!useVideo || shouldMountVideo || !posterLoaded) return;
+
+    const win = window as Window & {
+      requestIdleCallback?: (
+        callback: IdleRequestCallback,
+        options?: IdleRequestOptions
+      ) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+
+    let timeoutId: number | undefined;
+    let idleId: number | undefined;
+    const mountVideo = () => setShouldMountVideo(true);
+
+    if (isHero && win.requestIdleCallback) {
+      idleId = win.requestIdleCallback(() => mountVideo(), { timeout: 1500 });
+    } else {
+      timeoutId = window.setTimeout(mountVideo, isHero ? 300 : 800);
+    }
+
+    return () => {
+      if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+      if (idleId !== undefined && win.cancelIdleCallback) {
+        win.cancelIdleCallback(idleId);
+      }
+    };
+  }, [useVideo, posterLoaded, isHero, shouldMountVideo]);
 
   // Play video after animation completes + mount delay
   useEffect(() => {
-    if (isInView && useVideo && shouldMountVideo && videoRef.current) {
+    if (hasEnteredViewport && useVideo && shouldMountVideo && videoRef.current) {
       const timer = setTimeout(() => {
         videoRef.current?.play().catch(() => {
           // Autoplay may be blocked on some browsers — poster stays visible
@@ -119,7 +179,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
       }, videoDelay * 1000);
       return () => clearTimeout(timer);
     }
-  }, [isInView, useVideo, videoDelay, shouldMountVideo]);
+  }, [hasEnteredViewport, useVideo, videoDelay, shouldMountVideo]);
 
   return (
     <div
@@ -128,52 +188,66 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
     >
       <motion.div
         initial={{
-          // Start less clipped so the poster image is partially visible immediately.
-          // This lets the browser register the LCP element sooner on mobile.
+          // Hero should paint at final size immediately so it can become LCP fast.
           clipPath: isHero
-            ? "inset(20% 10% 20% 10% round 2rem)"
+            ? "inset(0% 0% 0% 0% round 2rem)"
             : "inset(55% 44% 55% 44% round 2rem)",
         }}
         animate={
-          isInView
+          isHero
             ? { clipPath: "inset(0% 0% 0% 0% round 2rem)" }
-            : { clipPath: isHero ? "inset(20% 10% 20% 10% round 2rem)" : "inset(55% 0% 0% 0% round 2rem)" }
+            : hasEnteredViewport
+            ? { clipPath: "inset(0% 0% 0% 0% round 2rem)" }
+            : { clipPath: "inset(55% 0% 0% 0% round 2rem)" }
         }
         transition={{
-          duration: 0.5,
+          duration: isHero ? 0 : 0.5,
           ease: [0.16, 1, 0.3, 1],
         }}
         className="absolute mx-auto rounded-xl inset-0 overflow-hidden"
         style={{
-          clipPath: isInView ? undefined : (isHero
-            ? "inset(20% 10% 20% 10% round 2rem)"
-            : "inset(55% 44% 55% 44% round 2rem)"),
-            willChange: "clip-path",
-            transform: "translateZ(0)"
+          clipPath:
+            isHero || hasEnteredViewport
+              ? undefined
+              : "inset(55% 44% 55% 44% round 2rem)",
+          willChange: isHero ? undefined : "clip-path",
+          transform: "translateZ(0)",
         }}
 
       >
         {useVideo ? (
           <div className="relative w-full h-full">
             {/* Poster image — lightweight, loads immediately, becomes LCP element */}
-            {posterUrl && (
+            {posterFallback && (
               <picture>
                 {/* Portrait poster for mobile — matches the portrait video crop */}
-                {posterUrlMobile && (
+                {posterSrcSetMobile && (
                   <source
                     media="(max-width: 768px)"
-                    srcSet={posterUrlMobile}
+                    srcSet={posterSrcSetMobile}
+                    sizes="100vw"
+                  />
+                )}
+                {posterSrcSetDesktop && (
+                  <source
+                    media="(min-width: 769px)"
+                    srcSet={posterSrcSetDesktop}
+                    sizes="100vw"
                   />
                 )}
                 <img
-                  src={posterUrl}
+                  ref={posterImgRef}
+                  src={posterFallback}
+                  srcSet={posterSrcSetDesktop}
+                  sizes="100vw"
                   alt={imageAlt}
                   width={1280}
                   height={720}
-                  // eslint-disable-next-line react/no-unknown-property
                   fetchPriority={isHero ? "high" : undefined}
-                  loading={isHero ? "eager" : undefined}
-                  decoding={isHero ? "sync" : "async"}
+                  loading={isHero ? "eager" : "lazy"}
+                  decoding="async"
+                  onLoad={() => setPosterLoaded(true)}
+                  onError={() => setPosterLoaded(true)}
                   className={`object-cover w-full h-full absolute inset-0 transition-opacity duration-500 ${videoReady ? "opacity-0" : "opacity-100"}`}
                   style={{ zIndex: 1 }}
                 />
@@ -184,10 +258,14 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
               <video
                 ref={videoRef}
                 src={isMobile ? videoUrlMobile : videoUrlDesktop}
+                autoPlay
                 loop
                 muted
                 playsInline
+                preload={isHero ? "metadata" : "none"}
                 onCanPlay={() => setVideoReady(true)}
+                onLoadedData={() => setVideoReady(true)}
+                onPlaying={() => setVideoReady(true)}
                 className={`object-cover w-full h-full transition-opacity duration-500 ${videoReady ? "opacity-100" : "opacity-0"}`}
                 style={{ zIndex: 0 }}
               />
