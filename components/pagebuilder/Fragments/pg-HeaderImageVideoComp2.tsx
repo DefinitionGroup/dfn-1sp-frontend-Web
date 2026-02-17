@@ -181,6 +181,15 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
     }
   }, [hasEnteredViewport, useVideo, videoDelay, shouldMountVideo]);
 
+  const clipPathClosed = isHero
+    ? "inset(6% 6% 6% 6% round 2rem)"
+    : "inset(55% 44% 55% 44% round 2rem)";
+  const clipPathPreInView = isHero
+    ? "inset(3% 3% 3% 3% round 2rem)"
+    : "inset(55% 0% 0% 0% round 2rem)";
+  const clipPathOpen = "inset(0% 0% 0% 0% round 2rem)";
+  const preInViewOpacity = isHero ? 0.92 : 0.86;
+
   return (
     <div
       ref={ref}
@@ -188,29 +197,23 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
     >
       <motion.div
         initial={{
-          // Hero should paint at final size immediately so it can become LCP fast.
-          clipPath: isHero
-            ? "inset(0% 0% 0% 0% round 2rem)"
-            : "inset(55% 44% 55% 44% round 2rem)",
+          clipPath: clipPathClosed,
+          opacity: preInViewOpacity,
         }}
         animate={
-          isHero
-            ? { clipPath: "inset(0% 0% 0% 0% round 2rem)" }
-            : hasEnteredViewport
-            ? { clipPath: "inset(0% 0% 0% 0% round 2rem)" }
-            : { clipPath: "inset(55% 0% 0% 0% round 2rem)" }
+          hasEnteredViewport
+            ? { clipPath: clipPathOpen, opacity: 1 }
+            : { clipPath: clipPathPreInView, opacity: preInViewOpacity }
         }
         transition={{
-          duration: isHero ? 0 : 0.5,
+          duration: isHero ? 0.22 : 0.35,
           ease: [0.16, 1, 0.3, 1],
+          opacity: { duration: isHero ? 0.18 : 0.28 },
         }}
         className="absolute mx-auto rounded-xl inset-0 overflow-hidden"
         style={{
-          clipPath:
-            isHero || hasEnteredViewport
-              ? undefined
-              : "inset(55% 44% 55% 44% round 2rem)",
-          willChange: isHero ? undefined : "clip-path",
+          clipPath: hasEnteredViewport ? undefined : clipPathClosed,
+          willChange: "clip-path, opacity",
           transform: "translateZ(0)",
         }}
 
