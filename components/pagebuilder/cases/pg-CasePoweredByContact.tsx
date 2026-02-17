@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import DeferredVideo from "@/components/ui/DeferredVideo";
+import Button2 from "@/components/ui/Button2";
+import { motion } from "motion/react";
 import { getTranslations } from "@/lib/translations";
 import type { CaseStudyData, CloudinaryAsset } from "@/types/sanity.types";
 import { assetUrl } from "@/utils/utils";
@@ -89,11 +91,11 @@ export default function CasePoweredByContact({
               {t.caseStudy.poweredBy}
             </h2>
 
-            <div className="mt-6 sm:mt-8 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
               {unitLogos.map(({ unit, logoUrl }) => (
                 <div
                   key={unit._id}
-                  className="relative aspect-[3/2] rounded-sm border border-neutral-300/70 bg-white"
+                  className="relative aspect-[3/2] w-[calc(50%-0.375rem)] sm:w-[calc(33.333%-0.667rem)] "
                 >
                   <Image
                     src={logoUrl}
@@ -110,42 +112,79 @@ export default function CasePoweredByContact({
         )}
 
         {relatedPerson && (
-          <div className="mt-14 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 items-end gap-8 lg:gap-10">
-            <div className="lg:col-span-7">
-              <h3 className="text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-tight text-neutral-900">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="max-w-5xl mx-auto bg-white rounded-xl overflow-hidden shadow-2xl mt-14 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 items-end gap-8 lg:gap-10"
+          >
+            <div className="lg:col-span-7 p-8">
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
+                className=" text-sm tracking-tight leading-tight  text-neutral-500 "
+              >
+                {`${t.caseStudy.contactPrefix}`}
+              </motion.p>
+              <motion.h3
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.3, ease: "easeOut" }}
+                className="text-xl sm:text-xl lg:text-2xl tracking-tight leading-tight text-neutral-700"
+              >
                 {t.caseStudy.wantToKnowMore}
-              </h3>
+              </motion.h3>
 
-              <p className="mt-2 text-2xl sm:text-3xl lg:text-5xl tracking-tight leading-tight font-semibold text-lime-500">
-                {`${t.caseStudy.contactPrefix} ${personName}${personUnit ? ` @ ${personUnit}` : ""}`}
-              </p>
 
-              <div className="mt-5 sm:mt-6 flex flex-col gap-2 text-sm sm:text-base text-neutral-700">
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
+                className="mt-2 text-2xl sm:text-3xl lg:text-3xl tracking-tight leading-tight  text-lime-500"
+              >
+                {`${personName}${personUnit ? ` @ ${personUnit}` : ""}`}
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.5, ease: "easeOut" }}
+                className=" flex flex-col gap-2 text-sm  text-neutral-300"
+              >
                 {relatedPerson.position && (
-                  <p className="font-medium text-neutral-800">{relatedPerson.position}</p>
+                  <p className=" text-sm tracking-tight leading-tight  text-neutral-500 mb-5 sm:mb-6 ">{relatedPerson.position}</p>
                 )}
                 {relatedPerson.email && (
-                  <a
+                  <Button2
+                    variant="limesmallrounded"
+                    magnetic={false}
+                    text={relatedPerson.email}
                     href={`mailto:${relatedPerson.email}`}
-                    className="hover:text-neutral-900 transition-colors break-all"
-                  >
-                    {relatedPerson.email}
-                  </a>
+                  />
                 )}
                 {relatedPerson.profileUrl && (
-                  <a
+                  <Button2 variant="limesmallrounded"
+                    magnetic={false}
+                    text={t.caseStudy.linkedInProfile}
                     href={relatedPerson.profileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-neutral-900 transition-colors"
-                  >
-                    {t.caseStudy.linkedInProfile}
-                  </a>
+                  />
                 )}
-              </div>
+              </motion.div>
             </div>
 
-            <div className="lg:col-span-5">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
+              className="lg:col-span-5"
+            >
               <div className="relative ml-auto w-full max-w-[440px] overflow-hidden rounded-sm bg-neutral-200 aspect-[5/4]">
                 {personMediaUrl ? (
                   personIsVideo ? (
@@ -171,8 +210,8 @@ export default function CasePoweredByContact({
                   </div>
                 )}
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         )}
       </div>
     </section>

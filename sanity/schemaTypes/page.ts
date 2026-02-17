@@ -170,7 +170,8 @@ export default defineType({
                 { type: 'smartUnitsGallery' },
                 { type: 'smartUnitsGlobe' },
                 { type: 'globeComponent' },
-                { type: 'unitLogoGrid' }
+                { type: 'unitLogoGrid' },
+                { type: 'pageBuilderLogoFloat' }
             ],
             hidden: ({ parent }: any) => parent?.channel !== '1spWeb',
         }),

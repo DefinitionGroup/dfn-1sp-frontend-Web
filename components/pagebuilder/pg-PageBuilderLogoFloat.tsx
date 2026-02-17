@@ -1,0 +1,187 @@
+"use client";
+
+import React from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { useParams } from "next/navigation";
+import { client } from "@/sanity/lib/client";
+import { UNIT_LOGO_FLOAT_QUERY } from "@/sanity/lib/queries";
+import { assetUrl } from "@/utils/utils";
+import { withDebugBadge } from "@/components/dev/withDebugBadge";
+import type { CloudinaryAsset } from "@/types/sanity.types";
+
+type Unit = {
+  _id: string;
+  _type?: string;
+  name?: string;
+  slug?: { current?: string };
+  logo?: CloudinaryAsset;
+  logoColor?: CloudinaryAsset;
+  logoSignet?: CloudinaryAsset;
+};
+
+interface PageBuilderLogoFloatProps {
+  data: {
+    logoVariant?: "logo" | "logoColor" | "logoSignet";
+    cardSize?: "sm" | "md" | "lg";
+    maxItems?: number;
+    navPointName?: string;
+    hideFromNav?: boolean;
+    selectionMode?: "auto" | "manual";
+    selectedUnits?: Unit[];
+  };
+  language?: string;
+}
+
+function PageBuilderLogoFloat({
+  data,
+  language: propLanguage,
+}: PageBuilderLogoFloatProps) {
+  const params = useParams();
+  const language = propLanguage || (params?.locale as string) || "de";
+
+  const {
+    logoVariant = "logoColor",
+    cardSize = "sm",
+    maxItems = 24,
+    navPointName,
+    hideFromNav = true,
+    selectionMode = "auto",
+    selectedUnits,
+  } = data || {};
+
+  const [units, setUnits] = React.useState<Unit[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [visible, setVisible] = React.useState(true);
+
+  React.useEffect(() => {
+    function onScroll() {
+      setVisible(window.scrollY < 24);
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  React.useEffect(() => {
+    async function loadUnits() {
+      try {
+        if (
+          selectionMode === "manual" &&
+          Array.isArray(selectedUnits) &&
+          selectedUnits.length > 0
+        ) {
+          setUnits(selectedUnits);
+          setIsLoading(false);
+          return;
+        }
+
+        const fetchedUnits = await client.fetch<Unit[]>(
+          UNIT_LOGO_FLOAT_QUERY,
+          { language, maxItems },
+          { next: { revalidate: 60 } }
+        );
+        setUnits(fetchedUnits || []);
+      } catch (error) {
+        console.error("Error loading units for logo float:", error);
+        setUnits([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadUnits();
+  }, [language, maxItems, selectedUnits, selectionMode]);
+
+  const sectionId = "logo-float";
+
+  const navPointDataAttr = navPointName
+    ? { "data-navpoint-name": navPointName }
+    : {};
+
+  const getLogoForUnit = (unit: Unit): CloudinaryAsset | undefined => {
+    return unit.logoColor || unit.logo;
+  };
+
+  const cardsWithLogo = units
+    .map((unit) => {
+      const asset = getLogoForUnit(unit);
+      return {
+        unit,
+        logoUrl: assetUrl(asset),
+        width: asset?.width || 0,
+        height: asset?.height || 0,
+      };
+    })
+    .filter((entry): entry is { unit: Unit; logoUrl: string; width: number; height: number } =>
+      Boolean(entry.logoUrl)
+    );
+
+  const maxHeightPx: Record<NonNullable<typeof cardSize>, number> = {
+    sm: 56,
+    md: 64,
+    lg: 80,
+  };
+
+  const maxH = maxHeightPx[cardSize] || maxHeightPx.md;
+
+  return (
+    <section
+      id={sectionId}
+      {...navPointDataAttr}
+      {...(hideFromNav ? { "data-nav-hidden": "true" } : {})}
+      className="hidden lg:block fixed inset-0 z-[999999] pointer-events-none"
+      data-component="pg-pagebuilder-logo-float"
+    >
+      <div className="h-full w-full flex items-start mt-24 justify-center px-6">
+        {isLoading ? (
+          <div className="text-center text-neutral-400">.</div>
+        ) : cardsWithLogo.length === 0 ? (
+          <div className="text-center text-neutral-400">No unit logos found</div>
+        ) : (
+          <div className="mx-auto max-w-7xl w-7xl flex flex-wrap items-center justify-center gap-0">
+            <AnimatePresence>
+              {visible && cardsWithLogo.map(({ unit, logoUrl, width, height }, index) => {
+                // Scale to max height, keeping aspect ratio
+                const scale = height > 0 ? Math.min(1, maxH / height) : 1;
+                const displayW = width > 0 ? Math.round(width * scale) : undefined;
+                const displayH = height > 0 ? Math.round(height * scale) : maxH;
+
+                return (
+                  <motion.div
+                    key={unit._id}
+                    initial={{ opacity: 0, y: 8, x: -0 }}
+                    animate={{ opacity: 1, y: 0, x: 0 }}
+                    exit={{ opacity: 0, y: -8, x: 0 }}
+                    transition={{
+                      duration: 0.25,
+                      delay: index * 0.05,
+                      ease: "easeOut",
+                    }}
+                    className="rounded-sm pointer-events-auto cursor-pointer"
+                    onClick={() => {
+                      document
+                        .getElementById("what-fuels-1sp")
+                        ?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={logoUrl}
+                      alt={unit.name || "Unit logo"}
+                      width={displayW}
+                      height={displayH}
+                      style={{ width: displayW, height: displayH }}
+                      className="invert   object-left"
+                    />
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+export default withDebugBadge(PageBuilderLogoFloat, "pg-PageBuilderLogoFloat");

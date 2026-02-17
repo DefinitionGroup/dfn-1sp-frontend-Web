@@ -64,12 +64,39 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
 
   // "once per route" — reset on navigation, latch on first intersection
   const [animatedForPath, setAnimatedForPath] = useState<string | null>(null);
+
+  // Reset when pathname changes so the animation can re-trigger on the new route
+  useEffect(() => {
+    if (isHero) return;
+    setAnimatedForPath(null);
+  }, [pathname, isHero]);
+
+  // Latch when in view on the current route
   useEffect(() => {
     if (isHero) return;
     if (rawInView && animatedForPath !== pathname) {
       setAnimatedForPath(pathname);
     }
   }, [rawInView, pathname, animatedForPath, isHero]);
+
+  // Fallback: if the element is already in the viewport after a route change,
+  // useInView may not re-fire. Check once after mount / pathname change.
+  useEffect(() => {
+    if (isHero || animatedForPath === pathname) return;
+    // Small delay to let the intersection observer settle after route change
+    const timer = setTimeout(() => {
+      if (ref.current) {
+        const rect = (ref.current as HTMLElement).getBoundingClientRect();
+        const inViewport =
+          rect.top < window.innerHeight && rect.bottom > 0;
+        if (inViewport) {
+          setAnimatedForPath(pathname);
+        }
+      }
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [pathname, isHero, animatedForPath]);
+
   const hasEnteredViewport = isHero || animatedForPath === pathname;
 
   // LCP optimization: defer video mount, show poster image first
