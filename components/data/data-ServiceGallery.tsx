@@ -250,14 +250,15 @@ export default function ServiceGalleryComponent({
                   className="col-start-1 col-span-1  row-start-1 row-span-3 bg-black  overflow-hidden rounded-xl"
                 >
                   {bg && isVideoUrl(bg) ? (
-                    <DeferredVideo
-                      src={bg}
-                      maxWidth={600}
-                      className="w-full h-full object-cover min-h-[320px] object-top"
-                      posterUrl={cloudinaryPosterUrl(bg, { maxWidth: 600, frame: "0" })}
-                      mountDelay={200}
-                      style={{ opacity: 0.8 }}
-                    />
+                    <div className="w-full h-full opacity-50 group-hover/card:opacity-100 transition-opacity">
+                      <DeferredVideo
+                        src={bg}
+                        maxWidth={600}
+                        className="w-full h-full object-cover min-h-[320px] object-top"
+                        posterUrl={cloudinaryPosterUrl(bg, { maxWidth: 600, frame: "0" })}
+                        mountDelay={200}
+                      />
+                    </div>
                   ) : bg ? (
                     <Image
                       width={1000}
