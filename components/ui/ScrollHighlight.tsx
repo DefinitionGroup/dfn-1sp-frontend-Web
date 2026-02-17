@@ -106,7 +106,7 @@ function ScrollHighlightItem({
 
         {isHighlighted && skill.text && (
           <motion.p
-            className="skill-description mb-4  text-xs  md:text-base w-3/4  "
+            className="skill-description mb-4  text-xs  md:text-base w-3/4 [hyphens:none]  "
             layout
             initial={{ opacity: 0, y: 0, x: 0 }}
             animate={{ opacity: 1, y: 0, x: 0 }}
@@ -402,7 +402,7 @@ function Stylesheet() {
         white-space: normal;
         overflow-wrap: break-word;
         word-break: break-word;
-        hyphens: auto;
+       
       }
 
       @media (min-width: 640px) {
