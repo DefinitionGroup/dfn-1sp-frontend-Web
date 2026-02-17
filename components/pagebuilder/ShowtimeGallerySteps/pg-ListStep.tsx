@@ -393,7 +393,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                     key={`para-${idx}`}
                     className={[
                       sizeToClass[line.fontSize] || "text-base",
-                      "text-gray-100 max-w-2xs mx-auto",
+                      "text-gray-100 max-w-2xs  mx-auto",
                       idx > 0 ? "mt-4" : "",
                     ].join(" ")}
                   >
@@ -406,7 +406,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
           : (header?.superText ||
             header?.mainHeadline ||
             header?.subHeadline) && (
-            <header className="col-span-12  md:col-span-6  col-start-1 md:col-start-3  md:mt-0 md:border-y border-gray-200">
+            <header className="col-span-12  md:col-span-6  col-start-1 md:col-start-3  md:mt-0  border-gray-200">
               <div className="flex flex-col items-start justify-start w-full">
                 <div className="flex-1 flex flex-col min-w-0">
                   {header?.superText && (
@@ -428,7 +428,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
               </div>
               {/* Right list column */}
               {Array.isArray(listItems) && listItems.length > 0 && (
-                <div className="col-span-12 md:col-span-4  col-start-1  md:col-start-1 mt-12 md:mt-8 border-gray-500 pb-8 md:row-start-2 ">
+                <div className="col-span-12 md:col-span-4  col-start-1   md:col-start-1 mt-12 md:mt-8  pb-0 md:row-start-2 ">
                   <ListContainerComponent>
                     {listItems.map((it, i) => (
                       <ListItemComponent
