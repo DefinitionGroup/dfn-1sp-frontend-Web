@@ -72,7 +72,7 @@ export default function Home() {
         <HeaderImageVideoComp
           useVideo={true}
           opacity="opacity-50"
-          videoSrc="/video/public/video/FLZR_WEB VIDEO.mp4"
+          videoSrc="/video/public/video/FLZR_WEB_VIDEO.mp4"
           enableParallax={true}
         />
         {/* Navigation */}
@@ -202,8 +202,8 @@ export default function Home() {
                   key={filter}
                   onClick={() => setActiveFilter(filter)}
                   className={`px-6 py-2 rounded-full text-xs font-medium uppercase transition-all duration-100 ${activeFilter === filter
-                      ? "bg-violet-500 text-black "
-                      : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
+                    ? "bg-violet-500 text-black "
+                    : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
                     }`}
                 >
                   {filter}
