@@ -72,7 +72,7 @@ export default function Home() {
         <HeaderImageVideoComp
           useVideo={true}
           opacity="opacity-50"
-          videoSrc="/video/public/video/FLZR_WEB_VIDEO.mp4"
+          videoSrc="/video/FLZR_WEB_VIDEO.mp4"
           enableParallax={true}
         />
         {/* Navigation */}
