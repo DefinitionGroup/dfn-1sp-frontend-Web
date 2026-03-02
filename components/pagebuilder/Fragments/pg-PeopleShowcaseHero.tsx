@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView } from "motion/react";
 import type { CloudinaryAsset } from "@/types/sanity.types";
 import { assetUrl, optimizedVideoUrl, cloudinaryPosterUrl } from "@/utils/utils";
@@ -7,6 +7,7 @@ import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import StaggeredFadeIn from "@/components/ui/StaggeredFadeIn";
 import Image from "next/image";
 import { Link } from "next-view-transitions";
+import { createPortal } from "react-dom";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
 export interface MemberItem {
   name?: string;
@@ -88,6 +89,42 @@ function PeopleShowcaseHero({
 }) {
   const [hoveredMember, setHoveredMember] = useState<string | null>(null);
   const [activeModal, setActiveModal] = useState<MemberItem | null>(null);
+  const [isClient, setIsClient] = useState(false);
+  const modalOpenedAtRef = useRef(0);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!activeModal) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [activeModal]);
+
+  const openModal = (
+    member: MemberItem,
+    event?: React.SyntheticEvent<HTMLElement>
+  ) => {
+    event?.preventDefault();
+    event?.stopPropagation();
+    modalOpenedAtRef.current = Date.now();
+    setActiveModal(member);
+  };
+
+  const closeModal = () => setActiveModal(null);
+
+  const handleBackdropClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    if (event.target !== event.currentTarget) return;
+    // Mobile browsers can dispatch a delayed synthetic click after opening.
+    if (Date.now() - modalOpenedAtRef.current < 250) return;
+    closeModal();
+  };
 
   if (!members || members.length === 0) {
     return null;
@@ -155,7 +192,7 @@ function PeopleShowcaseHero({
                     />
                   </div>
                 )}
-                <div className="absolute inset-0 hidden bg-gradient-to-t from-black/70 via-black/60 to-black/65 opacity-0 md:flex md:opacity-0 md:group-hover:opacity-100 rounded-xs transition-opacity duration-300 flex-col justify-end p-4">
+                <div className="absolute inset-0 hidden bg-gradient-to-t from-black/70 via-black/60 to-black/65 opacity-0 lg:flex lg:opacity-0 lg:group-hover:opacity-100 rounded-xs transition-opacity duration-300 flex-col justify-end p-4">
                   <StaggeredFadeIn
                     className="flex flex-col"
                     triggerOnView={false}
@@ -213,11 +250,9 @@ function PeopleShowcaseHero({
                 </div>
                 <button
                   type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setActiveModal(member);
-                  }}
-                  className="md:hidden absolute bottom-3 left-3 inline-flex w-fit items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-xs font-semibold text-neutral-900 shadow-lg cursor-pointer transition hover:-translate-y-[1px] hover:shadow-xl"
+                  onClick={(e) => openModal(member, e)}
+                  onTouchEnd={(e) => openModal(member, e)}
+                  className="lg:hidden absolute bottom-3 left-3 z-20 inline-flex w-fit touch-manipulation items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-xs font-semibold text-neutral-900 shadow-lg cursor-pointer transition hover:-translate-y-[1px] hover:shadow-xl"
                 >
                   View contact
                   <svg
@@ -241,114 +276,118 @@ function PeopleShowcaseHero({
         </StaggeredSlideUp>
       </div>
 
-      <AnimatePresence>
-        {activeModal && (
-          <motion.div
-            className="fixed inset-0 z-50 grid place-items-center bg-black/70 backdrop-blur-sm px-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.2 } }}
-            onClick={() => setActiveModal(null)}
-          >
-            <motion.div
-              role="dialog"
-              aria-modal="true"
-              onClick={(e) => e.stopPropagation()}
-              initial={{ opacity: 0, scale: 0.94, y: 12 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96, y: 10, transition: { duration: 0.18 } }}
-              transition={{ type: "spring", stiffness: 280, damping: 24 }}
-              className="relative w-full max-w-sm rounded-2xl bg-neutral-900 p-5 text-white shadow-2xl"
-            >
-              <button
-                type="button"
-                onClick={() => setActiveModal(null)}
-                className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
-                aria-label="Close"
+      {isClient &&
+        createPortal(
+          <AnimatePresence>
+            {activeModal && (
+              <motion.div
+                className="fixed inset-0 z-[120] grid place-items-center bg-black/70 backdrop-blur-sm px-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, transition: { duration: 0.2 } }}
+                onClick={handleBackdropClick}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-5 w-5"
+                <motion.div
+                  role="dialog"
+                  aria-modal="true"
+                  onClick={(e) => e.stopPropagation()}
+                  initial={{ opacity: 0, scale: 0.94, y: 12 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.96, y: 10, transition: { duration: 0.18 } }}
+                  transition={{ type: "spring", stiffness: 280, damping: 24 }}
+                  className="relative w-full max-w-sm rounded-2xl bg-neutral-900 p-5 text-white shadow-2xl"
                 >
-                  <path d="M18 6 6 18" />
-                  <path d="m6 6 12 12" />
-                </svg>
-              </button>
-              <div className="flex items-center gap-3">
-                {activeModal.media?.secure_url ? (
-                  <div className="relative h-14 w-14 overflow-hidden rounded-full bg-neutral-800">
-                    {isVideoUrl(activeModal.media.secure_url) ? (
-                      <video
-                        src={optimizedVideoUrl(activeModal.media.secure_url, { maxWidth: 112 })}
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <Image
-                        src={assetUrl(activeModal.media as any) || activeModal.media.secure_url}
-                        alt={activeModal.altText || activeModal.fullname || activeModal.name || "Profile image"}
-                        fill
-                        sizes="56px"
-                        className="object-cover"
-                      />
+                  <button
+                    type="button"
+                    onClick={closeModal}
+                    className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
+                    aria-label="Close"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-5 w-5"
+                    >
+                      <path d="M18 6 6 18" />
+                      <path d="m6 6 12 12" />
+                    </svg>
+                  </button>
+                  <div className="flex items-center gap-3">
+                    {activeModal.media?.secure_url ? (
+                      <div className="relative h-14 w-14 overflow-hidden rounded-full bg-neutral-800">
+                        {isVideoUrl(activeModal.media.secure_url) ? (
+                          <video
+                            src={optimizedVideoUrl(activeModal.media.secure_url, { maxWidth: 112 })}
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <Image
+                            src={assetUrl(activeModal.media as any) || activeModal.media.secure_url}
+                            alt={activeModal.altText || activeModal.fullname || activeModal.name || "Profile image"}
+                            fill
+                            sizes="56px"
+                            className="object-cover"
+                          />
+                        )}
+                      </div>
+                    ) : null}
+                    <div className="flex flex-col max-w-2/3">
+                      <p className="text-xxs mb-4 uppercase tracking-[0.04em] text-neutral-400">Team contact</p>
+                      <h3 className="text-lg font-semibold leading-tight">
+                        {activeModal.fullname || activeModal.name}
+                      </h3>
+                      {activeModal.position && (
+                        <p className="text-xs mt-2 text-neutral-400">{activeModal.position}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="mt-4 space-y-3 text-sm">
+                    {activeModal.email && (
+                      <a
+                        href={`mailto:${activeModal.email}`}
+                        className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2 transition hover:border-white/20 hover:bg-white/10"
+                      >
+                        <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white">
+                          @
+                        </span>
+                        <span className="break-all">{activeModal.email}</span>
+                      </a>
+                    )}
+                    {activeModal.profileUrl && (
+                      <Link
+                        href={activeModal.profileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2 transition hover:border-white/20 hover:bg-white/10"
+                      >
+                        <Image
+                          src="/LinkedinLogo.svg"
+                          alt="LinkedIn"
+                          width={16}
+                          height={16}
+                          className="h-5 w-5"
+                          style={{ height: "auto" }}
+                        />
+                        <span>LinkedIn profile</span>
+                      </Link>
                     )}
                   </div>
-                ) : null}
-                <div className="flex flex-col max-w-2/3">
-                  <p className="text-xxs mb-4 uppercase tracking-[0.04em] text-neutral-400">Team contact</p>
-                  <h3 className="text-lg font-semibold leading-tight">
-                    {activeModal.fullname || activeModal.name}
-                  </h3>
-                  {activeModal.position && (
-                    <p className="text-xs mt-2 text-neutral-400">{activeModal.position}</p>
-                  )}
-                </div>
-              </div>
-
-              <div className="mt-4 space-y-3 text-sm">
-                {activeModal.email && (
-                  <a
-                    href={`mailto:${activeModal.email}`}
-                    className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2 transition hover:border-white/20 hover:bg-white/10"
-                  >
-                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white">
-                      @
-                    </span>
-                    <span className="break-all">{activeModal.email}</span>
-                  </a>
-                )}
-                {activeModal.profileUrl && (
-                  <Link
-                    href={activeModal.profileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2 transition hover:border-white/20 hover:bg-white/10"
-                  >
-                    <Image
-                      src="/LinkedinLogo.svg"
-                      alt="LinkedIn"
-                      width={16}
-                      height={16}
-                      className="h-5 w-5"
-                      style={{ height: "auto" }}
-                    />
-                    <span>LinkedIn profile</span>
-                  </Link>
-                )}
-              </div>
-            </motion.div>
-          </motion.div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
     </section>
   );
 }
