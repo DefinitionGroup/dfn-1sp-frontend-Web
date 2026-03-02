@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, useInView } from "motion/react";
 import { usePathname } from "next/navigation";
@@ -39,6 +39,11 @@ interface HeaderImageVideoCompProps {
   /** Mark as above-the-fold hero — adds fetchpriority="high" and priority to images */
   isHero?: boolean;
 }
+
+type VideoSource = {
+  src: string;
+  media?: string;
+};
 
 const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   useVideo = false,
@@ -103,16 +108,9 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   const [shouldMountVideo, setShouldMountVideo] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
   const [posterLoaded, setPosterLoaded] = useState(!useVideo);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Detect mobile on mount for responsive video source
-  useEffect(() => {
-    const mql = window.matchMedia("(max-width: 768px)");
-    setIsMobile(mql.matches);
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mql.addEventListener("change", handler);
-    return () => mql.removeEventListener("change", handler);
-  }, []);
+  const [sourceFallbackStage, setSourceFallbackStage] = useState(0);
+  const [autoplayBlocked, setAutoplayBlocked] = useState(false);
+  const [videoLoadFailed, setVideoLoadFailed] = useState(false);
 
   // Derive poster from Cloudinary video URL — portrait for mobile, landscape for desktop
   const posterUrl = useVideo
@@ -142,12 +140,56 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
     quality: "eco",
   });
 
+  const sourceStages = useMemo(() => {
+    const dedupe = (sources: Array<VideoSource | undefined>) => {
+      const seen = new Set<string>();
+      const out: VideoSource[] = [];
+      for (const source of sources) {
+        if (!source?.src) continue;
+        const key = `${source.src}|${source.media ?? "all"}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        out.push(source);
+      }
+      return out;
+    };
+
+    const stage0 = dedupe([
+      videoUrlMobile
+        ? { src: videoUrlMobile, media: "(max-width: 768px)" }
+        : undefined,
+      videoUrlDesktop
+        ? { src: videoUrlDesktop, media: "(min-width: 769px)" }
+        : undefined,
+      videoSrc ? { src: videoSrc } : undefined,
+    ]);
+
+    const stage1 = dedupe([
+      videoUrlDesktop ? { src: videoUrlDesktop } : undefined,
+      videoSrc ? { src: videoSrc } : undefined,
+    ]);
+
+    const stage2 = dedupe([videoSrc ? { src: videoSrc } : undefined]);
+
+    return [stage0, stage1, stage2].filter((stage) => stage.length > 0);
+  }, [videoUrlDesktop, videoUrlMobile, videoSrc]);
+
+  const maxStage = Math.max(sourceStages.length - 1, 0);
+  const activeStage = Math.min(sourceFallbackStage, maxStage);
+  const activeVideoSources = sourceStages[activeStage] ?? [];
+  const videoSourceKey = `${activeStage}:${activeVideoSources
+    .map((source) => `${source.media ?? "all"}=${source.src}`)
+    .join("|")}`;
+
   useEffect(() => {
     // Reset visual/video state when media changes
     setShouldMountVideo(false);
     setVideoReady(false);
     setPosterLoaded(!useVideo || !posterFallback);
-  }, [useVideo, posterFallback]);
+    setSourceFallbackStage(0);
+    setAutoplayBlocked(false);
+    setVideoLoadFailed(false);
+  }, [useVideo, posterFallback, videoSrc, videoUrlDesktop, videoUrlMobile]);
 
   useEffect(() => {
     if (!useVideo || posterLoaded) return;
@@ -198,15 +240,65 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
 
   // Play video after animation completes + mount delay
   useEffect(() => {
-    if (hasEnteredViewport && useVideo && shouldMountVideo && videoRef.current) {
-      const timer = setTimeout(() => {
-        videoRef.current?.play().catch(() => {
-          // Autoplay may be blocked on some browsers — poster stays visible
-        });
-      }, videoDelay * 1000);
-      return () => clearTimeout(timer);
+    if (
+      !hasEnteredViewport ||
+      !useVideo ||
+      !shouldMountVideo ||
+      !videoRef.current ||
+      activeVideoSources.length === 0 ||
+      videoLoadFailed
+    ) {
+      return;
     }
-  }, [hasEnteredViewport, useVideo, videoDelay, shouldMountVideo]);
+
+    const timer = setTimeout(() => {
+      const playAttempt = videoRef.current?.play();
+      if (playAttempt && typeof playAttempt.catch === "function") {
+        playAttempt
+          .then(() => setAutoplayBlocked(false))
+          .catch(() => {
+            // Autoplay can be blocked on mobile Safari/Chrome battery modes.
+            setAutoplayBlocked(true);
+          });
+      }
+    }, videoDelay * 1000);
+
+    return () => clearTimeout(timer);
+  }, [
+    hasEnteredViewport,
+    useVideo,
+    videoDelay,
+    shouldMountVideo,
+    activeVideoSources.length,
+    videoLoadFailed,
+    activeStage,
+  ]);
+
+  const handleVideoReady = () => {
+    setVideoReady(true);
+    setVideoLoadFailed(false);
+  };
+
+  const handleVideoError = () => {
+    setVideoReady(false);
+    setAutoplayBlocked(false);
+    if (activeStage < maxStage) {
+      setSourceFallbackStage((current) => current + 1);
+      return;
+    }
+    setVideoLoadFailed(true);
+  };
+
+  const handleManualPlay = () => {
+    if (!videoRef.current) return;
+    videoRef.current.muted = true;
+    const playAttempt = videoRef.current.play();
+    if (playAttempt && typeof playAttempt.catch === "function") {
+      playAttempt
+        .then(() => setAutoplayBlocked(false))
+        .catch(() => setAutoplayBlocked(true));
+    }
+  };
 
   const clipPathClosed = isHero
     ? "inset(6% 6% 6% 6% round 2rem)"
@@ -284,21 +376,34 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
               </picture>
             )}
             {/* Video — responsive: portrait (9:16) on mobile, landscape on desktop */}
-            {shouldMountVideo && (
+            {shouldMountVideo && activeVideoSources.length > 0 && (
               <video
+                key={videoSourceKey}
                 ref={videoRef}
-                src={isMobile ? videoUrlMobile : videoUrlDesktop}
                 autoPlay
                 loop
                 muted
                 playsInline
                 preload={isHero ? "metadata" : "none"}
-                onCanPlay={() => setVideoReady(true)}
-                onLoadedData={() => setVideoReady(true)}
-                onPlaying={() => setVideoReady(true)}
+                onCanPlay={handleVideoReady}
+                onLoadedData={handleVideoReady}
+                onPlaying={() => {
+                  setVideoReady(true);
+                  setAutoplayBlocked(false);
+                  setVideoLoadFailed(false);
+                }}
+                onError={handleVideoError}
                 className={`object-cover w-full h-full transition-opacity duration-500 ${videoReady ? "opacity-100" : "opacity-0"}`}
                 style={{ zIndex: 0 }}
-              />
+              >
+                {activeVideoSources.map((source) => (
+                  <source
+                    key={`${source.media ?? "all"}-${source.src}`}
+                    src={source.src}
+                    media={source.media}
+                  />
+                ))}
+              </video>
             )}
           </div>
         ) : (
@@ -316,6 +421,15 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
           className="absolute inset-0 bg-black"
           style={{ opacity, zIndex: 2 }}
         />
+        {useVideo && shouldMountVideo && autoplayBlocked && !videoLoadFailed && (
+          <button
+            type="button"
+            onClick={handleManualPlay}
+            className="absolute bottom-4 right-4 z-[3] rounded-md border border-white/60 bg-black/45 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-white"
+          >
+            Tap to play
+          </button>
+        )}
       </motion.div>
     </div>
   );
