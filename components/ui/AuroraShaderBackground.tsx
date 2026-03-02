@@ -344,7 +344,7 @@ export default function AuroraShaderBackground({
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 100%)",
+            "radial-gradient(ellipse at center, rgba(0,0,0,0.13) 0%, rgba(0,0,0,0.63) 100%)",
         }}
       />
     </div>
