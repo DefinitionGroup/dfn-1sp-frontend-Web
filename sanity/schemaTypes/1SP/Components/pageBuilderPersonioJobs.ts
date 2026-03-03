@@ -114,6 +114,13 @@ export default defineType({
       group: "display",
     }),
     defineField({
+      name: "showGridBackground",
+      title: "Show Grid Background",
+      type: "boolean",
+      initialValue: true,
+      group: "display",
+    }),
+    defineField({
       name: "navPointName",
       title: "Navigation Point Name",
       type: "string",

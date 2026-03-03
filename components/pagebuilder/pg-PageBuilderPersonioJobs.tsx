@@ -4,6 +4,7 @@ import React from "react";
 import { useParams } from "next/navigation";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
 import Button2 from "@/components/ui/Button2";
+import GridBackground from "@/components/ui/GridBackground";
 import { client } from "@/sanity/lib/client";
 import { UNIT_LOGO_FLOAT_QUERY } from "@/sanity/lib/queries";
 import { assetUrl } from "@/utils/utils";
@@ -56,19 +57,19 @@ type TagTone =
 const DEFAULT_JOB_LOGO_URL = "/1sp-fallback.svg";
 
 const tagToneClasses: Record<TagTone, string> = {
-  department: "border-cyan-300 bg-cyan-50 text-cyan-800",
-  location: "border-emerald-300 bg-emerald-50 text-emerald-800",
-  employment: "border-amber-300 bg-amber-50 text-amber-800",
-  contract: "border-orange-300 bg-orange-50 text-orange-800",
-  seniority: "border-rose-300 bg-rose-50 text-rose-800",
-  schedule: "border-slate-300 bg-slate-100 text-slate-700",
-  remote: "border-lime-300 bg-lime-100 text-lime-900",
+  department: "text-lime-500 bg-black",
+  location: "text-lime-500 bg-black",
+  employment: "text-red-500 bg-white",
+  contract: " text-green-500 bg-white",
+  seniority: " text-orange-500 bg-white ",
+  schedule: "  text-blue-500 bg-white",
+  remote: "  text-purple-500 bg-white",
 };
 
 function Tag({ tone, children }: { tone: TagTone; children: React.ReactNode }) {
   return (
     <span
-      className={`inline-flex items-center border px-2 py-1 text-[10px] font-medium uppercase tracking-wide rounded-none ${tagToneClasses[tone]}`}
+      className={`inline-flex items-center   px-3 py-1 text-[10px] font-medium uppercase tracking-wide rounded-xl ${tagToneClasses[tone]} `}
     >
       {children}
     </span>
@@ -91,6 +92,7 @@ interface PageBuilderPersonioJobsProps {
     showDescription?: boolean;
     showSchedule?: boolean;
     showUpdatedAt?: boolean;
+    showGridBackground?: boolean;
     navPointName?: string;
     hideFromNav?: boolean;
   };
@@ -119,6 +121,7 @@ function PageBuilderPersonioJobs({
     showDescription = true,
     showSchedule = true,
     showUpdatedAt = true,
+    showGridBackground = true,
     navPointName,
     hideFromNav = false,
   } = data || {};
@@ -318,117 +321,120 @@ function PageBuilderPersonioJobs({
       id={sectionId}
       {...navPointDataAttr}
       {...(hideFromNav ? { "data-nav-hidden": "true" } : {})}
-      className="relative py-10 md:py-14"
+      className="relative "
       data-component="pg-pagebuilder-personio-jobs"
     >
-      <div className="container mx-auto ">
-        <div className="mx-auto mb-7  text-left md:mb-9">
-          <h2 className="text-3xl font-normal text-neutral-800 md:text-4xl lg:text-5xl">
-            {headline}
-          </h2>
-          {subheadline ? (
-            <p className="mx-auto mt-3 max-w-2xl text-sm text-neutral-500 md:text-base">
-              {subheadline}
-            </p>
-          ) : null}
+      <div className="container mx-auto grid grid-cols-12 relative">
+        {showGridBackground && <GridBackground />}
+        <div className="col-span-12 col-start-1 row-start-1 relative z-10">
+          <div className="mx-auto mb-7  text-left md:mb-9">
+            <h2 className="text-3xl font-normal text-neutral-800 md:text-4xl lg:text-5xl">
+              {headline}
+            </h2>
+            {subheadline ? (
+              <p className="mx-auto mt-3 max-w-2xl text-sm text-neutral-500 md:text-base">
+                {subheadline}
+              </p>
+            ) : null}
+          </div>
+
+          {isLoading ? (
+            <div className=" bg-white/80 px-5 py-8  text-center text-neutral-500 rounded-none">
+              Loading open positions...
+            </div>
+          ) : error ? (
+            <div className=" bg-red-50 px-5 py-8 text-center text-red-700 rounded-none">
+              {error}
+            </div>
+          ) : jobs.length === 0 ? (
+            <div className=" bg-white/80 px-5 py-8 text-center text-neutral-500 rounded-none">
+              {emptyStateText}
+            </div>
+          ) : (
+            <ul className="mx-auto grid md:grid-cols-2 lg:grid-cols-3">
+              {jobs.map((job) => {
+                const updatedAtLabel = formatDate(job.updatedAt);
+                const descriptionSnippet = createSnippet(job.description);
+                const matchedUnit = matchedUnitByJobId[job.id];
+                const logoUrl = matchedUnit?.logoUrl || DEFAULT_JOB_LOGO_URL;
+                const logoAlt = matchedUnit?.name || "1SP Logo";
+                const showContractChip =
+                  showContractType &&
+                  job.contractType &&
+                  job.contractType !== job.employmentType;
+
+                return (
+                  <li
+                    key={job.id}
+                    className="p-1 flex flex-col justify-between "
+                  >
+                    <div className=" bg-neutral-50/75 p-8  rounded-sm h-100 flex flex-col items-start justify-end gap-3">
+                      <div className="flex flex-col min-w-0  items-start gap-3">
+                        <img
+                          src={logoUrl}
+                          alt={logoAlt}
+                          onError={handleLogoError}
+                          className="  w-auto max-w-[96px] object-contain object-left"
+                        />
+                        <h3 className="text-2xl font-regular leading-tight text-neutral-700 md:text-2xl">
+                          {job.title}
+                        </h3>
+                      </div>
+
+
+                      {showDescription && descriptionSnippet ? (
+                        <p className="my-2 text-xs leading-relaxed text-neutral-600">
+                          {descriptionSnippet}
+                        </p>
+                      ) : null}
+
+                      <div className="mt-8 flex flex-wrap gap-1.5">
+                        {/* {showDepartment && job.department ? (
+                        <Tag tone="department">{job.department}</Tag>
+                      ) : null} */}
+                        {showLocation && job.location ? (
+                          <Tag tone="location">{job.location}</Tag>
+                        ) : null}
+                        {showEmploymentType && job.employmentType ? (
+                          <Tag tone="employment">{job.employmentType}</Tag>
+                        ) : null}
+                        {/* {showContractChip ? (
+                          <Tag tone="contract">{job.contractType}</Tag>
+                        ) : null} */}
+                        {showSeniority && job.seniority ? (
+                          <Tag tone="seniority">{job.seniority}</Tag>
+                        ) : null}
+                        {showSchedule && job.schedule ? (
+                          <Tag tone="schedule">{job.schedule}</Tag>
+                        ) : null}
+                        {job.remote ? <Tag tone="remote">Remote</Tag> : null}
+                      </div>
+
+                      {showUpdatedAt && updatedAtLabel ? (
+                        <p className="mt-3 text-[10px] uppercase tracking-wide text-neutral-600">
+                          Updated: {updatedAtLabel}
+                        </p>
+                      ) : null}
+
+                      {job.url ? (
+                        <div className="w-[120px] mt-8 min-w-[120px] shrink-0">
+                          <Button2
+                            text={applyLabel}
+                            href={job.url}
+                            variant="ghost"
+                            magnetic={false}
+                            className="rounded-none"
+                          />
+                        </div>
+                      ) : null}
+                    </div>
+                  </li>
+
+                );
+              })}
+            </ul>
+          )}
         </div>
-
-        {isLoading ? (
-          <div className="border border-neutral-200 bg-white/80 px-5 py-8  text-center text-neutral-500 rounded-none">
-            Loading open positions...
-          </div>
-        ) : error ? (
-          <div className="border border-red-200 bg-red-50 px-5 py-8 text-center text-red-700 rounded-none">
-            {error}
-          </div>
-        ) : jobs.length === 0 ? (
-          <div className="border border-neutral-200 bg-white/80 px-5 py-8 text-center text-neutral-500 rounded-none">
-            {emptyStateText}
-          </div>
-        ) : (
-          <ul className="mx-auto grid gap-2 md:grid-cols-2 lg:grid-cols-4">
-            {jobs.map((job) => {
-              const updatedAtLabel = formatDate(job.updatedAt);
-              const descriptionSnippet = createSnippet(job.description);
-              const matchedUnit = matchedUnitByJobId[job.id];
-              const logoUrl = matchedUnit?.logoUrl || DEFAULT_JOB_LOGO_URL;
-              const logoAlt = matchedUnit?.name || "1SP Logo";
-              const showContractChip =
-                showContractType &&
-                job.contractType &&
-                job.contractType !== job.employmentType;
-
-              return (
-                <li
-                  key={job.id}
-                  className=" bg-neutral-50/75 p-8 rounded-xl"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex flex-col min-w-0 items-start gap-3">
-                      <img
-                        src={logoUrl}
-                        alt={logoAlt}
-                        onError={handleLogoError}
-                        className="  w-auto max-w-[96px] object-contain object-left"
-                      />
-                      <h3 className="text-2xl font-regular leading-tight text-neutral-700 md:text-2xl">
-                        {job.title}
-                      </h3>
-                    </div>
-
-                  </div>
-
-                  {showDescription && descriptionSnippet ? (
-                    <p className="mt-2 text-xs leading-relaxed text-neutral-600">
-                      {descriptionSnippet}
-                    </p>
-                  ) : null}
-
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {/* {showDepartment && job.department ? (
-                      <Tag tone="department">{job.department}</Tag>
-                    ) : null} */}
-                    {showLocation && job.location ? (
-                      <Tag tone="location">{job.location}</Tag>
-                    ) : null}
-                    {showEmploymentType && job.employmentType ? (
-                      <Tag tone="employment">{job.employmentType}</Tag>
-                    ) : null}
-                    {showContractChip ? (
-                      <Tag tone="contract">{job.contractType}</Tag>
-                    ) : null}
-                    {showSeniority && job.seniority ? (
-                      <Tag tone="seniority">{job.seniority}</Tag>
-                    ) : null}
-                    {showSchedule && job.schedule ? (
-                      <Tag tone="schedule">{job.schedule}</Tag>
-                    ) : null}
-                    {job.remote ? <Tag tone="remote">Remote</Tag> : null}
-                  </div>
-
-                  {showUpdatedAt && updatedAtLabel ? (
-                    <p className="mt-3 text-[10px] uppercase tracking-wide text-neutral-600">
-                      Updated: {updatedAtLabel}
-                    </p>
-                  ) : null}
-
-                  {job.url ? (
-                    <div className="w-[120px] mt-8 min-w-[120px] shrink-0">
-                      <Button2
-                        text={applyLabel}
-                        href={job.url}
-                        variant="ghost"
-                        magnetic={false}
-                        className="rounded-none"
-                      />
-                    </div>
-                  ) : null}
-                </li>
-
-              );
-            })}
-          </ul>
-        )}
       </div>
     </section>
   );
