@@ -66,12 +66,12 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
             distance={80}
           >
             {heading ? (
-              <h2 className="text-4xl md:text-6xl font-aspekta  leading-none pb-2">
+              <h2 className="text-4xl md:text-6xl iphone-landscape:!text-4xl font-aspekta leading-none pb-2">
                 <MixedType text={heading} />
               </h2>
             ) : null}
             {subheading ? (
-              <p className="text-xl text-gray-100  max-w-sm mx-auto">
+              <p className="text-xl iphone-landscape:!text-base text-gray-100  max-w-sm mx-auto">
                 {subheading}
               </p>
             ) : null}

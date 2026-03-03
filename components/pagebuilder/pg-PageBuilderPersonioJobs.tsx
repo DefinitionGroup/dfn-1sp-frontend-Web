@@ -195,11 +195,10 @@ function SegmentedSwitch<T extends string>({
               type="button"
               onClick={() => onChange(option.value)}
               aria-pressed={isActive}
-              className={`flex-1 px-3 py-2 text-[11px] font-medium uppercase tracking-wide transition-colors ${
-                isActive
-                  ? "bg-neutral-900 text-white"
-                  : "text-neutral-600 hover:bg-neutral-100"
-              }`}
+              className={`flex-1 px-3 py-2 text-[11px] font-medium uppercase tracking-wide transition-colors ${isActive
+                ? "bg-neutral-900 text-white"
+                : "text-neutral-600 hover:bg-neutral-100"
+                }`}
             >
               {option.label}
             </button>
@@ -550,8 +549,8 @@ function PageBuilderPersonioJobs({
               {emptyStateText}
             </div>
           ) : (
-            <div className="space-y-5">
-              <div className="rounded-sm border border-neutral-200 bg-white/80 p-4">
+            <div className="space-y-3">
+              <div className=" bg-white/80 p-1 md:max-w-1/2">
                 {availableUnitFilters.length > 0 ? (
                   <div className="mb-4">
                     <p className="mb-2 text-[10px] font-medium uppercase tracking-wide text-neutral-500">
@@ -562,11 +561,10 @@ function PageBuilderPersonioJobs({
                         type="button"
                         onClick={() => setSelectedUnitId("all")}
                         aria-pressed={selectedUnitId === "all"}
-                        className={`px-3 py-1.5 rounded-full text-[10px] font-medium uppercase tracking-wide transition-colors ${
-                          selectedUnitId === "all"
-                            ? "bg-lime-500 text-black"
-                            : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
-                        }`}
+                        className={`px-3 py-1.5 rounded-full text-[10px] font-medium uppercase tracking-wide transition-colors ${selectedUnitId === "all"
+                          ? "bg-lime-500 text-black"
+                          : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
+                          }`}
                       >
                         All units
                       </button>
@@ -579,11 +577,10 @@ function PageBuilderPersonioJobs({
                             type="button"
                             onClick={() => setSelectedUnitId(unit._id)}
                             aria-pressed={isActive}
-                            className={`px-3 py-1.5 rounded-full text-[10px] font-medium uppercase tracking-wide transition-colors ${
-                              isActive
-                                ? "bg-lime-500 text-black"
-                                : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
-                            }`}
+                            className={`px-3 py-1.5 rounded-full text-[10px] font-medium uppercase tracking-wide transition-colors ${isActive
+                              ? "bg-lime-500 text-black"
+                              : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
+                              }`}
                           >
                             {unit.name}
                           </button>
@@ -612,7 +609,7 @@ function PageBuilderPersonioJobs({
                   <button
                     type="button"
                     onClick={resetFilters}
-                    className="mt-3 text-[11px] font-medium uppercase tracking-wide text-neutral-600 hover:text-neutral-900"
+                    className="mt-3 text-[11px] border rounded-xl px-6 font-medium uppercase tracking-wide text-neutral-200 hover:text-neutral-200 hover:bg-neutral-900 transition-colors"
                   >
                     Clear filters
                   </button>
@@ -627,83 +624,83 @@ function PageBuilderPersonioJobs({
 
               <ul className="mx-auto grid md:grid-cols-2 lg:grid-cols-3">
                 {filteredJobs.map((job) => {
-                const updatedAtLabel = formatDate(job.updatedAt);
-                const descriptionSnippet = createSnippet(job.description);
-                const matchedUnit = jobFilterMetadataByJobId[job.id]?.matchedUnit;
-                const logoUrl = matchedUnit?.logoUrl || DEFAULT_JOB_LOGO_URL;
-                const logoAlt = matchedUnit?.name || "1SP Logo";
-                const showContractChip =
-                  showContractType &&
-                  job.contractType &&
-                  job.contractType !== job.employmentType;
+                  const updatedAtLabel = formatDate(job.updatedAt);
+                  const descriptionSnippet = createSnippet(job.description);
+                  const matchedUnit = jobFilterMetadataByJobId[job.id]?.matchedUnit;
+                  const logoUrl = matchedUnit?.logoUrl || DEFAULT_JOB_LOGO_URL;
+                  const logoAlt = matchedUnit?.name || "1SP Logo";
+                  const showContractChip =
+                    showContractType &&
+                    job.contractType &&
+                    job.contractType !== job.employmentType;
 
-                return (
-                  <li
-                    key={job.id}
-                    className="p-1 flex flex-col justify-between "
-                  >
-                    <div className=" bg-neutral-50/75 p-8  rounded-sm h-100 flex flex-col items-start justify-end gap-3">
-                      <div className="flex flex-col min-w-0  items-start gap-3">
-                        <img
-                          src={logoUrl}
-                          alt={logoAlt}
-                          onError={handleLogoError}
-                          className="  w-auto max-w-[96px] object-contain object-left"
-                        />
-                        <h3 className="text-2xl font-regular leading-tight text-neutral-700 md:text-2xl">
-                          {job.title}
-                        </h3>
-                      </div>
+                  return (
+                    <li
+                      key={job.id}
+                      className="p-1 flex flex-col justify-between "
+                    >
+                      <div className=" bg-neutral-50/75 p-8  rounded-sm h-100 flex flex-col items-start justify-between gap-3">
+                        <div className="flex  flex-col min-w-0  items-start">
+                          <img
+                            src={logoUrl}
+                            alt={logoAlt}
+                            onError={handleLogoError}
+                            className="  w-auto max-w-[96px] relative -left-2 object-contain object-left"
+                          />
+                          <h3 className="text-xl font-regular leading-tight text-neutral-700 md:text-xl">
+                            {job.title}
+                          </h3>
+                        </div>
 
 
-                      {showDescription && descriptionSnippet ? (
-                        <p className="my-2 text-xs leading-relaxed text-neutral-600">
-                          {descriptionSnippet}
-                        </p>
-                      ) : null}
+                        {showDescription && descriptionSnippet ? (
+                          <p className="my-2 text-xs leading-relaxed text-neutral-600">
+                            {descriptionSnippet}
+                          </p>
+                        ) : null}
 
-                      <div className="mt-8 flex flex-wrap gap-1.5">
-                        {/* {showDepartment && job.department ? (
+                        <div className="mt-8 flex  flex-wrap gap-1.5">
+                          {/* {showDepartment && job.department ? (
                         <Tag tone="department">{job.department}</Tag>
                       ) : null} */}
-                        {showLocation && job.location ? (
-                          <Tag tone="location">{job.location}</Tag>
-                        ) : null}
-                        {showEmploymentType && job.employmentType ? (
-                          <Tag tone="employment">{job.employmentType}</Tag>
-                        ) : null}
-                        {/* {showContractChip ? (
+                          {showLocation && job.location ? (
+                            <Tag tone="location">{job.location}</Tag>
+                          ) : null}
+                          {showEmploymentType && job.employmentType ? (
+                            <Tag tone="employment">{job.employmentType}</Tag>
+                          ) : null}
+                          {/* {showContractChip ? (
                           <Tag tone="contract">{job.contractType}</Tag>
                         ) : null} */}
-                        {showSeniority && job.seniority ? (
-                          <Tag tone="seniority">{job.seniority}</Tag>
-                        ) : null}
-                        {showSchedule && job.schedule ? (
-                          <Tag tone="schedule">{job.schedule}</Tag>
-                        ) : null}
-                        {job.remote ? <Tag tone="remote">Remote</Tag> : null}
-                      </div>
-
-                      {showUpdatedAt && updatedAtLabel ? (
-                        <p className="mt-3 text-[10px] uppercase tracking-wide text-neutral-600">
-                          Updated: {updatedAtLabel}
-                        </p>
-                      ) : null}
-
-                      {job.url ? (
-                        <div className="w-[120px] mt-8 min-w-[120px] shrink-0">
-                          <Button2
-                            text={applyLabel}
-                            href={job.url}
-                            variant="ghost"
-                            magnetic={false}
-                            className="rounded-none"
-                          />
+                          {showSeniority && job.seniority ? (
+                            <Tag tone="seniority">{job.seniority}</Tag>
+                          ) : null}
+                          {showSchedule && job.schedule ? (
+                            <Tag tone="schedule">{job.schedule}</Tag>
+                          ) : null}
+                          {job.remote ? <Tag tone="remote">Remote</Tag> : null}
                         </div>
-                      ) : null}
-                    </div>
-                  </li>
-                );
+
+                        {showUpdatedAt && updatedAtLabel ? (
+                          <p className="mt-3 text-[10px] uppercase tracking-wide text-neutral-600">
+                            Updated: {updatedAtLabel}
+                          </p>
+                        ) : null}
+
+                        {job.url ? (
+                          <div className="w-[120px]absolute bottom-0 min-w-[120px] shrink-0">
+                            <Button2
+                              text={applyLabel}
+                              href={job.url}
+                              variant="ghost"
+                              magnetic={false}
+                              className="rounded-none"
+                            />
+                          </div>
+                        ) : null}
+                      </div>
+                    </li>
+                  );
                 })}
               </ul>
             </div>
