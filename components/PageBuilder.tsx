@@ -216,6 +216,13 @@ const PageBuilderLogoFloat = dynamic(
     ssr: true,
   }
 );
+const PageBuilderPersonioJobs = dynamic(
+  () => import("./pagebuilder/pg-PageBuilderPersonioJobs"),
+  {
+    loading: () => <ComponentLoader />,
+    ssr: true,
+  }
+);
 
 type PageBuilderProps = { 
   content: NonNullable<Page["content1sp"]>;
@@ -439,6 +446,16 @@ export function PageBuilder({ content, language = "de" }: PageBuilderProps) {
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <PageBuilderLogoFloat
+                  key={key}
+                  data={block as any}
+                  language={language}
+                />
+              </ErrorBoundary>
+            );
+          case "pageBuilderPersonioJobs":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <PageBuilderPersonioJobs
                   key={key}
                   data={block as any}
                   language={language}
