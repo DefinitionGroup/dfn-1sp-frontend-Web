@@ -13,22 +13,31 @@ import type {
 } from "@/types/sanity.types";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
 
-function useIphoneLandscape(): boolean {
+function useMediaQuery(query: string): boolean {
   const [matches, setMatches] = useState(false);
 
   useEffect(() => {
-    const media = window.matchMedia(
-      "(orientation: landscape) and (max-height: 500px) and (max-width: 950px)"
-    );
+    if (typeof window === "undefined") return;
+
+    const media = window.matchMedia(query);
     setMatches(media.matches);
+
     const listener = (e: MediaQueryListEvent) => setMatches(e.matches);
     media.addEventListener("change", listener);
-    return () => media.removeEventListener("change", listener);
-  }, []);
+
+    return () => {
+      media.removeEventListener("change", listener);
+    };
+  }, [query]);
 
   return matches;
 }
 
+function useIphoneLandscape(): boolean {
+  return useMediaQuery(
+    "(orientation: landscape) and (max-height: 500px) and (max-width: 950px)"
+  );
+}
 /** --- helpers --- */
 function isVideoUrl(url?: string) {
   return !!url && (/\/video\//.test(url) || /\.(mp4|webm|ogg)$/i.test(url));
