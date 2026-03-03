@@ -151,7 +151,7 @@ function ExpandableCards({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.12, ease: "easeInOut" } }}
               transition={{ type: "spring", bounce: 0.18, visualDuration: 0.25 }}
-              className="w-full max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[50%] rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
+              className="w-full max-w-[900px] min-h-[70vh] iphone-landscape:min-h-[100vh] relative h-full md:h-fit md:max-h-[50%] rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
             >
               {/* Media */} <motion.button
                 onClick={() => setActive(null)}
@@ -176,7 +176,7 @@ function ExpandableCards({
 
               {/* Foreground content area (logo, title, body, cta) */}
               <div className="flex justify-between absolute items-start m-8 pt-8 z-10">
-                <div className="flex justify-between relative top-0 flex-col items-start z-10 left-0 text-white">
+                <div className="flex justify-between relative top-0 flex-col iphone-landscape:flex-col items-start z-10 left-0 text-white">
                   {active.logo && (
                     <motion.img
                       layoutId={`logo-${active.title}-${id}`}
@@ -187,7 +187,7 @@ function ExpandableCards({
                   )}
                   <motion.h3
                     layoutId={`title-${active.title}-${id}`}
-                    className="text-white text-2xl md:mt-32 dark:text-neutral-200"
+                    className="text-white text-2xl md:mt-32 iphone-landscape:mt-0   dark:text-neutral-200"
                   >
                     {active.title}
                   </motion.h3>
@@ -197,7 +197,7 @@ function ExpandableCards({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="text-white text-sm md:text-sm lg:text-base mt-8 md:max-w-1/2 mb-2 md:h-fit pb-8 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
+                    className="text-white text-sm md:text-sm lg:text-base mt-8 iphone-landscape:mt-0 md:max-w-1/2 mb-2 iphone-landscape:mb-0 iphone-landscape:pb-2 md:h-fit pb-8 flex flex-col items-start gap-4 iphone-landscape:gap-0 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
                   >
                     {typeof active.content === "function"
                       ? (active.content as any)()

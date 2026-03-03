@@ -185,7 +185,7 @@ function PageBuilderLogoFloat({
                       width={displayW}
                       height={displayH}
                       style={{ width: displayW, height: displayH }}
-                      className={`invert object-contain object-left  max-w-[33vw]   min-h-12 md:min-h-8 lg:max-w-none ${logoHeightClass}`}
+                      className={`invert object-contain object-left iphone-landscape:max-w-[8vw]  max-w-[33vw]   min-h-12 md:min-h-8 lg:max-w-none ${logoHeightClass}`}
                     />
                   </motion.div>
                 );

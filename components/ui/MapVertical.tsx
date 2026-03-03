@@ -85,7 +85,7 @@ export default function LineMinimap({
 
   return (
     <div
-      className="hidden md:flex fixed top-0 md:left-1 z-100 w-[72px] flex-col justify-center h-[100vh]"
+      className="hidden md:flex iphone-landscape:hidden fixed top-0 md:left-1 z-100 w-[72px] flex-col justify-center h-[100vh]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

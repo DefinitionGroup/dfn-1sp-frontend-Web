@@ -199,7 +199,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               delay: 0.7,
             }
         }
-        className={`floating-nav z-99999   hidden fixed top-6 left-0 backdrop-blur-xl rounded-4xl border border-white/20 w-fit h-16  px-6  right-0 md:grid items-center z-50 grid-cols-12 py-2  mx-auto ${textColor} ${className}`}
+        className={`floating-nav z-99999    hidden fixed top-6 left-0 backdrop-blur-xl rounded-4xl border border-white/20 w-fit h-16  px-6  right-0 md:grid items-center grid-cols-12 py-2 iphone-landscape:scale-70 iphone-landscape:top-2 mx-auto ${textColor} ${className}`}
       >
         <div className="col-span-2 flex items-center pr-16  justify-start">
           <motion.div

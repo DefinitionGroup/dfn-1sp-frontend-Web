@@ -131,7 +131,7 @@ export default function HighlightStep({
       <div className="relative z-10 container mx-auto px-4 sm:px-6  lg:px-8">
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 pt-16 pb-16">
           {/* Left column: sticky badge + controls */}
-          <div className="col-span-4 sm:col-span-3 md:col-span-2 mb-8 md:mb-0 md:sticky md:top-24 self-start flex flex-col gap-4">
+          <div className="col-span-4 iphone-landscape:col-span-12 sm:col-span-3 md:col-span-2 mb-8 md:mb-0 md:sticky iphone-landscape:relative md:top-24 self-start flex flex-col gap-4">
             {step.badge && (
               <Badgemodule
                 text={step.badge.text ?? ""}
@@ -148,11 +148,11 @@ export default function HighlightStep({
                   animate={true}
                   size={48}
                   color="white"
-                  className="mb-4 fill-white text-white"
+                  className="mb-4 fill-white text-white iphone-landscape:hidden"
                 />
                 <CtaMiniComponent
                   {...({
-                    className: "text-white ",
+                    className: "text-white iphone-landscape:max-w-1/3",
                     heading: cta?.heading,
                     paragraph: cta?.paragraph,
                     buttonText: cta?.buttonText,
@@ -166,7 +166,7 @@ export default function HighlightStep({
           </div>
 
           {/* Right column: scroll highlight content */}
-          <div className="col-span-4 sm:col-span-6   md:col-span-9 md:col-start-4">
+          <div className="col-span-4 sm:col-span-6 iphone-landscape:col-span-12 md:col-span-9 md:col-start-4">
             <TracingBeam className="">
               {items.length > 0 && <ScrollHighlight items={items} />}
             </TracingBeam>
