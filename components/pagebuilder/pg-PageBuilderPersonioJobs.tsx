@@ -54,6 +54,22 @@ type TagTone =
   | "schedule"
   | "remote";
 
+type JobTimeFilter = "all" | "parttime" | "fulltime";
+type JobContractFilter = "all" | "freelance" | "permanent";
+type JobTimeCategory = Exclude<JobTimeFilter, "all">;
+type JobContractCategory = Exclude<JobContractFilter, "all">;
+
+type SegmentedOption<T extends string> = {
+  value: T;
+  label: string;
+};
+
+type JobFilterMetadata = {
+  matchedUnit: MatchableUnit | null;
+  timeCategory: JobTimeCategory | null;
+  contractCategory: JobContractCategory | null;
+};
+
 const DEFAULT_JOB_LOGO_URL = "/1sp-fallback.svg";
 
 const tagToneClasses: Record<TagTone, string> = {
@@ -66,6 +82,83 @@ const tagToneClasses: Record<TagTone, string> = {
   remote: "  text-purple-500 bg-white",
 };
 
+const PART_TIME_PATTERNS = [/\bpart\s*time\b/, /\bteilzeit\b/];
+const FULL_TIME_PATTERNS = [/\bfull\s*time\b/, /\bvollzeit\b/];
+const FREELANCE_PATTERNS = [
+  /\bfreelanc\w*\b/,
+  /\bfreiberuf\w*\b/,
+  /\bcontractor\b/,
+];
+const PERMANENT_PATTERNS = [
+  /\bpermanent\b/,
+  /\bfestanstellung\b/,
+  /\bunbefristet\b/,
+];
+
+const JOB_TIME_OPTIONS: ReadonlyArray<SegmentedOption<JobTimeFilter>> = [
+  { value: "all", label: "All" },
+  { value: "parttime", label: "Part-time" },
+  { value: "fulltime", label: "Full-time" },
+];
+
+const JOB_CONTRACT_OPTIONS: ReadonlyArray<SegmentedOption<JobContractFilter>> = [
+  { value: "all", label: "All" },
+  { value: "freelance", label: "Freelance" },
+  { value: "permanent", label: "Permanent" },
+];
+
+const normalizeForFilter = (value?: string) => {
+  if (!value) return "";
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim()
+    .replace(/\s+/g, " ");
+};
+
+const includesPattern = (value: string, patterns: ReadonlyArray<RegExp>) =>
+  patterns.some((pattern) => pattern.test(value));
+
+const getJobFilterContext = (job: PersonioJob) =>
+  normalizeForFilter(
+    [
+      job.employmentType,
+      job.contractType,
+      job.schedule,
+      job.department,
+      job.title,
+      job.description,
+    ]
+      .filter(Boolean)
+      .join(" ")
+  );
+
+const resolveJobTimeCategory = (job: PersonioJob): JobTimeCategory | null => {
+  const context = getJobFilterContext(job);
+  if (!context) return null;
+
+  const isPartTime = includesPattern(context, PART_TIME_PATTERNS);
+  const isFullTime = includesPattern(context, FULL_TIME_PATTERNS);
+
+  if (isPartTime === isFullTime) return null;
+  return isPartTime ? "parttime" : "fulltime";
+};
+
+const resolveJobContractCategory = (
+  job: PersonioJob
+): JobContractCategory | null => {
+  const context = getJobFilterContext(job);
+  if (!context) return null;
+
+  const isFreelance = includesPattern(context, FREELANCE_PATTERNS);
+  const isPermanent = includesPattern(context, PERMANENT_PATTERNS);
+
+  if (isFreelance === isPermanent) return null;
+  return isFreelance ? "freelance" : "permanent";
+};
+
 function Tag({ tone, children }: { tone: TagTone; children: React.ReactNode }) {
   return (
     <span
@@ -73,6 +166,47 @@ function Tag({ tone, children }: { tone: TagTone; children: React.ReactNode }) {
     >
       {children}
     </span>
+  );
+}
+
+function SegmentedSwitch<T extends string>({
+  label,
+  value,
+  onChange,
+  options,
+}: {
+  label: string;
+  value: T;
+  onChange: (nextValue: T) => void;
+  options: ReadonlyArray<SegmentedOption<T>>;
+}) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <p className="text-[10px] font-medium uppercase tracking-wide text-neutral-500">
+        {label}
+      </p>
+      <div className="inline-flex w-full overflow-hidden rounded-full border border-neutral-200 bg-white">
+        {options.map((option) => {
+          const isActive = option.value === value;
+
+          return (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => onChange(option.value)}
+              aria-pressed={isActive}
+              className={`flex-1 px-3 py-2 text-[11px] font-medium uppercase tracking-wide transition-colors ${
+                isActive
+                  ? "bg-neutral-900 text-white"
+                  : "text-neutral-600 hover:bg-neutral-100"
+              }`}
+            >
+              {option.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -130,6 +264,10 @@ function PageBuilderPersonioJobs({
   const [units, setUnits] = React.useState<Unit[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
+  const [selectedUnitId, setSelectedUnitId] = React.useState<string>("all");
+  const [timeFilter, setTimeFilter] = React.useState<JobTimeFilter>("all");
+  const [contractFilter, setContractFilter] =
+    React.useState<JobContractFilter>("all");
 
   React.useEffect(() => {
     const controller = new AbortController();
@@ -309,12 +447,73 @@ function PageBuilderPersonioJobs({
     []
   );
 
-  const matchedUnitByJobId = React.useMemo(() => {
-    return jobs.reduce<Record<string, MatchableUnit | null>>((acc, job) => {
-      acc[job.id] = matchUnitForJob(job);
+  const jobFilterMetadataByJobId = React.useMemo(() => {
+    return jobs.reduce<Record<string, JobFilterMetadata>>((acc, job) => {
+      acc[job.id] = {
+        matchedUnit: matchUnitForJob(job),
+        timeCategory: resolveJobTimeCategory(job),
+        contractCategory: resolveJobContractCategory(job),
+      };
       return acc;
     }, {});
   }, [jobs, matchUnitForJob]);
+
+  const availableUnitFilters = React.useMemo(() => {
+    const uniqueUnits = new Map<string, MatchableUnit>();
+
+    jobs.forEach((job) => {
+      const matchedUnit = jobFilterMetadataByJobId[job.id]?.matchedUnit;
+      if (matchedUnit) {
+        uniqueUnits.set(matchedUnit._id, matchedUnit);
+      }
+    });
+
+    return Array.from(uniqueUnits.values()).sort((a, b) =>
+      a.name.localeCompare(b.name, language)
+    );
+  }, [jobs, jobFilterMetadataByJobId, language]);
+
+  React.useEffect(() => {
+    if (selectedUnitId === "all") return;
+    if (availableUnitFilters.some((unit) => unit._id === selectedUnitId)) return;
+    setSelectedUnitId("all");
+  }, [availableUnitFilters, selectedUnitId]);
+
+  const filteredJobs = React.useMemo(() => {
+    return jobs.filter((job) => {
+      const metadata = jobFilterMetadataByJobId[job.id];
+      if (!metadata) return false;
+
+      if (
+        selectedUnitId !== "all" &&
+        metadata.matchedUnit?._id !== selectedUnitId
+      ) {
+        return false;
+      }
+
+      if (timeFilter !== "all" && metadata.timeCategory !== timeFilter) {
+        return false;
+      }
+
+      if (
+        contractFilter !== "all" &&
+        metadata.contractCategory !== contractFilter
+      ) {
+        return false;
+      }
+
+      return true;
+    });
+  }, [jobs, jobFilterMetadataByJobId, selectedUnitId, timeFilter, contractFilter]);
+
+  const hasActiveFilters =
+    selectedUnitId !== "all" || timeFilter !== "all" || contractFilter !== "all";
+
+  const resetFilters = React.useCallback(() => {
+    setSelectedUnitId("all");
+    setTimeFilter("all");
+    setContractFilter("all");
+  }, []);
 
   return (
     <section
@@ -351,11 +550,86 @@ function PageBuilderPersonioJobs({
               {emptyStateText}
             </div>
           ) : (
-            <ul className="mx-auto grid md:grid-cols-2 lg:grid-cols-3">
-              {jobs.map((job) => {
+            <div className="space-y-5">
+              <div className="rounded-sm border border-neutral-200 bg-white/80 p-4">
+                {availableUnitFilters.length > 0 ? (
+                  <div className="mb-4">
+                    <p className="mb-2 text-[10px] font-medium uppercase tracking-wide text-neutral-500">
+                      Units
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedUnitId("all")}
+                        aria-pressed={selectedUnitId === "all"}
+                        className={`px-3 py-1.5 rounded-full text-[10px] font-medium uppercase tracking-wide transition-colors ${
+                          selectedUnitId === "all"
+                            ? "bg-lime-500 text-black"
+                            : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
+                        }`}
+                      >
+                        All units
+                      </button>
+                      {availableUnitFilters.map((unit) => {
+                        const isActive = selectedUnitId === unit._id;
+
+                        return (
+                          <button
+                            key={unit._id}
+                            type="button"
+                            onClick={() => setSelectedUnitId(unit._id)}
+                            aria-pressed={isActive}
+                            className={`px-3 py-1.5 rounded-full text-[10px] font-medium uppercase tracking-wide transition-colors ${
+                              isActive
+                                ? "bg-lime-500 text-black"
+                                : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
+                            }`}
+                          >
+                            {unit.name}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null}
+
+                <div className="grid gap-3 md:grid-cols-2">
+                  <SegmentedSwitch
+                    label="Schedule"
+                    value={timeFilter}
+                    onChange={setTimeFilter}
+                    options={JOB_TIME_OPTIONS}
+                  />
+                  <SegmentedSwitch
+                    label="Contract"
+                    value={contractFilter}
+                    onChange={setContractFilter}
+                    options={JOB_CONTRACT_OPTIONS}
+                  />
+                </div>
+
+                {hasActiveFilters ? (
+                  <button
+                    type="button"
+                    onClick={resetFilters}
+                    className="mt-3 text-[11px] font-medium uppercase tracking-wide text-neutral-600 hover:text-neutral-900"
+                  >
+                    Clear filters
+                  </button>
+                ) : null}
+              </div>
+
+              {filteredJobs.length === 0 ? (
+                <div className=" bg-white/80 px-5 py-8 text-center text-neutral-500 rounded-none">
+                  No open positions match the current filters.
+                </div>
+              ) : null}
+
+              <ul className="mx-auto grid md:grid-cols-2 lg:grid-cols-3">
+                {filteredJobs.map((job) => {
                 const updatedAtLabel = formatDate(job.updatedAt);
                 const descriptionSnippet = createSnippet(job.description);
-                const matchedUnit = matchedUnitByJobId[job.id];
+                const matchedUnit = jobFilterMetadataByJobId[job.id]?.matchedUnit;
                 const logoUrl = matchedUnit?.logoUrl || DEFAULT_JOB_LOGO_URL;
                 const logoAlt = matchedUnit?.name || "1SP Logo";
                 const showContractChip =
@@ -429,10 +703,10 @@ function PageBuilderPersonioJobs({
                       ) : null}
                     </div>
                   </li>
-
                 );
-              })}
-            </ul>
+                })}
+              </ul>
+            </div>
           )}
         </div>
       </div>
