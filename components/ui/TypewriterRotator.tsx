@@ -35,13 +35,24 @@ export default function TypewriterRotator({
 }) {
   const [index, setIndex] = useState(0);
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const isIphoneLandscape = useMediaQuery(
+    "(orientation: landscape) and (max-height: 500px) and (max-width: 950px)"
+  );
 
-  const cursor: React.CSSProperties = {
+  const cursorStyle: React.CSSProperties = {
     background: "#66ff00",
     width: isMobile ? 4 : 8,
     borderRadius: isMobile ? 2 : 4,
     marginLeft: isMobile ? 2 : 4,
     minHeight: isMobile ? "calc(24px + 4vw)" : "calc(20px + 3vw)",
+  };
+
+  const cursorStyleIPL: React.CSSProperties = {
+    background: "#66ff00",
+    width: 3,
+    borderRadius: 2,
+    marginLeft: 2,
+    minHeight: "calc(14px + 1.5vw)",
   };
 
   return (
@@ -52,8 +63,8 @@ export default function TypewriterRotator({
         speed={"slow"}
         backspace="character"
         cursorBlinkDuration={0.26}
-        cursorStyle={cursor}
-        textStyle={animatingText}
+        cursorStyle={isIphoneLandscape ? cursorStyleIPL : cursorStyle}
+        textStyle={isIphoneLandscape ? animatingTextIPL : animatingText}
         onComplete={() => {
           delay(() => setIndex(wrap(0, text.length, index + 1)), 1);
         }}
@@ -89,6 +100,16 @@ const animatingText: React.CSSProperties = {
   lineHeight: "min(9vw, 5rem)",
   letterSpacing: " - 0.1rem",
 
+  textTransform: "uppercase",
+  color: "var(--text-primary)",
+  whiteSpace: "wrap",
+};
+
+const animatingTextIPL: React.CSSProperties = {
+  fontSize: "min(5vw, 1.75rem)",
+  fontWeight: 500,
+  lineHeight: "min(7vw, 2.75rem)",
+  letterSpacing: " - 0.1rem",
   textTransform: "uppercase",
   color: "var(--text-primary)",
   whiteSpace: "wrap",

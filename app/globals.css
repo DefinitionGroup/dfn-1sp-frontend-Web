@@ -2,6 +2,11 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant iphone-landscape {
+  @media (orientation: landscape) and (max-height: 500px) and (max-width: 950px) {
+    @slot;
+  }
+}
 
 @theme extend {
   --color-background: var(--background);

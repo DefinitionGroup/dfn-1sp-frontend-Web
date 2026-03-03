@@ -121,7 +121,7 @@ export default function Badgemodule({
     <div ref={ref} className={cn("w-full", className)}>
       {/* Mobile Layout - Horizontal Pill Style */}
       <motion.div
-        className="md:hidden flex items-center gap-3 py-3"
+        className="flex items-center gap-3 py-3 md:hidden iphone-landscape:!flex"
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
         variants={{
@@ -198,7 +198,7 @@ export default function Badgemodule({
       {/* Desktop Layout - Original Card Style */}
       <motion.div
         className={cn(
-          "hidden md:flex relative flex-col justify-between",
+          "hidden md:flex iphone-landscape:!hidden relative flex-col justify-between",
           "aspect-auto md:aspect-square",
           "transition-all duration-300",
           sizes.container,

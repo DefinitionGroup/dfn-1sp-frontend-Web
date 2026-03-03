@@ -345,7 +345,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
       <div className="z-1 grid col-span-12  col-start-1 pt-32 row-start-1 grid-cols-12 ">
         {/* Badge */}
-        <div className="col-span-6 col-span-12 col-start-1 row-span-2 md:col-start-1 md:col-span-2 md:sticky top-0 pr-4 ">
+        <div className="col-span-6 iphone-landscape:col-span-12 col-start-1 row-span-2 md:col-start-1 md:col-span-2 md:sticky iphone-landscape:relative top-0 pr-4 ">
 
           {step.badge && (
             <Badgemodule
@@ -356,7 +356,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
           )}
           {showBadgeMiniCta && badgeMiniCta && (
-            <div className="col-span-6 col-start-1 md:col-start-1 md:col-span-2 px-1 md:mt-4 pr-8 ">
+            <div className="col-span-6 col-start-1 iphone-landscape:max-w-1/3 md:col-start-1 md:col-span-2 px-1 md:mt-4 pr-8 ">
               <CtaMiniComponent
                 heading={badgeMiniCta.heading || ""}
                 paragraph={badgeMiniCta.paragraph || ""}
@@ -374,7 +374,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
         {/* Header area */}
         {staggered
           ? ((staggeredHeader as any)?.title || paragraphLines.length > 0) && (
-            <div className="col-span-10 col-start-3 ">
+            <div className="col-span-10 col-start-3  iphone-landscape:col-start-1">
               <StaggeredSlideUp
                 className="flex flex-col items-start justify-start"
                 delay={0}
@@ -406,7 +406,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
           : (header?.superText ||
             header?.mainHeadline ||
             header?.subHeadline) && (
-            <header className="col-span-12  md:col-span-6  col-start-1 md:col-start-3  md:mt-0  border-gray-200">
+            <header className="col-span-12  md:col-span-6  col-start-1  iphone-landscape:col-start-1 iphone-landscape:col-span-12 md:col-start-3  md:mt-0  border-gray-200">
               <div className="flex flex-col items-start justify-start w-full">
                 <div className="flex-1 flex flex-col min-w-0">
                   {header?.superText && (
@@ -415,7 +415,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                     </h4>
                   )}
                   {header?.mainHeadline && (
-                    <h2 className="text-5xl md:text-7xl  text-gray-900  tracking-tight font-aspekta">
+                    <h2 className="text-5xl md:text-7xl iphone-landscape:text-5xl  text-gray-900  tracking-tight font-aspekta">
                       {header.mainHeadline}
                     </h2>
                   )}
@@ -428,7 +428,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
               </div>
               {/* Right list column */}
               {Array.isArray(listItems) && listItems.length > 0 && (
-                <div className="col-span-12 md:col-span-4  col-start-1   md:col-start-1 mt-12 md:mt-8  pb-0 md:row-start-2 ">
+                <div className="col-span-12  md:col-span-4  col-start-1   md:col-start-1 mt-12 md:mt-8  pb-0 md:row-start-2  iphone-landscape:col-span-12">
                   <ListContainerComponent>
                     {listItems.map((it, i) => (
                       <ListItemComponent
@@ -481,7 +481,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
         {/* Variant A: Cards present (no buttons) */}
         {hasCards && (
-          <div className="col-span-12 md:col-span-10 col-start-1 md:col-start-3 mt-8">
+          <div className="col-span-12 md:col-span-10 col-start-1 iphone-landscape:col-start-1   md:col-start-3 mt-8">
             <ExpandableCards items={cards} variant="default" />
           </div>
         )}

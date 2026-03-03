@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import HeaderImageVideoComp2 from "@/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import { assetUrl } from "@/utils/utils";
@@ -13,6 +13,31 @@ import type {
 } from "@/types/sanity.types";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
 
+function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const media = window.matchMedia(query);
+    setMatches(media.matches);
+
+    const listener = (e: MediaQueryListEvent) => setMatches(e.matches);
+    media.addEventListener("change", listener);
+
+    return () => {
+      media.removeEventListener("change", listener);
+    };
+  }, [query]);
+
+  return matches;
+}
+
+function useIphoneLandscape(): boolean {
+  return useMediaQuery(
+    "(orientation: landscape) and (max-height: 500px) and (max-width: 950px)"
+  );
+}
 /** --- helpers --- */
 function isVideoUrl(url?: string) {
   return !!url && (/\/video\//.test(url) || /\.(mp4|webm|ogg)$/i.test(url));
@@ -47,6 +72,7 @@ function highlightInline(text: string, highlight?: string): React.ReactNode {
 
 /** --- component --- */
 function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
+  const isIphoneLandscape = useIphoneLandscape();
   const mediaUrl = assetUrl(step.media as CloudinaryAsset | undefined);
   const useVideo = isVideoUrl(mediaUrl);
 
@@ -73,11 +99,14 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     ...(navPointName ? { "data-navpoint-name": navPointName } : {}),
     ...(hideFromNav ? { "data-nav-hidden": "true" } : {}),
   };
+  const paragraphSizeClass = isIphoneLandscape ? "text-xs" : "text-base";
 
   const portableTextComponents = {
     block: {
       normal: ({ children }: { children?: React.ReactNode }) => (
-        <p className="text-neutral-50 text-base lg:max-w-1/2">{children}</p>
+        <p className={`text-neutral-50 ${paragraphSizeClass} iphone-landscape:max-w-[66.6667%] lg:max-w-[50%]`}>
+          {children}
+        </p>
       ),
     },
     marks: {
@@ -102,13 +131,13 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           // If highlight matched, render the highlighted version
           if (highlighted !== plainText) {
             return (
-              <p className="text-neutral-50 text-base lg:max-w-1/2">
+              <p className={`text-neutral-500 ${paragraphSizeClass} iphone-landscape:max-w-1/2  lg:max-w-1/2`}>
                 {highlighted}
               </p>
             );
           }
           return (
-            <p className="text-neutral-50 text-base lg:max-w-1/2">
+            <p className={`text-neutral-500 ${paragraphSizeClass} iphone-landscape:max-w-1/2  lg:max-w-1/2`}>
               {children}
             </p>
           );
@@ -121,7 +150,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="relative min-h-[80vh] h-[95vh] md:h-[80vh] overflow-hidden z-1"
+      className="relative min-h-[80vh] h-[95vh] iphone-landscape:h-full  md:h-[80vh] overflow-hidden z-1"
     >
       {/* Background media */}
       {mediaUrl && (
@@ -135,7 +164,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
       )}
 
       {/* Foreground content */}
-      <div className="absolute bottom-24 md:bottom-24 md:relative z-10  max-w-9xl container md:mt-[50vh] mx-auto">
+      <div className="absolute bottom-24 md:bottom-24 iphone-landscape:bottom-0 md:relative z-10  max-w-9xl container md:mt-[50vh] iphone-landscape:mt-[50vh] mx-auto">
         <StaggeredSlideUp
           className="px-4 md:px-4 space-y-1 max-w-full"
           delay={1}
@@ -148,7 +177,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           animateImmediately={true}
         >
           {eyebrow && (
-            <h3 className="text-neutral-50 uppercase  text-xs border-b pb-1 border-white/50 font-medium max-w-1/4">
+            <h3 className="text-neutral-50 uppercase  text-xs iphone-landscape:text-xxs border-b pb-1 border-white/50 font-medium max-w-1/4">
               {eyebrow}
             </h3>
           )}
@@ -158,7 +187,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
           {/* Paragraphs (rich text) */}
           {paragraphs.length > 0 && (
-            <div className="space-y-4 text-neutral-50 lg:max-w-3/4">
+            <div className="space-y-4  text-neutral-50 lg:max-w-3/4">
               <PortableText
                 value={paragraphs}
                 components={portableTextComponentsWithHighlight}
