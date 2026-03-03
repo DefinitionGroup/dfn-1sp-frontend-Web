@@ -104,7 +104,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   const portableTextComponents = {
     block: {
       normal: ({ children }: { children?: React.ReactNode }) => (
-        <p className={`text-neutral-50 ${paragraphSizeClass} iphone-landscape:max-w-2/3  lg:max-w-1/2`}>
+        <p className={`text-neutral-50 ${paragraphSizeClass} iphone-landscape:max-w-[66.6667%] lg:max-w-[50%]`}>
           {children}
         </p>
       ),
