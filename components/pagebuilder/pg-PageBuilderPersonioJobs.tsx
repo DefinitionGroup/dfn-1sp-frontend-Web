@@ -53,6 +53,8 @@ type TagTone =
   | "schedule"
   | "remote";
 
+const DEFAULT_JOB_LOGO_URL = "/1sp-fallback.svg";
+
 const tagToneClasses: Record<TagTone, string> = {
   department: "border-cyan-300 bg-cyan-50 text-cyan-800",
   location: "border-emerald-300 bg-emerald-50 text-emerald-800",
@@ -293,6 +295,17 @@ function PageBuilderPersonioJobs({
     [unitsForMatching, normalizeForMatch]
   );
 
+  const handleLogoError = React.useCallback(
+    (event: React.SyntheticEvent<HTMLImageElement>) => {
+      const image = event.currentTarget;
+      if (image.dataset.fallbackApplied === "true") return;
+      image.dataset.fallbackApplied = "true";
+      image.src = DEFAULT_JOB_LOGO_URL;
+      image.alt = "1SP Logo";
+    },
+    []
+  );
+
   const matchedUnitByJobId = React.useMemo(() => {
     return jobs.reduce<Record<string, MatchableUnit | null>>((acc, job) => {
       acc[job.id] = matchUnitForJob(job);
@@ -308,9 +321,9 @@ function PageBuilderPersonioJobs({
       className="relative py-10 md:py-14"
       data-component="pg-pagebuilder-personio-jobs"
     >
-      <div className="container mx-auto px-4">
-        <div className="mx-auto mb-7 max-w-3xl text-center md:mb-9">
-          <h2 className="text-3xl font-medium text-neutral-900 md:text-4xl lg:text-5xl">
+      <div className="container mx-auto ">
+        <div className="mx-auto mb-7  text-left md:mb-9">
+          <h2 className="text-3xl font-normal text-neutral-800 md:text-4xl lg:text-5xl">
             {headline}
           </h2>
           {subheadline ? (
@@ -333,11 +346,13 @@ function PageBuilderPersonioJobs({
             {emptyStateText}
           </div>
         ) : (
-          <ul className="mx-auto grid max-w-6xl gap-2 md:grid-cols-2 lg:grid-cols-3">
+          <ul className="mx-auto grid gap-2 md:grid-cols-2 lg:grid-cols-4">
             {jobs.map((job) => {
               const updatedAtLabel = formatDate(job.updatedAt);
               const descriptionSnippet = createSnippet(job.description);
               const matchedUnit = matchedUnitByJobId[job.id];
+              const logoUrl = matchedUnit?.logoUrl || DEFAULT_JOB_LOGO_URL;
+              const logoAlt = matchedUnit?.name || "1SP Logo";
               const showContractChip =
                 showContractType &&
                 job.contractType &&
@@ -350,13 +365,12 @@ function PageBuilderPersonioJobs({
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex flex-col min-w-0 items-start gap-3">
-                      {matchedUnit ? (
-                        <img
-                          src={matchedUnit.logoUrl}
-                          alt={matchedUnit.name}
-                          className="  w-auto max-w-[96px] object-contain object-left"
-                        />
-                      ) : null}
+                      <img
+                        src={logoUrl}
+                        alt={logoAlt}
+                        onError={handleLogoError}
+                        className="  w-auto max-w-[96px] object-contain object-left"
+                      />
                       <h3 className="text-2xl font-regular leading-tight text-neutral-700 md:text-2xl">
                         {job.title}
                       </h3>
