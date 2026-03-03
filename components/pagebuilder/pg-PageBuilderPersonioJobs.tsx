@@ -688,7 +688,7 @@ function PageBuilderPersonioJobs({
                         ) : null}
 
                         {job.url ? (
-                          <div className="w-[120px]absolute bottom-0 min-w-[120px] shrink-0">
+                          <div className="w-[120px] absolute bottom-0 min-w-[120px] shrink-0">
                             <Button2
                               text={applyLabel}
                               href={job.url}
