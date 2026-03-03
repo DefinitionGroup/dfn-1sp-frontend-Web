@@ -550,7 +550,7 @@ function PageBuilderPersonioJobs({
             </div>
           ) : (
             <div className="space-y-3">
-              <div className=" bg-white/80 p-1 md:max-w-1/2">
+              <div className=" bg-white/80 p-1 md:w-1/2">
                 {availableUnitFilters.length > 0 ? (
                   <div className="mb-4">
                     <p className="mb-2 text-[10px] font-medium uppercase tracking-wide text-neutral-500">
