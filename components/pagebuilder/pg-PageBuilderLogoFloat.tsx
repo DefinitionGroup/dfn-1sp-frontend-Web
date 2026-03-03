@@ -58,8 +58,12 @@ function PageBuilderLogoFloat({
       setVisible(window.scrollY < 24);
     }
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   React.useEffect(() => {
@@ -123,22 +127,33 @@ function PageBuilderLogoFloat({
   };
 
   const maxH = maxHeightPx[cardSize] || maxHeightPx.md;
+  const mobileMaxHeightClass: Record<NonNullable<typeof cardSize>, string> = {
+    sm: "max-h-6 sm:max-h-7",
+    md: "max-h-7 sm:max-h-8",
+    lg: "max-h-8 sm:max-h-9",
+  };
+  const desktopMaxHeightClass: Record<NonNullable<typeof cardSize>, string> = {
+    sm: "lg:max-h-14",
+    md: "lg:max-h-16",
+    lg: "lg:max-h-20",
+  };
+  const logoHeightClass = `${mobileMaxHeightClass[cardSize] || mobileMaxHeightClass.md} ${desktopMaxHeightClass[cardSize] || desktopMaxHeightClass.md}`;
 
   return (
     <section
       id={sectionId}
       {...navPointDataAttr}
       {...(hideFromNav ? { "data-nav-hidden": "true" } : {})}
-      className="hidden lg:block fixed inset-0 z-[999999] pointer-events-none"
+      className="fixed inset-x-0 top-0 z-[999999] pointer-events-none lg:inset-0"
       data-component="pg-pagebuilder-logo-float"
     >
-      <div className="h-full w-full flex items-start mt-24 justify-center px-6">
+      <div className="w-full flex items-start justify-center px-4 pt-24 md:pt-16 sm:px-6 lg:h-full lg:mt-24 lg:px-6 lg:pt-0">
         {isLoading ? (
           <div className="text-center text-neutral-400">.</div>
         ) : cardsWithLogo.length === 0 ? (
           <div className="text-center text-neutral-400">No unit logos found</div>
         ) : (
-          <div className="mx-auto max-w-7xl w-7xl flex flex-wrap items-center justify-center gap-0">
+          <div className="mx-auto w-full max-w-7xl flex flex-wrap items-center  justify-center lg:gap-0">
             <AnimatePresence>
               {visible && cardsWithLogo.map(({ unit, logoUrl, width, height }, index) => {
                 // Scale to max height, keeping aspect ratio
@@ -157,21 +172,20 @@ function PageBuilderLogoFloat({
                       delay: index * 0.05,
                       ease: "easeOut",
                     }}
-                    className="rounded-sm pointer-events-auto cursor-pointer"
+                    className="rounded-sm min-h-12 w-1/3  flex items-center justify-center  md:w-auto pointer-events-auto cursor-pointer"
                     onClick={() => {
                       document
                         .getElementById("what-fuels-1sp")
                         ?.scrollIntoView({ behavior: "smooth" });
                     }}
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={logoUrl}
                       alt={unit.name || "Unit logo"}
                       width={displayW}
                       height={displayH}
                       style={{ width: displayW, height: displayH }}
-                      className="invert   object-left"
+                      className={`invert object-contain object-left  max-w-[33vw]   min-h-12 md:min-h-8 lg:max-w-none ${logoHeightClass}`}
                     />
                   </motion.div>
                 );

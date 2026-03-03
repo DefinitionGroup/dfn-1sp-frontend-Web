@@ -171,7 +171,8 @@ export default defineType({
                 { type: 'smartUnitsGlobe' },
                 { type: 'globeComponent' },
                 { type: 'unitLogoGrid' },
-                { type: 'pageBuilderLogoFloat' }
+                { type: 'pageBuilderLogoFloat' },
+                { type: 'pageBuilderPersonioJobs' }
             ],
             hidden: ({ parent }: any) => parent?.channel !== '1spWeb',
         }),

@@ -10,7 +10,7 @@ interface Button2Props {
   text?: string;
   className?: string;
   href?: string;
-  variant?: "default" | "black" | "lime" | "limesmall" | "limesmallrounded";
+  variant?: "default" | "black" | "lime" | "limesmall" | "limesmallrounded" | "ghost";
   magnetic?: boolean;
 }
 
@@ -27,6 +27,11 @@ const variantStyles: Record<
     top: "border-neutral-800/30 bg-neutral-900 text-white p-4 ",
     bottom: "border-neutral-900 bg-neutral-800  text-white ",
     container: "h-15",
+  },
+  ghost: {
+    top: "border-neutral-800/30  p-2 pr-8 ",
+    bottom: " border-lime-400 bg-lime-400  text-lime-100  p-2 pr-8 ",
+    container: "h-14",
   },
   lime: {
     top: "border-lime-500/30 bg-lime-400 p-4  w-full",
