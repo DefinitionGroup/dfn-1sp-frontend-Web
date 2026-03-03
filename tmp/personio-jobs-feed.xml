@@ -1,100 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <workzag-jobs>
+    <!--
+      NOTE:
+      This is a truncated sample of the Personio jobs feed, kept intentionally small
+      to avoid committing large generated XML artifacts to the repository.
+      The full feed should be generated at build/runtime (e.g. into tmp/) and
+      should not be version-controlled.
+    -->
 
-    
-        <position>
-            <id>2515526</id>
-                            <subcompany>MSM.digital Communications GmbH</subcompany>
-                                        <office>Hamburg</office>
-                                                    <department>MSM.digital Communications</department>
-                                        <recruitingCategory>Freie Mitarbeiter</recruitingCategory>
-            
-            <name></name>
-
-                            <jobDescriptions>
-                                                                                                                                                                                                                    </jobDescriptions>
-            
-                            <employmentType>freelance</employmentType>
-            
-                            <seniority>experienced</seniority>
-            
-                            <schedule>full-or-part-time</schedule>
-            
-                            <yearsOfExperience>1-2</yearsOfExperience>
-            
-            
-                            <occupation>marketing_communications</occupation>
-            
-                            <occupationCategory>marketing_and_product</occupationCategory>
-            
-                            <createdAt>2026-02-02T11:54:15+00:00</createdAt>
-            
-            
-        </position>
-
-
-    
-        <position>
-            <id>2536723</id>
-                            <subcompany>FLZR GmbH</subcompany>
-                                        <office>Ingolstadt</office>
-                                                    <department>FLZR</department>
-                                        <recruitingCategory>Festangestellte</recruitingCategory>
-            
-            <name>Account Manager (m/w/d) Consumer Electronics</name>
-
-                            <jobDescriptions>
-                                                                                                                                                                                                                    </jobDescriptions>
-            
-                            <employmentType>permanent</employmentType>
-            
-                            <seniority>experienced</seniority>
-            
-                            <schedule>full-time</schedule>
-            
-            
-            
-                            <occupation>account_management_non_commissioned</occupation>
-            
-                            <occupationCategory>customer_support_and_client_care</occupationCategory>
-            
-                            <createdAt>2026-02-19T09:26:22+00:00</createdAt>
-            
-            
-        </position>
-
-
-    
-        <position>
-            <id>2457621</id>
-                            <subcompany>MSM.digital Communications GmbH</subcompany>
-                                        <office>Hamburg</office>
-                                                    <department>MSM.digital Communications</department>
-                                        <recruitingCategory>Festangestellte</recruitingCategory>
-            
-            <name>Account Manager:in Social Media und Influencer Marketing (m/w/d)</name>
-
-                            <jobDescriptions>
-                                                                                                                                                                                                                    </jobDescriptions>
-            
-                            <employmentType>permanent</employmentType>
-            
-                            <seniority>experienced</seniority>
-            
-                            <schedule>full-time</schedule>
-            
-                            <yearsOfExperience>5-7</yearsOfExperience>
-            
-            
-                            <occupation>marketing_communications</occupation>
-            
-                            <occupationCategory>marketing_and_product</occupationCategory>
-            
-                            <createdAt>2025-12-10T16:35:27+00:00</createdAt>
-            
-            
-        </position>
+    <position>
+        <id>2515526</id>
+        <subcompany>MSM.digital Communications GmbH</subcompany>
+        <office>Hamburg</office>
+        <department>MSM.digital Communications</department>
+        <recruitingCategory>Freie Mitarbeiter</recruitingCategory>
+        <name></name>
+        <jobDescriptions>
+        </jobDescriptions>
+        <employmentType>freelance</employmentType>
+        <seniority>experienced</seniority>
+        <schedule>full-or-part-time</schedule>
+        <yearsOfExperience>1-2</yearsOfExperience>
+        <occupation>marketing_communications</occupation>
+        <occupationCategory>marketing_and_product</occupationCategory>
+        <createdAt>2026-02-02T11:54:15+00:00</createdAt>
+    </position>
 
 
     
