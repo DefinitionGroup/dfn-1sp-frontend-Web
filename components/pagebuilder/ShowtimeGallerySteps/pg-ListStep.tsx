@@ -358,7 +358,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
       <div className="z-1 grid col-span-12  col-start-1 pt-32 row-start-1 grid-cols-12 ">
         {/* Badge */}
-        <div className="col-span-12  iphone-landscape:col-span-12 col-start-1 row-span-2 md:col-start-1 md:col-span-2 md:sticky iphone-landscape:relative top-0 pr-4 ">
+        <div className="hidden md:block md:col-start-1 md:col-span-2 md:sticky top-0 pr-4 iphone-landscape:!hidden">
 
           {step.badge && (
             <Badgemodule
@@ -387,7 +387,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
         {/* Header area */}
         {staggered
           ? ((staggeredHeader as any)?.title || paragraphLines.length > 0) && (
-            <div className="col-span-10 col-start-3  iphone-landscape:col-start-1">
+            <div className="col-span-12 col-start-1 md:col-span-10 md:col-start-3 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1">
               <StaggeredSlideUp
                 className="flex flex-col items-start justify-start"
                 delay={0}
@@ -419,7 +419,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
           : (header?.superText ||
             header?.mainHeadline ||
             header?.subHeadline) && (
-            <header className="col-span-12  md:col-span-6 col-start-1  iphone-landscape:col-start-1 iphone-landscape:col-span-12 md:col-start-3  md:mt-0  ">
+            <header className="col-span-12  md:col-span-6 col-start-1  iphone-landscape:!col-start-1 iphone-landscape:!col-span-12 md:col-start-3  md:mt-0  ">
               <div className="flex flex-col items-start justify-start w-full">
                 <div className="flex-1 flex flex-col min-w-0">
                   {header?.superText && (
@@ -511,14 +511,14 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
         {/* Variant A: Cards present (no buttons) */}
         {hasCards && (
-          <div className="col-span-12 md:col-span-10 col-start-1 iphone-landscape:col-start-1   md:col-start-3 mt-8">
+          <div className="col-span-12 md:col-span-10 col-start-1 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-start-3 mt-8">
             <ExpandableCards items={cards} variant="default" />
           </div>
         )}
 
         {/* Variant B (fallback): No cards, no ctaMini → plain CTA buttons */}
         {!hasCards && !hasCtaMini && hasCtas && (
-          <div className="col-span-2 col-start-3 mt-8 pr-8 ">
+          <div className="col-span-12 col-start-1 md:col-span-2 md:col-start-3 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 mt-8 pr-8 ">
             <div className="flex flex-col gap-4">
               {ctas.map((cta, idx) => {
                 const btn = ctaToButtonProps(cta);

@@ -71,14 +71,14 @@ export default function RevealStep({ step }: { step: GalleryRevealStep }) {
       <div className="z-1 grid col-span-12 py-32 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12">
         {step?.badge && (
           <Badgemodule
-            className={step.badge.colSpan || "col-span-2"}
+            className={`hidden md:block iphone-landscape:!hidden ${step.badge.colSpan || "col-span-2"}`}
             text={step.badge.text ?? ""}
             subtitle={step.badge.subtitle ?? ""}
             numberEl={step.badge.numberEl ?? ""}
           />
         )}
 
-        <div className="col-start-3 col-span-9">
+        <div className="col-span-12 col-start-1 md:col-span-9 md:col-start-3 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1">
           <TextReveal items={items} />
         </div>
       </div>

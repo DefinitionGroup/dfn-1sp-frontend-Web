@@ -126,7 +126,7 @@ export default function PeopleStep({
 
           {/* Badge + CTA Column */}
           {(step.badge || shouldShowBadgeMiniCta) && (
-            <div className="col-span-4  sm:col-span-3 md:col-span-2 iphone-landscape:col-span-12 mb-8 md:mb-0 iphone-landscape:mb-6 md:sticky iphone-landscape:relative md:top-24 iphone-landscape:top-0 self-start">
+            <div className="hidden md:block md:col-span-2 md:mb-0 md:sticky md:top-24 self-start iphone-landscape:!hidden">
               <div className="flex flex-col gap-6">
                 {step.badge && (
                   <Badgemodule
@@ -139,7 +139,7 @@ export default function PeopleStep({
                 )}
 
                 {shouldShowBadgeMiniCta && badgeMiniCta && (
-                  <div className="hidden md:block iphone-landscape:block iphone-landscape:max-w-1/3">
+                  <div className="hidden md:block">
                     <CtaMiniComponent
                       heading={badgeMiniCta.heading || ""}
                       paragraph={badgeMiniCta.paragraph || ""}
@@ -155,7 +155,7 @@ export default function PeopleStep({
           )}
 
           {/* Main Content Area */}
-          <div className={`col-span-4 sm:col-span-6 iphone-landscape:col-span-12 iphone-landscape:col-start-1 ${step.badge || shouldShowBadgeMiniCta ? "md:col-span-10 md:col-start-3" : "md:col-span-12"}`}>
+          <div className={`col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 ${step.badge || shouldShowBadgeMiniCta ? "md:col-span-10 md:col-start-3" : "md:col-span-12"}`}>
 
             {/* Header Section */}
             <header className="border-t border-gray-200 pt-4 sm:pt-6 mb-8 md:mb-12">
@@ -211,7 +211,7 @@ export default function PeopleStep({
 
             {/* Mobile CTA - shown at bottom on mobile */}
             {shouldShowBadgeMiniCta && badgeMiniCta && (
-              <div className="mt-10 md:hidden iphone-landscape:hidden">
+              <div className="mt-10 md:hidden">
                 <CtaMiniComponent
                   heading={badgeMiniCta.heading || ""}
                   paragraph={badgeMiniCta.paragraph || ""}

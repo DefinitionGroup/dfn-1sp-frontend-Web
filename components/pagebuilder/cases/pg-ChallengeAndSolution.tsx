@@ -135,8 +135,8 @@ export default function ChallengeAndSolution({
 
   // Determine list column classes based on whether CTA is shown
   const listColumnClasses = shouldShowCta
-    ? "col-span-4 sm:col-span-6 md:col-span-5 md:col-start-5"
-    : "col-span-4 sm:col-span-6 md:col-span-5 md:col-start-3";
+    ? "col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-5 md:col-start-5"
+    : "col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-5 md:col-start-3";
 
   // Store nav-related data attributes
   const navPointDataAttr = {
@@ -156,7 +156,7 @@ export default function ChallengeAndSolution({
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className={`grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 py-16 sm:py-24 lg:py-${paddingY}`}>
             {/* Badge Module - Responsive sticky behavior */}
-            <div className="col-span-4 sm:col-span-3 md:col-span-2 mb-6 md:mb-0 md:sticky md:top-24 self-start">
+            <div className="hidden md:block md:col-span-2 md:mb-0 md:sticky md:top-24 self-start iphone-landscape:!hidden">
               <Badgemodule
                 text={badgeText || t.badges.intro}
                 subtitle={badgeSubtitle || t.badges.theGoal}
@@ -167,7 +167,7 @@ export default function ChallengeAndSolution({
             </div>
 
             {/* Title and Description */}
-            <div className="col-span-4 sm:col-span-6 md:col-span-10 md:col-start-3">
+            <div className="col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-10 md:col-start-3">
               <StaggeredSlideUp
                 className="flex flex-col items-start justify-start gap-4"
                 delay={0.1}
@@ -191,7 +191,7 @@ export default function ChallengeAndSolution({
               <>
                 {/* CTA Mini - Responsive (only show if showCta is true) */}
                 {shouldShowCta && (
-                  <div className="col-span-4 sm:col-span-3 md:col-span-2 md:col-start-3 mt-6 md:mt-8">
+                  <div className="col-span-4 sm:col-span-3 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-2 md:col-start-3 mt-6 md:mt-8">
                     <CtaMiniComponent
                       heading={
                         ctaHeading ||
@@ -263,7 +263,7 @@ export default function ChallengeAndSolution({
 
             {/* Solution only (when content is hidden but solution is enabled) */}
             {!shouldShowContent && showSolution && solution && (
-              <div className="col-span-4 sm:col-span-6 md:col-span-10 md:col-start-3 mt-6 md:mt-8">
+              <div className="col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-10 md:col-start-3 mt-6 md:mt-8">
                 <StaggeredSlideUp
                   className="flex flex-col items-start justify-start"
                   delay={0.3}
