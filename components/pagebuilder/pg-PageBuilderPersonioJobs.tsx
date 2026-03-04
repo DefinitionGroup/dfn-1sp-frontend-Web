@@ -79,7 +79,7 @@ const tagToneClasses: Record<TagTone, string> = {
   contract: "text-neutral-500 bg-white",
   seniority: "text-neutral-500 bg-white",
   schedule: "text-neutral-500 bg-white",
-  remote: "  text-neutral-500 bg-white",
+  remote: "text-neutral-500 bg-white",
 };
 
 const PART_TIME_PATTERNS = [/\bpart\s*time\b/, /\bteilzeit\b/];
