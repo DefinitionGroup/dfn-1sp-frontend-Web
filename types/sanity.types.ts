@@ -398,8 +398,8 @@ export interface OneSPHeader {
     // content
     eyebrow?: string;
     rotatingText?: string[];
-    paragraphs?: ParagraphLine[];
-    mobileParagraphs?: ParagraphLine[];
+    paragraphs?: any[];
+    mobileParagraphs?: any[];
     highlight?: string;
 
     // decoration
