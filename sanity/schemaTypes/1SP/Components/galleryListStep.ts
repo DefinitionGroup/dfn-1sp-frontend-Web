@@ -83,6 +83,17 @@ export default defineType({
                 { type: 'listItem' }
             ]
         }),
+        defineField({
+            name: 'mobileListItems',
+            title: 'Mobile List Items',
+            description:
+                'Shown on mobile and iPhone landscape. If empty, regular list items are used.',
+            type: 'array',
+            group: 'content',
+            of: [
+                { type: 'listItem' }
+            ]
+        }),
 
         defineField({ name: 'media', title: 'Image/Video', type: 'cloudinary.asset', group: 'media' }),
         defineField({ name: 'grid', title: 'Grid Element', type: 'gridElement', group: 'media' }),
@@ -104,12 +115,18 @@ export default defineType({
         }),
     ],
     preview: {
-        select: { headline: 'header.mainHeadline', badgeText: 'badge.text', itemCount: 'listItems' },
-        prepare({ headline, badgeText, itemCount }) {
+        select: {
+            headline: 'header.mainHeadline',
+            badgeText: 'badge.text',
+            itemCount: 'listItems',
+            mobileItemCount: 'mobileListItems'
+        },
+        prepare({ headline, badgeText, itemCount, mobileItemCount }) {
             const count = Array.isArray(itemCount) ? itemCount.length : 0
+            const mobileCount = Array.isArray(mobileItemCount) ? mobileItemCount.length : 0
             return {
                 title: headline || 'List Step',
-                subtitle: `${badgeText || 'No badge'} • ${count} items`
+                subtitle: `${badgeText || 'No badge'} • ${count} desktop • ${mobileCount} mobile`
             }
         }
     }

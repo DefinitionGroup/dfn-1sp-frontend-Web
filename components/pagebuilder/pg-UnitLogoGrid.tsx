@@ -88,9 +88,9 @@ function UnitLogoGrid({ data, language: propLanguage }: UnitLogoGridProps) {
   // Generate section ID from headline
   const sectionId = headline
     ? headline
-        .replace(/[^a-zA-Z0-9\s]/g, "")
-        .replace(/\s+/g, "-")
-        .toLowerCase()
+      .replace(/[^a-zA-Z0-9\s]/g, "")
+      .replace(/\s+/g, "-")
+      .toLowerCase()
     : "unit-logo-grid";
 
   // Nav point data attribute
@@ -158,7 +158,7 @@ function UnitLogoGrid({ data, language: propLanguage }: UnitLogoGridProps) {
             delay={0.1}
             staggerDelay={0.1}
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium text-gray-800 dark:text-gray-100">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light tracking-tight leading-normal text-gray-800 dark:text-gray-100">
               {headline}
             </h2>
             {subheadline && (
@@ -211,11 +211,10 @@ function UnitLogoGrid({ data, language: propLanguage }: UnitLogoGridProps) {
                         src={logoUrl}
                         alt={unit.name || "Unit logo"}
                         fill
-                        className={`object-contain block transition-all duration-300  max-h-16 mt-3 px-4   group-hover:scale-80 ${
-                          isDarkBg
-                            ? "opacity-90 group-hover:opacity-100"
-                            : "opacity-90 group-hover:opacity-100 dark:brightness-0 dark:invert"
-                        }`}
+                        className={`object-contain block transition-all duration-300  max-h-16 mt-3 px-4   group-hover:scale-80 ${isDarkBg
+                          ? "opacity-90 group-hover:opacity-100"
+                          : "opacity-90 group-hover:opacity-100 dark:brightness-0 dark:invert"
+                          }`}
                         sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 16vw"
                         unoptimized
                       />

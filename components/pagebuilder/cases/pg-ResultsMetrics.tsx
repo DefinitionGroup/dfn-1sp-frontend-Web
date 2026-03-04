@@ -122,7 +122,7 @@ export default function ResultsMetrics({
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className={`grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 py-16 sm:py-24 lg:py-${paddingY}`}>
             {/* Badge Module - Responsive sticky */}
-            <div className="col-span-4 sm:col-span-3 md:col-span-2 mb-6 md:mb-0 md:sticky md:top-24 self-start">
+            <div className="hidden md:block md:col-span-2 md:mb-0 md:sticky md:top-24 self-start iphone-landscape:!hidden">
               <Badgemodule
                 text={badgeText || t.caseStudy.results}
                 subtitle={badgeSubtitle || t.caseStudy.resultsSubtitle}
@@ -133,7 +133,7 @@ export default function ResultsMetrics({
             </div>
 
             {/* Title and Description */}
-            <div className="col-span-4 sm:col-span-6 md:col-span-10 md:col-start-3">
+            <div className="col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-10 md:col-start-3">
               <StaggeredSlideUp
                 className="flex flex-col items-start justify-start gap-3"
                 delay={0.0}

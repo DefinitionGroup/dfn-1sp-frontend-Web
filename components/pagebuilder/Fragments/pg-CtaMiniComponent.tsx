@@ -2,9 +2,9 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
-import Button2 from "@/components/ui/Button2";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
-import { useParams } from "next/navigation";
+import { Link } from "next-view-transitions";
+import { ArrowRightIcon } from "@phosphor-icons/react";
 
 interface CtaMiniProps {
   heading: string;
@@ -21,6 +21,20 @@ interface CtaMiniProps {
   showButton?: boolean;
 }
 
+const buttonVariantStyles: Record<
+  NonNullable<CtaMiniProps["buttonVariant"]>,
+  string
+> = {
+  default:
+    "border-white/30 text-white bg-transparent hover:bg-slate-100 hover:text-slate-900",
+  black:
+    "border-neutral-800/40 bg-neutral-900 text-white hover:bg-neutral-800",
+  lime:
+    "border-lime-500/40 bg-lime-400 text-neutral-900 hover:bg-neutral-900 hover:text-white",
+  limesmall:
+    "border-lime-500/40 bg-lime-400 text-neutral-900 hover:bg-neutral-900 hover:text-white",
+};
+
 function CtaMiniComponent({
   heading,
   paragraph,
@@ -36,6 +50,9 @@ function CtaMiniComponent({
   showButton = true,
 }: CtaMiniProps) {
   const finalUrl = url || "#";
+  const isExternal = /^(https?:|mailto:|tel:)/.test(finalUrl);
+  const safeButtonVariant: NonNullable<CtaMiniProps["buttonVariant"]> =
+    buttonVariant in buttonVariantStyles ? buttonVariant : "default";
 
   const alignClass =
     align === "center"
@@ -66,13 +83,23 @@ function CtaMiniComponent({
       <p className={`md:text-sm mb-2 md:mb-8 ${textAlignClass}`}>{paragraph}</p>
       {showButton ? (
         buttonText && finalUrl && finalUrl !== "#" ? (
-          <div className="md:text-xs mb-8 min-w-[180px] w-full">
-            <Button2
-              variant={buttonVariant}
-              className="w-full text-xxs"
-              text={buttonText}
+          <div className="mb-8 w-full md:w-auto md:min-w-[180px]">
+            <Link
               href={finalUrl}
-            />
+              className={cn(
+                "inline-flex w-full md:w-fit items-center justify-between gap-3 rounded-xs border font-bold tracking-wider transition-colors duration-200",
+                "text-[10px] sm:text-xxs md:text-xs",
+                buttonVariant === "limesmall"
+                  ? "px-3 py-2 md:px-4 md:py-2"
+                  : "px-3 py-2.5 md:px-4 md:py-3",
+                buttonVariantStyles[safeButtonVariant]
+              )}
+              target={isExternal ? "_blank" : undefined}
+              rel={isExternal ? "noopener noreferrer nofollow" : undefined}
+            >
+              <span>{buttonText}</span>
+              <ArrowRightIcon size={14} className="-rotate-45 shrink-0" />
+            </Link>
           </div>
         ) : (
           <div className="md:text-xs mb-8 text-red-500">

@@ -8,6 +8,7 @@ type Unit = {
   _type: string;
   name?: string;
   slug?: { current: string };
+  logoColor?: CloudinaryAsset;
   logo?: CloudinaryAsset;
   backgroundImage?: CloudinaryAsset;
   description?: string;
@@ -42,8 +43,8 @@ function transformUnitsToCards(units: Unit[]): CardItem[] {
     _key: unit._id,
     title: unit.name || "",
     description: unit.tagline || unit.description || "",
-    src: unit.backgroundImage || unit.logo,
-    logo: unit.logo,
+    src: unit.backgroundImage || unit.logoColor || unit.logo,
+    logo: unit.logoColor || unit.logo,
     content: unit.description || "",
     ctaButton: unit.cta || undefined,
   }));

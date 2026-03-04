@@ -69,6 +69,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
 
   // "once per route" — reset on navigation, latch on first intersection
   const [animatedForPath, setAnimatedForPath] = useState<string | null>(null);
+  const [heroIntroArmed, setHeroIntroArmed] = useState(!isHero);
 
   // Reset when pathname changes so the animation can re-trigger on the new route
   useEffect(() => {
@@ -102,7 +103,25 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
     return () => clearTimeout(timer);
   }, [pathname, isHero, animatedForPath]);
 
-  const hasEnteredViewport = isHero || animatedForPath === pathname;
+  // Re-arm hero intro after route changes so clipPath reveal is visible
+  // even when View Transition overlays are active.
+  useEffect(() => {
+    if (!isHero) {
+      setHeroIntroArmed(true);
+      return;
+    }
+
+    setHeroIntroArmed(false);
+    const timer = window.setTimeout(() => {
+      setHeroIntroArmed(true);
+    }, 180);
+
+    return () => window.clearTimeout(timer);
+  }, [pathname, isHero]);
+
+  const hasEnteredViewport = isHero
+    ? heroIntroArmed
+    : animatedForPath === pathname;
 
   // LCP optimization: defer video mount, show poster image first
   const [shouldMountVideo, setShouldMountVideo] = useState(false);
@@ -189,7 +208,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
     setSourceFallbackStage(0);
     setAutoplayBlocked(false);
     setVideoLoadFailed(false);
-  }, [useVideo, posterFallback, videoSrc, videoUrlDesktop, videoUrlMobile]);
+  }, [useVideo, posterFallback, videoSrc, videoUrlDesktop, videoUrlMobile, pathname]);
 
   useEffect(() => {
     if (!useVideo || posterLoaded) return;
@@ -331,7 +350,6 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
         }}
         className="absolute mx-auto rounded-xl inset-0 overflow-hidden"
         style={{
-          clipPath: hasEnteredViewport ? undefined : clipPathClosed,
           willChange: "clip-path, opacity",
           transform: "translateZ(0)",
         }}

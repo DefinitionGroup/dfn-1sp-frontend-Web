@@ -182,12 +182,12 @@ function ExpandableCards({
                       layoutId={`logo-${active.title}-${id}`}
                       src={active.logo}
                       alt={active.title}
-                      className="w-40 h-32 -left-3 relative invert object-contain"
+                      className="w-40 h-32 -left-3 relative  invert object-contain"
                     />
                   )}
                   <motion.h3
                     layoutId={`title-${active.title}-${id}`}
-                    className="text-white text-2xl md:mt-32 iphone-landscape:mt-0   dark:text-neutral-200"
+                    className="text-white text-2xl md:text-5xl md:mt-16 iphone-landscape:mt-0   dark:text-neutral-200"
                   >
                     {active.title}
                   </motion.h3>
@@ -246,7 +246,7 @@ function ExpandableCards({
                   height={1000}
                   src={card.src}
                   alt={card.title}
-                  className={`w-full h-full object-cover object-top ${imageOpacity} group-hover/card:opacity-100 transition-all`}
+                  className={`w-full h-full object-cover  object-top ${imageOpacity} group-hover/card:opacity-100 transition-all`}
                 />
               </motion.div>
 
@@ -256,7 +256,7 @@ function ExpandableCards({
                     layoutId={`logo-${card.title}-${id}`}
                     src={card.logo}
                     alt={card.title}
-                    className="w-full h-12 -left-2 relative object-contain invert object-left"
+                    className="w-full h-12 -left-1 top-2 relative invert object-contain   object-left"
                   />
                 )}
                 {/* Old tile only showed title; keep that for parity */}

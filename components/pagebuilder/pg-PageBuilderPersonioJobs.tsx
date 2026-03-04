@@ -73,13 +73,13 @@ type JobFilterMetadata = {
 const DEFAULT_JOB_LOGO_URL = "/1sp-fallback.svg";
 
 const tagToneClasses: Record<TagTone, string> = {
+  location: " bg-lime-400 font-bold text-black",
   department: "text-lime-500 bg-black",
-  location: "text-lime-500 bg-black",
-  employment: "text-red-500 bg-white",
-  contract: " text-green-500 bg-white",
-  seniority: " text-orange-500 bg-white ",
-  schedule: "  text-blue-500 bg-white",
-  remote: "  text-purple-500 bg-white",
+  employment: "text-neutral-500 bg-white",
+  contract: "text-neutral-500 bg-white",
+  seniority: "text-neutral-500 bg-white",
+  schedule: "text-neutral-500 bg-white",
+  remote: "text-neutral-500 bg-white",
 };
 
 const PART_TIME_PATTERNS = [/\bpart\s*time\b/, /\bteilzeit\b/];
@@ -182,7 +182,7 @@ function SegmentedSwitch<T extends string>({
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <p className="text-[10px] font-medium uppercase tracking-wide text-neutral-500">
+      <p className="text-[8px] font-medium uppercase tracking-wide text-neutral-500">
         {label}
       </p>
       <div className="inline-flex w-full overflow-hidden rounded-full border border-neutral-200 bg-white">
@@ -195,7 +195,7 @@ function SegmentedSwitch<T extends string>({
               type="button"
               onClick={() => onChange(option.value)}
               aria-pressed={isActive}
-              className={`flex-1 px-3 py-2 text-[11px] font-medium uppercase tracking-wide transition-colors ${isActive
+              className={`flex-1 px-3 py-2 text-[8px] font-medium cursor-pointer uppercase tracking-wide transition-colors ${isActive
                 ? "bg-neutral-900 text-white"
                 : "text-neutral-600 hover:bg-neutral-100"
                 }`}
@@ -550,10 +550,10 @@ function PageBuilderPersonioJobs({
             </div>
           ) : (
             <div className="space-y-3">
-              <div className=" bg-white/80 p-1 md:w-1/2">
+              <div className=" bg-white/80  p-1 md:w-2/3">
                 {availableUnitFilters.length > 0 ? (
                   <div className="mb-4">
-                    <p className="mb-2 text-[10px] font-medium uppercase tracking-wide text-neutral-500">
+                    <p className="mb-2 text-[8px] font-medium uppercase tracking-wide text-neutral-500">
                       Units
                     </p>
                     <div className="flex flex-wrap gap-1.5">
@@ -561,7 +561,7 @@ function PageBuilderPersonioJobs({
                         type="button"
                         onClick={() => setSelectedUnitId("all")}
                         aria-pressed={selectedUnitId === "all"}
-                        className={`px-3 py-1.5 rounded-full text-[10px] font-medium uppercase tracking-wide transition-colors ${selectedUnitId === "all"
+                        className={`px-3 py-1.5 rounded-full text-[8px] font-medium uppercase tracking-wide transition-colors ${selectedUnitId === "all"
                           ? "bg-lime-500 text-black"
                           : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
                           }`}
@@ -577,8 +577,8 @@ function PageBuilderPersonioJobs({
                             type="button"
                             onClick={() => setSelectedUnitId(unit._id)}
                             aria-pressed={isActive}
-                            className={`px-3 py-1.5 rounded-full text-[10px] font-medium uppercase tracking-wide transition-colors ${isActive
-                              ? "bg-lime-500 text-black"
+                            className={`px-3 py-1.5 rounded-full text-[8px] font-medium uppercase tracking-wide transition-colors ${isActive
+                              ? "bg-lime-400 text-black"
                               : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
                               }`}
                           >
@@ -609,7 +609,7 @@ function PageBuilderPersonioJobs({
                   <button
                     type="button"
                     onClick={resetFilters}
-                    className="mt-3 text-[11px] border rounded-xl px-6 font-medium uppercase tracking-wide text-neutral-200 hover:text-neutral-200 hover:bg-neutral-900 transition-colors"
+                    className="mt-3 text-[8px] border rounded-xl px-6 font-medium uppercase tracking-wide text-neutral-200 hover:text-neutral-200 hover:bg-neutral-900 transition-colors"
                   >
                     Clear filters
                   </button>
@@ -680,25 +680,29 @@ function PageBuilderPersonioJobs({
                           ) : null}
                           {job.remote ? <Tag tone="remote">Remote</Tag> : null}
                         </div>
-
-                        {showUpdatedAt && updatedAtLabel ? (
-                          <p className="mt-3 text-[10px] uppercase tracking-wide text-neutral-600">
-                            Updated: {updatedAtLabel}
-                          </p>
-                        ) : null}
-
                         {job.url ? (
-                          <div className="w-[120px] absolute bottom-0 min-w-[120px] shrink-0">
+                          <div className="w-[120px] flex flex-col   shrink-0">
                             <Button2
                               text={applyLabel}
                               href={job.url}
-                              variant="ghost"
+                              variant="limesmallrounded"
                               magnetic={false}
-                              className="rounded-none"
+
                             />
+
+                            {showUpdatedAt && updatedAtLabel ? (
+                              <p className=" text-[10px]  tracking-wide text-neutral-400">
+                                Updated: <span className="font-bold">{updatedAtLabel} </span>
+                              </p>
+                            ) : null}
                           </div>
                         ) : null}
+
+
+
+
                       </div>
+
                     </li>
                   );
                 })}

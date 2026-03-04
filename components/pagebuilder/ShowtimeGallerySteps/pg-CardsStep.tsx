@@ -94,7 +94,7 @@ export default function CardsStep({ step }: CardsStepProps) {
         {/* Badge (left) */}
         {step.badge && (
           <Badgemodule
-            className={step.badge.colSpan || "col-span-2"}
+            className={`hidden md:block iphone-landscape:!hidden ${step.badge.colSpan || "col-span-2"}`}
             text={step.badge.text ?? ""}
             subtitle={step.badge.subtitle ?? ""}
             numberEl={step.badge.numberEl ?? ""}
@@ -103,7 +103,7 @@ export default function CardsStep({ step }: CardsStepProps) {
 
         {/* Title + paragraph (center) */}
         {(title || description) && (
-          <div className="col-span-10 col-start-3 border">
+          <div className="col-span-12 col-start-1 md:col-span-10 md:col-start-3 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 border">
             <StaggeredSlideUp
               className="flex flex-col items-start justify-start"
               delay={0.1}
@@ -128,7 +128,7 @@ export default function CardsStep({ step }: CardsStepProps) {
         {/* Cards */}
 
         {cards.length > 0 && (
-          <div className="col-span-9  col-start-3 mt-8 ">
+          <div className="col-span-12 col-start-1 md:col-span-9 md:col-start-3 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 mt-8 ">
             <ExpandableCards items={cards} variant="compact" columns={5} />
           </div>
         )}

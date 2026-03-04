@@ -163,7 +163,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
                     distance={100}
                     className="max-w-full md:max-w-2/4"
                   >
-                    <h2 className="text-5xl leading-none text-neutral-700 font-aspekta">
+                    <h2 className="text-3xl leading-normal text-neutral-700 font-aspekta">
                       {introHeading}
                     </h2>
                   </StaggeredSlideUp>
@@ -173,9 +173,9 @@ function ContentSection({ data }: { data: ContentSectionData }) {
                     delay={0.65}
                     staggerDelay={0.03}
                     distance={100}
-                    className="max-w-full md:max-w-2/4"
+                    className="max-w-full md:max-w-2/4 "
                   >
-                    <h2 className="text-5xl leading-none text-neutral-400 font-aspekta">
+                    <h2 className="text-3xl leading-normal text-neutral-400 font-aspekta">
                       {introSubheading}
                     </h2>
                   </StaggeredSlideUp>
@@ -196,17 +196,17 @@ function ContentSection({ data }: { data: ContentSectionData }) {
         <div
           className={`z-1 grid gap-8 col-span-12 py-${paddingY} col-start-1 container mx-auto row-start-1 grid-cols-12`}
         >
-          <div className={`z-1 col-span-${columnSpan} col-start-1`}>
+          <div className={`z-1 col-span-${columnSpan} col-start-1 pt-8  border-t`}>
             {/* Optional section title */}
             {title && (
-              <StaggeredFadeIn>
-                <h2 className="text-6xl mb-12 text-neutral-800">{title}</h2>
+              <StaggeredFadeIn viewThreshold={0.01}>
+                <h2 className="text-4xl  md:text-7xl  tracking-tighter font-light mb-12 text-neutral-600">{title}</h2>
               </StaggeredFadeIn>
             )}
 
             {/* Content */}
-            <StaggeredFadeIn>
-              <div className="w-full md:w-2/4">
+            <StaggeredFadeIn viewThreshold={0.01}>
+              <div className="w-full px-12 md:w-2/4">
                 <PortableText
                   value={content}
                   components={portableTextComponents}

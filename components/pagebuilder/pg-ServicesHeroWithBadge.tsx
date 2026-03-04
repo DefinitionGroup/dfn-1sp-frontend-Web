@@ -101,7 +101,7 @@ function ServicesHeroWithBadge({
         >
           {/* Badge Module - Responsive positioning */}
           {badgeText && (
-            <div className="col-span-4 sm:col-span-3 md:col-span-2 mb-8 md:mb-0 md:sticky md:top-24 self-start">
+            <div className="hidden md:block md:col-span-2 md:mb-0 md:sticky md:top-24 self-start iphone-landscape:!hidden">
               <Badgemodule
                 text={badgeText}
                 subtitle={badgeSubtitle || ""}
@@ -113,7 +113,7 @@ function ServicesHeroWithBadge({
           )}
 
           {/* Title and Subtitle */}
-          <div className={`col-span-4 sm:col-span-6 ${badgeText ? "md:col-span-10 md:col-start-3" : "md:col-span-12"}`}>
+          <div className={`col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 ${badgeText ? "md:col-span-10 md:col-start-3" : "md:col-span-12"}`}>
             <StaggeredSlideUp
               className="flex flex-col items-start justify-start gap-4"
               delay={0.0}
@@ -134,7 +134,7 @@ function ServicesHeroWithBadge({
 
           {/* CTA Section - Improved responsive layout */}
           {cta && (
-            <div className="col-span-4 sm:col-span-3 md:col-span-2 md:col-start-3 text-white mt-6 md:mt-8">
+            <div className="col-span-4 sm:col-span-3 md:col-span-2 md:col-start-3 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 text-white mt-6 md:mt-8">
               <CtaMiniComponent
                 heading={cta.heading}
                 paragraph={cta.paragraph || ""}
@@ -152,7 +152,7 @@ function ServicesHeroWithBadge({
 
           {/* List Items - Improved responsive layout */}
           {listItems && listItems.length > 0 && (
-            <div className={`col-span-4 sm:col-span-6 ${cta ? "md:col-span-4 md:col-start-5" : "md:col-span-8 md:col-start-3"} mt-6 md:mt-8`}>
+            <div className={`col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 ${cta ? "md:col-span-4 md:col-start-5" : "md:col-span-8 md:col-start-3"} mt-6 md:mt-8`}>
               <ListContainerComponent>
                 {listItems.map((item, index) => (
                   <ListItemComponent
