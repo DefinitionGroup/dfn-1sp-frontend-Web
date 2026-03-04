@@ -61,6 +61,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   const posterImgRef = useRef<HTMLImageElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const pathname = usePathname();
+  const routeAnimationKey = `${pathname ?? "__unknown__"}-${isHero ? "hero" : "section"}`;
   const rawInView = useInView(ref, {
     once: false,
     amount: 0.1,
@@ -189,7 +190,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
     setSourceFallbackStage(0);
     setAutoplayBlocked(false);
     setVideoLoadFailed(false);
-  }, [useVideo, posterFallback, videoSrc, videoUrlDesktop, videoUrlMobile]);
+  }, [useVideo, posterFallback, videoSrc, videoUrlDesktop, videoUrlMobile, pathname]);
 
   useEffect(() => {
     if (!useVideo || posterLoaded) return;
@@ -315,6 +316,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
       className={`absolute mt-4 inset-0 overflow-visible mx-auto ${className}`}
     >
       <motion.div
+        key={routeAnimationKey}
         initial={{
           clipPath: clipPathClosed,
           opacity: preInViewOpacity,
