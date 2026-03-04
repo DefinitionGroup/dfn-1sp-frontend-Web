@@ -2,10 +2,6 @@ import React from "react";
 import { defineType, defineField, defineArrayMember } from "sanity";
 import { TextT } from "@phosphor-icons/react";
 
-type MediaParent = {
-  /* nothing needed; we infer video/image from asset */
-};
-
 export default defineType({
   name: "oneSPHeader",
   title: "Header",
@@ -73,6 +69,28 @@ export default defineType({
       name: "paragraphs",
       title: "Paragraphs",
       description: "Rich text content below the typewriter. Use paragraphs for spacing.",
+      type: "array",
+      of: [
+        defineArrayMember({
+          type: "block",
+          styles: [{ title: "Normal", value: "normal" }],
+          lists: [],
+          marks: {
+            decorators: [
+              { title: "Bold", value: "strong" },
+              { title: "Italic", value: "em" },
+            ],
+            annotations: [],
+          },
+        }),
+      ],
+      group: "content",
+    }),
+    defineField({
+      name: "mobileParagraphs",
+      title: "Mobile Paragraphs",
+      description:
+        "Rich text content for mobile and iPhone landscape. If empty, desktop paragraphs are used.",
       type: "array",
       of: [
         defineArrayMember({

@@ -79,6 +79,9 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   const eyebrow = step.eyebrow ?? "Welcome at 1SP";
   const words = Array.isArray(step.rotatingText) ? step.rotatingText : [];
   const paragraphs = (step.paragraphs ?? []) as PortableTextBlock[];
+  const mobileParagraphs = (step.mobileParagraphs ?? []) as PortableTextBlock[];
+  const mobileParagraphsToRender =
+    mobileParagraphs.length > 0 ? mobileParagraphs : paragraphs;
   const highlight = step.highlight;
   const navPointName = step.navPointName;
   const hideFromNav = (step as any).hideFromNav ?? false;
@@ -185,11 +188,21 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           {/* Typewriter words */}
           {words.length > 0 && <TypewriterRotator text={words} />}
 
-          {/* Paragraphs (rich text) */}
+          {/* Desktop paragraphs (rich text) */}
           {paragraphs.length > 0 && (
-            <div className="space-y-4  text-neutral-50 lg:max-w-3/4">
+            <div className="hidden md:block iphone-landscape:!hidden space-y-4 text-neutral-50 lg:max-w-3/4">
               <PortableText
                 value={paragraphs}
+                components={portableTextComponentsWithHighlight}
+              />
+            </div>
+          )}
+
+          {/* Mobile + iPhone landscape paragraphs (rich text) */}
+          {mobileParagraphsToRender.length > 0 && (
+            <div className="block md:hidden iphone-landscape:!block space-y-4 text-neutral-50 lg:max-w-3/4">
+              <PortableText
+                value={mobileParagraphsToRender}
                 components={portableTextComponentsWithHighlight}
               />
             </div>

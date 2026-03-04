@@ -391,6 +391,7 @@ export interface OneSPHeader {
     eyebrow?: string;
     rotatingText?: string[];
     paragraphs?: ParagraphLine[];
+    mobileParagraphs?: ParagraphLine[];
     highlight?: string;
 
     // decoration
