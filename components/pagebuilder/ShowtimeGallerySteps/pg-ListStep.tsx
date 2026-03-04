@@ -369,7 +369,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
           )}
           {showBadgeMiniCta && badgeMiniCta && (
-            <div className="hidden md:block iphone-landscape:!hidden col-span-12 col-start-1 iphone-landscape:max-w-1/3 md:col-span-2 px-1 md:mt-4 pr-8 ">
+            <div className="col-span-12 col-start-1 md:col-span-2 px-1 md:mt-4 pr-8 ">
               <CtaMiniComponent
                 heading={badgeMiniCta.heading || ""}
                 paragraph={badgeMiniCta.paragraph || ""}
