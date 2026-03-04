@@ -190,7 +190,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
           {/* Desktop paragraphs (rich text) */}
           {paragraphs.length > 0 && (
-            <div className="hidden md:block iphone-landscape:!hidden space-y-4 text-neutral-50 lg:max-w-3/4">
+            <div className="hidden md:block iphone-landscape:!hidden space-y-4 text-neutral-50 ">
               <PortableText
                 value={paragraphs}
                 components={portableTextComponentsWithHighlight}

@@ -852,6 +852,7 @@ export const SMART_UNITS_QUERY = defineQuery(`
   _type,
   name,
   slug,
+  logoColor,
   logo,
   backgroundImage,
   description,

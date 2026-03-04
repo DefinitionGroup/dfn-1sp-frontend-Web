@@ -182,7 +182,7 @@ function ExpandableCards({
                       layoutId={`logo-${active.title}-${id}`}
                       src={active.logo}
                       alt={active.title}
-                      className="w-40 h-32 -left-3 relative  object-contain"
+                      className="w-40 h-32 -left-3 relative  invert object-contain"
                     />
                   )}
                   <motion.h3
@@ -256,7 +256,7 @@ function ExpandableCards({
                     layoutId={`logo-${card.title}-${id}`}
                     src={card.logo}
                     alt={card.title}
-                    className="w-full h-12 -left-2 relative object-contain  object-left"
+                    className="w-full h-12 -left-1 top-2 relative invert object-contain   object-left"
                   />
                 )}
                 {/* Old tile only showed title; keep that for parity */}
