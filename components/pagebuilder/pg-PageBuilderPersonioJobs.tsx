@@ -680,21 +680,23 @@ function PageBuilderPersonioJobs({
                           ) : null}
                           {job.remote ? <Tag tone="remote">Remote</Tag> : null}
                         </div>
-                        <div className="w-[120px] flex flex-col   shrink-0">
-                          <Button2
-                            text={applyLabel}
-                            href={job.url}
-                            variant="limesmallrounded"
-                            magnetic={false}
+                        {job.url ? (
+                          <div className="w-[120px] flex flex-col   shrink-0">
+                            <Button2
+                              text={applyLabel}
+                              href={job.url}
+                              variant="limesmallrounded"
+                              magnetic={false}
 
-                          />
+                            />
 
-                          {showUpdatedAt && updatedAtLabel ? (
-                            <p className=" text-[10px]  tracking-wide text-neutral-400">
-                              Updated: <span className="font-bold">{updatedAtLabel} </span>
-                            </p>
-                          ) : null}
-                        </div>
+                            {showUpdatedAt && updatedAtLabel ? (
+                              <p className=" text-[10px]  tracking-wide text-neutral-400">
+                                Updated: <span className="font-bold">{updatedAtLabel} </span>
+                              </p>
+                            ) : null}
+                          </div>
+                        ) : null}
 
 
 
