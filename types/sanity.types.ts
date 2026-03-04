@@ -148,6 +148,14 @@ export interface GalleryListStep extends GalleryBase {
         color?: "black" | "white" | "gray" | string;
     }>;
 
+    /** Mobile/iPhone-landscape specific list field */
+    mobileListItems?: Array<{
+        text?: string;
+        size?: "small" | "medium" | "large" | string;
+        fontWeight?: "normal" | "bold" | string;
+        color?: "black" | "white" | "gray" | string;
+    }>;
+
     /** Back-compat: legacy list field */
     items?: Array<{
         text?: string;

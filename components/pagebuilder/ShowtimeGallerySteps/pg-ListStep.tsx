@@ -60,6 +60,16 @@ function pickListItems(step: GalleryListStep) {
   return [];
 }
 
+function pickMobileListItems(step: GalleryListStep) {
+  const candidates = [
+    step.mobileListItems,
+    (step as any)?.content?.mobileList?.items,
+    (step as any)?.mobileList?.items,
+  ];
+  for (const c of candidates) if (Array.isArray(c)) return c;
+  return [];
+}
+
 function pickLegacyCards(step: GalleryListStep): CardItem[] {
   const candidates = [
     (step as any)?.expandableCards?.items,
@@ -255,6 +265,9 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
   // Lists & content
   const listItems = pickListItems(step);
+  const mobileListItems = pickMobileListItems(step);
+  const mobileListItemsToRender =
+    mobileListItems.length > 0 ? mobileListItems : listItems;
 
   const {
     cards: cardsFromAC,
@@ -428,7 +441,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
               </div>
               {/* Right list column */}
               {Array.isArray(listItems) && listItems.length > 0 && (
-                <div className="col-span-12  md:col-span-4  col-start-1   md:col-start-1 mt-12 md:mt-8  pb-0 md:row-start-2  iphone-landscape:col-span-12">
+                <div className="hidden md:block iphone-landscape:!hidden col-span-12 md:col-span-4 col-start-1 md:col-start-1 mt-12 md:mt-8 pb-0 md:row-start-2 iphone-landscape:col-span-12">
                   <ListContainerComponent>
                     {listItems.map((it, i) => (
                       <ListItemComponent
@@ -443,6 +456,23 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                   </ListContainerComponent>
                 </div>
               )}
+              {Array.isArray(mobileListItemsToRender) &&
+                mobileListItemsToRender.length > 0 && (
+                  <div className="block md:hidden iphone-landscape:!block col-span-12 md:col-span-4 col-start-1 md:col-start-1 mt-12 md:mt-8 pb-0 md:row-start-2 iphone-landscape:col-span-12">
+                    <ListContainerComponent>
+                      {mobileListItemsToRender.map((it, i) => (
+                        <ListItemComponent
+                          key={(it as any)?._key || `mobile-${i}`}
+                          size={(it?.size as any) || "small"}
+                          fontWeight={(it?.fontWeight as any) || "normal"}
+                          color={(it?.color as any) || "black"}
+                        >
+                          {it?.text}
+                        </ListItemComponent>
+                      ))}
+                    </ListContainerComponent>
+                  </div>
+                )}
             </header>
           )}
 
