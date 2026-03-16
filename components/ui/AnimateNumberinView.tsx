@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useInView } from "motion/react";
 import { AnimateNumber } from "motion-plus/react";
+import { useRobustInView } from "@/hooks/use-robust-in-view";
 
 interface AnimateNumberinViewProps {
   number: string | number;
@@ -22,7 +22,10 @@ export default function AnimateNumberinView({
   transition = { duration: 1.5, ease: "easeOut" },
 }: AnimateNumberinViewProps) {
   const ref = useRef<HTMLDivElement | null>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const { isInView } = useRobustInView(ref, {
+    amount: 0.1,
+    margin: "0px 0px 120px 0px",
+  });
   const [animateNumberValue, setAnimateNumberValue] = useState(0);
 
   useEffect(() => {

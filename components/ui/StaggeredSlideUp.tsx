@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useRef, useId } from "react";
-import { motion, useInView } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
+import { useRobustInView } from "@/hooks/use-robust-in-view";
 
 const EASING_MAP = {
   smooth: [0.33, 1, 0.68, 1] as [number, number, number, number],
@@ -45,6 +46,7 @@ const StaggeredItem = React.memo(({
   duration,
   distance,
   easing,
+  useClipPath,
 }: {
   children: React.ReactNode;
   index: number;
@@ -54,17 +56,20 @@ const StaggeredItem = React.memo(({
   duration: number;
   distance: number;
   easing: [number, number, number, number];
+  useClipPath: boolean;
 }) => {
   const itemDelay = delay + index * staggerDelay;
 
   return (
     <motion.div
       className="relative"
-      initial={{ clipPath: "inset(50% 0% 0% 0%)" }}
+      initial={useClipPath ? { clipPath: "inset(50% 0% 0% 0%)" } : false}
       animate={
-        isVisible
-          ? { clipPath: "inset(0% 0% 0% 0%)" }
-          : { clipPath: "inset(20% 0% 0% 0%)" }
+        useClipPath
+          ? isVisible
+            ? { clipPath: "inset(0% 0% 0% 0%)" }
+            : { clipPath: "inset(20% 0% 0% 0%)" }
+          : undefined
       }
       transition={{
         duration,
@@ -105,30 +110,33 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
   duration = 0.4,
   distance = 10,
   easing = "spring",
-  threshold = 0.15,
-  rootMargin = "0px 0px -10px 0px",
+  threshold = 0.08,
+  rootMargin = "0px 0px 72px 0px",
   once = true,
   debug = false,
   animateImmediately = false,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const id = useId(); // Unique ID to prevent animation conflicts
+  const prefersReducedMotion = useReducedMotion();
 
-  // Single source of truth for viewport detection
-  const isInView = useInView(ref, {
+  const { isInView, isMobile } = useRobustInView(ref, {
     once,
     amount: threshold,
-    margin: rootMargin as `${number}px ${number}px ${number}px ${number}px`,
+    margin: rootMargin,
   });
 
   // Determine if animation should be active
-  const shouldAnimate = animateImmediately || isInView;
+  const shouldAnimate = animateImmediately || !!prefersReducedMotion || isInView;
 
   // Convert children to array for mapping
   const childArray = React.Children.toArray(children);
 
   // Get the easing curve
   const easingCurve = EASING_MAP[easing];
+  const shouldUseClipPath = !isMobile && !prefersReducedMotion;
+  const effectiveDistance = prefersReducedMotion ? 0 : distance;
+  const effectiveDuration = prefersReducedMotion ? 0.01 : duration;
 
   return (
     <div ref={ref} className={className} data-stagger-id={id}>
@@ -147,9 +155,10 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
           isVisible={shouldAnimate}
           delay={delay}
           staggerDelay={staggerDelay}
-          duration={duration}
-          distance={distance}
+          duration={effectiveDuration}
+          distance={effectiveDistance}
           easing={easingCurve}
+          useClipPath={shouldUseClipPath}
         >
           {child}
         </StaggeredItem>

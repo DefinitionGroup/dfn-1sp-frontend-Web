@@ -2,21 +2,9 @@
 
 import { delay, wrap } from "motion";
 import { Typewriter } from "motion-plus/react";
-import React, { useState, useEffect } from "react";
-
-function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia(query);
-    setMatches(media.matches);
-    const listener = (e: MediaQueryListEvent) => setMatches(e.matches);
-    media.addEventListener("change", listener);
-    return () => media.removeEventListener("change", listener);
-  }, [query]);
-
-  return matches;
-}
+import React, { useState } from "react";
+import { useMediaQuery } from "@/hooks/use-media-query";
+import { SMALL_TOUCH_LANDSCAPE_MEDIA_QUERY } from "@/lib/responsive";
 
 export default function TypewriterRotator({
   text = [
@@ -35,9 +23,7 @@ export default function TypewriterRotator({
 }) {
   const [index, setIndex] = useState(0);
   const isMobile = useMediaQuery("(max-width: 768px)");
-  const isIphoneLandscape = useMediaQuery(
-    "(orientation: landscape) and (max-height: 500px) and (max-width: 950px)"
-  );
+  const isIphoneLandscape = useMediaQuery(SMALL_TOUCH_LANDSCAPE_MEDIA_QUERY);
 
   const cursorStyle: React.CSSProperties = {
     background: "#66ff00",

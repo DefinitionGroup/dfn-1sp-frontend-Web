@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import HeaderImageVideoComp2 from "@/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import { assetUrl } from "@/utils/utils";
@@ -12,31 +12,11 @@ import type {
   CloudinaryAsset,
 } from "@/types/sanity.types";
 import { withDebugBadge } from "@/components/dev/withDebugBadge";
-
-function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const media = window.matchMedia(query);
-    setMatches(media.matches);
-
-    const listener = (e: MediaQueryListEvent) => setMatches(e.matches);
-    media.addEventListener("change", listener);
-
-    return () => {
-      media.removeEventListener("change", listener);
-    };
-  }, [query]);
-
-  return matches;
-}
+import { useMediaQuery } from "@/hooks/use-media-query";
+import { SMALL_TOUCH_LANDSCAPE_MEDIA_QUERY } from "@/lib/responsive";
 
 function useIphoneLandscape(): boolean {
-  return useMediaQuery(
-    "(orientation: landscape) and (max-height: 500px) and (max-width: 950px)"
-  );
+  return useMediaQuery(SMALL_TOUCH_LANDSCAPE_MEDIA_QUERY);
 }
 /** --- helpers --- */
 function isVideoUrl(url?: string) {

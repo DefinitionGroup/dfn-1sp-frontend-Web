@@ -2,8 +2,9 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+/* Legacy variant name retained; it now targets any short touch landscape viewport. */
 @custom-variant iphone-landscape {
-  @media (orientation: landscape) and (max-height: 500px) and (max-width: 950px) {
+  @media (orientation: landscape) and (pointer: coarse) and (max-height: 500px) {
     @slot;
   }
 }
