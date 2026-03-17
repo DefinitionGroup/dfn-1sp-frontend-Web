@@ -172,7 +172,7 @@ function PageBuilderLogoFloat({
                       delay: index * 0.05,
                       ease: "easeOut",
                     }}
-                    className="rounded-sm min-h-12 w-1/3  flex items-center justify-center  md:w-auto pointer-events-auto cursor-pointer"
+                    className="rounded-sm min-h-2  flex items-center justify-center  md:w-auto pointer-events-auto cursor-pointer"
                     onClick={() => {
                       document
                         .getElementById("what-fuels-1sp")
@@ -185,7 +185,7 @@ function PageBuilderLogoFloat({
                       width={displayW}
                       height={displayH}
                       style={{ width: displayW, height: displayH }}
-                      className={`invert object-contain object-left iphone-landscape:max-w-[8vw]  max-w-[33vw]   min-h-12 md:min-h-8 lg:max-w-none ${logoHeightClass}`}
+                      className={`invert object-contain object-left iphone-landscape:max-w-[8vw]  max-w-[33vw]   min-h-2 md:min-h-8 lg:max-w-none ${logoHeightClass}`}
                     />
                   </motion.div>
                 );

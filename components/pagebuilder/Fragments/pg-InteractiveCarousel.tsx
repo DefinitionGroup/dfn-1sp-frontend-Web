@@ -359,33 +359,7 @@ function InteractiveCarousel({
         </div>
 
         {/* Thumbnail Strip (match Plaintext absolute positioning) */}
-        <div className="absolute flex justify-center w-full bottom-[200px] z-30">
-          <div
-            ref={stripRef}
-            className={`flex absolute justify-center mt-8 space-x-4 pt-4 pb-4 ${isScrollable ? "overflow-x-auto" : ""}`}
-          >
-            {carouselItems.map((item, index) => (
-              <motion.button
-                key={item.id}
-                className={`relative flex-shrink-0 w-22 h-18 rounded-xl overflow-hidden outline-3 transition-colors ${index === currentIndex ? "outline-lime-500" : "outline-transparent"}`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  setDirection(index > currentIndex ? 1 : -1);
-                  setCurrentIndex(index);
-                }}
-              >
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  sizes="88px"
-                  className="w-full h-full object-cover"
-                />
-              </motion.button>
-            ))}
-          </div>
-        </div>
+
       </div>
     </section>
   );
