@@ -16,6 +16,7 @@ import SiteWrapper from "@/components/SiteWrapper";
 import NotFound from "@/components/ui/not-found";
 import ContactForm from "@/components/ui/ContactForm";
 import { getPageBySlug } from "@/lib/sanity/queries";
+import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 import { urlFor } from "@/sanity/lib/image";
 import type { Metadata } from "next";
 import { cloudinaryPosterUrl, cloudinaryPosterSrcSet } from "@/utils/utils";
@@ -208,6 +209,7 @@ export default async function ContactPage({
         />
       )}
 
+      <HamburgerGradientMenu />
       <div className="min-h-screen">
         <div className="min-h-screen px-1 md:px-2">
           {page.content1sp?.length ? (

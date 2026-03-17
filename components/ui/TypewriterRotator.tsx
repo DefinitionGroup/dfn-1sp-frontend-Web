@@ -82,9 +82,9 @@ const container: React.CSSProperties = {
 };
 
 const animatingText: React.CSSProperties = {
-  fontSize: "min(10vw, 5rem)",
+  fontSize: "min(4vw, 12rem)",
   fontWeight: 500,
-  lineHeight: "min(9vw, 5rem)",
+  lineHeight: "min(9vw, 12rem)",
   letterSpacing: " - 0.1rem",
 
   textTransform: "uppercase",
@@ -94,7 +94,7 @@ const animatingText: React.CSSProperties = {
 
 const animatingTextIPL: React.CSSProperties = {
   fontSize: "min(2vw, 1.25rem)",
-  fontWeight: 400,
+  fontWeight: 500,
   lineHeight: "min(2vw, 1.75rem)",
   letterSpacing: " - 0.1rem",
   textTransform: "uppercase",
