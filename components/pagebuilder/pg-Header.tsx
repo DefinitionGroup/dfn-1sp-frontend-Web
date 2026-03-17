@@ -133,7 +133,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="relative min-h-[80vh] h-[95vh] iphone-landscape:h-full  md:h-[80vh] overflow-hidden z-1"
+      className="relative min-h-[80vh] h-[95vh] iphone-landscape:!h-dvh  overflow-hidden z-1"
     >
       {/* Background media */}
       {mediaUrl && (

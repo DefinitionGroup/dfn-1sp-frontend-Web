@@ -44,6 +44,7 @@ export default function TypewriterRotator({
   return (
     <h2 style={container}>
       <Typewriter
+        key={isIphoneLandscape ? "ipl" : isMobile ? "mobile" : "desktop"}
         as="div"
         variance={2.8}
         speed={"slow"}
@@ -92,9 +93,9 @@ const animatingText: React.CSSProperties = {
 };
 
 const animatingTextIPL: React.CSSProperties = {
-  fontSize: "min(5vw, 1.75rem)",
-  fontWeight: 500,
-  lineHeight: "min(7vw, 2.75rem)",
+  fontSize: "min(2vw, 1.25rem)",
+  fontWeight: 400,
+  lineHeight: "min(2vw, 1.75rem)",
   letterSpacing: " - 0.1rem",
   textTransform: "uppercase",
   color: "var(--text-primary)",

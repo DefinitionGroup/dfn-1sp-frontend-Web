@@ -87,8 +87,8 @@ function CtaMiniComponent({
             <Link
               href={finalUrl}
               className={cn(
-                "inline-flex w-full md:w-fit items-center justify-between gap-3 rounded-xs border font-bold tracking-wider transition-colors duration-200",
-                "text-[10px] sm:text-xxs md:text-xs",
+                "inline-flex w-full md:w-fit items-center justify-between gap-3 rounded-xs border font-medium tracking-wider transition-colors duration-200",
+                "text-[10px] sm:text-xxs md:text-xxs",
                 buttonVariant === "limesmall"
                   ? "px-3 py-2 md:px-4 md:py-2"
                   : "px-3 py-2.5 md:px-4 md:py-3",
