@@ -12,6 +12,7 @@ import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-r
 import FrontNavOverlay from "../menu/FrontNavOverlay";
 import Image from "next/image";
 import { useFooterMenu } from "../menu/FooterMenuContext";
+import { useNavColor } from "../menu/NavColorContext";
 
 interface MenuItem {
   label: string;
@@ -55,8 +56,8 @@ const DEFAULT_ITEMS: MenuItem[] = [
 
 export default function HamburgerGradientMenu({
   items = DEFAULT_ITEMS,
-  color = "light",
-  buttonClassName = "md:hidden",
+  color,
+  buttonClassName = "m-0",
   panelClassName = "",
 }: HamburgerGradientMenuProps) {
   const [open, setOpen] = useState(false);
@@ -65,6 +66,7 @@ export default function HamburgerGradientMenu({
   const firstLinkRef = useRef<HTMLAnchorElement | null>(null);
   const router = useOptimizedTransitionRouter();
   const footerMenu = useFooterMenu();
+  const navColor = useNavColor();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -96,8 +98,10 @@ export default function HamburgerGradientMenu({
     }
   }, [open]);
 
+  const resolvedColor = color ?? navColor ?? "light";
+
   const imageLogo =
-    color === "dark"
+    resolvedColor === "dark"
       ? "/ci/1sp-fulllogotype-blk.svg"
       : "/ci/1sp-fulllogotype.svg";
 
@@ -158,26 +162,26 @@ export default function HamburgerGradientMenu({
   }, [pendingHref, router]);
 
   return (
-    <div className="fixed top-0 left-0 w-full md:hidden z-[1000000] flex items-center justify-between h-24">
-      <div className="pointer-events-auto  mt-2 ml-2 inline-block">
+    <div className="fixed top-6 left-0 right-0 z-[1000000] flex h-16 w-full items-center justify-between px-6 md:hidden iphone-landscape:top-2">
+      <div className="pointer-events-auto inline-flex items-center">
         <HamburgerButton
           open={open}
           onClick={toggle}
-          className=""
+          className={buttonClassName}
           ariaControls="gradient-menu-panel"
         />
       </div>
       <Link
-        className="hover:text-lime-400   pointer-events-auto"
+        className="pointer-events-auto flex items-center justify-center"
         href={"/"}
         onClick={(event) => handleMenuNavigation(event, "/")}
       >
         <Image
           src={imageLogo}
           alt="1SP Logo"
-          width={60}
-          height={60}
-          className="object-contain md:hidden  block mr-8 top-1 relative sm:right-4 w-[60px] h-auto"
+          width={64}
+          height={64}
+          className="block h-auto w-16 object-contain md:hidden"
         />
       </Link>
       <AnimatePresence mode="wait" onExitComplete={handleOverlayExitComplete}>
