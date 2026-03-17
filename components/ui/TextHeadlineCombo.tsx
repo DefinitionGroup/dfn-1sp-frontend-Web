@@ -93,7 +93,7 @@ export const TextHeadlineCombo: React.FC<TextHeadlineComboProps> = ({
   const baseMotion = (d: number) => ({
     initial: animate ? { opacity: 0, y: 24 } : undefined,
     whileInView: animate ? { opacity: 1, y: 0 } : undefined,
-    viewport: animate ? { once: true, amount: 0.5 } : undefined,
+    viewport: animate ? { once: true, amount: 0.15 } : undefined,
     transition: animate
       ? {
           duration: 0.6,

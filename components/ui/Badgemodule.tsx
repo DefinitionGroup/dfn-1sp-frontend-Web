@@ -143,6 +143,16 @@ export default function Badgemodule({
             transition: {
               duration: 0.5,
               ease: [0.25, 0.46, 0.45, 0.94],
+            },
+          },
+        }}
+      >
+      <motion.div
+        className="flex flex-col justify-between h-full"
+        variants={{
+          hidden: {},
+          visible: {
+            transition: {
               staggerChildren: 0.15,
               delayChildren: 0.1,
             },
@@ -233,6 +243,7 @@ export default function Badgemodule({
         >
           {subtitle}
         </motion.div>
+      </motion.div>
       </motion.div>
     </div>
   );

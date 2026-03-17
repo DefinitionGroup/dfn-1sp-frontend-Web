@@ -112,11 +112,7 @@ export default function CasePoweredByContact({
         )}
 
         {relatedPerson && (
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+          <div
             className="max-w-5xl mx-auto bg-white rounded-xl overflow-hidden shadow-2xl mt-14 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 items-end gap-8 lg:gap-10"
           >
             <div className="lg:col-span-7 p-8">
@@ -211,7 +207,7 @@ export default function CasePoweredByContact({
                 )}
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         )}
       </div>
     </section>
