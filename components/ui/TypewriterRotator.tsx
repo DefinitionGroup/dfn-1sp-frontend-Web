@@ -3,8 +3,6 @@
 import { delay, wrap } from "motion";
 import { Typewriter } from "motion-plus/react";
 import React, { useState } from "react";
-import { useMediaQuery } from "@/hooks/use-media-query";
-import { SMALL_TOUCH_LANDSCAPE_MEDIA_QUERY } from "@/lib/responsive";
 
 export default function TypewriterRotator({
   text = [
@@ -22,36 +20,18 @@ export default function TypewriterRotator({
   text?: string[];
 }) {
   const [index, setIndex] = useState(0);
-  const isMobile = useMediaQuery("(max-width: 768px)");
-  const isIphoneLandscape = useMediaQuery(SMALL_TOUCH_LANDSCAPE_MEDIA_QUERY);
-
-  const cursorStyle: React.CSSProperties = {
-    background: "#66ff00",
-    width: isMobile ? 4 : 8,
-    borderRadius: isMobile ? 2 : 4,
-    marginLeft: isMobile ? 2 : 4,
-    minHeight: isMobile ? "calc(24px + 4vw)" : "calc(20px + 3vw)",
-  };
-
-  const cursorStyleIPL: React.CSSProperties = {
-    background: "#66ff00",
-    width: 3,
-    borderRadius: 2,
-    marginLeft: 2,
-    minHeight: "calc(14px + 1.5vw)",
-  };
 
   return (
-    <h2 style={container}>
+    <h2 className="typewriter-rotator flex flex-col flex-wrap items-start max-w-[90%] w-full font-aspekta font-medium leading-[0.8] text-accent"
+      style={{ maxWidth: 900 }}>
       <Typewriter
-        key={isIphoneLandscape ? "ipl" : isMobile ? "mobile" : "desktop"}
         as="div"
         variance={2.8}
-        speed={"slow"}
+        speed="slow"
         backspace="character"
         cursorBlinkDuration={0.26}
-        cursorStyle={isIphoneLandscape ? cursorStyleIPL : cursorStyle}
-        textStyle={isIphoneLandscape ? animatingTextIPL : animatingText}
+        cursorStyle={cursorStyle}
+        textStyle={textStyle}
         onComplete={() => {
           delay(() => setIndex(wrap(0, text.length, index + 1)), 1);
         }}
@@ -62,42 +42,20 @@ export default function TypewriterRotator({
   );
 }
 
-/**
- * ==============   Styles   ================
- */
-const container: React.CSSProperties = {
-  display: "flex",
-  flexWrap: "wrap",
-  maxWidth: "90%",
-  alignItems: "flex-start",
-  gap: 0,
-  flexDirection: "column",
-  fontFamily: "var(--font-aspekta)",
-  width: 900,
-  fontWeight: 500,
-  lineHeight: 0.8,
-  color: "var(--accent)",
-
-
+const cursorStyle: React.CSSProperties = {
+  background: "#66ff00",
+  width: "var(--tw-cursor-w)" as string,
+  borderRadius: "var(--tw-cursor-radius)" as string,
+  marginLeft: "var(--tw-cursor-ml)" as string,
+  minHeight: "var(--tw-cursor-h)",
 };
 
-const animatingText: React.CSSProperties = {
-  fontSize: "min(4vw, 12rem)",
+const textStyle: React.CSSProperties = {
+  fontSize: "var(--tw-text-size)",
   fontWeight: 500,
-  lineHeight: "min(9vw, 12rem)",
-  letterSpacing: " - 0.1rem",
-
+  lineHeight: "var(--tw-text-lh)",
+  letterSpacing: "var(--tw-text-ls)",
   textTransform: "uppercase",
   color: "var(--text-primary)",
-  whiteSpace: "wrap",
-};
-
-const animatingTextIPL: React.CSSProperties = {
-  fontSize: "min(2vw, 1.25rem)",
-  fontWeight: 500,
-  lineHeight: "min(2vw, 1.75rem)",
-  letterSpacing: " - 0.1rem",
-  textTransform: "uppercase",
-  color: "var(--text-primary)",
-  whiteSpace: "wrap",
+  whiteSpace: "normal",
 };

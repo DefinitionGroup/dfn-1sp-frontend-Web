@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+
 /* Legacy variant name retained; it now targets any short touch landscape viewport. */
 @custom-variant iphone-landscape {
   @media (orientation: landscape) and (pointer: coarse) and (max-height: 500px) {
@@ -275,6 +276,36 @@
     @apply focus:outline-none focus:ring-2 focus:ring-brand-lime-500 focus:ring-offset-2;
   }
 
+  /* Typewriter rotator — responsive custom properties */
+  .typewriter-rotator {
+    --tw-cursor-w: 8px;
+    --tw-cursor-radius: 4px;
+    --tw-cursor-ml: 4px;
+    --tw-cursor-h: calc(20px + 3vw);
+    --tw-text-size: min(4vw, 12rem);
+    --tw-text-lh: min(9vw, 12rem);
+    --tw-text-ls: -0.1rem;
+  }
+
+  @media (max-width: 768px) {
+    .typewriter-rotator {
+      --tw-cursor-w: 4px;
+      --tw-cursor-radius: 2px;
+      --tw-cursor-ml: 2px;
+      --tw-cursor-h: calc(24px + 4vw);
+    }
+  }
+
+  @media (orientation: landscape) and (pointer: coarse) and (max-height: 500px) {
+    .typewriter-rotator {
+      --tw-cursor-w: 3px;
+      --tw-cursor-radius: 2px;
+      --tw-cursor-ml: 2px;
+      --tw-cursor-h: calc(14px + 1.5vw);
+      --tw-text-size: min(2vw, 1.25rem);
+      --tw-text-lh: min(2vw, 1.75rem);
+    }
+  }
 
 }
 
@@ -481,12 +512,15 @@
 
   /* Hide scrollbar utility - cross-browser */
   .scrollbar-hide {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
   }
 
   .scrollbar-hide::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+    display: none;
+    /* Chrome, Safari, Opera */
   }
 
   /* Alternative: Style scrollbars to be transparent/dark instead of hiding */
