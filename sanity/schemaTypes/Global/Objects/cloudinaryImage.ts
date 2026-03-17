@@ -29,6 +29,7 @@ export default defineType({
             title: 'Crop Focus',
             description: 'Choose whether the frontend should keep the default center crop or use a manual focal point.',
             initialValue: 'auto',
+            hidden: true,
             options: {
                 list: [
                     { title: 'Auto / Center', value: 'auto' },
@@ -44,7 +45,7 @@ export default defineType({
             title: 'Focus X (%)',
             description: 'Horizontal focal point. 0 = left, 50 = center, 100 = right.',
             initialValue: 50,
-            hidden: ({ parent }) => parent?.focusMode !== 'manual',
+            hidden: true,
             validation: (Rule) => Rule.min(0).max(100),
         }),
         defineField({
@@ -53,7 +54,7 @@ export default defineType({
             title: 'Focus Y (%)',
             description: 'Vertical focal point. 0 = top, 50 = center, 100 = bottom.',
             initialValue: 50,
-            hidden: ({ parent }) => parent?.focusMode !== 'manual',
+            hidden: true,
             validation: (Rule) => Rule.min(0).max(100),
         }),
     ],

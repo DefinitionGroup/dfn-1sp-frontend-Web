@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { ServiceBackgroundFocusInput } from '../../../lib/serviceBackgroundFocusInput'
 
 const languageFilter = (docField: string) => ({ document }: { document: any }) => {
     const currentLanguage = document?.language || 'de'
@@ -70,6 +71,10 @@ export default defineType({
             name: 'serviceBackground',
             title: 'Service Background Image',
             type: 'cloudinaryImage',
+            description: 'Use the drag point below the image to control the gallery crop focus.',
+            components: {
+                input: ServiceBackgroundFocusInput,
+            },
             group: 'media',
         }),
         defineField({
