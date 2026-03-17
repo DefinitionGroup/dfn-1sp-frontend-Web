@@ -146,7 +146,7 @@ function PageBuilderLogoFloat({
       className="fixed inset-x-0 top-0 z-[999999] pointer-events-none lg:inset-0"
       data-component="pg-pagebuilder-logo-float"
     >
-      <div className="w-full flex items-start justify-center px-4 pt-24 md:pt-16 sm:px-6 lg:h-full lg:mt-24 lg:px-6 lg:pt-0">
+      <div className="w-full flex items-start justify-center px-4  sm:px-6 lg:h-full mt-12  md:mt-24  lg:px-6 lg:pt-0">
         {isLoading ? (
           <div className="text-center text-neutral-400">.</div>
         ) : cardsWithLogo.length === 0 ? (
