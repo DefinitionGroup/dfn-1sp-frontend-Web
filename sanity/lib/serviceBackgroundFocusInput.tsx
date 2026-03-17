@@ -21,6 +21,25 @@ type CloudinaryImageValue = {
 
 const HIDDEN_MEMBER_NAMES = new Set(["focusMode", "focusX", "focusY"]);
 
+function isVideoUrl(url?: string): boolean {
+  if (!url) return false;
+  return /\.(mp4|webm|mov|ogg|avi|mkv)(\?.*)?$/i.test(url) || url.includes("/video/");
+}
+
+function cloudinaryVideoPosterUrl(url?: string): string | undefined {
+  if (!url) return undefined;
+  if (!url.includes("/upload/")) return undefined;
+
+  const transforms = ["q_auto", "f_auto", "so_auto", "w_1200"];
+  const transformStr = transforms.join(",");
+  const withTransforms = url.replace(/\/upload\//, `/upload/${transformStr}/`);
+
+  return withTransforms.replace(
+    /\.(mp4|mov|webm|avi|mkv|ogg)(\?.*)?$/i,
+    ".jpg$2"
+  );
+}
+
 function clampFocus(value?: number): number {
   if (typeof value !== "number" || Number.isNaN(value)) return 50;
   return Math.min(100, Math.max(0, value));
@@ -76,7 +95,10 @@ export function ServiceBackgroundFocusInput(
   const [isDragging, setIsDragging] = useState(false);
   const isDraggingRef = useRef(false);
 
-  const imageUrl = value?.asset?.secure_url || value?.asset?.url;
+  const mediaUrl = value?.asset?.secure_url || value?.asset?.url;
+  const isVideoAsset = isVideoUrl(mediaUrl);
+  const posterUrl = isVideoAsset ? cloudinaryVideoPosterUrl(mediaUrl) : undefined;
+  const previewImageUrl = posterUrl || mediaUrl;
   const focusMode = value?.focusMode === "manual" ? "manual" : "auto";
   const focusX = clampFocus(value?.focusX);
   const focusY = clampFocus(value?.focusY);
@@ -204,7 +226,7 @@ export function ServiceBackgroundFocusInput(
             </Flex>
           </Flex>
 
-          {imageUrl ? (
+          {mediaUrl ? (
             <Stack space={3}>
               <Card padding={2} radius={2} border>
                 <Box
@@ -219,17 +241,33 @@ export function ServiceBackgroundFocusInput(
                     userSelect: "none",
                   }}
                 >
-                  <img
-                    src={imageUrl}
-                    alt={value?.alt || ""}
-                    draggable={false}
-                    style={{
-                      display: "block",
-                      width: "100%",
-                      height: "auto",
-                      borderRadius: 6,
-                    }}
-                  />
+                  {previewImageUrl ? (
+                    <img
+                      src={previewImageUrl}
+                      alt={value?.alt || ""}
+                      draggable={false}
+                      style={{
+                        display: "block",
+                        width: "100%",
+                        height: "auto",
+                        borderRadius: 6,
+                      }}
+                    />
+                  ) : (
+                    <video
+                      src={mediaUrl}
+                      muted
+                      loop
+                      playsInline
+                      autoPlay
+                      style={{
+                        display: "block",
+                        width: "100%",
+                        height: "auto",
+                        borderRadius: 6,
+                      }}
+                    />
+                  )}
 
                   <div
                     aria-hidden="true"
@@ -289,17 +327,53 @@ export function ServiceBackgroundFocusInput(
                       width: "100%",
                       aspectRatio: "3 / 2",
                       borderRadius: 6,
-                      backgroundImage: `url(${imageUrl})`,
-                      backgroundPosition: `${focusX}% ${focusY}%`,
-                      backgroundRepeat: "no-repeat",
-                      backgroundSize: "cover",
+                      overflow: "hidden",
+                      position: "relative",
+                      background: "var(--card-code-bg-color)",
                     }}
-                  />
+                  >
+                    {isVideoAsset ? (
+                      <video
+                        src={mediaUrl}
+                        muted
+                        loop
+                        playsInline
+                        autoPlay
+                        style={{
+                          display: "block",
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          objectPosition: `${focusX}% ${focusY}%`,
+                        }}
+                      />
+                    ) : previewImageUrl ? (
+                      <img
+                        src={previewImageUrl}
+                        alt=""
+                        draggable={false}
+                        style={{
+                          display: "block",
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          objectPosition: `${focusX}% ${focusY}%`,
+                        }}
+                      />
+                    ) : null}
+                  </Box>
                   <Text size={1} muted>
                     {focusMode === "manual"
                       ? `Manual focus at ${focusX}% / ${focusY}%`
                       : "Auto mode uses the default center crop. Dragging the image switches to manual."}
                   </Text>
+                  {isVideoAsset ? (
+                    <Text size={1} muted>
+                      Video backgrounds use the same focal-point data as images.
+                      The drag surface uses a poster frame, and the crop preview
+                      uses the video itself when available.
+                    </Text>
+                  ) : null}
                 </Stack>
               </Card>
             </Stack>
