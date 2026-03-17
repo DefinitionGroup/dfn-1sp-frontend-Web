@@ -2,7 +2,6 @@
 
 import React from "react";
 import { useParams } from "next/navigation";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
 import Button2 from "@/components/ui/Button2";
 import GridBackground from "@/components/ui/GridBackground";
 import { client } from "@/sanity/lib/client";
@@ -715,7 +714,4 @@ function PageBuilderPersonioJobs({
   );
 }
 
-export default withDebugBadge(
-  PageBuilderPersonioJobs,
-  "pg-PageBuilderPersonioJobs"
-);
+export default PageBuilderPersonioJobs;

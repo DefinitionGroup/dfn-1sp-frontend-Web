@@ -9,7 +9,7 @@ import type { PortableTextBlock } from "@portabletext/types";
 import { Link } from "next-view-transitions";
 import { assetUrl, optimizedVideoUrl } from "@/utils/utils";
 import type { CloudinaryAsset } from "@/types/sanity.types";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
+
 import { motion, useScroll, useTransform } from "motion/react";
 
 type TwoColContentSectionData = {
@@ -298,4 +298,4 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
   );
 }
 
-export default withDebugBadge(TwoColContentSection, "twoColContentSection");
+export default TwoColContentSection;

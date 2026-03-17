@@ -8,7 +8,7 @@ import ListContainerComponent from "@/components/ui/ListContainerComponent";
 import ListItemComponent from "@/components/ui/ListItemComponent";
 import CtaMiniComponent from "@/components/data/Fragments/data-CtaMiniComponent";
 import { getTranslations } from "@/lib/translations";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
+
 
 interface ServicesHeroWithBadgeProps {
   badgeText?: string;
@@ -173,7 +173,4 @@ function ServicesHeroWithBadge({
   );
 }
 
-export default withDebugBadge(
-  ServicesHeroWithBadge,
-  "pg-ServicesHeroWithBadge"
-);
+export default ServicesHeroWithBadge;

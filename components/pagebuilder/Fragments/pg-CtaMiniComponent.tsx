@@ -2,7 +2,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
 import { Link } from "next-view-transitions";
 import { ArrowRightIcon } from "@phosphor-icons/react";
 
@@ -87,8 +86,8 @@ function CtaMiniComponent({
             <Link
               href={finalUrl}
               className={cn(
-                "inline-flex w-full md:w-fit items-center justify-between gap-3 rounded-xs border font-bold tracking-wider transition-colors duration-200",
-                "text-[10px] sm:text-xxs md:text-xs",
+                "inline-flex w-full md:w-fit items-center justify-between gap-3 rounded-xs border font-medium tracking-wider transition-colors duration-200",
+                "text-[10px] sm:text-xxs md:text-xxs",
                 buttonVariant === "limesmall"
                   ? "px-3 py-2 md:px-4 md:py-2"
                   : "px-3 py-2.5 md:px-4 md:py-3",
@@ -113,6 +112,4 @@ function CtaMiniComponent({
   );
 }
 
-export default withDebugBadge(CtaMiniComponent, "fragment-CtaMiniComponent", {
-  badgeClassName: "bg-black/60 text-red-200 border-red-500/60",
-});
+export default CtaMiniComponent;

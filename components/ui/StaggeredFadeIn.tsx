@@ -1,5 +1,6 @@
 import React from "react";
-import { motion, useInView } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
+import { useRobustInView } from "@/hooks/use-robust-in-view";
 
 interface StaggeredFadeInProps {
   children: React.ReactNode | React.ReactNode[];
@@ -24,14 +25,15 @@ const StaggeredFadeIn: React.FC<StaggeredFadeInProps> = ({
   direction = "up",
   distance = 20,
   triggerOnView = true,
-  viewThreshold = 0.1,
+  viewThreshold = 0.05,
   once = true,
   animate,
 }) => {
   const ref = React.useRef(null);
-  const isInView = useInView(ref, {
+  const prefersReducedMotion = useReducedMotion();
+  const { isInView } = useRobustInView(ref, {
     amount: viewThreshold,
-    once: once,
+    once,
   });
   const getInitialPosition = () => {
     switch (direction) {
@@ -66,14 +68,14 @@ const StaggeredFadeIn: React.FC<StaggeredFadeInProps> = ({
   const itemVariants = {
     hidden: {
       opacity: 0,
-      ...getInitialPosition(),
+      ...(prefersReducedMotion ? { x: 0, y: 0 } : getInitialPosition()),
     },
     visible: {
       opacity: 1,
       x: 0,
       y: 0,
       transition: {
-        duration,
+        duration: prefersReducedMotion ? 0.01 : duration,
         ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number], // Custom easing for smooth animation
       },
     },
@@ -90,6 +92,8 @@ const StaggeredFadeIn: React.FC<StaggeredFadeInProps> = ({
       animate={
         animate !== undefined
           ? animate
+          : prefersReducedMotion
+            ? "visible"
           : triggerOnView
             ? isInView
               ? "visible"

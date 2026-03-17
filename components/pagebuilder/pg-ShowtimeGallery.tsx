@@ -4,7 +4,7 @@ import type {
   ShowtimeGallery as ShowtimeGalleryType,
   GalleryStep,
 } from "@/types/sanity.types";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
+
 
 import HeroStep from "./pg-GalleryHeroStep";
 import CardsStep from "./ShowtimeGallerySteps/pg-CardsStep";
@@ -84,4 +84,4 @@ function ShowtimeGallery(props: Props) {
   );
 }
 
-export default withDebugBadge(ShowtimeGallery, "pg-ShowtimeGallery");
+export default ShowtimeGallery;

@@ -1,7 +1,7 @@
 "use client";
 import type { Carousel } from "@/types/sanity.types";
 import InteractiveCarousel from "./Fragments/pg-InteractiveCarousel";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
+
 
 type Props = { data: Carousel } | Carousel;
 
@@ -13,7 +13,4 @@ function InteractiveCarouselWrapper(props: Props) {
   return <InteractiveCarousel items={carousel.items as any} />;
 }
 
-export default withDebugBadge(
-  InteractiveCarouselWrapper,
-  "pg-InteractiveCarousel"
-);
+export default InteractiveCarouselWrapper;

@@ -6,7 +6,7 @@ import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 import { getTranslations } from "@/lib/translations";
 import { useParams } from "next/navigation";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
+
 
 interface CasesIntroProps {
   title: string;
@@ -74,4 +74,4 @@ function CasesIntro({
   );
 }
 
-export default withDebugBadge(CasesIntro, "pg-CasesIntro");
+export default CasesIntro;

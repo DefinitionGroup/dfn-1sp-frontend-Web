@@ -2,7 +2,7 @@
 import React from "react";
 import type { GlobeComponent as GlobeComponentType } from "@/types/sanity.types";
 import GlobalDataComponent from "@/components/pagebuilder/pg-GlobalDataComponent";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
+
 
 interface GlobeComponentProps {
   data: GlobeComponentType;
@@ -95,4 +95,4 @@ function GlobeComponent({ data }: GlobeComponentProps) {
   );
 }
 
-export default withDebugBadge(GlobeComponent, "pg-GlobeComponent");
+export default GlobeComponent;

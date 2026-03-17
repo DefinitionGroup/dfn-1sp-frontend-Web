@@ -464,7 +464,8 @@ export const getAllCaseSlugs = cache(async () => {
   const CASE_SLUGS_QUERY = defineQuery(/* groq */ `
     *[_type == "caseStudy" && isPublished == true && defined(slug.current)]{
       "slug": slug.current,
-      language
+      language,
+      _updatedAt
     }
   `);
 
@@ -476,7 +477,7 @@ export const getAllCaseSlugs = cache(async () => {
     stega: false,
   });
 
-  return (data as Array<{ slug: string; language: string }>) || [];
+  return (data as Array<{ slug: string; language: string; _updatedAt: string }>) || [];
 });
 
 /**
@@ -487,7 +488,8 @@ export const getAllPageSlugs = cache(async () => {
     *[_type == "page" && defined(slug.current) && !isHomepage]{
       "slug": slug.current,
       language,
-      channel
+      channel,
+      _updatedAt
     }
   `);
 
@@ -499,6 +501,6 @@ export const getAllPageSlugs = cache(async () => {
   });
 
   return (
-    (data as Array<{ slug: string; language: string; channel: string }>) || []
+    (data as Array<{ slug: string; language: string; channel: string; _updatedAt: string }>) || []
   );
 });

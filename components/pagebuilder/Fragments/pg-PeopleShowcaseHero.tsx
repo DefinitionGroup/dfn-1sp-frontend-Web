@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useInView } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import type { CloudinaryAsset } from "@/types/sanity.types";
 import { assetUrl, optimizedVideoUrl, cloudinaryPosterUrl } from "@/utils/utils";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
@@ -8,7 +8,7 @@ import StaggeredFadeIn from "@/components/ui/StaggeredFadeIn";
 import Image from "next/image";
 import { Link } from "next-view-transitions";
 import { createPortal } from "react-dom";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
+import { useRobustInView } from "@/hooks/use-robust-in-view";
 export interface MemberItem {
   name?: string;
   media?: (CloudinaryAsset & { resource_type?: string }) | null;
@@ -30,53 +30,72 @@ function isVideoUrl(url?: string) {
   return lowered.endsWith(".mp4") || lowered.includes("/video/");
 }
 
-function LazyVideo({ src, className }: { src: string; className?: string }) {
+function LazyVideo({
+  src,
+  className,
+  priority = false,
+}: {
+  src: string;
+  className?: string;
+  priority?: boolean;
+}) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "200px" });
+  const { isInView, isMobile } = useRobustInView(ref, {
+    amount: 0.01,
+    margin: "0px 0px 200px 0px",
+    mobileAmount: 0.01,
+    mobileMargin: "0px 0px 280px 0px",
+    fallbackVisibleAfterMs: 500,
+  });
   const [shouldMountVideo, setShouldMountVideo] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
 
   // Derive poster image from Cloudinary video URL
   const posterUrl = cloudinaryPosterUrl(src, { maxWidth: 640 });
 
-  // Mount video after 300ms delay once in view
   React.useEffect(() => {
     if (!isInView) return;
-    const timer = setTimeout(() => setShouldMountVideo(true), 300);
+
+    if (isMobile) {
+      setShouldMountVideo(true);
+      return;
+    }
+
+    const timer = setTimeout(() => setShouldMountVideo(true), 120);
     return () => clearTimeout(timer);
-  }, [isInView]);
+  }, [isInView, isMobile]);
 
   return (
-    <div ref={ref} className={`w-full h-full relative ${className ?? ""}`}>
-      {isInView ? (
-        <>
-          {/* Poster image — lightweight, loads immediately */}
-          {posterUrl && (
-            <img
-              src={posterUrl}
-              alt=""
-              aria-hidden="true"
-              className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-500 group-hover:brightness-110 ${videoReady ? "opacity-0" : "opacity-100"}`}
-              style={{ zIndex: 1 }}
-            />
-          )}
-          {/* Video — mounted after 300ms, fades in once ready */}
-          {shouldMountVideo && (
-            <video
-              src={optimizedVideoUrl(src, { maxWidth: 640 })}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="none"
-              onCanPlay={() => setVideoReady(true)}
-              className={`w-full h-full object-cover transition-all duration-300 group-hover:brightness-110 ${videoReady ? "opacity-100" : "opacity-0"}`}
-              style={{ zIndex: 0 }}
-            />
-          )}
-        </>
+    <div ref={ref} className={`w-full h-full relative overflow-hidden bg-neutral-200 dark:bg-neutral-800 ${className ?? ""}`}>
+      {posterUrl ? (
+        <img
+          src={posterUrl}
+          alt=""
+          aria-hidden="true"
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+          fetchPriority={priority ? "high" : "auto"}
+          className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-300 group-hover:brightness-110 ${videoReady ? "opacity-0" : "opacity-100"}`}
+          style={{ zIndex: 1 }}
+        />
       ) : (
         <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800" />
+      )}
+
+      {shouldMountVideo && (
+        <video
+          src={optimizedVideoUrl(src, { maxWidth: 640 })}
+          poster={posterUrl || undefined}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload={isMobile ? "metadata" : "none"}
+          onLoadedData={() => setVideoReady(true)}
+          onCanPlay={() => setVideoReady(true)}
+          className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-300 group-hover:brightness-110 ${videoReady ? "opacity-100" : "opacity-0"}`}
+          style={{ zIndex: 0 }}
+        />
       )}
     </div>
   );
@@ -137,7 +156,11 @@ function PeopleShowcaseHero({
       aria-labelledby="people-showcase-title"
     >
       <div className="flex items-center justify-start  w-full overflow-x-auto">
-        <StaggeredSlideUp className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[2px] w-full overflow-x-auto">
+        <StaggeredSlideUp
+          className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[2px] w-full overflow-x-auto"
+          threshold={0.01}
+          rootMargin="0px 0px 160px 0px"
+        >
           {members.map((member, index) => {
             const src = assetUrl(member.media as any);
 
@@ -170,13 +193,14 @@ function PeopleShowcaseHero({
                 onMouseLeave={() => setHoveredMember(null)}
               >
                 {isVideo ? (
-                  <LazyVideo src={src ?? ""} />
+                  <LazyVideo src={src ?? ""} priority={index < 4} />
                 ) : (
                   <Image
                     src={src}
                     alt={label}
                     fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
+                    priority={index < 4}
+                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                     className="object-cover transition-all duration-300 group-hover:brightness-110 "
                   />
                 )}
@@ -392,6 +416,4 @@ function PeopleShowcaseHero({
   );
 }
 
-export default withDebugBadge(PeopleShowcaseHero, "fragment-PeopleShowcaseHero", {
-  badgeClassName: "bg-black/60 text-red-200 border-red-500/60",
-});
+export default PeopleShowcaseHero;

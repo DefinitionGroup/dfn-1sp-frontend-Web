@@ -120,7 +120,7 @@ export default function SmartCarousel({
           language,
           maxItems,
         });
-        
+
         setCaseStudies(results);
       } catch (error) {
         console.error("Error fetching case studies:", error);
@@ -216,7 +216,7 @@ export default function SmartCarousel({
     return (
       <section className="px-2 sm:px-4 md:px-0">
         <div className="container mx-auto w-full">
-          <div className="relative h-[60vh] sm:h-[70vh] md:h-[800px] flex items-center justify-center">
+          <div className="relative h-[60vh] sm:h-[70vh] iphone-landscape:!h-dvh md:h-[800px] flex items-center justify-center">
             <div className="text-gray-400 text-sm sm:text-base">Loading case studies...</div>
           </div>
         </div>
@@ -228,7 +228,7 @@ export default function SmartCarousel({
     return (
       <section className="px-2 sm:px-4 md:px-0">
         <div className="container mx-auto w-full">
-          <div className="relative h-[60vh] sm:h-[70vh] md:h-[800px] flex items-center justify-center">
+          <div className="relative h-[60vh] sm:h-[70vh] iphone-landscape:!h-dvh md:h-[800px] flex items-center justify-center">
             <div className="text-gray-400 text-sm sm:text-base text-center px-4">
               No case studies found for Smart Carousel
             </div>
@@ -285,7 +285,7 @@ export default function SmartCarousel({
         ref={containerRef}
         className=" relative top-0 mx-auto w-full"
       >
-        <div className="relative h-[60vh] sm:h-[70vh]  md:h-[800px] flex items-start">
+        <div className="relative h-[60vh] sm:h-[70vh] iphone-landscape:!h-dvh md:h-[800px] flex items-start">
           {/* Main Carousel */}
           <div className="relative w-full rounded-xl overflow-hidden h-full perspective-1000">
             <AnimatePresence initial={false} custom={direction}>
@@ -347,7 +347,7 @@ export default function SmartCarousel({
                         hidden: { opacity: 0 },
                         visible: {
                           opacity: 1,
-                          transition: { delay: 0.6, staggerChildren: 0.4252 },
+                          transition: { delay: 0.6, staggerChildren: 0.4252, ease: [0.97, 0.004, 0, 1.015] },
                         },
                       }}
                     >
@@ -360,7 +360,7 @@ export default function SmartCarousel({
                               alt="Logo"
                               width={120}
                               height={32}
-                   
+
                             />
                           </motion.div>
                         )}
@@ -480,7 +480,7 @@ export default function SmartCarousel({
         </div>
 
         {/* Thumbnail Strip (match Plaintext absolute positioning) */}
-        <div className="absolute flex justify-center w-full hidden md:block bottom-16 max-w-[100%] overflow-x-auto scrollbar-hide md:bottom-[64px] z-30 px-2">
+        <div className="absolute flex justify-center w-full hidden iphone:hidden md:block bottom-16 max-w-[100%] overflow-x-auto scrollbar-hide md:bottom-[64px] z-30 px-2">
           <div
             ref={stripRef}
             className={`flex justify-center mt-4 sm:mt-8 space-x-1.5 sm:space-x-2 md:space-x-4 pt-2 sm:pt-4 md:pb-4 ${isScrollable ? "overflow-x-auto scrollbar-hide" : ""}`}

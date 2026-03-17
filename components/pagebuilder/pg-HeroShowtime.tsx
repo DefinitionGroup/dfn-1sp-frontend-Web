@@ -9,7 +9,7 @@ import Button2 from "../ui/Button2";
 import MixedType from "@/components/ui/MixedType";
 
 import { assetUrl, resolveLink, ctaToButtonProps } from "@/utils/utils";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
+
 
 function HeroShowtime({ data }: { data: HeroShowtimeType }) {
   const {
@@ -113,4 +113,4 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
   );
 }
 
-export default withDebugBadge(HeroShowtime, "pg-HeroShowtime");
+export default HeroShowtime;

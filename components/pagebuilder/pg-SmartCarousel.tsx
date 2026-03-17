@@ -1,7 +1,7 @@
 "use client";
 import SmartCarouselData from "../data/data-InteractiveCarousel";
 import { useParams } from "next/navigation";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
+
 import type { CloudinaryAsset } from "@/types/sanity.types";
 
 // Dereferenced case study from GROQ query
@@ -67,4 +67,4 @@ function SmartCarouselWrapper(props: Props) {
   );
 }
 
-export default withDebugBadge(SmartCarouselWrapper, "pg-SmartCarousel");
+export default SmartCarouselWrapper;

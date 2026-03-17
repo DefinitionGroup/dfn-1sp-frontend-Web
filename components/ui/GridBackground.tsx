@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "motion/react";
-import { useInView } from "motion/react";
+import { useRobustInView } from "@/hooks/use-robust-in-view";
 
 interface GridBackgroundProps {
   className?: string;
@@ -25,7 +25,10 @@ const GridBackground: React.FC<GridBackgroundProps> = ({
   viewport = { once: true, amount: 0.1 },
 }) => {
   const ref = React.useRef(null);
-  const isInView = useInView(ref, viewport);
+  const { isInView } = useRobustInView(ref, {
+    once: viewport.once,
+    amount: viewport.amount,
+  });
 
   const containerVariants = {
     hidden: {

@@ -4,7 +4,7 @@ import React from "react";
 import type { CtaSplitHeader as CtaSplitHeaderType } from "@/types/sanity.types";
 import { resolveLink } from "@/utils/utils";
 import CtaMiniComponent from "./pg-CtaMiniComponent";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
+
 
 function CtaSplitHeader({ data }: { data: CtaSplitHeaderType }) {
   const cta = data?.cta;
@@ -59,6 +59,4 @@ function CtaSplitHeader({ data }: { data: CtaSplitHeaderType }) {
   );
 }
 
-export default withDebugBadge(CtaSplitHeader, "fragment-CtaSplitHeader", {
-  badgeClassName: "bg-black/60 text-red-200 border-red-500/60",
-});
+export default CtaSplitHeader;

@@ -1,7 +1,7 @@
 "use client";
 import type { GalleryListStep } from "@/types/sanity.types";
 import ListStep from "./ShowtimeGallerySteps/pg-ListStep";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
+
 
 type Props = { data: GalleryListStep } | GalleryListStep;
 
@@ -14,4 +14,4 @@ function GalleryListStepWrapper(props: Props) {
   return <ListStep step={step as any} />;
 }
 
-export default withDebugBadge(GalleryListStepWrapper, "pg-GalleryListStep");
+export default GalleryListStepWrapper;

@@ -49,7 +49,7 @@ See `docs/PAGEBUILDER_COMPONENT_GUIDE.md` for the full step-by-step guide with t
 | `components/data/data-*` | "Smart" components that fetch their own Sanity data |
 | `components/ui/*` | Pure UI, no CMS dependency |
 | `components/menu/*` | Navigation (nav overlay, footer) |
-| `components/dev/*` | Debug utilities (`withDebugBadge` HOC, controlled by `NEXT_PUBLIC_DEBUG_BADGES`) |
+| `components/dev/*` | Debug utilities (CSS diagnostic outlines via `NEXT_PUBLIC_DIAG`) |
 
 ### Data Fetching
 
@@ -83,7 +83,7 @@ See `docs/PAGEBUILDER_COMPONENT_GUIDE.md` for the full step-by-step guide with t
 - `components/ui/DeferredVideo.tsx` — LCP-optimized video: shows Cloudinary poster immediately, crossfades to video after delay
 - `hooks/use-optimized-transition-router.ts` — View transitions router with 1.5s timeout fallback
 - `lib/translations.ts` — Static EN/DE UI string translations (no i18n library)
-- `lib/structured-data.tsx` — JSON-LD generators (homepage, breadcrumbs, Article, ItemList)
+- `lib/structured-data.tsx` — JSON-LD generators (Organization, WebPage, ContactPage, Article, Person, ItemList, BreadcrumbList) + content extractors for Person/Unit data
 
 ## Conventions
 
@@ -92,4 +92,4 @@ See `docs/PAGEBUILDER_COMPONENT_GUIDE.md` for the full step-by-step guide with t
 - **Imports**: Use `@/*` path alias (maps to project root)
 - **Links**: Use `Link` from `next-view-transitions` (not `next/link`)
 - **Media**: Images via Cloudinary asset type in Sanity schemas; use `cloudinary.asset` field type
-- **Debug badges**: Wrap pagebuilder component exports with `withDebugBadge(Component, "typeName")`
+- **Structured data**: All pages include JSON-LD (WebPage, BreadcrumbList, Person, Organization). See `lib/structured-data.tsx`

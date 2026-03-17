@@ -1,10 +1,11 @@
 "use client";
 
-import { motion, useInView } from "motion/react";
+import { motion } from "motion/react";
 import { AnimateNumber } from "motion-plus/react";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { useRobustInView } from "@/hooks/use-robust-in-view";
 
 interface BadgemoduleProps {
   text: string;
@@ -26,7 +27,10 @@ export default function Badgemodule({
   size = "md",
 }: BadgemoduleProps) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const { isInView } = useRobustInView(ref, {
+    amount: 0.1,
+    margin: "0px 0px 120px 0px",
+  });
   const [animateNumberValue, setAnimateNumberValue] = useState(0);
 
   useEffect(() => {

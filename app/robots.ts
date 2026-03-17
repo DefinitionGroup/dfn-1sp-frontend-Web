@@ -1,16 +1,13 @@
 import type { MetadataRoute } from "next";
+import { CANONICAL_URL } from "@/lib/structured-data";
 
 /**
  * Robots.txt configuration
  *
- * Tells search engine crawlers which pages to index and where to find the sitemap.
+ * Uses the canonical production URL for the sitemap reference.
  * @see https://nextjs.org/docs/app/api-reference/file-conventions/metadata/robots
  */
 export default function robots(): MetadataRoute.Robots {
-    const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
-        ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-        : "http://localhost:3000";
-
     return {
         rules: [
             {
@@ -19,6 +16,6 @@ export default function robots(): MetadataRoute.Robots {
                 disallow: ["/studio", "/studio/", "/api/"],
             },
         ],
-        sitemap: `${baseUrl}/sitemap.xml`,
+        sitemap: `${CANONICAL_URL}/sitemap.xml`,
     };
 }
