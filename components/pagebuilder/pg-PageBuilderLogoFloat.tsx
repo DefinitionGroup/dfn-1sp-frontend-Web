@@ -146,7 +146,7 @@ function PageBuilderLogoFloat({
       className="fixed inset-x-0 top-0 z-[999999] pointer-events-none lg:inset-0"
       data-component="pg-pagebuilder-logo-float"
     >
-      <div className="w-full flex items-start justify-center px-4  sm:px-6 lg:h-full mt-12  md:mt-24  lg:px-6 lg:pt-0">
+      <div className="w-full flex items-start justify-center px-4  sm:px-6 lg:h-full mt-20   md:mt-24  lg:px-6 lg:pt-0">
         {isLoading ? (
           <div className="text-center text-neutral-400">.</div>
         ) : cardsWithLogo.length === 0 ? (
@@ -171,7 +171,7 @@ function PageBuilderLogoFloat({
                       delay: index * 0.05,
                       ease: "easeOut",
                     }}
-                    className="rounded-sm min-h-2  flex items-center justify-center  md:w-auto pointer-events-auto cursor-pointer"
+                    className="rounded-sm min-h-6  flex items-center justify-center  md:w-auto pointer-events-auto cursor-pointer"
                     onClick={() => {
                       document
                         .getElementById("what-fuels-1sp")
@@ -184,7 +184,7 @@ function PageBuilderLogoFloat({
                       width={displayW}
                       height={displayH}
                       style={{ width: displayW, height: displayH }}
-                      className={`invert object-contain object-left iphone-landscape:max-w-[8vw]  max-w-[33vw]   min-h-2 md:min-h-8 lg:max-w-none ${logoHeightClass}`}
+                      className={`invert object-contain object-center iphone-landscape:max-w-[8vw]  max-w-[33vw]   min-h-6 md:min-h-8 lg:max-w-none ${logoHeightClass}`}
                     />
                   </motion.div>
                 );
