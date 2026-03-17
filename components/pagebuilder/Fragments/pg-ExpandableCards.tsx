@@ -255,7 +255,7 @@ function ExpandableCards({
                     layoutId={`logo-${card.title}-${id}`}
                     src={card.logo}
                     alt={card.title}
-                    className="w-full h-12 -left-1 top-2 relative invert object-contain   object-left"
+                    className="w-full h-12 -left-3 top-2 relative invert object-contain   object-left"
                   />
                 )}
                 {/* Old tile only showed title; keep that for parity */}

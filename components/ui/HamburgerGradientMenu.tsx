@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { usePathname } from "next/navigation";
 import {
   motion,
   AnimatePresence,
@@ -59,10 +60,12 @@ export default function HamburgerGradientMenu({
   panelClassName = "",
 }: HamburgerGradientMenuProps) {
   const [open, setOpen] = useState(false);
+  const [pendingHref, setPendingHref] = useState<string | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const firstLinkRef = useRef<HTMLAnchorElement | null>(null);
   const router = useOptimizedTransitionRouter();
   const footerMenu = useFooterMenu();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!open) return;
@@ -110,6 +113,50 @@ export default function HamburgerGradientMenu({
 
   const toggle = useCallback(() => setOpen((o) => !o), []);
 
+  const normalizePath = useCallback((path: string) => {
+    const normalized = path.replace(/\/+$/, "");
+    return normalized || "/";
+  }, []);
+
+  const handleMenuNavigation = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+
+      if (normalizePath(pathname || "") === normalizePath(href)) {
+        setPendingHref(null);
+        setOpen(false);
+        return;
+      }
+
+      if (open) {
+        setPendingHref(href);
+        setOpen(false);
+        return;
+      }
+
+      router.push(href);
+    },
+    [normalizePath, open, pathname, router]
+  );
+
+  const handleOverlayExitComplete = useCallback(() => {
+    if (!pendingHref) return;
+    const href = pendingHref;
+    setPendingHref(null);
+    router.push(href);
+  }, [pendingHref, router]);
+
   return (
     <div className="fixed top-0 left-0 w-full md:hidden z-[1000000] flex items-center justify-between h-24">
       <div className="pointer-events-auto  mt-2 ml-2 inline-block">
@@ -123,10 +170,7 @@ export default function HamburgerGradientMenu({
       <Link
         className="hover:text-lime-400   pointer-events-auto"
         href={"/"}
-        onClick={(e) => {
-          e.preventDefault();
-          router.push("/");
-        }}
+        onClick={(event) => handleMenuNavigation(event, "/")}
       >
         <Image
           src={imageLogo}
@@ -136,7 +180,7 @@ export default function HamburgerGradientMenu({
           className="object-contain md:hidden  block mr-8 top-1 relative sm:right-4 w-[60px] h-auto"
         />
       </Link>
-      <AnimatePresence>
+      <AnimatePresence mode="wait" onExitComplete={handleOverlayExitComplete}>
         {open && (
           <OverlayRoot
             key="gradient-menu-overlay"
@@ -144,6 +188,7 @@ export default function HamburgerGradientMenu({
             innerRef={panelRef}
             items={items}
             onClose={() => setOpen(false)}
+            onNavigate={handleMenuNavigation}
             firstLinkRef={firstLinkRef}
             panelClassName={panelClassName}
             imageLogo={imageLogo}
@@ -160,6 +205,7 @@ function OverlayRoot({
   innerRef,
   items,
   onClose,
+  onNavigate,
   firstLinkRef,
   panelClassName,
   imageLogo,
@@ -169,6 +215,7 @@ function OverlayRoot({
   innerRef: React.RefObject<HTMLDivElement | null>;
   items: MenuItem[];
   onClose: () => void;
+  onNavigate: (event: React.MouseEvent<HTMLAnchorElement>, href: string) => void;
   firstLinkRef: React.RefObject<HTMLAnchorElement | null>;
   panelClassName?: string;
   imageLogo: string;
@@ -280,7 +327,7 @@ function OverlayRoot({
                       href={item.href}
                       ref={idx === 0 ? firstLinkRef : undefined}
                       className="text-xl md:text-2xl tracking-tight text-neutral-50 hover:text-lime-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400 rounded-xl transition-colors"
-                      onClick={onClose}
+                      onClick={(event) => onNavigate(event, item.href)}
                     >
                       {item.label}
                     </Link>
@@ -317,7 +364,7 @@ function OverlayRoot({
                           <Link
                             href={sub.href}
                             className="text-sm text-white hover:text-lime-200  py-2  transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400"
-                            onClick={onClose}
+                            onClick={(event) => onNavigate(event, sub.href)}
                           >
                             {sub.label}
                           </Link>
