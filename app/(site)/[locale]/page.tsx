@@ -63,8 +63,6 @@ function extractHeroVideoUrl(content: any[]): string | undefined {
   return undefined;
 }
 
-const SUPPORTED_LOCALES = ["en"];
-
 export async function generateMetadata({
   params,
 }: {
@@ -105,11 +103,7 @@ export async function generateMetadata({
     description,
     keywords: page.metadata?.keywords ?? undefined,
     alternates: {
-      canonical: `/${language}`,
-      languages: {
-        "x-default": `/${language}`,
-        ...Object.fromEntries(SUPPORTED_LOCALES.map((l) => [l, `/${l}`])),
-      },
+      canonical: "/",
     },
     openGraph: {
       title,
@@ -179,7 +173,7 @@ export default async function Home({
         data={generateBreadcrumbJsonLd([
           {
             name: getBreadcrumbLabel(language, "home"),
-            url: `${CANONICAL_URL}/${language}`,
+            url: CANONICAL_URL,
           },
         ])}
       />

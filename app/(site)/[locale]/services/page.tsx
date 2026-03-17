@@ -86,8 +86,7 @@ export async function generateMetadata({
     description,
     keywords: page.metadata?.keywords ?? undefined,
     alternates: {
-      canonical: `/${language}/services`,
-      languages: { "x-default": `/${language}/services`, [language]: `/${language}/services` },
+      canonical: "/services",
     },
     openGraph: {
       title,
@@ -170,11 +169,11 @@ export default async function ServicesPage({
         data={generateBreadcrumbJsonLd([
           {
             name: getBreadcrumbLabel(language, "home"),
-            url: `${CANONICAL_URL}/${language}`,
+            url: CANONICAL_URL,
           },
           {
             name: getBreadcrumbLabel(language, "services"),
-            url: `${CANONICAL_URL}/${language}/services`,
+            url: `${CANONICAL_URL}/services`,
           },
         ])}
       />

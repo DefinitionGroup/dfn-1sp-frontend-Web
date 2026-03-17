@@ -135,8 +135,8 @@ export function generateHomepageJsonLd(options: {
     },
     {
       "@type": "WebPage",
-      "@id": `${CANONICAL_URL}/${locale}`,
-      url: `${CANONICAL_URL}/${locale}`,
+      "@id": CANONICAL_URL,
+      url: CANONICAL_URL,
       name: SITE_NAME,
       description: SITE_DESCRIPTION,
       isPartOf: { "@id": `${CANONICAL_URL}/#website` },
@@ -193,7 +193,7 @@ export function generateCaseStudyJsonLd(options: {
     imageUrl, publishedAt, clientName, services, units,
   } = options;
 
-  const pageUrl = `${CANONICAL_URL}/${locale}/cases/${slug}`;
+  const pageUrl = `${CANONICAL_URL}/cases/${slug}`;
 
   return {
     "@context": "https://schema.org",
@@ -243,7 +243,7 @@ export function generateWebPageJsonLd(options: {
   imageUrl?: string | null;
 }): JsonLdEntity {
   const { title, slug, description, locale, imageUrl } = options;
-  const pageUrl = `${CANONICAL_URL}/${locale}/${slug}`;
+  const pageUrl = `${CANONICAL_URL}/${slug}`;
 
   return {
     "@context": "https://schema.org",
@@ -355,7 +355,7 @@ export function generateContactPageJsonLd(options: {
   title?: string;
   description?: string | null;
 }): JsonLdEntity {
-  const pageUrl = `${CANONICAL_URL}/${options.locale}/contact`;
+  const pageUrl = `${CANONICAL_URL}/contact`;
   return {
     "@context": "https://schema.org",
     "@type": "ContactPage",
@@ -409,7 +409,7 @@ export function generateItemListJsonLd(options: {
     itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      url: `${CANONICAL_URL}/${locale}/cases/${item.slug}`,
+      url: `${CANONICAL_URL}/cases/${item.slug}`,
       name: item.title,
       ...(item.description && { description: item.description }),
       ...(item.imageUrl && {

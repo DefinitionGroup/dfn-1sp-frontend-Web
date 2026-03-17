@@ -6,15 +6,15 @@ import { CANONICAL_URL } from "@/lib/structured-data";
  * Dynamic Sitemap
  *
  * Generates a sitemap.xml from all published pages and case studies in Sanity.
- * Uses the canonical production URL (not Vercel preview URLs).
+ * URLs are locale-free (no /en/ prefix) since middleware handles the rewrite.
  *
  * @see https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    // Homepage (1spWeb channel = English only)
+    // Homepage
     const homePages: MetadataRoute.Sitemap = [
         {
-            url: `${CANONICAL_URL}/en`,
+            url: CANONICAL_URL,
             lastModified: new Date(),
             changeFrequency: "weekly",
             priority: 1.0,
@@ -24,7 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Dynamic pages from Sanity (includes real _updatedAt dates)
     const pages = await getAllPageSlugs();
     const pageEntries: MetadataRoute.Sitemap = pages.map((page) => ({
-        url: `${CANONICAL_URL}/${page.language || "en"}/${page.slug}`,
+        url: `${CANONICAL_URL}/${page.slug}`,
         lastModified: page._updatedAt ? new Date(page._updatedAt) : new Date(),
         changeFrequency: "weekly",
         priority: 0.8,
@@ -33,7 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Case studies from Sanity (includes real _updatedAt dates)
     const cases = await getAllCaseSlugs();
     const caseEntries: MetadataRoute.Sitemap = cases.map((cs) => ({
-        url: `${CANONICAL_URL}/${cs.language || "en"}/cases/${cs.slug}`,
+        url: `${CANONICAL_URL}/cases/${cs.slug}`,
         lastModified: cs._updatedAt ? new Date(cs._updatedAt) : new Date(),
         changeFrequency: "monthly",
         priority: 0.7,
