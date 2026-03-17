@@ -4,13 +4,18 @@ import React, { useRef, useId } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { useRobustInView } from "@/hooks/use-robust-in-view";
 
-const EASING_MAP = {
-  smooth: [0.33, 1, 0.68, 1] as [number, number, number, number],
-  spring: [0.16, 1, 0.3, 1] as [number, number, number, number],
-  "ease-out": [0, 0, 0.2, 1] as [number, number, number, number],
-  bounce: [0.68, -0.55, 0.265, 1.55] as [number, number, number, number],
+// ─── Easing presets ──────────────────────────────────────────────────
+type EasingPreset = "smooth" | "spring" | "ease-out" | "bounce";
+type Cubic = [number, number, number, number];
+
+const EASING: Record<EasingPreset, Cubic> = {
+  smooth: [0.33, 1, 0.68, 1],
+  spring: [0.16, 1, 0.3, 1],
+  "ease-out": [0, 0, 0.2, 1],
+  bounce: [0.68, -0.55, 0.265, 1.55],
 };
 
+// ─── Props (public API – unchanged) ─────────────────────────────────
 interface StaggeredSlideUpProps {
   children: React.ReactNode | React.ReactNode[];
   className?: string;
@@ -23,7 +28,7 @@ interface StaggeredSlideUpProps {
   /** Distance to slide up from (pixels) */
   distance?: number;
   /** Easing function for animations */
-  easing?: "smooth" | "spring" | "ease-out" | "bounce";
+  easing?: EasingPreset;
   /** Intersection Observer threshold (0-1) */
   threshold?: number;
   /** Root margin for Intersection Observer */
@@ -32,51 +37,61 @@ interface StaggeredSlideUpProps {
   once?: boolean;
   /** Enable debug mode to visualize trigger state */
   debug?: boolean;
-  /** Skip viewport detection - animate immediately */
+  /** Skip viewport detection – animate immediately */
   animateImmediately?: boolean;
 }
 
-// Memoized item component to prevent unnecessary re-renders
-const StaggeredItem = React.memo(({
-  children,
-  index,
-  isVisible,
-  delay,
-  staggerDelay,
-  duration,
-  distance,
-  easing,
-  useClipPath,
-}: {
-  children: React.ReactNode;
-  index: number;
-  isVisible: boolean;
-  delay: number;
-  staggerDelay: number;
-  duration: number;
-  distance: number;
-  easing: [number, number, number, number];
-  useClipPath: boolean;
-}) => {
-  const itemDelay = delay + index * staggerDelay;
+// ─── Per-child item ──────────────────────────────────────────────────
+// Clip-path and slide/fade run on two *separate* motion.divs so their
+// timing can differ without interfering with each other.
+const StaggeredItem = React.memo(
+  ({
+    children,
+    index,
+    isVisible,
+    delay,
+    staggerDelay,
+    duration,
+    distance,
+    easing,
+    useClipPath,
+  }: {
+    children: React.ReactNode;
+    index: number;
+    isVisible: boolean;
+    delay: number;
+    staggerDelay: number;
+    duration: number;
+    distance: number;
+    easing: Cubic;
+    useClipPath: boolean;
+  }) => {
+    const itemDelay = delay + index * staggerDelay;
 
-  return (
-    <motion.div
-      className="relative"
-      initial={useClipPath ? { clipPath: "inset(50% 0% 0% 0%)" } : false}
-      animate={
-        useClipPath
-          ? isVisible
+    // Clip-path: reveal from bottom, runs ~40 % longer so it never
+    // cuts the content while the slide is still in progress.
+    const clipWrapper = useClipPath ? (
+      <motion.div
+        initial={{ clipPath: "inset(0% 0% 100% 0%)" }}
+        animate={
+          isVisible
             ? { clipPath: "inset(0% 0% 0% 0%)" }
-            : { clipPath: "inset(20% 0% 0% 0%)" }
-          : undefined
-      }
-      transition={{
-        duration,
-        delay: itemDelay,
-        ease: easing,
-      }}
-    >
+            : { clipPath: "inset(0% 0% 100% 0%)" }
+        }
+        transition={{
+          duration: duration * 1.4,
+          delay: itemDelay,
+          ease: easing,
+        }}
+      >
+        {children}
+      </motion.div>
+    ) : (
+      children
+    );
+
+    // Slide-up + fade
+    return (
       <motion.div
         initial={{ y: distance, opacity: 0 }}
         animate={
@@ -89,19 +104,17 @@ const StaggeredItem = React.memo(({
           delay: itemDelay,
           ease: easing,
         }}
-        style={{
-          willChange: "transform, opacity",
-          transform: "translateZ(0)", // Force GPU layer
-        }}
+        style={{ willChange: "transform, opacity" }}
       >
-        {children}
+        {clipWrapper}
       </motion.div>
-    </motion.div>
-  );
-});
+    );
+  },
+);
 
 StaggeredItem.displayName = "StaggeredItem";
 
+// ─── Container ───────────────────────────────────────────────────────
 const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
   children,
   className = "",
@@ -117,7 +130,7 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
   animateImmediately = false,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const id = useId(); // Unique ID to prevent animation conflicts
+  const id = useId();
   const prefersReducedMotion = useReducedMotion();
 
   const { isInView, isMobile } = useRobustInView(ref, {
@@ -126,28 +139,28 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
     margin: rootMargin,
   });
 
-  // Determine if animation should be active
-  const shouldAnimate = animateImmediately || !!prefersReducedMotion || isInView;
+  // Only animate when *actually* in the viewport (or explicitly told to)
+  const shouldAnimate = animateImmediately || isInView;
 
-  // Convert children to array for mapping
-  const childArray = React.Children.toArray(children);
-
-  // Get the easing curve
-  const easingCurve = EASING_MAP[easing];
-  const shouldUseClipPath = !isMobile && !prefersReducedMotion;
-  const effectiveDistance = prefersReducedMotion ? 0 : distance;
+  // Reduced-motion: skip to final state instantly
   const effectiveDuration = prefersReducedMotion ? 0.01 : duration;
+  const effectiveDistance = prefersReducedMotion ? 0 : distance;
+  const shouldUseClipPath = !isMobile && !prefersReducedMotion;
+
+  const easingCurve = EASING[easing];
+  const childArray = React.Children.toArray(children);
 
   return (
     <div ref={ref} className={className} data-stagger-id={id}>
       {debug && (
         <div
-          className={`fixed top-4 right-4 z-50 px-3 py-1  text-xs font-mono ${shouldAnimate ? "bg-green-500" : "bg-red-500"
+          className={`fixed top-4 right-4 z-50 px-3 py-1 text-xs font-mono ${shouldAnimate ? "bg-green-500" : "bg-red-500"
             } text-white`}
         >
           {shouldAnimate ? "IN VIEW" : "OUT OF VIEW"}
         </div>
       )}
+
       {childArray.map((child, index) => (
         <StaggeredItem
           key={`${id}-${index}`}
@@ -158,7 +171,7 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
           duration={effectiveDuration}
           distance={effectiveDistance}
           easing={easingCurve}
-        // useClipPath={shouldUseClipPath}
+          useClipPath={shouldUseClipPath}
         >
           {child}
         </StaggeredItem>
