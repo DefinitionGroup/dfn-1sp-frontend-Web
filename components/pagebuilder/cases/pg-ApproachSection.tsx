@@ -94,7 +94,7 @@ export default function ApproachSection({
             numberEl={badgeNumber}
           />
 
-          <div className="col-span-12 col-start-1 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-10 md:col-start-3 mt-12 md:mt-0">
+          <div className="col-span-12 col-start-1 iphone-landscape:!col-span-12 px-4 md-px0 iphone-landscape:!col-start-1 md:col-span-10 md:col-start-3 mt-12 md:mt-0">
             <StaggeredSlideUp
               className="flex flex-col items-start gap-4 justify-start"
               delay={0.0}
@@ -119,7 +119,7 @@ export default function ApproachSection({
           </div>
 
           {approachDetails && approachDetails.length > 0 && (
-            <div className="col-span-12 col-start-1 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-8 md:col-start-3 mt-8 border-t border-white pt-4">
+            <div className="col-span-12 col-start-1 iphone-landscape:!col-span-12 px-4 md:px-0  iphone-landscape:!col-start-1 md:col-span-8 md:col-start-3 mt-8 border-t border-white pt-4">
               <ListContainerComponent>
                 {approachDetails.map((detail, idx) => (
                   <ListItemComponent key={idx} size="small" fontWeight="normal">
