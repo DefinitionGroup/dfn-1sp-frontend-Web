@@ -9,7 +9,7 @@ import type {
   CTA,
 } from "@/types/sanity.types";
 import { assetUrl, ctaToButtonProps, optimizedVideoUrl, cloudinaryPosterUrl } from "@/utils/utils";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
+
 
 interface UIItem {
   id: string;
@@ -365,6 +365,4 @@ function InteractiveCarousel({
   );
 }
 
-export default withDebugBadge(InteractiveCarousel, "fragment-InteractiveCarousel", {
-  badgeClassName: "bg-black/60 text-red-200 border-red-500/60",
-});
+export default InteractiveCarousel;

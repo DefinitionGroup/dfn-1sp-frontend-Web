@@ -16,6 +16,7 @@ import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
 import { urlFor } from "@/sanity/lib/image";
 import type { Metadata } from "next";
+import { cloudinaryPosterUrl, cloudinaryPosterSrcSet } from "@/utils/utils";
 import {
   JsonLdScript,
   generateWebPageJsonLd,
@@ -29,6 +30,21 @@ import {
 
 export const revalidate = 60;
 
+/** Extract hero video URL from page builder content for preload hint */
+function extractHeroVideoUrl(content: any[]): string | undefined {
+  if (!Array.isArray(content)) return undefined;
+  for (const block of content) {
+    if (block?._type === "oneSPHeader") {
+      const media = block?.media;
+      const url = media?.secure_url || media?.url;
+      if (url && (/\/video\//.test(url) || /\.(mp4|webm|ogg)$/i.test(url))) {
+        return url;
+      }
+    }
+  }
+  return undefined;
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -40,21 +56,40 @@ export async function generateMetadata({
   const language = locale || "en";
   const page = await getPageBySlug("cases", channel, language);
 
+  const title = page?.metadata?.title || "Cases";
+  const description = page?.metadata?.description;
+
+  const ogImages = page?.metadata?.image
+    ? [
+        {
+          url: urlFor(page.metadata.image).width(1200).height(630).url(),
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ]
+    : [];
+
   return {
-    title: page?.metadata?.title || "Cases",
-    description: page?.metadata?.description,
+    title,
+    description,
+    keywords: page?.metadata?.keywords ?? undefined,
+    alternates: {
+      canonical: `/${language}/cases`,
+      languages: { "x-default": `/${language}/cases`, [language]: `/${language}/cases` },
+    },
     openGraph: {
-      title: page?.metadata?.title || "Cases",
-      description: page?.metadata?.description || undefined,
-      ...(page?.metadata?.image && {
-        images: [
-          {
-            url: urlFor(page.metadata.image).width(1200).height(630).url(),
-            width: 1200,
-            height: 630,
-          },
-        ],
-      }),
+      title,
+      description: description || undefined,
+      locale: language,
+      type: "website",
+      images: ogImages,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: description || undefined,
+      images: ogImages.map((img) => img.url),
     },
   };
 }
@@ -92,6 +127,25 @@ export default async function CasesPage({
     allCaseItems,
   );
 
+  // LCP optimization: preload hero poster image
+  const heroVideoUrl = page?.content1sp
+    ? extractHeroVideoUrl(page.content1sp as any[])
+    : undefined;
+  const heroPosterDesktop = heroVideoUrl
+    ? cloudinaryPosterUrl(heroVideoUrl, { maxWidth: 1280 })
+    : undefined;
+  const heroPosterMobile = heroVideoUrl
+    ? cloudinaryPosterUrl(heroVideoUrl, { maxWidth: 480, portrait: true })
+    : undefined;
+  const heroPosterDesktopSrcSet = heroVideoUrl
+    ? cloudinaryPosterSrcSet(heroVideoUrl, [960, 1280, 1600, 1920])
+    : undefined;
+  const heroPosterMobileSrcSet = heroVideoUrl
+    ? cloudinaryPosterSrcSet(heroVideoUrl, [360, 480, 640, 750], {
+        portrait: true,
+      })
+    : undefined;
+
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
       {/* Structured Data (JSON-LD) */}
@@ -122,6 +176,38 @@ export default async function CasesPage({
             locale: language,
             listName: getBreadcrumbLabel(language, "cases"),
           })}
+        />
+      )}
+
+      {/* Preload the hero poster for fast LCP */}
+      {heroVideoUrl && (
+        <>
+          <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="" />
+          <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        </>
+      )}
+      {heroPosterDesktop && (
+        <link
+          rel="preload"
+          as="image"
+          href={heroPosterDesktop}
+          // @ts-expect-error — fetchpriority is valid HTML but not yet in React types
+          fetchpriority="high"
+          imageSrcSet={heroPosterDesktopSrcSet}
+          imageSizes="100vw"
+          media="(min-width: 769px)"
+        />
+      )}
+      {heroPosterMobile && (
+        <link
+          rel="preload"
+          as="image"
+          href={heroPosterMobile}
+          // @ts-expect-error — fetchpriority is valid HTML but not yet in React types
+          fetchpriority="high"
+          imageSrcSet={heroPosterMobileSrcSet}
+          imageSizes="100vw"
+          media="(max-width: 768px)"
         />
       )}
 

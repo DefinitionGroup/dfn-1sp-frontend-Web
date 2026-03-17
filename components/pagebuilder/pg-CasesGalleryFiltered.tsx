@@ -7,7 +7,7 @@ import { CASE_STUDIES_QUERY, CASE_STUDIES_BY_IDS_QUERY } from "@/sanity/lib/quer
 import GridBackground from "@/components/ui/GridBackground";
 import CaseGalleryComponent from "@/components/data/data-CaseGallery";
 import { getTranslations } from "@/lib/translations";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
+
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
 
 interface CaseStudy {
@@ -215,4 +215,4 @@ function CasesGalleryFiltered({
   );
 }
 
-export default withDebugBadge(CasesGalleryFiltered, "pg-CasesGalleryFiltered");
+export default CasesGalleryFiltered;

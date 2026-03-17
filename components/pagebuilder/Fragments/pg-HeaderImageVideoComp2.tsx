@@ -4,7 +4,6 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, useInView } from "motion/react";
 import { usePathname } from "next/navigation";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
 import {
   optimizedVideoUrl,
   optimizedPortraitVideoUrl,
@@ -453,6 +452,4 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   );
 };
 
-export default withDebugBadge(HeaderImageVideoComp2, "fragment-HeaderImageVideoComp2", {
-  badgeClassName: "bg-black/60 text-red-200 border-red-500/60",
-});
+export default HeaderImageVideoComp2;

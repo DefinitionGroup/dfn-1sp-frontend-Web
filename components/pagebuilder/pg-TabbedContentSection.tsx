@@ -6,7 +6,6 @@ import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import { Link } from "next-view-transitions";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
 import { motion, AnimatePresence } from "motion/react";
 
 type TabbedContentSectionData = {
@@ -291,4 +290,4 @@ function TabbedContentSection({ data }: { data: TabbedContentSectionData }) {
   );
 }
 
-export default withDebugBadge(TabbedContentSection, "pg-TabbedContentSection");
+export default TabbedContentSection;

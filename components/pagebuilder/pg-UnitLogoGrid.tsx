@@ -8,7 +8,6 @@ import { useParams } from "next/navigation";
 import { Link } from "next-view-transitions";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import GridBackground from "@/components/ui/GridBackground";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
 import type { CloudinaryAsset, CTA } from "@/types/sanity.types";
 
 type Unit = {
@@ -230,4 +229,4 @@ function UnitLogoGrid({ data, language: propLanguage }: UnitLogoGridProps) {
   );
 }
 
-export default withDebugBadge(UnitLogoGrid, "pg-UnitLogoGrid");
+export default UnitLogoGrid;

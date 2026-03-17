@@ -33,6 +33,10 @@ import {
   generateBreadcrumbJsonLd,
   generateItemListJsonLd,
   extractCaseItemsFromContent,
+  extractPeopleFromContent,
+  generatePeopleListJsonLd,
+  extractUnitsFromContent,
+  generateUnitsListJsonLd,
   getBreadcrumbLabel,
   CANONICAL_URL,
 } from "@/lib/structured-data";
@@ -59,7 +63,7 @@ function extractHeroVideoUrl(content: any[]): string | undefined {
   return undefined;
 }
 
-const SUPPORTED_LOCALES = ["en", "de", "es"];
+const SUPPORTED_LOCALES = ["en"];
 
 export async function generateMetadata({
   params,
@@ -99,11 +103,13 @@ export async function generateMetadata({
   return {
     title,
     description,
+    keywords: page.metadata?.keywords ?? undefined,
     alternates: {
       canonical: `/${language}`,
-      languages: Object.fromEntries(
-        SUPPORTED_LOCALES.map((l) => [l, `/${l}`])
-      ),
+      languages: {
+        "x-default": `/${language}`,
+        ...Object.fromEntries(SUPPORTED_LOCALES.map((l) => [l, `/${l}`])),
+      },
     },
     openGraph: {
       title,
@@ -191,6 +197,16 @@ export default async function Home({
             })}
           />
         ) : null;
+      })()}
+
+      {/* Person & Unit structured data from page builder content */}
+      {(() => {
+        const people = extractPeopleFromContent(page?.content1sp as any[] | undefined);
+        return people.length > 0 ? <JsonLdScript data={generatePeopleListJsonLd({ people })} /> : null;
+      })()}
+      {(() => {
+        const units = extractUnitsFromContent(page?.content1sp as any[] | undefined);
+        return units.length > 0 ? <JsonLdScript data={generateUnitsListJsonLd({ units })} /> : null;
       })()}
 
       {/* Preload the hero poster for fast LCP */}

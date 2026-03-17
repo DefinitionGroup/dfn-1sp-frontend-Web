@@ -2,7 +2,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
 import { Link } from "next-view-transitions";
 import { ArrowRightIcon } from "@phosphor-icons/react";
 
@@ -113,6 +112,4 @@ function CtaMiniComponent({
   );
 }
 
-export default withDebugBadge(CtaMiniComponent, "fragment-CtaMiniComponent", {
-  badgeClassName: "bg-black/60 text-red-200 border-red-500/60",
-});
+export default CtaMiniComponent;

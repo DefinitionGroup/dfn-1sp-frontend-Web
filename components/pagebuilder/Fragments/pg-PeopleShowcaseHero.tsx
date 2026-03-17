@@ -8,7 +8,6 @@ import StaggeredFadeIn from "@/components/ui/StaggeredFadeIn";
 import Image from "next/image";
 import { Link } from "next-view-transitions";
 import { createPortal } from "react-dom";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
 import { useRobustInView } from "@/hooks/use-robust-in-view";
 export interface MemberItem {
   name?: string;
@@ -417,6 +416,4 @@ function PeopleShowcaseHero({
   );
 }
 
-export default withDebugBadge(PeopleShowcaseHero, "fragment-PeopleShowcaseHero", {
-  badgeClassName: "bg-black/60 text-red-200 border-red-500/60",
-});
+export default PeopleShowcaseHero;

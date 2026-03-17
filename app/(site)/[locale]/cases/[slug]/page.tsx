@@ -107,6 +107,7 @@ export async function generateMetadata({
     description,
     alternates: {
       canonical: `/${language}/cases/${slug}`,
+      languages: { "x-default": `/${language}/cases/${slug}`, [language]: `/${language}/cases/${slug}` },
     },
     openGraph: {
       title,

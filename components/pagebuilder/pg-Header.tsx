@@ -11,7 +11,6 @@ import type {
   OneSPHeader,
   CloudinaryAsset,
 } from "@/types/sanity.types";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { SMALL_TOUCH_LANDSCAPE_MEDIA_QUERY } from "@/lib/responsive";
 
@@ -205,4 +204,4 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   );
 }
 
-export default withDebugBadge(OneSPHeaderStep, "pg-Header");
+export default OneSPHeaderStep;

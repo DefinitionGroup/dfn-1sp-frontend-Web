@@ -6,7 +6,6 @@ import { useParams } from "next/navigation";
 import { client } from "@/sanity/lib/client";
 import { UNIT_LOGO_FLOAT_QUERY } from "@/sanity/lib/queries";
 import { assetUrl } from "@/utils/utils";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
 import type { CloudinaryAsset } from "@/types/sanity.types";
 
 type Unit = {
@@ -198,4 +197,4 @@ function PageBuilderLogoFloat({
   );
 }
 
-export default withDebugBadge(PageBuilderLogoFloat, "pg-PageBuilderLogoFloat");
+export default PageBuilderLogoFloat;

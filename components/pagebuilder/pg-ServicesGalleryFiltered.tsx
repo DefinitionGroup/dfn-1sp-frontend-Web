@@ -6,7 +6,7 @@ import { client } from "@/sanity/lib/client";
 import { SERVICES_QUERY } from "@/sanity/lib/queries";
 import ServiceGalleryComponent from "@/components/data/data-ServiceGallery";
 import { getTranslations } from "@/lib/translations";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
+
 
 interface Service {
   _id: string;
@@ -130,7 +130,4 @@ function ServicesGalleryFiltered({
   );
 }
 
-export default withDebugBadge(
-  ServicesGalleryFiltered,
-  "pg-ServicesGalleryFiltered"
-);
+export default ServicesGalleryFiltered;

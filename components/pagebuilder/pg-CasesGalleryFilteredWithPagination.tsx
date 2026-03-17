@@ -7,7 +7,7 @@ import { CASE_STUDIES_QUERY } from "@/sanity/lib/queries";
 import GridBackground from "@/components/ui/GridBackground";
 import CaseGalleryComponent from "@/components/data/data-CaseGallery";
 import { getTranslations } from "@/lib/translations";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
+
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 
 interface CaseStudy {
@@ -263,4 +263,4 @@ function CasesGalleryFilteredWithPagination({
   );
 }
 
-export default withDebugBadge(CasesGalleryFilteredWithPagination, "pg-CasesGalleryFilteredWithPagination");
+export default CasesGalleryFilteredWithPagination;

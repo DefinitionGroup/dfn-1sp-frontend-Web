@@ -342,6 +342,33 @@ export function generateBusinessUnitJsonLd(options: {
   };
 }
 
+/**
+ * ContactPage structured data.
+ *
+ * Schema.org `ContactPage` type signals to search engines that this page
+ * contains contact information for the organization.
+ *
+ * SEO Impact: Page-level understanding, Organization contact info
+ */
+export function generateContactPageJsonLd(options: {
+  locale: string;
+  title?: string;
+  description?: string | null;
+}): JsonLdEntity {
+  const pageUrl = `${CANONICAL_URL}/${options.locale}/contact`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "@id": pageUrl,
+    name: options.title || "Contact",
+    ...(options.description && { description: options.description }),
+    url: pageUrl,
+    inLanguage: options.locale,
+    isPartOf: { "@id": `${CANONICAL_URL}/#website` },
+    mainEntity: { "@id": `${CANONICAL_URL}/#organization` },
+  };
+}
+
 // =============================================================================
 // ITEM LIST / CAROUSEL
 // =============================================================================
@@ -472,4 +499,159 @@ export function extractCaseItemsFromContent(
   }
 
   return items;
+}
+
+// =============================================================================
+// PERSON EXTRACTION FROM PAGE BUILDER CONTENT
+// =============================================================================
+
+/**
+ * Person data extracted from page builder blocks for JSON-LD.
+ */
+export interface PersonForJsonLd {
+  name: string;
+  position?: string | null;
+  email?: string | null;
+  imageUrl?: string | null;
+  profileUrl?: string | null;
+  unitName?: string | null;
+}
+
+/**
+ * Extract people from page builder content blocks for Person JSON-LD.
+ *
+ * Scans for:
+ * - `galleryPeopleStep` blocks → `teamMembers[]`
+ * - `showtimeGallery` blocks → nested `steps[].teamMembers[]`
+ *
+ * @param contentBlocks - The page builder content array from Sanity
+ * @returns Deduplicated array of person data ready for JSON-LD
+ */
+export function extractPeopleFromContent(
+  contentBlocks: any[] | null | undefined,
+): PersonForJsonLd[] {
+  if (!contentBlocks || !Array.isArray(contentBlocks)) return [];
+
+  const seen = new Set<string>();
+  const people: PersonForJsonLd[] = [];
+
+  const addPerson = (member: any) => {
+    if (!member?.name) return;
+    const key = member._id || member.name;
+    if (seen.has(key)) return;
+    seen.add(key);
+    people.push({
+      name: member.fullname || member.name,
+      position: member.position || null,
+      email: member.email || null,
+      imageUrl: member.image?.secure_url || member.image?.url || null,
+      profileUrl: member.profileUrl || null,
+      unitName: member.unit?.name || null,
+    });
+  };
+
+  const extractFromBlock = (block: any) => {
+    if (block?._type === "galleryPeopleStep" && Array.isArray(block.teamMembers)) {
+      for (const member of block.teamMembers) addPerson(member);
+    }
+  };
+
+  for (const block of contentBlocks) {
+    if (!block?._type) continue;
+
+    // Direct galleryPeopleStep blocks
+    extractFromBlock(block);
+
+    // Nested inside showtimeGallery steps
+    if (block._type === "showtimeGallery" && Array.isArray(block.steps)) {
+      for (const step of block.steps) extractFromBlock(step);
+    }
+  }
+
+  return people;
+}
+
+/**
+ * Generate a JSON-LD `@graph` containing Person entities.
+ *
+ * Use when a page displays team members (people galleries, team sections).
+ */
+export function generatePeopleListJsonLd(options: {
+  people: PersonForJsonLd[];
+}): JsonLdEntity {
+  return {
+    "@context": "https://schema.org",
+    "@graph": options.people.map((person) => generatePersonJsonLd(person)),
+  };
+}
+
+// =============================================================================
+// BUSINESS UNIT EXTRACTION FROM PAGE BUILDER CONTENT
+// =============================================================================
+
+/**
+ * Unit data extracted from page builder blocks for JSON-LD.
+ */
+export interface UnitForJsonLd {
+  name: string;
+  description?: string | null;
+  logoUrl?: string | null;
+}
+
+/**
+ * Extract business units from page builder content blocks for JSON-LD.
+ *
+ * Scans for:
+ * - `unitLogoGrid` blocks → `selectedUnits[]`
+ * - `pageBuilderLogoFloat` blocks → `selectedUnits[]`
+ *
+ * @param contentBlocks - The page builder content array from Sanity
+ * @returns Deduplicated array of unit data ready for JSON-LD
+ */
+export function extractUnitsFromContent(
+  contentBlocks: any[] | null | undefined,
+): UnitForJsonLd[] {
+  if (!contentBlocks || !Array.isArray(contentBlocks)) return [];
+
+  const seen = new Set<string>();
+  const units: UnitForJsonLd[] = [];
+
+  const addUnit = (unit: any) => {
+    if (!unit?.name) return;
+    const key = unit._id || unit.name;
+    if (seen.has(key)) return;
+    seen.add(key);
+    units.push({
+      name: unit.name,
+      description: unit.description || unit.tagline || null,
+      logoUrl: unit.logo?.secure_url || unit.logoUrl || null,
+    });
+  };
+
+  for (const block of contentBlocks) {
+    if (!block?._type) continue;
+
+    if (
+      (block._type === "unitLogoGrid" || block._type === "pageBuilderLogoFloat") &&
+      Array.isArray(block.selectedUnits)
+    ) {
+      for (const unit of block.selectedUnits) addUnit(unit);
+    }
+  }
+
+  return units;
+}
+
+/**
+ * Generate a JSON-LD `@graph` containing Organization (sub-unit) entities.
+ *
+ * Use when a page displays business unit logos or cards.
+ */
+export function generateUnitsListJsonLd(options: {
+  units: UnitForJsonLd[];
+}): JsonLdEntity {
+  return {
+    "@context": "https://schema.org",
+    "@graph": options.units.map((unit) => generateBusinessUnitJsonLd(unit)),
+  };
 }

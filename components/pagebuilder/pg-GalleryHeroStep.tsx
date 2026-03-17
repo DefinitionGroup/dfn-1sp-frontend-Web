@@ -9,7 +9,7 @@ import { useRef } from "react";
 import { assetUrl } from "@/utils/utils";
 import { useInView } from "motion/react";
 import { useParams } from "next/navigation";
-import { withDebugBadge } from "@/components/dev/withDebugBadge";
+
 
 type Props =
   | { data: GalleryHeroStep }
@@ -136,4 +136,4 @@ function GalleryHeroStepComponent(props: Props) {
   );
 }
 
-export default withDebugBadge(GalleryHeroStepComponent, "pg-GalleryHeroStep");
+export default GalleryHeroStepComponent;
