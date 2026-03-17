@@ -101,7 +101,7 @@ function UnitLogoGrid({ data, language: propLanguage }: UnitLogoGridProps) {
   const columnClasses: Record<number, string> = {
     3: "grid-cols-2 sm:grid-cols-3",
     4: "grid-cols-2 sm:grid-cols-3 md:grid-cols-4",
-    5: "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5",
+    5: "grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5",
     6: "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6",
   };
 
@@ -203,14 +203,14 @@ function UnitLogoGrid({ data, language: propLanguage }: UnitLogoGridProps) {
                     href={href}
                     target={unit.cta?.link?.linkType === "external" ? "_blank" : undefined}
                     rel={unit.cta?.link?.linkType === "external" ? "noopener noreferrer" : undefined}
-                    className={`group flex items-center justify-center hover:bg-neutral-200/20  rounded-sm   cursor-pointer p-4 md:p-4  ${bgClass} transition-all duration-300`}
+                    className={`group flex items-center justify-center hover:bg-neutral-200/20 rounded-sm   cursor-pointer p-2 md:p-4  ${bgClass} transition-all duration-300`}
                   >
-                    <div className="relative w-full aspect-[3/2] flex-col cursor-pointer border border-neutral-200/50  rounded-sm   items-center justify-center overflow-hidden">
+                    <div className="relative w-full aspect-[3/2] flex-col cursor-pointer border border-neutral-200/90  rounded-sm   items-center justify-center overflow-hidden">
                       <Image
                         src={logoUrl}
                         alt={unit.name || "Unit logo"}
                         fill
-                        className={`object-contain block transition-all duration-300  max-h-16 mt-3 px-4   group-hover:scale-80 ${isDarkBg
+                        className={`object-contain object-center relative  transition-all duration-300    px-4   group-hover:scale-80 ${isDarkBg
                           ? "opacity-90 group-hover:opacity-100"
                           : "opacity-90 group-hover:opacity-100 dark:brightness-0 dark:invert"
                           }`}

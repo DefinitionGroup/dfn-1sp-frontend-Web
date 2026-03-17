@@ -158,7 +158,7 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
           duration={effectiveDuration}
           distance={effectiveDistance}
           easing={easingCurve}
-          useClipPath={shouldUseClipPath}
+        // useClipPath={shouldUseClipPath}
         >
           {child}
         </StaggeredItem>
