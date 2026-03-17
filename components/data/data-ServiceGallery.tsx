@@ -8,11 +8,22 @@ import { useOutsideClick } from "@/hooks/use-outside-click";
 import Image from "next/image";
 import DeferredVideo from "@/components/ui/DeferredVideo";
 import { cloudinaryPosterUrl } from "@/utils/utils";
-import { Service } from "@/types/sanity.types";
+import type { CloudinaryImage, Service } from "@/types/sanity.types";
 
 function isVideoUrl(url: string | undefined): boolean {
   if (!url) return false;
   return /\.(mp4|webm|mov|ogg)$/i.test(url) || url.includes("/video/");
+}
+
+function clampFocus(value?: number): number {
+  if (typeof value !== "number" || Number.isNaN(value)) return 50;
+  return Math.min(100, Math.max(0, value));
+}
+
+function getObjectPosition(image?: CloudinaryImage | null): string | undefined {
+  if (image?.focusMode !== "manual") return undefined;
+
+  return `${clampFocus(image.focusX)}% ${clampFocus(image.focusY)}%`;
 }
 
 interface ServiceGalleryProps {
@@ -61,13 +72,14 @@ export default function ServiceGalleryComponent({
   useOutsideClick(ref, () => setActive(null));
 
   const activeBg =
-    active?.serviceBackground?.asset.secure_url ||
-    active?.serviceBackground?.asset.url ||
+    active?.serviceBackground?.asset?.secure_url ||
+    active?.serviceBackground?.asset?.url ||
     active?.iconUrl;
   const activeIcon =
-    active?.serviceicon?.asset.secure_url ||
-    active?.serviceicon?.asset.url ||
+    active?.serviceicon?.asset?.secure_url ||
+    active?.serviceicon?.asset?.url ||
     active?.iconUrl;
+  const activeObjectPosition = getObjectPosition(active?.serviceBackground);
 
   return (
     <>
@@ -139,7 +151,12 @@ export default function ServiceGalleryComponent({
                   <DeferredVideo
                     src={activeBg}
                     maxWidth={1000}
-                    className="w-full min-h-[1000px] sm:rounded-t-xl object-cover object-top"
+                    className="w-full min-h-[1000px] sm:rounded-t-xl object-cover"
+                    mediaStyle={
+                      activeObjectPosition
+                        ? { objectPosition: activeObjectPosition }
+                        : undefined
+                    }
                     mountDelay={100}
                     style={{ opacity: 0.5 }}
                   />
@@ -148,8 +165,13 @@ export default function ServiceGalleryComponent({
                     width={1000}
                     height={400}
                     src={activeBg}
-                    alt={active.name}
-                    className="w-full min-h-[1000px]  sm:rounded-t-xl  opacity-50 object-cover object-top"
+                    alt={active.serviceBackground?.alt || active.name}
+                    className="w-full min-h-[1000px]  sm:rounded-t-xl  opacity-50 object-cover"
+                    style={
+                      activeObjectPosition
+                        ? { objectPosition: activeObjectPosition }
+                        : undefined
+                    }
                   />
                 ) : (
                   <div className="w-full h-full sm:rounded-t-xl bg-neutral-800 opacity-50" />
@@ -230,13 +252,14 @@ export default function ServiceGalleryComponent({
         >
           {filteredItems.map((item) => {
             const bg =
-              item.serviceBackground?.asset.secure_url ||
-              item.serviceBackground?.asset.url ||
+              item.serviceBackground?.asset?.secure_url ||
+              item.serviceBackground?.asset?.url ||
               item.iconUrl;
             const icon =
-              item.serviceicon?.asset.secure_url ||
-              item.serviceicon?.asset.url ||
+              item.serviceicon?.asset?.secure_url ||
+              item.serviceicon?.asset?.url ||
               item.iconUrl;
+            const objectPosition = getObjectPosition(item.serviceBackground);
 
             return (
               <motion.div
@@ -254,7 +277,12 @@ export default function ServiceGalleryComponent({
                       <DeferredVideo
                         src={bg}
                         maxWidth={600}
-                        className="w-full h-full object-cover min-h-[320px] object-top"
+                        className="w-full h-full object-cover min-h-[320px]"
+                        mediaStyle={
+                          objectPosition
+                            ? { objectPosition }
+                            : undefined
+                        }
                         posterUrl={cloudinaryPosterUrl(bg, { maxWidth: 600, frame: "0" })}
                         mountDelay={200}
                       />
@@ -264,8 +292,13 @@ export default function ServiceGalleryComponent({
                       width={1000}
                       height={600}
                       src={bg}
-                      alt={item.name}
-                      className="w-full h-full object-cover min-h-[320px] group-hover/card:opacity-100 object-top opacity-80 transition-all"
+                      alt={item.serviceBackground?.alt || item.name}
+                      className="w-full h-full object-cover min-h-[320px] group-hover/card:opacity-100 opacity-80 transition-all"
+                      style={
+                        objectPosition
+                          ? { objectPosition }
+                          : undefined
+                      }
                     />
                   ) : (
                     <div className="w-full h-full bg-neutral-800 border opacity-80 min-h-[200px] group-hover/card:opacity-100 transition-all" />
