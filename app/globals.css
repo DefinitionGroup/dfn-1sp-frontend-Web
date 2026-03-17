@@ -292,7 +292,9 @@
       --tw-cursor-w: 4px;
       --tw-cursor-radius: 2px;
       --tw-cursor-ml: 2px;
-      --tw-cursor-h: calc(24px + 4vw);
+      --tw-text-size: clamp(1.875rem, 8vw, 3.75rem);
+      --tw-text-lh: calc(var(--tw-text-size) * 1.05);
+      --tw-cursor-h: var(--tw-text-lh);
     }
   }
 
@@ -301,9 +303,9 @@
       --tw-cursor-w: 3px;
       --tw-cursor-radius: 2px;
       --tw-cursor-ml: 2px;
-      --tw-cursor-h: calc(14px + 1.5vw);
       --tw-text-size: min(2vw, 1.25rem);
-      --tw-text-lh: min(2vw, 1.75rem);
+      --tw-text-lh: calc(var(--tw-text-size) * 1.05);
+      --tw-cursor-h: var(--tw-text-lh);
     }
   }
 

@@ -47,6 +47,7 @@ const cursorStyle: React.CSSProperties = {
   width: "var(--tw-cursor-w)" as string,
   borderRadius: "var(--tw-cursor-radius)" as string,
   marginLeft: "var(--tw-cursor-ml)" as string,
+  height: "var(--tw-cursor-h)",
   minHeight: "var(--tw-cursor-h)",
 };
 

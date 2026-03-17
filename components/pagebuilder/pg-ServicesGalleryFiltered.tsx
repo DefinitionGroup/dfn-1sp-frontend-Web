@@ -6,17 +6,7 @@ import { client } from "@/sanity/lib/client";
 import { SERVICES_QUERY } from "@/sanity/lib/queries";
 import ServiceGalleryComponent from "@/components/data/data-ServiceGallery";
 import { getTranslations } from "@/lib/translations";
-
-
-interface Service {
-  _id: string;
-  name: string;
-  taglabel?: string;
-  iconUrl?: string;
-  serviceicon?: any;
-  servicegrouprel?: { _id: string; name: string; taglabel?: string }[];
-  unitsrel?: { _id: string; name: string; slug: { current: string } }[];
-}
+import type { Service } from "@/types/sanity.types";
 
 interface ServicesGalleryFilteredProps {
   showGridBackground?: boolean;

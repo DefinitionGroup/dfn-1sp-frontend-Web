@@ -21,6 +21,7 @@ interface DeferredVideoProps {
   maxWidth?: number;
   className?: string;
   posterClassName?: string;
+  mediaStyle?: React.CSSProperties;
   autoPlay?: boolean;
   loop?: boolean;
   muted?: boolean;
@@ -45,6 +46,7 @@ export default function DeferredVideo({
   maxWidth = 1920,
   className = "object-cover w-full h-full",
   posterClassName,
+  mediaStyle,
   autoPlay = true,
   loop = true,
   muted = true,
@@ -100,7 +102,7 @@ export default function DeferredVideo({
           alt=""
           aria-hidden="true"
           className={`${posterClassName || className} absolute inset-0 w-full h-full transition-opacity duration-500 ${videoReady ? "opacity-0" : "opacity-100"}`}
-          style={{ zIndex: 1 }}
+          style={{ ...mediaStyle, zIndex: 1 }}
         />
       )}
 
@@ -124,7 +126,7 @@ export default function DeferredVideo({
           preload={preload}
           onCanPlay={handleCanPlay}
           className={`${className} ${videoReady ? "opacity-100" : "opacity-0"} transition-opacity duration-500`}
-          style={{ zIndex: 0 }}
+          style={{ ...mediaStyle, zIndex: 0 }}
         />
       )}
     </div>

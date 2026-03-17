@@ -11,6 +11,14 @@ export interface CloudinaryAsset {
     metadata?: Record<string, any>;
 }
 
+export interface CloudinaryImage {
+    asset?: CloudinaryAsset | null;
+    alt?: string;
+    focusMode?: "auto" | "manual";
+    focusX?: number;
+    focusY?: number;
+}
+
 /* Global / Shared objects */
 export interface Link {
     linkType?: "internal" | "external";
@@ -417,7 +425,8 @@ export interface Services {
     language?: string;
     name?: string;
     taglabel?: string;
-    serviceicon?: CloudinaryAsset;
+    serviceicon?: CloudinaryImage;
+    serviceBackground?: CloudinaryImage;
     unitsrel?: Reference<Unit>[];
     servicegrouprel?: Reference<ServiceGroup>[];
 }
@@ -581,8 +590,8 @@ export interface Service {
     name: string;
     taglabel?: string;
     iconUrl?: string;
-    serviceicon?: any;
-    serviceBackground?: any;
+    serviceicon?: CloudinaryImage;
+    serviceBackground?: CloudinaryImage;
     serviceDescription?: string;
     servicegrouprel?: { _id: string; name: string; taglabel?: string }[];
     unitsrel?: { _id: string; name: string; slug: { current: string } }[];
