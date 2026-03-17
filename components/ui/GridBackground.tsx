@@ -31,17 +31,11 @@ const GridBackground: React.FC<GridBackgroundProps> = ({
   });
 
   const containerVariants = {
-    hidden: {
-      opacity: 0,
-    },
+    hidden: {},
     visible: {
-      opacity: 1,
       transition: {
-        delay,
         staggerChildren: staggerDelay,
         delayChildren: delay,
-        duration: 0.3,
-        ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
       },
     },
   };
