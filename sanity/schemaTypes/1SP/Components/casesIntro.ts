@@ -36,6 +36,21 @@ export default defineType({
             validation: (Rule) => Rule.required(),
         }),
         defineField({
+            name: "titleTag",
+            title: "Main Title Tag",
+            type: "string",
+            description: "Choose whether the main title renders as an h1 or h2.",
+            initialValue: "h2",
+            group: "content",
+            options: {
+                list: [
+                    { title: "H1", value: "h1" },
+                    { title: "H2", value: "h2" },
+                ],
+                layout: "radio",
+            },
+        }),
+        defineField({
             name: "subtitle",
             title: "Subtitle",
             type: "string",
