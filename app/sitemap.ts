@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getAllPageSlugs, getAllCaseSlugs } from "@/lib/sanity/queries";
+import { getAllPageSitemapSlugs, getAllCaseSlugs } from "@/lib/sanity/queries";
 import { CANONICAL_URL } from "@/lib/structured-data";
 
 /**
@@ -22,7 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ];
 
     // Dynamic pages from Sanity (includes real _updatedAt dates)
-    const pages = await getAllPageSlugs();
+    const pages = await getAllPageSitemapSlugs();
     const pageEntries: MetadataRoute.Sitemap = pages.map((page) => ({
         url: `${CANONICAL_URL}/${page.slug}`,
         lastModified: page._updatedAt ? new Date(page._updatedAt) : new Date(),

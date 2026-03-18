@@ -14,5 +14,12 @@ export default defineType({
             type: 'array',
             of: [{ type: 'string' }],
         }),
+        defineField({
+            name: 'excludeFromSitemap',
+            title: 'Exclude From Sitemap',
+            type: 'boolean',
+            description: 'Exclude this page from sitemap.xml. Useful for test or temporary pages.',
+            initialValue: false,
+        }),
     ],
 });

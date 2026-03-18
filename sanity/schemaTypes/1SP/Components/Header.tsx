@@ -58,6 +58,14 @@ export default defineType({
       initialValue: "Welcome at 1SP",
     }),
     defineField({
+      name: "seoTitle",
+      title: "SEO H1 Title",
+      type: "string",
+      description:
+        "Optional hidden H1 for screen readers and SEO. It is not shown visually in the header.",
+      group: "content",
+    }),
+    defineField({
       name: "rotatingText",
       title: "Typewriter Words",
       type: "array",

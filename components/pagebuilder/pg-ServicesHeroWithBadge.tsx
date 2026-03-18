@@ -33,6 +33,7 @@ interface ServicesHeroWithBadgeProps {
   };
   enableParallax?: boolean;
   title: string;
+  titleTag?: "h1" | "h2";
   subtitle?: string;
   cta?: {
     heading: string;
@@ -68,6 +69,7 @@ function ServicesHeroWithBadge({
   backgroundVideo,
   enableParallax = false,
   title,
+  titleTag = "h2",
   subtitle,
   cta,
   listItems = [],
@@ -80,6 +82,7 @@ function ServicesHeroWithBadge({
   const t = getTranslations(locale);
 
   const sectionId = t.ids.top;
+  const TitleTag = titleTag === "h1" ? "h1" : "h2";
 
   return (
     <section
@@ -121,9 +124,9 @@ function ServicesHeroWithBadge({
               duration={0.5}
               distance={80}
             >
-              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-gray-100 max-w-2xl tracking-tighter leading-[0.9] mb-2 md:mb-4">
+              <TitleTag className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-gray-100 max-w-2xl tracking-tighter leading-[0.9] mb-2 md:mb-4">
                 {title}
-              </h2>
+              </TitleTag>
               {subtitle && (
                 <p className="text-lg sm:text-xl md:text-2xl text-gray-200 leading-snug max-w-md">
                   {subtitle}

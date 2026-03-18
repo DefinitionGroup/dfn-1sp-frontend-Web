@@ -56,6 +56,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   const useVideo = isVideoUrl(mediaUrl);
 
   const eyebrow = step.eyebrow ?? "Welcome at 1SP";
+  const seoTitle = step.seoTitle?.trim();
   const words = Array.isArray(step.rotatingText) ? step.rotatingText : [];
   const paragraphs = (step.paragraphs ?? []) as PortableTextBlock[];
   const mobileParagraphs = (step.mobileParagraphs ?? []) as PortableTextBlock[];
@@ -134,6 +135,8 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
       {...navPointDataAttr}
       className="relative min-h-[80vh] h-[95vh] iphone-landscape:!h-dvh  overflow-hidden z-1"
     >
+      {seoTitle && <h1 className="sr-only">{seoTitle}</h1>}
+
       {/* Background media */}
       {mediaUrl && (
         <HeaderImageVideoComp2

@@ -17,6 +17,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
     backgroundImage,
     backgroundVideo,
     heading = "Show Time",
+    headingTag = "h2",
     subheading = "Your subheading here",
     paragraphs = [],
     additionalContent = [],
@@ -26,6 +27,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
 
   const imageUrl = assetUrl(backgroundImage) || "/hr.png";
   const videoUrl = assetUrl(backgroundVideo);
+  const HeadingTag = headingTag === "h1" ? "h1" : "h2";
 
   // Generate section ID from heading or use a default
   const sectionId = heading
@@ -66,9 +68,9 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
             distance={80}
           >
             {heading ? (
-              <h2 className="text-4xl md:text-6xl iphone-landscape:!text-4xl font-aspekta leading-none pb-2">
+              <HeadingTag className="text-4xl md:text-6xl iphone-landscape:!text-4xl font-aspekta leading-none pb-2">
                 <MixedType text={heading} />
-              </h2>
+              </HeadingTag>
             ) : null}
             {subheading ? (
               <p className="text-xl iphone-landscape:!text-base text-gray-100  max-w-sm mx-auto">

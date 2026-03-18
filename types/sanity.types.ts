@@ -262,6 +262,7 @@ export interface ShowtimeGallery {
 
 export interface HeroShowtime {
     heading?: string;
+    headingTag?: "h1" | "h2";
     subheading?: string;
     initialValue?: string;
     paragraphs?: string[];
@@ -307,6 +308,7 @@ export interface Page {
         description?: string;
         image?: CloudinaryAsset;
         keywords?: string[];
+        excludeFromSitemap?: boolean;
     };
     channel?: "1spWeb" | "msmWeb" | "studioco2Web" | string;
     navbarVariant?: "light" | "dark";
@@ -405,6 +407,7 @@ export interface OneSPHeader {
 
     // content
     eyebrow?: string;
+    seoTitle?: string;
     rotatingText?: string[];
     paragraphs?: any[];
     mobileParagraphs?: any[];
