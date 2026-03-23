@@ -254,7 +254,7 @@ function ExpandableCards({
                 />
               </motion.div>
 
-              <div className="col-start-1 col-span-1 flex flex-col justify-start items-center opacity-100 row-start-1 p-4 z-1 text-white">
+              <div className="col-start-1 col-span-1 flex flex-col  md:justify-start items-center opacity-100 row-start-1 p-4 z-1 text-white">
                 {card.logo && (
                   <motion.img
                     layoutId={`logo-${card.title}-${id}`}
@@ -266,7 +266,7 @@ function ExpandableCards({
                 {/* Old tile only showed title; keep that for parity */}
                 <motion.h3
                   layoutId={`title-${card.title}-${id}`}
-                  className="font-medium mt-12   text-base leading-snug tracking-tight text-neutral-100 dark:text-neutral-200 md:text-center "
+                  className="font-medium mt-4 md:mt-12   text-xs md:text-base leading-snug tracking-tight text-neutral-100 dark:text-neutral-200 md:text-center "
                 >
                   {card.description}
                 </motion.h3>
