@@ -56,6 +56,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   const useVideo = isVideoUrl(mediaUrl);
 
   const eyebrow = step.eyebrow ?? "Welcome at 1SP";
+  const seoTitle = step.seoTitle?.trim();
   const words = Array.isArray(step.rotatingText) ? step.rotatingText : [];
   const paragraphs = (step.paragraphs ?? []) as PortableTextBlock[];
   const mobileParagraphs = (step.mobileParagraphs ?? []) as PortableTextBlock[];
@@ -134,6 +135,8 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
       {...navPointDataAttr}
       className="relative min-h-[80vh] h-[95vh] iphone-landscape:!h-dvh  overflow-hidden z-1"
     >
+      {seoTitle && <h1 className="sr-only">{seoTitle}</h1>}
+
       {/* Background media */}
       {mediaUrl && (
         <HeaderImageVideoComp2
@@ -148,7 +151,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
       {/* Foreground content */}
       <div className="absolute bottom-24 md:bottom-24 iphone-landscape:bottom-0 md:relative z-10  max-w-9xl container md:mt-[50vh] iphone-landscape:mt-[50vh] mx-auto">
         <StaggeredSlideUp
-          className="px-4 md:px-4 space-y-1 max-w-full"
+          className="px-4 md:px-4 space-y-1 container mx-auto  "
           delay={1}
           staggerDelay={0.08}
           duration={0.5}

@@ -10,6 +10,7 @@ import { useParams } from "next/navigation";
 
 interface CasesIntroProps {
   title: string;
+  titleTag?: "h1" | "h2";
   subtitle?: string;
   showGridBackground?: boolean;
   showHamburgerMenu?: boolean;
@@ -19,6 +20,7 @@ interface CasesIntroProps {
 
 function CasesIntro({
   title,
+  titleTag = "h2",
   subtitle,
   showGridBackground = true,
   showHamburgerMenu = true,
@@ -35,6 +37,7 @@ function CasesIntro({
   }, []);
 
   const sectionId = t.ids.intro;
+  const TitleTag = titleTag === "h1" ? "h1" : "h2";
 
   return (
     <section className="relative overflow-hidden">
@@ -57,9 +60,9 @@ function CasesIntro({
                 distance={100}
                 className="md:max-w-3/4 lg:max-w-2/4"
               >
-                <h2 className="text-3xl md:text-4xl leading-none text-neutral-700 pb-3 font-aspekta font-medium">
+                <TitleTag className="text-3xl md:text-4xl leading-none text-neutral-700 pb-3 font-aspekta font-medium">
                   {title}
-                </h2>
+                </TitleTag>
                 {subtitle && (
                   <h2 className="text-3xl  md:text-4xl leading-none text-neutral-400 pb-3 font-aspekta">
                     {subtitle}

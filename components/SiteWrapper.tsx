@@ -30,6 +30,7 @@ import Footer from "./menu/FooterNew";
 import { NavbarMenu, FooterMenu } from "@/types/menu.types";
 import PageWithMapVertical from "./ui/PageWithMapVertical";
 import { FooterMenuProvider } from "./menu/FooterMenuContext";
+import { NavColorProvider } from "./menu/NavColorContext";
 
 interface SiteWrapperProps {
   children: React.ReactNode;
@@ -62,19 +63,21 @@ export default async function SiteWrapper({
 
   return (
     <FooterMenuProvider menu={footer as FooterMenu}>
-      <PageWithMapVertical>
-        <FrontNavOverlay
-          menuData={nav as NavbarMenu}
-          color={navColor}
-          locale={language}
-          hasCaseStudies={hasCaseStudies}
-          caseStudies={cases || []}
-          hasServices={hasServices}
-          services={services || []}
-        />
-        {children}
-        <Footer menuData={footer as FooterMenu} />
-      </PageWithMapVertical>
+      <NavColorProvider color={navColor}>
+        <PageWithMapVertical>
+          <FrontNavOverlay
+            menuData={nav as NavbarMenu}
+            color={navColor}
+            locale={language}
+            hasCaseStudies={hasCaseStudies}
+            caseStudies={cases || []}
+            hasServices={hasServices}
+            services={services || []}
+          />
+          {children}
+          <Footer menuData={footer as FooterMenu} />
+        </PageWithMapVertical>
+      </NavColorProvider>
     </FooterMenuProvider>
   );
 }

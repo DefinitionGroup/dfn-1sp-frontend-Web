@@ -35,7 +35,7 @@ interface HeaderImageVideoCompProps {
   enableParallax?: boolean;
   opacity?: number; // overlay target opacity when in view
   videoDelay?: number; // delay before video starts (seconds)
-  /** Mark as above-the-fold hero — adds fetchpriority="high" and priority to images */
+  /** Mark as above-the-fold hero — adds fetchPriority="high" and priority to images */
   isHero?: boolean;
 }
 

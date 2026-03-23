@@ -110,6 +110,21 @@ export default defineType({
       group: "content",
     }),
     defineField({
+      name: "headingTag",
+      title: "Heading Tag",
+      type: "string",
+      description: "Choose whether the main heading renders as an h1 or h2.",
+      initialValue: "h2",
+      group: "content",
+      options: {
+        list: [
+          { title: "H1", value: "h1" },
+          { title: "H2", value: "h2" },
+        ],
+        layout: "radio",
+      },
+    }),
+    defineField({
       name: "subheading",
       title: "Subheading",
       type: "text",

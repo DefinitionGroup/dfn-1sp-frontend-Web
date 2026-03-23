@@ -190,8 +190,7 @@ export default async function CasesPage({
           rel="preload"
           as="image"
           href={heroPosterDesktop}
-          // @ts-expect-error — fetchpriority is valid HTML but not yet in React types
-          fetchpriority="high"
+          fetchPriority="high"
           imageSrcSet={heroPosterDesktopSrcSet}
           imageSizes="100vw"
           media="(min-width: 769px)"
@@ -202,8 +201,7 @@ export default async function CasesPage({
           rel="preload"
           as="image"
           href={heroPosterMobile}
-          // @ts-expect-error — fetchpriority is valid HTML but not yet in React types
-          fetchpriority="high"
+          fetchPriority="high"
           imageSrcSet={heroPosterMobileSrcSet}
           imageSizes="100vw"
           media="(max-width: 768px)"

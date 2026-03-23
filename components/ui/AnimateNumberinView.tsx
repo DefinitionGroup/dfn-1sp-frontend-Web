@@ -57,25 +57,40 @@ const StyleSheet = () => {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 20px;
+          gap: 12px;
         }
 
         .number {
-          font-size: 96px;
-          letter-spacing: -0.014rem; /* match Plaintext */
+          font-size: 48px;
+          letter-spacing: -0.014rem;
           font-weight: 300;
           font-variation-settings: "opsz" 30, "wght" 530;
         }
 
         .number-section-post {
-          font-size: 96px; /* match Plaintext */
-          opacity: 1; /* match Plaintext */
-          color: var(--color-lime-500); /* match Plaintext */
+          font-size: 48px;
+          opacity: 1;
+          color: var(--color-lime-500);
           position: relative;
-          bottom:0px; /* match Plaintext */
+          bottom: 0px;
           align-self: flex-end;
-          margin-left: 5px;
+          margin-left: 3px;
           letter-spacing: -0.02em;
+        }
+
+        @media (min-width: 768px) {
+          .price-switcher {
+            gap: 20px;
+          }
+
+          .number {
+            font-size: 96px;
+          }
+
+          .number-section-post {
+            font-size: 96px;
+            margin-left: 5px;
+          }
         }
     `}</style>
   );

@@ -504,3 +504,33 @@ export const getAllPageSlugs = cache(async () => {
     (data as Array<{ slug: string; language: string; channel: string; _updatedAt: string }>) || []
   );
 });
+
+/**
+ * Get all page slugs that should be included in sitemap.xml.
+ */
+export const getAllPageSitemapSlugs = cache(async () => {
+  const PAGE_SITEMAP_SLUGS_QUERY = defineQuery(/* groq */ `
+    *[
+      _type == "page" &&
+      defined(slug.current) &&
+      !isHomepage &&
+      metadata.excludeFromSitemap != true
+    ]{
+      "slug": slug.current,
+      language,
+      channel,
+      _updatedAt
+    }
+  `);
+
+  const { data } = await sanityFetch({
+    query: PAGE_SITEMAP_SLUGS_QUERY,
+    params: {},
+    perspective: "published",
+    stega: false,
+  });
+
+  return (
+    (data as Array<{ slug: string; language: string; channel: string; _updatedAt: string }>) || []
+  );
+});

@@ -179,7 +179,7 @@ export default function HighlightStep({
 
                 <CtaMiniComponent
                   {...({
-                    className: "font-regular line-height-normal",
+                    className: "font-regular text-white  line-height-normal",
                     heading: cta?.paragraph,
 
                     buttonText: cta?.buttonText,
