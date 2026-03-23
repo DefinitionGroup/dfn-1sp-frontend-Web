@@ -90,7 +90,7 @@ export default function CardsStep({ step }: CardsStepProps) {
         />
       )}
 
-      <div className="z-1 grid gap-8 col-span-12 py-8 col-start-1 container mx-auto row-start-1 grid-cols-12">
+      <div className="z-1 grid gap-8  col-span-12 py-8 col-start-1 container mx-auto row-start-1 grid-cols-12">
         {/* Badge (left) */}
         {step.badge && (
           <Badgemodule
