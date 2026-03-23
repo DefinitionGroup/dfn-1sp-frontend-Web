@@ -6,12 +6,14 @@ interface DeferredSectionProps {
   children: React.ReactNode;
   rootMargin?: string;
   fallbackHeightClassName?: string;
+  minHeight?: string;
 }
 
 export default function DeferredSection({
   children,
-  rootMargin = "1200px 0px",
+  rootMargin = "0px 0px 0px 0px",
   fallbackHeightClassName = "min-h-[25vh] md:min-h-[40vh]",
+  minHeight,
 }: DeferredSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [shouldRender, setShouldRender] = useState(false);
@@ -53,7 +55,11 @@ export default function DeferredSection({
       {shouldRender ? (
         children
       ) : (
-        <div className={fallbackHeightClassName} aria-hidden="true" />
+        <div
+          className={fallbackHeightClassName}
+          style={minHeight ? { minHeight } : undefined}
+          aria-hidden="true"
+        />
       )}
     </div>
   );

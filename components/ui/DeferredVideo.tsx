@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect, useCallback } from "react";
+import { useInView } from "motion/react";
 import { optimizedVideoUrl, cloudinaryPosterUrl } from "@/utils/utils";
 
 /**
@@ -60,8 +61,14 @@ export default function DeferredVideo({
   style,
 }: DeferredVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [shouldMount, setShouldMount] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
+  const isInView = useInView(containerRef, {
+    amount: 0.1,
+    margin: "200px 0px",
+    once: false,
+  });
 
   // Derive poster URL from video URL via Cloudinary transformation
   const posterUrl =
@@ -76,11 +83,12 @@ export default function DeferredVideo({
 
   // Delay-mount the video element to let the poster paint as LCP
   useEffect(() => {
+    if (!isInView) return;
     const timer = setTimeout(() => {
       setShouldMount(true);
     }, mountDelay);
     return () => clearTimeout(timer);
-  }, [mountDelay]);
+  }, [isInView, mountDelay]);
 
   // Handle video ready state
   const handleCanPlay = useCallback(() => {
@@ -94,13 +102,15 @@ export default function DeferredVideo({
   }, [autoPlay, onPlay]);
 
   return (
-    <div className="relative w-full h-full" style={style}>
+    <div ref={containerRef} className="relative w-full h-full" style={style}>
       {/* Poster image — lightweight, loads immediately, becomes LCP element */}
       {posterUrl && (
         <img
           src={posterUrl}
           alt=""
           aria-hidden="true"
+          loading="lazy"
+          decoding="async"
           className={`${posterClassName || className} absolute inset-0 w-full h-full transition-opacity duration-500 ${videoReady ? "opacity-0" : "opacity-100"}`}
           style={{ ...mediaStyle, zIndex: 1 }}
         />

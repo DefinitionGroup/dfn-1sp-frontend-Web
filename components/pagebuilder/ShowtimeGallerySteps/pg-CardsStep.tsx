@@ -129,7 +129,12 @@ export default function CardsStep({ step }: CardsStepProps) {
 
         {cards.length > 0 && (
           <div className="col-span-12 col-start-1 md:col-span-9 md:col-start-3 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 mt-8 ">
-            <ExpandableCards items={cards} variant="compact" columns={5} />
+            <ExpandableCards
+              items={cards}
+              variant="compact"
+              columns={5}
+              initialVisibleCount={Math.min(8, cards.length)}
+            />
           </div>
         )}
       </div>

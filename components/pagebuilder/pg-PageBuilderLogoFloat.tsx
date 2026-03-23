@@ -2,9 +2,6 @@
 
 import React from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { useParams } from "next/navigation";
-import { client } from "@/sanity/lib/client";
-import { UNIT_LOGO_FLOAT_QUERY } from "@/sanity/lib/queries";
 import { assetUrl } from "@/utils/utils";
 import type { CloudinaryAsset } from "@/types/sanity.types";
 
@@ -25,31 +22,20 @@ interface PageBuilderLogoFloatProps {
     maxItems?: number;
     navPointName?: string;
     hideFromNav?: boolean;
-    selectionMode?: "auto" | "manual";
-    selectedUnits?: Unit[];
   };
+  units?: Unit[];
   language?: string;
 }
 
 function PageBuilderLogoFloat({
   data,
-  language: propLanguage,
+  units = [],
 }: PageBuilderLogoFloatProps) {
-  const params = useParams();
-  const language = propLanguage || (params?.locale as string) || "de";
-
   const {
-    logoVariant = "logoColor",
     cardSize = "sm",
-    maxItems = 24,
     navPointName,
     hideFromNav = true,
-    selectionMode = "auto",
-    selectedUnits,
   } = data || {};
-
-  const [units, setUnits] = React.useState<Unit[]>([]);
-  const [isLoading, setIsLoading] = React.useState(true);
   const [visible, setVisible] = React.useState(true);
 
   React.useEffect(() => {
@@ -64,36 +50,6 @@ function PageBuilderLogoFloat({
       window.removeEventListener("resize", onScroll);
     };
   }, []);
-
-  React.useEffect(() => {
-    async function loadUnits() {
-      try {
-        if (
-          selectionMode === "manual" &&
-          Array.isArray(selectedUnits) &&
-          selectedUnits.length > 0
-        ) {
-          setUnits(selectedUnits);
-          setIsLoading(false);
-          return;
-        }
-
-        const fetchedUnits = await client.fetch<Unit[]>(
-          UNIT_LOGO_FLOAT_QUERY,
-          { language, maxItems },
-          { next: { revalidate: 60 } }
-        );
-        setUnits(fetchedUnits || []);
-      } catch (error) {
-        console.error("Error loading units for logo float:", error);
-        setUnits([]);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    loadUnits();
-  }, [language, maxItems, selectedUnits, selectionMode]);
 
   const sectionId = "logo-float";
 
@@ -147,9 +103,7 @@ function PageBuilderLogoFloat({
       data-component="pg-pagebuilder-logo-float"
     >
       <div className="w-full flex items-start justify-center px-4  sm:px-6 lg:h-full mt-20   md:mt-24  lg:px-6 lg:pt-0">
-        {isLoading ? (
-          <div className="text-center text-neutral-400">.</div>
-        ) : cardsWithLogo.length === 0 ? (
+        {cardsWithLogo.length === 0 ? (
           <div className="text-center text-neutral-400">No unit logos found</div>
         ) : (
           <div className="mx-auto w-full max-w-7xl flex flex-wrap items-center  justify-center lg:gap-0">

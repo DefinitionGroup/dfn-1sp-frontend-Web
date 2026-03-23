@@ -33,6 +33,12 @@ import { cache } from "react";
 import { sanityFetch } from "@/sanity/lib/live";
 import { defineQuery } from "next-sanity";
 
+const INTERACTIVE_CAROUSEL_FIELD_MAP = {
+  "1spWeb": "connectedDataCarouselPromo1SP",
+  msmWeb: "connectedDataCarouselPromoMSM",
+  studioco2Web: "connectedDataCarouselPromoStudioCO2",
+} as const;
+
 // =============================================================================
 // QUERY FRAGMENTS (Reusable pieces)
 // =============================================================================
@@ -333,6 +339,114 @@ export const getAllServices = cache(async (language: string) => {
 
   return data || [];
 });
+
+export const getSmartPeople = cache(
+  async (
+    channel: "1spWeb" | "msmWeb" | "studioco2Web",
+    maxItems: number,
+  ) => {
+    const { SMART_PEOPLE_QUERY } = await import("@/sanity/lib/queries");
+
+    const { data } = await sanityFetch({
+      query: SMART_PEOPLE_QUERY,
+      params: {
+        channel,
+        maxItems: Math.max(0, maxItems - 1),
+      },
+    });
+
+    return data || [];
+  }
+);
+
+export const getSmartUnits = cache(
+  async (
+    language: string,
+    maxItems: number,
+    sortBy: "recent" | "name-asc" | "name-desc" = "recent",
+  ) => {
+    const { SMART_UNITS_QUERY } = await import("@/sanity/lib/queries");
+
+    const sortExpression =
+      sortBy === "name-asc"
+        ? "order(name asc)"
+        : sortBy === "name-desc"
+          ? "order(name desc)"
+          : "order(_createdAt desc)";
+
+    const { data } = await sanityFetch({
+      query: defineQuery(
+        SMART_UNITS_QUERY.replace("order(_createdAt desc)", sortExpression)
+      ),
+      params: {
+        language,
+        maxItems: Math.max(0, maxItems - 1),
+      },
+    });
+
+    return data || [];
+  }
+);
+
+export const getUnitLogoGridUnits = cache(async (language: string, maxItems: number) => {
+  const { UNIT_LOGO_GRID_QUERY } = await import("@/sanity/lib/queries");
+
+  const { data } = await sanityFetch({
+    query: UNIT_LOGO_GRID_QUERY,
+    params: {
+      language,
+      maxItems: Math.max(0, maxItems - 1),
+    },
+  });
+
+  return data || [];
+});
+
+export const getUnitLogoFloatUnits = cache(async (language: string, maxItems: number) => {
+  const { UNIT_LOGO_FLOAT_QUERY } = await import("@/sanity/lib/queries");
+
+  const { data } = await sanityFetch({
+    query: UNIT_LOGO_FLOAT_QUERY,
+    params: { language, maxItems },
+  });
+
+  return data || [];
+});
+
+export const getCaseStudiesByIds = cache(async (ids: string[]) => {
+  if (!ids.length) {
+    return [];
+  }
+
+  const { CASE_STUDIES_BY_IDS_QUERY } = await import("@/sanity/lib/queries");
+
+  const { data } = await sanityFetch({
+    query: CASE_STUDIES_BY_IDS_QUERY,
+    params: { ids },
+  });
+
+  return data || [];
+});
+
+export const getInteractiveCarouselCases = cache(
+  async (channel: string, language: string, maxItems: number) => {
+    const normalizedChannel =
+      channel in INTERACTIVE_CAROUSEL_FIELD_MAP ? channel : "1spWeb";
+    const carouselField =
+      INTERACTIVE_CAROUSEL_FIELD_MAP[
+        normalizedChannel as keyof typeof INTERACTIVE_CAROUSEL_FIELD_MAP
+      ];
+
+    const { getInteractiveCarouselQuery } = await import("@/sanity/lib/queries");
+
+    const { data } = await sanityFetch({
+      query: defineQuery(getInteractiveCarouselQuery(carouselField)),
+      params: { language, maxItems },
+    });
+
+    return data || [];
+  }
+);
 
 // =============================================================================
 // STATIC GENERATION HELPERS

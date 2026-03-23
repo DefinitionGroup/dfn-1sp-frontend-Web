@@ -512,7 +512,11 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
         {/* Variant A: Cards present (no buttons) */}
         {hasCards && (
           <div className="col-span-12 md:col-span-10 col-start-1 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-start-3 mt-8">
-            <ExpandableCards items={cards} variant="default" />
+            <ExpandableCards
+              items={cards}
+              variant="default"
+              initialVisibleCount={Math.min(8, cards.length)}
+            />
           </div>
         )}
 

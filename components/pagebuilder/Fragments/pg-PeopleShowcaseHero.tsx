@@ -103,13 +103,26 @@ function LazyVideo({
 
 function PeopleShowcaseHero({
   members,
+  initialVisibleCount = Number.POSITIVE_INFINITY,
 }: {
   members?: MemberItem[];
+  initialVisibleCount?: number;
 }) {
   const [hoveredMember, setHoveredMember] = useState<string | null>(null);
   const [activeModal, setActiveModal] = useState<MemberItem | null>(null);
   const [isClient, setIsClient] = useState(false);
   const modalOpenedAtRef = useRef(0);
+  const sectionRef = useRef<HTMLElement>(null);
+  const { isInView } = useRobustInView(sectionRef, {
+    amount: 0.01,
+    margin: "0px 0px 120px 0px",
+    mobileAmount: 0.01,
+    mobileMargin: "0px 0px 180px 0px",
+    fallbackVisibleAfterMs: 2500,
+  });
+  const [shouldRenderAll, setShouldRenderAll] = useState(
+    !Number.isFinite(initialVisibleCount)
+  );
 
   useEffect(() => {
     setIsClient(true);
@@ -145,12 +158,42 @@ function PeopleShowcaseHero({
     closeModal();
   };
 
+  useEffect(() => {
+    if (shouldRenderAll || !isInView) return;
+
+    const win = window as Window & typeof globalThis & {
+      requestIdleCallback?: (
+        callback: IdleRequestCallback,
+        options?: IdleRequestOptions,
+      ) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+    const run = () => setShouldRenderAll(true);
+    if (win.requestIdleCallback) {
+      const idleId = win.requestIdleCallback(run, { timeout: 800 });
+      return () => {
+        if (win.cancelIdleCallback) {
+          win.cancelIdleCallback(idleId);
+        }
+      };
+    }
+
+    const timer = win.setTimeout(run, 180);
+    return () => win.clearTimeout(timer);
+  }, [isInView, shouldRenderAll]);
+
   if (!members || members.length === 0) {
     return null;
   }
 
+  const visibleMembers =
+    shouldRenderAll || !Number.isFinite(initialVisibleCount)
+      ? members
+      : members.slice(0, initialVisibleCount);
+
   return (
     <section
+      ref={sectionRef}
       className="flex flex-col items-start justify-start w-full mx-auto"
       data-component="people-showcase-hero"
       aria-labelledby="people-showcase-title"
@@ -161,7 +204,7 @@ function PeopleShowcaseHero({
           threshold={0.01}
           rootMargin="0px 0px 160px 0px"
         >
-          {members.map((member, index) => {
+          {visibleMembers.map((member, index) => {
             const src = assetUrl(member.media as any);
 
             // Skip rendering if no valid source URL

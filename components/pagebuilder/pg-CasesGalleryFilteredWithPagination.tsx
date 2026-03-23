@@ -1,9 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
-import { client } from "@/sanity/lib/client";
-import { CASE_STUDIES_QUERY } from "@/sanity/lib/queries";
 import GridBackground from "@/components/ui/GridBackground";
 import CaseGalleryComponent from "@/components/data/data-CaseGallery";
 import { getTranslations } from "@/lib/translations";
@@ -29,6 +26,8 @@ interface CaseStudy {
 }
 
 interface CasesGalleryFilteredWithPaginationProps {
+  locale?: string;
+  caseStudies?: CaseStudy[];
   showGridBackground?: boolean;
   showFilters?: boolean;
   paddingY?: string;
@@ -38,6 +37,8 @@ interface CasesGalleryFilteredWithPaginationProps {
 }
 
 function CasesGalleryFilteredWithPagination({
+  locale = "en",
+  caseStudies = [],
   showGridBackground = true,
   showFilters = true,
   paddingY = "16",
@@ -45,13 +46,9 @@ function CasesGalleryFilteredWithPagination({
   navPointName,
   rowsPerPage = 12,
 }: CasesGalleryFilteredWithPaginationProps) {
-  const params = useParams();
-  const locale = (params?.locale as string) || "en";
   const t = getTranslations(locale);
 
-  const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
   const [activeFilter, setActiveFilter] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(true);
   const [filterAllText, setFilterAllText] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -60,34 +57,6 @@ function CasesGalleryFilteredWithPagination({
     setFilterAllText(t.casesList.filterAll);
     setActiveFilter(t.casesList.filterAll);
   }, [t.casesList.filterAll]);
-
-  // Fetch case studies
-  useEffect(() => {
-    const fetchCaseStudies = async () => {
-      try {
-        setIsLoading(true);
-        // Get channel from cookie or default
-        const channel =
-          document.cookie
-            .split("; ")
-            .find((row) => row.startsWith("channel="))
-            ?.split("=")[1] || "1spWeb";
-
-        const data = await client.fetch(CASE_STUDIES_QUERY, {
-          channel,
-          language: locale,
-        });
-
-        setCaseStudies(data || []);
-      } catch (error) {
-        console.error("Error fetching case studies:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchCaseStudies();
-  }, [locale]);
 
   // Reset to page 1 when filter changes
   useEffect(() => {
@@ -152,16 +121,6 @@ function CasesGalleryFilteredWithPagination({
 
   const paddingClass = `py-${paddingY}`;
   const marginClass = `mb-${marginBottom}`;
-
-  if (isLoading) {
-    return (
-      <div className="grid grid-cols-12 z-1 mx-auto container relative">
-        <div className="col-span-12 py-16 text-center">
-          <div className="text-gray-400">Loading cases...</div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div

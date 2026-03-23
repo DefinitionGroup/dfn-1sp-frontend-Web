@@ -6,11 +6,13 @@ import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import type { CardItem, CloudinaryAsset } from "@/types/sanity.types";
 import { assetUrl } from "@/utils/utils";
 import { useOutsideClick } from "@/hooks/use-outside-click";
+import { useRobustInView } from "@/hooks/use-robust-in-view";
 import Image from "next/image";
 export interface ExpandableCardsProps {
   items?: CardItem[];
   variant?: "default" | "compact";
   columns?: 3 | 4 | 5;
+  initialVisibleCount?: number;
 }
 
 type UIShape = {
@@ -87,15 +89,51 @@ function ExpandableCards({
   items,
   variant = "default",
   columns = 4,
+  initialVisibleCount = Number.POSITIVE_INFINITY,
 }: ExpandableCardsProps) {
   const [active, setActive] = useState<UIShape | boolean | null>(null);
   const ref = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLUListElement>(null);
   const id = useId();
+  const { isInView } = useRobustInView(gridRef, {
+    amount: 0.01,
+    margin: "0px 0px 120px 0px",
+    mobileAmount: 0.01,
+    mobileMargin: "0px 0px 180px 0px",
+    fallbackVisibleAfterMs: 2500,
+  });
+  const [shouldRenderAll, setShouldRenderAll] = useState(
+    !Number.isFinite(initialVisibleCount)
+  );
 
   const sourceCards = useMemo(
     () => (items || []).map(mapCard).filter(Boolean) as UIShape[],
     [items]
   );
+
+  useEffect(() => {
+    if (shouldRenderAll || !isInView) return;
+
+    const win = window as Window & typeof globalThis & {
+      requestIdleCallback?: (
+        callback: IdleRequestCallback,
+        options?: IdleRequestOptions,
+      ) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+    const run = () => setShouldRenderAll(true);
+    if (win.requestIdleCallback) {
+      const idleId = win.requestIdleCallback(run, { timeout: 800 });
+      return () => {
+        if (win.cancelIdleCallback) {
+          win.cancelIdleCallback(idleId);
+        }
+      };
+    }
+
+    const timer = win.setTimeout(run, 180);
+    return () => win.clearTimeout(timer);
+  }, [isInView, shouldRenderAll]);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -116,6 +154,11 @@ function ExpandableCards({
   useOutsideClick(ref, () => setActive(null));
 
   if (sourceCards.length === 0) return null;
+
+  const visibleCards =
+    shouldRenderAll || !Number.isFinite(initialVisibleCount)
+      ? sourceCards
+      : sourceCards.slice(0, initialVisibleCount);
 
   const cardHeight =
     variant === "compact"
@@ -230,11 +273,11 @@ function ExpandableCards({
       </AnimatePresence>
 
       {/* Grid */}
-      <ul className="w-full  ">
+      <ul ref={gridRef} className="w-full  ">
         <StaggeredSlideUp
           className={`grid grid-cols-2   lg:${colsClass(columns)} grid ${gap} mx-auto h-full min-h-full w-full`}
         >
-          {sourceCards.map((card) => (
+          {visibleCards.map((card) => (
             <motion.div
               layoutId={`card-${card.title}-${id}`}
               key={`card-${card.title}-${id}`}

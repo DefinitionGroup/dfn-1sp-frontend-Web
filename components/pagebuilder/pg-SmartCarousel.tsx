@@ -1,6 +1,5 @@
 "use client";
 import SmartCarouselData from "../data/data-InteractiveCarousel";
-import { useParams } from "next/navigation";
 
 import type { CloudinaryAsset } from "@/types/sanity.types";
 
@@ -22,9 +21,8 @@ interface DereferencedCase {
 }
 
 interface SmartCarouselProps {
-  maxItems?: number;
-  selectionMode?: "auto" | "manual";
-  selectedCases?: DereferencedCase[];
+  language?: string;
+  caseStudies?: DereferencedCase[];
   navPointName?: string;
   hideFromNav?: boolean;
 }
@@ -33,21 +31,16 @@ type Props = { data: SmartCarouselProps } | SmartCarouselProps;
 
 function SmartCarouselWrapper(props: Props) {
   const smartCarousel: SmartCarouselProps =
-    "selectionMode" in props || "maxItems" in props ? props : (props as any).data;
-  const params = useParams();
-  const language = (params?.locale as string) || "de";
+    "caseStudies" in props || "language" in props ? props : (props as any).data;
 
   const {
-    selectionMode = "auto",
-    maxItems = 5,
-    selectedCases,
+    language = "en",
+    caseStudies = [],
     navPointName,
     hideFromNav = false,
   } = smartCarousel || {};
 
-  // For auto mode, require maxItems; for manual mode, require selectedCases
-  if (selectionMode === "auto" && !maxItems) return null;
-  if (selectionMode === "manual" && (!selectedCases || selectedCases.length === 0)) return null;
+  if (!caseStudies.length) return null;
 
   // Navigation data attributes
   const navPointDataAttr = {
@@ -57,12 +50,7 @@ function SmartCarouselWrapper(props: Props) {
 
   return (
     <div {...navPointDataAttr}>
-      <SmartCarouselData
-        maxItems={maxItems}
-        language={language}
-        selectionMode={selectionMode}
-        selectedCases={selectionMode === "manual" ? selectedCases : undefined}
-      />
+      <SmartCarouselData language={language} caseStudies={caseStudies} />
     </div>
   );
 }

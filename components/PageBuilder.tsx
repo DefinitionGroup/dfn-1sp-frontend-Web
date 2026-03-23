@@ -27,6 +27,13 @@ const ShowtimeGallery = dynamic(
     ssr: true,
   }
 );
+const DeferredShowtimeGallery = dynamic(
+  () => import("./pagebuilder/client/DeferredShowtimeGalleryShell"),
+  {
+    loading: () => <ComponentLoader />,
+    ssr: true,
+  }
+);
 
 const HeroShowtime = dynamic(() => import("./pagebuilder/pg-HeroShowtime"), {
   loading: () => <ComponentLoader />,
@@ -133,10 +140,13 @@ const InteractiveCarousel = dynamic(
   }
 );
 
-const SmartCarousel = dynamic(() => import("./pagebuilder/pg-SmartCarousel"), {
-  loading: () => <ComponentLoader />,
-  ssr: true,
-});
+const SmartCarousel = dynamic(
+  () => import("./pagebuilder/server/SmartCarouselBlock"),
+  {
+    loading: () => <ComponentLoader />,
+    ssr: true,
+  }
+);
 
 const SmartPeople = dynamic(() => import("./data/data-SmartPeople"), {
   loading: () => <ComponentLoader />,
@@ -170,7 +180,7 @@ const CasesIntro = dynamic(() => import("./pagebuilder/pg-CasesIntro"), {
 });
 
 const CasesGalleryFiltered = dynamic(
-  () => import("./pagebuilder/pg-CasesGalleryFiltered"),
+  () => import("./pagebuilder/server/CasesGalleryFilteredBlock"),
   {
     loading: () => <ComponentLoader />,
     ssr: true,
@@ -178,7 +188,7 @@ const CasesGalleryFiltered = dynamic(
 );
 
 const CasesGalleryFilteredWithPagination = dynamic(
-  () => import("./pagebuilder/pg-CasesGalleryFilteredWithPagination"),
+  () => import("./pagebuilder/server/CasesGalleryFilteredWithPaginationBlock"),
   {
     loading: () => <ComponentLoader />,
     ssr: true,
@@ -186,7 +196,7 @@ const CasesGalleryFilteredWithPagination = dynamic(
 );
 
 const ServicesGalleryFiltered = dynamic(
-  () => import("./pagebuilder/pg-ServicesGalleryFiltered"),
+  () => import("./pagebuilder/server/ServicesGalleryFilteredBlock"),
   {
     loading: () => <ComponentLoader />,
     ssr: true,
@@ -206,12 +216,15 @@ const IntertitleCTA = dynamic(() => import("./pagebuilder/pg-IntertitleCTA"), {
   ssr: true,
 });
 
-const UnitLogoGrid = dynamic(() => import("./pagebuilder/pg-UnitLogoGrid"), {
-  loading: () => <ComponentLoader />,
-  ssr: true,
-});
 const PageBuilderLogoFloat = dynamic(
-  () => import("./pagebuilder/pg-PageBuilderLogoFloat"),
+  () => import("./pagebuilder/server/PageBuilderLogoFloatBlock"),
+  {
+    loading: () => <ComponentLoader />,
+    ssr: true,
+  }
+);
+const UnitLogoGrid = dynamic(
+  () => import("./pagebuilder/server/UnitLogoGridBlock"),
   {
     loading: () => <ComponentLoader />,
     ssr: true,
@@ -229,31 +242,37 @@ type PageBuilderProps = {
   content: NonNullable<Page["content1sp"]>;
   language?: string;
   deferAfter?: number;
+  renderMode?: "default" | "deferred";
 };
 
 export function PageBuilder({
   content,
   language = "de",
   deferAfter = Number.POSITIVE_INFINITY,
+  renderMode = "default",
 }: PageBuilderProps) {
   if (!Array.isArray(content) || content.length === 0) return null;
 
-  return (
-    <>
-      {content.map((block: any, i: number) => {
-        if (!block?._type) return null;
+  const renderBlock = (block: any, i: number, isDeferred = false) => {
+    if (!block?._type) return null;
 
-        const key = block._key ?? `${block._type}-${i}`;
+    const key = block._key ?? `${block._type}-${i}`;
 
-        const renderedBlock = (() => {
-          switch (block._type) {
+    switch (block._type) {
           case "showtimeGallery":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <ShowtimeGallery
-                  key={key}
-                  data={block as ShowtimeGalleryType}
-                />
+                {isDeferred ? (
+                  <DeferredShowtimeGallery
+                    key={key}
+                    data={block as ShowtimeGalleryType}
+                  />
+                ) : (
+                  <ShowtimeGallery
+                    key={key}
+                    data={block as ShowtimeGalleryType}
+                  />
+                )}
               </ErrorBoundary>
             );
           case "heroShowTime":
@@ -368,7 +387,7 @@ export function PageBuilder({
           case "smartCarousel":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <SmartCarousel key={key} data={block as any} />
+                <SmartCarousel key={key} {...(block as any)} language={language} />
               </ErrorBoundary>
             );
           case "smartPeople":
@@ -410,19 +429,19 @@ export function PageBuilder({
           case "casesGalleryFiltered":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <CasesGalleryFiltered key={key} {...block} />
+                <CasesGalleryFiltered key={key} {...block} language={language} />
               </ErrorBoundary>
             );
           case "casesGalleryFilteredWithPagination":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <CasesGalleryFilteredWithPagination key={key} {...block} />
+                <CasesGalleryFilteredWithPagination key={key} {...block} language={language} />
               </ErrorBoundary>
             );
           case "servicesGalleryFiltered":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <ServicesGalleryFiltered key={key} {...block} />
+                <ServicesGalleryFiltered key={key} {...block} language={language} />
               </ErrorBoundary>
             );
           case "servicesHeroWithBadge":
@@ -446,7 +465,7 @@ export function PageBuilder({
           case "unitLogoGrid":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <UnitLogoGrid key={key} data={block as any} language={language} />
+                <UnitLogoGrid key={key} {...(block as any)} language={language} />
               </ErrorBoundary>
             );
           case "pageBuilderLogoFloat":
@@ -454,7 +473,7 @@ export function PageBuilder({
               <ErrorBoundary key={`error-${key}`}>
                 <PageBuilderLogoFloat
                   key={key}
-                  data={block as any}
+                  {...(block as any)}
                   language={language}
                 />
               </ErrorBoundary>
@@ -472,23 +491,35 @@ export function PageBuilder({
 
           default:
             return null;
-          }
-        })();
+    }
+  };
 
-        if (!renderedBlock) {
-          return null;
-        }
+  const eagerCount = renderMode === "deferred"
+    ? content.length
+    : Number.isFinite(deferAfter)
+    ? Math.max(0, Math.min(content.length, deferAfter))
+    : content.length;
+  const eagerBlocks = content.slice(0, eagerCount);
+  const deferredBlocks = content.slice(eagerCount);
+  const deferredMinHeight = `${Math.max(deferredBlocks.length * 32, 140)}vh`;
 
-        if (i < deferAfter) {
-          return renderedBlock;
-        }
-
-        return (
-          <DeferredSection key={`deferred-${key}`}>
-            {renderedBlock}
-          </DeferredSection>
-        );
-      })}
+  return (
+    <>
+      {eagerBlocks.map((block, index) =>
+        renderBlock(block, index, renderMode === "deferred")
+      )}
+      {deferredBlocks.length > 0 && (
+        <DeferredSection
+          rootMargin="0px 0px 0px 0px"
+          minHeight={deferredMinHeight}
+        >
+          <PageBuilder
+            content={deferredBlocks}
+            language={language}
+            renderMode="deferred"
+          />
+        </DeferredSection>
+      )}
     </>
   );
 }

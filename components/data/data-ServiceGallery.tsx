@@ -8,6 +8,7 @@ import { useOutsideClick } from "@/hooks/use-outside-click";
 import Image from "next/image";
 import DeferredVideo from "@/components/ui/DeferredVideo";
 import { cloudinaryPosterUrl } from "@/utils/utils";
+import { useRobustInView } from "@/hooks/use-robust-in-view";
 import type { CloudinaryImage, Service } from "@/types/sanity.types";
 
 function isVideoUrl(url: string | undefined): boolean {
@@ -31,6 +32,7 @@ interface ServiceGalleryProps {
   activeFilter?: string;
   locale?: string;
   filterAllText?: string;
+  initialVisibleCount?: number;
 }
 
 export default function ServiceGalleryComponent({
@@ -38,11 +40,23 @@ export default function ServiceGalleryComponent({
   activeFilter = "All",
   locale = "en",
   filterAllText = "All",
+  initialVisibleCount = Number.POSITIVE_INFINITY,
 }: ServiceGalleryProps) {
   const router = useOptimizedTransitionRouter();
   const [active, setActive] = useState<Service | null>(null);
   const ref = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLUListElement>(null);
   const id = useId();
+  const { isInView } = useRobustInView(gridRef, {
+    amount: 0.01,
+    margin: "0px 0px 120px 0px",
+    mobileAmount: 0.01,
+    mobileMargin: "0px 0px 180px 0px",
+    fallbackVisibleAfterMs: 2500,
+  });
+  const [shouldRenderAll, setShouldRenderAll] = useState(
+    !Number.isFinite(initialVisibleCount)
+  );
 
   // Filter items based on active filter - using service groups
   const filteredItems =
@@ -51,6 +65,30 @@ export default function ServiceGalleryComponent({
       : services.filter((item) =>
         item.servicegrouprel?.some((group) => group.name === activeFilter)
       );
+
+  useEffect(() => {
+    if (shouldRenderAll || !isInView) return;
+
+    const win = window as Window & typeof globalThis & {
+      requestIdleCallback?: (
+        callback: IdleRequestCallback,
+        options?: IdleRequestOptions,
+      ) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+    const run = () => setShouldRenderAll(true);
+    if (win.requestIdleCallback) {
+      const idleId = win.requestIdleCallback(run, { timeout: 800 });
+      return () => {
+        if (win.cancelIdleCallback) {
+          win.cancelIdleCallback(idleId);
+        }
+      };
+    }
+
+    const timer = win.setTimeout(run, 180);
+    return () => win.clearTimeout(timer);
+  }, [isInView, shouldRenderAll]);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -80,6 +118,10 @@ export default function ServiceGalleryComponent({
     active?.serviceicon?.asset?.url ||
     active?.iconUrl;
   const activeObjectPosition = getObjectPosition(active?.serviceBackground);
+  const visibleItems =
+    shouldRenderAll || !Number.isFinite(initialVisibleCount)
+      ? filteredItems
+      : filteredItems.slice(0, initialVisibleCount);
 
   return (
     <>
@@ -239,7 +281,7 @@ export default function ServiceGalleryComponent({
           </div>
         ) : null}
       </AnimatePresence>
-      <ul className="w-full">
+      <ul ref={gridRef} className="w-full">
         <StaggeredSlideUp
           key={activeFilter}
           staggerDelay={0.0225}
@@ -250,7 +292,7 @@ export default function ServiceGalleryComponent({
           once={true}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto w-full min-h-full"
         >
-          {filteredItems.map((item) => {
+          {visibleItems.map((item) => {
             const bg =
               item.serviceBackground?.asset?.secure_url ||
               item.serviceBackground?.asset?.url ||
