@@ -140,7 +140,7 @@ function ExpandableCards({
         )}
 
         {active && typeof active === "object" ? (
-          <div className="fixed inset-0 flex items-center justify-center py-8 px-4 md:p-0  z-[100]">
+          <div className="fixed inset-0 flex items-center  justify-center py-8 px-4 md:p-0  z-[100]">
 
 
             <motion.div
@@ -150,7 +150,7 @@ function ExpandableCards({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.12, ease: "easeInOut" } }}
               transition={{ type: "spring", bounce: 0.18, visualDuration: 0.25 }}
-              className="w-full max-w-[900px] min-h-[70vh] iphone-landscape:min-h-[100vh] relative h-full md:h-fit md:max-h-[50%] rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
+              className="w-full max-w-[900px] min-h-[70vh] iphone-landscape:min-h-[95vh] max-h-[600px] relative h-full  rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
             >
               {/* Media */} <motion.button
                 onClick={() => setActive(null)}
@@ -165,8 +165,8 @@ function ExpandableCards({
                 layoutId={`image-${active.title}-${id}`}
               >
                 <Image
-                  width={100}
-                  height={500}
+                  width={1100}
+                  height={1200}
                   src={active.src}
                   alt={active.title}
                   className="w-full h-full absolute min-h-[70vh] sm:rounded-t-xl opacity-50 object-cover object-top"
@@ -174,7 +174,7 @@ function ExpandableCards({
               </motion.div>
 
               {/* Foreground content area (logo, title, body, cta) */}
-              <div className="flex justify-between absolute items-start m-8 pt-8 z-10">
+              <div className="flex justify-between absolute items-start m-8 pt-8 landscape:pt-0 z-10">
                 <div className="flex justify-between relative top-0 flex-col iphone-landscape:flex-col items-start z-10 left-0 text-white">
                   {active.logo && (
                     <motion.img
@@ -184,19 +184,24 @@ function ExpandableCards({
                       className="w-40 h-32 -left-3 relative  invert object-contain"
                     />
                   )}
-                  <motion.h3
-                    layoutId={`title-${active.title}-${id}`}
-                    className="text-white text-2xl md:text-5xl md:mt-16 iphone-landscape:mt-0   dark:text-neutral-200"
-                  >
-                    {active.title}
-                  </motion.h3>
 
+                  <motion.h4
+                    transition={{ duration: 0.3, delay: 0.5 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="text-white text-lg mt-2   iphone-landscape:mt-0 iphone-landscape:!text-xs lg:max-w-1/2 md:max-w-3/4 iphone-landscape:mb-0 iphone-landscape:pb-2 md:h-fit pb-8 flex flex-col items-start gap-4 iphone-landscape:gap-0 overflow-auto dark:text-neutral-400 [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
+                  >
+                    {typeof active.description === "function"
+                      ? (active.description as any)()
+                      : active.description}
+                  </motion.h4>
                   <motion.div
                     transition={{ duration: 0.3, delay: 0.5 }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="text-white text-sm md:text-sm lg:text-base mt-8 iphone-landscape:mt-0 md:max-w-1/2 mb-2 iphone-landscape:mb-0 iphone-landscape:pb-2 md:h-fit pb-8 flex flex-col items-start gap-4 iphone-landscape:gap-0 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
+                    className="text-white text-xs iphone-landscape:!text-xs md:text-sm lg:text-base mt-2 iphone-landscape:!mt-0 lg:max-w-1/2 md:max-w-3/4 mb-2 iphone-landscape:!mb-0 iphone-landscape:!pb-2 md:h-fit pb-8 flex flex-col items-start gap-4 iphone-landscape:!gap-0 overflow-auto dark:text-neutral-400 [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
                   >
                     {typeof active.content === "function"
                       ? (active.content as any)()
@@ -245,25 +250,25 @@ function ExpandableCards({
                   height={1000}
                   src={card.src}
                   alt={card.title}
-                  className={`w-full h-full object-cover  object-top ${imageOpacity} group-hover/card:opacity-100 transition-all`}
+                  className={`w-full h-full object-cover  object-top ${imageOpacity} group-hover/card:opacity-510 transition-all`}
                 />
               </motion.div>
 
-              <div className="col-start-1 col-span-1 flex flex-col justify-between opacity-100 row-start-1 p-4 z-1 text-white">
+              <div className="col-start-1 col-span-1 flex flex-col justify-start items-center opacity-100 row-start-1 p-4 z-1 text-white">
                 {card.logo && (
                   <motion.img
                     layoutId={`logo-${card.title}-${id}`}
                     src={card.logo}
                     alt={card.title}
-                    className="w-full h-12 -left-3 top-2 relative invert object-contain   object-left"
+                    className=" h-24 top-0  relative invert object-contain   object-center"
                   />
                 )}
                 {/* Old tile only showed title; keep that for parity */}
                 <motion.h3
                   layoutId={`title-${card.title}-${id}`}
-                  className="font-medium mt-2 text-sm leading-snug tracking-tight text-neutral-100 dark:text-neutral-200 md:text-center md:text-left"
+                  className="font-medium mt-12   text-base leading-snug tracking-tight text-neutral-100 dark:text-neutral-200 md:text-center "
                 >
-                  {card.title}
+                  {card.description}
                 </motion.h3>
               </div>
             </motion.div>

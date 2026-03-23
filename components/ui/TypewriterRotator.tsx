@@ -22,7 +22,7 @@ export default function TypewriterRotator({
   const [index, setIndex] = useState(0);
 
   return (
-    <h2 className="typewriter-rotator flex flex-col flex-wrap items-start max-w-[90%] w-full font-aspekta font-medium leading-[0.8] text-accent"
+    <h2 className="typewriter-rotator  flex flex-col flex-wrap items-start  w-full font-aspekta font-medium leading-[0.8] text-accent"
       style={{ maxWidth: 900 }}>
       <Typewriter
         as="div"
@@ -48,13 +48,13 @@ const cursorStyle: React.CSSProperties = {
   borderRadius: "var(--tw-cursor-radius)" as string,
   marginLeft: "var(--tw-cursor-ml)" as string,
   height: "var(--tw-cursor-h)",
-  minHeight: "var(--tw-cursor-h)",
+
 };
 
 const textStyle: React.CSSProperties = {
   fontSize: "var(--tw-text-size)",
   fontWeight: 500,
-  lineHeight: "var(--tw-text-lh)",
+  // lineHeight: "var(--tw-text-lh)",
   letterSpacing: "var(--tw-text-ls)",
   textTransform: "uppercase",
   color: "var(--text-primary)",
