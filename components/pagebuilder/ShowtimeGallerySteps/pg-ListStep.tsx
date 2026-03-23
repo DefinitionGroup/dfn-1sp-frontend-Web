@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import GridBackground from "@/components/ui/GridBackground";
 import Badgemodule from "@/components/ui/Badgemodule";
 import ListContainerComponent from "@/components/ui/ListContainerComponent";
@@ -25,7 +25,6 @@ import {
   ctaToButtonProps,
   assetUrl,
   resolveLink,
-  resolveLinkAsync,
 } from "@/utils/utils";
 import { useParams } from "next/navigation";
 
@@ -312,29 +311,9 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
   );
   const badgeMiniCta = shouldShowBadgeMiniCta ? step.badgeMiniCta : undefined;
   const showBadgeMiniCta = shouldShowBadgeMiniCta;
-  const [badgeMiniUrl, setBadgeMiniUrl] = useState<string | undefined>();
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function updateBadgeUrl() {
-      if (!showBadgeMiniCta || !badgeMiniCta?.link) {
-        if (!cancelled) setBadgeMiniUrl(undefined);
-        return;
-      }
-      const resolved = await resolveLinkAsync(badgeMiniCta.link);
-      if (!cancelled) setBadgeMiniUrl(applyLocaleToPath(resolved));
-    }
-
-    updateBadgeUrl();
-    return () => {
-      cancelled = true;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showBadgeMiniCta, badgeMiniCta?.link, locale]);
-
-  const [ctaMiniUrls, setCtaMiniUrls] = useState<string[]>(() =>
-    ctaMini.map((item) => applyLocaleToPath(resolveLink(item.link)) || "")
+  const badgeMiniUrl = applyLocaleToPath(resolveLink(badgeMiniCta?.link));
+  const ctaMiniUrls = ctaMini.map(
+    (item) => applyLocaleToPath(resolveLink(item.link)) || ""
   );
 
 

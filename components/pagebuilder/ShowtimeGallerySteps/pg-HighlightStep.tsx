@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import HeaderImageVideoComp2 from "@/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
 import Badgemodule from "@/components/ui/Badgemodule";
 import ScrollHighlight from "../../ui/ScrollHighlight";
@@ -10,7 +10,7 @@ import type {
   GalleryScrollHighlightStep,
   CloudinaryAsset,
 } from "@/types/sanity.types";
-import { assetUrl, resolveLinkAsync } from "@/utils/utils";
+import { assetUrl, resolveLink } from "@/utils/utils";
 import { useParams } from "next/navigation";
 
 type RawItem =
@@ -43,7 +43,6 @@ export default function HighlightStep({
 }) {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
-  const [ctaUrl, setCtaUrl] = useState<string>("#");
 
   const mediaUrl = assetUrl(step.backgroundVideo);
   const isImage = mediaUrl
@@ -92,23 +91,13 @@ export default function HighlightStep({
 
   const cta = (step as any).ctaMini ?? null;
   const showCta = !!(step as any).useCTAMini && !!cta;
-
-  useEffect(() => {
-    async function resolveCTALink() {
-      if (showCta && cta?.link) {
-        const baseUrl = await resolveLinkAsync(cta.link);
-        const finalUrl =
-          baseUrl &&
-            baseUrl.startsWith("/") &&
-            !baseUrl.startsWith(`/${locale}`)
-            ? `/${locale}${baseUrl}`
-            : baseUrl || "#";
-        setCtaUrl(finalUrl);
-      }
-    }
-
-    resolveCTALink();
-  }, [showCta, cta?.link, locale]);
+  const baseCtaUrl = showCta && cta?.link ? resolveLink(cta.link) : undefined;
+  const ctaUrl =
+    baseCtaUrl &&
+    baseCtaUrl.startsWith("/") &&
+    !baseCtaUrl.startsWith(`/${locale}`)
+      ? `/${locale}${baseCtaUrl}`
+      : baseCtaUrl;
 
   return (
     <section

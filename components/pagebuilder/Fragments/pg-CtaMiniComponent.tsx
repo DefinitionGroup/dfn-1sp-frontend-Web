@@ -48,7 +48,8 @@ function CtaMiniComponent({
   className,
   showButton = true,
 }: CtaMiniProps) {
-  const finalUrl = url || "#";
+  const finalUrl = url?.trim() || "";
+  const hasValidUrl = finalUrl.length > 0 && finalUrl !== "#";
   const isExternal = /^(https?:|mailto:|tel:)/.test(finalUrl);
   const safeButtonVariant: NonNullable<CtaMiniProps["buttonVariant"]> =
     buttonVariant in buttonVariantStyles ? buttonVariant : "default";
@@ -81,7 +82,7 @@ function CtaMiniComponent({
       </h3>
       <p className={`md:text-sm mb-2 md:mb-8 ${textAlignClass}`}>{paragraph}</p>
       {showButton ? (
-        buttonText && finalUrl && finalUrl !== "#" ? (
+        buttonText && hasValidUrl ? (
           <div className="mb-8 w-full md:w-auto md:min-w-[180px]">
             <Link
               href={finalUrl}
@@ -100,13 +101,7 @@ function CtaMiniComponent({
               <ArrowRightIcon size={14} className="-rotate-45 shrink-0" />
             </Link>
           </div>
-        ) : (
-          <div className="md:text-xs mb-8 text-red-500">
-            {!buttonText && "Missing buttonText"}
-            {!finalUrl && "Missing URL"}
-            {finalUrl === "#" && "URL is #"}
-          </div>
-        )
+        ) : null
       ) : null}
     </StaggeredSlideUp>
   );

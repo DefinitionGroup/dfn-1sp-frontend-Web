@@ -1,11 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Badgemodule from "@/components/ui/Badgemodule";
 import type { GalleryPeopleStep, CloudinaryAsset } from "@/types/sanity.types";
 import PeopleShowcaseHero from "../Fragments/pg-PeopleShowcaseHero";
 import GridBackground from "@/components/ui/GridBackground";
 import CtaMiniComponent from "../Fragments/pg-CtaMiniComponent";
-import { resolveLink, resolveLinkAsync } from "@/utils/utils";
+import { resolveLink } from "@/utils/utils";
 import { useParams } from "next/navigation";
 
 type Member = {
@@ -89,29 +89,7 @@ export default function PeopleStep({
     step.showBadgeMiniCta && step.badgeMiniCta
   );
   const badgeMiniCta = shouldShowBadgeMiniCta ? step.badgeMiniCta : undefined;
-
-  const [badgeMiniUrl, setBadgeMiniUrl] = useState<string | undefined>(() =>
-    applyLocaleToPath(resolveLink(badgeMiniCta?.link))
-  );
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function updateBadgeUrl() {
-      if (!shouldShowBadgeMiniCta || !badgeMiniCta?.link) {
-        if (!cancelled) setBadgeMiniUrl(undefined);
-        return;
-      }
-      const resolved = await resolveLinkAsync(badgeMiniCta.link);
-      if (!cancelled) setBadgeMiniUrl(applyLocaleToPath(resolved));
-    }
-
-    updateBadgeUrl();
-    return () => {
-      cancelled = true;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldShowBadgeMiniCta, badgeMiniCta?.link, locale]);
+  const badgeMiniUrl = applyLocaleToPath(resolveLink(badgeMiniCta?.link));
 
   return (
     <section
