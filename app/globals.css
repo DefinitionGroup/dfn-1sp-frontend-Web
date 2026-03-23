@@ -419,6 +419,30 @@
   }
 }
 
+/**
+ * Hero reveal — clip-path animation driven by CSS so the poster can paint
+ * from SSR HTML without waiting for JS hydration / Framer Motion.
+ * cubic-bezier(0.16, 1, 0.3, 1) matches the previous Framer Motion easing.
+ * The 180ms delay mirrors the old heroIntroArmed setTimeout.
+ */
+@keyframes heroClipReveal {
+  0% {
+    clip-path: inset(6% 6% 6% 6% round 2rem);
+    opacity: 0.92;
+  }
+
+  100% {
+    clip-path: inset(0% 0% 0% 0% round 2rem);
+    opacity: 1;
+  }
+}
+
+.hero-clip-reveal {
+  animation: heroClipReveal 0.22s cubic-bezier(0.16, 1, 0.3, 1) 0.18s both;
+  will-change: clip-path, opacity;
+  transform: translateZ(0);
+}
+
 @layer utilities {
   .logo-marquee-track {
     animation: logo-marquee var(--marquee-duration, 220s) linear infinite;

@@ -46,10 +46,10 @@ export default async function SiteLayout({
       <TransitionLoader />
       <ScrollToTop />
       {children}
-      <SanityLive />
       <StegaErrorHandler />
       {isEnabled && (
         <>
+          <SanityLive />
           <VisualEditing />
           <DisableDraftMode />
         </>

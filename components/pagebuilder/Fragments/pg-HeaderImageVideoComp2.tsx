@@ -327,127 +327,140 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   const clipPathOpen = "inset(0% 0% 0% 0% round 2rem)";
   const preInViewOpacity = isHero ? 0.92 : 0.86;
 
+  // Shared inner content rendered identically for both hero (CSS) and non-hero (Framer Motion) paths
+  const innerContent = (
+    <>
+      {useVideo ? (
+        <div className="relative w-full h-full">
+          {/* Poster image — lightweight, loads immediately, becomes LCP element */}
+          {posterFallback && (
+            <picture>
+              {posterSrcSetMobile && (
+                <source
+                  media="(max-width: 768px)"
+                  srcSet={posterSrcSetMobile}
+                  sizes="100vw"
+                />
+              )}
+              {posterSrcSetDesktop && (
+                <source
+                  media="(min-width: 769px)"
+                  srcSet={posterSrcSetDesktop}
+                  sizes="100vw"
+                />
+              )}
+              <img
+                ref={posterImgRef}
+                src={posterFallback}
+                srcSet={posterSrcSetDesktop}
+                sizes="100vw"
+                alt={imageAlt}
+                width={1280}
+                height={720}
+                fetchPriority={isHero ? "high" : undefined}
+                loading={isHero ? "eager" : "lazy"}
+                decoding="async"
+                onLoad={() => setPosterLoaded(true)}
+                onError={() => setPosterLoaded(true)}
+                className={`object-cover w-full h-full absolute inset-0 transition-opacity duration-500 ${videoReady ? "opacity-0" : "opacity-100"}`}
+                style={{ zIndex: 1 }}
+              />
+            </picture>
+          )}
+          {shouldMountVideo && activeVideoSources.length > 0 && (
+            <video
+              key={videoSourceKey}
+              ref={videoRef}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload={isHero ? "metadata" : "none"}
+              onCanPlay={handleVideoReady}
+              onLoadedData={handleVideoReady}
+              onPlaying={() => {
+                setVideoReady(true);
+                setAutoplayBlocked(false);
+                setVideoLoadFailed(false);
+              }}
+              onError={handleVideoError}
+              className={`object-cover w-full h-full transition-opacity duration-500 ${videoReady ? "opacity-100" : "opacity-0"}`}
+              style={{ zIndex: 0 }}
+            >
+              {activeVideoSources.map((source) => (
+                <source
+                  key={`${source.media ?? "all"}-${source.src}`}
+                  src={source.src}
+                  media={source.media}
+                />
+              ))}
+            </video>
+          )}
+        </div>
+      ) : (
+        <Image
+          src={imageSrc}
+          alt={imageAlt}
+          fill
+          sizes="100vw"
+          className="object-cover object-top"
+          priority={isHero}
+          fetchPriority={isHero ? "high" : undefined}
+        />
+      )}
+      <div
+        className="absolute inset-0 bg-black"
+        style={{ opacity, zIndex: 2 }}
+      />
+      {useVideo && shouldMountVideo && autoplayBlocked && !videoLoadFailed && (
+        <button
+          type="button"
+          onClick={handleManualPlay}
+          className="absolute bottom-4 right-4 z-[3] rounded-md border border-white/60 bg-black/45 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-white"
+        >
+          Tap to play
+        </button>
+      )}
+    </>
+  );
+
   return (
     <div
       ref={ref}
       className={`absolute mt-4 inset-0 overflow-visible mx-auto ${className}`}
     >
-      <motion.div
-        initial={{
-          clipPath: clipPathClosed,
-          opacity: preInViewOpacity,
-        }}
-        animate={
-          hasEnteredViewport
-            ? { clipPath: clipPathOpen, opacity: 1 }
-            : { clipPath: clipPathPreInView, opacity: preInViewOpacity }
-        }
-        transition={{
-          duration: isHero ? 0.22 : 0.35,
-          ease: [0.16, 1, 0.3, 1],
-          opacity: { duration: isHero ? 0.18 : 0.28 },
-        }}
-        className="absolute mx-auto rounded-xl inset-0 overflow-hidden"
-        style={{
-          willChange: "clip-path, opacity",
-          transform: "translateZ(0)",
-        }}
-
-      >
-        {useVideo ? (
-          <div className="relative w-full h-full">
-            {/* Poster image — lightweight, loads immediately, becomes LCP element */}
-            {posterFallback && (
-              <picture>
-                {/* Portrait poster for mobile — matches the portrait video crop */}
-                {posterSrcSetMobile && (
-                  <source
-                    media="(max-width: 768px)"
-                    srcSet={posterSrcSetMobile}
-                    sizes="100vw"
-                  />
-                )}
-                {posterSrcSetDesktop && (
-                  <source
-                    media="(min-width: 769px)"
-                    srcSet={posterSrcSetDesktop}
-                    sizes="100vw"
-                  />
-                )}
-                <img
-                  ref={posterImgRef}
-                  src={posterFallback}
-                  srcSet={posterSrcSetDesktop}
-                  sizes="100vw"
-                  alt={imageAlt}
-                  width={1280}
-                  height={720}
-                  fetchPriority={isHero ? "high" : undefined}
-                  loading={isHero ? "eager" : "lazy"}
-                  decoding="async"
-                  onLoad={() => setPosterLoaded(true)}
-                  onError={() => setPosterLoaded(true)}
-                  className={`object-cover w-full h-full absolute inset-0 transition-opacity duration-500 ${videoReady ? "opacity-0" : "opacity-100"}`}
-                  style={{ zIndex: 1 }}
-                />
-              </picture>
-            )}
-            {/* Video — responsive: portrait (9:16) on mobile, landscape on desktop */}
-            {shouldMountVideo && activeVideoSources.length > 0 && (
-              <video
-                key={videoSourceKey}
-                ref={videoRef}
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload={isHero ? "metadata" : "none"}
-                onCanPlay={handleVideoReady}
-                onLoadedData={handleVideoReady}
-                onPlaying={() => {
-                  setVideoReady(true);
-                  setAutoplayBlocked(false);
-                  setVideoLoadFailed(false);
-                }}
-                onError={handleVideoError}
-                className={`object-cover w-full h-full transition-opacity duration-500 ${videoReady ? "opacity-100" : "opacity-0"}`}
-                style={{ zIndex: 0 }}
-              >
-                {activeVideoSources.map((source) => (
-                  <source
-                    key={`${source.media ?? "all"}-${source.src}`}
-                    src={source.src}
-                    media={source.media}
-                  />
-                ))}
-              </video>
-            )}
-          </div>
-        ) : (
-          <Image
-            src={imageSrc}
-            alt={imageAlt}
-            fill
-            sizes="100vw"
-            className="object-cover object-top"
-            priority={isHero}
-            fetchPriority={isHero ? "high" : undefined}
-          />
-        )}
+      {/* Hero: CSS-only clip-path animation — paints from SSR without waiting for JS */}
+      {isHero ? (
         <div
-          className="absolute inset-0 bg-black"
-          style={{ opacity, zIndex: 2 }}
-        />
-        {useVideo && shouldMountVideo && autoplayBlocked && !videoLoadFailed && (
-          <button
-            type="button"
-            onClick={handleManualPlay}
-            className="absolute bottom-4 right-4 z-[3] rounded-md border border-white/60 bg-black/45 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-white"
-          >
-            Tap to play
-          </button>
-        )}
-      </motion.div>
+          className="absolute mx-auto rounded-xl inset-0 overflow-hidden hero-clip-reveal"
+        >
+          {innerContent}
+        </div>
+      ) : (
+        <motion.div
+          initial={{
+            clipPath: clipPathClosed,
+            opacity: preInViewOpacity,
+          }}
+          animate={
+            hasEnteredViewport
+              ? { clipPath: clipPathOpen, opacity: 1 }
+              : { clipPath: clipPathPreInView, opacity: preInViewOpacity }
+          }
+          transition={{
+            duration: 0.35,
+            ease: [0.16, 1, 0.3, 1],
+            opacity: { duration: 0.28 },
+          }}
+          className="absolute mx-auto rounded-xl inset-0 overflow-hidden"
+          style={{
+            willChange: "clip-path, opacity",
+            transform: "translateZ(0)",
+          }}
+        >
+          {innerContent}
+        </motion.div>
+      )}
     </div>
   );
 };
