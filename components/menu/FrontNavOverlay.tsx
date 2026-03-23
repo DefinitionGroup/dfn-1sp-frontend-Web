@@ -9,8 +9,6 @@ import { usePathname } from "next/navigation";
 import CaseGalleryMenu from "../data/data-CaseGalleryMenu";
 import Button2 from "../ui/Button2";
 import { NavbarMenu } from "@/types/menu.types";
-import { client } from "@/sanity/lib/client";
-import { CASE_STUDIES_QUERY } from "@/sanity/lib/queries";
 
 interface CaseStudy {
   _id: string;
@@ -54,6 +52,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   const [showOverlay, setShowOverlay] = React.useState(false);
   const [caseStudies, setCaseStudies] = React.useState<CaseStudy[]>([]);
   const [isCasesLoading, setIsCasesLoading] = React.useState(false);
+  const [hasLoadedCases, setHasLoadedCases] = React.useState(false);
+  const [casesLoadError, setCasesLoadError] = React.useState<string | null>(null);
   const navRef = React.useRef<HTMLElement>(null);
 
   // Scroll direction detection for show/hide navbar
@@ -153,7 +153,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
     if (
       !showOverlay ||
       !isCaseDetailRoute ||
-      caseStudies.length > 0 ||
+      hasLoadedCases ||
       isCasesLoading
     ) {
       return;
@@ -164,15 +164,29 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
     const fetchCaseStudies = async () => {
       try {
         setIsCasesLoading(true);
-        const data = await client.fetch(CASE_STUDIES_QUERY, {
-          channel,
-          language: locale,
-        });
+        setCasesLoadError(null);
+
+        const response = await fetch(
+          `/api/cases?channel=${encodeURIComponent(channel)}&language=${encodeURIComponent(locale)}`,
+          { cache: "no-store" }
+        );
+
+        if (!response.ok) {
+          throw new Error(`Cases request failed with status ${response.status}`);
+        }
+
+        const payload = await response.json();
+        const data = Array.isArray(payload?.caseStudies) ? payload.caseStudies : [];
 
         if (!isCancelled) {
-          setCaseStudies(data || []);
+          setCaseStudies(data);
+          setHasLoadedCases(true);
         }
       } catch (error) {
+        if (!isCancelled) {
+          setCasesLoadError("Unable to load cases right now.");
+          setHasLoadedCases(true);
+        }
         console.error("Error fetching case studies for overlay:", error);
       } finally {
         if (!isCancelled) {
@@ -186,7 +200,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
     return () => {
       isCancelled = true;
     };
-  }, [channel, caseStudies.length, isCaseDetailRoute, isCasesLoading, locale, showOverlay]);
+  }, [channel, hasLoadedCases, isCaseDetailRoute, isCasesLoading, locale, showOverlay]);
 
   const itemClass = `text-xs leading-compress tracking-wide font-medium mr-8 inline-block `;
 
@@ -420,6 +434,14 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               {isCasesLoading ? (
                 <div className="px-8 py-20 text-sm text-neutral-500">
                   Loading cases...
+                </div>
+              ) : casesLoadError ? (
+                <div className="px-8 py-20 text-sm text-neutral-500">
+                  {casesLoadError}
+                </div>
+              ) : caseStudies.length === 0 ? (
+                <div className="px-8 py-20 text-sm text-neutral-500">
+                  No cases available right now.
                 </div>
               ) : (
                 <CaseGalleryMenu caseStudies={caseStudies} locale={locale} />
