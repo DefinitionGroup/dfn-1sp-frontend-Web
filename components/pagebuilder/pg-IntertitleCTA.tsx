@@ -2,7 +2,7 @@
 import React from "react";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import Button2 from "@/components/ui/Button2";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import { resolveLink } from "@/utils/utils";
 import { useParams } from "next/navigation";
 import type { CTA } from "@/types/sanity.types";

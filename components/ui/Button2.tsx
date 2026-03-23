@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "@phosphor-icons/react";
 import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
@@ -94,7 +94,7 @@ function Button2({ text, className, href, variant = "default", magnetic = true }
       {isExternal ? (
         <>
           <Link
-            href={href}
+            href={href || "#"}
             target="_blank"
             rel="noopener noreferrer nofollow"
             className={topClass}
@@ -102,7 +102,7 @@ function Button2({ text, className, href, variant = "default", magnetic = true }
             {content(false)}
           </Link>
           <Link
-            href={href}
+            href={href || "#"}
             target="_blank"
             rel="noopener noreferrer nofollow"
             className={bottomClass}

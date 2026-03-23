@@ -3,12 +3,6 @@ import { VisualEditing } from "next-sanity/visual-editing";
 import { SanityLive } from "@/sanity/lib/live";
 import { DisableDraftMode } from "@/components/DisableDraftMode";
 import { StegaErrorHandler } from "@/components/StegaErrorHandler";
-import { TransitionLoader } from "@/components/TransitionLoader";
-
-// Removed localFont imports and variables — font classes should be applied in root layout
-
-import NoiseOverlay from "@/components/ui/NoiseOverlay";
-import ScrollToTop from "@/components/ui/ScrollToTop";
 
 /**
  * Locale-aware layout
@@ -40,11 +34,6 @@ export default async function SiteLayout({
           __html: `document.documentElement.lang="${locale || "en"}";`,
         }}
       />
-
-      <NoiseOverlay />
-
-      <TransitionLoader />
-      <ScrollToTop />
       {children}
       <StegaErrorHandler />
       {isEnabled && (

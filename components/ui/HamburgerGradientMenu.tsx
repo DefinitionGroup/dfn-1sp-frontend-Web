@@ -1,18 +1,22 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import dynamic from "next/dynamic";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   motion,
   AnimatePresence,
 } from "motion/react";
-import AuroraShaderBackground from "./AuroraShaderBackground";
-import { Link } from "next-view-transitions";
 import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
-import FrontNavOverlay from "../menu/FrontNavOverlay";
 import Image from "next/image";
 import { useFooterMenu } from "../menu/FooterMenuContext";
 import { useNavColor } from "../menu/NavColorContext";
+
+const AuroraShaderBackground = dynamic(
+  () => import("./AuroraShaderBackground"),
+  { ssr: false }
+);
 
 interface MenuItem {
   label: string;
@@ -451,8 +455,6 @@ function OverlayRoot({
             </motion.div>
           </motion.div>
         </div>
-
-        <FrontNavOverlay />
         <motion.button
           onClick={onClose}
           className="mt-6 text-7xl fixed top-0 font-extralight uppercase tracking-wide text-neutral-100 hover:text-white focus:outline-none hover:rotate-45 transition focus-visible:ring-2 focus-visible:ring-lime-400 rounded-xl"

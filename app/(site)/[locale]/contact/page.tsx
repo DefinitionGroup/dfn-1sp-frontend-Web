@@ -33,6 +33,11 @@ import {
 } from "@/lib/structured-data";
 
 export const revalidate = 60;
+const SUPPORTED_LOCALES = ["en"];
+
+export function generateStaticParams() {
+  return SUPPORTED_LOCALES.map((locale) => ({ locale }));
+}
 
 export async function generateMetadata({
   params,
@@ -153,7 +158,11 @@ export default async function ContactPage({
       <div className="min-h-screen">
         <div className="min-h-screen px-1 md:px-2">
           {page.content1sp?.length ? (
-            <PageBuilder content={page.content1sp} language={language} />
+            <PageBuilder
+              content={page.content1sp}
+              language={language}
+              deferAfter={2}
+            />
           ) : null}
           <ContactForm
             language={language}

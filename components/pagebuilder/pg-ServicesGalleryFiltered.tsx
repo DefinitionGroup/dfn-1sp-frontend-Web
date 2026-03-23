@@ -1,14 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
-import { client } from "@/sanity/lib/client";
-import { SERVICES_QUERY } from "@/sanity/lib/queries";
+import { useState } from "react";
 import ServiceGalleryComponent from "@/components/data/data-ServiceGallery";
 import { getTranslations } from "@/lib/translations";
 import type { Service } from "@/types/sanity.types";
 
 interface ServicesGalleryFilteredProps {
+  locale?: string;
+  services?: Service[];
   showGridBackground?: boolean;
   showFilters?: boolean;
   backgroundColor?: string;
@@ -17,41 +16,19 @@ interface ServicesGalleryFilteredProps {
 }
 
 function ServicesGalleryFiltered({
+  locale = "en",
+  services = [],
   showGridBackground = false,
   showFilters = true,
   backgroundColor = "neutral-100",
   paddingY = "32",
   navPointName,
 }: ServicesGalleryFilteredProps) {
-  const params = useParams();
-  const locale = (params?.locale as string) || "en";
   const t = getTranslations(locale);
 
-  const [services, setServices] = useState<Service[]>([]);
   const [activeFilter, setActiveFilter] = useState<string>(
     t.services.filterAll
   );
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Fetch services
-  useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        setIsLoading(true);
-        const data = await client.fetch(SERVICES_QUERY, {
-          language: locale,
-        });
-
-        setServices(data || []);
-      } catch (error) {
-        console.error("Error fetching services:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchServices();
-  }, [locale]);
 
   // Extract unique service groups for filtering
   const uniqueServiceGroups = Array.from(
@@ -67,18 +44,6 @@ function ServicesGalleryFiltered({
 
   const bgColorClass = `bg-${backgroundColor}`;
   const paddingClass = `py-${paddingY}`;
-
-  if (isLoading) {
-    return (
-      <div
-        className={`grid grid-cols-12 z-50 mx-auto ${bgColorClass} relative`}
-      >
-        <div className="col-span-12 py-16 text-center">
-          <div className="text-gray-400">Loading services...</div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div
@@ -113,6 +78,7 @@ function ServicesGalleryFiltered({
             activeFilter={activeFilter}
             locale={locale}
             filterAllText={t.services.filterAll}
+            initialVisibleCount={Math.min(6, services.length)}
           />
         </div>
       </div>

@@ -1,11 +1,8 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { client } from "@/sanity/lib/client";
-import { UNIT_LOGO_GRID_QUERY } from "@/sanity/lib/queries";
 import { resolveLink, assetUrl } from "@/utils/utils";
-import { useParams } from "next/navigation";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import GridBackground from "@/components/ui/GridBackground";
 import type { CloudinaryAsset, CTA } from "@/types/sanity.types";
@@ -33,54 +30,23 @@ interface UnitLogoGridProps {
     selectionMode?: "auto" | "manual";
     selectedUnits?: Unit[];
   };
+  units?: Unit[];
   language?: string;
 }
 
-function UnitLogoGrid({ data, language: propLanguage }: UnitLogoGridProps) {
-  const params = useParams();
-  const language = propLanguage || (params?.locale as string) || "de";
-
+function UnitLogoGrid({
+  data,
+  units = [],
+  language = "de",
+}: UnitLogoGridProps) {
   const {
     headline,
     subheadline,
     logoVariant = "logoColor",
     columns = 4,
-    maxItems = 20,
     navPointName,
     hideFromNav = false,
-    selectionMode = "auto",
-    selectedUnits: preSelectedUnits,
   } = data || {};
-
-  const [units, setUnits] = React.useState<Unit[]>([]);
-  const [isLoading, setIsLoading] = React.useState(true);
-
-  React.useEffect(() => {
-    async function fetchUnits() {
-      try {
-        // Manual mode: use pre-selected units directly
-        if (selectionMode === "manual" && preSelectedUnits && preSelectedUnits.length > 0) {
-          setUnits(preSelectedUnits);
-          setIsLoading(false);
-          return;
-        }
-
-        // Auto mode: fetch units from database
-        const fetchedUnits = await client.fetch<Unit[]>(
-          UNIT_LOGO_GRID_QUERY,
-          { language, maxItems: maxItems - 1 },
-          { next: { revalidate: 60 } }
-        );
-        setUnits(fetchedUnits || []);
-      } catch (error) {
-        console.error("Error fetching units for logo grid:", error);
-        setUnits([]);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchUnits();
-  }, [language, maxItems, selectionMode, preSelectedUnits]);
 
   if (!headline) return null;
 
@@ -170,11 +136,7 @@ function UnitLogoGrid({ data, language: propLanguage }: UnitLogoGridProps) {
 
         {/* Logo Grid */}
         <div className="relative container max-w-4xl mx-auto  z-10">
-          {isLoading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="text-gray-400">Loading...</div>
-            </div>
-          ) : unitsWithLogo.length === 0 ? (
+          {unitsWithLogo.length === 0 ? (
             <div className="flex items-center justify-center py-12">
               <div className="text-gray-400">No units found</div>
             </div>

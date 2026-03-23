@@ -33,6 +33,12 @@ import { cache } from "react";
 import { sanityFetch } from "@/sanity/lib/live";
 import { defineQuery } from "next-sanity";
 
+const INTERACTIVE_CAROUSEL_FIELD_MAP = {
+  "1spWeb": "connectedDataCarouselPromo1SP",
+  msmWeb: "connectedDataCarouselPromoMSM",
+  studioco2Web: "connectedDataCarouselPromoStudioCO2",
+} as const;
+
 // =============================================================================
 // QUERY FRAGMENTS (Reusable pieces)
 // =============================================================================
@@ -81,63 +87,6 @@ const teamMemberFragment = /* groq */ `
     _id,
     name,
     logoSignet
-  }
-`;
-
-/**
- * Fragment for case study cards (used in carousels/listings)
- */
-const caseStudyCardFragment = /* groq */ `
-  _id,
-  title,
-  subtitle,
-  slug,
-  description,
-  services[]->{
-    _id,
-    name,
-    taglabel
-  },
-  mainImage,
-  isVerticalVideo,
-  mainVideo,
-  "mainImageUrl": mainImage.secure_url,
-  "mainVideoUrl": mainVideo.asset->url,
-  client->{
-    _id,
-    name,
-    logo,
-    "logoUrl": logo.secure_url
-  },
-  websiteUrl,
-  websiteUrlText,
-  publishedAt
-`;
-
-/**
- * Fragment for service data
- */
-const serviceFragment = /* groq */ `
-  _id,
-  name,
-  taglabel,
-  "iconUrl": serviceicon.asset.secure_url,
-  serviceicon,
-  serviceBackground,
-  serviceDescription,
-  servicegrouprel[]->{
-    _id,
-    name,
-    taglabel
-  },
-  unitsrel[]->{
-    _id,
-    name,
-    slug,
-    tagline,
-    "logoUrl": logo.secure_url,
-    backgroundImage,
-    cta
   }
 `;
 
@@ -202,12 +151,8 @@ const GLOBAL_DATA_QUERY = defineQuery(/* groq */ `{
     },
     copyright
   },
-  "cases": *[_type == "caseStudy" && channel match $channel && language == $language && isPublished == true] | order(publishedAt desc){
-    ${caseStudyCardFragment}
-  },
-  "services": *[_type == "services" && language == $language] | order(name asc){
-    ${serviceFragment}
-  }
+  "hasCaseStudies": count(*[_type == "caseStudy" && channel match $channel && language == $language && isPublished == true]) > 0,
+  "hasServices": count(*[_type == "services" && language == $language]) > 0
 }`);
 
 // =============================================================================
@@ -262,51 +207,8 @@ export interface GlobalData {
     }>;
     copyright: string | null;
   } | null;
-  cases: Array<{
-    _id: string;
-    title: string;
-    subtitle: string | null;
-    slug: { current: string };
-    description: string | null;
-    services: Array<{ _id: string; name: string; taglabel: string | null }>;
-    mainImage: unknown;
-    isVerticalVideo: boolean;
-    mainVideo: unknown;
-    mainImageUrl: string | null;
-    mainVideoUrl: string | null;
-    client: {
-      _id: string;
-      name: string;
-      logo: unknown;
-      logoUrl: string | null;
-    } | null;
-    websiteUrl: string | null;
-    websiteUrlText: string | null;
-    publishedAt: string | null;
-  }>;
-  services: Array<{
-    _id: string;
-    name: string;
-    taglabel: string | null;
-    iconUrl: string | null;
-    serviceicon: unknown;
-    serviceBackground: string | null;
-    serviceDescription: string | null;
-    servicegrouprel: Array<{
-      _id: string;
-      name: string;
-      taglabel: string | null;
-    }>;
-    unitsrel: Array<{
-      _id: string;
-      name: string;
-      slug: { current: string };
-      tagline: string | null;
-      logoUrl: string | null;
-      backgroundImage: unknown;
-      cta: unknown;
-    }>;
-  }>;
+  hasCaseStudies: boolean;
+  hasServices: boolean;
 }
 
 // =============================================================================
@@ -314,19 +216,17 @@ export interface GlobalData {
 // =============================================================================
 
 /**
- * Fetch all global data (nav, footer, cases, services) in ONE request.
+ * Fetch all global shell data in ONE request.
  *
  * This replaces 6 separate queries and is cached for the entire render.
  *
  * @param channel - The channel (e.g., "1spWeb")
  * @param language - The language code (e.g., "en", "de")
- * @returns Object containing nav, footer, cases, and services
+ * @returns Object containing nav, footer, and lightweight availability flags
  *
  * @example
  * ```typescript
- * const { nav, footer, cases, services } = await getGlobalData('1spWeb', 'en');
- * const hasCases = cases.length > 0;
- * const hasServices = services.length > 0;
+ * const { nav, footer, hasCaseStudies, hasServices } = await getGlobalData('1spWeb', 'en');
  * ```
  */
 export const getGlobalData = cache(
@@ -339,8 +239,8 @@ export const getGlobalData = cache(
     return (data as GlobalData) || {
       nav: null,
       footer: null,
-      cases: [],
-      services: [],
+      hasCaseStudies: false,
+      hasServices: false,
     };
   }
 );
@@ -439,6 +339,114 @@ export const getAllServices = cache(async (language: string) => {
 
   return data || [];
 });
+
+export const getSmartPeople = cache(
+  async (
+    channel: "1spWeb" | "msmWeb" | "studioco2Web",
+    maxItems: number,
+  ) => {
+    const { SMART_PEOPLE_QUERY } = await import("@/sanity/lib/queries");
+
+    const { data } = await sanityFetch({
+      query: SMART_PEOPLE_QUERY,
+      params: {
+        channel,
+        maxItems: Math.max(0, maxItems - 1),
+      },
+    });
+
+    return data || [];
+  }
+);
+
+export const getSmartUnits = cache(
+  async (
+    language: string,
+    maxItems: number,
+    sortBy: "recent" | "name-asc" | "name-desc" = "recent",
+  ) => {
+    const { SMART_UNITS_QUERY } = await import("@/sanity/lib/queries");
+
+    const sortExpression =
+      sortBy === "name-asc"
+        ? "order(name asc)"
+        : sortBy === "name-desc"
+          ? "order(name desc)"
+          : "order(_createdAt desc)";
+
+    const { data } = await sanityFetch({
+      query: defineQuery(
+        SMART_UNITS_QUERY.replace("order(_createdAt desc)", sortExpression)
+      ),
+      params: {
+        language,
+        maxItems: Math.max(0, maxItems - 1),
+      },
+    });
+
+    return data || [];
+  }
+);
+
+export const getUnitLogoGridUnits = cache(async (language: string, maxItems: number) => {
+  const { UNIT_LOGO_GRID_QUERY } = await import("@/sanity/lib/queries");
+
+  const { data } = await sanityFetch({
+    query: UNIT_LOGO_GRID_QUERY,
+    params: {
+      language,
+      maxItems: Math.max(0, maxItems - 1),
+    },
+  });
+
+  return data || [];
+});
+
+export const getUnitLogoFloatUnits = cache(async (language: string, maxItems: number) => {
+  const { UNIT_LOGO_FLOAT_QUERY } = await import("@/sanity/lib/queries");
+
+  const { data } = await sanityFetch({
+    query: UNIT_LOGO_FLOAT_QUERY,
+    params: { language, maxItems },
+  });
+
+  return data || [];
+});
+
+export const getCaseStudiesByIds = cache(async (ids: string[]) => {
+  if (!ids.length) {
+    return [];
+  }
+
+  const { CASE_STUDIES_BY_IDS_QUERY } = await import("@/sanity/lib/queries");
+
+  const { data } = await sanityFetch({
+    query: CASE_STUDIES_BY_IDS_QUERY,
+    params: { ids },
+  });
+
+  return data || [];
+});
+
+export const getInteractiveCarouselCases = cache(
+  async (channel: string, language: string, maxItems: number) => {
+    const normalizedChannel =
+      channel in INTERACTIVE_CAROUSEL_FIELD_MAP ? channel : "1spWeb";
+    const carouselField =
+      INTERACTIVE_CAROUSEL_FIELD_MAP[
+        normalizedChannel as keyof typeof INTERACTIVE_CAROUSEL_FIELD_MAP
+      ];
+
+    const { getInteractiveCarouselQuery } = await import("@/sanity/lib/queries");
+
+    const { data } = await sanityFetch({
+      query: defineQuery(getInteractiveCarouselQuery(carouselField)),
+      params: { language, maxItems },
+    });
+
+    return data || [];
+  }
+);
 
 // =============================================================================
 // STATIC GENERATION HELPERS

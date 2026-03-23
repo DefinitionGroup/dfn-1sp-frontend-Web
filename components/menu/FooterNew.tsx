@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import { FooterMenu } from "@/types/menu.types";
 import Image from "next/image";
 

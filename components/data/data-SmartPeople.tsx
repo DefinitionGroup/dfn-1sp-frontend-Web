@@ -1,8 +1,7 @@
-import { client } from "@/sanity/lib/client";
-import { SMART_PEOPLE_QUERY } from "@/sanity/lib/queries";
 import PeopleShowcaseHero, {
   type MemberItem,
 } from "@/components/pagebuilder/Fragments/pg-PeopleShowcaseHero";
+import { getSmartPeople } from "@/lib/sanity/queries";
 
 type CloudinaryAsset = {
   _type?: string;
@@ -50,13 +49,7 @@ export default async function SmartPeople({
   language = "de",
   channel = "1spWeb",
 }: SmartPeopleProps) {
-  const people = await client.fetch<Person[]>(
-    SMART_PEOPLE_QUERY,
-    { channel, maxItems: maxItems - 1 },
-    {
-      next: { revalidate: 60 },
-    }
-  );
+  const people = await getSmartPeople(channel, maxItems) as Person[];
 
   if (people.length === 0) {
     return (
@@ -81,7 +74,10 @@ export default async function SmartPeople({
   return (
     <section className="w-full py-8" data-component="smart-people">
       <div className="container mx-auto px-4">
-        <PeopleShowcaseHero members={members} />
+        <PeopleShowcaseHero
+          members={members}
+          initialVisibleCount={Math.min(8, members.length)}
+        />
       </div>
     </section>
   );

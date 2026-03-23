@@ -3,39 +3,10 @@
 import { motion, AnimatePresence, PanInfo } from "motion/react";
 import { useState, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import Button2 from "@/components/ui/Button2";
 import type { CTA, CloudinaryAsset } from "@/types/sanity.types";
 import { assetUrl, optimizedVideoUrl } from "@/utils/utils";
-import { client } from "@/sanity/lib/client";
-import { getInteractiveCarouselQuery } from "@/sanity/lib/queries";
-
-// Channel to carousel field mapping
-const CHANNEL_FIELD_MAP = {
-  "1spWeb": "connectedDataCarouselPromo1SP",
-  msmWeb: "connectedDataCarouselPromoMSM",
-  studioco2Web: "connectedDataCarouselPromoStudioCO2",
-} as const;
-
-// Channel display names
-const CHANNEL_NAMES = {
-  "1spWeb": "1SP",
-  msmWeb: "MSM",
-  studioco2Web: "Studio CO2",
-} as const;
-
-// Helper to get channel from cookies on client side
-function getChannelFromCookie(): "1spWeb" | "msmWeb" | "studioco2Web" | null {
-  if (typeof document === "undefined") return null;
-  const cookies = document.cookie.split(";");
-  const channelCookie = cookies.find((c) => c.trim().startsWith("channel="));
-  const channel = channelCookie?.split("=")[1]?.trim() as
-    | "1spWeb"
-    | "msmWeb"
-    | "studioco2Web"
-    | undefined;
-  return channel || null;
-}
 
 interface CaseStudy {
   _id: string;
@@ -66,73 +37,24 @@ interface UIItem {
 }
 
 interface SmartCarouselProps {
-  maxItems?: number;
   language?: string;
-  channel?: "1spWeb" | "msmWeb" | "studioco2Web";
-  selectionMode?: "auto" | "manual";
-  selectedCases?: CaseStudy[];
+  caseStudies?: CaseStudy[];
 }
 
 export default function SmartCarousel({
-  maxItems = 6,
   language = "en",
-  channel,
-  selectionMode = "auto",
-  selectedCases: preSelectedCases,
+  caseStudies = [],
 }: SmartCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isScrollable, setIsScrollable] = useState(false);
-  const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [mounted, setMounted] = useState(false);
   const stripRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Get channel from prop or cookie (only on client)
-  const activeChannel = channel || "1spWeb";
-
-  // Handle client-side channel detection
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Fetch case studies on mount (only for auto mode)
-  useEffect(() => {
-    const fetchCaseStudies = async () => {
-      try {
-        // Manual mode: use pre-fetched cases directly
-        if (selectionMode === "manual" && preSelectedCases && preSelectedCases.length > 0) {
-          setCaseStudies(preSelectedCases);
-          setLoading(false);
-          return;
-        }
-
-        // Auto mode: fetch cases with the carousel promo flag
-        const effectiveChannel =
-          channel || (mounted ? getChannelFromCookie() : null) || "1spWeb";
-        const carouselField = CHANNEL_FIELD_MAP[effectiveChannel];
-
-        const query = getInteractiveCarouselQuery(carouselField);
-        const results = await client.fetch(query, {
-          language,
-          maxItems,
-        });
-
-        setCaseStudies(results);
-      } catch (error) {
-        console.error("Error fetching case studies:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCaseStudies();
-  }, [maxItems, language, channel, mounted, selectionMode, preSelectedCases]);
-
   const carouselItems: UIItem[] = useMemo(() => {
-    const list = caseStudies
+    return caseStudies
       .map((cs) => {
         const image = assetUrl(cs.mainImage);
         const logosrc = assetUrl(cs.client?.logo);
@@ -161,7 +83,6 @@ export default function SmartCarousel({
         } as UIItem;
       })
       .filter((x): x is UIItem => x !== null);
-    return list;
   }, [caseStudies, language]);
 
   const clearAutoPlay = () => {
@@ -211,18 +132,6 @@ export default function SmartCarousel({
       return () => window.removeEventListener("resize", checkScrollable);
     }
   }, []);
-
-  if (loading) {
-    return (
-      <section className="px-2 sm:px-4 md:px-0">
-        <div className="container mx-auto w-full">
-          <div className="relative h-[60vh] sm:h-[70vh] iphone-landscape:!h-dvh md:h-[800px] flex items-center justify-center">
-            <div className="text-gray-400 text-sm sm:text-base">Loading case studies...</div>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   if (!carouselItems.length) {
     return (

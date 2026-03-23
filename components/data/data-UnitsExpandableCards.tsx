@@ -1,6 +1,5 @@
-import { client } from "@/sanity/lib/client";
-import { SMART_UNITS_QUERY } from "@/sanity/lib/queries";
 import ExpandableCards from "@/components/pagebuilder/Fragments/pg-ExpandableCards";
+import { getSmartUnits } from "@/lib/sanity/queries";
 import type { CardItem, CloudinaryAsset, CTA } from "@/types/sanity.types";
 
 type Unit = {
@@ -25,18 +24,6 @@ interface UnitsExpandableCardsProps {
   columns?: 3 | 4 | 5;
 }
 
-function getSortParams(sortBy: string) {
-  switch (sortBy) {
-    case "name-asc":
-      return { field: "name", direction: "asc" };
-    case "name-desc":
-      return { field: "name", direction: "desc" };
-    case "recent":
-    default:
-      return { field: "_createdAt", direction: "desc" };
-  }
-}
-
 function transformUnitsToCards(units: Unit[]): CardItem[] {
   return units.map((unit) => ({
     _type: "cardItem" as const,
@@ -57,21 +44,7 @@ export default async function UnitsExpandableCards({
   variant = "default",
   columns = 4,
 }: UnitsExpandableCardsProps) {
-  const sortParams = getSortParams(sortBy);
-
-  // Build the query with dynamic sorting
-  const queryWithSort = SMART_UNITS_QUERY.replace(
-    "order(_createdAt desc)",
-    `order(${sortParams.field} ${sortParams.direction})`
-  );
-
-  const units = await client.fetch<Unit[]>(
-    queryWithSort,
-    { language, maxItems: maxItems - 1 },
-    {
-      next: { revalidate: 60 },
-    }
-  );
+  const units = await getSmartUnits(language, maxItems, sortBy) as Unit[];
 
   if (units.length === 0) {
     return (
@@ -85,7 +58,12 @@ export default async function UnitsExpandableCards({
   return (
     <section className="w-full " data-component="smart-units-gallery">
       <div className="container mx-auto ">
-        <ExpandableCards items={cards} variant={variant} columns={columns} />
+        <ExpandableCards
+          items={cards}
+          variant={variant}
+          columns={columns}
+          initialVisibleCount={Math.min(8, cards.length)}
+        />
       </div>
     </section>
   );

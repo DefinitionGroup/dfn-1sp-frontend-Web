@@ -21,8 +21,9 @@
  * Now: Makes 1 consolidated API call via `getGlobalData()`.
  * This reduces network round trips by ~83%.
  *
- * The `hasCaseStudies` and `hasServices` flags are now derived
- * from the array lengths (cases.length > 0).
+ * The shell now fetches lightweight availability flags instead of
+ * full case/service collections. Rich overlay data is loaded only
+ * when a user opens that UI.
  */
 import { getGlobalData } from "@/lib/sanity/queries";
 import FrontNavOverlay from "./menu/FrontNavOverlay";
@@ -48,18 +49,14 @@ export default async function SiteWrapper({
   // ==========================================================================
   // SINGLE CONSOLIDATED FETCH
   // ==========================================================================
-  // This replaces 6 separate queries with 1 optimized query.
+  // This keeps the shell to a single lightweight query.
   // The `getGlobalData` function uses React's cache() for deduplication,
   // so if this component is rendered multiple times in the same request,
   // only 1 API call is made.
-  const { nav, footer, cases, services } = await getGlobalData(
+  const { nav, footer, hasCaseStudies, hasServices } = await getGlobalData(
     channel,
     language
   );
-
-  // Derive boolean flags from array lengths (replaces HAS_* queries)
-  const hasCaseStudies = cases.length > 0;
-  const hasServices = services.length > 0;
 
   return (
     <FooterMenuProvider menu={footer as FooterMenu}>
@@ -68,11 +65,10 @@ export default async function SiteWrapper({
           <FrontNavOverlay
             menuData={nav as NavbarMenu}
             color={navColor}
+            channel={channel}
             locale={language}
             hasCaseStudies={hasCaseStudies}
-            caseStudies={cases || []}
             hasServices={hasServices}
-            services={services || []}
           />
           {children}
           <Footer menuData={footer as FooterMenu} />

@@ -229,6 +229,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   // Mount video after poster paint + idle time so the poster can win LCP
   useEffect(() => {
     if (!useVideo || shouldMountVideo || !posterLoaded) return;
+    if (!isHero && !rawInView) return;
 
     const win = window as Window & {
       requestIdleCallback?: (
@@ -254,7 +255,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
         win.cancelIdleCallback(idleId);
       }
     };
-  }, [useVideo, posterLoaded, isHero, shouldMountVideo]);
+  }, [useVideo, posterLoaded, isHero, shouldMountVideo, rawInView]);
 
   // Play video after animation completes + mount delay
   useEffect(() => {
