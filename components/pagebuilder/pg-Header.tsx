@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import HeaderImageVideoComp2 from "@/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
+import HeroVideoComp from "@/components/pagebuilder/Fragments/HeroVideoComp";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import { assetUrl } from "@/utils/utils";
 import TypewriterRotator from "../ui/TypewriterRotator";
@@ -139,12 +139,10 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
       {/* Background media */}
       {mediaUrl && (
-        <HeaderImageVideoComp2
+        <HeroVideoComp
           useVideo={useVideo}
           videoSrc={useVideo ? mediaUrl : undefined}
           imageSrc={!useVideo ? mediaUrl : undefined}
-          enableParallax={!!step.enableParallax}
-          isHero
         />
       )}
 

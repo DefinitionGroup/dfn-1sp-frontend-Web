@@ -19,7 +19,7 @@ import SiteWrapper from "@/components/SiteWrapper";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 import { urlFor } from "@/sanity/lib/image";
 import type { Metadata } from "next";
-import { cloudinaryPosterUrl, cloudinaryPosterSrcSet } from "@/utils/utils";
+import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
   JsonLdScript,
   generateWebPageJsonLd,
@@ -35,21 +35,6 @@ import {
 } from "@/lib/structured-data";
 
 export const revalidate = 60;
-
-/** Extract hero video URL from page builder content for preload hint */
-function extractHeroVideoUrl(content: any[]): string | undefined {
-  if (!Array.isArray(content)) return undefined;
-  for (const block of content) {
-    if (block?._type === "oneSPHeader") {
-      const media = block?.media;
-      const url = media?.secure_url || media?.url;
-      if (url && (/\/video\//.test(url) || /\.(mp4|webm|ogg)$/i.test(url))) {
-        return url;
-      }
-    }
-  }
-  return undefined;
-}
 
 export async function generateMetadata({
   params,
@@ -72,13 +57,13 @@ export async function generateMetadata({
 
   const ogImages = page.metadata?.image
     ? [
-        {
-          url: urlFor(page.metadata.image).width(1200).height(630).url(),
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ]
+      {
+        url: urlFor(page.metadata.image).width(1200).height(630).url(),
+        width: 1200,
+        height: 630,
+        alt: title,
+      },
+    ]
     : [];
 
   return {
@@ -128,23 +113,7 @@ export default async function ServicesPage({
   const navbarVariant = page?.navbarVariant || "light";
 
   // LCP optimization: preload hero poster image
-  const heroVideoUrl = page?.content1sp
-    ? extractHeroVideoUrl(page.content1sp as any[])
-    : undefined;
-  const heroPosterDesktop = heroVideoUrl
-    ? cloudinaryPosterUrl(heroVideoUrl, { maxWidth: 1280 })
-    : undefined;
-  const heroPosterMobile = heroVideoUrl
-    ? cloudinaryPosterUrl(heroVideoUrl, { maxWidth: 480, portrait: true })
-    : undefined;
-  const heroPosterDesktopSrcSet = heroVideoUrl
-    ? cloudinaryPosterSrcSet(heroVideoUrl, [960, 1280, 1600, 1920])
-    : undefined;
-  const heroPosterMobileSrcSet = heroVideoUrl
-    ? cloudinaryPosterSrcSet(heroVideoUrl, [360, 480, 640, 750], {
-        portrait: true,
-      })
-    : undefined;
+  const heroPreload = getHeroPreloadData(page?.content1sp as any[] | undefined);
 
   // Extract structured data from page builder content
   const caseItems = extractCaseItemsFromContent(page.content1sp as any[] | undefined);
@@ -193,34 +162,7 @@ export default async function ServicesPage({
       )}
 
       {/* Preload the hero poster for fast LCP */}
-      {heroVideoUrl && (
-        <>
-          <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="" />
-          <link rel="dns-prefetch" href="https://res.cloudinary.com" />
-        </>
-      )}
-      {heroPosterDesktop && (
-        <link
-          rel="preload"
-          as="image"
-          href={heroPosterDesktop}
-          fetchPriority="high"
-          imageSrcSet={heroPosterDesktopSrcSet}
-          imageSizes="100vw"
-          media="(min-width: 769px)"
-        />
-      )}
-      {heroPosterMobile && (
-        <link
-          rel="preload"
-          as="image"
-          href={heroPosterMobile}
-          fetchPriority="high"
-          imageSrcSet={heroPosterMobileSrcSet}
-          imageSizes="100vw"
-          media="(max-width: 768px)"
-        />
-      )}
+      <HeroPreloadLinks {...heroPreload} />
       <HamburgerGradientMenu />
       <div className="min-h-screen px-1 md:px-2 mt-2">
         {page.content1sp ? (
