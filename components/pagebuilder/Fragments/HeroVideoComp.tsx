@@ -20,7 +20,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     useVideo,
     videoSrc,
     imageSrc,
-    imageAlt = "Hero Background",
+    imageAlt = "",
 }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const posterImgRef = useRef<HTMLImageElement>(null);
@@ -142,6 +142,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                                     height={1080}
                                     fetchPriority="high"
                                     loading="eager"
+                                    decoding="async"
                                     onLoad={() => setPosterLoaded(true)}
                                     onError={() => setPosterLoaded(true)}
                                     className={`object-cover w-full h-full absolute inset-0 transition-opacity duration-700 ${videoReady ? "opacity-0" : "opacity-100"}`}
@@ -159,6 +160,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                                 muted
                                 playsInline
                                 preload="none"
+                                poster={posterFallback}
                                 onCanPlay={handleVideoReady}
                                 onLoadedData={handleVideoReady}
                                 onPlaying={() => setVideoReady(true)}
@@ -187,6 +189,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                             alt={imageAlt}
                             fill
                             sizes="100vw"
+                            decoding="async"
                             className="object-cover object-top"
                             priority
                             fetchPriority="high"

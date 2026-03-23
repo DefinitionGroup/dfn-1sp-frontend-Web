@@ -48,7 +48,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   useVideo = false,
   imageSrc = "/hero-bg-home2-34f136.png",
   videoSrc = "/video/atf.mp4",
-  imageAlt = "Hero Background",
+  imageAlt = "",
   className = "",
   enableParallax = true,
   opacity = 0.6, // default overlay opacity
@@ -376,7 +376,8 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
               loop
               muted
               playsInline
-              preload={isHero ? "metadata" : "none"}
+              preload="none"
+              poster={posterFallback}
               onCanPlay={handleVideoReady}
               onLoadedData={handleVideoReady}
               onPlaying={() => {
@@ -404,6 +405,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
           alt={imageAlt}
           fill
           sizes="100vw"
+          decoding="async"
           className="object-cover object-top"
           priority={isHero}
           fetchPriority={isHero ? "high" : undefined}

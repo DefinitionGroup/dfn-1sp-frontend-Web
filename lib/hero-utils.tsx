@@ -68,16 +68,18 @@ export function HeroPreloadLinks({
     heroPosterDesktopSrcSet,
     heroPosterMobileSrcSet,
 }: HeroPreloadData) {
+    const cloudinaryOrigin = "https://res.cloudinary.com";
+
     return (
         <>
         { heroVideoUrl && (
             <>
             <link
             rel= "preconnect"
-    href = "https://res.cloudinary.com"
+    href = {cloudinaryOrigin}
     crossOrigin = ""
         />
-        <link rel="dns-prefetch" href = "https://res.cloudinary.com" />
+        <link rel="dns-prefetch" href = {cloudinaryOrigin} />
             </>
       )
 }
