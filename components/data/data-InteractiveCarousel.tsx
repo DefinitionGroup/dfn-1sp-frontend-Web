@@ -3,7 +3,7 @@
 import { motion, AnimatePresence, PanInfo } from "motion/react";
 import { useState, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import Button2 from "@/components/ui/Button2";
 import type { CTA, CloudinaryAsset } from "@/types/sanity.types";
 import { assetUrl, optimizedVideoUrl } from "@/utils/utils";

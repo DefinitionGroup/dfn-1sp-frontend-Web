@@ -11,64 +11,37 @@ export default function PageWithMapVertical({
 }: PageWithMapVerticalProps) {
   const [navPoints, setNavPoints] = useState<NavPoint[]>([]);
 
-  // Collect section IDs and custom nav names from DOM
   const collectPageIds = () => {
-    setTimeout(() => {
-      const allElements = document.querySelectorAll("[id]");
-      const points: NavPoint[] = [];
+    const points = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-navpoint-name][id]")
+    ).map((element) => ({
+      id: element.id,
+      name: element.getAttribute("data-navpoint-name") || element.id,
+    }));
 
-      allElements.forEach((element) => {
-        const id = element.id;
+    const uniquePoints = points.filter(
+      (point, index, array) => array.findIndex((item) => item.id === point.id) === index
+    );
 
-        // Check if element is inside a footer
-        const isInFooter = element.closest("footer") !== null;
-
-        // Check if element should be hidden from nav
-        const isHiddenFromNav = element.getAttribute("data-nav-hidden") === "true";
-
-        if (
-          id &&
-          !id.startsWith("headlessui-") &&
-          !id.startsWith("radix-") &&
-          !id.startsWith("__") &&
-          !id.startsWith("gradient") &&
-          !id.startsWith("_") &&
-          id !== "_R_" &&
-          id.length > 2 &&
-          !/^\d+$/.test(id) &&
-          !/^\d+-\d+$/.test(id) && // Exclude timestamp-like IDs (e.g., 1762951177499-0)
-          id !== "root" &&
-          !isInFooter && // Exclude footer elements
-          !isHiddenFromNav // Exclude elements marked as hidden from nav
-        ) {
-          // Check for custom navpoint name in data attribute
-          const customName = element.getAttribute("data-navpoint-name");
-          points.push({
-            id: id,
-            name: customName || id,
-          });
-        }
-      });
-
-      setNavPoints(points);
-    }, 500);
+    setNavPoints(uniquePoints);
   };
 
   useEffect(() => {
-    collectPageIds();
-
-    // Re-run collection when DOM changes (e.g., async content).
-    const observer = new MutationObserver(() => {
-      collectPageIds();
-    });
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-    });
+    const idleCallback =
+      "requestIdleCallback" in window
+        ? window.requestIdleCallback(collectPageIds)
+        : null;
+    const timeoutId = window.setTimeout(collectPageIds, 800);
+    const finalPassId = window.setTimeout(collectPageIds, 1800);
+    window.addEventListener("load", collectPageIds);
 
     return () => {
-      observer.disconnect();
+      if (idleCallback !== null) {
+        window.cancelIdleCallback(idleCallback);
+      }
+      window.clearTimeout(timeoutId);
+      window.clearTimeout(finalPassId);
+      window.removeEventListener("load", collectPageIds);
     };
   }, []);
 

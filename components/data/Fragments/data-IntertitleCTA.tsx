@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import Button2 from "@/components/ui/Button2";
 interface StaggeredSlideUpProps {

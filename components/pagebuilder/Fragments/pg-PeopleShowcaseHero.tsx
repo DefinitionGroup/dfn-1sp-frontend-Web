@@ -6,7 +6,7 @@ import { assetUrl, optimizedVideoUrl, cloudinaryPosterUrl } from "@/utils/utils"
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import StaggeredFadeIn from "@/components/ui/StaggeredFadeIn";
 import Image from "next/image";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import { createPortal } from "react-dom";
 import { useRobustInView } from "@/hooks/use-robust-in-view";
 export interface MemberItem {

@@ -194,7 +194,11 @@ export default async function Page({
       <HamburgerGradientMenu />
       <div className="  min-h-screen px-1 md:px-2">
         {page?.content1sp ? (
-          <PageBuilder content={page.content1sp} language={language} />
+          <PageBuilder
+            content={page.content1sp}
+            language={language}
+            deferAfter={2}
+          />
         ) : (
           <NotFound />
         )}

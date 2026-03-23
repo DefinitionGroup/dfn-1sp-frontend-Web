@@ -17,6 +17,7 @@ import { HeroShowtime as HeroShowtimeType } from "@/types/sanity.types";
 import ErrorBoundary from "./ErrorBoundary";
 import HeadlineChallenge from "./pagebuilder/cases/pg-HeadlineChallenge";
 import ComponentLoader from "./ui/ComponentLoader";
+import DeferredSection from "./ui/DeferredSection";
 
 // Dynamically import heavy components to reduce initial bundle size
 const ShowtimeGallery = dynamic(
@@ -227,9 +228,14 @@ const PageBuilderPersonioJobs = dynamic(
 type PageBuilderProps = { 
   content: NonNullable<Page["content1sp"]>;
   language?: string;
+  deferAfter?: number;
 };
 
-export function PageBuilder({ content, language = "de" }: PageBuilderProps) {
+export function PageBuilder({
+  content,
+  language = "de",
+  deferAfter = Number.POSITIVE_INFINITY,
+}: PageBuilderProps) {
   if (!Array.isArray(content) || content.length === 0) return null;
 
   return (
@@ -239,7 +245,8 @@ export function PageBuilder({ content, language = "de" }: PageBuilderProps) {
 
         const key = block._key ?? `${block._type}-${i}`;
 
-        switch (block._type) {
+        const renderedBlock = (() => {
+          switch (block._type) {
           case "showtimeGallery":
             return (
               <ErrorBoundary key={`error-${key}`}>
@@ -465,7 +472,22 @@ export function PageBuilder({ content, language = "de" }: PageBuilderProps) {
 
           default:
             return null;
+          }
+        })();
+
+        if (!renderedBlock) {
+          return null;
         }
+
+        if (i < deferAfter) {
+          return renderedBlock;
+        }
+
+        return (
+          <DeferredSection key={`deferred-${key}`}>
+            {renderedBlock}
+          </DeferredSection>
+        );
       })}
     </>
   );

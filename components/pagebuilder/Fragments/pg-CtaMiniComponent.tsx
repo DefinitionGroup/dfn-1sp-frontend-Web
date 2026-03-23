@@ -2,7 +2,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import { ArrowRightIcon } from "@phosphor-icons/react";
 
 interface CtaMiniProps {

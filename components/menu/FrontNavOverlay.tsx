@@ -1,39 +1,59 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
-import { Link } from "next-view-transitions";
 import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
 import { usePathname } from "next/navigation";
 import CaseGalleryMenu from "../data/data-CaseGalleryMenu";
 import Button2 from "../ui/Button2";
 import { NavbarMenu } from "@/types/menu.types";
+import { client } from "@/sanity/lib/client";
+import { CASE_STUDIES_QUERY } from "@/sanity/lib/queries";
+
+interface CaseStudy {
+  _id: string;
+  title: string;
+  subtitle?: string;
+  slug: { current: string };
+  description?: string;
+  services?: { _id: string; name: string; taglabel?: string }[];
+  mainImageUrl?: string;
+  mainVideoUrl?: string;
+  client?: {
+    _id: string;
+    name: string;
+    logoUrl?: string;
+  };
+  websiteUrl?: string;
+  websiteUrlText?: string;
+}
 
 interface FrontNavOverlayProps {
   className?: string;
   color?: "light" | "dark";
   menuData?: NavbarMenu | null;
+  channel?: string;
   locale?: string;
   hasCaseStudies?: boolean;
-  caseStudies?: any[];
   hasServices?: boolean;
-  services?: any[];
 }
 
 const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   className = "",
   color = "light",
   menuData,
+  channel = "1spWeb",
   locale = "en",
   hasCaseStudies = false,
-  caseStudies = [],
   hasServices = false,
-  services = [],
 }) => {
   const router = useOptimizedTransitionRouter();
   const pathname = usePathname() || "";
   const [showOverlay, setShowOverlay] = React.useState(false);
+  const [caseStudies, setCaseStudies] = React.useState<CaseStudy[]>([]);
+  const [isCasesLoading, setIsCasesLoading] = React.useState(false);
   const navRef = React.useRef<HTMLElement>(null);
 
   // Scroll direction detection for show/hide navbar
@@ -129,33 +149,44 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       : "/ci/1sp-fulllogotype.svg";
   const logoUrl = imageLogo;
 
-  // Detect if Sanity menu already contains a Cases link
-  const hasCasesLinkInMenu =
-    !!menuData?.menuItems &&
-    menuData.menuItems.some((item) => {
-      const slug = item.slug?.toLowerCase() || "";
-      const title = (item.displayName || item.title || "")
-        .toString()
-        .toLowerCase();
-      return (
-        slug.includes("cases") || title === "cases" || title.includes("cases")
-      );
-    });
+  React.useEffect(() => {
+    if (
+      !showOverlay ||
+      !isCaseDetailRoute ||
+      caseStudies.length > 0 ||
+      isCasesLoading
+    ) {
+      return;
+    }
 
-  // Detect if Sanity menu already contains a Services link
-  const hasServicesLinkInMenu =
-    !!menuData?.menuItems &&
-    menuData.menuItems.some((item) => {
-      const slug = item.slug?.toLowerCase() || "";
-      const title = (item.displayName || item.title || "")
-        .toString()
-        .toLowerCase();
-      return (
-        slug.includes("services") ||
-        title === "services" ||
-        title.includes("services")
-      );
-    });
+    let isCancelled = false;
+
+    const fetchCaseStudies = async () => {
+      try {
+        setIsCasesLoading(true);
+        const data = await client.fetch(CASE_STUDIES_QUERY, {
+          channel,
+          language: locale,
+        });
+
+        if (!isCancelled) {
+          setCaseStudies(data || []);
+        }
+      } catch (error) {
+        console.error("Error fetching case studies for overlay:", error);
+      } finally {
+        if (!isCancelled) {
+          setIsCasesLoading(false);
+        }
+      }
+    };
+
+    fetchCaseStudies();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [channel, caseStudies.length, isCaseDetailRoute, isCasesLoading, locale, showOverlay]);
 
   const itemClass = `text-xs leading-compress tracking-wide font-medium mr-8 inline-block `;
 
@@ -386,7 +417,13 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               </svg>
             </button>
             <div className="pb-8">
-              <CaseGalleryMenu caseStudies={caseStudies} locale={locale} />
+              {isCasesLoading ? (
+                <div className="px-8 py-20 text-sm text-neutral-500">
+                  Loading cases...
+                </div>
+              ) : (
+                <CaseGalleryMenu caseStudies={caseStudies} locale={locale} />
+              )}
             </div>
           </motion.div>
         </div>

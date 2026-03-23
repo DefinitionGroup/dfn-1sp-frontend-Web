@@ -5,7 +5,7 @@ import { client } from "@/sanity/lib/client";
 import { UNIT_LOGO_GRID_QUERY } from "@/sanity/lib/queries";
 import { resolveLink, assetUrl } from "@/utils/utils";
 import { useParams } from "next/navigation";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import GridBackground from "@/components/ui/GridBackground";
 import type { CloudinaryAsset, CTA } from "@/types/sanity.types";

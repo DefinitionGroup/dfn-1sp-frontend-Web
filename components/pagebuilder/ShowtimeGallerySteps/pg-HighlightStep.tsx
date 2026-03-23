@@ -51,7 +51,6 @@ export default function HighlightStep({
     : false;
 
   const rawItems = pickItems(step);
-  console.log("🔍 rawItems:", rawItems);
   const items = rawItems
     .map((it) => {
       if (typeof it === "string") {
@@ -77,7 +76,6 @@ export default function HighlightStep({
       };
     })
     .filter((i) => i.name);
-  console.log("✅ Final items:", items);
 
   // Generate section ID from badge text
   const sectionId = step.badge?.text

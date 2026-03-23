@@ -84,63 +84,6 @@ const teamMemberFragment = /* groq */ `
   }
 `;
 
-/**
- * Fragment for case study cards (used in carousels/listings)
- */
-const caseStudyCardFragment = /* groq */ `
-  _id,
-  title,
-  subtitle,
-  slug,
-  description,
-  services[]->{
-    _id,
-    name,
-    taglabel
-  },
-  mainImage,
-  isVerticalVideo,
-  mainVideo,
-  "mainImageUrl": mainImage.secure_url,
-  "mainVideoUrl": mainVideo.asset->url,
-  client->{
-    _id,
-    name,
-    logo,
-    "logoUrl": logo.secure_url
-  },
-  websiteUrl,
-  websiteUrlText,
-  publishedAt
-`;
-
-/**
- * Fragment for service data
- */
-const serviceFragment = /* groq */ `
-  _id,
-  name,
-  taglabel,
-  "iconUrl": serviceicon.asset.secure_url,
-  serviceicon,
-  serviceBackground,
-  serviceDescription,
-  servicegrouprel[]->{
-    _id,
-    name,
-    taglabel
-  },
-  unitsrel[]->{
-    _id,
-    name,
-    slug,
-    tagline,
-    "logoUrl": logo.secure_url,
-    backgroundImage,
-    cta
-  }
-`;
-
 // =============================================================================
 // CONSOLIDATED GLOBAL DATA QUERY
 // =============================================================================
@@ -202,12 +145,8 @@ const GLOBAL_DATA_QUERY = defineQuery(/* groq */ `{
     },
     copyright
   },
-  "cases": *[_type == "caseStudy" && channel match $channel && language == $language && isPublished == true] | order(publishedAt desc){
-    ${caseStudyCardFragment}
-  },
-  "services": *[_type == "services" && language == $language] | order(name asc){
-    ${serviceFragment}
-  }
+  "hasCaseStudies": count(*[_type == "caseStudy" && channel match $channel && language == $language && isPublished == true]) > 0,
+  "hasServices": count(*[_type == "services" && language == $language]) > 0
 }`);
 
 // =============================================================================
@@ -262,51 +201,8 @@ export interface GlobalData {
     }>;
     copyright: string | null;
   } | null;
-  cases: Array<{
-    _id: string;
-    title: string;
-    subtitle: string | null;
-    slug: { current: string };
-    description: string | null;
-    services: Array<{ _id: string; name: string; taglabel: string | null }>;
-    mainImage: unknown;
-    isVerticalVideo: boolean;
-    mainVideo: unknown;
-    mainImageUrl: string | null;
-    mainVideoUrl: string | null;
-    client: {
-      _id: string;
-      name: string;
-      logo: unknown;
-      logoUrl: string | null;
-    } | null;
-    websiteUrl: string | null;
-    websiteUrlText: string | null;
-    publishedAt: string | null;
-  }>;
-  services: Array<{
-    _id: string;
-    name: string;
-    taglabel: string | null;
-    iconUrl: string | null;
-    serviceicon: unknown;
-    serviceBackground: string | null;
-    serviceDescription: string | null;
-    servicegrouprel: Array<{
-      _id: string;
-      name: string;
-      taglabel: string | null;
-    }>;
-    unitsrel: Array<{
-      _id: string;
-      name: string;
-      slug: { current: string };
-      tagline: string | null;
-      logoUrl: string | null;
-      backgroundImage: unknown;
-      cta: unknown;
-    }>;
-  }>;
+  hasCaseStudies: boolean;
+  hasServices: boolean;
 }
 
 // =============================================================================
@@ -314,19 +210,17 @@ export interface GlobalData {
 // =============================================================================
 
 /**
- * Fetch all global data (nav, footer, cases, services) in ONE request.
+ * Fetch all global shell data in ONE request.
  *
  * This replaces 6 separate queries and is cached for the entire render.
  *
  * @param channel - The channel (e.g., "1spWeb")
  * @param language - The language code (e.g., "en", "de")
- * @returns Object containing nav, footer, cases, and services
+ * @returns Object containing nav, footer, and lightweight availability flags
  *
  * @example
  * ```typescript
- * const { nav, footer, cases, services } = await getGlobalData('1spWeb', 'en');
- * const hasCases = cases.length > 0;
- * const hasServices = services.length > 0;
+ * const { nav, footer, hasCaseStudies, hasServices } = await getGlobalData('1spWeb', 'en');
  * ```
  */
 export const getGlobalData = cache(
@@ -339,8 +233,8 @@ export const getGlobalData = cache(
     return (data as GlobalData) || {
       nav: null,
       footer: null,
-      cases: [],
-      services: [],
+      hasCaseStudies: false,
+      hasServices: false,
     };
   }
 );

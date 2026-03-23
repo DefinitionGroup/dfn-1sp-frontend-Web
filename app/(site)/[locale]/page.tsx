@@ -21,7 +21,6 @@
  */
 import { getHomePage, getGlobalData } from "@/lib/sanity/queries";
 import { PageBuilder } from "@/components/PageBuilder";
-import { cookies } from "next/headers";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
 import { urlFor } from "@/sanity/lib/image";
@@ -43,19 +42,23 @@ import {
 
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 export const revalidate = 60;
+const DEFAULT_CHANNEL = "1spWeb";
+const SUPPORTED_LOCALES = ["en"];
+
+export function generateStaticParams() {
+  return SUPPORTED_LOCALES.map((locale) => ({ locale }));
+}
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const cookieStore = await cookies();
-  const channel = cookieStore.get("channel")?.value || "1spWeb";
   const { locale } = await params;
   const language = locale || "en";
 
   // Uses cached fetch - shared with page component
-  const page = await getHomePage(channel, language);
+  const page = await getHomePage(DEFAULT_CHANNEL, language);
 
   if (!page) {
     return {
@@ -107,25 +110,27 @@ export default async function Home({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const cookieStore = await cookies();
-  const channel = cookieStore.get("channel")?.value || "1spWeb";
   const { locale } = await params;
   const language = locale || "en";
 
   // Uses cached fetch - deduped with generateMetadata call
-  const page = await getHomePage(channel, language);
+  const page = await getHomePage(DEFAULT_CHANNEL, language);
 
   const navbarVariant = page?.navbarVariant || "light";
 
   // Structured data: get social links & logo (cached — deduped with SiteWrapper)
-  const globalData = await getGlobalData(channel, language);
+  const globalData = await getGlobalData(DEFAULT_CHANNEL, language);
 
   // LCP optimization: preload hero poster image so the browser discovers it
   // during HTML parsing, well before JavaScript mounts the client component.
   const heroPreload = getHeroPreloadData(page?.content1sp as any[] | undefined);
 
   return (
-    <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
+    <SiteWrapper
+      channel={DEFAULT_CHANNEL}
+      language={language}
+      navColor={navbarVariant}
+    >
       {/* Structured Data (JSON-LD) */}
       <JsonLdScript
         data={generateHomepageJsonLd({
@@ -173,7 +178,11 @@ export default async function Home({
       <HamburgerGradientMenu />
       <div className="  min-h-screen px-1 md:px-4 ">
         {page?.content1sp ? (
-          <PageBuilder content={page.content1sp} language={language} />
+          <PageBuilder
+            content={page.content1sp}
+            language={language}
+            deferAfter={2}
+          />
         ) : (
           <NotFound />
         )}

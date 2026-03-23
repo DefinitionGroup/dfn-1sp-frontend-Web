@@ -1,7 +1,7 @@
 "use client";
 
 import { useDraftModeEnvironment } from "next-sanity/hooks";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 export function DisableDraftMode() {
   const environment = useDraftModeEnvironment();
 

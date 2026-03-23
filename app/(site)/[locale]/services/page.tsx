@@ -35,6 +35,11 @@ import {
 } from "@/lib/structured-data";
 
 export const revalidate = 60;
+const SUPPORTED_LOCALES = ["en"];
+
+export function generateStaticParams() {
+  return SUPPORTED_LOCALES.map((locale) => ({ locale }));
+}
 
 export async function generateMetadata({
   params,
@@ -166,7 +171,11 @@ export default async function ServicesPage({
       <HamburgerGradientMenu />
       <div className="min-h-screen px-1 md:px-2 mt-2">
         {page.content1sp ? (
-          <PageBuilder content={page.content1sp} language={language} />
+          <PageBuilder
+            content={page.content1sp}
+            language={language}
+            deferAfter={2}
+          />
         ) : (
           <NotFound />
         )}
