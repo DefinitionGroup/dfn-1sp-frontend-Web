@@ -66,7 +66,7 @@ function LazyVideo({
   }, [isInView, isMobile]);
 
   return (
-    <div ref={ref} className={`w-full h-full relative overflow-hidden bg-neutral-200 dark:bg-neutral-800 ${className ?? ""}`}>
+    <div ref={ref} className={`w-full h-full relative pointer-events-none overflow-hidden bg-neutral-200 dark:bg-neutral-800 ${className ?? ""}`}>
       {posterUrl ? (
         <img
           src={posterUrl}
@@ -201,7 +201,7 @@ function PeopleShowcaseHero({
                     fill
                     priority={index < 4}
                     sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                    className="object-cover transition-all duration-300 group-hover:brightness-110 "
+                    className="object-cover pointer-events-none transition-all duration-300 group-hover:brightness-110 "
                   />
                 )}
                 {/* Unit Logo Signet */}
@@ -216,7 +216,7 @@ function PeopleShowcaseHero({
                     />
                   </div>
                 )}
-                <div className="absolute inset-0 hidden bg-gradient-to-t from-black/70 via-black/60 to-black/65 opacity-0 lg:flex lg:opacity-0 lg:group-hover:opacity-100 rounded-xs transition-opacity duration-300 flex-col justify-end p-4">
+                <div className="absolute inset-0 hidden bg-gradient-to-t from-black/80 via-black/60 to-black/65 opacity-0 lg:flex lg:opacity-0 lg:group-hover:opacity-100 rounded-xs transition-opacity duration-300 flex-col justify-end p-4">
                   <StaggeredFadeIn
                     className="flex flex-col"
                     triggerOnView={false}

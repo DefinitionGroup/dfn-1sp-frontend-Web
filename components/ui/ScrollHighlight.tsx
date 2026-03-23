@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { useState, useRef, useId, useEffect } from "react";
+import { useState, useRef, useId, useEffect, useCallback } from "react";
 import Image from "next/image";
 import DeferredVideo from "@/components/ui/DeferredVideo";
 import { useOutsideClick } from "@/hooks/use-outside-click";
@@ -38,20 +38,21 @@ function ScrollHighlightItem({
   skill,
   index,
   isHighlighted,
-  onHighlight,
   onOpenModal,
   isMobile,
+  itemRef,
 }: {
   skill: SkillItem;
   index: number;
   isHighlighted: boolean;
-  onHighlight: (index: number) => void;
   onOpenModal: (skill: SkillItem) => void;
   isMobile: boolean;
+  itemRef: (el: HTMLLIElement | null) => void;
 }) {
   const id = useId();
   return (
     <motion.li
+      ref={itemRef}
       className="skill-item md:p-0 py-6 flex flex-col  md:flex-row justify-start items-start  flex-grow  cursor-pointer"
       initial={false}
       animate={{
@@ -61,12 +62,10 @@ function ScrollHighlightItem({
         transformOrigin: "left",
       }}
       transition={{ type: "spring", duration: 0.5, }}
-      onViewportEnter={() => onHighlight(index)}
       onClick={(e) => {
         e.stopPropagation();
         onOpenModal(skill);
       }}
-      viewport={{ margin: isMobile ? "-20% 0px -20% 0px" : "-35% 0px -40% 0px", amount: "some", once: false }}
     >
 
       <motion.div
@@ -137,16 +136,64 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
   const [activeSkill, setActiveSkill] = useState<number | null>(null);
   const [activeModal, setActiveModal] = useState<SkillItem | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const rafId = useRef<number>(0);
   const id = useId();
   const isMobile = useIsMobile();
 
+  const setItemRef = useCallback(
+    (index: number) => (el: HTMLLIElement | null) => {
+      itemRefs.current[index] = el;
+    },
+    []
+  );
+
   useOutsideClick(modalRef, () => setActiveModal(null));
 
+  // Scroll-based active item detection — runs every frame via rAF
   useEffect(() => {
-    if (items && items.length > 0 && activeSkill === null) {
-      setActiveSkill(0);
+    const els = itemRefs.current;
+    if (!items || items.length === 0) return;
+
+    // Target zone: items closest to this % from the top of the viewport become active
+    const targetRatio = isMobile ? 0.4 : 0.38;
+
+    function updateActiveOnScroll() {
+      const viewportH = window.innerHeight;
+      const targetY = viewportH * targetRatio;
+      let closest = 0;
+      let closestDist = Infinity;
+
+      for (let i = 0; i < els.length; i++) {
+        const el = els[i];
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        // Use the vertical center of each item
+        const itemCenter = rect.top + rect.height / 2;
+        const dist = Math.abs(itemCenter - targetY);
+        if (dist < closestDist) {
+          closestDist = dist;
+          closest = i;
+        }
+      }
+
+      setActiveSkill((prev) => (prev === closest ? prev : closest));
     }
-  }, [items, activeSkill]);
+
+    function onScroll() {
+      cancelAnimationFrame(rafId.current);
+      rafId.current = requestAnimationFrame(updateActiveOnScroll);
+    }
+
+    // Initial calculation
+    updateActiveOnScroll();
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(rafId.current);
+    };
+  }, [items, isMobile]);
 
   if (!items || items.length === 0) return null;
 
@@ -155,37 +202,35 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
       <AnimatePresence>
         {activeModal && (
           <motion.div
-            className="fixed inset-0 p-8 md:p-0bg-black/50 backdrop-blur-lg z-9999999 grid place-items-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.18, ease: "easeInOut" } }}
+            className="fixed inset-0 p-8 md:p-0 bg-black/50 z-9999999 grid place-items-center"
+            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            animate={{ opacity: 1, backdropFilter: "blur(16px)" }}
+            exit={{ opacity: 0, backdropFilter: "blur(0px)", transition: { duration: 0.18, ease: "easeInOut" } }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
           >
             <motion.button
               key={`button-${activeModal.name}-${id}`}
-              layout
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, transition: { duration: 0.12 } }}
+              animate={{ opacity: 1, transition: { delay: 0.15 } }}
+              exit={{ opacity: 0, transition: { duration: 0.1 } }}
               className="flex absolute top-2 right-2 lg:hidden items-center overflow-hidden justify-around rounded-full h-6 w-6 z-9999999"
               onClick={() => setActiveModal(null)}
             >
               <CloseIcon />
             </motion.button>
             <motion.div
-              layoutId={`modal-card-${activeModal.name}-${id}`}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.92, transition: { duration: 0.18, ease: "easeInOut" } }}
-              transition={{ type: "spring", visualDuration: 0.3, bounce: 0.2 }}
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.97, y: 5, transition: { duration: 0.15, ease: "easeIn" } }}
+              transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
               ref={modalRef}
-              className="w-full z-999999999  max-w-[900px] min-h-[50vh] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
+              className="w-full z-999999999 max-w-[900px] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden will-change-transform"
             >
               <motion.button
                 key={`button-inner-${activeModal.name}-${id}`}
-                layout
-                initial={{ opacity: 1 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0, transition: { duration: 0.12 } }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, transition: { delay: 0.15 } }}
+                exit={{ opacity: 0, transition: { duration: 0.1 } }}
                 className="flex absolute top-4 right-4 items-center overflow-hidden justify-around rounded-full h-6 w-6 z-9999999"
                 onClick={() => setActiveModal(null)}
               >
@@ -193,10 +238,9 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
               </motion.button>
               <motion.div
                 className="w-full sm:rounded-t-xl relative overflow-hidden h-full"
-                layoutId={`modal-image-${activeModal.name}-${id}`}
               >
                 {activeModal.video ? (
-                  <div className="w-full h-[400px] opacity-50">
+                  <div className="w-full opacity-50">
                     <DeferredVideo
                       src={activeModal.video}
                       maxWidth={1000}
@@ -220,14 +264,18 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
                 <div className="flex justify-between relative top-0 flex-col items-start z-10 left-0">
                   <div className="">
                     <motion.h3
-                      layoutId={`modal-title-${activeModal.name}-${id}`}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
                       className="text-white text-5xl max-w-2/3 dark:text-neutral-200 mb-4"
                     >
                       {activeModal.modalContent?.title || activeModal.name}
                     </motion.h3>
                     {activeModal.text && (
                       <motion.p
-                        layoutId={`modal-description-${activeModal.name}-${id}`}
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: 0.15, ease: "easeOut" }}
                         className="text-neutral-100 text-xl dark:text-neutral-400 mb-4"
                       >
                         {activeModal.text}
@@ -278,9 +326,9 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
             skill={skill}
             index={index}
             isHighlighted={activeSkill === index}
-            onHighlight={() => setActiveSkill(index)}
             onOpenModal={(skill) => setActiveModal(skill)}
             isMobile={isMobile}
+            itemRef={setItemRef(index)}
           />
         ))}
       </ul>
