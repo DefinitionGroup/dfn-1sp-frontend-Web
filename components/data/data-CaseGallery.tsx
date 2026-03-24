@@ -213,6 +213,7 @@ export default function CaseGalleryComponent({
               id={id}
               variant={variant}
               activeFilter={activeFilter}
+              locale={locale}
               onClick={() => setActive(item)}
             />
           ))}
