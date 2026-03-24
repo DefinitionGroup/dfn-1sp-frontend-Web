@@ -33,11 +33,30 @@ import PageWithMapVertical from "./ui/PageWithMapVertical";
 import { FooterMenuProvider } from "./menu/FooterMenuContext";
 import { NavColorProvider } from "./menu/NavColorContext";
 
+type OverlayCaseStudy = {
+  _id: string;
+  title: string;
+  subtitle?: string;
+  slug: { current: string };
+  description?: string;
+  services?: { _id: string; name: string; taglabel?: string }[];
+  mainImageUrl?: string;
+  mainVideoUrl?: string;
+  client?: {
+    _id: string;
+    name: string;
+    logoUrl?: string;
+  };
+  websiteUrl?: string;
+  websiteUrlText?: string;
+};
+
 interface SiteWrapperProps {
   children: React.ReactNode;
   channel?: string;
   language?: string;
   navColor?: "light" | "dark";
+  overlayCaseStudies?: OverlayCaseStudy[];
 }
 
 export default async function SiteWrapper({
@@ -45,6 +64,7 @@ export default async function SiteWrapper({
   channel = "1spWeb",
   language = "en",
   navColor = "light",
+  overlayCaseStudies,
 }: SiteWrapperProps) {
   // ==========================================================================
   // SINGLE CONSOLIDATED FETCH
@@ -69,6 +89,7 @@ export default async function SiteWrapper({
             locale={language}
             hasCaseStudies={hasCaseStudies}
             hasServices={hasServices}
+            initialCaseStudies={overlayCaseStudies}
           />
           {children}
           <Footer menuData={footer as FooterMenu} />
