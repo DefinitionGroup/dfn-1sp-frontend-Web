@@ -3,9 +3,17 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Legacy variant name retained; it now targets any short touch landscape viewport. */
+/* Targets landscape viewports with height ≤ 640 px (all iPhone landscape sizes).
+   Defined after the built-in sm/md/lg/xl breakpoints so it always wins in cascade order. */
+@custom-variant landscape-small {
+  @media (orientation: landscape) and (max-height: 640px) {
+    @slot;
+  }
+}
+
+/* Legacy alias kept for backward compatibility */
 @custom-variant iphone-landscape {
-  @media (orientation: landscape) and (pointer: coarse) and (max-height: 500px) {
+  @media (orientation: landscape) and (max-height: 640px) {
     @slot;
   }
 }

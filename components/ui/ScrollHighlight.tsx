@@ -45,7 +45,7 @@ function ScrollHighlightItem({
   skill: SkillItem;
   index: number;
   isHighlighted: boolean;
-  onOpenModal: (skill: SkillItem) => void;
+  onOpenModal?: (skill: SkillItem) => void;
   isMobile: boolean;
   itemRef: (el: HTMLLIElement | null) => void;
 }) {
@@ -75,8 +75,8 @@ function ScrollHighlightItem({
 
         <motion.div
           layout={!isMobile}
-          initial={isMobile ? { opacity: 0.5, scale: 0.8 } : { y: -112 }}
-          animate={isMobile ? { opacity: isHighlighted ? 1 : 0.83, scale: isHighlighted ? 1 : 0.8 } : { y: 0 }}
+          initial={isMobile ? { opacity: 0.5, scale: 0.8 } : { opacity: 0.5, y: -112 }}
+          animate={isMobile ? { opacity: isHighlighted ? 1 : 0.83, scale: isHighlighted ? 1 : 0.8 } : { opacity: 1, y: 0 }}
           transition={{ type: "spring", duration: isMobile ? 2.5 : 1.5 }}
           className="skill-image pr-4 mb-8"
         >
@@ -107,14 +107,14 @@ function ScrollHighlightItem({
           <motion.p
             className="skill-description mb-4  text-xs  md:text-base w-3/4 [hyphens:none]  "
             layout
-            initial={{ opacity: 0, y: 0, x: 0 }}
+            initial={{ opacity: 0, y: 22, x: 0 }}
             animate={{ opacity: 1, y: 0, x: 0 }}
-            transition={{ type: "spring", }}
+            transition={{ type: "spring", duration: 1.5, bounce: 0 }}
           >
             {skill.text}
           </motion.p>
         )}
-        {isHighlighted && (
+        {/* {isHighlighted && (
           <motion.button
             className="text-xs text-white bg-lime-500 rounded-full inline-block w-fit px-4 py-2 hover:cursor-pointer hover:bg-black transition-all"
             initial={{ opacity: 0, y: 22 }}
@@ -127,7 +127,9 @@ function ScrollHighlightItem({
           >
             {skill.buttonLabel || "Learn More"}
           </motion.button>
-        )}</div>
+        )} */}
+
+      </div>
     </motion.li >
   );
 }
@@ -317,7 +319,7 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
             skill={skill}
             index={index}
             isHighlighted={activeSkill === index}
-            onOpenModal={(skill) => setActiveModal(skill)}
+            // onOpenModal={(skill) => setActiveModal(skill)}
             isMobile={isMobile}
             itemRef={setItemRef(index)}
           />
