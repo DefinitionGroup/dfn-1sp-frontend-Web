@@ -36,6 +36,7 @@ interface FrontNavOverlayProps {
   locale?: string;
   hasCaseStudies?: boolean;
   hasServices?: boolean;
+  initialCaseStudies?: CaseStudy[];
 }
 
 const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
@@ -46,13 +47,16 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   locale = "en",
   hasCaseStudies = false,
   hasServices = false,
+  initialCaseStudies = [],
 }) => {
   const router = useOptimizedTransitionRouter();
   const pathname = usePathname() || "";
   const [showOverlay, setShowOverlay] = React.useState(false);
-  const [caseStudies, setCaseStudies] = React.useState<CaseStudy[]>([]);
+  const [caseStudies, setCaseStudies] = React.useState<CaseStudy[]>(initialCaseStudies);
   const [isCasesLoading, setIsCasesLoading] = React.useState(false);
-  const [hasLoadedCases, setHasLoadedCases] = React.useState(false);
+  const [hasLoadedCases, setHasLoadedCases] = React.useState(
+    initialCaseStudies.length > 0
+  );
   const [casesLoadError, setCasesLoadError] = React.useState<string | null>(null);
   const navRef = React.useRef<HTMLElement>(null);
 

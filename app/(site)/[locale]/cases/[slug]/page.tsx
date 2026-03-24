@@ -23,7 +23,7 @@
  * - Canonical URLs to prevent duplicate content
  * - Twitter card metadata for social sharing
  */
-import { getCaseBySlug, getAllCaseSlugs } from "@/lib/sanity/queries";
+import { getCaseBySlug, getAllCaseSlugs, getAllCases } from "@/lib/sanity/queries";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import CaseStudyPageClient from "./CaseStudyPageClient";
@@ -140,13 +140,19 @@ export default async function CaseStudyPage({
 
   // Uses cached fetch from centralized data layer
   const caseStudy = await getCaseBySlug(slug, channel, language);
+  const overlayCaseStudies = await getAllCases(channel, language);
 
   if (!caseStudy) {
     notFound();
   }
 
   return (
-    <SiteWrapper channel={channel} language={language} navColor="light">
+    <SiteWrapper
+      channel={channel}
+      language={language}
+      navColor="light"
+      overlayCaseStudies={overlayCaseStudies}
+    >
       {/* Structured Data (JSON-LD) */}
       <JsonLdScript
         data={generateCaseStudyJsonLd({
