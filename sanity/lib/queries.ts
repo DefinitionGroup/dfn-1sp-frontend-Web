@@ -135,6 +135,24 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
         },
         _type == 'galleryScrollHighlightStep' => {
           ...,
+          useCTAMini,
+          ctaMini{
+            _type,
+            heading,
+            paragraph,
+            buttonText,
+            variant,
+            alignment,
+            link{
+              _type,
+              linkType,
+              externalUrl,
+              page->{
+                _id,
+                slug
+              }
+            }
+          },
           scrollHighlightContent{
             ...,
             contentType,
@@ -224,6 +242,24 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
     },
     _type == 'galleryScrollHighlightStep' => {
       ...,
+      useCTAMini,
+      ctaMini{
+        _type,
+        heading,
+        paragraph,
+        buttonText,
+        variant,
+        alignment,
+        link{
+          _type,
+          linkType,
+          externalUrl,
+          page->{
+            _id,
+            slug
+          }
+        }
+      },
       scrollHighlightContent{
         ...,
         contentType,
@@ -403,6 +439,24 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
         },
         _type == 'galleryScrollHighlightStep' => {
           ...,
+          useCTAMini,
+          ctaMini{
+            _type,
+            heading,
+            paragraph,
+            buttonText,
+            variant,
+            alignment,
+            link{
+              _type,
+              linkType,
+              externalUrl,
+              page->{
+                _id,
+                slug
+              }
+            }
+          },
           scrollHighlightContent{
             ...,
             contentType,
@@ -456,6 +510,24 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
     },
     _type == 'galleryScrollHighlightStep' => {
       ...,
+      useCTAMini,
+      ctaMini{
+        _type,
+        heading,
+        paragraph,
+        buttonText,
+        variant,
+        alignment,
+        link{
+          _type,
+          linkType,
+          externalUrl,
+          page->{
+            _id,
+            slug
+          }
+        }
+      },
       scrollHighlightContent{
         ...,
         contentType,
