@@ -1,5 +1,56 @@
 import { defineQuery } from "next-sanity";
 
+const ADDITIONAL_CONTENT_PROJECTION = `additionalContent[]{
+  ...,
+  _type == 'cta' => {
+    ...,
+    link{
+      ...,
+      page->{
+        _id,
+        slug
+      }
+    }
+  },
+  _type == 'ctaMiniComponent' => {
+    ...,
+    link{
+      ...,
+      page->{
+        _id,
+        slug
+      }
+    }
+  },
+  _type == 'ctaSplitHeader' => {
+    ...,
+    cta{
+      ...,
+      link{
+        ...,
+        page->{
+          _id,
+          slug
+        }
+      }
+    }
+  },
+  _type == 'unitCards' => {
+    ...,
+    units[]->{
+      _id,
+      _type,
+      name,
+      slug,
+      logoColor,
+      backgroundImage,
+      description,
+      tagline,
+      cta
+    }
+  }
+}`;
+
 export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slug && channel == $channel && language == $language][0]{
   ...,
   content1sp[]{
@@ -11,6 +62,7 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
         page->{slug}
       }
     },
+    ${ADDITIONAL_CONTENT_PROJECTION},
     _type == 'showtimeGallery' => {
       ...,
       steps[]{
@@ -117,23 +169,7 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
               }
             }
           },
-          additionalContent[]{
-            ...,
-            _type == 'unitCards' => {
-              ...,
-              units[]->{
-                _id,
-                _type,
-                name,
-                slug,
-                logoColor,
-                backgroundImage,
-                description,
-                tagline,
-                cta
-              }
-            }
-          }
+          ${ADDITIONAL_CONTENT_PROJECTION}
         }
       }
     },
@@ -222,23 +258,7 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
           }
         }
       },
-      additionalContent[]{
-        ...,
-        _type == 'unitCards' => {
-          ...,
-          units[]->{
-            _id,
-            _type,
-            name,
-            slug,
-            logoColor,
-            backgroundImage,
-            description,
-            tagline,
-            cta
-          }
-        }
-      }
+      ${ADDITIONAL_CONTENT_PROJECTION}
     },
     _type == 'smartCarousel' => {
       ...,
@@ -328,6 +348,7 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
         page->{slug}
       }
     },
+    ${ADDITIONAL_CONTENT_PROJECTION},
     _type == 'showtimeGallery' => {
       ...,
       steps[]{
@@ -398,23 +419,7 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
         },
         _type == 'galleryListStep' => {
           ...,
-          additionalContent[]{
-            ...,
-            _type == 'unitCards' => {
-              ...,
-              units[]->{
-                _id,
-                _type,
-                name,
-                slug,
-                logoColor,
-                backgroundImage,
-                description,
-                tagline,
-                cta
-              }
-            }
-          }
+          ${ADDITIONAL_CONTENT_PROJECTION}
         }
       }
     },
@@ -467,23 +472,7 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
     },
     _type == 'galleryListStep' => {
       ...,
-      additionalContent[]{
-        ...,
-        _type == 'unitCards' => {
-          ...,
-          units[]->{
-            _id,
-            _type,
-            name,
-            slug,
-            logoColor,
-            backgroundImage,
-            description,
-            tagline,
-            cta
-          }
-        }
-      }
+      ${ADDITIONAL_CONTENT_PROJECTION}
     },
     _type == 'smartCarousel' => {
       ...,
