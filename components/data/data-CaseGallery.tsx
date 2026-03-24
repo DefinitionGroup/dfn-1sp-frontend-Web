@@ -91,7 +91,7 @@ export default function CaseGalleryComponent({
               transition: { type: "spring", stiffness: 110, duration: 0.2 },
             }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0  top-0 cl-overlay backdrop-blur-2xl bg-black w-full min-h-[100vh] z-100"
+            className="fixed inset-0  top-0 cl-overlay backdrop-blur-2xl bg-black w-full z-100"
           />
         )}
       </AnimatePresence>
@@ -108,17 +108,17 @@ export default function CaseGalleryComponent({
               exit={{ opacity: 0, transition: { duration: 0.05 } }}
               transition={{ type: "spring", visualDuration: 0.3, bounce: 0.2 }}
               ref={ref}
-              className="w-full max-w-[900px]   min-h-[70vh] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
+              className="w-full max-w-[960px] min-h-[70vh] max-h-[100vh] rounded-xl grid bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
             >
               <motion.div
-                className="w-full h-100 sm:rounded-t-xl  opacity-80 object-cover object-top"
+                className="[grid-area:1/1] w-full sm:rounded-t-xl opacity-80  min-h-[70vh] max-h-[100vh] mediabackground"
                 layoutId={`image-${active.title}-${id}`}
               >
                 {active.mainVideoUrl ? (
                   <DeferredVideo
                     src={active.mainVideoUrl}
                     maxWidth={900}
-                    className="w-full h-full absolute min-h-[70vh] sm:rounded-t-xl opacity-50 object-cover object-top"
+                    className="w-full h-full sm:rounded-t-xl opacity-50 object-cover object-top"
                     mountDelay={100}
                     posterFrame="0"
                   />
@@ -128,13 +128,13 @@ export default function CaseGalleryComponent({
                     height={500}
                     src={active.mainImageUrl || "/placeholder.png"}
                     alt={active.title}
-                    className="w-full h-full absolute min-h-[70vh] sm:rounded-t-xl opacity-50 object-cover object-top"
+                    className="w-full h-full sm:rounded-t-xl opacity-50 object-cover object-top"
                   />
                 )}
 
               </motion.div>
 
-              <div className="flex justify-between w-full  absolute items-start p-8 pt-24 z-10 ">
+              <div className="[grid-area:1/1] flex flex-col  justify-end w-full relative items-start p-8 z-10 popoupcontent">
 
                 <motion.button
                   key={`button-${active.title}-${id}`}
@@ -148,13 +148,13 @@ export default function CaseGalleryComponent({
                 >
                   <CloseIcon />
                 </motion.button>
-                <div className="flex justify-between relative top-0 flex-col items-start z-10 left-0">
+                <div className="flex justify-end  top-0 flex-col items-start gap-4 landscape:gap-2  z-10 left-0">
                   {active.client?.logoUrl && (
                     <motion.img
                       layoutId={`logo-${active.title}-${id}`}
                       src={active.client.logoUrl}
                       alt={active.title}
-                      className={`w-32 h-20 object-contain invert ${variant === "light" ? "invert" : ""}`}
+                      className={`w-32 h-20 landscape:h-10 object-contain invert ${variant === "light" ? "invert" : ""}`}
                     />
                   )}
 
@@ -162,7 +162,7 @@ export default function CaseGalleryComponent({
 
                     <motion.h3
                       layoutId={`title-${active.title}-${id}`}
-                      className="text-white mt-8 text-3xl md:text-5xl md:max-w-2/3 dark:text-neutral-200"
+                      className="text-white  text-3xl md:text-4xl md:max-w-3/4 dark:text-neutral-200 landscape-small:text-2xl"
                     >
                       {active.title}
                     </motion.h3>
@@ -173,7 +173,7 @@ export default function CaseGalleryComponent({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="text-white text-sm md:text-sm lg:text-base mt-8 md:max-w-1/2 mb-8 md:h-fit pb-8 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
+                    className="text-white text-sm landscape-small:max-w-3/4 landscape-small:text-xs  md:text-sm lg:text-base  md:max-w-1/2 md:h-fit pb-8 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400  [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
                   >
                     {active.description}
                   </motion.div>
