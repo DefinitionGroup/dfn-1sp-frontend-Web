@@ -11,6 +11,7 @@ import {
 import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
 import Image from "next/image";
 import { useFooterMenu } from "../menu/FooterMenuContext";
+import { useNavbarMenu } from "../menu/NavbarMenuContext";
 import { useNavColor } from "../menu/NavColorContext";
 
 const AuroraShaderBackground = dynamic(
@@ -18,7 +19,7 @@ const AuroraShaderBackground = dynamic(
   { ssr: false }
 );
 
-interface MenuItem {
+interface MobileMenuItem {
   label: string;
   href: string;
   internal?: boolean;
@@ -28,13 +29,13 @@ interface MenuItem {
   }[];
 }
 interface HamburgerGradientMenuProps {
-  items?: MenuItem[];
+  items?: MobileMenuItem[];
   buttonClassName?: string;
   panelClassName?: string;
   color?: "light" | "dark";
 }
 
-const DEFAULT_ITEMS: MenuItem[] = [
+const DEFAULT_ITEMS: MobileMenuItem[] = [
   { label: "Home", href: "/" },
   {
     label: "Cases",
@@ -59,7 +60,7 @@ const DEFAULT_ITEMS: MenuItem[] = [
 ];
 
 export default function HamburgerGradientMenu({
-  items = DEFAULT_ITEMS,
+  items,
   color,
   buttonClassName = "m-0",
   panelClassName = "",
@@ -70,8 +71,38 @@ export default function HamburgerGradientMenu({
   const firstLinkRef = useRef<HTMLAnchorElement | null>(null);
   const router = useOptimizedTransitionRouter();
   const footerMenu = useFooterMenu();
+  const navbarMenu = useNavbarMenu();
   const navColor = useNavColor();
   const pathname = usePathname();
+
+  const sanityItems: MobileMenuItem[] = (
+    navbarMenu?.menu?.menuItems ?? []
+  )
+    .filter((item) => {
+      if (!item.slug) {
+        return false;
+      }
+
+      const isCasesPage = item.slug.includes("cases");
+      const isServicesPage = item.slug.includes("services");
+
+      if (isCasesPage && !navbarMenu?.hasCaseStudies) {
+        return false;
+      }
+
+      if (isServicesPage && !navbarMenu?.hasServices) {
+        return false;
+      }
+
+      return Boolean(item.displayName || item.title);
+    })
+    .map((item) => ({
+      label: item.displayName || item.title || "",
+      href: `/${item.slug}`,
+    }));
+
+  const resolvedItems =
+    items ?? (sanityItems.length > 0 ? sanityItems : DEFAULT_ITEMS);
 
   useEffect(() => {
     if (!open) return;
@@ -194,7 +225,7 @@ export default function HamburgerGradientMenu({
             key="gradient-menu-overlay"
             id="gradient-menu-panel"
             innerRef={panelRef}
-            items={items}
+            items={resolvedItems}
             onClose={() => setOpen(false)}
             onNavigate={handleMenuNavigation}
             firstLinkRef={firstLinkRef}
@@ -221,7 +252,7 @@ function OverlayRoot({
 }: {
   id: string;
   innerRef: React.RefObject<HTMLDivElement | null>;
-  items: MenuItem[];
+  items: MobileMenuItem[];
   onClose: () => void;
   onNavigate: (event: React.MouseEvent<HTMLAnchorElement>, href: string) => void;
   firstLinkRef: React.RefObject<HTMLAnchorElement | null>;
