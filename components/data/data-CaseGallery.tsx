@@ -124,7 +124,7 @@ export default function CaseGalleryComponent({
                   />
                 ) : (
                   <Image
-                    width={100}
+                    width={1000}
                     height={500}
                     src={active.mainImageUrl || "/placeholder.png"}
                     alt={active.title}
@@ -142,7 +142,7 @@ export default function CaseGalleryComponent({
                   initial={{ opacity: 1 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 1, transition: { duration: 0.05 } }}
-                  className="flex absolute top-20  right-4 lg items-center hover:cursor-pointer overflow-hidden justify-around rounded-full h-6 w-6 z-100"
+                  className="flex absolute top:24 md:top-10  right-4 lg items-center hover:cursor-pointer overflow-hidden justify-around rounded-full h-6 w-6 z-100"
                   onClick={() => setActive(null)}
                   aria-label="Close"
                 >
