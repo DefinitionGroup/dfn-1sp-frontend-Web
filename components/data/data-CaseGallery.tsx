@@ -201,8 +201,6 @@ export default function CaseGalleryComponent({
           staggerDelay={0.2}
           distance={10}
           duration={1}
-
-
           once={true}
           className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3  mx-auto w-full min-h-full"
         >
