@@ -95,7 +95,7 @@ export default function PeopleStep({
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="relative grid grid-cols-12 font-aspekta"
+      className="relative grid grid-cols-12 z-0  font-aspekta"
     >
       {/* <GridBackground /> */}
 

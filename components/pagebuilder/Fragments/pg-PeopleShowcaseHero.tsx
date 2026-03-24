@@ -194,7 +194,7 @@ function PeopleShowcaseHero({
   return (
     <section
       ref={sectionRef}
-      className="flex flex-col items-start justify-start w-full mx-auto"
+      className="flex flex-col items-start justify-start   w-full mx-auto"
       data-component="people-showcase-hero"
       aria-labelledby="people-showcase-title"
     >
