@@ -30,7 +30,9 @@ import FrontNavOverlay from "./menu/FrontNavOverlay";
 import Footer from "./menu/FooterNew";
 import { NavbarMenu, FooterMenu } from "@/types/menu.types";
 import PageWithMapVertical from "./ui/PageWithMapVertical";
+import ScrollToTop from "./ui/ScrollToTop";
 import { FooterMenuProvider } from "./menu/FooterMenuContext";
+import { NavbarMenuProvider } from "./menu/NavbarMenuContext";
 import { NavColorProvider } from "./menu/NavColorContext";
 
 type OverlayCaseStudy = {
@@ -80,21 +82,28 @@ export default async function SiteWrapper({
 
   return (
     <FooterMenuProvider menu={footer as FooterMenu}>
-      <NavColorProvider color={navColor}>
-        <PageWithMapVertical>
-          <FrontNavOverlay
-            menuData={nav as NavbarMenu}
-            color={navColor}
-            channel={channel}
-            locale={language}
-            hasCaseStudies={hasCaseStudies}
-            hasServices={hasServices}
-            initialCaseStudies={overlayCaseStudies}
-          />
-          {children}
-          <Footer menuData={footer as FooterMenu} />
-        </PageWithMapVertical>
-      </NavColorProvider>
+      <NavbarMenuProvider
+        menu={nav as NavbarMenu}
+        hasCaseStudies={hasCaseStudies}
+        hasServices={hasServices}
+      >
+        <NavColorProvider color={navColor}>
+          <PageWithMapVertical>
+            <FrontNavOverlay
+              menuData={nav as NavbarMenu}
+              color={navColor}
+              channel={channel}
+              locale={language}
+              hasCaseStudies={hasCaseStudies}
+              hasServices={hasServices}
+              initialCaseStudies={overlayCaseStudies}
+            />
+            {children}
+            <Footer menuData={footer as FooterMenu} />
+            <ScrollToTop />
+          </PageWithMapVertical>
+        </NavColorProvider>
+      </NavbarMenuProvider>
     </FooterMenuProvider>
   );
 }

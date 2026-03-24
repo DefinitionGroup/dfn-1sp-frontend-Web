@@ -56,7 +56,7 @@ function ScrollHighlightItem({
       className="skill-item md:p-0 py-6 flex flex-col  md:flex-row justify-start items-start  flex-grow  cursor-pointer"
       initial={false}
       animate={{
-        opacity: isHighlighted ? 1 : 0.5,
+        opacity: isHighlighted ? 1 : 1,
         scale: isMobile ? 1 : (isHighlighted ? 1.20 : 1),
         x: isHighlighted ? 0 : 0,
         transformOrigin: "left",
@@ -69,14 +69,14 @@ function ScrollHighlightItem({
     >
 
       <motion.div
-        className="relative  w-3/4  md:w-1/3 md:pr-4"
+        className="relative w-full  md:w-1/3 md:pr-4"
 
       >{(skill.video || skill.image) && (isMobile || isHighlighted) && (
 
         <motion.div
           layout={!isMobile}
-          initial={isMobile ? { opacity: 0.3, scale: 0.8 } : { opacity: 0, y: -22 }}
-          animate={isMobile ? { opacity: isHighlighted ? 1 : 0.3, scale: isHighlighted ? 1 : 0.8 } : { opacity: 1, y: 0 }}
+          initial={isMobile ? { opacity: 0.5, scale: 0.8 } : { y: -112 }}
+          animate={isMobile ? { opacity: isHighlighted ? 1 : 0.83, scale: isHighlighted ? 1 : 0.8 } : { y: 0 }}
           transition={{ type: "spring", duration: isMobile ? 2.5 : 1.5 }}
           className="skill-image pr-4 mb-8"
         >
@@ -84,7 +84,7 @@ function ScrollHighlightItem({
             <DeferredVideo
               src={skill.video}
               maxWidth={400}
-              className="rounded-lg w-3/4 md:w-full object-cover absolute inset-0 w-full h-full"
+              className="rounded-lg w-full  object-cover absolute inset-0  h-full"
               mountDelay={200}
             />
           ) : (
@@ -93,7 +93,7 @@ function ScrollHighlightItem({
               alt={skill.name || "Service background"}
               fill
               sizes="(max-width: 640px) 75vw, 400px"
-              className="rounded-lg w-3/4 md:w-full object-cover"
+              className="rounded-lg w-full md:w-full object-cover"
             />
           )}
         </motion.div>)}
@@ -208,30 +208,21 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
             exit={{ opacity: 0, backdropFilter: "blur(0px)", transition: { duration: 0.18, ease: "easeInOut" } }}
             transition={{ duration: 0.25, ease: "easeOut" }}
           >
-            <motion.button
-              key={`button-${activeModal.name}-${id}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { delay: 0.15 } }}
-              exit={{ opacity: 0, transition: { duration: 0.1 } }}
-              className="flex absolute top-2 right-2 lg:hidden items-center overflow-hidden justify-around rounded-full h-6 w-6 z-9999999"
-              onClick={() => setActiveModal(null)}
-            >
-              <CloseIcon />
-            </motion.button>
+
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.97, y: 5, transition: { duration: 0.15, ease: "easeIn" } }}
               transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
               ref={modalRef}
-              className="w-full z-999999999 max-w-[900px] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden will-change-transform"
+              className="w-full z-9 max-w-[900px] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden will-change-transform"
             >
               <motion.button
                 key={`button-inner-${activeModal.name}-${id}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1, transition: { delay: 0.15 } }}
                 exit={{ opacity: 0, transition: { duration: 0.1 } }}
-                className="flex absolute top-4 right-4 items-center overflow-hidden justify-around rounded-full h-6 w-6 z-9999999"
+                className="flex absolute top-14 md:top-4 right-4 items-center overflow-hidden justify-around rounded-full h-6 w-6 z-999999999999"
                 onClick={() => setActiveModal(null)}
               >
                 <CloseIcon />
@@ -240,7 +231,7 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
                 className="w-full sm:rounded-t-xl relative overflow-hidden h-full"
               >
                 {activeModal.video ? (
-                  <div className="w-full opacity-50">
+                  <div className="w-full opacity-50   h-full">
                     <DeferredVideo
                       src={activeModal.video}
                       maxWidth={1000}
@@ -267,7 +258,7 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
-                      className="text-white text-5xl max-w-2/3 dark:text-neutral-200 mb-4"
+                      className="text-white text-3xl md:text-5xl max-w-2/3 dark:text-neutral-200 mb-4"
                     >
                       {activeModal.modalContent?.title || activeModal.name}
                     </motion.h3>

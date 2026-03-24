@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ArrowUp } from "@phosphor-icons/react";
+import { ArrowUpIcon } from "@phosphor-icons/react";
 
 interface ScrollToTopProps {
   /** Scroll threshold in pixels before button appears */
@@ -27,7 +27,7 @@ export default function ScrollToTop({
     };
 
     window.addEventListener("scroll", toggleVisibility);
-    
+
     // Check initial position
     toggleVisibility();
 
@@ -61,7 +61,7 @@ export default function ScrollToTop({
           style={{ zIndex: 9999 }}
           aria-label="Scroll to top"
         >
-          <ArrowUp size={16} weight="regular" />
+          <ArrowUpIcon size={16} weight="regular" />
         </motion.button>
       )}
     </AnimatePresence>

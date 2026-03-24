@@ -29,7 +29,7 @@ export default async function CasesGalleryFilteredBlock({
   selectedCases = [],
   ...props
 }: CasesGalleryFilteredBlockProps) {
-  const selectedIds = selectedCases
+  const selectedIds = (selectedCases ?? [])
     .map((item) => item._ref)
     .filter(Boolean);
 
@@ -41,10 +41,10 @@ export default async function CasesGalleryFilteredBlock({
   const orderedCaseStudies =
     selectionMode === "manual" && selectedIds.length > 0
       ? selectedIds
-          .map((id) =>
-            rawCaseStudies.find((caseStudy: { _id: string }) => caseStudy._id === id)
-          )
-          .filter(Boolean)
+        .map((id) =>
+          rawCaseStudies.find((caseStudy: { _id: string }) => caseStudy._id === id)
+        )
+        .filter(Boolean)
       : rawCaseStudies;
 
   return (
