@@ -321,7 +321,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="z-4 grid col-span-12 relative col-start-1  z-[100] container mx-auto row-start-1 grid-cols-12 "
+      className="z-1 grid col-span-12 relative col-start-1  container mx-auto row-start-1 grid-cols-12 "
     >
       {/* Optional background media */}
       {mediaUrl && (
