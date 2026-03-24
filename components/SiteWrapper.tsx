@@ -30,6 +30,7 @@ import FrontNavOverlay from "./menu/FrontNavOverlay";
 import Footer from "./menu/FooterNew";
 import { NavbarMenu, FooterMenu } from "@/types/menu.types";
 import PageWithMapVertical from "./ui/PageWithMapVertical";
+import ScrollToTop from "./ui/ScrollToTop";
 import { FooterMenuProvider } from "./menu/FooterMenuContext";
 import { NavbarMenuProvider } from "./menu/NavbarMenuContext";
 import { NavColorProvider } from "./menu/NavColorContext";
@@ -99,6 +100,7 @@ export default async function SiteWrapper({
             />
             {children}
             <Footer menuData={footer as FooterMenu} />
+            <ScrollToTop />
           </PageWithMapVertical>
         </NavColorProvider>
       </NavbarMenuProvider>
