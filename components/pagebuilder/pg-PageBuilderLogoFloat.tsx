@@ -128,7 +128,7 @@ function PageBuilderLogoFloat({
                     className="rounded-sm min-h-12 flex items-center justify-center  md:w-auto pointer-events-auto cursor-pointer"
                     onClick={() => {
                       document
-                        .getElementById("what-fuels-1sp")
+                        .getElementById("1sp-where-specialists-unite")
                         ?.scrollIntoView({ behavior: "smooth" });
                     }}
                   >
