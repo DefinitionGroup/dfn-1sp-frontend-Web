@@ -125,10 +125,10 @@ export default function CaseGalleryComponent({
                 ) : (
                   <Image
                     width={1000}
-                    height={500}
+                    height={1000}
                     src={active.mainImageUrl || "/placeholder.png"}
                     alt={active.title}
-                    className="w-full h-full sm:rounded-t-xl opacity-50 object-cover object-top"
+                    className="w-full h-full min-h-full   sm:rounded-t-xl opacity-50 object-cover object-top"
                   />
                 )}
 
