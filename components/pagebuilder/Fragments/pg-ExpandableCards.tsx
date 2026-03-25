@@ -224,7 +224,7 @@ function ExpandableCards({
                       layoutId={`logo-${active.title}-${id}`}
                       src={active.logo}
                       alt={active.title}
-                      className="w-40 h-32 -left-3 relative  invert object-contain"
+                      className=" relative  invert object-contain"
                     />
                   )}
 
@@ -303,13 +303,13 @@ function ExpandableCards({
                     layoutId={`logo-${card.title}-${id}`}
                     src={card.logo}
                     alt={card.title}
-                    className=" h-24 top-0  relative invert object-contain   object-center"
+                    className=" h-24 top-0  relative invert object-contain    object-center"
                   />
                 )}
                 {/* Old tile only showed title; keep that for parity */}
                 <motion.h3
                   layoutId={`title-${card.title}-${id}`}
-                  className="font-medium mt-4 md:mt-12   text-xs md:text-base leading-snug tracking-tight text-neutral-100 dark:text-neutral-200 md:text-center "
+                  className="font-medium mt-4 md:mt-12 text-xs md:text-xs leading-snug tracking-tight text-neutral-100 dark:text-neutral-200 text-center "
                 >
                   {card.description}
                 </motion.h3>

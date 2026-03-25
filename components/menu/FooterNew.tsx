@@ -25,7 +25,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
       <footer className={`bg-neutral-900 text-neutral-200 mt-5 md:mt-12 py-6 sm:py-8 ${className}`}>
         <div className="container mx-auto px-4 sm:px-6">
           {/* Top border line */}
-       
+
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-12 gap-6 sm:gap-8 min-h-[120px] lg:min-h-[163px]">
             {/* Company Logo */}
             <div className="col-span-2 sm:col-span-4 lg:col-span-3 flex flex-col justify-center gap-3 mb-4 lg:mb-0">
@@ -164,8 +164,8 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
               {/* Company Info */}
               <div className=" flex w-full lg:w-auto">
 
-        
-                <div className="flex gap-4 w-1/2 items-center justify-center  ">
+
+                <div className="flex gap-4 w-1/2 items-center   justify-start  ">
                   {menuData?.socialLinks && menuData.socialLinks.length > 0 ? (
                     menuData.socialLinks
                       .filter((s) => !!s?.url)
@@ -180,14 +180,14 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                         >
                           {social.icon?.secure_url && (
                             <div className="flex items-center gap-2">
-                            <Image
-                              src={social.icon.secure_url}
-                              alt={social.name || "social"}
-                              width={64}
-                              height={64}
-                              className="w-full h-full object-contain"
-                            />
-                            <p className="text-xs text-white">{social.name || "social"}</p>
+                              <Image
+                                src={social.icon.secure_url}
+                                alt={social.name || "social"}
+                                width={64}
+                                height={64}
+                                className="w-full h-full object-contain"
+                              />
+                              <p className="text-xs text-white">{social.name || "social"}</p>
                             </div>
                           )}
                         </Link>

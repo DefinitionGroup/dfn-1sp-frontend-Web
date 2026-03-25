@@ -64,7 +64,7 @@ function ScrollHighlightItem({
       transition={{ type: "spring", duration: 0.5, }}
       onClick={(e) => {
         e.stopPropagation();
-        onOpenModal(skill);
+        onOpenModal?.(skill);
       }}
     >
 
@@ -122,7 +122,7 @@ function ScrollHighlightItem({
             transition={{ type: "spring", }}
             onClick={(e) => {
               e.stopPropagation();
-              onOpenModal(skill);
+              onOpenModal?.(skill);
             }}
           >
             {skill.buttonLabel || "Learn More"}
