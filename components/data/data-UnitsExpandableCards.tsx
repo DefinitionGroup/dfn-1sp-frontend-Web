@@ -32,6 +32,7 @@ function transformUnitsToCards(units: Unit[]): CardItem[] {
     description: unit.tagline || unit.description || "",
     src: unit.backgroundImage || unit.logoColor || unit.logo,
     logo: unit.logoColor || unit.logo,
+    logoModal: unit.logo,
     content: unit.description || "",
     ctaButton: unit.cta || undefined,
   }));

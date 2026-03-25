@@ -27,6 +27,7 @@ export default defineType({
     defineField({ name: "title", title: "Title", type: "string" }),
     defineField({ name: "src", title: "Image", type: "cloudinary.asset" }),
     defineField({ name: "logo", title: "Logo", type: "cloudinary.asset" }),
+    defineField({ name: "logoModal", title: "Logo Modal", type: "cloudinary.asset" }),
     defineField({ name: "ctaButton", title: "Button", type: "cta" }),
     defineField({ name: "content", title: "Content", type: "text" }),
   ],

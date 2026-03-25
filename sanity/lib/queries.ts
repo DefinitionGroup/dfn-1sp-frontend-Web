@@ -42,6 +42,7 @@ const ADDITIONAL_CONTENT_PROJECTION = `additionalContent[]{
       _type,
       name,
       slug,
+      logo,
       logoColor,
       backgroundImage,
       description,
