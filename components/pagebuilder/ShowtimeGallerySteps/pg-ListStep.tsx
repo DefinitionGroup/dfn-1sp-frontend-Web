@@ -86,6 +86,7 @@ type UnitReference = {
   _type: string;
   name?: string;
   slug?: { current: string };
+  logo?: CloudinaryAsset;
   logoColor?: CloudinaryAsset;
   backgroundImage?: CloudinaryAsset;
   description?: string;
@@ -152,6 +153,7 @@ function transformUnitsToCards(
         description: unit.tagline || unit.description || "",
         src: unit.backgroundImage || unit.logoColor,
         logo: unit.logoColor,
+        logoModal: unit.logo,
         content: unit.description || "",
         ctaButton: unit.cta || undefined,
       }) as CardItem

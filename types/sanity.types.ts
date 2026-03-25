@@ -62,6 +62,7 @@ export interface CardItem {
     title?: string;
     description?: string;
     logo?: CloudinaryAsset;
+    logoModal?: CloudinaryAsset;
     src?: CloudinaryAsset;
     ctaButton?: CTA;
     content?: string;
