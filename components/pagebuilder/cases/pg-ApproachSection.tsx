@@ -102,7 +102,7 @@ export default function ApproachSection({
               duration={0.5}
               distance={80}
             >
-              <h2 className="text-5xl md:text-7xl mb-2  text-gray-100 max-w-2xl  tracking-tight leading">
+              <h2 className="text-5xl md:text-7xl mb-2 pb-2  text-gray-100 max-w-2xl   tracking-tight leading-loose">
                 {mainHeadline}
               </h2>
               {subHeadline && (
