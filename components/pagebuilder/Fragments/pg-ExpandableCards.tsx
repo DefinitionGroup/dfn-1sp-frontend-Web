@@ -237,7 +237,7 @@ function ExpandableCards({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="text-white text-lg mt-2   iphone-landscape:mt-0 iphone-landscape:!text-xs lg:max-w-1/2 md:max-w-3/4 iphone-landscape:mb-0 iphone-landscape:pb-2 md:h-fit pb-8 flex flex-col items-start gap-4 iphone-landscape:gap-0 overflow-auto dark:text-neutral-400 [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
+                    className="text-white text-lg md:text-3xl mt-2 md:mt-8   iphone-landscape:mt-0 iphone-landscape:!text-base lg:max-w-1/2 md:max-w-3/4 iphone-landscape:mb-0 iphone-landscape:pb-2 md:h-fit pb-8 flex flex-col items-start gap-4 iphone-landscape:gap-0 overflow-auto dark:text-neutral-400 [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
                   >
                     {typeof active.description === "function"
                       ? (active.description as any)()
@@ -248,7 +248,7 @@ function ExpandableCards({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="text-white text-xs iphone-landscape:!text-xs md:text-sm lg:text-base mt-2 iphone-landscape:!mt-0 lg:max-w-1/2 md:max-w-3/4 mb-2 iphone-landscape:!mb-0 iphone-landscape:!pb-2 md:h-fit pb-8 flex flex-col items-start gap-4 iphone-landscape:!gap-0 overflow-auto dark:text-neutral-400 [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
+                    className="text-white text-xs iphone-landscape:!text-xs md:text-sm lg:text-base mt-2 iphone-landscape:!mt-0 lg:max-w-1/2 md:max-w-3/4 mb-2 iphone-landscape:!mb-2 iphone-landscape:!pb-2 md:h-fit pb-8 flex flex-col items-start gap-4 iphone-landscape:!gap-0 overflow-auto dark:text-neutral-400 [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
                   >
                     {typeof active.content === "function"
                       ? (active.content as any)()
