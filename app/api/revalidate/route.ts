@@ -132,6 +132,16 @@ async function handleRevalidation(body: SanityWebhookBody) {
 
     console.log(`[Revalidate] Processing: ${_type}${slug?.current ? ` (${slug.current})` : ""} [${language || "all"}]`);
 
+    /**
+     * All `sanityFetch()` calls from `next-sanity/live` are cached with the
+     * shared `sanity` tag in production. Without invalidating that base tag,
+     * referenced content changes (for example `unit` data inside a page query)
+     * can remain stale indefinitely on Vercel even though Studio/local dev
+     * already shows the new content.
+     */
+    revalidateTag("sanity");
+    revalidatedTags.push("sanity");
+
     // ==========================================================================
     // TAG-BASED REVALIDATION
     // ==========================================================================
