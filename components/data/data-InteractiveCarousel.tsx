@@ -247,7 +247,7 @@ export default function SmartCarousel({
                   <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/0 to-transparent" />
 
                   {/* Content (match Plaintext: top placement) */}
-                  <div className="absolute top-0 flex left-0 right-0 p-4 sm:p-6 md:p-8 text-white">
+                  <div className="absolute top-0 flex left-0 right-0 p-4   container mx-auto sm:p-6 md:py-8 text-white">
                     <motion.div
                       initial="hidden"
                       animate="visible"
