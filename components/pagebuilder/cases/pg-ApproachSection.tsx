@@ -92,7 +92,10 @@ export default function ApproachSection({
             text={badgeText || t.caseStudy.approach}
             subtitle={badgeSubtitle || t.caseStudy.approachSubtitle}
             numberEl={badgeNumber}
+            variant="glass"
+
           />
+
 
           <div className="col-span-12 col-start-1 iphone-landscape:!col-span-12 px-4 md-px0 iphone-landscape:!col-start-1 md:col-span-10 md:col-start-3 mt-12 md:mt-0">
             <StaggeredSlideUp
@@ -102,7 +105,7 @@ export default function ApproachSection({
               duration={0.5}
               distance={80}
             >
-              <h2 className="text-5xl md:text-7xl mb-2 pb-2  text-gray-100 max-w-2xl   tracking-tight leading-loose">
+              <h2 className="text-5xl md:text-7xl mb-2 pb-2  text-gray-100 max-w-2xl   tracking-tight leading-none">
                 {mainHeadline}
               </h2>
               {subHeadline && (
