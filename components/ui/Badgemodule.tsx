@@ -71,7 +71,7 @@ export default function Badgemodule({
         "border-t border-black/20 md:border-0 md:bg-black md:rounded-lg md:shadow-xl",
       content: "text-gray-900 md:text-gray-100",
       footer:
-        "text-gray-500 md:bg-neutral-800  w-full  md:text-gray-200 md:rounded-b-lg",
+        "text-gray-500 md:bg-neutral-800 md:text-gray-200 md:rounded-b-lg",
     },
     minimal: {
       wrapper:
