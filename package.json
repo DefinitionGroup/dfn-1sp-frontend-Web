@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "dev:diag": "NEXT_PUBLIC_DIAG=1 next dev --turbopack",
+    "dev:seo-diag": "NEXT_PUBLIC_SEO_DIAG=1 next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
