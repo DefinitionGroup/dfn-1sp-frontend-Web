@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent, type ChangeEvent } from "react";
 import type { ContactFormSettings } from "@/types/sanity.types";
+import { hasVisibleText } from "@/lib/text-content";
 
 type ContactFormProps = {
   language?: string;
@@ -99,7 +100,9 @@ export default function ContactForm({
               <span className="h-1.5 w-1.5 rounded-full bg-lime-500 shadow-[0_0_0_4px_rgba(132,204,22,0.14)]" aria-hidden />
               Contact
             </span>
-            <h2 className="text-3xl font-semibold leading-tight text-neutral-900 md:text-4xl">{headline}</h2>
+            {hasVisibleText(headline) ? (
+              <h2 className="text-3xl font-semibold leading-tight text-neutral-900 md:text-4xl">{headline}</h2>
+            ) : null}
             <p className="text-lg text-neutral-600">{subheadline}</p>
             {description ? <p className="text-neutral-500">{description}</p> : null}
           </div>

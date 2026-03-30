@@ -13,6 +13,7 @@ import type {
 } from "@/types/sanity.types";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { SMALL_TOUCH_LANDSCAPE_MEDIA_QUERY } from "@/lib/responsive";
+import { hasVisibleText } from "@/lib/text-content";
 
 function useIphoneLandscape(): boolean {
   return useMediaQuery(SMALL_TOUCH_LANDSCAPE_MEDIA_QUERY);
@@ -159,7 +160,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           once={true}
           animateImmediately={true}
         >
-          {eyebrow && (
+          {hasVisibleText(eyebrow) && (
             <h3 className="text-neutral-50 uppercase  text-xs iphone-landscape:text-xxs border-b pb-1 border-white/50 font-medium max-w-1/4">
               {eyebrow}
             </h3>

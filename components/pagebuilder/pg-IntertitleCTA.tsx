@@ -7,6 +7,7 @@ import { resolveLink } from "@/utils/utils";
 import { useParams } from "next/navigation";
 import type { CTA } from "@/types/sanity.types";
 import GridBackground from "@/components/ui/GridBackground";
+import { hasVisibleText } from "@/lib/text-content";
 
 interface StaggeredSlideUpProps {
   className?: string;
@@ -104,7 +105,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
         <GridBackground delay={0.2} staggerDelay={0.06} />
         <div className={`z-1   py-12 col-span-8   col-start-3  container mx-auto row-start-1 grid-cols-12 ${paddingTopClass}`}>
           <StaggeredSlideUp {...defaultStaggeredProps}>
-            <h3 className={titleClass}>{title}</h3>
+            {hasVisibleText(title) ? <h3 className={titleClass}>{title}</h3> : null}
             <p className={subtitleClass}>{subtitle}</p>
           </StaggeredSlideUp>
           {buttonHref && buttonText && (

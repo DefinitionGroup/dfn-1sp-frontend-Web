@@ -3,6 +3,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import Button2 from "@/components/ui/Button2";
+import { hasVisibleText } from "@/lib/text-content";
 interface CtaMiniProps {
   heading: string;
   paragraph: string;
@@ -51,11 +52,13 @@ function CtaMiniComponent({
       duration={duration}
       distance={distance}
     >
-      <h3
-        className={`text-2xl leading-none mb-4 tracking-tight md:font-semibold ${textAlignClass}`}
-      >
-        {heading}
-      </h3>
+      {hasVisibleText(heading) ? (
+        <h3
+          className={`text-2xl leading-none mb-4 tracking-tight md:font-semibold ${textAlignClass}`}
+        >
+          {heading}
+        </h3>
+      ) : null}
       <p className={`md:text-xs mb-8 ${textAlignClass}`}>{paragraph}</p>
       {url ? (
         <div className="md:text-xs mb-8 min-w-[120px] w-full">

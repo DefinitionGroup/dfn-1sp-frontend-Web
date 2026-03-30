@@ -26,6 +26,7 @@ import {
   assetUrl,
   resolveLink,
 } from "@/utils/utils";
+import { hasVisibleText } from "@/lib/text-content";
 import { useParams } from "next/navigation";
 
 /* ---------- helpers ---------- */
@@ -376,7 +377,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                 duration={0.5}
                 distance={80}
               >
-                {(staggeredHeader as any)?.title && (
+                {hasVisibleText((staggeredHeader as any)?.title) && (
                   <h2 className="text-9xl text-gray-100 max-w-xl tracking-tight border border-red-500 leading-compress mb-4 pb-8">
                     {(staggeredHeader as any).title}
                   </h2>
@@ -408,7 +409,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                       {header.superText}
                     </h4>
                   )}
-                  {header?.mainHeadline && (
+                  {hasVisibleText(header?.mainHeadline) && (
                     <h2 className="text-3xl md:text-7xl iphone-landscape:text-5xl  text-gray-900  tracking-tight font-aspekta">
                       {header.mainHeadline}
                     </h2>

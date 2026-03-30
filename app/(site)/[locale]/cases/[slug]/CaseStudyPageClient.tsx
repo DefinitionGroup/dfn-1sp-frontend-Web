@@ -8,6 +8,7 @@ import { CasePageBuilder } from "@/components/CasePageBuilder";
 import CasePoweredByContact from "@/components/pagebuilder/cases/pg-CasePoweredByContact";
 import { getTranslations } from "@/lib/translations";
 import type { CaseStudyData } from "@/types/sanity.types";
+import { hasVisibleText } from "@/lib/text-content";
 
 interface CaseStudyPageClientProps {
   caseStudy: CaseStudyData;
@@ -107,7 +108,7 @@ export default function CaseStudyPageClient({
             delay={0.4}
             className="max-w-full flex flex-col gap-3 sm:gap-4 lg:max-w-2/3 "
           >
-            {caseStudy.subtitle && (
+            {hasVisibleText(caseStudy.subtitle) && (
               <h2 className="text-neutral-50 text-[10px] sm:text-xs font-bold bg-lime-500 rounded-full leading-compress  inline-block w-fit py-1 px-3 sm:px-4">
                 {caseStudy.subtitle}
               </h2>
@@ -116,7 +117,7 @@ export default function CaseStudyPageClient({
               {caseStudy.title}
             </h1>
 
-            {caseStudy.description && (
+            {hasVisibleText(caseStudy.description) && (
               <h3 className="text-neutral-50 w-full sm:w-3/4 md:w-1/2 pb-2 text-base sm:text-lg md:text-xl leading-relaxed">
                 {caseStudy.description}
               </h3>
@@ -125,7 +126,7 @@ export default function CaseStudyPageClient({
             {caseStudy.units && caseStudy.units.length > 0 && (
               <div className="flex flex-wrap gap-1 sm:gap-4 mb-4 w-fit  border-white/50">
                 {caseStudy.units.map((unit) =>
-                  unit.name ? (
+                  hasVisibleText(unit.name) ? (
 
 
                     <h2 key={unit._id} className="text-neutral-200 tracking-wider text-[10px] sm:text-xxs font-regular bg-gray-700 rounded-full inline-block w-fit py-1 px-3 sm:px-4">

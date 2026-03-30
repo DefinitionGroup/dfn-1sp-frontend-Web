@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { FooterMenu } from "@/types/menu.types";
 import Image from "next/image";
+import { hasVisibleText } from "@/lib/text-content";
 
 interface FooterProps {
   className?: string;
@@ -42,9 +43,11 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
             {menuData?.footerColumns && menuData.footerColumns.length > 0 ? (
               menuData.footerColumns.map((column) => (
                 <div key={column._key} className="col-span-1 sm:col-span-2 lg:col-span-2">
-                  <h3 className="text-xs sm:text-sm font-bold text-neutral-300 mb-3 sm:mb-4">
-                    {column.title}
-                  </h3>
+                  {hasVisibleText(column.title) ? (
+                    <h3 className="text-xs sm:text-sm font-bold text-neutral-300 mb-3 sm:mb-4">
+                      {column.title}
+                    </h3>
+                  ) : null}
                   <div className="space-y-1.5 sm:space-y-2">
                     {column.links?.map((link) => (
                       <Link

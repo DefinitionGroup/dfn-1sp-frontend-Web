@@ -7,6 +7,7 @@ import HeaderImageVideoComp2 from "@/components/data/Fragments/data-HeaderImageV
 import ListContainerComponent from "@/components/ui/ListContainerComponent";
 import ListItemComponent from "@/components/ui/ListItemComponent";
 import CtaMiniComponent from "@/components/data/Fragments/data-CtaMiniComponent";
+import { hasVisibleText } from "@/lib/text-content";
 import { getTranslations } from "@/lib/translations";
 
 
@@ -124,9 +125,11 @@ function ServicesHeroWithBadge({
               duration={0.5}
               distance={80}
             >
-              <TitleTag className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-gray-100 max-w-2xl tracking-tighter leading-[0.9] mb-2 md:mb-4">
-                {title}
-              </TitleTag>
+              {hasVisibleText(title) ? (
+                <TitleTag className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-gray-100 max-w-2xl tracking-tighter leading-[0.9] mb-2 md:mb-4">
+                  {title}
+                </TitleTag>
+              ) : null}
               {subtitle && (
                 <p className="text-lg sm:text-xl md:text-2xl text-gray-200 leading-snug max-w-md">
                   {subtitle}

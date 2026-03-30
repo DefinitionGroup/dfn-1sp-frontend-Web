@@ -4,6 +4,7 @@ import React from "react";
 import type { CtaSplitHeader as CtaSplitHeaderType } from "@/types/sanity.types";
 import { resolveLink } from "@/utils/utils";
 import CtaMiniComponent from "./pg-CtaMiniComponent";
+import { hasVisibleText } from "@/lib/text-content";
 
 
 function CtaSplitHeader({ data }: { data: CtaSplitHeaderType }) {
@@ -28,11 +29,11 @@ function CtaSplitHeader({ data }: { data: CtaSplitHeaderType }) {
       )}
 
       {/* Middle: small two-line heading/subheading */}
-      {(data?.heading || data?.subheading) && (
+      {(hasVisibleText(data?.heading) || hasVisibleText(data?.subheading)) && (
         <header className="col-span-3 col-start-1 md:col-start-4">
           <div className="flex flex-col lg:gap-8 items-start justify-start w-full">
             <div className="flex-1 flex flex-col min-w-0">
-              {data.heading && (
+              {hasVisibleText(data.heading) && (
                 <h2 className="text-3xl text-neutral-900 font-aspekta">
                   {data.heading}
                 </h2>
@@ -48,7 +49,7 @@ function CtaSplitHeader({ data }: { data: CtaSplitHeaderType }) {
       )}
 
       {/* Right: paragraph */}
-      {data?.paragraph && (
+      {hasVisibleText(data?.paragraph) && (
         <header className="col-span-6 md:col-start-8">
           <h2 className="text-base text-neutral-900 font-aspekta">
             {data.paragraph}

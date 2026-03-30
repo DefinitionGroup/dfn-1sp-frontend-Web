@@ -8,6 +8,7 @@ import { client } from "@/sanity/lib/client";
 import { UNIT_LOGO_FLOAT_QUERY } from "@/sanity/lib/queries";
 import { assetUrl } from "@/utils/utils";
 import type { CloudinaryAsset } from "@/types/sanity.types";
+import { hasVisibleText } from "@/lib/text-content";
 
 type PersonioJob = {
   id: string;
@@ -525,9 +526,11 @@ function PageBuilderPersonioJobs({
         {showGridBackground && <GridBackground />}
         <div className="col-span-12 col-start-1 row-start-1 relative z-10">
           <div className="mx-auto mb-7  text-left md:mb-9">
-            <h2 className="text-3xl font-normal text-neutral-800 md:text-4xl lg:text-5xl">
-              {headline}
-            </h2>
+            {hasVisibleText(headline) ? (
+              <h2 className="text-3xl font-normal text-neutral-800 md:text-4xl lg:text-5xl">
+                {headline}
+              </h2>
+            ) : null}
             {subheadline ? (
               <p className="mx-auto mt-3 max-w-2xl text-sm text-neutral-500 md:text-base">
                 {subheadline}
@@ -646,9 +649,11 @@ function PageBuilderPersonioJobs({
                             onError={handleLogoError}
                             className="  w-auto max-w-[96px] relative -left-2 object-contain object-left"
                           />
-                          <h3 className="text-xl font-regular leading-tight text-neutral-700 md:text-xl">
-                            {job.title}
-                          </h3>
+                          {hasVisibleText(job.title) ? (
+                            <h3 className="text-xl font-regular leading-tight text-neutral-700 md:text-xl">
+                              {job.title}
+                            </h3>
+                          ) : null}
                         </div>
 
 

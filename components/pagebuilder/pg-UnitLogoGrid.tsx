@@ -6,6 +6,7 @@ import Link from "next/link";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import GridBackground from "@/components/ui/GridBackground";
 import type { CloudinaryAsset, CTA } from "@/types/sanity.types";
+import { hasVisibleText } from "@/lib/text-content";
 
 type Unit = {
   _id: string;
@@ -48,7 +49,7 @@ function UnitLogoGrid({
     hideFromNav = false,
   } = data || {};
 
-  if (!headline) return null;
+  if (!hasVisibleText(headline)) return null;
 
   // Generate section ID from headline
   const sectionId = headline

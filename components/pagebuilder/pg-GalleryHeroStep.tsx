@@ -9,6 +9,7 @@ import { useRef } from "react";
 import { assetUrl } from "@/utils/utils";
 import { useInView } from "motion/react";
 import { useParams } from "next/navigation";
+import { hasVisibleText } from "@/lib/text-content";
 
 
 type Props =
@@ -97,7 +98,7 @@ function GalleryHeroStepComponent(props: Props) {
 
           {/* Main Content */}
           <div className={`col-span-4 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 sm:col-span-6 ${step.badge ? "md:col-span-10 md:col-start-3" : "md:col-span-12"}`}>
-            {step.typewriterText && (
+            {hasVisibleText(step.typewriterText) && (
               <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-regular tracking-tighter mb-4 text-neutral-800 md:mb-2">
                 <Typewriter
                   ref={typewriterref}
