@@ -3,7 +3,7 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "motion/react";
 import Image from "next/image";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
 import DeferredVideo from "@/components/ui/DeferredVideo";
 
