@@ -23,8 +23,7 @@
  * - Canonical URLs to prevent duplicate content
  * - Twitter card metadata for social sharing
  */
-import { getCaseBySlug, getAllCaseSlugs, getAllCases } from "@/lib/sanity/queries";
-import { cookies } from "next/headers";
+import { getCaseBySlug, getAllCaseSlugs } from "@/lib/sanity/queries";
 import { notFound } from "next/navigation";
 import CaseStudyPageClient from "./CaseStudyPageClient";
 import SiteWrapper from "@/components/SiteWrapper";
@@ -72,9 +71,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-
-  const cookieStore = await cookies();
-  const channel = cookieStore.get("channel")?.value || "1spWeb";
+  const channel = "1spWeb";
   const language = locale || "en";
 
   const caseStudy = await getCaseBySlug(slug, channel, language);
@@ -133,14 +130,11 @@ export default async function CaseStudyPage({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params;
-
-  const cookieStore = await cookies();
-  const channel = cookieStore.get("channel")?.value || "1spWeb";
+  const channel = "1spWeb";
   const language = locale || "en";
 
   // Uses cached fetch from centralized data layer
   const caseStudy = await getCaseBySlug(slug, channel, language);
-  const overlayCaseStudies = await getAllCases(channel, language);
 
   if (!caseStudy) {
     notFound();
@@ -151,7 +145,6 @@ export default async function CaseStudyPage({
       channel={channel}
       language={language}
       navColor="light"
-      overlayCaseStudies={overlayCaseStudies}
     >
       {/* Structured Data (JSON-LD) */}
       <JsonLdScript

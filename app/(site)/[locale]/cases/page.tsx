@@ -10,7 +10,6 @@
  * Uses `getPageBySlug()` for cached data fetching.
  */
 import { getPageBySlug, getAllCases } from "@/lib/sanity/queries";
-import { cookies } from "next/headers";
 import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
@@ -40,8 +39,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const cookieStore = await cookies();
-  const channel = cookieStore.get("channel")?.value || "1spWeb";
+  const channel = "1spWeb";
   const { locale } = await params;
   const language = locale || "en";
   const page = await getPageBySlug("cases", channel, language);
@@ -88,8 +86,7 @@ export default async function CasesPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const cookieStore = await cookies();
-  const channel = cookieStore.get("channel")?.value || "1spWeb";
+  const channel = "1spWeb";
   const { locale } = await params;
   const language = locale || "en";
 
