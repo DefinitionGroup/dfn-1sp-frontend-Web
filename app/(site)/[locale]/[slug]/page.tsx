@@ -28,7 +28,7 @@ import NotFound from "@/components/ui/not-found";
 import { cookies } from "next/headers";
 import SiteWrapper from "@/components/SiteWrapper";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
-import { urlFor } from "@/sanity/lib/image";
+import { resolveImageUrl } from "@/sanity/lib/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
@@ -86,11 +86,12 @@ export async function generateMetadata({
 
   const title = page.metadata?.title || page.title;
   const description = page.metadata?.description;
+  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
 
-  const ogImages = page.metadata?.image
+  const ogImages = ogImageUrl
     ? [
       {
-        url: urlFor(page.metadata.image).width(1200).height(630).url(),
+        url: ogImageUrl,
         width: 1200,
         height: 630,
         alt: title,
@@ -150,6 +151,7 @@ export default async function Page({
   const caseItems = extractCaseItemsFromContent(contentBlocks, mapCasesToItemList(allCasesRaw));
   const services = mapServicesToCatalogItems(allServicesRaw);
   const pageUrl = `${CANONICAL_URL}/${slug}`;
+  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
 
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
@@ -162,9 +164,7 @@ export default async function Page({
               slug,
               description: page.metadata?.description,
               locale: language,
-              imageUrl: page.metadata?.image
-                ? urlFor(page.metadata.image).width(1200).height(630).url()
-                : undefined,
+              imageUrl: ogImageUrl,
             })}
           />
           <JsonLdScript

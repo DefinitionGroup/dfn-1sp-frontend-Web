@@ -17,7 +17,7 @@ import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
-import { urlFor } from "@/sanity/lib/image";
+import { resolveImageUrl } from "@/sanity/lib/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
@@ -64,11 +64,12 @@ export async function generateMetadata({
 
   const title = page.metadata?.title || page.title || "Services";
   const description = page.metadata?.description;
+  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
 
-  const ogImages = page.metadata?.image
+  const ogImages = ogImageUrl
     ? [
       {
-        url: urlFor(page.metadata.image).width(1200).height(630).url(),
+        url: ogImageUrl,
         width: 1200,
         height: 630,
         alt: title,
@@ -138,6 +139,7 @@ export default async function ServicesPage({
     contentBlocks,
     mapCasesToItemList(allCasesRaw),
   );
+  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
   const services = mapServicesToCatalogItems(allServicesRaw);
   const people = extractPeopleFromContent(contentBlocks);
   const units = extractUnitsFromContent(contentBlocks);
@@ -153,13 +155,11 @@ export default async function ServicesPage({
           slug: "services",
           description: page.metadata?.description,
           locale: language,
-          imageUrl: page.metadata?.image
-            ? urlFor(page.metadata.image).width(1200).height(630).url()
-            : undefined,
+          imageUrl: ogImageUrl,
           mainEntityId:
             services.length > 0
               ? serviceCatalogId
-              : caseItems.length > 0
+                : caseItems.length > 0
                 ? itemListId
                 : undefined,
         })}

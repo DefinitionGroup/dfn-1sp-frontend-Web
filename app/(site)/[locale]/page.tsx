@@ -23,7 +23,7 @@ import { getAllCases, getAllServices, getHomePage, getGlobalData } from "@/lib/s
 import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
-import { urlFor } from "@/sanity/lib/image";
+import { resolveImageUrl } from "@/sanity/lib/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
@@ -75,11 +75,12 @@ export async function generateMetadata({
   const description =
     page.metadata?.description ||
     "1SP is a full-service agency specializing in brand engagement, experiential marketing, creative content, and talent management.";
+  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
 
-  const ogImages = page.metadata?.image
+  const ogImages = ogImageUrl
     ? [
       {
-        url: urlFor(page.metadata.image).width(1200).height(630).url(),
+        url: ogImageUrl,
         width: 1200,
         height: 630,
         alt: title,

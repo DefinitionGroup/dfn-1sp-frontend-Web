@@ -17,7 +17,7 @@ import NotFound from "@/components/ui/not-found";
 import ContactForm from "@/components/ui/ContactForm";
 import { getAllCases, getAllServices, getPageBySlug } from "@/lib/sanity/queries";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
-import { urlFor } from "@/sanity/lib/image";
+import { resolveImageUrl } from "@/sanity/lib/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
@@ -64,11 +64,12 @@ export async function generateMetadata({
 
   const title = page.metadata?.title || page.title || "Contact";
   const description = page.metadata?.description;
+  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
 
-  const ogImages = page.metadata?.image
+  const ogImages = ogImageUrl
     ? [
       {
-        url: urlFor(page.metadata.image).width(1200).height(630).url(),
+        url: ogImageUrl,
         width: 1200,
         height: 630,
         alt: title,
