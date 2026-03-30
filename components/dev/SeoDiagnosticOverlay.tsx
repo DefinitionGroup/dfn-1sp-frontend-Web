@@ -19,7 +19,13 @@ type JsonLdBlock = {
   raw: string;
 };
 
+type HeadingInfo = {
+  level: number;
+  text: string;
+};
+
 type SeoSnapshot = {
+  url: string;
   lang: string;
   title: string;
   description: string | null;
@@ -30,6 +36,7 @@ type SeoSnapshot = {
   openGraph: KeyValueTag[];
   twitter: KeyValueTag[];
   jsonLd: JsonLdBlock[];
+  headings: HeadingInfo[];
 };
 
 const IS_ENABLED =
@@ -72,6 +79,14 @@ function collectMetaTags(selector: string, attribute: "name" | "property"): KeyV
   }));
 }
 
+function isImageTag(key: string) {
+  return /(?:^|:)(?:image|image:url|image:secure_url)$/i.test(key);
+}
+
+function findTagContent(items: KeyValueTag[], key: string) {
+  return items.find((item) => item.key === key)?.content || null;
+}
+
 function snapshotSeo(): SeoSnapshot {
   const canonical =
     document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href || null;
@@ -111,7 +126,15 @@ function snapshotSeo(): SeoSnapshot {
     }
   });
 
+  const headings = Array.from(
+    document.querySelectorAll<HTMLHeadingElement>("h1, h2, h3, h4, h5, h6"),
+  ).map((heading) => ({
+    level: Number(heading.tagName.replace("H", "")),
+    text: heading.textContent?.trim() || "",
+  }));
+
   return {
+    url: window.location.href,
     lang: document.documentElement.lang || "",
     title: document.title,
     description:
@@ -123,6 +146,7 @@ function snapshotSeo(): SeoSnapshot {
     openGraph: collectMetaTags('meta[property^="og:"]', "property"),
     twitter: collectMetaTags('meta[name^="twitter:"]', "name"),
     jsonLd,
+    headings,
   };
 }
 
@@ -137,7 +161,7 @@ function TagList({
     return <p className="text-neutral-500">{emptyLabel}</p>;
   }
 
-  const imageItems = items.filter((item) => /(?:^|:)(?:image|image:url|image:secure_url)$/i.test(item.key));
+  const imageItems = items.filter((item) => isImageTag(item.key));
   const nonImageItems = items.filter((item) => !imageItems.includes(item));
 
   return (
@@ -220,6 +244,45 @@ function LinkList({
   );
 }
 
+function SummaryStat({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="rounded-lg border border-neutral-800 bg-neutral-950/70 p-3">
+      <p className="text-[11px] uppercase tracking-[0.14em] text-lime-400">{label}</p>
+      <p className="mt-1 text-sm text-neutral-100">{value}</p>
+    </div>
+  );
+}
+
+function HeadingList({ headings }: { headings: HeadingInfo[] }) {
+  if (headings.length === 0) {
+    return <p className="text-neutral-500">No headings found</p>;
+  }
+
+  return (
+    <div className="space-y-2">
+      {headings.map((heading, index) => (
+        <div
+          key={`${heading.level}-${heading.text}-${index}`}
+          className="rounded-lg border border-neutral-800 bg-neutral-950/70 p-3"
+        >
+          <p className="text-[11px] uppercase tracking-[0.14em] text-lime-400">
+            H{heading.level}
+          </p>
+          <p className="mt-1 text-sm text-neutral-100">
+            {heading.text || "Empty heading"}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function Section({
   title,
   children,
@@ -254,6 +317,44 @@ export default function SeoDiagnosticOverlay() {
   }
 
   const refreshSnapshot = () => setSnapshot(snapshotSeo());
+
+  const h1s = snapshot?.headings.filter((heading) => heading.level === 1) || [];
+  const ogImage = snapshot ? findTagContent(snapshot.openGraph, "og:image") : null;
+  const twitterImage = snapshot
+    ? findTagContent(snapshot.twitter, "twitter:image")
+    : null;
+  const titleLength = snapshot?.title.length || 0;
+  const descriptionLength = snapshot?.description?.length || 0;
+  const jsonLdTypes = snapshot?.jsonLd.map((block) => block.label.replace(/^\d+\.\s*/, "")) || [];
+
+  const warnings: string[] = [];
+  if (snapshot) {
+    if (h1s.length !== 1) {
+      warnings.push(`Expected exactly 1 H1, found ${h1s.length}.`);
+    }
+    if (!snapshot.title) {
+      warnings.push("Missing title tag.");
+    } else if (titleLength < 20 || titleLength > 65) {
+      warnings.push(`Title length is ${titleLength} characters.`);
+    }
+    if (!snapshot.description) {
+      warnings.push("Missing meta description.");
+    } else if (descriptionLength < 70 || descriptionLength > 170) {
+      warnings.push(`Meta description length is ${descriptionLength} characters.`);
+    }
+    if (!snapshot.canonical) {
+      warnings.push("Missing canonical link.");
+    }
+    if (!ogImage) {
+      warnings.push("Missing og:image.");
+    }
+    if (!twitterImage) {
+      warnings.push("Missing twitter:image.");
+    }
+    if (snapshot.jsonLd.length === 0) {
+      warnings.push("No JSON-LD blocks found.");
+    }
+  }
 
   return (
     <>
@@ -296,8 +397,64 @@ export default function SeoDiagnosticOverlay() {
           </div>
 
           <div className="flex-1 space-y-4 overflow-y-auto px-4 py-4">
+            <Section title="SEO Checks">
+              <div className="grid gap-3 sm:grid-cols-2">
+                <SummaryStat
+                  label="Indexability"
+                  value={
+                    snapshot?.robots?.toLowerCase().includes("noindex")
+                      ? "Noindex"
+                      : "Indexable"
+                  }
+                />
+                <SummaryStat label="H1 Count" value={String(h1s.length)} />
+                <SummaryStat label="Title Length" value={`${titleLength} chars`} />
+                <SummaryStat
+                  label="Description Length"
+                  value={snapshot?.description ? `${descriptionLength} chars` : "Missing"}
+                />
+                <SummaryStat label="OG Image" value={ogImage ? "Present" : "Missing"} />
+                <SummaryStat
+                  label="Twitter Image"
+                  value={twitterImage ? "Present" : "Missing"}
+                />
+                <SummaryStat
+                  label="Hreflang"
+                  value={`${snapshot?.hreflangs.length || 0} links`}
+                />
+                <SummaryStat
+                  label="JSON-LD"
+                  value={`${snapshot?.jsonLd.length || 0} blocks`}
+                />
+              </div>
+
+              <div className="rounded-lg border border-neutral-800 bg-neutral-950/70 p-3">
+                <p className="text-[11px] uppercase tracking-[0.14em] text-lime-400">Detected Types</p>
+                <p className="mt-1 text-sm text-neutral-100">
+                  {jsonLdTypes.length > 0 ? jsonLdTypes.join(" | ") : "None"}
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-neutral-800 bg-neutral-950/70 p-3">
+                <p className="text-[11px] uppercase tracking-[0.14em] text-lime-400">Warnings</p>
+                {warnings.length > 0 ? (
+                  <ul className="mt-2 space-y-2 text-sm text-neutral-100">
+                    {warnings.map((warning) => (
+                      <li key={warning}>{warning}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="mt-1 text-sm text-neutral-100">No immediate warnings</p>
+                )}
+              </div>
+            </Section>
+
             <Section title="Core Metadata">
               <div className="grid gap-3">
+                <div className="rounded-lg border border-neutral-800 bg-neutral-950/70 p-3">
+                  <p className="text-[11px] uppercase tracking-[0.14em] text-lime-400">URL</p>
+                  <p className="mt-1 break-all text-sm text-neutral-100">{snapshot.url}</p>
+                </div>
                 <div className="rounded-lg border border-neutral-800 bg-neutral-950/70 p-3">
                   <p className="text-[11px] uppercase tracking-[0.14em] text-lime-400">Title</p>
                   <p className="mt-1 text-sm text-neutral-100">{snapshot.title || "Missing"}</p>
@@ -326,6 +483,26 @@ export default function SeoDiagnosticOverlay() {
                     {snapshot.canonical || "Missing"}
                   </p>
                 </div>
+              </div>
+            </Section>
+
+            <Section title="Headings">
+              <div className="space-y-4">
+                <div className="rounded-lg border border-neutral-800 bg-neutral-950/70 p-3">
+                  <p className="text-[11px] uppercase tracking-[0.14em] text-lime-400">H1 Content</p>
+                  {h1s.length > 0 ? (
+                    <div className="mt-2 space-y-2">
+                      {h1s.map((heading, index) => (
+                        <p key={`${heading.text}-${index}`} className="text-sm text-neutral-100">
+                          {heading.text || "Empty heading"}
+                        </p>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="mt-1 text-sm text-neutral-100">No H1 found</p>
+                  )}
+                </div>
+                <HeadingList headings={snapshot.headings} />
               </div>
             </Section>
 
