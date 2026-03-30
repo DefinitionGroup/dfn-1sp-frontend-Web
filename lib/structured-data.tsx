@@ -261,6 +261,42 @@ export function generateWebPageJsonLd(options: {
 }
 
 /**
+ * CollectionPage structured data for archive/listing pages.
+ *
+ * Use this for pages whose main purpose is to surface a browsable set of
+ * entities, such as the cases archive. It gives search engines a stronger
+ * page-level signal than a generic WebPage.
+ */
+export function generateCollectionPageJsonLd(options: {
+  title: string;
+  slug: string;
+  description?: string | null;
+  locale: string;
+  imageUrl?: string | null;
+  mainEntityId?: string;
+}): JsonLdEntity {
+  const { title, slug, description, locale, imageUrl, mainEntityId } = options;
+  const pageUrl = `${CANONICAL_URL}/${slug}`;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": pageUrl,
+    name: title,
+    ...(description && { description }),
+    url: pageUrl,
+    inLanguage: locale,
+    isPartOf: { "@id": `${CANONICAL_URL}/#website` },
+    ...(imageUrl && {
+      primaryImageOfPage: { "@type": "ImageObject", url: imageUrl },
+    }),
+    ...(mainEntityId && {
+      mainEntity: { "@id": mainEntityId },
+    }),
+  };
+}
+
+/**
  * Person structured data for team member profiles.
  *
  * Use this when rendering People on a page (gallery, team sections).
@@ -399,13 +435,16 @@ export function generateItemListJsonLd(options: {
   items: CaseItemForList[];
   locale: string;
   listName?: string;
+  id?: string;
 }): JsonLdEntity {
-  const { items, locale, listName } = options;
+  const { items, locale, listName, id } = options;
 
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
+    ...(id && { "@id": id }),
     ...(listName && { name: listName }),
+    numberOfItems: items.length,
     itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
       position: index + 1,

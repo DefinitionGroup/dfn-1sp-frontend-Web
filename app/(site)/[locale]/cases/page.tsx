@@ -19,7 +19,7 @@ import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
   JsonLdScript,
-  generateWebPageJsonLd,
+  generateCollectionPageJsonLd,
   generateBreadcrumbJsonLd,
   generateItemListJsonLd,
   extractCaseItemsFromContent,
@@ -115,6 +115,7 @@ export default async function CasesPage({
     page?.content1sp as any[] | undefined,
     allCaseItems,
   );
+  const itemListId = `${CANONICAL_URL}/cases#case-list`;
 
   // LCP optimization: preload hero poster image
   const heroPreload = getHeroPreloadData(page?.content1sp as any[] | undefined);
@@ -123,11 +124,15 @@ export default async function CasesPage({
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
       {/* Structured Data (JSON-LD) */}
       <JsonLdScript
-        data={generateWebPageJsonLd({
+        data={generateCollectionPageJsonLd({
           title: page?.metadata?.title || "Cases",
           slug: "cases",
           description: page?.metadata?.description,
           locale: language,
+          imageUrl: page?.metadata?.image
+            ? urlFor(page.metadata.image).width(1200).height(630).url()
+            : undefined,
+          mainEntityId: caseItems.length > 0 ? itemListId : undefined,
         })}
       />
       <JsonLdScript
@@ -148,6 +153,7 @@ export default async function CasesPage({
             items: caseItems,
             locale: language,
             listName: getBreadcrumbLabel(language, "cases"),
+            id: itemListId,
           })}
         />
       )}
