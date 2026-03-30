@@ -13,16 +13,13 @@ import type { NextRequest } from "next/server";
 export default function middleware(req: NextRequest) {
     const { pathname, search } = req.nextUrl;
 
-    const channel = "1spWeb";
     const locale = "en";
 
     // Skip locale logic for API, TRPC, and Studio presentation routes
     const localePrefixedApiOrTrpc = /^\/[a-z]{2}(?:-[A-Z]{2})?\/(api|trpc)(\/|$)/.test(pathname);
     const isStudioPresentation = pathname === '/studio/presentation' || /^\/[a-z]{2}(?:-[A-Z]{2})?\/studio\/presentation(\/|$)/.test(pathname);
     if (pathname.startsWith('/api') || pathname.startsWith('/trpc') || localePrefixedApiOrTrpc || isStudioPresentation) {
-        const res = NextResponse.next();
-        res.cookies.set("channel", channel, { path: "/" });
-        return res;
+        return NextResponse.next();
     }
 
     // Detect if the URL already has a locale prefix (e.g. /en/about, /de/about)
@@ -46,11 +43,7 @@ export default function middleware(req: NextRequest) {
     url.pathname = `/${locale}${pathname === "/" ? "" : pathname}`;
     url.search = search;
 
-    const res = NextResponse.rewrite(url);
-    res.cookies.set("channel", channel, { path: "/" });
-    res.cookies.set("locale", locale, { path: "/" });
-
-    return res;
+    return NextResponse.rewrite(url);
 }
 
 export const config = {

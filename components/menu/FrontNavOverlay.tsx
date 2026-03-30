@@ -255,10 +255,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
             className=" flex items-start  justify-center">
             <Link
-              href={`/${locale}`}
+              href={`/`}
               onClick={(e) => {
                 e.preventDefault();
-                router.push(`/${locale}`);
+                router.push(`/`);
               }}
               aria-label="Home"
               className="flex items-center justify-center"
@@ -391,7 +391,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             <Button2
               variant="limesmall"
               className="min-w-[110px] w-[50px] max-w-[110px] overflow-hidden block absolute  rounded-full "
-              href={`/${locale}/contact`}
+              href={`/contact`}
               text="Contact us"
             />
           </div>

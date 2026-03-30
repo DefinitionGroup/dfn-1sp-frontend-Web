@@ -3,6 +3,7 @@ import { VisualEditing } from "next-sanity/visual-editing";
 import { SanityLive } from "@/sanity/lib/live";
 import { DisableDraftMode } from "@/components/DisableDraftMode";
 import { StegaErrorHandler } from "@/components/StegaErrorHandler";
+import SeoDiagnosticOverlay from "@/components/dev/SeoDiagnosticOverlay";
 
 /**
  * Locale-aware layout
@@ -34,6 +35,7 @@ export default async function SiteLayout({
           __html: `document.documentElement.lang="${locale || "en"}";`,
         }}
       />
+      <SeoDiagnosticOverlay />
       {children}
       <StegaErrorHandler />
       {isEnabled && (

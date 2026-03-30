@@ -10,7 +10,6 @@
  * Uses `getPageBySlug()` for cached data fetching.
  */
 import { getPageBySlug, getAllCases } from "@/lib/sanity/queries";
-import { cookies } from "next/headers";
 import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
@@ -19,7 +18,7 @@ import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
   JsonLdScript,
-  generateWebPageJsonLd,
+  generateCollectionPageJsonLd,
   generateBreadcrumbJsonLd,
   generateItemListJsonLd,
   extractCaseItemsFromContent,
@@ -40,8 +39,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const cookieStore = await cookies();
-  const channel = cookieStore.get("channel")?.value || "1spWeb";
+  const channel = "1spWeb";
   const { locale } = await params;
   const language = locale || "en";
   const page = await getPageBySlug("cases", channel, language);
@@ -88,8 +86,7 @@ export default async function CasesPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const cookieStore = await cookies();
-  const channel = cookieStore.get("channel")?.value || "1spWeb";
+  const channel = "1spWeb";
   const { locale } = await params;
   const language = locale || "en";
 
@@ -115,6 +112,7 @@ export default async function CasesPage({
     page?.content1sp as any[] | undefined,
     allCaseItems,
   );
+  const itemListId = `${CANONICAL_URL}/cases#case-list`;
 
   // LCP optimization: preload hero poster image
   const heroPreload = getHeroPreloadData(page?.content1sp as any[] | undefined);
@@ -123,11 +121,15 @@ export default async function CasesPage({
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
       {/* Structured Data (JSON-LD) */}
       <JsonLdScript
-        data={generateWebPageJsonLd({
+        data={generateCollectionPageJsonLd({
           title: page?.metadata?.title || "Cases",
           slug: "cases",
           description: page?.metadata?.description,
           locale: language,
+          imageUrl: page?.metadata?.image
+            ? urlFor(page.metadata.image).width(1200).height(630).url()
+            : undefined,
+          mainEntityId: caseItems.length > 0 ? itemListId : undefined,
         })}
       />
       <JsonLdScript
@@ -148,6 +150,7 @@ export default async function CasesPage({
             items: caseItems,
             locale: language,
             listName: getBreadcrumbLabel(language, "cases"),
+            id: itemListId,
           })}
         />
       )}
