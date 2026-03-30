@@ -57,6 +57,13 @@ interface BreadcrumbItem {
   url: string;
 }
 
+export interface ServiceForCatalog {
+  name: string;
+  description?: string | null;
+  imageUrl?: string | null;
+  groupNames?: string[];
+}
+
 // =============================================================================
 // COMPONENT
 // =============================================================================
@@ -293,6 +300,52 @@ export function generateCollectionPageJsonLd(options: {
     ...(mainEntityId && {
       mainEntity: { "@id": mainEntityId },
     }),
+  };
+}
+
+/**
+ * OfferCatalog structured data for service listing pages.
+ *
+ * Use this when a page renders the services gallery. Service detail pages do not
+ * exist in the app, so the catalog embeds Service entities directly instead of
+ * pointing to per-service URLs.
+ */
+export function generateServiceCatalogJsonLd(options: {
+  services: ServiceForCatalog[];
+  locale: string;
+  id?: string;
+  name?: string;
+  url?: string;
+}): JsonLdEntity {
+  const {
+    services,
+    locale,
+    id,
+    name = "Services",
+    url = `${CANONICAL_URL}/services`,
+  } = options;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "OfferCatalog",
+    ...(id && { "@id": id }),
+    name,
+    url,
+    inLanguage: locale,
+    itemListOrder: "https://schema.org/ItemListOrderAscending",
+    numberOfItems: services.length,
+    itemListElement: services.map((service, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "Service",
+        name: service.name,
+        ...(service.description && { description: service.description }),
+        ...(service.imageUrl && { image: service.imageUrl }),
+        ...(service.groupNames?.length && { category: service.groupNames }),
+        provider: { "@id": `${CANONICAL_URL}/#organization` },
+      },
+    })),
   };
 }
 
@@ -538,6 +591,84 @@ export function extractCaseItemsFromContent(
   }
 
   return items;
+}
+
+/**
+ * True when the page contains case blocks that need the `allCases` fallback for
+ * auto-mode JSON-LD generation.
+ */
+export function hasAutoCaseListingBlocks(
+  contentBlocks: any[] | null | undefined,
+): boolean {
+  if (!contentBlocks || !Array.isArray(contentBlocks)) return false;
+
+  return contentBlocks.some((block) => {
+    if (!block?._type) return false;
+
+    return (
+      (block._type === "smartCarousel" ||
+        block._type === "casesGalleryFiltered" ||
+        block._type === "casesGalleryFilteredWithPagination") &&
+      block.selectionMode !== "manual"
+    );
+  });
+}
+
+/**
+ * True when the page contains the services gallery block.
+ */
+export function hasServicesGalleryBlock(
+  contentBlocks: any[] | null | undefined,
+): boolean {
+  if (!contentBlocks || !Array.isArray(contentBlocks)) return false;
+
+  return contentBlocks.some((block) => block?._type === "servicesGalleryFiltered");
+}
+
+/**
+ * Normalize raw service documents into JSON-LD catalog items.
+ */
+export function mapServicesToCatalogItems(
+  services: any[] | null | undefined,
+): ServiceForCatalog[] {
+  if (!services || !Array.isArray(services)) return [];
+
+  return services
+    .filter((service) => service?.name)
+    .map((service) => ({
+      name: service.name,
+      description: service.serviceDescription || null,
+      imageUrl:
+        service.serviceBackground?.asset?.secure_url ||
+        service.serviceBackground?.asset?.url ||
+        service.iconUrl ||
+        service.serviceicon?.asset?.secure_url ||
+        service.serviceicon?.asset?.url ||
+        null,
+      groupNames: Array.isArray(service.servicegrouprel)
+        ? service.servicegrouprel
+          .map((group: any) => group?.name)
+          .filter(Boolean)
+        : [],
+    }));
+}
+
+/**
+ * Normalize raw case documents into ItemList-ready entries.
+ */
+export function mapCasesToItemList(
+  cases: any[] | null | undefined,
+): CaseItemForList[] {
+  if (!cases || !Array.isArray(cases)) return [];
+
+  return cases
+    .filter((cs) => cs?.title && cs?.slug?.current)
+    .map((cs) => ({
+      title: cs.title,
+      slug: cs.slug.current,
+      description: cs.description || null,
+      imageUrl: cs.mainImageUrl || cs.mainImage?.secure_url || null,
+    }));
 }
 
 // =============================================================================

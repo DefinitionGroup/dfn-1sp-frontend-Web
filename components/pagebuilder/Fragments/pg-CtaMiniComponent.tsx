@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import Link from "next/link";
 import { ArrowRightIcon } from "@phosphor-icons/react";
+import { hasVisibleText } from "@/lib/text-content";
 
 interface CtaMiniProps {
   heading: string;
@@ -75,11 +76,13 @@ function CtaMiniComponent({
       duration={duration}
       distance={distance}
     >
-      <h3
-        className={`text-xl leading-normal mb-0 md:mb-4 tracking-tight font- ${textAlignClass}`}
-      >
-        {heading}
-      </h3>
+      {hasVisibleText(heading) ? (
+        <h3
+          className={`text-xl leading-normal mb-0 md:mb-4 tracking-tight font- ${textAlignClass}`}
+        >
+          {heading}
+        </h3>
+      ) : null}
       <p className={`md:text-sm mb-2 md:mb-8 ${textAlignClass}`}>{paragraph}</p>
       {showButton ? (
         buttonText && hasValidUrl ? (

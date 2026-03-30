@@ -5,6 +5,7 @@ import Link from "next/link";
 import { assetUrl } from "@/utils/utils";
 import DeferredVideo from "@/components/ui/DeferredVideo";
 import StaggeredFadeIn from "@/components/ui/StaggeredFadeIn";
+import { hasVisibleText } from "@/lib/text-content";
 
 type CloudinaryAsset = {
   _type?: string;
@@ -89,7 +90,7 @@ export default function PersonCard({ person, index }: PersonCardProps) {
 
       {/* Always visible name overlay at bottom */}
       <div className="absolute flex flex-col   bottom-0 left-0 right-0 bg-gradient-to-t from-black/25 h-full via-black/10 to-black/10 p-2 transition-all duration-300 group-hover:from-black/95 group-hover:via-black/40 group-hover:to-black/70">
-        {person.fullname && (
+        {hasVisibleText(person.fullname) && (
           <h3 className="text-black group-hover:text-red-500 font-bold text-xs mb-0.5 drop-shadow-lg">
             {person.fullname}
           </h3>

@@ -11,21 +11,26 @@
  * - Person/Unit JSON-LD for team members and business units in content
  * - Hero video poster preload for LCP optimization
  */
-import { getPageBySlug } from "@/lib/sanity/queries";
+import { getAllCases, getAllServices, getPageBySlug } from "@/lib/sanity/queries";
 import { cookies } from "next/headers";
 import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
-import { urlFor } from "@/sanity/lib/image";
+import { resolveImageUrl } from "@/sanity/lib/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
   JsonLdScript,
-  generateWebPageJsonLd,
+  generateCollectionPageJsonLd,
   generateBreadcrumbJsonLd,
   generateItemListJsonLd,
   extractCaseItemsFromContent,
+  hasAutoCaseListingBlocks,
+  hasServicesGalleryBlock,
+  mapCasesToItemList,
+  mapServicesToCatalogItems,
+  generateServiceCatalogJsonLd,
   extractPeopleFromContent,
   generatePeopleListJsonLd,
   extractUnitsFromContent,
@@ -59,11 +64,12 @@ export async function generateMetadata({
 
   const title = page.metadata?.title || page.title || "Services";
   const description = page.metadata?.description;
+  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
 
-  const ogImages = page.metadata?.image
+  const ogImages = ogImageUrl
     ? [
       {
-        url: urlFor(page.metadata.image).width(1200).height(630).url(),
+        url: ogImageUrl,
         width: 1200,
         height: 630,
         alt: title,
@@ -116,27 +122,46 @@ export default async function ServicesPage({
   }
 
   const navbarVariant = page?.navbarVariant || "light";
+  const contentBlocks = page.content1sp as any[] | undefined;
+  const needsAllCases = hasAutoCaseListingBlocks(contentBlocks);
+  const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
+
+  const [allCasesRaw, allServicesRaw] = await Promise.all([
+    needsAllCases ? getAllCases(channel, language) : Promise.resolve([]),
+    hasServicesGallery ? getAllServices(language) : Promise.resolve([]),
+  ]);
 
   // LCP optimization: preload hero poster image
-  const heroPreload = getHeroPreloadData(page?.content1sp as any[] | undefined);
+  const heroPreload = getHeroPreloadData(contentBlocks);
 
   // Extract structured data from page builder content
-  const caseItems = extractCaseItemsFromContent(page.content1sp as any[] | undefined);
-  const people = extractPeopleFromContent(page.content1sp as any[] | undefined);
-  const units = extractUnitsFromContent(page.content1sp as any[] | undefined);
+  const caseItems = extractCaseItemsFromContent(
+    contentBlocks,
+    mapCasesToItemList(allCasesRaw),
+  );
+  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
+  const services = mapServicesToCatalogItems(allServicesRaw);
+  const people = extractPeopleFromContent(contentBlocks);
+  const units = extractUnitsFromContent(contentBlocks);
+  const itemListId = `${CANONICAL_URL}/services#case-list`;
+  const serviceCatalogId = `${CANONICAL_URL}/services#service-catalog`;
 
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
       {/* Structured Data (JSON-LD) */}
       <JsonLdScript
-        data={generateWebPageJsonLd({
+        data={generateCollectionPageJsonLd({
           title: page.metadata?.title || page.title || "Services",
           slug: "services",
           description: page.metadata?.description,
           locale: language,
-          imageUrl: page.metadata?.image
-            ? urlFor(page.metadata.image).width(1200).height(630).url()
-            : undefined,
+          imageUrl: ogImageUrl,
+          mainEntityId:
+            services.length > 0
+              ? serviceCatalogId
+                : caseItems.length > 0
+                ? itemListId
+                : undefined,
         })}
       />
       <JsonLdScript
@@ -156,6 +181,18 @@ export default async function ServicesPage({
           data={generateItemListJsonLd({
             items: caseItems,
             locale: language,
+            listName: "Case Studies",
+            id: itemListId,
+          })}
+        />
+      )}
+      {services.length > 0 && (
+        <JsonLdScript
+          data={generateServiceCatalogJsonLd({
+            services,
+            locale: language,
+            id: serviceCatalogId,
+            name: getBreadcrumbLabel(language, "services"),
           })}
         />
       )}

@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import Button2 from "@/components/ui/Button2";
+import { hasVisibleText } from "@/lib/text-content";
 interface StaggeredSlideUpProps {
   className?: string;
   delay?: number;
@@ -56,7 +57,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   return (
     <div className={containerClassName}>
       <StaggeredSlideUp {...defaultStaggeredProps}>
-        <h3 className={titleClass}>{title}</h3>
+        {hasVisibleText(title) ? <h3 className={titleClass}>{title}</h3> : null}
         <p className={subtitleClass}>{subtitle}</p>
       </StaggeredSlideUp>
       {showButton && href && buttonText && (

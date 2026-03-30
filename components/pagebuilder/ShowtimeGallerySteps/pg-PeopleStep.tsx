@@ -7,6 +7,7 @@ import GridBackground from "@/components/ui/GridBackground";
 import CtaMiniComponent from "../Fragments/pg-CtaMiniComponent";
 import { resolveLink } from "@/utils/utils";
 import { useParams } from "next/navigation";
+import { hasVisibleText } from "@/lib/text-content";
 
 type Member = {
   _id?: string;
@@ -142,12 +143,12 @@ export default function PeopleStep({
                   {/* Left: Titles */}
                   <div className="col-span-4 sm:col-span-3 md:col-span-4 iphone-landscape:col-span-4">
                     <div className="flex flex-col gap-2 sm:gap-4">
-                      {header.superText && (
+                      {hasVisibleText(header.superText) && (
                         <h2 className="text-xs sm:text-sm text-neutral-700 font-semibold tracking-tight">
                           {header.superText}
                         </h2>
                       )}
-                      {header.mainHeadline && (
+                      {hasVisibleText(header.mainHeadline) && (
                         <h3 className="text-4xl sm:text-4xl md:text-4xl lg:text-5xl text-neutral-900 tracking-tighter leading-[1.1]">
                           {header.mainHeadline}
                         </h3>

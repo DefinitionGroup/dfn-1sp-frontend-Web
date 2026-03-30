@@ -7,7 +7,7 @@ export default defineType({
     fields: [
         defineField({ name: 'title', title: 'Meta Title', type: 'string' }),
         defineField({ name: 'description', title: 'Meta Description', type: 'text' }),
-        defineField({ name: 'image', title: 'Meta Image', type: 'image' }),
+        defineField({ name: 'image', title: 'Meta Image', type: 'cloudinaryImage' }),
         defineField({
             name: 'keywords',
             title: 'Meta Keywords',

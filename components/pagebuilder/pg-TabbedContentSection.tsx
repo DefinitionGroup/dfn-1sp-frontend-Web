@@ -7,6 +7,7 @@ import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
+import { hasVisibleNode, hasVisibleText } from "@/lib/text-content";
 
 type TabbedContentSectionData = {
   title?: string;
@@ -89,9 +90,11 @@ function TabbedContentSection({ data }: { data: TabbedContentSectionData }) {
         </p>
       ),
       h3: ({ children }: any) => (
-        <h3 className="text-5xl font-semibold text-neutral-800 mt-8 mb-4">
-          {children}
-        </h3>
+        hasVisibleNode(children) ? (
+          <h3 className="text-5xl font-semibold text-neutral-800 mt-8 mb-4">
+            {children}
+          </h3>
+        ) : null
       ),
       h4: ({ children }: any) => (
         <h4 className="text-3xl font-semibold text-neutral-800 mt-6 mb-3">
@@ -162,13 +165,13 @@ function TabbedContentSection({ data }: { data: TabbedContentSectionData }) {
   return (
     <>
       {/* Introduction Section (if provided) */}
-      {(introHeading || introSubheading) && (
+      {(hasVisibleText(introHeading) || hasVisibleText(introSubheading)) && (
         <div className="grid grid-cols-12 z-1 mx-auto container relative font-aspekta">
           {showGridBackground && <GridBackground />}
           <div className="z-1 grid gap-8 col-span-12 pt-12 mt-24 col-start-1 container mx-auto row-start-1 grid-cols-12">
             <div className="z-1 col-span-12 col-start-1">
               <div className="flex flex-col items-start gap-2 justify-center w-full">
-                {introHeading && (
+                {hasVisibleText(introHeading) && (
                   <StaggeredSlideUp
                     delay={0.59}
                     staggerDelay={0.03}
@@ -180,7 +183,7 @@ function TabbedContentSection({ data }: { data: TabbedContentSectionData }) {
                     </h2>
                   </StaggeredSlideUp>
                 )}
-                {introSubheading && (
+                {hasVisibleText(introSubheading) && (
                   <StaggeredSlideUp
                     delay={0.65}
                     staggerDelay={0.03}
@@ -210,7 +213,7 @@ function TabbedContentSection({ data }: { data: TabbedContentSectionData }) {
         >
           <div className={`z-1 col-span-${columnSpan} col-start-1`}>
             {/* Optional section title */}
-            {title && (
+            {hasVisibleText(title) && (
               <StaggeredFadeIn>
                 <h2 className="text-6xl mb-12 text-neutral-800">{title}</h2>
               </StaggeredFadeIn>

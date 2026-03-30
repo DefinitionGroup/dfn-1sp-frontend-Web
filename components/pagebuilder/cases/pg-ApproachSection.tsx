@@ -9,6 +9,7 @@ import HeaderImageVideoComp2 from "@/components/pagebuilder/Fragments/pg-HeaderI
 import { getTranslations } from "@/lib/translations";
 import { useParams } from "next/navigation";
 import { assetUrl } from "@/utils/utils";
+import { hasVisibleText } from "@/lib/text-content";
 
 interface CloudinaryAsset {
   public_id?: string;
@@ -105,10 +106,12 @@ export default function ApproachSection({
               duration={0.5}
               distance={80}
             >
-              <h2 className="text-5xl md:text-7xl mb-2 pb-2  text-gray-100 max-w-2xl   tracking-tight leading-none">
-                {mainHeadline}
-              </h2>
-              {subHeadline && (
+              {hasVisibleText(mainHeadline) ? (
+                <h2 className="text-5xl md:text-7xl mb-2 pb-2  text-gray-100 max-w-2xl   tracking-tight leading-none">
+                  {mainHeadline}
+                </h2>
+              ) : null}
+              {hasVisibleText(subHeadline) && (
                 <h2 className="text-3xl md:text-5xl text-gray-100 max-w-2xl tracking-tight leading-compress mb-4">
                   {subHeadline}
                 </h2>

@@ -15,15 +15,22 @@ import { PageBuilder } from "@/components/PageBuilder";
 import SiteWrapper from "@/components/SiteWrapper";
 import NotFound from "@/components/ui/not-found";
 import ContactForm from "@/components/ui/ContactForm";
-import { getPageBySlug } from "@/lib/sanity/queries";
+import { getAllCases, getAllServices, getPageBySlug } from "@/lib/sanity/queries";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
-import { urlFor } from "@/sanity/lib/image";
+import { resolveImageUrl } from "@/sanity/lib/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
   JsonLdScript,
   generateContactPageJsonLd,
   generateBreadcrumbJsonLd,
+  generateItemListJsonLd,
+  hasAutoCaseListingBlocks,
+  hasServicesGalleryBlock,
+  mapCasesToItemList,
+  mapServicesToCatalogItems,
+  generateServiceCatalogJsonLd,
+  extractCaseItemsFromContent,
   extractPeopleFromContent,
   generatePeopleListJsonLd,
   extractUnitsFromContent,
@@ -57,11 +64,12 @@ export async function generateMetadata({
 
   const title = page.metadata?.title || page.title || "Contact";
   const description = page.metadata?.description;
+  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
 
-  const ogImages = page.metadata?.image
+  const ogImages = ogImageUrl
     ? [
       {
-        url: urlFor(page.metadata.image).width(1200).height(630).url(),
+        url: ogImageUrl,
         width: 1200,
         height: 630,
         alt: title,
@@ -114,13 +122,23 @@ export default async function ContactPage({
   }
 
   const navbarVariant = page?.navbarVariant || "light";
+  const contentBlocks = page.content1sp as any[] | undefined;
+  const needsAllCases = hasAutoCaseListingBlocks(contentBlocks);
+  const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
+
+  const [allCasesRaw, allServicesRaw] = await Promise.all([
+    needsAllCases ? getAllCases(channel, language) : Promise.resolve([]),
+    hasServicesGallery ? getAllServices(language) : Promise.resolve([]),
+  ]);
 
   // LCP optimization: preload hero poster image
-  const heroPreload = getHeroPreloadData(page?.content1sp as any[] | undefined);
+  const heroPreload = getHeroPreloadData(contentBlocks);
 
-  // Extract people and units from page builder content for JSON-LD
-  const people = extractPeopleFromContent(page.content1sp as any[] | undefined);
-  const units = extractUnitsFromContent(page.content1sp as any[] | undefined);
+  // Extract structured data from page builder content
+  const caseItems = extractCaseItemsFromContent(contentBlocks, mapCasesToItemList(allCasesRaw));
+  const services = mapServicesToCatalogItems(allServicesRaw);
+  const people = extractPeopleFromContent(contentBlocks);
+  const units = extractUnitsFromContent(contentBlocks);
 
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
@@ -144,6 +162,26 @@ export default async function ContactPage({
           },
         ])}
       />
+      {caseItems.length > 0 && (
+        <JsonLdScript
+          data={generateItemListJsonLd({
+            items: caseItems,
+            locale: language,
+            listName: "Case Studies",
+          })}
+        />
+      )}
+      {services.length > 0 && (
+        <JsonLdScript
+          data={generateServiceCatalogJsonLd({
+            services,
+            locale: language,
+            id: `${CANONICAL_URL}/contact#service-catalog`,
+            name: "Services",
+            url: `${CANONICAL_URL}/contact`,
+          })}
+        />
+      )}
       {people.length > 0 && (
         <JsonLdScript data={generatePeopleListJsonLd({ people })} />
       )}

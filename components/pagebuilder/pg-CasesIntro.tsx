@@ -6,6 +6,7 @@ import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 import { getTranslations } from "@/lib/translations";
 import { useParams } from "next/navigation";
+import { hasVisibleText } from "@/lib/text-content";
 
 
 interface CasesIntroProps {
@@ -60,10 +61,12 @@ function CasesIntro({
                 distance={100}
                 className="md:max-w-3/4 lg:max-w-2/4"
               >
-                <TitleTag className="text-3xl md:text-4xl leading-none text-neutral-700 pb-3 font-aspekta font-medium">
-                  {title}
-                </TitleTag>
-                {subtitle && (
+                {hasVisibleText(title) ? (
+                  <TitleTag className="text-3xl md:text-4xl leading-none text-neutral-700 pb-3 font-aspekta font-medium">
+                    {title}
+                  </TitleTag>
+                ) : null}
+                {hasVisibleText(subtitle) && (
                   <h2 className="text-3xl  md:text-4xl leading-none text-neutral-400 pb-3 font-aspekta">
                     {subtitle}
                   </h2>

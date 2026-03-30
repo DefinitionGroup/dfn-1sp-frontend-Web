@@ -9,6 +9,7 @@ import type { PortableTextBlock } from "@portabletext/types";
 import Link from "next/link";
 import { assetUrl, optimizedVideoUrl } from "@/utils/utils";
 import type { CloudinaryAsset } from "@/types/sanity.types";
+import { hasVisibleNode, hasVisibleText } from "@/lib/text-content";
 
 import { motion, useScroll, useTransform } from "motion/react";
 
@@ -136,14 +137,18 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
         </p>
       ),
       h2: ({ children }: any) => (
-        <h2 className={`text-4xl md:text-5xl font-semibold ${textColors.primary} mt-8 mb-4`}>
-          {children}
-        </h2>
+        hasVisibleNode(children) ? (
+          <h2 className={`text-4xl md:text-5xl font-semibold ${textColors.primary} mt-8 mb-4`}>
+            {children}
+          </h2>
+        ) : null
       ),
       h3: ({ children }: any) => (
-        <h3 className={`text-3xl md:text-4xl font-semibold ${textColors.primary} mt-8 mb-4`}>
-          {children}
-        </h3>
+        hasVisibleNode(children) ? (
+          <h3 className={`text-3xl md:text-4xl font-semibold ${textColors.primary} mt-8 mb-4`}>
+            {children}
+          </h3>
+        ) : null
       ),
       h4: ({ children }: any) => (
         <h4 className={`text-2xl md:text-3xl font-semibold ${textColors.primary} mt-6 mb-3`}>
@@ -254,7 +259,7 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
   const ContentColumn = () => (
     <div className="col-span-12 md:col-span-6 flex flex-col   justify-start">
       <StaggeredSlideUp className="flex-col justify-start ">
-        {showTitle && title && (
+        {showTitle && hasVisibleText(title) && (
           <h2 className={`text-2xl md:text-4xl  tracking-tight ${titleColorClass} mb-6 md:mb-8`}>
             {title}
           </h2>

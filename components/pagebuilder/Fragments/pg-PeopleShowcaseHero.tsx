@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { createPortal } from "react-dom";
 import { useRobustInView } from "@/hooks/use-robust-in-view";
+import { hasVisibleText } from "@/lib/text-content";
 export interface MemberItem {
   name?: string;
   media?: (CloudinaryAsset & { resource_type?: string }) | null;
@@ -272,7 +273,7 @@ function PeopleShowcaseHero({
                         : "hidden"
                     }
                   >
-                    {member.fullname && (
+                    {hasVisibleText(member.fullname) && (
                       <h3 className="text-white font-semibold text-lg mb-2">
                         {member.fullname}
                       </h3>
@@ -409,9 +410,11 @@ function PeopleShowcaseHero({
                     ) : null}
                     <div className="flex flex-col max-w-2/3">
                       <p className="text-xxs mb-4 uppercase tracking-[0.04em] text-neutral-400">Team contact</p>
-                      <h3 className="text-lg font-semibold leading-tight">
-                        {activeModal.fullname || activeModal.name}
-                      </h3>
+                      {hasVisibleText(activeModal.fullname || activeModal.name) ? (
+                        <h3 className="text-lg font-semibold leading-tight">
+                          {activeModal.fullname || activeModal.name}
+                        </h3>
+                      ) : null}
                       {activeModal.position && (
                         <p className="text-xs mt-2 text-neutral-400">{activeModal.position}</p>
                       )}

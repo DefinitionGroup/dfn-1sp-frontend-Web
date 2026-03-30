@@ -10,6 +10,7 @@ import type {
   CloudinaryAsset,
 } from "@/types/sanity.types";
 import { assetUrl } from "@/utils/utils";
+import { hasVisibleText } from "@/lib/text-content";
 
 type CardsStepProps = {
   step: GalleryCardsStep & {
@@ -111,7 +112,7 @@ export default function CardsStep({ step }: CardsStepProps) {
               duration={0.5}
               distance={80}
             >
-              {title && (
+              {hasVisibleText(title) && (
                 <h2 className="text-7xl leading-compress text-neutral-900 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
                   {title}
                 </h2>

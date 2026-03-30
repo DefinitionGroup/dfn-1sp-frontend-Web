@@ -12,6 +12,7 @@ import PercentagePosNegDiagram from "@/components/ui/percentagePosNegDiagram";
 import { getTranslations } from "@/lib/translations";
 import { useParams } from "next/navigation";
 import { assetUrl } from "@/utils/utils";
+import { hasVisibleText } from "@/lib/text-content";
 
 interface CloudinaryAsset {
   public_id?: string;
@@ -141,9 +142,11 @@ export default function ResultsMetrics({
                 duration={0.5}
                 distance={80}
               >
-                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-2 text-gray-100 max-w-xl tracking-tight leading-[1.1]">
-                  {title}
-                </h2>
+                {hasVisibleText(title) ? (
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-2 text-gray-100 max-w-xl tracking-tight leading-[1.1]">
+                    {title}
+                  </h2>
+                ) : null}
                 {description && (
                   <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-xl leading-relaxed">
                     {description}
@@ -208,9 +211,11 @@ export default function ResultsMetrics({
                           duration={0.5}
                           distance={80}
                         >
-                          <h3 className="text-sm sm:text-base md:text-lg text-gray-200 tracking-tight leading-snug">
-                            {metric.label}
-                          </h3>
+                          {hasVisibleText(metric.label) ? (
+                            <h3 className="text-sm sm:text-base md:text-lg text-gray-200 tracking-tight leading-snug">
+                              {metric.label}
+                            </h3>
+                          ) : null}
                         </StaggeredSlideUp>
                       </div>
                     ))}

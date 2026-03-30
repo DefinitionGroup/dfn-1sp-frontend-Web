@@ -13,6 +13,7 @@ import { resolveLink } from "@/utils/utils";
 import type { CTA } from "@/types/sanity.types";
 import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
+import { hasVisibleText } from "@/lib/text-content";
 
 interface Service {
   _id: string;
@@ -175,9 +176,11 @@ export default function ChallengeAndSolution({
                 duration={0.5}
                 distance={80}
               >
-                <h2 className="text-3xl sm:text-4xl md:text-5xl text-gray-900 max-w-xl tracking-tight leading-[1.1] mb-4 md:mb-8">
-                  {title}
-                </h2>
+                {hasVisibleText(title) ? (
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl text-gray-900 max-w-xl tracking-tight leading-[1.1] mb-4 md:mb-8">
+                    {title}
+                  </h2>
+                ) : null}
                 {description && (
                   <p className="text-base sm:text-lg text-gray-800 max-w-lg leading-relaxed">
                     {description}
@@ -251,9 +254,11 @@ export default function ChallengeAndSolution({
                       duration={0.5}
                       distance={80}
                     >
-                      <h3 className="text-xl sm:text-2xl leading-tight text-gray-900 max-w-lg font-semibold tracking-tight mb-4 md:mb-6">
-                        {solutionHeadline || t.caseStudy.solution}
-                      </h3>
+                      {hasVisibleText(solutionHeadline || t.caseStudy.solution) ? (
+                        <h3 className="text-xl sm:text-2xl leading-tight text-gray-900 max-w-lg font-semibold tracking-tight mb-4 md:mb-6">
+                          {solutionHeadline || t.caseStudy.solution}
+                        </h3>
+                      ) : null}
                       <SolutionContent solution={solution} />
                     </StaggeredSlideUp>
                   )}
@@ -271,9 +276,11 @@ export default function ChallengeAndSolution({
                   duration={0.5}
                   distance={80}
                 >
-                  <h3 className="text-xl sm:text-2xl leading-tight text-gray-900 max-w-lg font-semibold tracking-tight mb-4 md:mb-6">
-                    {solutionHeadline || t.caseStudy.solution}
-                  </h3>
+                  {hasVisibleText(solutionHeadline || t.caseStudy.solution) ? (
+                    <h3 className="text-xl sm:text-2xl leading-tight text-gray-900 max-w-lg font-semibold tracking-tight mb-4 md:mb-6">
+                      {solutionHeadline || t.caseStudy.solution}
+                    </h3>
+                  ) : null}
                   <SolutionContent solution={solution} />
                 </StaggeredSlideUp>
               </div>

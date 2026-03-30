@@ -13,7 +13,7 @@ import { getPageBySlug, getAllCases } from "@/lib/sanity/queries";
 import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
-import { urlFor } from "@/sanity/lib/image";
+import { resolveImageUrl } from "@/sanity/lib/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
@@ -46,11 +46,12 @@ export async function generateMetadata({
 
   const title = page?.metadata?.title || "Cases";
   const description = page?.metadata?.description;
+  const ogImageUrl = resolveImageUrl(page?.metadata?.image, { width: 1200, height: 630 });
 
-  const ogImages = page?.metadata?.image
+  const ogImages = ogImageUrl
     ? [
       {
-        url: urlFor(page.metadata.image).width(1200).height(630).url(),
+        url: ogImageUrl,
         width: 1200,
         height: 630,
         alt: title,
@@ -113,6 +114,7 @@ export default async function CasesPage({
     allCaseItems,
   );
   const itemListId = `${CANONICAL_URL}/cases#case-list`;
+  const ogImageUrl = resolveImageUrl(page?.metadata?.image, { width: 1200, height: 630 });
 
   // LCP optimization: preload hero poster image
   const heroPreload = getHeroPreloadData(page?.content1sp as any[] | undefined);
@@ -126,9 +128,7 @@ export default async function CasesPage({
           slug: "cases",
           description: page?.metadata?.description,
           locale: language,
-          imageUrl: page?.metadata?.image
-            ? urlFor(page.metadata.image).width(1200).height(630).url()
-            : undefined,
+          imageUrl: ogImageUrl,
           mainEntityId: caseItems.length > 0 ? itemListId : undefined,
         })}
       />

@@ -5,6 +5,7 @@ import { useState, useRef, useId, useEffect, useCallback } from "react";
 import Image from "next/image";
 import DeferredVideo from "@/components/ui/DeferredVideo";
 import { useOutsideClick } from "@/hooks/use-outside-click";
+import { hasVisibleText } from "@/lib/text-content";
 
 // Hook to detect mobile screen
 function useIsMobile(breakpoint: number = 768) {
@@ -101,7 +102,11 @@ function ScrollHighlightItem({
 
 
       <div className=" flex  flex-col ">
-        <h3 className="skill-name relative leading-none font-medium max-w-[20ch] ">{skill.name}</h3>
+        {hasVisibleText(skill.name) ? (
+          <h3 className="skill-name relative leading-none font-medium max-w-[20ch] ">
+            {skill.name}
+          </h3>
+        ) : null}
 
         {isHighlighted && skill.text && (
           <motion.p

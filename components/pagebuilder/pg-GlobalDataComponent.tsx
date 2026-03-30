@@ -2,6 +2,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "motion/react";
 import dynamic from "next/dynamic";
+import { hasVisibleText } from "@/lib/text-content";
 
 const World = dynamic(
   () => import("@/components/ui/globe").then((m) => m.World),
@@ -101,9 +102,11 @@ export default function GlobalDataComponent({
           }}
           className="div"
         >
-          <h2 className="text-center text-xl md:text-5xl tracking-tight dark:text-white">
-            {title}
-          </h2>
+          {hasVisibleText(title) ? (
+            <h2 className="text-center text-xl md:text-5xl tracking-tight dark:text-white">
+              {title}
+            </h2>
+          ) : null}
           <p className="text-center text-base md:text-lg font-normal text-neutral-400 dark:text-neutral-200 max-w-md mt-2 mx-auto">
             {description}
           </p>
