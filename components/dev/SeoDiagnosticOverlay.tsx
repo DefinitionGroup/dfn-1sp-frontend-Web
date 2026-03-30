@@ -364,7 +364,7 @@ export default function SeoDiagnosticOverlay() {
           if (!isOpen) refreshSnapshot();
           setIsOpen((open) => !open);
         }}
-        className="fixed bottom-4 right-4 z-[1000010] rounded-full border border-lime-400/40 bg-neutral-950/90 px-4 py-2 text-xs font-semibold tracking-[0.14em] text-lime-400 shadow-[0_12px_32px_rgba(0,0,0,0.35)] backdrop-blur"
+        className="fixed bottom-6 right-20 z-[1000010] rounded-full border border-lime-400/40 bg-neutral-950/90 px-4 py-2  font-semibold tracking-[0.14em] text-xxs  text-lime-400 shadow-[0_12px_32px_rgba(0,0,0,0.35)] backdrop-blur"
       >
         SEO DIAG
       </button>

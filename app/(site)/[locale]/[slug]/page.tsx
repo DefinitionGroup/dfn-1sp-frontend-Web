@@ -23,7 +23,7 @@
  * - Full OpenGraph + Twitter card metadata for social sharing
  */
 import { PageBuilder } from "@/components/PageBuilder";
-import { getPageBySlug, getAllPageSlugs } from "@/lib/sanity/queries";
+import { getAllCases, getAllPageSlugs, getAllServices, getPageBySlug } from "@/lib/sanity/queries";
 import NotFound from "@/components/ui/not-found";
 import { cookies } from "next/headers";
 import SiteWrapper from "@/components/SiteWrapper";
@@ -36,7 +36,12 @@ import {
   generateWebPageJsonLd,
   generateBreadcrumbJsonLd,
   generateItemListJsonLd,
+  generateServiceCatalogJsonLd,
   extractCaseItemsFromContent,
+  hasAutoCaseListingBlocks,
+  hasServicesGalleryBlock,
+  mapCasesToItemList,
+  mapServicesToCatalogItems,
   extractPeopleFromContent,
   generatePeopleListJsonLd,
   extractUnitsFromContent,
@@ -131,9 +136,20 @@ export default async function Page({
   const page = await getPageBySlug(slug, channel, language);
 
   const navbarVariant = page?.navbarVariant || "light";
+  const contentBlocks = page?.content1sp as any[] | undefined;
+  const needsAllCases = hasAutoCaseListingBlocks(contentBlocks);
+  const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
+
+  const [allCasesRaw, allServicesRaw] = await Promise.all([
+    needsAllCases ? getAllCases(channel, language) : Promise.resolve([]),
+    hasServicesGallery ? getAllServices(language) : Promise.resolve([]),
+  ]);
 
   // LCP optimization: preload hero poster image
-  const heroPreload = getHeroPreloadData(page?.content1sp as any[] | undefined);
+  const heroPreload = getHeroPreloadData(contentBlocks);
+  const caseItems = extractCaseItemsFromContent(contentBlocks, mapCasesToItemList(allCasesRaw));
+  const services = mapServicesToCatalogItems(allServicesRaw);
+  const pageUrl = `${CANONICAL_URL}/${slug}`;
 
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
@@ -159,31 +175,38 @@ export default async function Page({
               },
               {
                 name: page.title || slug,
-                url: `${CANONICAL_URL}/${slug}`,
+                url: pageUrl,
               },
             ])}
           />
           {/* ItemList for case carousels / galleries on this page */}
-          {(() => {
-            const caseItems = extractCaseItemsFromContent(
-              page.content1sp as any[] | undefined,
-            );
-            return caseItems.length > 0 ? (
-              <JsonLdScript
-                data={generateItemListJsonLd({
-                  items: caseItems,
-                  locale: language,
-                })}
-              />
-            ) : null;
-          })()}
+          {caseItems.length > 0 && (
+            <JsonLdScript
+              data={generateItemListJsonLd({
+                items: caseItems,
+                locale: language,
+                id: `${pageUrl}#case-list`,
+              })}
+            />
+          )}
+          {services.length > 0 && (
+            <JsonLdScript
+              data={generateServiceCatalogJsonLd({
+                services,
+                locale: language,
+                id: `${pageUrl}#service-catalog`,
+                name: page.title || slug,
+                url: pageUrl,
+              })}
+            />
+          )}
           {/* Person & Unit structured data from page builder content */}
           {(() => {
-            const people = extractPeopleFromContent(page.content1sp as any[] | undefined);
+            const people = extractPeopleFromContent(contentBlocks);
             return people.length > 0 ? <JsonLdScript data={generatePeopleListJsonLd({ people })} /> : null;
           })()}
           {(() => {
-            const units = extractUnitsFromContent(page.content1sp as any[] | undefined);
+            const units = extractUnitsFromContent(contentBlocks);
             return units.length > 0 ? <JsonLdScript data={generateUnitsListJsonLd({ units })} /> : null;
           })()}
         </>

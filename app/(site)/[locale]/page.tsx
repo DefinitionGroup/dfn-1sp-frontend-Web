@@ -19,7 +19,7 @@
  * - OpenGraph + Twitter card metadata for social sharing
  * - Proper title template integration with root layout
  */
-import { getHomePage, getGlobalData } from "@/lib/sanity/queries";
+import { getAllCases, getAllServices, getHomePage, getGlobalData } from "@/lib/sanity/queries";
 import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
@@ -32,6 +32,11 @@ import {
   generateBreadcrumbJsonLd,
   generateItemListJsonLd,
   extractCaseItemsFromContent,
+  hasAutoCaseListingBlocks,
+  hasServicesGalleryBlock,
+  mapCasesToItemList,
+  mapServicesToCatalogItems,
+  generateServiceCatalogJsonLd,
   extractPeopleFromContent,
   generatePeopleListJsonLd,
   extractUnitsFromContent,
@@ -120,10 +125,20 @@ export default async function Home({
 
   // Structured data: get social links & logo (cached — deduped with SiteWrapper)
   const globalData = await getGlobalData(DEFAULT_CHANNEL, language);
+  const contentBlocks = page?.content1sp as any[] | undefined;
+  const needsAllCases = hasAutoCaseListingBlocks(contentBlocks);
+  const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
+
+  const [allCasesRaw, allServicesRaw] = await Promise.all([
+    needsAllCases ? getAllCases(DEFAULT_CHANNEL, language) : Promise.resolve([]),
+    hasServicesGallery ? getAllServices(language) : Promise.resolve([]),
+  ]);
 
   // LCP optimization: preload hero poster image so the browser discovers it
   // during HTML parsing, well before JavaScript mounts the client component.
-  const heroPreload = getHeroPreloadData(page?.content1sp as any[] | undefined);
+  const heroPreload = getHeroPreloadData(contentBlocks);
+  const caseItems = extractCaseItemsFromContent(contentBlocks, mapCasesToItemList(allCasesRaw));
+  const services = mapServicesToCatalogItems(allServicesRaw);
 
   return (
     <SiteWrapper
@@ -148,28 +163,34 @@ export default async function Home({
         ])}
       />
       {/* ItemList for case carousels / galleries on the homepage */}
-      {(() => {
-        const caseItems = extractCaseItemsFromContent(
-          page?.content1sp as any[] | undefined,
-        );
-        return caseItems.length > 0 ? (
-          <JsonLdScript
-            data={generateItemListJsonLd({
-              items: caseItems,
-              locale: language,
-              listName: "Featured Case Studies",
-            })}
-          />
-        ) : null;
-      })()}
+      {caseItems.length > 0 && (
+        <JsonLdScript
+          data={generateItemListJsonLd({
+            items: caseItems,
+            locale: language,
+            listName: "Featured Case Studies",
+          })}
+        />
+      )}
+      {services.length > 0 && (
+        <JsonLdScript
+          data={generateServiceCatalogJsonLd({
+            services,
+            locale: language,
+            id: `${CANONICAL_URL}#homepage-service-catalog`,
+            name: "Services",
+            url: CANONICAL_URL,
+          })}
+        />
+      )}
 
       {/* Person & Unit structured data from page builder content */}
       {(() => {
-        const people = extractPeopleFromContent(page?.content1sp as any[] | undefined);
+        const people = extractPeopleFromContent(contentBlocks);
         return people.length > 0 ? <JsonLdScript data={generatePeopleListJsonLd({ people })} /> : null;
       })()}
       {(() => {
-        const units = extractUnitsFromContent(page?.content1sp as any[] | undefined);
+        const units = extractUnitsFromContent(contentBlocks);
         return units.length > 0 ? <JsonLdScript data={generateUnitsListJsonLd({ units })} /> : null;
       })()}
 
