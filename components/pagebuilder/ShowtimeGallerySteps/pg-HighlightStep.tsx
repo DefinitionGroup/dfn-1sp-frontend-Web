@@ -10,12 +10,13 @@ import type {
   GalleryScrollHighlightStep,
   CloudinaryAsset,
 } from "@/types/sanity.types";
-import { assetUrl, resolveLink } from "@/utils/utils";
+import { assetUrl, resolveLink, withCacheKey } from "@/utils/utils";
 import { useParams } from "next/navigation";
 
 type RawItem =
   | string
   | {
+    _updatedAt?: string;
     _type?: string;
     name?: string;
     text?: string;
@@ -57,7 +58,10 @@ export default function HighlightStep({
       }
       // Handle Services references
       if (it?._type === "services") {
-        const url = assetUrl((it.serviceBackground as any)?.asset);
+        const url = withCacheKey(
+          assetUrl((it.serviceBackground as any)?.asset),
+          it._updatedAt
+        );
         const isVideo = url
           ? /\.(mp4|webm|mov|ogg)$/i.test(url) || url.includes("/video/")
           : false;

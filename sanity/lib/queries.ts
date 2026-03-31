@@ -160,6 +160,7 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
             textItems,
             serviceItems[]->{
               _id,
+              _updatedAt,
               _type,
               name,
               taglabel,
@@ -267,6 +268,7 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
         textItems,
         serviceItems[]->{
           _id,
+          _updatedAt,
           _type,
           name,
           taglabel,
@@ -464,6 +466,7 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
             textItems,
             serviceItems[]->{
               _id,
+              _updatedAt,
               _type,
               name,
               taglabel,
@@ -535,6 +538,7 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
         textItems,
         serviceItems[]->{
           _id,
+          _updatedAt,
           _type,
           name,
           taglabel,
@@ -847,6 +851,7 @@ count(*[_type == "caseStudy" && channel match $channel && language == $language 
 export const SERVICES_QUERY = defineQuery(`
 *[_type == "services" && language == $language] | order(name asc){
   _id,
+  _updatedAt,
   name,
   taglabel,
   "iconUrl": serviceicon.asset.secure_url,
