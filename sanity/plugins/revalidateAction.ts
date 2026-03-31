@@ -1,4 +1,5 @@
 import { DocumentActionComponent } from 'sanity'
+import { getRevalidationBaseUrl } from '@/lib/site-url'
 
 export const revalidateAction: DocumentActionComponent = (props) => {
     const { id, type, draft, published } = props
@@ -14,10 +15,7 @@ export const revalidateAction: DocumentActionComponent = (props) => {
             }
 
             try {
-                // Get the deployment URL from environment
-                const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
-                    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-                    : 'http://localhost:3000'
+                const baseUrl = getRevalidationBaseUrl()
 
                 const response = await fetch(`${baseUrl}/api/revalidate`, {
                     method: 'POST',
