@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import type { Metadata } from "next";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import CookiebotBanner from "@/components/CookiebotBanner";
 
 const aspekta = localFont({
   src: [
@@ -58,7 +59,9 @@ export default function RootLayout({
       className={`${aspekta.variable} `}
       suppressHydrationWarning
     >
-      <head />
+      <head>
+        <CookiebotBanner />
+      </head>
       <body className="antialiased" suppressHydrationWarning>
         {children} <SpeedInsights />
       </body>
