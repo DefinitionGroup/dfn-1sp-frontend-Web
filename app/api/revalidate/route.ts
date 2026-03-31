@@ -210,8 +210,9 @@ async function handleRevalidation(body: SanityWebhookBody) {
         case "services":
             // Services affect: their own page + nav overlay + any page showing services
             revalidateTag("services");
+            revalidateTag("pages");
             revalidateTag("global"); // Services appear in nav overlay
-            revalidatedTags.push("services", "global");
+            revalidatedTags.push("services", "pages", "global");
 
             pushPath("/services");
             break;
@@ -219,7 +220,8 @@ async function handleRevalidation(body: SanityWebhookBody) {
         case "serviceGroup":
             // Service groups affect service listings
             revalidateTag("services");
-            revalidatedTags.push("services");
+            revalidateTag("pages");
+            revalidatedTags.push("services", "pages");
 
             pushPath("/services");
             break;

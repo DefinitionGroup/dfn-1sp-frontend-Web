@@ -7,7 +7,7 @@ import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-r
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import Image from "next/image";
 import DeferredVideo from "@/components/ui/DeferredVideo";
-import { cloudinaryPosterUrl } from "@/utils/utils";
+import { cloudinaryPosterUrl, withCacheKey } from "@/utils/utils";
 import { useRobustInView } from "@/hooks/use-robust-in-view";
 import type { CloudinaryImage, Service } from "@/types/sanity.types";
 
@@ -109,14 +109,21 @@ export default function ServiceGalleryComponent({
 
   useOutsideClick(ref, () => setActive(null));
 
+  const activeCacheKey = active?._updatedAt;
   const activeBg =
-    active?.serviceBackground?.asset?.secure_url ||
-    active?.serviceBackground?.asset?.url ||
-    active?.iconUrl;
+    withCacheKey(
+      active?.serviceBackground?.asset?.secure_url ||
+        active?.serviceBackground?.asset?.url ||
+        active?.iconUrl,
+      activeCacheKey
+    );
   const activeIcon =
-    active?.serviceicon?.asset?.secure_url ||
-    active?.serviceicon?.asset?.url ||
-    active?.iconUrl;
+    withCacheKey(
+      active?.serviceicon?.asset?.secure_url ||
+        active?.serviceicon?.asset?.url ||
+        active?.iconUrl,
+      activeCacheKey
+    );
   const activeObjectPosition = getObjectPosition(active?.serviceBackground);
   const visibleItems =
     shouldRenderAll || !Number.isFinite(initialVisibleCount)
@@ -293,14 +300,19 @@ export default function ServiceGalleryComponent({
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto w-full min-h-full"
         >
           {visibleItems.map((item) => {
-            const bg =
+            const cacheKey = item._updatedAt;
+            const bg = withCacheKey(
               item.serviceBackground?.asset?.secure_url ||
-              item.serviceBackground?.asset?.url ||
-              item.iconUrl;
-            const icon =
+                item.serviceBackground?.asset?.url ||
+                item.iconUrl,
+              cacheKey
+            );
+            const icon = withCacheKey(
               item.serviceicon?.asset?.secure_url ||
-              item.serviceicon?.asset?.url ||
-              item.iconUrl;
+                item.serviceicon?.asset?.url ||
+                item.iconUrl,
+              cacheKey
+            );
             const objectPosition = getObjectPosition(item.serviceBackground);
 
             return (

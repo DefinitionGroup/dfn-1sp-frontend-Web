@@ -1,6 +1,19 @@
 export const assetUrl = (a?: { secure_url?: string; url?: string } | null) =>
     a?.secure_url || a?.url || undefined;
 
+export const withCacheKey = (url?: string, cacheKey?: string) => {
+    if (!url || !cacheKey) return url;
+
+    try {
+        const nextUrl = new URL(url);
+        nextUrl.searchParams.set("v", cacheKey);
+        return nextUrl.toString();
+    } catch {
+        const separator = url.includes("?") ? "&" : "?";
+        return `${url}${separator}v=${encodeURIComponent(cacheKey)}`;
+    }
+};
+
 /**
  * Optimizes a Cloudinary video URL by injecting transformation parameters.
  *

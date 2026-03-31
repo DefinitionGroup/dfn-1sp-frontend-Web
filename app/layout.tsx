@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   metadataBase: getMetadataBaseUrl(),
   title: {
     default: "1SP Agency | People-Powered Brand Engagement",
-    template: "%s | 1SP Agency",
+    template: "%s",
   },
   description:
     "1SP is a full-service agency specializing in brand engagement, experiential marketing, creative content, and talent management.",

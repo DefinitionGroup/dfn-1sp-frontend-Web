@@ -591,6 +591,7 @@ export interface GlobeComponent {
 
 export interface Service {
     _id: string;
+    _updatedAt?: string;
     name: string;
     taglabel?: string;
     iconUrl?: string;
