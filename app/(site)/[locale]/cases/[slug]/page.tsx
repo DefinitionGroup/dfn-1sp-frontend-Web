@@ -23,7 +23,7 @@
  * - Canonical URLs to prevent duplicate content
  * - Twitter card metadata for social sharing
  */
-import { getCaseBySlug, getAllCaseSlugs } from "@/lib/sanity/queries";
+import { getCaseBySlug, getAllCaseSlugs, getAllCases } from "@/lib/sanity/queries";
 import { notFound } from "next/navigation";
 import CaseStudyPageClient from "./CaseStudyPageClient";
 import SiteWrapper from "@/components/SiteWrapper";
@@ -134,17 +134,47 @@ export default async function CaseStudyPage({
   const language = locale || "en";
 
   // Uses cached fetch from centralized data layer
-  const caseStudy = await getCaseBySlug(slug, channel, language);
+  const [caseStudy, overlayCasesRaw] = await Promise.all([
+    getCaseBySlug(slug, channel, language),
+    getAllCases(channel, language),
+  ]);
 
   if (!caseStudy) {
     notFound();
   }
+
+  const overlayCaseStudies = (overlayCasesRaw || []).map((item: any) => ({
+    _id: item._id,
+    title: item.title,
+    subtitle: item.subtitle,
+    slug: item.slug,
+    description: item.description,
+    services: Array.isArray(item.services)
+      ? item.services.map((service: any) => ({
+          _id: service._id,
+          name: service.name,
+          taglabel: service.taglabel,
+        }))
+      : [],
+    mainImageUrl: item.mainImageUrl,
+    mainVideoUrl: item.mainVideoUrl,
+    client: item.client
+      ? {
+          _id: item.client._id,
+          name: item.client.name,
+          logoUrl: item.client.logoUrl,
+        }
+      : undefined,
+    websiteUrl: item.websiteUrl,
+    websiteUrlText: item.websiteUrlText,
+  }));
 
   return (
     <SiteWrapper
       channel={channel}
       language={language}
       navColor="light"
+      overlayCaseStudies={overlayCaseStudies}
     >
       {/* Structured Data (JSON-LD) */}
       <JsonLdScript

@@ -112,7 +112,7 @@ export default function ApproachSection({
                 </h2>
               ) : null}
               {hasVisibleText(subHeadline) && (
-                <h2 className="text-3xl md:text-5xl text-gray-100 max-w-2xl tracking-tight leading-compress mb-4">
+                <h2 className="text-3xl md:text-5xl text-gray-100 max-w-2xl tracking-tight leading-none mb-2 pb-2">
                   {subHeadline}
                 </h2>
               )}
