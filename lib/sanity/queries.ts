@@ -234,6 +234,7 @@ export const getGlobalData = cache(
     const { data } = await sanityFetch({
       query: GLOBAL_DATA_QUERY,
       params: { channel, language },
+      tags: ["global"],
     });
 
     return (data as GlobalData) || {
@@ -263,6 +264,7 @@ export const getPageBySlug = cache(
     const { data } = await sanityFetch({
       query: PAGE_QUERY,
       params: { slug, channel, language },
+      tags: ["pages", `page:${slug}`],
     });
 
     return data;
@@ -284,6 +286,7 @@ export const getHomePage = cache(async (channel: string, language: string) => {
   const { data } = await sanityFetch({
     query: HOME_PAGE_QUERY,
     params: { channel, language },
+    tags: ["pages"],
   });
 
   return data;
@@ -302,6 +305,7 @@ export const getCaseBySlug = cache(async (slug: string, channel: string, languag
   const { data } = await sanityFetch({
     query: CASE_STUDY_BY_SLUG_QUERY,
     params: { slug, channel, language },
+    tags: ["cases", `case:${slug}`],
   });
 
   return data;
@@ -319,6 +323,7 @@ export const getAllCases = cache(async (channel: string, language: string) => {
   const { data } = await sanityFetch({
     query: CASE_STUDIES_QUERY,
     params: { channel, language },
+    tags: ["cases"],
   });
 
   return data || [];
@@ -335,6 +340,7 @@ export const getAllServices = cache(async (language: string) => {
   const { data } = await sanityFetch({
     query: SERVICES_QUERY,
     params: { language },
+    tags: ["services"],
   });
 
   return data || [];
@@ -347,13 +353,14 @@ export const getSmartPeople = cache(
   ) => {
     const { SMART_PEOPLE_QUERY } = await import("@/sanity/lib/queries");
 
-    const { data } = await sanityFetch({
-      query: SMART_PEOPLE_QUERY,
-      params: {
-        channel,
-        maxItems: Math.max(0, maxItems - 1),
-      },
-    });
+      const { data } = await sanityFetch({
+        query: SMART_PEOPLE_QUERY,
+        params: {
+          channel,
+          maxItems: Math.max(0, maxItems - 1),
+        },
+        tags: ["people"],
+      });
 
     return data || [];
   }
@@ -382,6 +389,7 @@ export const getSmartUnits = cache(
         language,
         maxItems: Math.max(0, maxItems - 1),
       },
+      tags: ["units"],
     });
 
     return data || [];
@@ -397,6 +405,7 @@ export const getUnitLogoGridUnits = cache(async (language: string, maxItems: num
       language,
       maxItems: Math.max(0, maxItems - 1),
     },
+    tags: ["units"],
   });
 
   return data || [];
@@ -408,6 +417,7 @@ export const getUnitLogoFloatUnits = cache(async (language: string, maxItems: nu
   const { data } = await sanityFetch({
     query: UNIT_LOGO_FLOAT_QUERY,
     params: { language, maxItems },
+    tags: ["units"],
   });
 
   return data || [];
@@ -423,6 +433,7 @@ export const getCaseStudiesByIds = cache(async (ids: string[]) => {
   const { data } = await sanityFetch({
     query: CASE_STUDIES_BY_IDS_QUERY,
     params: { ids },
+    tags: ["cases"],
   });
 
   return data || [];
@@ -442,6 +453,7 @@ export const getInteractiveCarouselCases = cache(
     const { data } = await sanityFetch({
       query: defineQuery(getInteractiveCarouselQuery(carouselField)),
       params: { language, maxItems },
+      tags: ["cases"],
     });
 
     return data || [];
