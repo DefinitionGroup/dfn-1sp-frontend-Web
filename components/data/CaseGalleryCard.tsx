@@ -102,7 +102,7 @@ export default function CaseGalleryCard({
               className={` min-w-[144px] max-w-[144px] h-7 object-contain object-left ${variant !== "light" ? "" : "invert"
                 }`}
             />
-          ) : null}   <Link href={`/${locale}/cases/${item.slug?.current}`} className="contents">
+          ) : null}   <Link href={`/cases/${item.slug?.current}`} className="contents">
             <motion.h3
               layoutId={`title-${item.title}-${id}`}
               className={`font-medium md:ext-lg leading-snug max-w-[350px] tracking-tight ${variant !== "light" ? "" : "invert"

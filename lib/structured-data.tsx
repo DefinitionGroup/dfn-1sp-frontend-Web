@@ -66,6 +66,11 @@ export interface ServiceForCatalog {
   groupNames?: string[];
 }
 
+interface LocationForSchema {
+  name?: string | null;
+  address?: string | null;
+}
+
 // =============================================================================
 // COMPONENT
 // =============================================================================
@@ -92,6 +97,13 @@ export function JsonLdScript({ data }: { data: JsonLdEntity | JsonLdEntity[] }) 
  */
 export function getBreadcrumbLabel(locale: string, key: string): string {
   return BREADCRUMB_LABELS[locale]?.[key] || BREADCRUMB_LABELS.en[key] || key;
+}
+
+function toSchemaFragment(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "") || "item";
 }
 
 // =============================================================================
@@ -327,26 +339,85 @@ export function generateServiceCatalogJsonLd(options: {
     url = `${CANONICAL_URL}/services`,
   } = options;
 
+  const catalogId = id || `${url}#service-catalog`;
+  const serviceIds = services.map((service, index) =>
+    `${catalogId}-service-${index + 1}-${toSchemaFragment(service.name)}`
+  );
+
   return {
     "@context": "https://schema.org",
-    "@type": "OfferCatalog",
-    ...(id && { "@id": id }),
-    name,
-    url,
-    inLanguage: locale,
-    itemListOrder: "https://schema.org/ItemListOrderAscending",
-    numberOfItems: services.length,
-    itemListElement: services.map((service, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      item: {
+    "@graph": [
+      {
+        "@type": "OfferCatalog",
+        "@id": catalogId,
+        name,
+        url,
+        inLanguage: locale,
+        itemListOrder: "https://schema.org/ItemListOrderAscending",
+        numberOfItems: services.length,
+        itemListElement: services.map((service, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          item: {
+            "@id": serviceIds[index],
+          },
+        })),
+      },
+      ...services.map((service, index) => ({
         "@type": "Service",
+        "@id": serviceIds[index],
         name: service.name,
+        url,
         ...(service.description && { description: service.description }),
         ...(service.imageUrl && { image: service.imageUrl }),
         ...(service.groupNames?.length && { category: service.groupNames }),
         provider: { "@id": `${CANONICAL_URL}/#organization` },
-      },
+      })),
+    ],
+  };
+}
+
+export function generateLocalBusinessJsonLd(options: {
+  locations?: LocationForSchema[] | null;
+  socialLinks?: Array<{ url: string }> | null;
+}): JsonLdEntity {
+  const locations = options.locations?.filter(
+    (location) => location?.name || location?.address
+  ) || [];
+
+  const baseBusiness = {
+    "@type": ["LocalBusiness", "ProfessionalService", "MarketingAgency"],
+    name: SITE_NAME,
+    url: CANONICAL_URL,
+    parentOrganization: { "@id": `${CANONICAL_URL}/#organization` },
+    ...(options.socialLinks?.length && {
+      sameAs: options.socialLinks.map((link) => link.url),
+    }),
+  };
+
+  if (locations.length === 0) {
+    return {
+      "@context": "https://schema.org",
+      "@id": `${CANONICAL_URL}/#local-business`,
+      ...baseBusiness,
+    };
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": locations.map((location, index) => ({
+      "@id": `${CANONICAL_URL}/#local-business-${index + 1}-${toSchemaFragment(
+        location.name || location.address || "location"
+      )}`,
+      ...baseBusiness,
+      ...(location.name && { branchOf: { "@id": `${CANONICAL_URL}/#organization` } }),
+      ...(location.name && { name: `${SITE_NAME} ${location.name}` }),
+      ...(location.address && {
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: location.address,
+        },
+      }),
     })),
   };
 }

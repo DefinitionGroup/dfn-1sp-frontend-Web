@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { CANONICAL_SITE_URL } from "@/lib/site-url";
 
 /**
  * Middleware — locale-free public URLs
@@ -12,8 +13,24 @@ import type { NextRequest } from "next/server";
  */
 export default function middleware(req: NextRequest) {
     const { pathname, search } = req.nextUrl;
+    const canonicalUrl = new URL(CANONICAL_SITE_URL);
+    const canonicalHost = canonicalUrl.hostname.toLowerCase();
+    const requestHost = req.nextUrl.hostname.toLowerCase();
 
     const locale = "en";
+
+    // Canonicalize www/non-www variants to the configured production hostname.
+    const stripWww = (host: string) => host.replace(/^www\./, "");
+    if (
+        stripWww(requestHost) === stripWww(canonicalHost) &&
+        requestHost !== canonicalHost
+    ) {
+        const url = req.nextUrl.clone();
+        url.protocol = canonicalUrl.protocol;
+        url.hostname = canonicalUrl.hostname;
+        url.search = search;
+        return NextResponse.redirect(url, 301);
+    }
 
     // Skip locale logic for API, TRPC, and Studio presentation routes
     const localePrefixedApiOrTrpc = /^\/[a-z]{2}(?:-[A-Z]{2})?\/(api|trpc)(\/|$)/.test(pathname);

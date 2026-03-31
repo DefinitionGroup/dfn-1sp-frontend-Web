@@ -37,12 +37,10 @@ interface UIItem {
 }
 
 interface SmartCarouselProps {
-  language?: string;
   caseStudies?: CaseStudy[];
 }
 
 export default function SmartCarousel({
-  language = "en",
   caseStudies = [],
 }: SmartCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -60,7 +58,7 @@ export default function SmartCarousel({
         const logosrc = assetUrl(cs.client?.logo);
         const video = assetUrl(cs.mainVideo);
         const linkHref = cs.slug?.current
-          ? `/${language}/cases/${cs.slug.current}`
+          ? `/cases/${cs.slug.current}`
           : undefined;
 
         // Skip items without valid image or video
@@ -83,7 +81,7 @@ export default function SmartCarousel({
         } as UIItem;
       })
       .filter((x): x is UIItem => x !== null);
-  }, [caseStudies, language]);
+  }, [caseStudies]);
 
   const clearAutoPlay = () => {
     if (autoPlayRef.current) {

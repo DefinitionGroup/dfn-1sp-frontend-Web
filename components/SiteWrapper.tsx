@@ -34,6 +34,10 @@ import ScrollToTop from "./ui/ScrollToTop";
 import { FooterMenuProvider } from "./menu/FooterMenuContext";
 import { NavbarMenuProvider } from "./menu/NavbarMenuContext";
 import { NavColorProvider } from "./menu/NavColorContext";
+import {
+  JsonLdScript,
+  generateLocalBusinessJsonLd,
+} from "@/lib/structured-data";
 
 type OverlayCaseStudy = {
   _id: string;
@@ -89,6 +93,12 @@ export default async function SiteWrapper({
       >
         <NavColorProvider color={navColor}>
           <PageWithMapVertical>
+            <JsonLdScript
+              data={generateLocalBusinessJsonLd({
+                locations: footer?.locations,
+                socialLinks: footer?.socialLinks,
+              })}
+            />
             <FrontNavOverlay
               menuData={nav as NavbarMenu}
               color={navColor}
