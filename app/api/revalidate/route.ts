@@ -90,7 +90,15 @@ export async function POST(req: NextRequest) {
                 );
             }
 
-            await handleRevalidation(body);
+            const result = await handleRevalidation(body);
+
+            return NextResponse.json({
+                success: true,
+                revalidated: true,
+                now: Date.now(),
+                message: "Cache revalidated successfully",
+                ...result,
+            });
         } else {
             // Fallback: check for secret in query or body (less secure)
             const { searchParams } = new URL(req.url);
@@ -104,15 +112,16 @@ export async function POST(req: NextRequest) {
             }
 
             const body = (await req.json()) as SanityWebhookBody;
-            await handleRevalidation(body);
-        }
+            const result = await handleRevalidation(body);
 
-        return NextResponse.json({
-            success: true,
-            revalidated: true,
-            now: Date.now(),
-            message: "Cache revalidated successfully",
-        });
+            return NextResponse.json({
+                success: true,
+                revalidated: true,
+                now: Date.now(),
+                message: "Cache revalidated successfully",
+                ...result,
+            });
+        }
     } catch (err) {
         console.error("Error in revalidate webhook:", err);
         return NextResponse.json(
@@ -129,6 +138,10 @@ async function handleRevalidation(body: SanityWebhookBody) {
     const { _type, slug, language } = body;
     const revalidatedTags: string[] = [];
     const revalidatedPaths: string[] = [];
+    const pushPath = (path: string, type?: "layout" | "page") => {
+        revalidatePath(path, type);
+        revalidatedPaths.push(type ? `${path} (${type})` : path);
+    };
 
     console.log(`[Revalidate] Processing: ${_type}${slug?.current ? ` (${slug.current})` : ""} [${language || "all"}]`);
 
@@ -160,9 +173,8 @@ async function handleRevalidation(body: SanityWebhookBody) {
             }
 
             // Also invalidate path for this specific page
-            if (slug?.current && language) {
-                revalidatePath(`/${language}/${slug.current}`);
-                revalidatedPaths.push(`/${language}/${slug.current}`);
+            if (slug?.current) {
+                pushPath(`/${slug.current}`);
             }
             break;
 
@@ -177,17 +189,11 @@ async function handleRevalidation(body: SanityWebhookBody) {
                 revalidateTag(`case:${slug.current}`);
                 revalidatedTags.push(`case:${slug.current}`);
 
-                if (language) {
-                    revalidatePath(`/${language}/cases/${slug.current}`);
-                    revalidatedPaths.push(`/${language}/cases/${slug.current}`);
-                }
+                pushPath(`/cases/${slug.current}`);
             }
 
             // Invalidate cases listing page
-            if (language) {
-                revalidatePath(`/${language}/cases`);
-                revalidatedPaths.push(`/${language}/cases`);
-            }
+            pushPath("/cases");
             break;
 
         case "person":
@@ -195,9 +201,8 @@ async function handleRevalidation(body: SanityWebhookBody) {
             revalidateTag("people");
             revalidatedTags.push("people");
 
-            if (slug?.current && language) {
-                revalidatePath(`/${language}/people/${slug.current}`);
-                revalidatedPaths.push(`/${language}/people/${slug.current}`);
+            if (slug?.current) {
+                pushPath(`/people/${slug.current}`);
             }
             break;
 
@@ -208,10 +213,7 @@ async function handleRevalidation(body: SanityWebhookBody) {
             revalidateTag("global"); // Services appear in nav overlay
             revalidatedTags.push("services", "global");
 
-            if (language) {
-                revalidatePath(`/${language}/services`);
-                revalidatedPaths.push(`/${language}/services`);
-            }
+            pushPath("/services");
             break;
 
         case "serviceGroup":
@@ -219,10 +221,7 @@ async function handleRevalidation(body: SanityWebhookBody) {
             revalidateTag("services");
             revalidatedTags.push("services");
 
-            if (language) {
-                revalidatePath(`/${language}/services`);
-                revalidatedPaths.push(`/${language}/services`);
-            }
+            pushPath("/services");
             break;
 
         case "menu":
@@ -232,13 +231,7 @@ async function handleRevalidation(body: SanityWebhookBody) {
             revalidatedTags.push("global");
 
             // Also invalidate layout to refresh nav/footer everywhere
-            if (language) {
-                revalidatePath(`/${language}`, "layout");
-                revalidatedPaths.push(`/${language} (layout)`);
-            } else {
-                revalidatePath("/", "layout");
-                revalidatedPaths.push("/ (layout)");
-            }
+            pushPath("/", "layout");
             break;
 
         case "siteSettings":
@@ -250,8 +243,7 @@ async function handleRevalidation(body: SanityWebhookBody) {
             revalidateTag("services");
             revalidatedTags.push("global", "pages", "cases", "services");
 
-            revalidatePath("/", "layout");
-            revalidatedPaths.push("/ (layout)");
+            pushPath("/", "layout");
             break;
 
         case "unit":
@@ -271,10 +263,7 @@ async function handleRevalidation(body: SanityWebhookBody) {
             revalidateTag("pages");
             revalidatedTags.push("pages");
 
-            if (language) {
-                revalidatePath(`/${language}`, "layout");
-                revalidatedPaths.push(`/${language} (layout)`);
-            }
+            pushPath("/", "layout");
     }
 
     // Log what was revalidated for debugging
@@ -282,4 +271,6 @@ async function handleRevalidation(body: SanityWebhookBody) {
     if (revalidatedPaths.length > 0) {
         console.log(`[Revalidate] Paths: [${revalidatedPaths.join(", ")}]`);
     }
+
+    return { revalidatedTags, revalidatedPaths };
 }

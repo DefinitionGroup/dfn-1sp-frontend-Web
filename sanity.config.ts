@@ -11,6 +11,7 @@ import { documentInternationalization } from "@sanity/document-internationalizat
 import { cloudinarySchemaPlugin } from "sanity-plugin-cloudinary";
 import { presentationTool } from 'sanity/presentation'
 import { syncServiceGroupRelationships } from './sanity/lib/syncRelationships'
+import { revalidateAction } from './sanity/plugins/revalidateAction'
 
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
 import { apiVersion, dataset, projectId } from './sanity/env'
@@ -104,7 +105,11 @@ export default defineConfig({
 
       // Add our custom sync action for documents with bidirectional relationships
       if (schemaType === 'services' || schemaType === 'serviceGroup' || schemaType === 'unit' || schemaType === 'caseStudy' || schemaType === 'client' || schemaType === 'person') {
-        return [...prev, syncServiceGroupRelationships]
+        return [...prev, syncServiceGroupRelationships, revalidateAction]
+      }
+
+      if (schemaType === 'page' || schemaType === 'menu') {
+        return [...prev, revalidateAction]
       }
 
       return prev
