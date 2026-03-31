@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import type { Metadata } from "next";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import CookiebotBanner from "@/components/CookiebotBanner";
 import { getMetadataBaseUrl } from "@/lib/site-url";
 
@@ -52,7 +53,9 @@ export default function RootLayout({
         <CookiebotBanner />
       </head>
       <body className="antialiased" suppressHydrationWarning>
-        {children} <SpeedInsights />
+        {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
