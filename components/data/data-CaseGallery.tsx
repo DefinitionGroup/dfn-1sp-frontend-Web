@@ -76,7 +76,7 @@ export default function CaseGalleryComponent({
     document.body.style.overflow = "auto";
     setActive(null);
     setTimeout(() => {
-      router.push(`/${locale}/cases/${slug}`);
+      router.push(`/cases/${slug}`);
     }, 50);
   };
 

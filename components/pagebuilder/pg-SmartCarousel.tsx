@@ -50,7 +50,7 @@ function SmartCarouselWrapper(props: Props) {
 
   return (
     <div {...navPointDataAttr}>
-      <SmartCarouselData language={language} caseStudies={caseStudies} />
+      <SmartCarouselData caseStudies={caseStudies} />
     </div>
   );
 }
