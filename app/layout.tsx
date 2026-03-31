@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import CookiebotBanner from "@/components/CookiebotBanner";
+import { getMetadataBaseUrl } from "@/lib/site-url";
 
 const aspekta = localFont({
   src: [
@@ -14,21 +15,8 @@ const aspekta = localFont({
   weight: "50 1000",
 });
 
-/**
- * Base URL for generating absolute URLs in metadata (OG images, canonicals).
- *
- * - In production:  uses NEXT_PUBLIC_VERCEL_URL (set by Vercel)
- * - In development: falls back to localhost
- */
-const getBaseUrl = () => {
-  if (process.env.NEXT_PUBLIC_VERCEL_URL) {
-    return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
-  }
-  return "http://localhost:3000";
-};
-
 export const metadata: Metadata = {
-  metadataBase: new URL(getBaseUrl()),
+  metadataBase: getMetadataBaseUrl(),
   title: {
     default: "1SP Agency | People-Powered Brand Engagement",
     template: "%s | 1SP Agency",
