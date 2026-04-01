@@ -7,4 +7,9 @@ export const { sanityFetch, SanityLive } = defineLive({
   client,
   serverToken: token,
   browserToken: token,
+  fetchOptions: {
+    // Keep tag-based invalidation, but also give production a TTL fallback so
+    // referenced Sanity content recovers even if a webhook/manual revalidate is missed.
+    revalidate: 60,
+  },
 })
