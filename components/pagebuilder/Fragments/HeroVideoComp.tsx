@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
     optimizedVideoUrl,
@@ -25,6 +25,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     const videoRef = useRef<HTMLVideoElement>(null);
     const posterImgRef = useRef<HTMLImageElement>(null);
 
+    const [isMobile, setIsMobile] = useState(false);
     const [videoMounted, setVideoMounted] = useState(false);
     const [videoReady, setVideoReady] = useState(false);
     const [posterLoaded, setPosterLoaded] = useState(!useVideo);
@@ -44,7 +45,12 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
             portrait: true,
         })
         : undefined;
-    const posterFallback = posterDesktop ?? posterMobile;
+    const posterFallback = isMobile
+        ? posterMobile ?? posterDesktop
+        : posterDesktop ?? posterMobile;
+    const posterSrcSet = isMobile
+        ? srcSetMobile ?? srcSetDesktop
+        : srcSetDesktop ?? srcSetMobile;
 
     // --- Optimized video URLs ---
     const videoUrlDesktop = optimizedVideoUrl(videoSrc, {
@@ -57,6 +63,25 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
         quality: "eco",
     });
 
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+
+        const mediaQueryList = window.matchMedia("(max-width: 768px)");
+        const updateIsMobile = (event?: MediaQueryListEvent) => {
+            setIsMobile(event?.matches ?? mediaQueryList.matches);
+        };
+
+        updateIsMobile();
+
+        if (typeof mediaQueryList.addEventListener === "function") {
+            mediaQueryList.addEventListener("change", updateIsMobile);
+            return () => mediaQueryList.removeEventListener("change", updateIsMobile);
+        }
+
+        mediaQueryList.addListener(updateIsMobile);
+        return () => mediaQueryList.removeListener(updateIsMobile);
+    }, []);
+
     // Detect poster loaded from cache
     useEffect(() => {
         if (!useVideo || posterLoaded) return;
@@ -64,50 +89,67 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
             setPosterLoaded(true);
             return;
         }
-        // Safety: don't block video mount forever
-        const timer = window.setTimeout(() => setPosterLoaded(true), 1500);
+        // Safety: don't block video mount forever if the poster is slow.
+        const timer = window.setTimeout(() => setPosterLoaded(true), 900);
         return () => window.clearTimeout(timer);
     }, [useVideo, posterLoaded]);
 
-    // Defer video mount until after poster paints as LCP
+    // Mount shortly after the poster has painted so the hero still becomes LCP
+    // without making video startup dependent on an idle callback.
     useEffect(() => {
         if (!useVideo || videoMounted || !posterLoaded) return;
 
-        const win = window as Window & {
-            requestIdleCallback?: (
-                cb: IdleRequestCallback,
-                opts?: IdleRequestOptions,
-            ) => number;
-            cancelIdleCallback?: (id: number) => void;
-        };
+        const timeoutId = window.setTimeout(
+            () => setVideoMounted(true),
+            isMobile ? 120 : 240,
+        );
 
-        let timeoutId: number | undefined;
-        let idleId: number | undefined;
+        return () => window.clearTimeout(timeoutId);
+    }, [useVideo, posterLoaded, videoMounted, isMobile]);
 
-        if (win.requestIdleCallback) {
-            idleId = win.requestIdleCallback(() => setVideoMounted(true), {
-                timeout: 1500,
+    const attemptPlay = useCallback(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        video.muted = true;
+        video.defaultMuted = true;
+
+        const playPromise = video.play();
+        if (playPromise && typeof playPromise.catch === "function") {
+            playPromise.catch(() => {
+                // If autoplay is temporarily blocked, keep the poster visible and retry later.
             });
-        } else {
-            timeoutId = window.setTimeout(() => setVideoMounted(true), 300);
         }
-
-        return () => {
-            if (timeoutId !== undefined) window.clearTimeout(timeoutId);
-            if (idleId !== undefined && win.cancelIdleCallback)
-                win.cancelIdleCallback(idleId);
-        };
-    }, [useVideo, posterLoaded, videoMounted]);
+    }, []);
 
     // Autoplay once video is mounted
     useEffect(() => {
         if (!videoMounted || !videoRef.current) return;
-        videoRef.current.play().catch(() => {
-            // Autoplay blocked — poster stays visible, which is fine
-        });
-    }, [videoMounted]);
+        attemptPlay();
+    }, [videoMounted, attemptPlay]);
 
-    const handleVideoReady = () => setVideoReady(true);
+    useEffect(() => {
+        if (!videoMounted) return;
+
+        const retryPlayback = () => {
+            if (document.visibilityState !== "visible") return;
+            attemptPlay();
+        };
+
+        retryPlayback();
+        window.addEventListener("pageshow", retryPlayback);
+        document.addEventListener("visibilitychange", retryPlayback);
+
+        return () => {
+            window.removeEventListener("pageshow", retryPlayback);
+            document.removeEventListener("visibilitychange", retryPlayback);
+        };
+    }, [videoMounted, attemptPlay]);
+
+    const handleVideoReady = useCallback(() => {
+        setVideoReady(true);
+        attemptPlay();
+    }, [attemptPlay]);
 
     return (
         <div className="absolute mt-4 inset-0 overflow-visible mx-auto">
@@ -135,7 +177,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                                 <img
                                     ref={posterImgRef}
                                     src={posterFallback}
-                                    srcSet={srcSetDesktop}
+                                    srcSet={posterSrcSet}
                                     sizes="100vw"
                                     alt={imageAlt}
                                     width={1920}
@@ -159,8 +201,9 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                                 loop
                                 muted
                                 playsInline
-                                preload="none"
+                                preload={isMobile ? "metadata" : "none"}
                                 poster={posterFallback}
+                                onLoadedMetadata={handleVideoReady}
                                 onCanPlay={handleVideoReady}
                                 onLoadedData={handleVideoReady}
                                 onPlaying={() => setVideoReady(true)}
