@@ -4,7 +4,10 @@ import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import CookiebotBanner from "@/components/CookiebotBanner";
+import GoogleAnalyticsConsent from "@/components/GoogleAnalyticsConsent";
 import { getMetadataBaseUrl } from "@/lib/site-url";
+
+const GOOGLE_MEASUREMENT_ID = "G-JTERFZC7J4";
 
 const aspekta = localFont({
   src: [
@@ -54,6 +57,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased" suppressHydrationWarning>
         {children}
+        <GoogleAnalyticsConsent measurementId={GOOGLE_MEASUREMENT_ID} />
         <Analytics />
         <SpeedInsights />
       </body>
