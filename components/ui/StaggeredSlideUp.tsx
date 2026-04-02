@@ -133,11 +133,17 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
   const id = useId();
   const prefersReducedMotion = useReducedMotion();
 
-  const { isInView, isMobile } = useRobustInView(ref, {
-    once,
-    amount: threshold,
-    margin: rootMargin,
-  });
+  // When animateImmediately is true, skip viewport detection entirely —
+  // no IntersectionObserver, no scroll/resize listeners, no wasted work.
+  const nullRef = useRef<HTMLDivElement>(null);
+  const { isInView, isMobile } = useRobustInView(
+    animateImmediately ? nullRef : ref,
+    {
+      once,
+      amount: threshold,
+      margin: rootMargin,
+    }
+  );
 
   // Only animate when *actually* in the viewport (or explicitly told to)
   const shouldAnimate = animateImmediately || isInView;

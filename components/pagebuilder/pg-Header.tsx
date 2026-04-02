@@ -1,10 +1,27 @@
 "use client";
 
 import React from "react";
+import dynamic from "next/dynamic";
 import HeroVideoComp from "@/components/pagebuilder/Fragments/HeroVideoComp";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import { assetUrl } from "@/utils/utils";
-import TypewriterRotator from "../ui/TypewriterRotator";
+const TypewriterRotator = dynamic(
+  () => import("../ui/TypewriterRotator"),
+  {
+    ssr: false,
+    loading: () => (
+      <h2
+        className="typewriter-rotator flex flex-col flex-wrap items-start w-full font-aspekta font-medium leading-[0.8] text-accent"
+        style={{ maxWidth: 900 }}
+      >
+        {/* Invisible placeholder matching typewriter dimensions to prevent CLS */}
+        <span style={{ visibility: "hidden", fontSize: "var(--tw-text-size)" }}>
+          &nbsp;
+        </span>
+      </h2>
+    ),
+  }
+);
 import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import type {

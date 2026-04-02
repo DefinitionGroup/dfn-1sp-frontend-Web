@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState, type SyntheticEvent } from "react";
 import Image from "next/image";
 import { getHeroMediaVariants } from "@/lib/hero-media";
 
@@ -24,6 +24,9 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     const [mediaReady, setMediaReady] = useState(false);
     const [revealComplete, setRevealComplete] = useState(!useVideo);
     const [isNearViewport, setIsNearViewport] = useState(true);
+    // LCP optimization: track when the poster has actually painted so we can
+    // mount the <video> element *after* the LCP frame, not before.
+    const [posterPainted, setPosterPainted] = useState(!useVideo);
 
     const heroMediaVariants = getHeroMediaVariants(videoSrc);
     const posterVariants = heroMediaVariants.filter((variant) => variant.posterUrl);
@@ -34,6 +37,8 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
             : undefined;
     const posterFallback = posterVariants.at(-1)?.posterUrl;
     const videoVisible = revealComplete && mediaReady;
+    // Only mount <video> after the poster has painted (outside LCP window).
+    const shouldMountVideo = posterPainted;
 
     const attemptPlay = useCallback(() => {
         const video = videoRef.current;
@@ -153,41 +158,50 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                                     fetchPriority="high"
                                     loading="eager"
                                     decoding="async"
-                                    className={`object-cover w-full h-full absolute inset-0 ${videoVisible ? "opacity-0" : "opacity-100"}`}
+                                    onLoad={() => {
+                                        // Wait one animation frame so the browser
+                                        // has committed the poster paint (= LCP).
+                                        requestAnimationFrame(() => setPosterPainted(true));
+                                    }}
+                                    onError={() => setPosterPainted(true)}
+                                    className={`object-cover w-full h-full absolute inset-0 transition-opacity duration-500 ${videoVisible ? "opacity-0" : "opacity-100"}`}
                                     style={{ zIndex: 1 }}
                                 />
                             </picture>
                         )}
 
-                        {/* Video mounts only while the hero is near the viewport. */}
-                        <video
-                            ref={videoRef}
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            preload="none"
-                            poster={posterFallback}
-                            onLoadedMetadata={handleVideoReady}
-                            onCanPlay={handleVideoReady}
-                            onLoadedData={handleVideoReady}
-                            onPlaying={() => setMediaReady(true)}
-                            onError={() => {
-                                // If optimized sources fail, keep poster visible.
-                                setMediaReady(false);
-                            }}
-                            className={`object-cover w-full h-full ${videoVisible ? "opacity-100" : "opacity-0"}`}
-                            style={{ zIndex: 0 }}
-                        >
-                            {videoVariants.map((variant) => (
-                                <source
-                                    key={`video-${variant.id}`}
-                                    src={variant.videoUrl}
-                                    media={variant.media}
-                                />
-                            ))}
-                            {rawFallbackSource && <source src={rawFallbackSource} />}
-                        </video>
+                        {/* Video mounts after poster has painted (outside the LCP window).
+                            Using preload="auto" so the browser starts downloading immediately. */}
+                        {shouldMountVideo && (
+                            <video
+                                ref={videoRef}
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                preload="auto"
+                                poster={posterFallback}
+                                onLoadedMetadata={handleVideoReady}
+                                onCanPlay={handleVideoReady}
+                                onLoadedData={handleVideoReady}
+                                onPlaying={() => setMediaReady(true)}
+                                onError={() => {
+                                    // If optimized sources fail, keep poster visible.
+                                    setMediaReady(false);
+                                }}
+                                className={`object-cover w-full h-full transition-opacity duration-700 ${videoVisible ? "opacity-100" : "opacity-0"}`}
+                                style={{ zIndex: 0 }}
+                            >
+                                {videoVariants.map((variant) => (
+                                    <source
+                                        key={`video-${variant.id}`}
+                                        src={variant.videoUrl}
+                                        media={variant.media}
+                                    />
+                                ))}
+                                {rawFallbackSource && <source src={rawFallbackSource} />}
+                            </video>
+                        )}
                     </div>
                 ) : (
                     imageSrc && (
