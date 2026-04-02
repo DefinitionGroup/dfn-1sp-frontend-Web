@@ -2,12 +2,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import {
-    optimizedVideoUrl,
-    optimizedPortraitVideoUrl,
-    cloudinaryPosterUrl,
-    cloudinaryPosterSrcSet,
-} from "@/utils/utils";
+import { getHeroMediaVariants } from "@/lib/hero-media";
 
 interface HeroVideoCompProps {
     useVideo: boolean;
@@ -23,86 +18,12 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     imageAlt = "",
 }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
-    const posterImgRef = useRef<HTMLImageElement>(null);
-
-    const [isMobile, setIsMobile] = useState(false);
     const [videoReady, setVideoReady] = useState(false);
-    const [posterLoaded, setPosterLoaded] = useState(!useVideo);
-    const [shouldMountVideo, setShouldMountVideo] = useState(false);
 
-    // --- Poster image URLs (derived from Cloudinary video URL) ---
-    const posterDesktop = useVideo
-        ? cloudinaryPosterUrl(videoSrc, { maxWidth: 1280 })
-        : undefined;
-    const posterMobile = useVideo
-        ? cloudinaryPosterUrl(videoSrc, { maxWidth: 480, portrait: true })
-        : undefined;
-    const srcSetDesktop = useVideo
-        ? cloudinaryPosterSrcSet(videoSrc, [960, 1280, 1600, 1920])
-        : undefined;
-    const srcSetMobile = useVideo
-        ? cloudinaryPosterSrcSet(videoSrc, [360, 480, 640, 750], {
-            portrait: true,
-        })
-        : undefined;
-    const posterFallback = isMobile
-        ? posterMobile ?? posterDesktop
-        : posterDesktop ?? posterMobile;
-    const posterSrcSet = isMobile
-        ? srcSetMobile ?? srcSetDesktop
-        : srcSetDesktop ?? srcSetMobile;
-
-    // --- Optimized video URLs ---
-    const videoUrlDesktop = optimizedVideoUrl(videoSrc, {
-        maxWidth: 1440,
-        quality: "auto",
-        autoCodec: true,
-    });
-    const videoUrlMobile = optimizedPortraitVideoUrl(videoSrc, {
-        maxWidth: 360,
-        quality: "eco",
-    });
-
-    useEffect(() => {
-        if (typeof window === "undefined") return;
-
-        const mediaQueryList = window.matchMedia("(max-width: 768px)");
-        const updateIsMobile = (event?: MediaQueryListEvent) => {
-            setIsMobile(event?.matches ?? mediaQueryList.matches);
-        };
-
-        updateIsMobile();
-
-        if (typeof mediaQueryList.addEventListener === "function") {
-            mediaQueryList.addEventListener("change", updateIsMobile);
-            return () => mediaQueryList.removeEventListener("change", updateIsMobile);
-        }
-
-        mediaQueryList.addListener(updateIsMobile);
-        return () => mediaQueryList.removeListener(updateIsMobile);
-    }, []);
-
-    // Detect poster loaded from cache
-    useEffect(() => {
-        if (!useVideo || posterLoaded) return;
-        if (posterImgRef.current?.complete) {
-            setPosterLoaded(true);
-            return;
-        }
-        // Safety: don't block video mount forever if the poster is slow.
-        const timer = window.setTimeout(() => setPosterLoaded(true), 900);
-        return () => window.clearTimeout(timer);
-    }, [useVideo, posterLoaded]);
-
-    // Mount video after a fixed delay from hydration — does not wait for poster,
-    // so video bytes start flowing in parallel. By the time this fires the poster
-    // preload (high-priority, started at HTML parse) has had a 200ms head start
-    // and is typically already downloaded, so there is no bandwidth competition.
-    useEffect(() => {
-        if (!useVideo || shouldMountVideo) return;
-        const timer = window.setTimeout(() => setShouldMountVideo(true), 200);
-        return () => window.clearTimeout(timer);
-    }, [useVideo, shouldMountVideo]);
+    const heroMediaVariants = getHeroMediaVariants(videoSrc);
+    const posterVariants = heroMediaVariants.filter((variant) => variant.posterUrl);
+    const videoVariants = heroMediaVariants.filter((variant) => variant.videoUrl);
+    const posterFallback = posterVariants.at(-1)?.posterUrl;
 
     const attemptPlay = useCallback(() => {
         const video = videoRef.current;
@@ -120,7 +41,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     }, []);
 
     useEffect(() => {
-        if (!useVideo || !shouldMountVideo || !videoRef.current) return;
+        if (!useVideo || !videoRef.current) return;
 
         const video = videoRef.current;
         if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
@@ -128,10 +49,10 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
         }
 
         attemptPlay();
-    }, [useVideo, shouldMountVideo, attemptPlay]);
+    }, [useVideo, attemptPlay]);
 
     useEffect(() => {
-        if (!useVideo || !shouldMountVideo) return;
+        if (!useVideo) return;
 
         const retryPlayback = () => {
             if (document.visibilityState !== "visible") return;
@@ -146,7 +67,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
             window.removeEventListener("pageshow", retryPlayback);
             document.removeEventListener("visibilitychange", retryPlayback);
         };
-    }, [useVideo, shouldMountVideo, attemptPlay]);
+    }, [useVideo, attemptPlay]);
 
     const handleVideoReady = useCallback(() => {
         setVideoReady(true);
@@ -162,70 +83,60 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                         {/* Poster — the LCP element. Loads eagerly, high priority. */}
                         {posterFallback && (
                             <picture>
-                                {srcSetMobile && (
-                                    <source
-                                        media="(max-width: 768px)"
-                                        srcSet={srcSetMobile}
-                                        sizes="100vw"
-                                    />
-                                )}
-                                {srcSetDesktop && (
-                                    <source
-                                        media="(min-width: 769px)"
-                                        srcSet={srcSetDesktop}
-                                        sizes="100vw"
-                                    />
+                                {posterVariants.map((variant) =>
+                                    variant.posterSrcSet ? (
+                                        <source
+                                            key={`poster-${variant.id}`}
+                                            media={variant.media}
+                                            srcSet={variant.posterSrcSet}
+                                            sizes={variant.sizes}
+                                        />
+                                    ) : null,
                                 )}
                                 <img
-                                    ref={posterImgRef}
                                     src={posterFallback}
-                                    srcSet={posterSrcSet}
-                                    sizes="100vw"
                                     alt={imageAlt}
                                     width={1920}
                                     height={1080}
                                     fetchPriority="high"
                                     loading="eager"
                                     decoding="async"
-                                    onLoad={() => setPosterLoaded(true)}
-                                    onError={() => setPosterLoaded(true)}
                                     className={`object-cover w-full h-full absolute inset-0 transition-opacity duration-500 ${videoReady ? "opacity-0" : "opacity-100"}`}
                                     style={{ zIndex: 1 }}
                                 />
                             </picture>
                         )}
 
-                        {/* Video — deferred until poster paints so poster wins LCP */}
-                        {shouldMountVideo && (
-                            <video
-                                ref={videoRef}
-                                autoPlay
-                                loop
-                                muted
-                                playsInline
-                                preload="auto"
-                                poster={posterFallback}
-                                onLoadedMetadata={handleVideoReady}
-                                onCanPlay={handleVideoReady}
-                                onLoadedData={handleVideoReady}
-                                onPlaying={() => setVideoReady(true)}
-                                onError={() => {
-                                    // If optimized sources fail, keep poster visible
-                                    setVideoReady(false);
-                                }}
-                                className="object-cover w-full h-full"
-                                style={{ zIndex: 0 }}
-                            >
-                                {videoUrlMobile && (
-                                    <source src={videoUrlMobile} media="(max-width: 768px)" />
-                                )}
-                                {videoUrlDesktop && (
-                                    <source src={videoUrlDesktop} media="(min-width: 769px)" />
-                                )}
-                                {/* Raw fallback */}
-                                {videoSrc && <source src={videoSrc} />}
-                            </video>
-                        )}
+                        {/* Video — rendered in SSR HTML so the browser selects the right source immediately. */}
+                        <video
+                            ref={videoRef}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            preload="metadata"
+                            poster={posterFallback}
+                            onLoadedMetadata={handleVideoReady}
+                            onCanPlay={handleVideoReady}
+                            onLoadedData={handleVideoReady}
+                            onPlaying={() => setVideoReady(true)}
+                            onError={() => {
+                                // If optimized sources fail, keep poster visible.
+                                setVideoReady(false);
+                            }}
+                            className={`object-cover w-full h-full transition-opacity duration-700 ${videoReady ? "opacity-100" : "opacity-0"}`}
+                            style={{ zIndex: 0 }}
+                        >
+                            {videoVariants.map((variant) => (
+                                <source
+                                    key={`video-${variant.id}`}
+                                    src={variant.videoUrl}
+                                    media={variant.media}
+                                />
+                            ))}
+                            {/* Raw fallback */}
+                            {videoSrc && <source src={videoSrc} />}
+                        </video>
                     </div>
                 ) : (
                     imageSrc && (

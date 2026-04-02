@@ -1,9 +1,8 @@
 import {
-    cloudinaryPosterUrl,
     cloudinaryPosterSrcSet,
-    optimizedVideoUrl,
-    optimizedPortraitVideoUrl,
+    cloudinaryPosterUrl,
 } from "@/utils/utils";
+import { getHeroMediaVariants, type HeroMediaVariant } from "@/lib/hero-media";
 
 /**
  * Extract the hero video URL from page builder content.
@@ -30,8 +29,7 @@ export interface HeroPreloadData {
     heroPosterMobile: string | undefined;
     heroPosterDesktopSrcSet: string | undefined;
     heroPosterMobileSrcSet: string | undefined;
-    heroVideoDesktop: string | undefined;
-    heroVideoMobile: string | undefined;
+    heroMediaVariants: HeroMediaVariant[];
 }
 
 /**
@@ -61,19 +59,9 @@ export function getHeroPreloadData(
                 portrait: true,
             })
             : undefined,
-        heroVideoDesktop: heroVideoUrl
-            ? optimizedVideoUrl(heroVideoUrl, {
-                maxWidth: 1440,
-                quality: "auto",
-                autoCodec: true,
-            })
-            : undefined,
-        heroVideoMobile: heroVideoUrl
-            ? optimizedPortraitVideoUrl(heroVideoUrl, {
-                maxWidth: 360,
-                quality: "eco",
-            })
-            : undefined,
+        heroMediaVariants: getHeroMediaVariants(heroVideoUrl).filter(
+            (variant) => Boolean(variant.videoUrl || variant.posterUrl),
+        ),
     };
 }
 
@@ -87,8 +75,7 @@ export function HeroPreloadLinks({
     heroPosterMobile,
     heroPosterDesktopSrcSet,
     heroPosterMobileSrcSet,
-    heroVideoDesktop,
-    heroVideoMobile,
+    heroMediaVariants,
 }: HeroPreloadData) {
     const cloudinaryOrigin = "https://res.cloudinary.com";
 
@@ -122,23 +109,17 @@ export function HeroPreloadLinks({
                     media="(max-width: 768px)"
                 />
             )}
-            {heroVideoDesktop && (
-                <link
-                    rel="preload"
-                    as="video"
-                    href={heroVideoDesktop}
-                    fetchPriority="low"
-                    media="(min-width: 769px)"
-                />
-            )}
-            {heroVideoMobile && (
-                <link
-                    rel="preload"
-                    as="video"
-                    href={heroVideoMobile}
-                    fetchPriority="low"
-                    media="(max-width: 768px)"
-                />
+            {heroMediaVariants.map((variant) =>
+                variant.videoUrl ? (
+                    <link
+                        key={`video-${variant.id}`}
+                        rel="preload"
+                        as="video"
+                        href={variant.videoUrl}
+                        fetchPriority="low"
+                        media={variant.media}
+                    />
+                ) : null,
             )}
         </>
     );
