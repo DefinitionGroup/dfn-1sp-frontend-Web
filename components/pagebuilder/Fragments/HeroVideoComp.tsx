@@ -101,7 +101,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                                     fetchPriority="high"
                                     loading="eager"
                                     decoding="async"
-                                    className={`object-cover w-full h-full absolute inset-0 transition-opacity duration-500 ${videoReady ? "opacity-0" : "opacity-100"}`}
+                                    className={`object-cover w-full h-full absolute inset-0 ${videoReady ? "opacity-0" : "opacity-100"}`}
                                     style={{ zIndex: 1 }}
                                 />
                             </picture>
@@ -124,7 +124,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                                 // If optimized sources fail, keep poster visible.
                                 setVideoReady(false);
                             }}
-                            className={`object-cover w-full h-full transition-opacity duration-700 ${videoReady ? "opacity-100" : "opacity-0"}`}
+                            className={`object-cover w-full h-full ${videoReady ? "opacity-100" : "opacity-0"}`}
                             style={{ zIndex: 0 }}
                         >
                             {videoVariants.map((variant) => (
