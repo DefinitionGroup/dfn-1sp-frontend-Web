@@ -146,17 +146,18 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   const posterFallback = posterUrl || posterUrlMobile;
 
   // Responsive video URLs:
-  // - Mobile: portrait 9:16 crop, 480px wide, aggressive compression
-  // - Desktop: landscape, 960px wide, good compression with vc_auto
+  // - Mobile: portrait 9:16 crop, 360px wide, aggressive compression
+  // - Desktop: landscape, 1280px wide, good compression with vc_auto
   const videoUrlDesktop = optimizedVideoUrl(videoSrc, {
-    maxWidth: 1440,
-    quality: "auto",
+    maxWidth: 1280,
+    quality: "good",
     autoCodec: true,
   });
   const videoUrlMobile = optimizedPortraitVideoUrl(videoSrc, {
     maxWidth: 360,
     quality: "eco",
   });
+  const rawFallbackSource = videoSrc && !videoSrc.includes("/upload/") ? videoSrc : undefined;
 
   const sourceStages = useMemo(() => {
     const dedupe = (sources: Array<VideoSource | undefined>) => {
@@ -179,18 +180,18 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
       videoUrlDesktop
         ? { src: videoUrlDesktop, media: "(min-width: 769px)" }
         : undefined,
-      videoSrc ? { src: videoSrc } : undefined,
+      rawFallbackSource ? { src: rawFallbackSource } : undefined,
     ]);
 
     const stage1 = dedupe([
       videoUrlDesktop ? { src: videoUrlDesktop } : undefined,
-      videoSrc ? { src: videoSrc } : undefined,
+      rawFallbackSource ? { src: rawFallbackSource } : undefined,
     ]);
 
-    const stage2 = dedupe([videoSrc ? { src: videoSrc } : undefined]);
+    const stage2 = dedupe([rawFallbackSource ? { src: rawFallbackSource } : undefined]);
 
     return [stage0, stage1, stage2].filter((stage) => stage.length > 0);
-  }, [videoUrlDesktop, videoUrlMobile, videoSrc]);
+  }, [rawFallbackSource, videoUrlDesktop, videoUrlMobile]);
 
   const maxStage = Math.max(sourceStages.length - 1, 0);
   const activeStage = Math.min(sourceFallbackStage, maxStage);

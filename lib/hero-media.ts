@@ -20,16 +20,16 @@ export function getHeroMediaVariants(videoUrl?: string): HeroMediaVariant[] {
             id: "phone-portrait",
             media: "(max-width: 767px) and (orientation: portrait)",
             videoUrl: optimizedPortraitVideoUrl(videoUrl, {
-                maxWidth: 420,
+                maxWidth: 360,
                 quality: "eco",
                 aspectRatio: "9:16",
             }),
             posterUrl: cloudinaryPosterUrl(videoUrl, {
-                maxWidth: 480,
+                maxWidth: 360,
                 portrait: true,
                 aspectRatio: "9:16",
             }),
-            posterSrcSet: cloudinaryPosterSrcSet(videoUrl, [360, 420, 480, 640], {
+            posterSrcSet: cloudinaryPosterSrcSet(videoUrl, [320, 360, 420, 480], {
                 portrait: true,
                 aspectRatio: "9:16",
             }),
@@ -39,16 +39,16 @@ export function getHeroMediaVariants(videoUrl?: string): HeroMediaVariant[] {
             id: "phone-landscape",
             media: "(max-width: 767px) and (orientation: landscape)",
             videoUrl: optimizedVideoUrl(videoUrl, {
-                maxWidth: 960,
+                maxWidth: 768,
                 quality: "eco",
                 autoCodec: true,
                 aspectRatio: "16:9",
             }),
             posterUrl: cloudinaryPosterUrl(videoUrl, {
-                maxWidth: 960,
+                maxWidth: 768,
                 aspectRatio: "16:9",
             }),
-            posterSrcSet: cloudinaryPosterSrcSet(videoUrl, [640, 768, 960], {
+            posterSrcSet: cloudinaryPosterSrcSet(videoUrl, [480, 640, 768], {
                 aspectRatio: "16:9",
             }),
             sizes: "100vw",
@@ -57,24 +57,24 @@ export function getHeroMediaVariants(videoUrl?: string): HeroMediaVariant[] {
             id: "tablet",
             media: "(min-width: 768px) and (max-width: 1023px)",
             videoUrl: optimizedVideoUrl(videoUrl, {
-                maxWidth: 1280,
+                maxWidth: 1024,
                 quality: "good",
                 autoCodec: true,
             }),
-            posterUrl: cloudinaryPosterUrl(videoUrl, { maxWidth: 1280 }),
-            posterSrcSet: cloudinaryPosterSrcSet(videoUrl, [960, 1280, 1440]),
+            posterUrl: cloudinaryPosterUrl(videoUrl, { maxWidth: 1024 }),
+            posterSrcSet: cloudinaryPosterSrcSet(videoUrl, [768, 960, 1024]),
             sizes: "100vw",
         },
         {
             id: "desktop",
             media: "(min-width: 1024px)",
             videoUrl: optimizedVideoUrl(videoUrl, {
-                maxWidth: 1600,
-                quality: "auto",
+                maxWidth: 1280,
+                quality: "good",
                 autoCodec: true,
             }),
-            posterUrl: cloudinaryPosterUrl(videoUrl, { maxWidth: 1600 }),
-            posterSrcSet: cloudinaryPosterSrcSet(videoUrl, [1280, 1600, 1920]),
+            posterUrl: cloudinaryPosterUrl(videoUrl, { maxWidth: 1280 }),
+            posterSrcSet: cloudinaryPosterSrcSet(videoUrl, [960, 1280, 1440]),
             sizes: "100vw",
         },
     ];
