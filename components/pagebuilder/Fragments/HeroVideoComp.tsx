@@ -28,6 +28,19 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     // mount the <video> element *after* the LCP frame, not before.
     const [posterPainted, setPosterPainted] = useState(!useVideo);
 
+    // Handle cached images: if the poster loaded before React hydrated (from
+    // browser cache), the onLoad handler was never attached. Check img.complete
+    // after mount to catch this race condition.
+    useEffect(() => {
+        if (posterPainted || !useVideo) return;
+        const img = containerRef.current?.querySelector(
+            'img[fetchpriority="high"]'
+        ) as HTMLImageElement | null;
+        if (img?.complete && img.naturalWidth > 0) {
+            requestAnimationFrame(() => setPosterPainted(true));
+        }
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
     const heroMediaVariants = getHeroMediaVariants(videoSrc);
     const posterVariants = heroMediaVariants.filter((variant) => variant.posterUrl);
     const videoVariants = heroMediaVariants.filter((variant) => variant.videoUrl);
@@ -100,7 +113,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
         }
 
         attemptPlay();
-    }, [useVideo, revealComplete, isNearViewport, attemptPlay]);
+    }, [useVideo, revealComplete, isNearViewport, attemptPlay, shouldMountVideo]);
 
     useEffect(() => {
         if (!useVideo || !revealComplete) return;
@@ -118,7 +131,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
             window.removeEventListener("pageshow", retryPlayback);
             document.removeEventListener("visibilitychange", retryPlayback);
         };
-    }, [useVideo, revealComplete, isNearViewport, attemptPlay]);
+    }, [useVideo, revealComplete, isNearViewport, attemptPlay, shouldMountVideo]);
 
     useEffect(() => {
         if (isNearViewport) return;
