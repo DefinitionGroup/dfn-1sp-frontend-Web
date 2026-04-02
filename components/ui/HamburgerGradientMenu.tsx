@@ -14,10 +14,8 @@ import { useFooterMenu } from "../menu/FooterMenuContext";
 import { useNavbarMenu } from "../menu/NavbarMenuContext";
 import { useNavColor } from "../menu/NavColorContext";
 
-const preloadAuroraShaderBackground = () => import("./AuroraShaderBackground");
-
 const AuroraShaderBackground = dynamic(
-  preloadAuroraShaderBackground,
+  () => import("./AuroraShaderBackground"),
   { ssr: false }
 );
 
@@ -151,34 +149,6 @@ export default function HamburgerGradientMenu({
       };
     }
   }, [open]);
-
-  useEffect(() => {
-    const win = window as Window & {
-      requestIdleCallback?: (
-        callback: IdleRequestCallback,
-        options?: IdleRequestOptions,
-      ) => number;
-      cancelIdleCallback?: (handle: number) => void;
-    };
-
-    if (win.requestIdleCallback) {
-      const idleId = win.requestIdleCallback(() => {
-        void preloadAuroraShaderBackground();
-      }, { timeout: 1500 });
-
-      return () => {
-        if (win.cancelIdleCallback) {
-          win.cancelIdleCallback(idleId);
-        }
-      };
-    }
-
-    const timer = window.setTimeout(() => {
-      void preloadAuroraShaderBackground();
-    }, 300);
-
-    return () => window.clearTimeout(timer);
-  }, []);
 
   const toggle = useCallback(() => setOpen((o) => !o), []);
 
