@@ -94,12 +94,15 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
         return () => window.clearTimeout(timer);
     }, [useVideo, posterLoaded]);
 
-    // Mount video after poster paints — short deterministic delay so poster wins LCP
+    // Mount video after a fixed delay from hydration — does not wait for poster,
+    // so video bytes start flowing in parallel. By the time this fires the poster
+    // preload (high-priority, started at HTML parse) has had a 200ms head start
+    // and is typically already downloaded, so there is no bandwidth competition.
     useEffect(() => {
-        if (!useVideo || shouldMountVideo || !posterLoaded) return;
-        const timer = window.setTimeout(() => setShouldMountVideo(true), 150);
+        if (!useVideo || shouldMountVideo) return;
+        const timer = window.setTimeout(() => setShouldMountVideo(true), 200);
         return () => window.clearTimeout(timer);
-    }, [useVideo, posterLoaded, shouldMountVideo]);
+    }, [useVideo, shouldMountVideo]);
 
     const attemptPlay = useCallback(() => {
         const video = videoRef.current;
@@ -186,7 +189,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                                     decoding="async"
                                     onLoad={() => setPosterLoaded(true)}
                                     onError={() => setPosterLoaded(true)}
-                                    className={`object-cover w-full h-full absolute inset-0 transition-opacity duration-700 ${videoReady ? "opacity-0" : "opacity-100"}`}
+                                    className={`object-cover w-full h-full absolute inset-0 transition-opacity duration-500 ${videoReady ? "opacity-0" : "opacity-100"}`}
                                     style={{ zIndex: 1 }}
                                 />
                             </picture>
@@ -210,7 +213,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                                     // If optimized sources fail, keep poster visible
                                     setVideoReady(false);
                                 }}
-                                className={`object-cover w-full h-full transition-opacity duration-700 ${videoReady ? "opacity-100" : "opacity-0"}`}
+                                className="object-cover w-full h-full"
                                 style={{ zIndex: 0 }}
                             >
                                 {videoUrlMobile && (
