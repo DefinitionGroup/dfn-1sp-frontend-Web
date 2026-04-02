@@ -1,4 +1,8 @@
-import { cloudinaryPosterUrl, cloudinaryPosterSrcSet } from "@/utils/utils";
+import {
+    cloudinaryPosterSrcSet,
+    cloudinaryPosterUrl,
+} from "@/utils/utils";
+import { getHeroMediaVariants, type HeroMediaVariant } from "@/lib/hero-media";
 
 /**
  * Extract the hero video URL from page builder content.
@@ -25,6 +29,7 @@ export interface HeroPreloadData {
     heroPosterMobile: string | undefined;
     heroPosterDesktopSrcSet: string | undefined;
     heroPosterMobileSrcSet: string | undefined;
+    heroMediaVariants: HeroMediaVariant[];
 }
 
 /**
@@ -54,6 +59,9 @@ export function getHeroPreloadData(
                 portrait: true,
             })
             : undefined,
+        heroMediaVariants: getHeroMediaVariants(heroVideoUrl).filter(
+            (variant) => Boolean(variant.videoUrl || variant.posterUrl),
+        ),
     };
 }
 
@@ -67,48 +75,52 @@ export function HeroPreloadLinks({
     heroPosterMobile,
     heroPosterDesktopSrcSet,
     heroPosterMobileSrcSet,
+    heroMediaVariants,
 }: HeroPreloadData) {
     const cloudinaryOrigin = "https://res.cloudinary.com";
 
     return (
         <>
-        { heroVideoUrl && (
-            <>
-            <link
-            rel= "preconnect"
-    href = {cloudinaryOrigin}
-    crossOrigin = ""
-        />
-        <link rel="dns-prefetch" href = {cloudinaryOrigin} />
-            </>
-      )
-}
-{
-    heroPosterDesktop && (
-        <link
-          rel="preload"
-    as = "image"
-    href = { heroPosterDesktop }
-    fetchPriority = "high"
-    imageSrcSet = { heroPosterDesktopSrcSet }
-    imageSizes = "100vw"
-    media = "(min-width: 769px)"
-        />
-      )
-}
-{
-    heroPosterMobile && (
-        <link
-          rel="preload"
-    as = "image"
-    href = { heroPosterMobile }
-    fetchPriority = "high"
-    imageSrcSet = { heroPosterMobileSrcSet }
-    imageSizes = "100vw"
-    media = "(max-width: 768px)"
-        />
-      )
-}
-</>
-  );
+            {heroVideoUrl && (
+                <>
+                    <link rel="preconnect" href={cloudinaryOrigin} crossOrigin="" />
+                    <link rel="dns-prefetch" href={cloudinaryOrigin} />
+                </>
+            )}
+            {heroPosterDesktop && (
+                <link
+                    rel="preload"
+                    as="image"
+                    href={heroPosterDesktop}
+                    fetchPriority="high"
+                    imageSrcSet={heroPosterDesktopSrcSet}
+                    imageSizes="100vw"
+                    media="(min-width: 769px)"
+                />
+            )}
+            {heroPosterMobile && (
+                <link
+                    rel="preload"
+                    as="image"
+                    href={heroPosterMobile}
+                    fetchPriority="high"
+                    imageSrcSet={heroPosterMobileSrcSet}
+                    imageSizes="100vw"
+                    media="(max-width: 768px)"
+                />
+            )}
+            {heroMediaVariants.map((variant) =>
+                variant.videoUrl ? (
+                    <link
+                        key={`video-${variant.id}`}
+                        rel="preload"
+                        as="video"
+                        href={variant.videoUrl}
+                        fetchPriority="low"
+                        media={variant.media}
+                    />
+                ) : null,
+            )}
+        </>
+    );
 }
