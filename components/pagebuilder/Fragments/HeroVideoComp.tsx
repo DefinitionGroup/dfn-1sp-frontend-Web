@@ -26,6 +26,10 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     const heroMediaVariants = getHeroMediaVariants(videoSrc);
     const posterVariants = heroMediaVariants.filter((variant) => variant.posterUrl);
     const videoVariants = heroMediaVariants.filter((variant) => variant.videoUrl);
+    const rawFallbackSource =
+        videoSrc && (!videoSrc.includes("/upload/") || videoVariants.length === 0)
+            ? videoSrc
+            : undefined;
     const posterFallback = posterVariants.at(-1)?.posterUrl;
     const videoVisible = revealComplete && mediaReady;
 
@@ -129,7 +133,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                             loop
                             muted
                             playsInline
-                            preload="metadata"
+                            preload="none"
                             poster={posterFallback}
                             onLoadedMetadata={handleVideoReady}
                             onCanPlay={handleVideoReady}
@@ -149,8 +153,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                                     media={variant.media}
                                 />
                             ))}
-                            {/* Raw fallback */}
-                            {videoSrc && <source src={videoSrc} />}
+                            {rawFallbackSource && <source src={rawFallbackSource} />}
                         </video>
                     </div>
                 ) : (
