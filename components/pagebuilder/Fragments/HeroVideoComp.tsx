@@ -26,7 +26,6 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     const posterImgRef = useRef<HTMLImageElement>(null);
 
     const [isMobile, setIsMobile] = useState(false);
-    const [videoMounted, setVideoMounted] = useState(false);
     const [videoReady, setVideoReady] = useState(false);
     const [posterLoaded, setPosterLoaded] = useState(!useVideo);
 
@@ -94,19 +93,6 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
         return () => window.clearTimeout(timer);
     }, [useVideo, posterLoaded]);
 
-    // Mount shortly after the poster has painted so the hero still becomes LCP
-    // without making video startup dependent on an idle callback.
-    useEffect(() => {
-        if (!useVideo || videoMounted || !posterLoaded) return;
-
-        const timeoutId = window.setTimeout(
-            () => setVideoMounted(true),
-            isMobile ? 120 : 240,
-        );
-
-        return () => window.clearTimeout(timeoutId);
-    }, [useVideo, posterLoaded, videoMounted, isMobile]);
-
     const attemptPlay = useCallback(() => {
         const video = videoRef.current;
         if (!video) return;
@@ -122,14 +108,19 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
         }
     }, []);
 
-    // Autoplay once video is mounted
     useEffect(() => {
-        if (!videoMounted || !videoRef.current) return;
+        if (!useVideo || !videoRef.current) return;
+
+        const video = videoRef.current;
+        if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+            setVideoReady(true);
+        }
+
         attemptPlay();
-    }, [videoMounted, attemptPlay]);
+    }, [useVideo, attemptPlay]);
 
     useEffect(() => {
-        if (!videoMounted) return;
+        if (!useVideo) return;
 
         const retryPlayback = () => {
             if (document.visibilityState !== "visible") return;
@@ -144,7 +135,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
             window.removeEventListener("pageshow", retryPlayback);
             document.removeEventListener("visibilitychange", retryPlayback);
         };
-    }, [videoMounted, attemptPlay]);
+    }, [useVideo, attemptPlay]);
 
     const handleVideoReady = useCallback(() => {
         setVideoReady(true);
@@ -193,37 +184,35 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                             </picture>
                         )}
 
-                        {/* Video — deferred mount, never competes with poster for bandwidth */}
-                        {videoMounted && (
-                            <video
-                                ref={videoRef}
-                                autoPlay
-                                loop
-                                muted
-                                playsInline
-                                preload={isMobile ? "metadata" : "none"}
-                                poster={posterFallback}
-                                onLoadedMetadata={handleVideoReady}
-                                onCanPlay={handleVideoReady}
-                                onLoadedData={handleVideoReady}
-                                onPlaying={() => setVideoReady(true)}
-                                onError={() => {
-                                    // If optimized sources fail, keep poster visible
-                                    setVideoReady(false);
-                                }}
-                                className={`object-cover w-full h-full transition-opacity duration-700 ${videoReady ? "opacity-100" : "opacity-0"}`}
-                                style={{ zIndex: 0 }}
-                            >
-                                {videoUrlMobile && (
-                                    <source src={videoUrlMobile} media="(max-width: 768px)" />
-                                )}
-                                {videoUrlDesktop && (
-                                    <source src={videoUrlDesktop} media="(min-width: 769px)" />
-                                )}
-                                {/* Raw fallback */}
-                                {videoSrc && <source src={videoSrc} />}
-                            </video>
-                        )}
+                        {/* Video — rendered in initial HTML so the browser can start loading it immediately. */}
+                        <video
+                            ref={videoRef}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            preload="metadata"
+                            poster={posterFallback}
+                            onLoadedMetadata={handleVideoReady}
+                            onCanPlay={handleVideoReady}
+                            onLoadedData={handleVideoReady}
+                            onPlaying={() => setVideoReady(true)}
+                            onError={() => {
+                                // If optimized sources fail, keep poster visible
+                                setVideoReady(false);
+                            }}
+                            className={`object-cover w-full h-full transition-opacity duration-700 ${videoReady ? "opacity-100" : "opacity-0"}`}
+                            style={{ zIndex: 0 }}
+                        >
+                            {videoUrlMobile && (
+                                <source src={videoUrlMobile} media="(max-width: 768px)" />
+                            )}
+                            {videoUrlDesktop && (
+                                <source src={videoUrlDesktop} media="(min-width: 769px)" />
+                            )}
+                            {/* Raw fallback */}
+                            {videoSrc && <source src={videoSrc} />}
+                        </video>
                     </div>
                 ) : (
                     imageSrc && (
