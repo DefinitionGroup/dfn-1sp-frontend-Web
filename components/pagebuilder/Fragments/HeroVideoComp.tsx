@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { getHeroMediaVariants } from "@/lib/hero-media";
+import { useRobustInView } from "@/hooks/use-robust-in-view";
 
 const HERO_REVEAL_SETTLE_MS = 450;
 
@@ -19,9 +20,17 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     imageSrc,
     imageAlt = "",
 }) => {
+    const containerRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const [mediaReady, setMediaReady] = useState(false);
     const [revealComplete, setRevealComplete] = useState(!useVideo);
+    const { isInView: isNearViewport } = useRobustInView(containerRef, {
+        once: false,
+        amount: 0.05,
+        margin: "160px 0px 160px 0px",
+        mobileAmount: 0.01,
+        mobileMargin: "240px 0px 240px 0px",
+    });
 
     const heroMediaVariants = getHeroMediaVariants(videoSrc);
     const posterVariants = heroMediaVariants.filter((variant) => variant.posterUrl);
@@ -31,11 +40,12 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
             ? videoSrc
             : undefined;
     const posterFallback = posterVariants.at(-1)?.posterUrl;
+    const shouldRenderVideo = useVideo && isNearViewport;
     const videoVisible = revealComplete && mediaReady;
 
     const attemptPlay = useCallback(() => {
         const video = videoRef.current;
-        if (!video) return;
+        if (!video || !isNearViewport || document.visibilityState !== "visible") return;
 
         video.muted = true;
         video.defaultMuted = true;
@@ -46,7 +56,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                 // If autoplay is temporarily blocked, keep the poster visible and retry later.
             });
         }
-    }, []);
+    }, [isNearViewport]);
 
     useEffect(() => {
         if (!useVideo) return;
@@ -59,7 +69,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     }, [useVideo]);
 
     useEffect(() => {
-        if (!useVideo || !revealComplete || !videoRef.current) return;
+        if (!useVideo || !revealComplete || !shouldRenderVideo || !videoRef.current) return;
 
         const video = videoRef.current;
         if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
@@ -67,13 +77,13 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
         }
 
         attemptPlay();
-    }, [useVideo, revealComplete, attemptPlay]);
+    }, [useVideo, revealComplete, shouldRenderVideo, attemptPlay]);
 
     useEffect(() => {
         if (!useVideo || !revealComplete) return;
 
         const retryPlayback = () => {
-            if (document.visibilityState !== "visible") return;
+            if (!isNearViewport || document.visibilityState !== "visible") return;
             attemptPlay();
         };
 
@@ -85,16 +95,23 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
             window.removeEventListener("pageshow", retryPlayback);
             document.removeEventListener("visibilitychange", retryPlayback);
         };
-    }, [useVideo, revealComplete, attemptPlay]);
+    }, [useVideo, revealComplete, isNearViewport, attemptPlay]);
+
+    useEffect(() => {
+        if (isNearViewport) return;
+
+        videoRef.current?.pause();
+        setMediaReady(false);
+    }, [isNearViewport]);
 
     const handleVideoReady = useCallback(() => {
         setMediaReady(true);
-        if (!revealComplete) return;
+        if (!revealComplete || !isNearViewport) return;
         attemptPlay();
-    }, [attemptPlay, revealComplete]);
+    }, [attemptPlay, revealComplete, isNearViewport]);
 
     return (
-        <div className="absolute mt-4 inset-0 overflow-visible mx-auto">
+        <div ref={containerRef} className="absolute mt-4 inset-0 overflow-visible mx-auto">
             {/* CSS-only clip-path reveal — paints from SSR HTML, no JS needed */}
             <div className="absolute mx-auto rounded-xl inset-0 overflow-hidden hero-clip-reveal">
                 {useVideo ? (
@@ -126,35 +143,37 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                             </picture>
                         )}
 
-                        {/* Video — rendered in SSR HTML so the browser selects the right source immediately. */}
-                        <video
-                            ref={videoRef}
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            preload="none"
-                            poster={posterFallback}
-                            onLoadedMetadata={handleVideoReady}
-                            onCanPlay={handleVideoReady}
-                            onLoadedData={handleVideoReady}
-                            onPlaying={() => setMediaReady(true)}
-                            onError={() => {
-                                // If optimized sources fail, keep poster visible.
-                                setMediaReady(false);
-                            }}
-                            className={`object-cover w-full h-full ${videoVisible ? "opacity-100" : "opacity-0"}`}
-                            style={{ zIndex: 0 }}
-                        >
-                            {videoVariants.map((variant) => (
-                                <source
-                                    key={`video-${variant.id}`}
-                                    src={variant.videoUrl}
-                                    media={variant.media}
-                                />
-                            ))}
-                            {rawFallbackSource && <source src={rawFallbackSource} />}
-                        </video>
+                        {/* Video mounts only while the hero is near the viewport. */}
+                        {shouldRenderVideo && (
+                            <video
+                                ref={videoRef}
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                preload="none"
+                                poster={posterFallback}
+                                onLoadedMetadata={handleVideoReady}
+                                onCanPlay={handleVideoReady}
+                                onLoadedData={handleVideoReady}
+                                onPlaying={() => setMediaReady(true)}
+                                onError={() => {
+                                    // If optimized sources fail, keep poster visible.
+                                    setMediaReady(false);
+                                }}
+                                className={`object-cover w-full h-full ${videoVisible ? "opacity-100" : "opacity-0"}`}
+                                style={{ zIndex: 0 }}
+                            >
+                                {videoVariants.map((variant) => (
+                                    <source
+                                        key={`video-${variant.id}`}
+                                        src={variant.videoUrl}
+                                        media={variant.media}
+                                    />
+                                ))}
+                                {rawFallbackSource && <source src={rawFallbackSource} />}
+                            </video>
+                        )}
                     </div>
                 ) : (
                     imageSrc && (
