@@ -196,6 +196,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   const maxStage = Math.max(sourceStages.length - 1, 0);
   const activeStage = Math.min(sourceFallbackStage, maxStage);
   const activeVideoSources = sourceStages[activeStage] ?? [];
+  const shouldRenderVideo = shouldMountVideo && rawInView && activeVideoSources.length > 0;
   const videoSourceKey = `${activeStage}:${activeVideoSources
     .map((source) => `${source.media ?? "all"}=${source.src}`)
     .join("|")}`;
@@ -263,9 +264,8 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
     if (
       !hasEnteredViewport ||
       !useVideo ||
-      !shouldMountVideo ||
+      !shouldRenderVideo ||
       !videoRef.current ||
-      activeVideoSources.length === 0 ||
       videoLoadFailed
     ) {
       return;
@@ -288,11 +288,18 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
     hasEnteredViewport,
     useVideo,
     videoDelay,
-    shouldMountVideo,
-    activeVideoSources.length,
+    shouldRenderVideo,
     videoLoadFailed,
     activeStage,
   ]);
+
+  useEffect(() => {
+    if (rawInView) return;
+
+    videoRef.current?.pause();
+    setVideoReady(false);
+    setAutoplayBlocked(false);
+  }, [rawInView]);
 
   const handleVideoReady = () => {
     setVideoReady(true);
@@ -369,7 +376,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
               />
             </picture>
           )}
-          {shouldMountVideo && activeVideoSources.length > 0 && (
+          {shouldRenderVideo && (
             <video
               key={videoSourceKey}
               ref={videoRef}
