@@ -158,6 +158,8 @@ export const optimizedVideoUrl = (
     const useAutoCodec = options?.autoCodec !== false;
 
     const transforms: string[] = [];
+    const cropTransforms: string[] = [];
+    const useSubjectCrop = options?.portrait || options?.aspectRatio;
 
     // Quality — q_auto variants give Cloudinary control over compression level
     transforms.push(quality === "auto" ? "q_auto" : `q_auto:${quality}`);
@@ -171,16 +173,22 @@ export const optimizedVideoUrl = (
     // Audio — strip for muted background videos
     if (!options?.withAudio) transforms.push("ac_none");
 
-    // Portrait mode or custom aspect ratio — crop to aspect ratio with AI subject detection
-    if (options?.portrait || options?.aspectRatio) {
-        transforms.push("c_fill", "g_auto");
-        transforms.push(`ar_${options?.aspectRatio ?? "9:16"}`);
+    // Portrait mode or custom aspect ratio — crop to aspect ratio with AI subject detection.
+    // Cloudinary requires `g_auto` to be in its own transformation component for video.
+    if (useSubjectCrop) {
+        cropTransforms.push("c_fill");
+        cropTransforms.push(`ar_${options?.aspectRatio ?? "9:16"}`);
     }
 
     // Width constraint
-    if (options?.maxWidth) transforms.push(`w_${options.maxWidth}`);
+    if (options?.maxWidth) {
+        (useSubjectCrop ? cropTransforms : transforms).push(`w_${options.maxWidth}`);
+    }
 
-    const transformStr = transforms.join(",");
+    const transformComponents = useSubjectCrop
+        ? ["g_auto", [...transforms, ...cropTransforms].join(",")]
+        : [transforms.join(",")];
+    const transformStr = transformComponents.join("/");
 
     // Insert transformations between /upload/ and the next path segment (e.g. v1234/)
     return url.replace(/\/upload\//, `/upload/${transformStr}/`);
