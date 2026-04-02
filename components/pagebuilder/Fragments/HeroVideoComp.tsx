@@ -179,7 +179,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                                 loop
                                 muted
                                 playsInline
-                                preload="auto"
+                                preload="metadata"
                                 poster={posterFallback}
                                 onLoadedMetadata={handleVideoReady}
                                 onCanPlay={handleVideoReady}
