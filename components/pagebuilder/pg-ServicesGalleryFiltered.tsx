@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { startTransition, useState } from "react";
 import ServiceGalleryComponent from "@/components/data/data-ServiceGallery";
 import { getTranslations } from "@/lib/translations";
 import type { Service } from "@/types/sanity.types";
@@ -61,7 +61,11 @@ function ServicesGalleryFiltered({
               {filters.map((filter) => (
                 <button
                   key={filter}
-                  onClick={() => setActiveFilter(filter)}
+                  onClick={() => {
+                    startTransition(() => {
+                      setActiveFilter(filter);
+                    });
+                  }}
                   className={`px-6 py-2 rounded-full text-xs font-medium uppercase transition-all duration-100 ${
                     activeFilter === filter
                       ? "bg-lime-500 text-black"

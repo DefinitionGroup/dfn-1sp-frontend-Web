@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useId, useRef, useState } from "react";
+import React, { startTransition, useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
 import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
@@ -57,6 +57,16 @@ export default function ServiceGalleryComponent({
   const [shouldRenderAll, setShouldRenderAll] = useState(
     !Number.isFinite(initialVisibleCount)
   );
+  const openService = (service: Service) => {
+    startTransition(() => {
+      setActive(service);
+    });
+  };
+  const closeService = () => {
+    startTransition(() => {
+      setActive(null);
+    });
+  };
 
   // Filter items based on active filter - using service groups
   const filteredItems =
@@ -93,7 +103,7 @@ export default function ServiceGalleryComponent({
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
-        setActive(null);
+        closeService();
       }
     }
 
@@ -107,7 +117,7 @@ export default function ServiceGalleryComponent({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [active]);
 
-  useOutsideClick(ref, () => setActive(null));
+  useOutsideClick(ref, closeService);
 
   const activeCacheKey = active?._updatedAt;
   const activeBg =
@@ -151,7 +161,7 @@ export default function ServiceGalleryComponent({
                 },
               }}
               className="flex absolute top-2 right-2 lg:hidden items-center overflow-hidden justify-around rounded-full h-6 w-6 z-50"
-              onClick={() => setActive(null)}
+              onClick={closeService}
             >
               <CloseIcon />
             </motion.button>
@@ -188,7 +198,7 @@ export default function ServiceGalleryComponent({
                 },
               }}
               className="flex absolute top-4 right-4 items-center overflow-hidden justify-around rounded-full h-6 w-6 z-50"
-              onClick={() => setActive(null)}
+              onClick={closeService}
             >
                 <CloseIcon />
               </motion.button>
@@ -319,7 +329,7 @@ export default function ServiceGalleryComponent({
               <motion.div
                 layoutId={`card-${item.name}-${id}`}
                 key={`card-${item.name}-${id}`}
-                onClick={() => setActive(item)}
+                onClick={() => openService(item)}
                 className="col-span-1 grid grid-cols-1 grid-rows-4 row-span-1  h-[350px] group/card overflow-hidden cursor-pointer"
               >
                 <motion.div

@@ -24,6 +24,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     const videoRef = useRef<HTMLVideoElement>(null);
     const [mediaReady, setMediaReady] = useState(false);
     const [revealComplete, setRevealComplete] = useState(!useVideo);
+    const [hasMountedVideo, setHasMountedVideo] = useState(false);
     const { isInView: isNearViewport } = useRobustInView(containerRef, {
         once: false,
         amount: 0.05,
@@ -40,7 +41,8 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
             ? videoSrc
             : undefined;
     const posterFallback = posterVariants.at(-1)?.posterUrl;
-    const shouldRenderVideo = useVideo && isNearViewport;
+    const shouldRenderVideo = useVideo && hasMountedVideo;
+    const shouldPlayVideo = shouldRenderVideo && isNearViewport;
     const videoVisible = revealComplete && mediaReady;
 
     const attemptPlay = useCallback(() => {
@@ -69,7 +71,12 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     }, [useVideo]);
 
     useEffect(() => {
-        if (!useVideo || !revealComplete || !shouldRenderVideo || !videoRef.current) return;
+        if (!useVideo || !isNearViewport) return;
+        setHasMountedVideo(true);
+    }, [useVideo, isNearViewport]);
+
+    useEffect(() => {
+        if (!useVideo || !revealComplete || !shouldPlayVideo || !videoRef.current) return;
 
         const video = videoRef.current;
         if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
@@ -77,7 +84,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
         }
 
         attemptPlay();
-    }, [useVideo, revealComplete, shouldRenderVideo, attemptPlay]);
+    }, [useVideo, revealComplete, shouldPlayVideo, attemptPlay]);
 
     useEffect(() => {
         if (!useVideo || !revealComplete) return;
@@ -99,9 +106,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
 
     useEffect(() => {
         if (isNearViewport) return;
-
         videoRef.current?.pause();
-        setMediaReady(false);
     }, [isNearViewport]);
 
     const handleVideoReady = useCallback(() => {

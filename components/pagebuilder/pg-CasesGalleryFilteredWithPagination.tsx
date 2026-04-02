@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { startTransition, useEffect, useState } from "react";
 import GridBackground from "@/components/ui/GridBackground";
 import CaseGalleryComponent from "@/components/data/data-CaseGallery";
 import { getTranslations } from "@/lib/translations";
@@ -111,7 +111,9 @@ function CasesGalleryFilteredWithPagination({
   const currentCaseStudies = filteredCaseStudies.slice(startIndex, endIndex);
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    startTransition(() => {
+      setCurrentPage(page);
+    });
     // Optional: Scroll to top of section when changing page
     const element = document.getElementById(sectionId);
     if (element) {
@@ -139,7 +141,11 @@ function CasesGalleryFilteredWithPagination({
               {filters.map((filter) => (
                 <button
                   key={filter}
-                  onClick={() => setActiveFilter(filter)}
+                  onClick={() => {
+                    startTransition(() => {
+                      setActiveFilter(filter);
+                    });
+                  }}
                   className={`px-6 py-2 rounded-full text-xs font-medium uppercase transition-all duration-100 ${
                     activeFilter === filter
                       ? "bg-lime-500 text-black"

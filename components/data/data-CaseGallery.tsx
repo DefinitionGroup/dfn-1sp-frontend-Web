@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useId, useRef, useState } from "react";
+import React, { startTransition, useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
@@ -48,6 +48,16 @@ export default function CaseGalleryComponent({
   const [active, setActive] = useState<CaseStudy | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   const id = useId();
+  const openCase = (item: CaseStudy) => {
+    startTransition(() => {
+      setActive(item);
+    });
+  };
+  const closeCase = () => {
+    startTransition(() => {
+      setActive(null);
+    });
+  };
 
   const filteredItems =
     activeFilter === filterAllText
@@ -58,7 +68,7 @@ export default function CaseGalleryComponent({
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setActive(null);
+      if (event.key === "Escape") closeCase();
     }
 
     document.body.style.overflow = active ? "hidden" : "auto";
@@ -70,11 +80,11 @@ export default function CaseGalleryComponent({
     };
   }, [active]);
 
-  useOutsideClick(ref, () => setActive(null));
+  useOutsideClick(ref, closeCase);
 
   const handleViewCaseStudy = (slug: string) => {
     document.body.style.overflow = "auto";
-    setActive(null);
+    closeCase();
     setTimeout(() => {
       router.push(`/cases/${slug}`);
     }, 50);
@@ -143,7 +153,7 @@ export default function CaseGalleryComponent({
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 1, transition: { duration: 0.05 } }}
                   className="flex absolute top-4  md:top-10  right-4 lg items-center hover:cursor-pointer overflow-hidden justify-around rounded-full h-6 w-6 z-100"
-                  onClick={() => setActive(null)}
+                  onClick={closeCase}
                   aria-label="Close"
                 >
                   <CloseIcon />
@@ -212,7 +222,7 @@ export default function CaseGalleryComponent({
               variant={variant}
               activeFilter={activeFilter}
               locale={locale}
-              onClick={() => setActive(item)}
+              onClick={() => openCase(item)}
             />
           ))}
         </StaggeredFadeIn>

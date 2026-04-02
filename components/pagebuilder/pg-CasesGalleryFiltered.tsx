@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { startTransition, useEffect, useState } from "react";
 import GridBackground from "@/components/ui/GridBackground";
 import CaseGalleryComponent from "@/components/data/data-CaseGallery";
 import { getTranslations } from "@/lib/translations";
@@ -120,7 +120,11 @@ function CasesGalleryFiltered({
                 {filters.map((filter) => (
                   <button
                     key={filter}
-                    onClick={() => setActiveFilter(filter)}
+                    onClick={() => {
+                      startTransition(() => {
+                        setActiveFilter(filter);
+                      });
+                    }}
                     className={`px-3 py-1 md:px-2 rounded-full text-xs md:text-xs  md:font-medium uppercase transition-all  duration-100 ${activeFilter === filter
                       ? "bg-lime-500 text-black"
                       : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
