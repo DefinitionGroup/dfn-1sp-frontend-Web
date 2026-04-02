@@ -7,7 +7,6 @@ export default function CookiebotBanner() {
       id="Cookiebot"
       src={COOKIEBOT_BANNER_SRC}
       data-cbid={COOKIEBOT_CID}
-      data-blockingmode="auto"
       strategy="afterInteractive"
     />
   );

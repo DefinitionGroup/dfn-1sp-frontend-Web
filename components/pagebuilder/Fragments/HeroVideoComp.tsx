@@ -3,7 +3,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { getHeroMediaVariants } from "@/lib/hero-media";
-import { useRobustInView } from "@/hooks/use-robust-in-view";
 
 const HERO_REVEAL_SETTLE_MS = 450;
 
@@ -24,14 +23,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     const videoRef = useRef<HTMLVideoElement>(null);
     const [mediaReady, setMediaReady] = useState(false);
     const [revealComplete, setRevealComplete] = useState(!useVideo);
-    const [hasMountedVideo, setHasMountedVideo] = useState(false);
-    const { isInView: isNearViewport } = useRobustInView(containerRef, {
-        once: false,
-        amount: 0.05,
-        margin: "160px 0px 160px 0px",
-        mobileAmount: 0.01,
-        mobileMargin: "240px 0px 240px 0px",
-    });
+    const [isNearViewport, setIsNearViewport] = useState(true);
 
     const heroMediaVariants = getHeroMediaVariants(videoSrc);
     const posterVariants = heroMediaVariants.filter((variant) => variant.posterUrl);
@@ -41,13 +33,11 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
             ? videoSrc
             : undefined;
     const posterFallback = posterVariants.at(-1)?.posterUrl;
-    const shouldRenderVideo = useVideo && hasMountedVideo;
-    const shouldPlayVideo = shouldRenderVideo && isNearViewport;
     const videoVisible = revealComplete && mediaReady;
 
     const attemptPlay = useCallback(() => {
         const video = videoRef.current;
-        if (!video || !isNearViewport || document.visibilityState !== "visible") return;
+        if (!video || document.visibilityState !== "visible") return;
 
         video.muted = true;
         video.defaultMuted = true;
@@ -58,7 +48,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                 // If autoplay is temporarily blocked, keep the poster visible and retry later.
             });
         }
-    }, [isNearViewport]);
+    }, []);
 
     useEffect(() => {
         if (!useVideo) return;
@@ -71,12 +61,33 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     }, [useVideo]);
 
     useEffect(() => {
-        if (!useVideo || !isNearViewport) return;
-        setHasMountedVideo(true);
-    }, [useVideo, isNearViewport]);
+        const element = containerRef.current;
+        if (!element) return;
+
+        const syncInView = () => {
+            const rect = element.getBoundingClientRect();
+            setIsNearViewport(rect.bottom > 0 && rect.top < window.innerHeight);
+        };
+
+        syncInView();
+
+        if (typeof IntersectionObserver !== "function") return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const entry = entries[0];
+                if (!entry) return;
+                setIsNearViewport(entry.isIntersecting);
+            },
+            { threshold: 0.01 },
+        );
+
+        observer.observe(element);
+        return () => observer.disconnect();
+    }, []);
 
     useEffect(() => {
-        if (!useVideo || !revealComplete || !shouldPlayVideo || !videoRef.current) return;
+        if (!useVideo || !revealComplete || !isNearViewport || !videoRef.current) return;
 
         const video = videoRef.current;
         if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
@@ -84,7 +95,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
         }
 
         attemptPlay();
-    }, [useVideo, revealComplete, shouldPlayVideo, attemptPlay]);
+    }, [useVideo, revealComplete, isNearViewport, attemptPlay]);
 
     useEffect(() => {
         if (!useVideo || !revealComplete) return;
@@ -111,9 +122,9 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
 
     const handleVideoReady = useCallback(() => {
         setMediaReady(true);
-        if (!revealComplete || !isNearViewport) return;
+        if (!revealComplete) return;
         attemptPlay();
-    }, [attemptPlay, revealComplete, isNearViewport]);
+    }, [attemptPlay, revealComplete]);
 
     return (
         <div ref={containerRef} className="absolute mt-4 inset-0 overflow-visible mx-auto">
@@ -149,36 +160,34 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                         )}
 
                         {/* Video mounts only while the hero is near the viewport. */}
-                        {shouldRenderVideo && (
-                            <video
-                                ref={videoRef}
-                                autoPlay
-                                loop
-                                muted
-                                playsInline
-                                preload="none"
-                                poster={posterFallback}
-                                onLoadedMetadata={handleVideoReady}
-                                onCanPlay={handleVideoReady}
-                                onLoadedData={handleVideoReady}
-                                onPlaying={() => setMediaReady(true)}
-                                onError={() => {
-                                    // If optimized sources fail, keep poster visible.
-                                    setMediaReady(false);
-                                }}
-                                className={`object-cover w-full h-full ${videoVisible ? "opacity-100" : "opacity-0"}`}
-                                style={{ zIndex: 0 }}
-                            >
-                                {videoVariants.map((variant) => (
-                                    <source
-                                        key={`video-${variant.id}`}
-                                        src={variant.videoUrl}
-                                        media={variant.media}
-                                    />
-                                ))}
-                                {rawFallbackSource && <source src={rawFallbackSource} />}
-                            </video>
-                        )}
+                        <video
+                            ref={videoRef}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            preload="none"
+                            poster={posterFallback}
+                            onLoadedMetadata={handleVideoReady}
+                            onCanPlay={handleVideoReady}
+                            onLoadedData={handleVideoReady}
+                            onPlaying={() => setMediaReady(true)}
+                            onError={() => {
+                                // If optimized sources fail, keep poster visible.
+                                setMediaReady(false);
+                            }}
+                            className={`object-cover w-full h-full ${videoVisible ? "opacity-100" : "opacity-0"}`}
+                            style={{ zIndex: 0 }}
+                        >
+                            {videoVariants.map((variant) => (
+                                <source
+                                    key={`video-${variant.id}`}
+                                    src={variant.videoUrl}
+                                    media={variant.media}
+                                />
+                            ))}
+                            {rawFallbackSource && <source src={rawFallbackSource} />}
+                        </video>
                     </div>
                 ) : (
                     imageSrc && (
