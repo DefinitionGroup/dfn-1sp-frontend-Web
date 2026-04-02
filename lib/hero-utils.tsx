@@ -109,18 +109,6 @@ export function HeroPreloadLinks({
                     media="(max-width: 768px)"
                 />
             )}
-            {heroMediaVariants.map((variant) =>
-                variant.videoUrl ? (
-                    <link
-                        key={`video-${variant.id}`}
-                        rel="preload"
-                        as="video"
-                        href={variant.videoUrl}
-                        fetchPriority="low"
-                        media={variant.media}
-                    />
-                ) : null,
-            )}
         </>
     );
 }

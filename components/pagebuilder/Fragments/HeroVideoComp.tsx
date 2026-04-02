@@ -4,6 +4,8 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { getHeroMediaVariants } from "@/lib/hero-media";
 
+const HERO_REVEAL_SETTLE_MS = 450;
+
 interface HeroVideoCompProps {
     useVideo: boolean;
     videoSrc?: string;
@@ -18,12 +20,14 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     imageAlt = "",
 }) => {
     const videoRef = useRef<HTMLVideoElement>(null);
-    const [videoReady, setVideoReady] = useState(false);
+    const [mediaReady, setMediaReady] = useState(false);
+    const [revealComplete, setRevealComplete] = useState(!useVideo);
 
     const heroMediaVariants = getHeroMediaVariants(videoSrc);
     const posterVariants = heroMediaVariants.filter((variant) => variant.posterUrl);
     const videoVariants = heroMediaVariants.filter((variant) => variant.videoUrl);
     const posterFallback = posterVariants.at(-1)?.posterUrl;
+    const videoVisible = revealComplete && mediaReady;
 
     const attemptPlay = useCallback(() => {
         const video = videoRef.current;
@@ -41,18 +45,28 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     }, []);
 
     useEffect(() => {
-        if (!useVideo || !videoRef.current) return;
+        if (!useVideo) return;
+
+        const timer = window.setTimeout(() => {
+            setRevealComplete(true);
+        }, HERO_REVEAL_SETTLE_MS);
+
+        return () => window.clearTimeout(timer);
+    }, [useVideo]);
+
+    useEffect(() => {
+        if (!useVideo || !revealComplete || !videoRef.current) return;
 
         const video = videoRef.current;
         if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-            setVideoReady(true);
+            setMediaReady(true);
         }
 
         attemptPlay();
-    }, [useVideo, attemptPlay]);
+    }, [useVideo, revealComplete, attemptPlay]);
 
     useEffect(() => {
-        if (!useVideo) return;
+        if (!useVideo || !revealComplete) return;
 
         const retryPlayback = () => {
             if (document.visibilityState !== "visible") return;
@@ -67,12 +81,13 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
             window.removeEventListener("pageshow", retryPlayback);
             document.removeEventListener("visibilitychange", retryPlayback);
         };
-    }, [useVideo, attemptPlay]);
+    }, [useVideo, revealComplete, attemptPlay]);
 
     const handleVideoReady = useCallback(() => {
-        setVideoReady(true);
+        setMediaReady(true);
+        if (!revealComplete) return;
         attemptPlay();
-    }, [attemptPlay]);
+    }, [attemptPlay, revealComplete]);
 
     return (
         <div className="absolute mt-4 inset-0 overflow-visible mx-auto">
@@ -101,7 +116,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                                     fetchPriority="high"
                                     loading="eager"
                                     decoding="async"
-                                    className={`object-cover w-full h-full absolute inset-0 ${videoReady ? "opacity-0" : "opacity-100"}`}
+                                    className={`object-cover w-full h-full absolute inset-0 ${videoVisible ? "opacity-0" : "opacity-100"}`}
                                     style={{ zIndex: 1 }}
                                 />
                             </picture>
@@ -119,12 +134,12 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                             onLoadedMetadata={handleVideoReady}
                             onCanPlay={handleVideoReady}
                             onLoadedData={handleVideoReady}
-                            onPlaying={() => setVideoReady(true)}
+                            onPlaying={() => setMediaReady(true)}
                             onError={() => {
                                 // If optimized sources fail, keep poster visible.
-                                setVideoReady(false);
+                                setMediaReady(false);
                             }}
-                            className={`object-cover w-full h-full ${videoReady ? "opacity-100" : "opacity-0"}`}
+                            className={`object-cover w-full h-full ${videoVisible ? "opacity-100" : "opacity-0"}`}
                             style={{ zIndex: 0 }}
                         >
                             {videoVariants.map((variant) => (
