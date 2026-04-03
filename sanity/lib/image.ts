@@ -1,5 +1,6 @@
 import createImageUrlBuilder from '@sanity/image-url'
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { optimizedImageUrl } from "@/utils/utils";
 
 import { dataset, projectId } from '../env'
 
@@ -14,15 +15,14 @@ function buildCloudinaryImageUrl(
   url: string,
   options?: { width?: number; height?: number },
 ) {
-  if (!url.includes("/upload/")) return url;
-
-  const transforms = ["q_auto", "f_auto"];
-
-  if (options?.width) transforms.push(`w_${options.width}`);
-  if (options?.height) transforms.push(`h_${options.height}`);
-  if (options?.width || options?.height) transforms.push("c_fill", "g_auto");
-
-  return url.replace("/upload/", `/upload/${transforms.join(",")}/`);
+  return (
+    optimizedImageUrl(url, {
+      width: options?.width,
+      height: options?.height,
+      crop: options?.width || options?.height ? "fill" : undefined,
+      gravity: options?.width || options?.height ? "auto" : undefined,
+    }) || url
+  );
 }
 
 export function resolveImageUrl(

@@ -4,11 +4,17 @@ import { motion, AnimatePresence, PanInfo, useInView } from "motion/react";
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import Image from "next/image";
 import Button2 from "@/components/ui/Button2";
+import {
+  getCarouselImageUrl,
+  getCarouselLogoUrl,
+  getCarouselPosterUrl,
+  getCarouselVideoSources,
+} from "@/lib/carousel-media";
 import type {
   CarouselItem as SanityCarouselItem,
   CTA,
 } from "@/types/sanity.types";
-import { assetUrl, ctaToButtonProps, optimizedVideoUrl, cloudinaryPosterUrl } from "@/utils/utils";
+import { assetUrl, ctaToButtonProps } from "@/utils/utils";
 
 
 interface UIItem {
@@ -41,9 +47,10 @@ function InteractiveCarousel({
 
   const carouselItems: UIItem[] = useMemo(() => {
     const list = (items ?? []).map((it, i) => {
-      const image = assetUrl((it as any)?.image) || "";
-      const logosrc =
-        assetUrl((it as any)?.logoSrc || (it as any)?.logo) || undefined;
+      const image = getCarouselImageUrl(assetUrl((it as any)?.image)) || "";
+      const logosrc = getCarouselLogoUrl(
+        assetUrl((it as any)?.logoSrc || (it as any)?.logo)
+      );
       const video = assetUrl((it as any)?.video) || undefined;
       const linkHref = (it as any)?.linkHref || undefined;
       return {
@@ -150,6 +157,8 @@ function InteractiveCarousel({
   };
 
   const active = carouselItems[currentIndex];
+  const activeVideoSources = getCarouselVideoSources(active.video);
+  const activePosterUrl = getCarouselPosterUrl(active.video);
 
   return (
     <section ref={sectionRef}>
@@ -185,7 +194,7 @@ function InteractiveCarousel({
                   {/* Background media */}
                   {active.video && shouldLoadVideo(currentIndex) ? (
                     <motion.video
-                      src={optimizedVideoUrl(active.video, { maxWidth: 1920 })}
+                      poster={activePosterUrl}
                       className="absolute inset-0 w-full h-full overflow-hidden object-cover"
                       initial={{ scale: 1.3, opacity: 1 }}
                       animate={{ scale: 1, opacity: 1 }}
@@ -193,12 +202,21 @@ function InteractiveCarousel({
                       loop
                       autoPlay
                       muted
+                      playsInline
                       preload="auto"
-                    />
+                    >
+                      {activeVideoSources.map((source) => (
+                        <source
+                          key={`${source.media ?? "all"}-${source.src}`}
+                          src={source.src}
+                          media={source.media}
+                        />
+                      ))}
+                    </motion.video>
                   ) : active.video ? (
                     /* Cloudinary poster fallback while video hasn't been preloaded yet */
                     <motion.img
-                      src={cloudinaryPosterUrl(active.video, { maxWidth: 1920 }) || ""}
+                      src={activePosterUrl || ""}
                       alt={active.title}
                       className="absolute inset-0 w-full h-full object-cover"
                       initial={{ scale: 1.3, opacity: 1 }}
@@ -222,12 +240,20 @@ function InteractiveCarousel({
                     item.video && preloadedVideos.has(idx) && idx !== currentIndex ? (
                       <video
                         key={`preload-${idx}`}
-                        src={optimizedVideoUrl(item.video, { maxWidth: 1920 })}
-                        preload="auto"
+                        preload="metadata"
                         muted
+                        playsInline
                         className="hidden"
                         aria-hidden="true"
-                      />
+                      >
+                        {getCarouselVideoSources(item.video).map((source) => (
+                          <source
+                            key={`${idx}-${source.media ?? "all"}-${source.src}`}
+                            src={source.src}
+                            media={source.media}
+                          />
+                        ))}
+                      </video>
                     ) : null
                   )}
 

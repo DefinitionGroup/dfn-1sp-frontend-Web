@@ -23,6 +23,7 @@ export function getHeroMediaVariants(videoUrl?: string): HeroMediaVariant[] {
                 maxWidth: 360,
                 quality: "eco",
                 aspectRatio: "9:16",
+                duration: 8,
             }),
             posterUrl: cloudinaryPosterUrl(videoUrl, {
                 maxWidth: 360,
@@ -43,6 +44,7 @@ export function getHeroMediaVariants(videoUrl?: string): HeroMediaVariant[] {
                 quality: "eco",
                 autoCodec: true,
                 aspectRatio: "16:9",
+                duration: 8,
             }),
             posterUrl: cloudinaryPosterUrl(videoUrl, {
                 maxWidth: 768,
@@ -60,6 +62,7 @@ export function getHeroMediaVariants(videoUrl?: string): HeroMediaVariant[] {
                 maxWidth: 1024,
                 quality: "good",
                 autoCodec: true,
+                duration: 8,
             }),
             posterUrl: cloudinaryPosterUrl(videoUrl, { maxWidth: 1024 }),
             posterSrcSet: cloudinaryPosterSrcSet(videoUrl, [768, 960, 1024]),
@@ -72,6 +75,7 @@ export function getHeroMediaVariants(videoUrl?: string): HeroMediaVariant[] {
                 maxWidth: 1280,
                 quality: "good",
                 autoCodec: true,
+                duration: 8,
             }),
             posterUrl: cloudinaryPosterUrl(videoUrl, { maxWidth: 1280 }),
             posterSrcSet: cloudinaryPosterSrcSet(videoUrl, [960, 1280, 1440]),
