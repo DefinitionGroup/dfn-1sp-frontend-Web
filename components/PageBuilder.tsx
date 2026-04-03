@@ -245,6 +245,42 @@ type PageBuilderProps = {
   renderMode?: "default" | "deferred";
 };
 
+function getUnitLogoGridProps(block: any) {
+  return {
+    headline: block?.headline,
+    subheadline: block?.subheadline,
+    logoVariant: block?.logoVariant,
+    columns: block?.columns,
+    maxItems: block?.maxItems,
+    navPointName: block?.navPointName,
+    hideFromNav: block?.hideFromNav,
+    selectionMode: block?.selectionMode,
+    selectedUnitIds:
+      block?.selectionMode === "manual" && Array.isArray(block?.selectedUnits)
+        ? block.selectedUnits
+            .map((unit: any) => unit?._ref || unit?._id)
+            .filter(Boolean)
+        : undefined,
+  };
+}
+
+function getPageBuilderLogoFloatProps(block: any) {
+  return {
+    logoVariant: block?.logoVariant,
+    cardSize: block?.cardSize,
+    maxItems: block?.maxItems,
+    navPointName: block?.navPointName,
+    hideFromNav: block?.hideFromNav,
+    selectionMode: block?.selectionMode,
+    selectedUnitIds:
+      block?.selectionMode === "manual" && Array.isArray(block?.selectedUnits)
+        ? block.selectedUnits
+            .map((unit: any) => unit?._ref || unit?._id)
+            .filter(Boolean)
+        : undefined,
+  };
+}
+
 export function PageBuilder({
   content,
   language = "de",
@@ -465,7 +501,11 @@ export function PageBuilder({
           case "unitLogoGrid":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <UnitLogoGrid key={key} {...(block as any)} language={language} />
+                <UnitLogoGrid
+                  key={key}
+                  {...getUnitLogoGridProps(block)}
+                  language={language}
+                />
               </ErrorBoundary>
             );
           case "pageBuilderLogoFloat":
@@ -473,7 +513,7 @@ export function PageBuilder({
               <ErrorBoundary key={`error-${key}`}>
                 <PageBuilderLogoFloat
                   key={key}
-                  {...(block as any)}
+                  {...getPageBuilderLogoFloatProps(block)}
                   language={language}
                 />
               </ErrorBoundary>

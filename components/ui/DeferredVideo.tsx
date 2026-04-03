@@ -52,7 +52,7 @@ export default function DeferredVideo({
   loop = true,
   muted = true,
   playsInline = true,
-  preload = "auto",
+  preload = "metadata",
   mountDelay = 300,
   posterUrl: customPosterUrl,
   posterFrame = "0",
@@ -100,6 +100,22 @@ export default function DeferredVideo({
     }
     onPlay?.();
   }, [autoPlay, onPlay]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !shouldMount) return;
+
+    if (!isInView) {
+      video.pause();
+      return;
+    }
+
+    if (autoPlay && videoReady) {
+      video.play().catch(() => {
+        // Autoplay stays best-effort when returning to view.
+      });
+    }
+  }, [autoPlay, isInView, shouldMount, videoReady]);
 
   return (
     <div ref={containerRef} className="relative w-full h-full" style={style}>

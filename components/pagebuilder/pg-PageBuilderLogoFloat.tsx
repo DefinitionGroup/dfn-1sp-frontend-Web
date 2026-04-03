@@ -2,17 +2,13 @@
 
 import React from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { assetUrl } from "@/utils/utils";
-import type { CloudinaryAsset } from "@/types/sanity.types";
 
-type Unit = {
-  _id: string;
-  _type?: string;
+type LogoItem = {
+  id: string;
   name?: string;
-  slug?: { current?: string };
-  logo?: CloudinaryAsset;
-  logoColor?: CloudinaryAsset;
-  logoSignet?: CloudinaryAsset;
+  url: string;
+  width?: number;
+  height?: number;
 };
 
 interface PageBuilderLogoFloatProps {
@@ -23,13 +19,13 @@ interface PageBuilderLogoFloatProps {
     navPointName?: string;
     hideFromNav?: boolean;
   };
-  units?: Unit[];
+  logos?: LogoItem[];
   language?: string;
 }
 
 function PageBuilderLogoFloat({
   data,
-  units = [],
+  logos = [],
 }: PageBuilderLogoFloatProps) {
   const {
     cardSize = "sm",
@@ -37,6 +33,34 @@ function PageBuilderLogoFloat({
     hideFromNav = true,
   } = data || {};
   const [visible, setVisible] = React.useState(true);
+  const [shouldRenderLogos, setShouldRenderLogos] = React.useState(false);
+
+  React.useEffect(() => {
+    const win = window as Window & {
+      requestIdleCallback?: (
+        callback: IdleRequestCallback,
+        options?: IdleRequestOptions
+      ) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+
+    let timeoutId: number | undefined;
+    let idleId: number | undefined;
+    const reveal = () => setShouldRenderLogos(true);
+
+    if (win.requestIdleCallback) {
+      idleId = win.requestIdleCallback(reveal, { timeout: 1200 });
+    } else {
+      timeoutId = window.setTimeout(reveal, 350);
+    }
+
+    return () => {
+      if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+      if (idleId !== undefined && win.cancelIdleCallback) {
+        win.cancelIdleCallback(idleId);
+      }
+    };
+  }, []);
 
   React.useEffect(() => {
     function onScroll() {
@@ -56,24 +80,6 @@ function PageBuilderLogoFloat({
   const navPointDataAttr = navPointName
     ? { "data-navpoint-name": navPointName }
     : {};
-
-  const getLogoForUnit = (unit: Unit): CloudinaryAsset | undefined => {
-    return unit.logoColor || unit.logo;
-  };
-
-  const cardsWithLogo = units
-    .map((unit) => {
-      const asset = getLogoForUnit(unit);
-      return {
-        unit,
-        logoUrl: assetUrl(asset),
-        width: asset?.width || 0,
-        height: asset?.height || 0,
-      };
-    })
-    .filter((entry): entry is { unit: Unit; logoUrl: string; width: number; height: number } =>
-      Boolean(entry.logoUrl)
-    );
 
   const maxHeightPx: Record<NonNullable<typeof cardSize>, number> = {
     sm: 56,
@@ -103,12 +109,14 @@ function PageBuilderLogoFloat({
       data-component="pg-pagebuilder-logo-float"
     >
       <div className="w-full flex items-start justify-center px-4  sm:px-6 lg:h-full mt-20   md:mt-24  lg:px-6 lg:pt-0">
-        {cardsWithLogo.length === 0 ? (
+        {logos.length === 0 ? (
           <div className="text-center text-neutral-400">No unit logos found</div>
         ) : (
           <div className="mx-auto w-full max-w-7xl flex flex-wrap items-center  justify-center lg:gap-0">
             <AnimatePresence>
-              {visible && cardsWithLogo.map(({ unit, logoUrl, width, height }, index) => {
+              {visible &&
+                shouldRenderLogos &&
+                logos.map(({ id, name, url, width = 0, height = 0 }, index) => {
                 // Scale to max height, keeping aspect ratio
                 const scale = height > 0 ? Math.min(1, maxH / height) : 1;
                 const displayW = width > 0 ? Math.round(width * scale) : undefined;
@@ -116,7 +124,7 @@ function PageBuilderLogoFloat({
 
                 return (
                   <motion.div
-                    key={unit._id}
+                    key={id}
                     initial={{ opacity: 0, y: 8, x: -0 }}
                     animate={{ opacity: 1, y: 0, x: 0 }}
                     exit={{ opacity: 0, y: -8, x: 0 }}
@@ -133,10 +141,13 @@ function PageBuilderLogoFloat({
                     }}
                   >
                     <img
-                      src={logoUrl}
-                      alt={unit.name || "Unit logo"}
+                      src={url}
+                      alt={name || "Unit logo"}
                       width={displayW}
                       height={displayH}
+                      loading="lazy"
+                      decoding="async"
+                      fetchPriority="low"
                       style={{ width: displayW, height: displayH }}
                       className={`invert object-contain object-center iphone-landscape:max-w-[8vw]  max-w-[33vw]   min-h-12 md:min-h-12 lg:max-w-none ${logoHeightClass}`}
                     />

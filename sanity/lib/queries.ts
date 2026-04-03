@@ -339,38 +339,18 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
     },
     _type == 'unitLogoGrid' => {
       ...,
-      selectedUnits[]->{
-        _id,
-        _type,
-        name,
-        slug,
-        logo,
-        logoColor,
-        logoSignet,
-        cta{
-          ...,
-          link{
-            ...,
-            linkType,
-            externalUrl,
-            page->{
-              _id,
-              slug
-            }
-          }
-        }
+      selectedUnits[]{
+        _key,
+        _ref,
+        _type
       }
     },
     _type == 'pageBuilderLogoFloat' => {
       ...,
-      selectedUnits[]->{
-        _id,
-        _type,
-        name,
-        slug,
-        logo,
-        logoColor,
-        logoSignet
+      selectedUnits[]{
+        _key,
+        _ref,
+        _type
       }
     }
   }
@@ -591,38 +571,18 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
     },
     _type == 'unitLogoGrid' => {
       ...,
-      selectedUnits[]->{
-        _id,
-        _type,
-        name,
-        slug,
-        logo,
-        logoColor,
-        logoSignet,
-        cta{
-          ...,
-          link{
-            ...,
-            linkType,
-            externalUrl,
-            page->{
-              _id,
-              slug
-            }
-          }
-        }
+      selectedUnits[]{
+        _key,
+        _ref,
+        _type
       }
     },
     _type == 'pageBuilderLogoFloat' => {
       ...,
-      selectedUnits[]->{
-        _id,
-        _type,
-        name,
-        slug,
-        logo,
-        logoColor,
-        logoSignet
+      selectedUnits[]{
+        _key,
+        _ref,
+        _type
       }
     }
   }
@@ -1012,5 +972,32 @@ export const UNIT_LOGO_FLOAT_QUERY = defineQuery(`
   logo,
   logoColor,
   logoSignet
+}
+`);
+
+export const UNITS_BY_IDS_QUERY = defineQuery(`
+*[
+  _type == "unit" &&
+  _id in $ids
+]{
+  _id,
+  _type,
+  name,
+  slug,
+  logo,
+  logoColor,
+  logoSignet,
+  cta{
+    ...,
+    link{
+      ...,
+      linkType,
+      externalUrl,
+      page->{
+        _id,
+        slug
+      }
+    }
+  }
 }
 `);

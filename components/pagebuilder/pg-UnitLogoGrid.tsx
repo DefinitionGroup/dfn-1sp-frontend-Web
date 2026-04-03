@@ -1,22 +1,17 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { resolveLink, assetUrl } from "@/utils/utils";
 import Link from "next/link";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import GridBackground from "@/components/ui/GridBackground";
-import type { CloudinaryAsset, CTA } from "@/types/sanity.types";
 import { hasVisibleText } from "@/lib/text-content";
 
 type Unit = {
-  _id: string;
-  _type: string;
+  id: string;
   name?: string;
-  slug?: { current: string };
-  logo?: CloudinaryAsset;
-  logoColor?: CloudinaryAsset;
-  logoSignet?: CloudinaryAsset;
-  cta?: CTA;
+  logoUrl: string;
+  href: string;
+  external?: boolean;
 };
 
 interface UnitLogoGridProps {
@@ -29,7 +24,6 @@ interface UnitLogoGridProps {
     navPointName?: string;
     hideFromNav?: boolean;
     selectionMode?: "auto" | "manual";
-    selectedUnits?: Unit[];
   };
   units?: Unit[];
   language?: string;
@@ -71,38 +65,7 @@ function UnitLogoGrid({
     5: "grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5",
     6: "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6",
   };
-
-  const getLogoForVariant = (unit: Unit): CloudinaryAsset | undefined => {
-    switch (logoVariant) {
-      case "logo":
-        return unit.logo;
-      case "logoSignet":
-        return unit.logoSignet;
-      case "logoColor":
-      default:
-        return unit.logoColor || unit.logo;
-    }
-  };
-
-  const getLinkHref = (unit: Unit): string => {
-    if (!unit.cta?.link) return "#";
-
-    const link = unit.cta.link;
-    let href = resolveLink(link);
-
-    // Fix URL to include locale if it's an internal link
-    if (href && href.startsWith("/") && !href.startsWith(`/${language}`)) {
-      href = `/${language}${href}`;
-    }
-
-    return href || "#";
-  };
-
-  // Filter units that have the selected logo variant
-  const unitsWithLogo = units.filter((unit) => {
-    const logo = getLogoForVariant(unit);
-    return assetUrl(logo);
-  });
+  const unitsWithLogo = units.filter((unit) => Boolean(unit.logoUrl));
 
   return (
     <section
@@ -148,12 +111,6 @@ function UnitLogoGrid({
               staggerDelay={0.05}
             >
               {unitsWithLogo.map((unit, index) => {
-                const logo = getLogoForVariant(unit);
-                const href = getLinkHref(unit);
-                const logoUrl = assetUrl(logo);
-
-                if (!logoUrl) return null;
-
                 // Use dark background for default logo variant (bright logos)
                 const isDarkBg = logoVariant === "logo";
                 const bgClass = isDarkBg
@@ -162,15 +119,15 @@ function UnitLogoGrid({
 
                 return (
                   <Link
-                    key={unit._id}
-                    href={href}
-                    target={unit.cta?.link?.linkType === "external" ? "_blank" : undefined}
-                    rel={unit.cta?.link?.linkType === "external" ? "noopener noreferrer" : undefined}
+                    key={unit.id}
+                    href={unit.href}
+                    target={unit.external ? "_blank" : undefined}
+                    rel={unit.external ? "noopener noreferrer" : undefined}
                     className={`group flex items-center justify-center hover:bg-neutral-200/20 rounded-sm   cursor-pointer p-2 md:p-4  ${bgClass} transition-all duration-300`}
                   >
                     <div className="relative w-full aspect-[3/2] flex-col cursor-pointer border border-neutral-200/90  rounded-sm   items-center justify-center overflow-hidden">
                       <Image
-                        src={logoUrl}
+                        src={unit.logoUrl}
                         alt={unit.name || "Unit logo"}
                         fill
                         className={`object-contain object-center relative  transition-all duration-300    px-4   group-hover:scale-80 ${isDarkBg

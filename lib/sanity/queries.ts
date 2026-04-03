@@ -423,6 +423,29 @@ export const getUnitLogoFloatUnits = cache(async (language: string, maxItems: nu
   return data || [];
 });
 
+export const getUnitsByIds = cache(async (ids: string[]) => {
+  if (!ids.length) {
+    return [];
+  }
+
+  const { UNITS_BY_IDS_QUERY } = await import("@/sanity/lib/queries");
+
+  const { data } = await sanityFetch({
+    query: UNITS_BY_IDS_QUERY,
+    params: { ids },
+    tags: ["units"],
+  });
+
+  const units = Array.isArray(data) ? data : [];
+  const unitsById = new Map(
+    units.map((unit: Record<string, unknown>) => [unit._id, unit]),
+  );
+
+  return ids
+    .map((id) => unitsById.get(id))
+    .filter(Boolean);
+});
+
 export const getCaseStudiesByIds = cache(async (ids: string[]) => {
   if (!ids.length) {
     return [];

@@ -37,10 +37,6 @@ import {
   mapCasesToItemList,
   mapServicesToCatalogItems,
   generateServiceCatalogJsonLd,
-  extractPeopleFromContent,
-  generatePeopleListJsonLd,
-  extractUnitsFromContent,
-  generateUnitsListJsonLd,
   getBreadcrumbLabel,
   CANONICAL_URL,
 } from "@/lib/structured-data";
@@ -184,16 +180,6 @@ export default async function Home({
           })}
         />
       )}
-
-      {/* Person & Unit structured data from page builder content */}
-      {(() => {
-        const people = extractPeopleFromContent(contentBlocks);
-        return people.length > 0 ? <JsonLdScript data={generatePeopleListJsonLd({ people })} /> : null;
-      })()}
-      {(() => {
-        const units = extractUnitsFromContent(contentBlocks);
-        return units.length > 0 ? <JsonLdScript data={generateUnitsListJsonLd({ units })} /> : null;
-      })()}
 
       {/* Preload the hero poster for fast LCP */}
       <HeroPreloadLinks {...heroPreload} />

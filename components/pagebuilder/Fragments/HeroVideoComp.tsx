@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState, type SyntheticEvent } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { getHeroMediaVariants } from "@/lib/hero-media";
 
@@ -39,7 +39,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
         if (img?.complete && img.naturalWidth > 0) {
             requestAnimationFrame(() => setPosterPainted(true));
         }
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [posterPainted, useVideo, videoSrc]);
 
     const heroMediaVariants = getHeroMediaVariants(videoSrc);
     const posterVariants = heroMediaVariants.filter((variant) => variant.posterUrl);
@@ -52,6 +52,12 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     const videoVisible = revealComplete && mediaReady;
     // Only mount <video> after the poster has painted (outside LCP window).
     const shouldMountVideo = posterPainted;
+
+    useEffect(() => {
+        setMediaReady(false);
+        setRevealComplete(!useVideo);
+        setPosterPainted(!useVideo || !posterFallback);
+    }, [posterFallback, useVideo, videoSrc]);
 
     const attemptPlay = useCallback(() => {
         const video = videoRef.current;
@@ -106,12 +112,6 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
 
     useEffect(() => {
         if (!useVideo || !revealComplete || !isNearViewport || !videoRef.current) return;
-
-        const video = videoRef.current;
-        if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-            setMediaReady(true);
-        }
-
         attemptPlay();
     }, [useVideo, revealComplete, isNearViewport, attemptPlay, shouldMountVideo]);
 
@@ -138,7 +138,12 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
         videoRef.current?.pause();
     }, [isNearViewport]);
 
-    const handleVideoReady = useCallback(() => {
+    const handleVideoCanPlay = useCallback(() => {
+        if (!revealComplete) return;
+        attemptPlay();
+    }, [attemptPlay, revealComplete]);
+
+    const handleVideoLoadedData = useCallback(() => {
         setMediaReady(true);
         if (!revealComplete) return;
         attemptPlay();
@@ -183,8 +188,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                             </picture>
                         )}
 
-                        {/* Video mounts after poster has painted (outside the LCP window).
-                            Using preload="auto" so the browser starts downloading immediately. */}
+                        {/* Video mounts after poster has painted so the poster can remain the LCP frame. */}
                         {shouldMountVideo && (
                             <video
                                 ref={videoRef}
@@ -194,9 +198,8 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                                 playsInline
                                 preload="metadata"
                                 poster={posterFallback}
-                                onLoadedMetadata={handleVideoReady}
-                                onCanPlay={handleVideoReady}
-                                onLoadedData={handleVideoReady}
+                                onCanPlay={handleVideoCanPlay}
+                                onLoadedData={handleVideoLoadedData}
                                 onPlaying={() => setMediaReady(true)}
                                 onError={() => {
                                     // If optimized sources fail, keep poster visible.

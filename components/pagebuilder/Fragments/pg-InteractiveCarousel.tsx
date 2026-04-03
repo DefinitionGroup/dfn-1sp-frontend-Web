@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence, PanInfo, useInView } from "motion/react";
-import { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import Button2 from "@/components/ui/Button2";
 import type {
@@ -36,8 +36,7 @@ function InteractiveCarousel({
   const stripRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "200px" });
-  const [preloadedVideos, setPreloadedVideos] = useState<Set<number>>(new Set());
+  const isInView = useInView(sectionRef, { once: false, margin: "200px 0px" });
 
   const carouselItems: UIItem[] = useMemo(() => {
     const list = (items ?? []).map((it, i) => {
@@ -61,23 +60,6 @@ function InteractiveCarousel({
     });
     return list.filter((x) => !!x.image || !!x.video);
   }, [items]);
-
-  // Preload active + next video when carousel is in view
-  useEffect(() => {
-    if (!isInView || !carouselItems.length) return;
-    const nextIndex = (currentIndex + 1) % carouselItems.length;
-    setPreloadedVideos((prev) => {
-      const next = new Set(prev);
-      next.add(currentIndex);
-      next.add(nextIndex);
-      return next;
-    });
-  }, [isInView, currentIndex, carouselItems.length]);
-
-  const shouldLoadVideo = useCallback(
-    (index: number) => isInView && preloadedVideos.has(index),
-    [isInView, preloadedVideos]
-  );
 
   useEffect(() => {
     if (!isAutoPlaying || !carouselItems.length) return;
@@ -183,9 +165,13 @@ function InteractiveCarousel({
               >
                 <div className="relative w-full h-full overflow-hidden bg-gradient-to-brshadow-2xl">
                   {/* Background media */}
-                  {active.video && shouldLoadVideo(currentIndex) ? (
+                  {active.video && isInView ? (
                     <motion.video
-                      src={optimizedVideoUrl(active.video, { maxWidth: 1920 })}
+                      src={optimizedVideoUrl(active.video, {
+                        maxWidth: 1440,
+                        quality: "good",
+                        autoCodec: true,
+                      })}
                       className="absolute inset-0 w-full h-full overflow-hidden object-cover"
                       initial={{ scale: 1.3, opacity: 1 }}
                       animate={{ scale: 1, opacity: 1 }}
@@ -193,12 +179,13 @@ function InteractiveCarousel({
                       loop
                       autoPlay
                       muted
-                      preload="auto"
+                      playsInline
+                      preload="metadata"
                     />
                   ) : active.video ? (
                     /* Cloudinary poster fallback while video hasn't been preloaded yet */
                     <motion.img
-                      src={cloudinaryPosterUrl(active.video, { maxWidth: 1920 }) || ""}
+                      src={cloudinaryPosterUrl(active.video, { maxWidth: 1440 }) || ""}
                       alt={active.title}
                       className="absolute inset-0 w-full h-full object-cover"
                       initial={{ scale: 1.3, opacity: 1 }}
@@ -215,20 +202,6 @@ function InteractiveCarousel({
                       transition={{ duration: 1.6 }}
                       loading="lazy"
                     />
-                  )}
-
-                  {/* Hidden preload for next video */}
-                  {carouselItems.map((item, idx) =>
-                    item.video && preloadedVideos.has(idx) && idx !== currentIndex ? (
-                      <video
-                        key={`preload-${idx}`}
-                        src={optimizedVideoUrl(item.video, { maxWidth: 1920 })}
-                        preload="auto"
-                        muted
-                        className="hidden"
-                        aria-hidden="true"
-                      />
-                    ) : null
                   )}
 
                   {/* Overlay (match Plaintext: gradient from top) */}

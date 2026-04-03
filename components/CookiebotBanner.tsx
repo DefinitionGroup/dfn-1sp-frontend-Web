@@ -7,7 +7,7 @@ export default function CookiebotBanner() {
       id="Cookiebot"
       src={COOKIEBOT_BANNER_SRC}
       data-cbid={COOKIEBOT_CID}
-      strategy="afterInteractive"
+      strategy="lazyOnload"
     />
   );
 }

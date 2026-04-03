@@ -55,11 +55,9 @@ export default function RootLayout({
       className={`${aspekta.variable} `}
       suppressHydrationWarning
     >
-      <head>
-        <CookiebotBanner />
-      </head>
       <body className="antialiased" suppressHydrationWarning>
         {children}
+        <CookiebotBanner />
         <GoogleAnalyticsConsent measurementId={GOOGLE_MEASUREMENT_ID} />
         <Analytics />
         <SpeedInsights />

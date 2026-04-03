@@ -136,9 +136,19 @@ export default async function Page({
 
   // Uses cached fetch - deduped with generateMetadata call
   const page = await getPageBySlug(slug, channel, language);
+  if (!page) {
+    return (
+      <SiteWrapper channel={channel} language={language} navColor="light">
+        <HamburgerGradientMenu />
+        <div className="min-h-screen px-1 md:px-2">
+          <NotFound />
+        </div>
+      </SiteWrapper>
+    );
+  }
 
-  const navbarVariant = page?.navbarVariant || "light";
-  const contentBlocks = page?.content1sp as any[] | undefined;
+  const navbarVariant = page.navbarVariant || "light";
+  const contentBlocks = page.content1sp as any[] | undefined;
   const needsAllCases = hasAutoCaseListingBlocks(contentBlocks);
   const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
 
@@ -157,78 +167,68 @@ export default async function Page({
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
       {/* Structured Data (JSON-LD) */}
-      {page && (
-        <>
-          <JsonLdScript
-            data={generateWebPageJsonLd({
-              title: page.metadata?.title || page.title || slug,
-              slug,
-              description: page.metadata?.description,
-              locale: language,
-              imageUrl: ogImageUrl,
-            })}
-          />
-          <JsonLdScript
-            data={generateBreadcrumbJsonLd([
-              {
-                name: getBreadcrumbLabel(language, "home"),
-                url: CANONICAL_URL,
-              },
-              {
-                name: page.title || slug,
-                url: pageUrl,
-              },
-            ])}
-          />
-          {/* ItemList for case carousels / galleries on this page */}
-          {caseItems.length > 0 && (
-            <JsonLdScript
-              data={generateItemListJsonLd({
-                items: caseItems,
-                locale: language,
-                id: `${pageUrl}#case-list`,
-              })}
-            />
-          )}
-          {services.length > 0 && (
-            <JsonLdScript
-              data={generateServiceCatalogJsonLd({
-                services,
-                locale: language,
-                id: `${pageUrl}#service-catalog`,
-                name: page.title || slug,
-                url: pageUrl,
-              })}
-            />
-          )}
-          {/* Person & Unit structured data from page builder content */}
-          {(() => {
-            const people = extractPeopleFromContent(contentBlocks);
-            return people.length > 0 ? <JsonLdScript data={generatePeopleListJsonLd({ people })} /> : null;
-          })()}
-          {(() => {
-            const units = extractUnitsFromContent(contentBlocks);
-            return units.length > 0 ? <JsonLdScript data={generateUnitsListJsonLd({ units })} /> : null;
-          })()}
-        </>
+      <JsonLdScript
+        data={generateWebPageJsonLd({
+          title: page.metadata?.title || page.title || slug,
+          slug,
+          description: page.metadata?.description,
+          locale: language,
+          imageUrl: ogImageUrl,
+        })}
+      />
+      <JsonLdScript
+        data={generateBreadcrumbJsonLd([
+          {
+            name: getBreadcrumbLabel(language, "home"),
+            url: CANONICAL_URL,
+          },
+          {
+            name: page.title || slug,
+            url: pageUrl,
+          },
+        ])}
+      />
+      {/* ItemList for case carousels / galleries on this page */}
+      {caseItems.length > 0 && (
+        <JsonLdScript
+          data={generateItemListJsonLd({
+            items: caseItems,
+            locale: language,
+            id: `${pageUrl}#case-list`,
+          })}
+        />
       )}
+      {services.length > 0 && (
+        <JsonLdScript
+          data={generateServiceCatalogJsonLd({
+            services,
+            locale: language,
+            id: `${pageUrl}#service-catalog`,
+            name: page.title || slug,
+            url: pageUrl,
+          })}
+        />
+      )}
+      {/* Person & Unit structured data from page builder content */}
+      {(() => {
+        const people = extractPeopleFromContent(contentBlocks);
+        return people.length > 0 ? <JsonLdScript data={generatePeopleListJsonLd({ people })} /> : null;
+      })()}
+      {(() => {
+        const units = extractUnitsFromContent(contentBlocks);
+        return units.length > 0 ? <JsonLdScript data={generateUnitsListJsonLd({ units })} /> : null;
+      })()}
 
       {/* Preload the hero poster for fast LCP */}
       <HeroPreloadLinks {...heroPreload} />
       <HamburgerGradientMenu />
       <div className="  min-h-screen px-1 md:px-2">
-        {page?.content1sp ? (
-          <>
-            <PageBuilder
-              content={page.content1sp}
-              language={language}
-              deferAfter={2}
-            />
-            {slug === "data-protection" && <CookieDeclaration />}
-          </>
-        ) : (
-          <NotFound />
-        )}
+        <PageBuilder
+          content={page.content1sp}
+          language={language}
+          deferAfter={2}
+        />
+        {slug === "data-protection" && <CookieDeclaration />}
       </div>
     </SiteWrapper>
   );
