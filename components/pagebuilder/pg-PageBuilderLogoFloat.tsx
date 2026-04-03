@@ -137,6 +137,9 @@ function PageBuilderLogoFloat({
                       alt={unit.name || "Unit logo"}
                       width={displayW}
                       height={displayH}
+                      loading="lazy"
+                      decoding="async"
+                      fetchPriority="low"
                       style={{ width: displayW, height: displayH }}
                       className={`invert object-contain object-center iphone-landscape:max-w-[8vw]  max-w-[33vw]   min-h-12 md:min-h-12 lg:max-w-none ${logoHeightClass}`}
                     />
