@@ -20,10 +20,12 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     imageAlt = "",
 }) => {
     const containerRef = useRef<HTMLDivElement>(null);
+    const posterImgRef = useRef<HTMLImageElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const [mediaReady, setMediaReady] = useState(false);
     const [revealComplete, setRevealComplete] = useState(!useVideo);
     const [isNearViewport, setIsNearViewport] = useState(true);
+    const [posterPainted, setPosterPainted] = useState(!useVideo);
 
     const heroMediaVariants = getHeroMediaVariants(videoSrc);
     const posterVariants = heroMediaVariants.filter((variant) => variant.posterUrl);
@@ -34,6 +36,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
             : undefined;
     const posterFallback = posterVariants.at(-1)?.posterUrl;
     const videoVisible = revealComplete && mediaReady;
+    const shouldMountVideo = posterPainted;
 
     const attemptPlay = useCallback(() => {
         const video = videoRef.current;
@@ -51,6 +54,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     }, []);
 
     useEffect(() => {
+        setRevealComplete(!useVideo);
         if (!useVideo) return;
 
         const timer = window.setTimeout(() => {
@@ -58,7 +62,21 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
         }, HERO_REVEAL_SETTLE_MS);
 
         return () => window.clearTimeout(timer);
-    }, [useVideo]);
+    }, [useVideo, videoSrc]);
+
+    useEffect(() => {
+        setMediaReady(false);
+        setPosterPainted(!useVideo || !posterFallback);
+    }, [useVideo, posterFallback, videoSrc]);
+
+    useEffect(() => {
+        if (posterPainted || !useVideo) return;
+
+        const posterImg = posterImgRef.current;
+        if (posterImg?.complete && posterImg.naturalWidth > 0) {
+            requestAnimationFrame(() => setPosterPainted(true));
+        }
+    }, [posterPainted, useVideo, videoSrc]);
 
     useEffect(() => {
         const element = containerRef.current;
@@ -87,7 +105,9 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     }, []);
 
     useEffect(() => {
-        if (!useVideo || !revealComplete || !isNearViewport || !videoRef.current) return;
+        if (!useVideo || !shouldMountVideo || !revealComplete || !isNearViewport || !videoRef.current) {
+            return;
+        }
 
         const video = videoRef.current;
         if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
@@ -95,10 +115,10 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
         }
 
         attemptPlay();
-    }, [useVideo, revealComplete, isNearViewport, attemptPlay]);
+    }, [useVideo, shouldMountVideo, revealComplete, isNearViewport, attemptPlay]);
 
     useEffect(() => {
-        if (!useVideo || !revealComplete) return;
+        if (!useVideo || !shouldMountVideo || !revealComplete) return;
 
         const retryPlayback = () => {
             if (!isNearViewport || document.visibilityState !== "visible") return;
@@ -113,7 +133,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
             window.removeEventListener("pageshow", retryPlayback);
             document.removeEventListener("visibilitychange", retryPlayback);
         };
-    }, [useVideo, revealComplete, isNearViewport, attemptPlay]);
+    }, [useVideo, shouldMountVideo, revealComplete, isNearViewport, attemptPlay]);
 
     useEffect(() => {
         if (isNearViewport) return;
@@ -146,6 +166,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                                     ) : null,
                                 )}
                                 <img
+                                    ref={posterImgRef}
                                     src={posterFallback}
                                     alt={imageAlt}
                                     width={1920}
@@ -153,41 +174,46 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                                     fetchPriority="high"
                                     loading="eager"
                                     decoding="async"
-                                    className={`object-cover w-full h-full absolute inset-0 ${videoVisible ? "opacity-0" : "opacity-100"}`}
+                                    onLoad={() => {
+                                        requestAnimationFrame(() => setPosterPainted(true));
+                                    }}
+                                    onError={() => setPosterPainted(true)}
+                                    className={`object-cover w-full h-full absolute inset-0 transition-opacity duration-500 ${videoVisible ? "opacity-0" : "opacity-100"}`}
                                     style={{ zIndex: 1 }}
                                 />
                             </picture>
                         )}
 
-                        {/* Video mounts only while the hero is near the viewport. */}
-                        <video
-                            ref={videoRef}
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            preload="none"
-                            poster={posterFallback}
-                            onLoadedMetadata={handleVideoReady}
-                            onCanPlay={handleVideoReady}
-                            onLoadedData={handleVideoReady}
-                            onPlaying={() => setMediaReady(true)}
-                            onError={() => {
-                                // If optimized sources fail, keep poster visible.
-                                setMediaReady(false);
-                            }}
-                            className={`object-cover w-full h-full ${videoVisible ? "opacity-100" : "opacity-0"}`}
-                            style={{ zIndex: 0 }}
-                        >
-                            {videoVariants.map((variant) => (
-                                <source
-                                    key={`video-${variant.id}`}
-                                    src={variant.videoUrl}
-                                    media={variant.media}
-                                />
-                            ))}
-                            {rawFallbackSource && <source src={rawFallbackSource} />}
-                        </video>
+                        {shouldMountVideo && (
+                            <video
+                                ref={videoRef}
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                preload="metadata"
+                                poster={posterFallback}
+                                onLoadedMetadata={handleVideoReady}
+                                onCanPlay={handleVideoReady}
+                                onLoadedData={handleVideoReady}
+                                onPlaying={() => setMediaReady(true)}
+                                onError={() => {
+                                    // If optimized sources fail, keep poster visible.
+                                    setMediaReady(false);
+                                }}
+                                className={`object-cover w-full h-full transition-opacity duration-700 ${videoVisible ? "opacity-100" : "opacity-0"}`}
+                                style={{ zIndex: 0 }}
+                            >
+                                {videoVariants.map((variant) => (
+                                    <source
+                                        key={`video-${variant.id}`}
+                                        src={variant.videoUrl}
+                                        media={variant.media}
+                                    />
+                                ))}
+                                {rawFallbackSource && <source src={rawFallbackSource} />}
+                            </video>
+                        )}
                     </div>
                 ) : (
                     imageSrc && (

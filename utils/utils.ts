@@ -82,6 +82,8 @@ export const cloudinaryPosterUrl = (
     options?: {
         maxWidth?: number;
         frame?: "0" | "auto" | string;
+        quality?: "auto" | "eco" | "good" | "best";
+        sensitive?: boolean;
         /** Crop poster to portrait with AI subject detection. Defaults to 9:16 unless aspectRatio is set. */
         portrait?: boolean;
         /** Custom aspect ratio (e.g. "9:16", "16:9", "4:5"). Overrides default 9:16 for portrait. */
@@ -94,7 +96,14 @@ export const cloudinaryPosterUrl = (
     if (!url.includes("/upload/")) return undefined;
 
     const frame = options?.frame ?? "0";
-    const transforms = ["q_auto", "f_auto", `so_${frame}`];
+    const quality = options?.quality ?? "auto";
+    const qualityTransform =
+        quality === "auto"
+            ? options?.sensitive
+                ? "q_auto:sensitive"
+                : "q_auto"
+            : `q_auto:${quality}${options?.sensitive ? ":sensitive" : ""}`;
+    const transforms = [qualityTransform, "f_auto", `so_${frame}`];
 
     // Portrait mode — match the video crop
     if (options?.portrait || options?.aspectRatio) {
@@ -124,6 +133,8 @@ export const cloudinaryPosterSrcSet = (
     widths: number[] = [480, 768, 960, 1280, 1600, 1920],
     options?: {
         frame?: "0" | "auto" | string;
+        quality?: "auto" | "eco" | "good" | "best";
+        sensitive?: boolean;
         portrait?: boolean;
         aspectRatio?: string;
     }

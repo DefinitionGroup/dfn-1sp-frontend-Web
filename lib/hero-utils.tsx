@@ -46,13 +46,20 @@ export function getHeroPreloadData(
     return {
         heroVideoUrl,
         heroPosterDesktop: heroVideoUrl
-            ? cloudinaryPosterUrl(heroVideoUrl, { maxWidth: 1280 })
+            ? cloudinaryPosterUrl(heroVideoUrl, {
+                maxWidth: 1280,
+                quality: "eco",
+                sensitive: true,
+            })
             : undefined,
         heroPosterMobile: heroVideoUrl
             ? cloudinaryPosterUrl(heroVideoUrl, { maxWidth: 480, portrait: true })
             : undefined,
         heroPosterDesktopSrcSet: heroVideoUrl
-            ? cloudinaryPosterSrcSet(heroVideoUrl, [960, 1280, 1600, 1920])
+            ? cloudinaryPosterSrcSet(heroVideoUrl, [960, 1280], {
+                quality: "eco",
+                sensitive: true,
+            })
             : undefined,
         heroPosterMobileSrcSet: heroVideoUrl
             ? cloudinaryPosterSrcSet(heroVideoUrl, [360, 480, 640, 750], {

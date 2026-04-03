@@ -77,8 +77,15 @@ export function getHeroMediaVariants(videoUrl?: string): HeroMediaVariant[] {
                 autoCodec: true,
                 duration: 8,
             }),
-            posterUrl: cloudinaryPosterUrl(videoUrl, { maxWidth: 1280 }),
-            posterSrcSet: cloudinaryPosterSrcSet(videoUrl, [960, 1280, 1440]),
+            posterUrl: cloudinaryPosterUrl(videoUrl, {
+                maxWidth: 1280,
+                quality: "eco",
+                sensitive: true,
+            }),
+            posterSrcSet: cloudinaryPosterSrcSet(videoUrl, [960, 1280], {
+                quality: "eco",
+                sensitive: true,
+            }),
             sizes: "100vw",
         },
     ];
