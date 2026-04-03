@@ -1,14 +1,12 @@
 "use client";
-import type { GalleryHeroStep, CarouselItem } from "@/types/sanity.types";
+import type { GalleryHeroStep } from "@/types/sanity.types";
 import HeaderImageVideoComp2 from "@/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
 import GridBackground from "@/components/ui/GridBackground";
 import Badgemodule from "@/components/ui/Badgemodule";
-import { Typewriter } from "motion-plus/react";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { assetUrl } from "@/utils/utils";
 import { useInView } from "motion/react";
-import { useParams } from "next/navigation";
 import { hasVisibleText } from "@/lib/text-content";
 
 
@@ -19,11 +17,12 @@ type Props =
 
 function GalleryHeroStepComponent(props: Props) {
   const typewriterref = useRef<HTMLSpanElement | null>(null);
+  const hasTypedRef = useRef(false);
   const isInView = useInView(typewriterref);
-  const params = useParams();
+  const [typedText, setTypedText] = useState("");
 
   // Prop normalization
-  let step: GalleryHeroStep;
+  let step: GalleryHeroStep | undefined;
   if ("step" in props && props.step) {
     step = props.step;
   } else if ("typewriterText" in props) {
@@ -32,29 +31,15 @@ function GalleryHeroStepComponent(props: Props) {
     step = (props as any).data;
   }
 
-  if (!step) return null;
-
-  const videoSrc = assetUrl(step.backgroundVideo);
-
-  // Legacy carousel field support
-  const carouselItems = (((step as any)?.carousel?.items ||
-    (step as any)?.content?.carousel?.items) ??
-    []) as CarouselItem[];
-
-  // Get additional content items
-  const additionalContent = (step as any)?.additionalContent || [];
-
-  // Get language from URL params (locale), or step, or default to 'en'
-  const language =
-    (params?.locale as string) || (step as any)?.language || "en";
+  const videoSrc = assetUrl(step?.backgroundVideo);
 
   // Generate section ID from badge text or typewriter text
-  const sectionId = step.badge?.text
+  const sectionId = step?.badge?.text
     ? step.badge.text
       .replace(/[^a-zA-Z0-9\s]/g, "")
       .replace(/\s+/g, "-")
       .toLowerCase()
-    : step.typewriterText
+    : step?.typewriterText
       ? step.typewriterText
         .substring(0, 30)
         .replace(/[^a-zA-Z0-9\s]/g, "")
@@ -63,9 +48,45 @@ function GalleryHeroStepComponent(props: Props) {
       : "gallery-hero";
 
   // Store the navPointName in a data attribute if provided
-  const navPointDataAttr = step.navPointName
+  const navPointDataAttr = step?.navPointName
     ? { "data-navpoint-name": step.navPointName }
     : {};
+
+  useEffect(() => {
+    hasTypedRef.current = false;
+    setTypedText("");
+  }, [step?.typewriterText]);
+
+  useEffect(() => {
+    const fullText = step?.typewriterText ?? "";
+    if (!fullText) {
+      setTypedText("");
+      return;
+    }
+
+    if (!isInView || hasTypedRef.current) return;
+    hasTypedRef.current = true;
+
+    const characters = Array.from(fullText);
+    let timeoutId: number | undefined;
+
+    const typeNextCharacter = (index: number) => {
+      setTypedText(characters.slice(0, index + 1).join(""));
+      if (index + 1 < characters.length) {
+        timeoutId = window.setTimeout(() => typeNextCharacter(index + 1), 28);
+      }
+    };
+
+    timeoutId = window.setTimeout(() => typeNextCharacter(0), 120);
+
+    return () => {
+      if (timeoutId !== undefined) {
+        window.clearTimeout(timeoutId);
+      }
+    };
+  }, [isInView, step?.typewriterText]);
+
+  if (!step) return null;
 
   return (
     <section
@@ -100,16 +121,9 @@ function GalleryHeroStepComponent(props: Props) {
           <div className={`col-span-4 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 sm:col-span-6 ${step.badge ? "md:col-span-10 md:col-start-3" : "md:col-span-12"}`}>
             {hasVisibleText(step.typewriterText) && (
               <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-regular tracking-tighter mb-4 text-neutral-800 md:mb-2">
-                <Typewriter
-                  ref={typewriterref}
-                  play={isInView}
-                  speed="fast"
-                  cursorStyle={{ backgroundColor: "transparent" }}
-                  variance={0.8}
-                  backspace="word"
-                >
-                  {step.typewriterText}
-                </Typewriter>
+                <span ref={typewriterref}>
+                  {typedText}
+                </span>
               </h2>
             )}
 

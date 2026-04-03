@@ -1,12 +1,12 @@
 "use client";
 
-import { Cursor, usePointerPosition } from "motion-plus/react";
 import {
   AnimatePresence,
   clamp,
   motion,
   MotionValue,
   Transition,
+  useMotionValue,
   useSpring,
   useTransform,
   useVelocity,
@@ -52,9 +52,21 @@ function TextRevealItem({
   imgH?: number;
 }) {
   const [isHovered, setIsHovered] = useState(false);
-  const pos = usePointerPosition();
-  const skewX = usePointerToSkew(pos.x);
-  const skewY = usePointerToSkew(pos.y);
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const skewX = usePointerToSkew(pointerX);
+  const skewY = usePointerToSkew(pointerY);
+
+  const updatePointerPosition = ({
+    clientX,
+    clientY,
+  }: {
+    clientX: number;
+    clientY: number;
+  }) => {
+    pointerX.set(clientX + 30);
+    pointerY.set(clientY + 30);
+  };
 
   const content = (
     <>
@@ -66,6 +78,11 @@ function TextRevealItem({
   return (
     <motion.li
       style={{ ...item, justifyContent: isHovered ? "flex-end" : "flex-start" }}
+      onPointerEnter={(event) => {
+        updatePointerPosition(event);
+        setIsHovered(true);
+      }}
+      onPointerMove={updatePointerPosition}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
     >
@@ -78,28 +95,39 @@ function TextRevealItem({
 
       <AnimatePresence>
         {isHovered && imageUrl && (
-          <Cursor
-            follow
-            offset={{ x: 30, y: 30 }}
-            variants={{
-              default: {
-                clipPath: "inset(0% 0% 0% 0%)",
-                transition: enterTransition,
-              },
-              exit: {
-                clipPath: "inset(50% 50% 50% 50%)",
-                transition: exitTransition,
-              },
+          <motion.div
+            initial={{
+              opacity: 0,
+              scale: 0.92,
+              clipPath: "inset(50% 50% 50% 50%)",
             }}
-            style={{ skewX, skewY, originX: 0, originY: 0 }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              clipPath: "inset(0% 0% 0% 0%)",
+              transition: enterTransition,
+            }}
+            exit={{
+              opacity: 0,
+              scale: 1.08,
+              clipPath: "inset(50% 50% 50% 50%)",
+              transition: exitTransition,
+            }}
+            style={{
+              position: "fixed",
+              left: 0,
+              top: 0,
+              x: pointerX,
+              y: pointerY,
+              skewX,
+              skewY,
+              originX: 0,
+              originY: 0,
+              pointerEvents: "none",
+              zIndex: 50,
+            }}
           >
-            <motion.div
-              variants={{
-                default: { scale: 1, transition: enterTransition },
-                exit: { scale: 1.5, transition: exitTransition },
-              }}
-              style={{ width: imgW, height: imgH }}
-            >
+            <motion.div style={{ width: imgW, height: imgH }}>
               <Image
                 src={imageUrl}
                 width={imgW}
@@ -107,7 +135,7 @@ function TextRevealItem({
                 alt={label ? `Photo of ${label}` : "Reveal image"}
               />
             </motion.div>
-          </Cursor>
+          </motion.div>
         )}
       </AnimatePresence>
     </motion.li>

@@ -8,7 +8,7 @@
     "dev:seo-diag": "NEXT_PUBLIC_SEO_DIAG=1 next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint . --config eslint.config.mjs --ignore-pattern .next --ignore-pattern node_modules --ignore-pattern next-env.d.ts --ignore-pattern package-lock.json --ignore-pattern pnpm-lock.yaml"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
@@ -22,7 +22,6 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "motion": "^12.23.12",
-    "motion-plus": "^1.5.1",
     "next": "15.5.7",
     "next-sanity": "^11.6.3",
     "next-view-transitions": "^0.3.4",

@@ -1,7 +1,7 @@
 import { ShareNetwork, SquaresFour } from "@phosphor-icons/react";
 import React from "react";
 
-export default {
+const menuSchema = {
     name: 'menu',
     title: 'Menu',
     type: 'document',
@@ -447,4 +447,6 @@ export default {
             return { title: menuType ? `${menuType} Menu` : 'Menu' }
         },
     },
-}
+};
+
+export default menuSchema;

@@ -30,10 +30,9 @@ function pickLogoAsset(
   logoVariant: NonNullable<PageBuilderLogoFloatBlockProps["logoVariant"]>
 ) {
   switch (logoVariant) {
-    case "logo":
-      return unit.logo || unit.logoColor || unit.logoSignet;
     case "logoSignet":
       return unit.logoSignet || unit.logoColor || unit.logo;
+    case "logo":
     case "logoColor":
     default:
       return unit.logoColor || unit.logo || unit.logoSignet;

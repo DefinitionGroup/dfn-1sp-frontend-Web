@@ -149,7 +149,7 @@ function PageBuilderLogoFloat({
                       decoding="async"
                       fetchPriority="low"
                       style={{ width: displayW, height: displayH }}
-                      className={`invert object-contain object-center iphone-landscape:max-w-[8vw]  max-w-[33vw]   min-h-12 md:min-h-12 lg:max-w-none ${logoHeightClass}`}
+                      className={`brightness-0 invert object-contain object-center iphone-landscape:max-w-[8vw] max-w-[33vw] min-h-12 md:min-h-12 lg:max-w-none ${logoHeightClass}`}
                     />
                   </motion.div>
                 );

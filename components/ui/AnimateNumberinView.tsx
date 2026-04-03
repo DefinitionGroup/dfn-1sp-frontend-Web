@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { AnimateNumber } from "motion-plus/react";
 import { useRobustInView } from "@/hooks/use-robust-in-view";
+import AnimatedNumberText from "./AnimatedNumberText";
 
 interface AnimateNumberinViewProps {
   number: string | number;
@@ -42,9 +42,12 @@ export default function AnimateNumberinView({
 
   return (
     <div ref={ref} className={className}>
-      <AnimateNumber format={format} transition={transition} suffix={suffix}>
-        {animateNumberValue}
-      </AnimateNumber>
+      <AnimatedNumberText
+        value={animateNumberValue}
+        format={format}
+        duration={transition?.duration ?? 1.5}
+        suffix={suffix}
+      />
       <StyleSheet />
     </div>
   );
