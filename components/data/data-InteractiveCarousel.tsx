@@ -5,8 +5,15 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Button2 from "@/components/ui/Button2";
-import type { CTA, CloudinaryAsset } from "@/types/sanity.types";
-import { assetUrl, optimizedVideoUrl } from "@/utils/utils";
+import {
+  getCarouselImageUrl,
+  getCarouselLogoUrl,
+  getCarouselPosterUrl,
+  getCarouselThumbnailUrl,
+  getCarouselVideoSources,
+} from "@/lib/carousel-media";
+import type { CloudinaryAsset } from "@/types/sanity.types";
+import { assetUrl } from "@/utils/utils";
 
 interface CaseStudy {
   _id: string;
@@ -29,6 +36,7 @@ interface UIItem {
   title: string;
   subtitle?: string;
   image: string;
+  thumbnail?: string;
   video?: string;
   description?: string;
   category?: string;
@@ -54,8 +62,10 @@ export default function SmartCarousel({
   const carouselItems: UIItem[] = useMemo(() => {
     return caseStudies
       .map((cs) => {
-        const image = assetUrl(cs.mainImage);
-        const logosrc = assetUrl(cs.client?.logo);
+        const rawImage = assetUrl(cs.mainImage);
+        const image = getCarouselImageUrl(rawImage);
+        const thumbnail = getCarouselThumbnailUrl(rawImage) || image;
+        const logosrc = getCarouselLogoUrl(assetUrl(cs.client?.logo));
         const video = assetUrl(cs.mainVideo);
         const linkHref = cs.slug?.current
           ? `/cases/${cs.slug.current}`
@@ -71,6 +81,7 @@ export default function SmartCarousel({
             cs.subtitle ||
             (cs.services ? cs.services.map((s) => s.name).join(", ") : ""),
           image: image || "",
+          thumbnail: thumbnail || image || undefined,
           video: video || undefined,
           description: cs.description || "",
           category: cs.services
@@ -185,6 +196,8 @@ export default function SmartCarousel({
   };
 
   const active = carouselItems[currentIndex];
+  const activeVideoSources = getCarouselVideoSources(active.video);
+  const activePosterUrl = getCarouselPosterUrl(active.video);
 
   return (
     <section className="px-2 sm:px-4 md:px-0">
@@ -221,15 +234,24 @@ export default function SmartCarousel({
                   {/* Background media */}
                   {active.video ? (
                     <motion.video
-                      src={optimizedVideoUrl(active.video, { maxWidth: 1920 })}
+                      poster={activePosterUrl}
                       className="absolute inset-0 w-full h-full overflow-hidden object-cover"
                       initial={{ scale: 1.3, opacity: 0.7 }}
                       animate={{ scale: 1, opacity: 0.7 }}
                       transition={{ duration: 1.6 }}
                       loop
-                      autoPlay playsInline
+                      autoPlay
+                      playsInline
                       muted
-                    />
+                    >
+                      {activeVideoSources.map((source) => (
+                        <source
+                          key={`${source.media ?? "all"}-${source.src}`}
+                          src={source.src}
+                          media={source.media}
+                        />
+                      ))}
+                    </motion.video>
                   ) : active.image ? (
                     <motion.img
                       src={active.image}
@@ -400,7 +422,7 @@ export default function SmartCarousel({
               >
                 {item.image && (
                   <Image
-                    src={item.image}
+                    src={item.thumbnail || item.image}
                     alt={item.title}
                     fill
                     sizes="88px"

@@ -31,7 +31,7 @@
  * ```
  */
 
-import { sanityFetch } from "@/sanity/lib/live";
+import { sanityFetch } from "@/sanity/lib/fetch";
 import type { QueryParams } from "next-sanity";
 
 // =============================================================================

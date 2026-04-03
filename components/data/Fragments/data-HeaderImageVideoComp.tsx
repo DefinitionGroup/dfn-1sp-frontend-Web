@@ -44,7 +44,7 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
 
   // Derive poster from Cloudinary video URL
   const posterUrl = useVideo
-    ? cloudinaryPosterUrl(videoSrc, { maxWidth: 1920 })
+    ? cloudinaryPosterUrl(videoSrc, { maxWidth: 1280 })
     : undefined;
 
   // Mount video after 300ms to let the poster image become the LCP element
@@ -103,7 +103,12 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
             {/* Video — mounted after 300ms delay, fades in once ready */}
             {shouldMountVideo && (
               <video
-                src={optimizedVideoUrl(videoSrc, { maxWidth: 1920 })}
+                src={optimizedVideoUrl(videoSrc, {
+                  maxWidth: 1280,
+                  quality: "good",
+                  autoCodec: true,
+                  duration: 8,
+                })}
                 autoPlay
                 loop
                 muted

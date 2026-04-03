@@ -1,9 +1,4 @@
 import { draftMode } from "next/headers";
-import { VisualEditing } from "next-sanity/visual-editing";
-import { SanityLive } from "@/sanity/lib/live";
-import { DisableDraftMode } from "@/components/DisableDraftMode";
-import { StegaErrorHandler } from "@/components/StegaErrorHandler";
-import SeoDiagnosticOverlay from "@/components/dev/SeoDiagnosticOverlay";
 
 /**
  * Locale-aware layout
@@ -26,6 +21,37 @@ export default async function SiteLayout({
 }) {
   const { isEnabled } = await draftMode();
   const { locale } = await params;
+  let diagnostics: React.ReactNode = null;
+  if (process.env.NODE_ENV === "development") {
+    const { default: SeoDiagnosticOverlay } = await import(
+      "@/components/dev/SeoDiagnosticOverlay"
+    );
+    diagnostics = <SeoDiagnosticOverlay />;
+  }
+
+  let previewTools: React.ReactNode = null;
+  if (isEnabled) {
+    const [
+      { VisualEditing },
+      { SanityLive },
+      { DisableDraftMode },
+      { StegaErrorHandler },
+    ] = await Promise.all([
+      import("next-sanity/visual-editing"),
+      import("@/sanity/lib/live"),
+      import("@/components/DisableDraftMode"),
+      import("@/components/StegaErrorHandler"),
+    ]);
+
+    previewTools = (
+      <>
+        <StegaErrorHandler />
+        <SanityLive />
+        <VisualEditing />
+        <DisableDraftMode />
+      </>
+    );
+  }
 
   return (
     <>
@@ -35,16 +61,9 @@ export default async function SiteLayout({
           __html: `document.documentElement.lang="${locale || "en"}";`,
         }}
       />
-      <SeoDiagnosticOverlay />
+      {diagnostics}
       {children}
-      <StegaErrorHandler />
-      {isEnabled && (
-        <>
-          <SanityLive />
-          <VisualEditing />
-          <DisableDraftMode />
-        </>
-      )}
+      {previewTools}
     </>
   );
 }

@@ -152,10 +152,12 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
     maxWidth: 1280,
     quality: "good",
     autoCodec: true,
+    duration: 8,
   });
   const videoUrlMobile = optimizedPortraitVideoUrl(videoSrc, {
     maxWidth: 360,
     quality: "eco",
+    duration: 8,
   });
   const rawFallbackSource = videoSrc && !videoSrc.includes("/upload/") ? videoSrc : undefined;
 

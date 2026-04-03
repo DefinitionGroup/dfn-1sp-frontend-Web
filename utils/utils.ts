@@ -14,6 +14,34 @@ export const withCacheKey = (url?: string, cacheKey?: string) => {
     }
 };
 
+export const optimizedImageUrl = (
+    url?: string,
+    options?: {
+        width?: number;
+        height?: number;
+        quality?: "auto" | "eco" | "good" | "best";
+        crop?: "limit" | "fill";
+        gravity?: "auto";
+    }
+): string | undefined => {
+    if (!url) return url;
+
+    if (!url.includes("/upload/")) return url;
+
+    const quality = options?.quality ?? "auto";
+    const transforms: string[] = [
+        quality === "auto" ? "q_auto" : `q_auto:${quality}`,
+        "f_auto",
+    ];
+
+    if (options?.width) transforms.push(`w_${options.width}`);
+    if (options?.height) transforms.push(`h_${options.height}`);
+    if (options?.crop) transforms.push(`c_${options.crop}`);
+    if (options?.gravity) transforms.push(`g_${options.gravity}`);
+
+    return url.replace(/\/upload\//, `/upload/${transforms.join(",")}/`);
+};
+
 /**
  * Optimizes a Cloudinary video URL by injecting transformation parameters.
  *
@@ -54,6 +82,8 @@ export const cloudinaryPosterUrl = (
     options?: {
         maxWidth?: number;
         frame?: "0" | "auto" | string;
+        quality?: "auto" | "eco" | "good" | "best";
+        sensitive?: boolean;
         /** Crop poster to portrait with AI subject detection. Defaults to 9:16 unless aspectRatio is set. */
         portrait?: boolean;
         /** Custom aspect ratio (e.g. "9:16", "16:9", "4:5"). Overrides default 9:16 for portrait. */
@@ -66,7 +96,14 @@ export const cloudinaryPosterUrl = (
     if (!url.includes("/upload/")) return undefined;
 
     const frame = options?.frame ?? "0";
-    const transforms = ["q_auto", "f_auto", `so_${frame}`];
+    const quality = options?.quality ?? "auto";
+    const qualityTransform =
+        quality === "auto"
+            ? options?.sensitive
+                ? "q_auto:sensitive"
+                : "q_auto"
+            : `q_auto:${quality}${options?.sensitive ? ":sensitive" : ""}`;
+    const transforms = [qualityTransform, "f_auto", `so_${frame}`];
 
     // Portrait mode — match the video crop
     if (options?.portrait || options?.aspectRatio) {
@@ -96,6 +133,8 @@ export const cloudinaryPosterSrcSet = (
     widths: number[] = [480, 768, 960, 1280, 1600, 1920],
     options?: {
         frame?: "0" | "auto" | string;
+        quality?: "auto" | "eco" | "good" | "best";
+        sensitive?: boolean;
         portrait?: boolean;
         aspectRatio?: string;
     }
@@ -126,6 +165,7 @@ export const optimizedVideoUrl = (
     options?: {
         maxWidth?: number;
         withAudio?: boolean;
+        duration?: number;
         /**
          * Crop to portrait (default 9:16) for mobile.
          * Uses `c_fill,g_auto,ar_9:16` so Cloudinary AI-crops around the subject.
@@ -173,6 +213,10 @@ export const optimizedVideoUrl = (
     // Audio — strip for muted background videos
     if (!options?.withAudio) transforms.push("ac_none");
 
+    if (Number.isFinite(options?.duration) && (options?.duration ?? 0) > 0) {
+        transforms.push(`du_${Math.round(options!.duration!)}`);
+    }
+
     // Portrait mode or custom aspect ratio — crop to aspect ratio with AI subject detection.
     // Cloudinary requires `g_auto` to be in its own transformation component for video.
     if (useSubjectCrop) {
@@ -211,7 +255,12 @@ export const optimizedVideoUrl = (
  */
 export const optimizedPortraitVideoUrl = (
     url?: string,
-    options?: { maxWidth?: number; quality?: "auto" | "eco" | "good" | "best"; aspectRatio?: string }
+    options?: {
+        maxWidth?: number;
+        quality?: "auto" | "eco" | "good" | "best";
+        aspectRatio?: string;
+        duration?: number;
+    }
 ): string | undefined =>
     optimizedVideoUrl(url, {
         portrait: true,
@@ -219,6 +268,7 @@ export const optimizedPortraitVideoUrl = (
         quality: options?.quality ?? "eco",
         autoCodec: true,
         aspectRatio: options?.aspectRatio,
+        duration: options?.duration,
     });
 
 

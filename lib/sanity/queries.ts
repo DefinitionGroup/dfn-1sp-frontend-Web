@@ -30,7 +30,7 @@
  */
 
 import { cache } from "react";
-import { sanityFetch } from "@/sanity/lib/live";
+import { sanityFetch } from "@/sanity/lib/fetch";
 import { defineQuery } from "next-sanity";
 
 const INTERACTIVE_CAROUSEL_FIELD_MAP = {

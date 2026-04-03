@@ -1,5 +1,13 @@
 import { defineQuery } from "next-sanity";
 
+const MINIMAL_CLOUDINARY_ASSET_PROJECTION = `{
+  secure_url,
+  url,
+  width,
+  height,
+  public_id
+}`;
+
 const ADDITIONAL_CONTENT_PROJECTION = `additionalContent[]{
   ...,
   _type == 'cta' => {
@@ -344,9 +352,9 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
         _type,
         name,
         slug,
-        logo,
-        logoColor,
-        logoSignet,
+        logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+        logoColor${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+        logoSignet${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
         cta{
           ...,
           link{
@@ -368,9 +376,9 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
         _type,
         name,
         slug,
-        logo,
-        logoColor,
-        logoSignet
+        logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+        logoColor${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+        logoSignet${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
       }
     }
   }
@@ -596,9 +604,9 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
         _type,
         name,
         slug,
-        logo,
-        logoColor,
-        logoSignet,
+        logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+        logoColor${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+        logoSignet${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
         cta{
           ...,
           link{
@@ -620,9 +628,9 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
         _type,
         name,
         slug,
-        logo,
-        logoColor,
-        logoSignet
+        logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+        logoColor${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+        logoSignet${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
       }
     }
   }
@@ -981,9 +989,9 @@ export const UNIT_LOGO_GRID_QUERY = defineQuery(`
   _type,
   name,
   slug,
-  logo,
-  logoColor,
-  logoSignet,
+  logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+  logoColor${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+  logoSignet${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
   cta{
     ...,
     link{
@@ -1009,8 +1017,8 @@ export const UNIT_LOGO_FLOAT_QUERY = defineQuery(`
   _type,
   name,
   slug,
-  logo,
-  logoColor,
-  logoSignet
+  logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+  logoColor${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+  logoSignet${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
 }
 `);
