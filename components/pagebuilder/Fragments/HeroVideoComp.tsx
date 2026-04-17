@@ -24,7 +24,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     const videoRef = useRef<HTMLVideoElement>(null);
     const [mediaReady, setMediaReady] = useState(false);
     const [revealComplete, setRevealComplete] = useState(!useVideo);
-    const [isNearViewport, setIsNearViewport] = useState(true);
+    const [isNearViewport, setIsNearViewport] = useState(false);
     const [posterPainted, setPosterPainted] = useState(!useVideo);
 
     const heroMediaVariants = getHeroMediaVariants(videoSrc);
@@ -37,6 +37,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     const posterFallback = posterVariants.at(-1)?.posterUrl;
     const videoVisible = revealComplete && mediaReady;
     const shouldMountVideo = posterPainted;
+    const shouldRenderVideo = shouldMountVideo && isNearViewport;
 
     const attemptPlay = useCallback(() => {
         const video = videoRef.current;
@@ -105,7 +106,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     }, []);
 
     useEffect(() => {
-        if (!useVideo || !shouldMountVideo || !revealComplete || !isNearViewport || !videoRef.current) {
+        if (!useVideo || !shouldRenderVideo || !revealComplete || !videoRef.current) {
             return;
         }
 
@@ -115,10 +116,10 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
         }
 
         attemptPlay();
-    }, [useVideo, shouldMountVideo, revealComplete, isNearViewport, attemptPlay]);
+    }, [useVideo, shouldRenderVideo, revealComplete, attemptPlay]);
 
     useEffect(() => {
-        if (!useVideo || !shouldMountVideo || !revealComplete) return;
+        if (!useVideo || !shouldRenderVideo || !revealComplete) return;
 
         const retryPlayback = () => {
             if (!isNearViewport || document.visibilityState !== "visible") return;
@@ -133,12 +134,12 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
             window.removeEventListener("pageshow", retryPlayback);
             document.removeEventListener("visibilitychange", retryPlayback);
         };
-    }, [useVideo, shouldMountVideo, revealComplete, isNearViewport, attemptPlay]);
+    }, [useVideo, shouldRenderVideo, revealComplete, isNearViewport, attemptPlay]);
 
     useEffect(() => {
-        if (isNearViewport) return;
-        videoRef.current?.pause();
-    }, [isNearViewport]);
+        if (shouldRenderVideo) return;
+        setMediaReady(false);
+    }, [shouldRenderVideo]);
 
     const handleVideoReady = useCallback(() => {
         setMediaReady(true);
@@ -184,7 +185,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                             </picture>
                         )}
 
-                        {shouldMountVideo && (
+                        {shouldRenderVideo && (
                             <video
                                 ref={videoRef}
                                 autoPlay

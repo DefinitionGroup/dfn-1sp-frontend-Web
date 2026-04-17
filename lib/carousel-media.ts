@@ -13,21 +13,17 @@ const CAROUSEL_DESKTOP_WIDTH = 1280;
 const CAROUSEL_MOBILE_WIDTH = 640;
 const CAROUSEL_THUMB_WIDTH = 176;
 const CAROUSEL_LOGO_WIDTH = 240;
-const CAROUSEL_LOOP_DURATION_SECONDS = 8;
-
 export function getCarouselVideoSources(url?: string): CarouselVideoSource[] {
   const mobile = optimizedVideoUrl(url, {
     maxWidth: CAROUSEL_MOBILE_WIDTH,
     quality: "eco",
     autoCodec: true,
-    duration: CAROUSEL_LOOP_DURATION_SECONDS,
   });
 
   const desktop = optimizedVideoUrl(url, {
     maxWidth: CAROUSEL_DESKTOP_WIDTH,
     quality: "good",
     autoCodec: true,
-    duration: CAROUSEL_LOOP_DURATION_SECONDS,
   });
 
   if (!mobile && !desktop) return [];

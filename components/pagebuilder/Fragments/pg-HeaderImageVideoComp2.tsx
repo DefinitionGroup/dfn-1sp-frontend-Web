@@ -152,12 +152,10 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
     maxWidth: 1280,
     quality: "good",
     autoCodec: true,
-    duration: 8,
   });
   const videoUrlMobile = optimizedPortraitVideoUrl(videoSrc, {
     maxWidth: 360,
     quality: "eco",
-    duration: 8,
   });
   const rawFallbackSource = videoSrc && !videoSrc.includes("/upload/") ? videoSrc : undefined;
 
@@ -198,8 +196,9 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   const maxStage = Math.max(sourceStages.length - 1, 0);
   const activeStage = Math.min(sourceFallbackStage, maxStage);
   const activeVideoSources = sourceStages[activeStage] ?? [];
-  const shouldRenderVideo = shouldMountVideo && activeVideoSources.length > 0;
-  const shouldPlayVideo = shouldRenderVideo && rawInView;
+  const shouldRenderVideo =
+    shouldMountVideo && rawInView && activeVideoSources.length > 0;
+  const shouldPlayVideo = shouldRenderVideo;
   const videoSourceKey = `${activeStage}:${activeVideoSources
     .map((source) => `${source.media ?? "all"}=${source.src}`)
     .join("|")}`;
@@ -297,11 +296,11 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   ]);
 
   useEffect(() => {
-    if (rawInView) return;
+    if (shouldRenderVideo) return;
 
-    videoRef.current?.pause();
+    setVideoReady(false);
     setAutoplayBlocked(false);
-  }, [rawInView]);
+  }, [shouldRenderVideo]);
 
   const handleVideoReady = () => {
     setVideoReady(true);

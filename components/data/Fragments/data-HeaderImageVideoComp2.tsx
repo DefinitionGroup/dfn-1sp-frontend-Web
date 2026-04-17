@@ -76,6 +76,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   }, [pathname]);
 
   const hasEnteredViewport = routeIntroArmed && animatedForPath === pathname;
+  const shouldRenderVideo = shouldMountVideo && rawInView;
 
   // Derive poster from Cloudinary video URL
   const posterUrl = useVideo
@@ -95,6 +96,11 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
     }, 300);
     return () => clearTimeout(timer);
   }, [useVideo]);
+
+  useEffect(() => {
+    if (shouldRenderVideo) return;
+    setVideoReady(false);
+  }, [shouldRenderVideo]);
 
   return (
     <motion.div className={`absolute inset-0   mx-auto ${className}`}>
@@ -126,13 +132,12 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
               />
             )}
             {/* Video — mounted after 300ms delay, fades in once ready */}
-            {shouldMountVideo && (
+            {shouldRenderVideo && (
               <video
                 src={optimizedVideoUrl(videoSrc, {
                   maxWidth: 1280,
                   quality: "good",
                   autoCodec: true,
-                  duration: 8,
                 })}
                 autoPlay
                 loop
