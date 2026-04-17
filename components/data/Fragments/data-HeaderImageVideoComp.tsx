@@ -37,6 +37,11 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
     amount: 0.3,
     margin: "0px 0px -100px 0px",
   });
+  const rawInView = useInView(ref, {
+    once: false,
+    amount: 0.3,
+    margin: "0px 0px -100px 0px",
+  });
 
   // LCP optimization: defer video mount, show poster image first
   const [shouldMountVideo, setShouldMountVideo] = useState(false);
@@ -46,6 +51,7 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
   const posterUrl = useVideo
     ? cloudinaryPosterUrl(videoSrc, { maxWidth: 1280 })
     : undefined;
+  const shouldRenderVideo = shouldMountVideo && rawInView;
 
   // Mount video after 300ms to let the poster image become the LCP element
   useEffect(() => {
@@ -55,6 +61,11 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
     }, 300);
     return () => clearTimeout(timer);
   }, [useVideo]);
+
+  useEffect(() => {
+    if (shouldRenderVideo) return;
+    setVideoReady(false);
+  }, [shouldRenderVideo]);
 
   const videoClassName = enableVertical
     ? "absolute right-0 top-0 w-1/2 h-full object-cover"
@@ -101,13 +112,12 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
               />
             )}
             {/* Video — mounted after 300ms delay, fades in once ready */}
-            {shouldMountVideo && (
+            {shouldRenderVideo && (
               <video
                 src={optimizedVideoUrl(videoSrc, {
                   maxWidth: 1280,
                   quality: "good",
                   autoCodec: true,
-                  duration: 8,
                 })}
                 autoPlay
                 loop
