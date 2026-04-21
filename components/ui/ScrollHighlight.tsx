@@ -54,7 +54,7 @@ function ScrollHighlightItem({
   return (
     <motion.li
       ref={itemRef}
-      className="skill-item md:p-0 py-6 flex flex-col  md:flex-row justify-start items-start  flex-grow  cursor-pointer"
+      className="skill-item md:p-0 py-6 flex flex-col  md:flex-row justify-start items-start  flex-grow  "
       initial={false}
       animate={{
         opacity: isHighlighted ? 1 : 1,
