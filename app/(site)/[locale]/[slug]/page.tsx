@@ -23,7 +23,7 @@
  * - Full OpenGraph + Twitter card metadata for social sharing
  */
 import { PageBuilder } from "@/components/PageBuilder";
-import CookieDeclaration from "@/components/CookieDeclaration";
+// import CookieDeclaration from "@/components/CookieDeclaration";
 import { getAllCases, getAllPageSlugs, getAllServices, getPageBySlug } from "@/lib/sanity/queries";
 import NotFound from "@/components/ui/not-found";
 import { cookies } from "next/headers";
