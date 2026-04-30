@@ -224,7 +224,7 @@ export default async function Page({
               language={language}
               deferAfter={2}
             />
-            {slug === "data-protection" && <CookieDeclaration />}
+            {/* {slug === "data-protection" && <CookieDeclaration />} */}
           </>
         ) : (
           <NotFound />
