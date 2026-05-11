@@ -135,6 +135,14 @@ export default async function Page({
   // Uses cached fetch - deduped with generateMetadata call
   const page = await getPageBySlug(slug, channel, language);
 
+  if (!page) {
+    return (
+      <FlzrSiteWrapper language={language} navColor="dark">
+        <NotFound />
+      </FlzrSiteWrapper>
+    );
+  }
+
   const navbarVariant = page?.navbarVariant || "light";
   const contentBlocks = page?.contentStudioFlizr as any[] | undefined;
   const needsAllCases = hasAutoCaseListingBlocks(contentBlocks);
