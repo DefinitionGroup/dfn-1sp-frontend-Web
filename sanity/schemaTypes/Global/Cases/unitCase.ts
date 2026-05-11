@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { websiteChannelOptions } from '../../shared/channelOptions'
 
 export default defineType({
     name: 'unit',
@@ -219,6 +220,17 @@ export default defineType({
             initialValue: true,
             group: 'settings',
         },
+        defineField({
+            name: 'channel',
+            title: 'Channel',
+            type: 'array',
+            of: [{ type: 'string' }],
+            options: {
+                list: websiteChannelOptions,
+            },
+            description: 'Websites where this unit can be used.',
+            group: 'settings',
+        }),
         defineField({
             name: 'services',
             title: 'Services',

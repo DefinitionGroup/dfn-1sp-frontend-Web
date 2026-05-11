@@ -1,5 +1,6 @@
 import React from 'react'
 import { defineType, defineField } from 'sanity'
+import { websiteChannelOptions } from '../../shared/channelOptions'
 
 export default defineType({
     name: 'person',
@@ -228,11 +229,7 @@ export default defineType({
             type: 'array',
             of: [{ type: 'string' }],
             options: {
-                list: [
-                    { title: '1sp Website', value: '1spWeb' },
-                    { title: 'MSM Website', value: 'msmWeb' },
-                    { title: 'Studio CO2 Website', value: 'studioco2Web' },
-                ],
+                list: websiteChannelOptions,
             },
             group: 'settings'
         },

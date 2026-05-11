@@ -46,6 +46,38 @@ const createDocWithChannel = (
     language,
   });
 
+const createGlobalDocWithChannel = (
+  S: any,
+  schemaType: string,
+  channel: string,
+  language: string
+): ReturnType<any["initialValueTemplateItem"]> =>
+  S.initialValueTemplateItem(`${schemaType}-${channel}-${language}`, {
+    channel,
+    language,
+  });
+
+const createAssignedGlobalListItem = (
+  S: any,
+  title: string,
+  schemaType: string,
+  channel: string,
+  language: string,
+  icon: React.ComponentType
+): ListItemBuilder =>
+  S.listItem()
+    .title(title)
+    .icon(icon)
+    .child(
+      S.documentTypeList(schemaType)
+        .title(`${title} (${language.toUpperCase()})`)
+        .filter('_type == $schemaType && language == $language && $channel in channel')
+        .params({ schemaType, channel, language })
+        .initialValueTemplates([
+          createGlobalDocWithChannel(S, schemaType, channel, language),
+        ])
+    );
+
 // --------- Channel Structure ---------
 
 const createChannelStructure = (
@@ -113,6 +145,47 @@ const createChannelStructure = (
                             ),
                           ])
                       ),
+                    S.divider(),
+                    createAssignedGlobalListItem(
+                      S,
+                      "Assigned Case Studies",
+                      "caseStudy",
+                      channelValue,
+                      lang.id,
+                      Briefcase
+                    ),
+                    createAssignedGlobalListItem(
+                      S,
+                      "Assigned Services",
+                      "services",
+                      channelValue,
+                      lang.id,
+                      SquaresFour
+                    ),
+                    createAssignedGlobalListItem(
+                      S,
+                      "Assigned People",
+                      "person",
+                      channelValue,
+                      lang.id,
+                      UserCircle
+                    ),
+                    createAssignedGlobalListItem(
+                      S,
+                      "Assigned Clients",
+                      "client",
+                      channelValue,
+                      lang.id,
+                      Users
+                    ),
+                    createAssignedGlobalListItem(
+                      S,
+                      "Assigned Units",
+                      "unit",
+                      channelValue,
+                      lang.id,
+                      SquaresFour
+                    ),
                   ])
               )
           )
