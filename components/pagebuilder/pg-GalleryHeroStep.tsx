@@ -6,10 +6,10 @@ import Badgemodule from "@/components/ui/Badgemodule";
 import { Typewriter } from "motion-plus/react";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import { useRef } from "react";
-import { assetUrl } from "@/utils/utils";
+import { assetUrl } from "@1sp/utils/cloudinary";
 import { useInView } from "motion/react";
 import { useParams } from "next/navigation";
-import { hasVisibleText } from "@/lib/text-content";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 
 type Props =

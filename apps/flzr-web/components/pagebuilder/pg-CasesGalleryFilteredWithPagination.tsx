@@ -3,7 +3,7 @@
 import { startTransition, useEffect, useState } from "react";
 import GridBackground from "@flzr/components/ui/GridBackground";
 import CaseGalleryComponent from "@flzr/components/data/data-CaseGallery";
-import { getTranslations } from "@/lib/translations";
+import { getTranslations } from "@1sp/utils/translations";
 
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 

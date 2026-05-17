@@ -10,7 +10,7 @@ import type {
   GalleryScrollHighlightStep,
   CloudinaryAsset,
 } from "@1sp/sanity-types";
-import { assetUrl, resolveLink, withCacheKey } from "@/utils/utils";
+import { assetUrl, resolveLink, withCacheKey } from "@1sp/utils/cloudinary";
 import { useParams } from "next/navigation";
 
 type RawItem =

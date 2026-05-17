@@ -6,7 +6,7 @@ import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import Link from "next/link";
-import { hasVisibleNode, hasVisibleText } from "@/lib/text-content";
+import { hasVisibleNode, hasVisibleText } from "@1sp/utils/text-content";
 type ContentSectionData = {
   title?: string;
   introHeading?: string;

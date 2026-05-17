@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion, useScroll, useTransform, useInView } from "motion/react";
 import { useRef } from "react";
 import { usePathname } from "next/navigation";
-import { optimizedVideoUrl, cloudinaryPosterUrl } from "@/utils/utils";
+import { optimizedVideoUrl, cloudinaryPosterUrl } from "@1sp/utils/cloudinary";
 
 interface HeaderImageVideoCompProps {
   useVideo?: boolean;

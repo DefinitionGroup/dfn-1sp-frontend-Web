@@ -3,7 +3,7 @@
 import { startTransition, useEffect, useState } from "react";
 import GridBackground from "@/components/ui/GridBackground";
 import CaseGalleryComponent from "@/components/data/data-CaseGallery";
-import { getTranslations } from "@/lib/translations";
+import { getTranslations } from "@1sp/utils/translations";
 
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
 

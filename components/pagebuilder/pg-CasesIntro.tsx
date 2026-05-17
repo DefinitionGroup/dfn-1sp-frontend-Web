@@ -4,9 +4,9 @@ import { useEffect } from "react";
 import GridBackground from "@/components/ui/GridBackground";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
-import { getTranslations } from "@/lib/translations";
+import { getTranslations } from "@1sp/utils/translations";
 import { useParams } from "next/navigation";
-import { hasVisibleText } from "@/lib/text-content";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 
 interface CasesIntroProps {

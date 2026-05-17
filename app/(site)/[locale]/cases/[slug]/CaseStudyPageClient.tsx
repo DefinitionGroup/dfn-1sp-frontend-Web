@@ -6,9 +6,9 @@ import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 import LineMinimap, { NavPoint } from "@/components/ui/MapVertical";
 import { CasePageBuilder } from "@/components/CasePageBuilder";
 import CasePoweredByContact from "@/components/pagebuilder/cases/pg-CasePoweredByContact";
-import { getTranslations } from "@/lib/translations";
+import { getTranslations } from "@1sp/utils/translations";
 import type { CaseStudyData } from "@1sp/sanity-types";
-import { hasVisibleText } from "@/lib/text-content";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 interface CaseStudyPageClientProps {
   caseStudy: CaseStudyData;

@@ -1,12 +1,12 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { resolveLink, assetUrl } from "@/utils/utils";
+import { resolveLink, assetUrl } from "@1sp/utils/cloudinary";
 import Link from "next/link";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import GridBackground from "@flzr/components/ui/GridBackground";
 import type { CloudinaryAsset, CTA } from "@1sp/sanity-types";
-import { hasVisibleText } from "@/lib/text-content";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 type Unit = {
   _id: string;

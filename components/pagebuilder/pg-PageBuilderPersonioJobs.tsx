@@ -6,9 +6,9 @@ import Button2 from "@/components/ui/Button2";
 import GridBackground from "@/components/ui/GridBackground";
 import { client } from "@1sp/sanity-queries/client";
 import { UNIT_LOGO_FLOAT_QUERY } from "@1sp/sanity-queries/groq";
-import { assetUrl } from "@/utils/utils";
+import { assetUrl } from "@1sp/utils/cloudinary";
 import type { CloudinaryAsset } from "@1sp/sanity-types";
-import { hasVisibleText } from "@/lib/text-content";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 type PersonioJob = {
   id: string;

@@ -2,7 +2,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "motion/react";
 import dynamic from "next/dynamic";
-import { hasVisibleText } from "@/lib/text-content";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 const World = dynamic(
   () => import("@/components/ui/globe").then((m) => m.World),

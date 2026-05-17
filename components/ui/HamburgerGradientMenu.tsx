@@ -8,7 +8,7 @@ import {
   motion,
   AnimatePresence,
 } from "motion/react";
-import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
+import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
 import Image from "next/image";
 import { useFooterMenu } from "../menu/FooterMenuContext";
 import { useNavbarMenu } from "../menu/NavbarMenuContext";

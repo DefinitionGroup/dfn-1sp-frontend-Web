@@ -2,7 +2,7 @@ import {
   cloudinaryPosterUrl,
   optimizedImageUrl,
   optimizedVideoUrl,
-} from "@/utils/utils";
+} from "./cloudinary";
 
 export interface CarouselVideoSource {
   media?: string;

@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { cn } from "@1sp/utils/cn";
 import { ArrowRightIcon } from "@phosphor-icons/react";
-import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
+import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
 import MagneticButton from "./MagneticButton";
 
 interface Button2Props {

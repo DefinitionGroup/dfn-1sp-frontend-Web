@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { FooterMenu } from "@1sp/sanity-types/menu";
 import Image from "next/image";
-import { hasVisibleText } from "@/lib/text-content";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 interface FooterProps {
   className?: string;

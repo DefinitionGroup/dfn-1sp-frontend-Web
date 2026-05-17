@@ -4,9 +4,9 @@ import Image from "next/image";
 import DeferredVideo from "@/components/ui/DeferredVideo";
 import Button2 from "@/components/ui/Button2";
 import { motion } from "motion/react";
-import { getTranslations } from "@/lib/translations";
+import { getTranslations } from "@1sp/utils/translations";
 import type { CaseStudyData, CloudinaryAsset } from "@1sp/sanity-types";
-import { assetUrl } from "@/utils/utils";
+import { assetUrl } from "@1sp/utils/cloudinary";
 
 type CaseUnit = NonNullable<CaseStudyData["units"]>[number];
 type CasePersonRelation = NonNullable<CaseStudyData["people"]>[number];

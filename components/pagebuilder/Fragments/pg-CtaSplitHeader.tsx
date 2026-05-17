@@ -2,9 +2,9 @@
 
 import React from "react";
 import type { CtaSplitHeader as CtaSplitHeaderType } from "@1sp/sanity-types";
-import { resolveLink } from "@/utils/utils";
+import { resolveLink } from "@1sp/utils/cloudinary";
 import CtaMiniComponent from "./pg-CtaMiniComponent";
-import { hasVisibleText } from "@/lib/text-content";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 
 function CtaSplitHeader({ data }: { data: CtaSplitHeaderType }) {

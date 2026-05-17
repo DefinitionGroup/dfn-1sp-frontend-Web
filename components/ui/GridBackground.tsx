@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "motion/react";
-import { useRobustInView } from "@/hooks/use-robust-in-view";
+import { useRobustInView } from "@1sp/utils/hooks/use-robust-in-view";
 
 interface GridBackgroundProps {
   className?: string;

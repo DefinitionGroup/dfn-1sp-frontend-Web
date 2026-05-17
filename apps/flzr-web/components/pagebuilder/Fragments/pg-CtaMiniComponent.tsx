@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@1sp/utils/cn";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import Link from "next/link";
 import { ArrowRightIcon } from "@phosphor-icons/react";
-import { hasVisibleText } from "@/lib/text-content";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 interface CtaMiniProps {
   heading: string;

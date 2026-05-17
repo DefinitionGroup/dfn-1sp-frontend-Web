@@ -14,7 +14,7 @@ import {
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import type { CloudinaryAsset } from "@1sp/sanity-types";
-import { assetUrl } from "@/utils/utils";
+import { assetUrl } from "@1sp/utils/cloudinary";
 
 export type RevealItem = {
   label?: string;

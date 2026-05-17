@@ -7,8 +7,8 @@ import HeaderImageVideoComp2 from "@flzr/components/data/Fragments/data-HeaderIm
 import ListContainerComponent from "@flzr/components/ui/ListContainerComponent";
 import ListItemComponent from "@flzr/components/ui/ListItemComponent";
 import CtaMiniComponent from "@flzr/components/data/Fragments/data-CtaMiniComponent";
-import { hasVisibleText } from "@/lib/text-content";
-import { getTranslations } from "@/lib/translations";
+import { hasVisibleText } from "@1sp/utils/text-content";
+import { getTranslations } from "@1sp/utils/translations";
 
 
 interface ServicesHeroWithBadgeProps {

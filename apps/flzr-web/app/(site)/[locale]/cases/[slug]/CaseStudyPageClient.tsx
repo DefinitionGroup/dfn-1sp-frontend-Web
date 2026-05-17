@@ -5,9 +5,9 @@ import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import LineMinimap, { NavPoint } from "@flzr/components/ui/MapVertical";
 import { CasePageBuilder } from "@flzr/components/CasePageBuilder";
 import CasePoweredByContact from "@flzr/components/pagebuilder/cases/pg-CasePoweredByContact";
-import { getTranslations } from "@/lib/translations";
+import { getTranslations } from "@1sp/utils/translations";
 import type { CaseStudyData } from "@1sp/sanity-types";
-import { hasVisibleText } from "@/lib/text-content";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 interface CaseStudyPageClientProps {
   caseStudy: CaseStudyData;

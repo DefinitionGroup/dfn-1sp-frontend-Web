@@ -2,14 +2,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import type { CloudinaryAsset } from "@1sp/sanity-types";
-import { assetUrl, optimizedVideoUrl, cloudinaryPosterUrl } from "@/utils/utils";
+import { assetUrl, optimizedVideoUrl, cloudinaryPosterUrl } from "@1sp/utils/cloudinary";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import StaggeredFadeIn from "@flzr/components/ui/StaggeredFadeIn";
 import Image from "next/image";
 import Link from "next/link";
 import { createPortal } from "react-dom";
-import { useRobustInView } from "@/hooks/use-robust-in-view";
-import { hasVisibleText } from "@/lib/text-content";
+import { useRobustInView } from "@1sp/utils/hooks/use-robust-in-view";
+import { hasVisibleText } from "@1sp/utils/text-content";
 export interface MemberItem {
   name?: string;
   media?: (CloudinaryAsset & { resource_type?: string }) | null;

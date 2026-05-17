@@ -3,8 +3,8 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
-import { useOutsideClick } from "@/hooks/use-outside-click";
-import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
+import { useOutsideClick } from "@1sp/utils/hooks/use-outside-click";
+import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
 import IntertitleCTA from "./Fragments/data-IntertitleCTA";
 import Image from "next/image";
 import DeferredVideo from "@flzr/components/ui/DeferredVideo";

@@ -8,7 +8,7 @@ import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import Button2 from "../ui/Button2";
 import MixedType from "@/components/ui/MixedType";
 
-import { assetUrl, resolveLink, ctaToButtonProps } from "@/utils/utils";
+import { assetUrl, resolveLink, ctaToButtonProps } from "@1sp/utils/cloudinary";
 
 function isVideoAsset(asset?: unknown, url?: string): boolean {
   const resourceType =

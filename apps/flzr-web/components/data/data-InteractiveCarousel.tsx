@@ -11,9 +11,9 @@ import {
   getCarouselPosterUrl,
   getCarouselThumbnailUrl,
   getCarouselVideoSources,
-} from "@/lib/carousel-media";
+} from "@1sp/utils/carousel-media";
 import type { CloudinaryAsset } from "@1sp/sanity-types";
-import { assetUrl } from "@/utils/utils";
+import { assetUrl } from "@1sp/utils/cloudinary";
 
 interface CaseStudy {
   _id: string;

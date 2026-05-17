@@ -4,8 +4,8 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState, useRef, useId, useEffect, useCallback } from "react";
 import Image from "next/image";
 import DeferredVideo from "@flzr/components/ui/DeferredVideo";
-import { useOutsideClick } from "@/hooks/use-outside-click";
-import { hasVisibleText } from "@/lib/text-content";
+import { useOutsideClick } from "@1sp/utils/hooks/use-outside-click";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 // Hook to detect mobile screen
 function useIsMobile(breakpoint: number = 768) {

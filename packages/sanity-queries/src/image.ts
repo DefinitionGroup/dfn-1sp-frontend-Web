@@ -1,36 +1,8 @@
 import createImageUrlBuilder from '@sanity/image-url'
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { optimizedImageUrl } from "@1sp/utils/cloudinary";
 
 import { dataset, projectId } from './env'
-
-// Inlined from utils/utils.ts to keep this package self-contained.
-// When packages/utils is extracted, this duplicate should be removed
-// and imported from there instead.
-const optimizedImageUrl = (
-  url?: string,
-  options?: {
-    width?: number;
-    height?: number;
-    quality?: "auto" | "eco" | "good" | "best";
-    crop?: "limit" | "fill";
-    gravity?: "auto";
-  },
-): string | undefined => {
-  if (!url) return url;
-  if (!url.includes("/upload/")) return url;
-
-  const quality = options?.quality ?? "auto";
-  const transforms: string[] = [
-    quality === "auto" ? "q_auto" : `q_auto:${quality}`,
-    "f_auto",
-  ];
-  if (options?.width) transforms.push(`w_${options.width}`);
-  if (options?.height) transforms.push(`h_${options.height}`);
-  if (options?.crop) transforms.push(`c_${options.crop}`);
-  if (options?.gravity) transforms.push(`g_${options.gravity}`);
-
-  return url.replace(/\/upload\//, `/upload/${transforms.join(",")}/`);
-};
 
 // https://www.sanity.io/docs/image-url
 const builder = createImageUrlBuilder({ projectId, dataset })

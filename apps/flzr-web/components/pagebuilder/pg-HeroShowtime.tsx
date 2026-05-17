@@ -8,7 +8,7 @@ import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import Button2 from "@flzr/components/ui/Button2";
 import MixedType from "@flzr/components/ui/MixedType";
 
-import { assetUrl, resolveLink, ctaToButtonProps } from "@/utils/utils";
+import { assetUrl, resolveLink, ctaToButtonProps } from "@1sp/utils/cloudinary";
 
 function isVideoAsset(asset?: unknown, url?: string): boolean {
   const resourceType =

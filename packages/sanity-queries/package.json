@@ -22,6 +22,7 @@
   ],
   "dependencies": {
     "@1sp/site-config": "workspace:*",
-    "@1sp/sanity-types": "workspace:*"
+    "@1sp/sanity-types": "workspace:*",
+    "@1sp/utils": "workspace:*"
   }
 }

@@ -2,10 +2,10 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { assetUrl } from "@/utils/utils";
+import { assetUrl } from "@1sp/utils/cloudinary";
 import DeferredVideo from "@flzr/components/ui/DeferredVideo";
 import StaggeredFadeIn from "@flzr/components/ui/StaggeredFadeIn";
-import { hasVisibleText } from "@/lib/text-content";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 type CloudinaryAsset = {
   _type?: string;

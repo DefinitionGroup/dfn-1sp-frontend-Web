@@ -4,9 +4,9 @@ import React, { useEffect, useId, useRef, useState, useMemo } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import type { CardItem, CloudinaryAsset } from "@1sp/sanity-types";
-import { assetUrl } from "@/utils/utils";
-import { useOutsideClick } from "@/hooks/use-outside-click";
-import { useRobustInView } from "@/hooks/use-robust-in-view";
+import { assetUrl } from "@1sp/utils/cloudinary";
+import { useOutsideClick } from "@1sp/utils/hooks/use-outside-click";
+import { useRobustInView } from "@1sp/utils/hooks/use-robust-in-view";
 import Image from "next/image";
 export interface ExpandableCardsProps {
   items?: CardItem[];

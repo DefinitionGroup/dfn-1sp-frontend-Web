@@ -10,7 +10,7 @@ import {
   AnimatePresence,
 } from "motion/react";
 import * as React from "react";
-import { clamp } from "@/lib/clamp";
+import { clamp } from "@1sp/utils/clamp";
 
 export const LINE_GAP = 4;
 export const LINE_WIDTH = 1;

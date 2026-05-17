@@ -3,12 +3,12 @@
 import React, { startTransition, useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
-import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
-import { useOutsideClick } from "@/hooks/use-outside-click";
+import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
+import { useOutsideClick } from "@1sp/utils/hooks/use-outside-click";
 import Image from "next/image";
 import DeferredVideo from "@/components/ui/DeferredVideo";
-import { cloudinaryPosterUrl, withCacheKey } from "@/utils/utils";
-import { useRobustInView } from "@/hooks/use-robust-in-view";
+import { cloudinaryPosterUrl, withCacheKey } from "@1sp/utils/cloudinary";
+import { useRobustInView } from "@1sp/utils/hooks/use-robust-in-view";
 import type { CloudinaryImage, Service } from "@1sp/sanity-types";
 
 function isVideoUrl(url: string | undefined): boolean {

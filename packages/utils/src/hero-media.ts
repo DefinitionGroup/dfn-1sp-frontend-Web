@@ -3,7 +3,7 @@ import {
     cloudinaryPosterUrl,
     optimizedPortraitVideoUrl,
     optimizedVideoUrl,
-} from "@/utils/utils";
+} from "./cloudinary";
 
 export interface HeroMediaVariant {
     id: "phone-portrait" | "phone-landscape" | "tablet" | "desktop";

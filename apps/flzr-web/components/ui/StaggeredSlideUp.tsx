@@ -2,7 +2,7 @@
 
 import React, { useRef, useId } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { useRobustInView } from "@/hooks/use-robust-in-view";
+import { useRobustInView } from "@1sp/utils/hooks/use-robust-in-view";
 
 // ─── Easing presets ──────────────────────────────────────────────────
 type EasingPreset = "smooth" | "spring" | "ease-out" | "bounce";

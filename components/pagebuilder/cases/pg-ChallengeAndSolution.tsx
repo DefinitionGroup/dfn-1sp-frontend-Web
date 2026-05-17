@@ -7,13 +7,13 @@ import Badgemodule from "@/components/ui/Badgemodule";
 import ListContainerComponent from "@/components/ui/ListContainerComponent";
 import ListItemComponent from "@/components/ui/ListItemComponent";
 import CtaMiniComponent from "@/components/pagebuilder/Fragments/pg-CtaMiniComponent";
-import { getTranslations } from "@/lib/translations";
+import { getTranslations } from "@1sp/utils/translations";
 import { useParams } from "next/navigation";
-import { resolveLink } from "@/utils/utils";
+import { resolveLink } from "@1sp/utils/cloudinary";
 import type { CTA } from "@1sp/sanity-types";
 import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
-import { hasVisibleText } from "@/lib/text-content";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 interface Service {
   _id: string;

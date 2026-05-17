@@ -7,8 +7,8 @@ import HeaderImageVideoComp2 from "@/components/data/Fragments/data-HeaderImageV
 import ListContainerComponent from "@/components/ui/ListContainerComponent";
 import ListItemComponent from "@/components/ui/ListItemComponent";
 import CtaMiniComponent from "@/components/data/Fragments/data-CtaMiniComponent";
-import { hasVisibleText } from "@/lib/text-content";
-import { getTranslations } from "@/lib/translations";
+import { hasVisibleText } from "@1sp/utils/text-content";
+import { getTranslations } from "@1sp/utils/translations";
 
 
 interface ServicesHeroWithBadgeProps {

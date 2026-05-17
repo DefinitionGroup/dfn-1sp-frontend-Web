@@ -9,10 +9,10 @@ import AnimateNumberinView from "@/components/ui/AnimateNumberinView";
 import PercentageDiagramVertical from "@/components/ui/percentageDiagramVertical";
 import PercentageDiagramHorizontal from "@/components/ui/percentageDiagramHorizontal";
 import PercentagePosNegDiagram from "@/components/ui/percentagePosNegDiagram";
-import { getTranslations } from "@/lib/translations";
+import { getTranslations } from "@1sp/utils/translations";
 import { useParams } from "next/navigation";
-import { assetUrl } from "@/utils/utils";
-import { hasVisibleText } from "@/lib/text-content";
+import { assetUrl } from "@1sp/utils/cloudinary";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 interface CloudinaryAsset {
   public_id?: string;

@@ -2,7 +2,7 @@
 
 import { startTransition, useState } from "react";
 import ServiceGalleryComponent from "@flzr/components/data/data-ServiceGallery";
-import { getTranslations } from "@/lib/translations";
+import { getTranslations } from "@1sp/utils/translations";
 import type { Service } from "@1sp/sanity-types";
 
 interface ServicesGalleryFilteredProps {

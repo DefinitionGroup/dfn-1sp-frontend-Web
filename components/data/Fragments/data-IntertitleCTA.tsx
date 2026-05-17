@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import Button2 from "@/components/ui/Button2";
-import { hasVisibleText } from "@/lib/text-content";
+import { hasVisibleText } from "@1sp/utils/text-content";
 interface StaggeredSlideUpProps {
   className?: string;
   delay?: number;

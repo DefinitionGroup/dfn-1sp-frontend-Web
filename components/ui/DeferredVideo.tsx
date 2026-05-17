@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import { useInView } from "motion/react";
-import { optimizedVideoUrl, cloudinaryPosterUrl } from "@/utils/utils";
+import { optimizedVideoUrl, cloudinaryPosterUrl } from "@1sp/utils/cloudinary";
 
 /**
  * DeferredVideo — LCP-optimized video component.

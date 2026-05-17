@@ -6,10 +6,10 @@ import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import ListContainerComponent from "@/components/ui/ListContainerComponent";
 import ListItemComponent from "@/components/ui/ListItemComponent";
 import HeaderImageVideoComp2 from "@/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
-import { getTranslations } from "@/lib/translations";
+import { getTranslations } from "@1sp/utils/translations";
 import { useParams } from "next/navigation";
-import { assetUrl } from "@/utils/utils";
-import { hasVisibleText } from "@/lib/text-content";
+import { assetUrl } from "@1sp/utils/cloudinary";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 interface CloudinaryAsset {
   public_id?: string;

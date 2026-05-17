@@ -2,7 +2,7 @@
 import React from "react";
 import GridBackground from "@flzr/components/ui/GridBackground";
 import type { CTA } from "@1sp/sanity-types";
-import { ctaToButtonProps } from "@/utils/utils";
+import { ctaToButtonProps } from "@1sp/utils/cloudinary";
 import Button2 from "@flzr/components/ui/Button2";
 
 

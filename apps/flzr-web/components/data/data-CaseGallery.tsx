@@ -2,9 +2,9 @@
 
 import React, { startTransition, useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { useOutsideClick } from "@/hooks/use-outside-click";
+import { useOutsideClick } from "@1sp/utils/hooks/use-outside-click";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
-import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
+import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
 import Button2 from "@flzr/components/ui/Button2";
 import Image from "next/image";
 import StaggeredFadeIn from "@flzr/components/ui/StaggeredFadeIn";

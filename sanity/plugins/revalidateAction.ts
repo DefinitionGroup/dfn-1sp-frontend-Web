@@ -1,5 +1,5 @@
 import { DocumentActionComponent } from 'sanity'
-import { getRevalidationBaseUrl } from '@/lib/site-url'
+import { getRevalidationBaseUrl } from '@1sp/utils/site-url'
 
 export const revalidateAction: DocumentActionComponent = (props) => {
     const { id, type, draft, published } = props

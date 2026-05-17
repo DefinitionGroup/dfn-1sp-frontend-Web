@@ -25,8 +25,8 @@ import {
   ctaToButtonProps,
   assetUrl,
   resolveLink,
-} from "@/utils/utils";
-import { hasVisibleText } from "@/lib/text-content";
+} from "@1sp/utils/cloudinary";
+import { hasVisibleText } from "@1sp/utils/text-content";
 import { useParams } from "next/navigation";
 
 /* ---------- helpers ---------- */
