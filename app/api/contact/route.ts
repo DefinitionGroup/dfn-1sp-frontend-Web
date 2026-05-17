@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "next-sanity";
 import { apiVersion, dataset, projectId } from "@/sanity/env";
+import { getChannelFromEnv } from "@/lib/site-config";
 
 const writeClient = createClient({
   projectId,
@@ -36,7 +37,7 @@ export async function POST(req: NextRequest) {
   const company = sanitize(payload?.company);
   const message = sanitize(payload?.message);
   const language = sanitize(payload?.language) || "en";
-  const channel = sanitize(payload?.channel) || "1spWeb";
+  const channel = sanitize(payload?.channel) || getChannelFromEnv();
 
   if (!name || !email || !message) {
     return NextResponse.json(

@@ -16,6 +16,7 @@ import SiteWrapper from "@/components/SiteWrapper";
 import { resolveImageUrl } from "@/sanity/lib/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
+import { getChannel } from "@/lib/server-channel";
 import {
   JsonLdScript,
   generateCollectionPageJsonLd,
@@ -39,7 +40,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const channel = "1spWeb";
+  const channel = await getChannel();
   const { locale } = await params;
   const language = locale || "en";
   const page = await getPageBySlug("cases", channel, language);
@@ -87,7 +88,7 @@ export default async function CasesPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const channel = "1spWeb";
+  const channel = await getChannel();
   const { locale } = await params;
   const language = locale || "en";
 

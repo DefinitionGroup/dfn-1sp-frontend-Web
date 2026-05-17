@@ -32,6 +32,7 @@
 import { cache } from "react";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { defineQuery } from "next-sanity";
+import { getChannelFromEnv } from "@/lib/site-config";
 
 const INTERACTIVE_CAROUSEL_FIELD_MAP = {
   "1spWeb": "connectedDataCarouselPromo1SP",
@@ -502,10 +503,17 @@ export const getAllCaseSlugs = cache(async () => {
 
 /**
  * Get all page slugs for static generation.
+ *
+ * Filters by the deployment's active channel (resolved via
+ * `NEXT_PUBLIC_CHANNEL`, default `1spWeb`). Each site should only pre-render
+ * its own channel's pages — pages from other channels would render empty
+ * because they live in different `content<Channel>` arrays.
+ *
+ * Pass an explicit `channel` to override (e.g. internal tooling).
  */
-export const getAllPageSlugs = cache(async () => {
+export const getAllPageSlugs = cache(async (channel: string = getChannelFromEnv()) => {
   const PAGE_SLUGS_QUERY = defineQuery(/* groq */ `
-    *[_type == "page" && defined(slug.current) && !isHomepage]{
+    *[_type == "page" && defined(slug.current) && !isHomepage && channel == $channel]{
       "slug": slug.current,
       language,
       channel,
@@ -515,7 +523,7 @@ export const getAllPageSlugs = cache(async () => {
 
   const { data } = await sanityFetch({
     query: PAGE_SLUGS_QUERY,
-    params: {},
+    params: { channel },
     perspective: "published",
     stega: false,
   });
@@ -527,13 +535,17 @@ export const getAllPageSlugs = cache(async () => {
 
 /**
  * Get all page slugs that should be included in sitemap.xml.
+ *
+ * Filters by the deployment's active channel — each site's sitemap only
+ * includes pages belonging to its channel.
  */
-export const getAllPageSitemapSlugs = cache(async () => {
+export const getAllPageSitemapSlugs = cache(async (channel: string = getChannelFromEnv()) => {
   const PAGE_SITEMAP_SLUGS_QUERY = defineQuery(/* groq */ `
     *[
       _type == "page" &&
       defined(slug.current) &&
       !isHomepage &&
+      channel == $channel &&
       metadata.excludeFromSitemap != true
     ]{
       "slug": slug.current,
@@ -545,7 +557,7 @@ export const getAllPageSitemapSlugs = cache(async () => {
 
   const { data } = await sanityFetch({
     query: PAGE_SITEMAP_SLUGS_QUERY,
-    params: {},
+    params: { channel },
     perspective: "published",
     stega: false,
   });

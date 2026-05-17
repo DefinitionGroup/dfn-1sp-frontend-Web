@@ -10,9 +10,9 @@
  * - ContactPage JSON-LD + BreadcrumbList structured data
  * - Hero video poster preload for LCP optimization
  */
-import { cookies } from "next/headers";
 import { PageBuilder } from "@/components/PageBuilder";
 import SiteWrapper from "@/components/SiteWrapper";
+import { getChannel } from "@/lib/server-channel";
 import NotFound from "@/components/ui/not-found";
 import ContactForm from "@/components/ui/ContactForm";
 import { getAllCases, getAllServices, getPageBySlug } from "@/lib/sanity/queries";
@@ -51,8 +51,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const cookieStore = await cookies();
-  const channel = cookieStore.get("channel")?.value || "1spWeb";
+  const channel = await getChannel();
   const { locale } = await params;
   const language = locale || "en";
 
@@ -106,8 +105,7 @@ export default async function ContactPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const cookieStore = await cookies();
-  const channel = cookieStore.get("channel")?.value || "1spWeb";
+  const channel = await getChannel();
   const language = locale || "en";
 
   // Uses cached fetch from centralized data layer

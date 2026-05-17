@@ -12,7 +12,7 @@
  * - Hero video poster preload for LCP optimization
  */
 import { getAllCases, getAllServices, getPageBySlug } from "@/lib/sanity/queries";
-import { cookies } from "next/headers";
+import { getChannel } from "@/lib/server-channel";
 import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
@@ -51,8 +51,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const cookieStore = await cookies();
-  const channel = cookieStore.get("channel")?.value || "1spWeb";
+  const channel = await getChannel();
   const { locale } = await params;
   const language = locale || "en";
 
@@ -105,8 +104,7 @@ export default async function ServicesPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const cookieStore = await cookies();
-  const channel = cookieStore.get("channel")?.value || "1spWeb";
+  const channel = await getChannel();
   const { locale } = await params;
   const language = locale || "en";
 

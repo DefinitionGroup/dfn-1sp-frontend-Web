@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAllCases } from "@/lib/sanity/queries";
+import { getChannelFromEnv } from "@/lib/site-config";
 
 const sanitize = (value: string | null, fallback: string) => {
   const trimmed = value?.trim();
@@ -8,7 +9,7 @@ const sanitize = (value: string | null, fallback: string) => {
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const channel = sanitize(searchParams.get("channel"), "1spWeb");
+  const channel = sanitize(searchParams.get("channel"), getChannelFromEnv());
   const language = sanitize(searchParams.get("language"), "en");
 
   try {

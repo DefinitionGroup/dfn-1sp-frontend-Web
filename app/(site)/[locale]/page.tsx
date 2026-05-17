@@ -26,6 +26,8 @@ import SiteWrapper from "@/components/SiteWrapper";
 import { resolveImageUrl } from "@/sanity/lib/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
+import { getChannel } from "@/lib/server-channel";
+import { SITE_BRAND } from "@/lib/site-config";
 import {
   JsonLdScript,
   generateHomepageJsonLd,
@@ -47,7 +49,6 @@ import {
 
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 export const revalidate = 60;
-const DEFAULT_CHANNEL = "1spWeb";
 const SUPPORTED_LOCALES = ["en"];
 
 export function generateStaticParams() {
@@ -61,9 +62,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const language = locale || "en";
+  const channel = await getChannel();
 
   // Uses cached fetch - shared with page component
-  const page = await getHomePage(DEFAULT_CHANNEL, language);
+  const page = await getHomePage(channel, language);
 
   if (!page) {
     return {
@@ -72,9 +74,7 @@ export async function generateMetadata({
   }
 
   const title = page.metadata?.title || page.title || "Home";
-  const description =
-    page.metadata?.description ||
-    "1SP is a full-service agency specializing in brand engagement, experiential marketing, creative content, and talent management.";
+  const description = page.metadata?.description || SITE_BRAND.description;
   const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
 
   const ogImages = ogImageUrl
@@ -118,20 +118,21 @@ export default async function Home({
 }) {
   const { locale } = await params;
   const language = locale || "en";
+  const channel = await getChannel();
 
   // Uses cached fetch - deduped with generateMetadata call
-  const page = await getHomePage(DEFAULT_CHANNEL, language);
+  const page = await getHomePage(channel, language);
 
   const navbarVariant = page?.navbarVariant || "light";
 
   // Structured data: get social links & logo (cached — deduped with SiteWrapper)
-  const globalData = await getGlobalData(DEFAULT_CHANNEL, language);
+  const globalData = await getGlobalData(channel, language);
   const contentBlocks = page?.content1sp as any[] | undefined;
   const needsAllCases = hasAutoCaseListingBlocks(contentBlocks);
   const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
 
   const [allCasesRaw, allServicesRaw] = await Promise.all([
-    needsAllCases ? getAllCases(DEFAULT_CHANNEL, language) : Promise.resolve([]),
+    needsAllCases ? getAllCases(channel, language) : Promise.resolve([]),
     hasServicesGallery ? getAllServices(language) : Promise.resolve([]),
   ]);
 
@@ -143,7 +144,7 @@ export default async function Home({
 
   return (
     <SiteWrapper
-      channel={DEFAULT_CHANNEL}
+      channel={channel}
       language={language}
       navColor={navbarVariant}
     >

@@ -26,8 +26,8 @@ import { PageBuilder } from "@/components/PageBuilder";
 // import CookieDeclaration from "@/components/CookieDeclaration";
 import { getAllCases, getAllPageSlugs, getAllServices, getPageBySlug } from "@/lib/sanity/queries";
 import NotFound from "@/components/ui/not-found";
-import { cookies } from "next/headers";
 import SiteWrapper from "@/components/SiteWrapper";
+import { getChannel } from "@/lib/server-channel";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 import { resolveImageUrl } from "@/sanity/lib/image";
 import type { Metadata } from "next";
@@ -72,8 +72,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const cookieStore = await cookies();
-  const channel = cookieStore.get("channel")?.value || "1spWeb";
+  const channel = await getChannel();
   const language = locale || "en";
 
   // Uses cached fetch - shared with page component
@@ -129,9 +128,7 @@ export default async function Page({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params;
-
-  const cookieStore = await cookies();
-  const channel = cookieStore.get("channel")?.value || "1spWeb";
+  const channel = await getChannel();
   const language = locale || "en";
 
   // Uses cached fetch - deduped with generateMetadata call
