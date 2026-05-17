@@ -12,8 +12,8 @@
  */
 import FlzrPageBuilder from "@flzr/components/FlzrPageBuilder";
 import FlzrSiteWrapper from "@flzr/components/FlzrSiteWrapper";
-import NotFound from "@/components/ui/not-found";
-import ContactForm from "@/components/ui/ContactForm";
+import NotFound from "@flzr/components/ui/not-found";
+import ContactForm from "@flzr/components/ui/ContactForm";
 import { getAllCases, getAllServicesForChannel, getPageBySlug } from "@/lib/sanity/queries";
 import { resolveImageUrl } from "@/sanity/lib/image";
 import type { Metadata } from "next";

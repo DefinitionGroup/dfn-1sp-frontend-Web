@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
-import HeaderImageVideoComp from "@/components/data/Fragments/data-HeaderImageVideoComp";
-import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
-import LineMinimap, { NavPoint } from "@/components/ui/MapVertical";
-import { CasePageBuilder } from "@/components/CasePageBuilder";
-import CasePoweredByContact from "@/components/pagebuilder/cases/pg-CasePoweredByContact";
+import HeaderImageVideoComp from "@flzr/components/data/Fragments/data-HeaderImageVideoComp";
+import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
+import LineMinimap, { NavPoint } from "@flzr/components/ui/MapVertical";
+import { CasePageBuilder } from "@flzr/components/CasePageBuilder";
+import CasePoweredByContact from "@flzr/components/pagebuilder/cases/pg-CasePoweredByContact";
 import { getTranslations } from "@/lib/translations";
 import type { CaseStudyData } from "@/types/sanity.types";
 import { hasVisibleText } from "@/lib/text-content";

@@ -21,7 +21,7 @@
  */
 import { getAllCases, getAllServicesForChannel, getHomePage, getGlobalData } from "@/lib/sanity/queries";
 import FlzrPageBuilder from "@flzr/components/FlzrPageBuilder";
-import NotFound from "@/components/ui/not-found";
+import NotFound from "@flzr/components/ui/not-found";
 import FlzrSiteWrapper from "@flzr/components/FlzrSiteWrapper";
 import { resolveImageUrl } from "@/sanity/lib/image";
 import type { Metadata } from "next";

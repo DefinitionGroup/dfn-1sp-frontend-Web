@@ -25,7 +25,7 @@
 import FlzrPageBuilder from "@flzr/components/FlzrPageBuilder";
 // import CookieDeclaration from "@/components/CookieDeclaration";
 import { getAllCases, getAllPageSlugs, getAllServicesForChannel, getPageBySlug } from "@/lib/sanity/queries";
-import NotFound from "@/components/ui/not-found";
+import NotFound from "@flzr/components/ui/not-found";
 import FlzrSiteWrapper from "@flzr/components/FlzrSiteWrapper";
 import { resolveImageUrl } from "@/sanity/lib/image";
 import type { Metadata } from "next";

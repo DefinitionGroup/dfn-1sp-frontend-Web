@@ -142,6 +142,14 @@ async function handleRevalidation(body: SanityWebhookBody) {
         revalidatePath(path, type);
         revalidatedPaths.push(type ? `${path} (${type})` : path);
     };
+    const pushLocalizedPath = (path: string, type?: "layout" | "page") => {
+        const normalizedPath = path === "/" ? "" : path.startsWith("/") ? path : `/${path}`;
+        const locales = language ? [language] : ["en"];
+
+        for (const locale of locales) {
+            pushPath(`/${locale}${normalizedPath}`, type);
+        }
+    };
 
     console.log(`[Revalidate] Processing: ${_type}${slug?.current ? ` (${slug.current})` : ""} [${language || "all"}]`);
 
@@ -174,7 +182,7 @@ async function handleRevalidation(body: SanityWebhookBody) {
 
             // Also invalidate path for this specific page
             if (slug?.current) {
-                pushPath(`/${slug.current}`);
+                pushLocalizedPath(`/${slug.current}`);
             }
             break;
 
@@ -189,11 +197,11 @@ async function handleRevalidation(body: SanityWebhookBody) {
                 revalidateTag(`case:${slug.current}`);
                 revalidatedTags.push(`case:${slug.current}`);
 
-                pushPath(`/cases/${slug.current}`);
+                pushLocalizedPath(`/cases/${slug.current}`);
             }
 
             // Invalidate cases listing page
-            pushPath("/cases");
+            pushLocalizedPath("/cases");
             break;
 
         case "person":
@@ -202,7 +210,7 @@ async function handleRevalidation(body: SanityWebhookBody) {
             revalidatedTags.push("people");
 
             if (slug?.current) {
-                pushPath(`/people/${slug.current}`);
+                pushLocalizedPath(`/people/${slug.current}`);
             }
             break;
 
@@ -214,7 +222,7 @@ async function handleRevalidation(body: SanityWebhookBody) {
             revalidateTag("global"); // Services appear in nav overlay
             revalidatedTags.push("services", "pages", "global");
 
-            pushPath("/services");
+            pushLocalizedPath("/services");
             break;
 
         case "serviceGroup":
@@ -223,7 +231,7 @@ async function handleRevalidation(body: SanityWebhookBody) {
             revalidateTag("pages");
             revalidatedTags.push("services", "pages");
 
-            pushPath("/services");
+            pushLocalizedPath("/services");
             break;
 
         case "menu":
@@ -251,7 +259,12 @@ async function handleRevalidation(body: SanityWebhookBody) {
         case "unit":
             // Units appear in various components
             revalidateTag("units");
-            revalidatedTags.push("units");
+            revalidateTag("pages");
+            revalidatedTags.push("units", "pages");
+
+            // Unit references can be embedded in page-builder payloads, so
+            // invalidate the route cache broadly instead of only unit fetches.
+            pushPath("/", "layout");
             break;
 
         case "client":
