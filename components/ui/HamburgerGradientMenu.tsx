@@ -138,6 +138,7 @@ export default function HamburgerGradientMenu({
 
   const imageLogo =
     resolvedColor === "dark" ? SITE_BRAND.logo.dark : SITE_BRAND.logo.light;
+  const logoAlt = SITE_BRAND.logo.alt;
 
   useEffect(() => {
     if (open) {
@@ -212,7 +213,7 @@ export default function HamburgerGradientMenu({
       >
         <Image
           src={imageLogo}
-          alt={SITE_BRAND.logoAlt}
+          alt={logoAlt}
           width={64}
           height={64}
           className="block h-auto w-16 object-contain md:hidden"
@@ -295,7 +296,7 @@ function OverlayRoot({
         >
           <Image
             src={imageLogo}
-            alt={SITE_BRAND.logoAlt}
+            alt={logoAlt}
             width={190}
             height={190}
             className="object-contain "
@@ -325,7 +326,7 @@ function OverlayRoot({
               >
                 <Image
                   src={imageLogo}
-                  alt={SITE_BRAND.logoAlt}
+                  alt={logoAlt}
                   width={64}
                   height={64}
                   className="object-contain drop-shadow-[0_0_24px_rgba(0,0,0,0.35)]"

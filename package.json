@@ -6,8 +6,11 @@
     "dev": "next dev --turbopack",
     "dev:diag": "NEXT_PUBLIC_DIAG=1 next dev --turbopack",
     "dev:seo-diag": "NEXT_PUBLIC_SEO_DIAG=1 next dev --turbopack",
+    "dev:flzr": "pnpm --filter @1sp/flzr-web dev",
     "build": "next build",
+    "build:flzr": "pnpm --filter @1sp/flzr-web build",
     "start": "next start",
+    "start:flzr": "pnpm --filter @1sp/flzr-web start",
     "lint": "next lint"
   },
   "dependencies": {

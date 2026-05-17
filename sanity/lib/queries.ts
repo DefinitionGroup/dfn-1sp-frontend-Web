@@ -60,8 +60,355 @@ const ADDITIONAL_CONTENT_PROJECTION = `additionalContent[]{
   }
 }`;
 
+const FLZR_CONTENT_PROJECTION = `contentStudioFlizr[]{
+  ...,
+  cta{
+    ...,
+    link{
+      ...,
+      page->{slug}
+    }
+  },
+  ${ADDITIONAL_CONTENT_PROJECTION},
+  _type == 'smartCarousel' => {
+    ...,
+    selectedCases[]->{
+      _id,
+      title,
+      subtitle,
+      description,
+      services[]->{_id, name},
+      mainImage,
+      mainVideo,
+      client->{
+        _id,
+        name,
+        logo
+      },
+      slug
+    }
+  },
+  _type == 'casesGalleryFiltered' => {
+    ...,
+    selectedCases[]->{
+      _id,
+      title,
+      slug,
+      description,
+      "mainImageUrl": mainImage.secure_url
+    }
+  },
+  _type == 'casesGalleryFilteredWithPagination' => {
+    ...,
+    selectedCases[]->{
+      _id,
+      title,
+      slug,
+      description,
+      "mainImageUrl": mainImage.secure_url,
+      services[]->{_id, name, taglabel},
+      client->{_id, name}
+    }
+  },
+  _type == 'galleryPeopleStep' => {
+    ...,
+    showBadgeMiniCta,
+    badgeMiniCta{
+      _type,
+      heading,
+      paragraph,
+      buttonText,
+      variant,
+      alignment,
+      link{
+        _type,
+        linkType,
+        externalUrl,
+        page->{
+          _id,
+          slug
+        }
+      }
+    },
+    teamMembers[]->{
+      _id,
+      name,
+      image{
+        ...,
+        secure_url,
+        resource_type,
+        public_id
+      },
+      video{
+        ...,
+        secure_url,
+        resource_type,
+        public_id
+      },
+      altText,
+      fullname,
+      position,
+      email,
+      profileUrl,
+      tagline,
+      channel,
+      unit->{
+        _id,
+        name,
+        logoSignet
+      }
+    }
+  },
+  _type == 'galleryScrollHighlightStep' => {
+    ...,
+    useCTAMini,
+    ctaMini{
+      _type,
+      heading,
+      paragraph,
+      buttonText,
+      variant,
+      alignment,
+      link{
+        _type,
+        linkType,
+        externalUrl,
+        page->{
+          _id,
+          slug
+        }
+      }
+    },
+    scrollHighlightContent{
+      ...,
+      contentType,
+      textItems,
+      serviceItems[]->{
+        _id,
+        _updatedAt,
+        _type,
+        name,
+        taglabel,
+        introText,
+        serviceBackground
+      }
+    }
+  },
+  _type == 'galleryListStep' => {
+    ...,
+    showBadgeMiniCta,
+    badgeMiniCta{
+      _type,
+      heading,
+      paragraph,
+      buttonText,
+      variant,
+      alignment,
+      link{
+        _type,
+        linkType,
+        externalUrl,
+        page->{
+          _id,
+          slug
+        }
+      }
+    },
+    ${ADDITIONAL_CONTENT_PROJECTION}
+  },
+  _type == 'showtimeGallery' => {
+    ...,
+    steps[]{
+      ...,
+      ctaMini{
+        _type,
+        heading,
+        paragraph,
+        buttonText,
+        variant,
+        alignment,
+        link{
+          _type,
+          linkType,
+          externalUrl,
+          page->{
+            _id,
+            slug
+          }
+        }
+      },
+      _type == 'galleryPeopleStep' => {
+        ...,
+        showBadgeMiniCta,
+        badgeMiniCta{
+          _type,
+          heading,
+          paragraph,
+          buttonText,
+          variant,
+          alignment,
+          link{
+            _type,
+            linkType,
+            externalUrl,
+            page->{
+              _id,
+              slug
+            }
+          }
+        },
+        teamMembers[]->{
+          _id,
+          name,
+          image{
+            ...,
+            secure_url,
+            resource_type,
+            public_id
+          },
+          video{
+            ...,
+            secure_url,
+            resource_type,
+            public_id
+          },
+          altText,
+          fullname,
+          position,
+          email,
+          profileUrl,
+          tagline,
+          channel,
+          unit->{
+            _id,
+            name,
+            logoSignet
+          }
+        }
+      },
+      _type == 'galleryScrollHighlightStep' => {
+        ...,
+        useCTAMini,
+        ctaMini{
+          _type,
+          heading,
+          paragraph,
+          buttonText,
+          variant,
+          alignment,
+          link{
+            _type,
+            linkType,
+            externalUrl,
+            page->{
+              _id,
+              slug
+            }
+          }
+        },
+        scrollHighlightContent{
+          ...,
+          contentType,
+          textItems,
+          serviceItems[]->{
+            _id,
+            _updatedAt,
+            _type,
+            name,
+            taglabel,
+            introText,
+            serviceBackground
+          }
+        }
+      },
+      _type == 'galleryListStep' => {
+        ...,
+        showBadgeMiniCta,
+        badgeMiniCta{
+          _type,
+          heading,
+          paragraph,
+          buttonText,
+          variant,
+          alignment,
+          link{
+            _type,
+            linkType,
+            externalUrl,
+            page->{
+              _id,
+              slug
+            }
+          }
+        },
+        ${ADDITIONAL_CONTENT_PROJECTION}
+      }
+    }
+  },
+  _type == 'unitLogoGrid' => {
+    ...,
+    selectedUnits[]->{
+      _id,
+      _type,
+      name,
+      slug,
+      logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+      logoColor${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+      logoSignet${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+      cta{
+        ...,
+        link{
+          ...,
+          linkType,
+          externalUrl,
+          page->{
+            _id,
+            slug
+          }
+        }
+      }
+    }
+  },
+  _type == 'pageBuilderLogoFloat' => {
+    ...,
+    selectedUnits[]->{
+      _id,
+      _type,
+      name,
+      slug,
+      logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+      logoColor${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+      logoSignet${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
+    }
+  },
+  _type == 'servicesHeroWithBadge' => {
+    ...,
+    serviceGroups[]->{
+      _id,
+      name,
+      taglabel,
+      services[]->{
+        _id,
+        name,
+        taglabel,
+        introText,
+        serviceDescription,
+        serviceicon,
+        serviceBackground
+      }
+    }
+  },
+  _type == 'contentSection' => {
+    ...,
+    content[]{
+      ...
+    }
+  }
+}`;
+
 export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slug && channel == $channel && language == $language][0]{
   ...,
+  ${FLZR_CONTENT_PROJECTION},
   content1sp[]{
     ...,
     cta{
@@ -386,6 +733,7 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
 
 export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == true && channel == $channel && language == $language][0]{
   ...,
+  ${FLZR_CONTENT_PROJECTION},
   content1sp[]{
     ...,
     cta{
@@ -686,7 +1034,7 @@ export const FOOTER_QUERY = defineQuery(`
 `);
 
 export const CASE_STUDIES_QUERY = defineQuery(`
-*[_type == "caseStudy" && channel match $channel && language == $language && isPublished == true] | order(publishedAt desc){
+*[_type == "caseStudy" && $channel in channel && language == $language && isPublished == true] | order(publishedAt desc){
   _id,
   title,
   subtitle,
@@ -745,7 +1093,7 @@ export const CASE_STUDIES_BY_IDS_QUERY = defineQuery(`
 `);
 
 export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
-*[_type == "caseStudy" && slug.current == $slug && channel match $channel && language == $language && isPublished == true][0]{
+*[_type == "caseStudy" && slug.current == $slug && $channel in channel && language == $language && isPublished == true][0]{
   _id,
   title,
   subtitle,
@@ -853,7 +1201,7 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
 `);
 
 export const HAS_CASE_STUDIES_QUERY = defineQuery(`
-count(*[_type == "caseStudy" && channel match $channel && language == $language && isPublished == true]) > 0
+count(*[_type == "caseStudy" && $channel in channel && language == $language && isPublished == true]) > 0
 `);
 
 export const SERVICES_QUERY = defineQuery(`
@@ -883,8 +1231,77 @@ export const SERVICES_QUERY = defineQuery(`
 }
 `);
 
+export const SERVICES_BY_CHANNEL_QUERY = defineQuery(`
+*[_type == "services" && $channel in channel && language == $language] | order(name asc){
+  _id,
+  _updatedAt,
+  name,
+  taglabel,
+  channel,
+  "iconUrl": serviceicon.asset.secure_url,
+  serviceicon,
+  serviceBackground,
+  serviceDescription,
+  servicegrouprel[]->{
+    _id,
+    name,
+    taglabel
+  },
+  unitsrel[]->{
+    _id,
+    name,
+    slug,
+    tagline,
+    "logoUrl": logo.secure_url,
+    backgroundImage,
+    cta
+  }
+}
+`);
+
+export const CASE_STUDIES_BY_CHANNEL_LIMIT_QUERY = defineQuery(`
+*[_type == "caseStudy" && $channel in channel && language == $language && isPublished == true] | order(publishedAt desc) [0...$maxItems] {
+  _id,
+  title,
+  subtitle,
+  slug,
+  description,
+  mainImage,
+  "mainImageUrl": mainImage.secure_url,
+  client->{
+    _id,
+    name,
+    logo,
+    "logoUrl": logo.secure_url
+  },
+  services[]->{
+    _id,
+    name,
+    taglabel
+  },
+  publishedAt
+}
+`);
+
+export const SERVICES_BY_CHANNEL_LIMIT_QUERY = defineQuery(`
+*[_type == "services" && $channel in channel && language == $language] | order(name asc) [0...$maxItems] {
+  _id,
+  _updatedAt,
+  name,
+  taglabel,
+  introText,
+  serviceDescription,
+  serviceicon,
+  serviceBackground
+}
+`);
+
 export const HAS_SERVICES_QUERY = defineQuery(`
 count(*[_type == "services" && language == $language]) > 0
+`);
+
+export const HAS_SERVICES_BY_CHANNEL_QUERY = defineQuery(`
+count(*[_type == "services" && $channel in channel && language == $language]) > 0
 `);
 
 export const SMART_PEOPLE_QUERY = defineQuery(`
@@ -963,6 +1380,7 @@ export const getInteractiveCarouselQuery = (carouselField: string) => `
 *[
   _type == "caseStudy" && 
   ${carouselField} == true &&
+  $channel in channel &&
   isPublished == true &&
   language == $language
 ] | order(publishedAt desc) [0...$maxItems] {

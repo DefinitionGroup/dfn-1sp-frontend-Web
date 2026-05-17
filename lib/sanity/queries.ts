@@ -36,6 +36,7 @@ import { getChannelFromEnv } from "@/lib/site-config";
 
 const INTERACTIVE_CAROUSEL_FIELD_MAP = {
   "1spWeb": "connectedDataCarouselPromo1SP",
+  flizrWeb: "connectedDataCarouselPromoFLZR",
   msmWeb: "connectedDataCarouselPromoMSM",
   studioco2Web: "connectedDataCarouselPromoStudioCO2",
 } as const;
@@ -152,7 +153,7 @@ const GLOBAL_DATA_QUERY = defineQuery(/* groq */ `{
     },
     copyright
   },
-  "hasCaseStudies": count(*[_type == "caseStudy" && channel match $channel && language == $language && isPublished == true]) > 0,
+  "hasCaseStudies": count(*[_type == "caseStudy" && $channel in channel && language == $language && isPublished == true]) > 0,
   "hasServices": count(*[_type == "services" && language == $language]) > 0
 }`);
 
@@ -347,9 +348,55 @@ export const getAllServices = cache(async (language: string) => {
   return data || [];
 });
 
+/**
+ * Fetch services assigned to a website channel.
+ *
+ * This is intentionally separate from `getAllServices()` so existing 1SP
+ * pages keep their current behavior until they are migrated deliberately.
+ */
+export const getAllServicesForChannel = cache(async (channel: string, language: string) => {
+  const { SERVICES_BY_CHANNEL_QUERY } = await import("@/sanity/lib/queries");
+
+  const { data } = await sanityFetch({
+    query: SERVICES_BY_CHANNEL_QUERY,
+    params: { channel, language },
+    tags: ["services"],
+  });
+
+  return data || [];
+});
+
+export const getCasesForChannel = cache(
+  async (channel: string, language: string, maxItems = 6) => {
+    const { CASE_STUDIES_BY_CHANNEL_LIMIT_QUERY } = await import("@/sanity/lib/queries");
+
+    const { data } = await sanityFetch({
+      query: CASE_STUDIES_BY_CHANNEL_LIMIT_QUERY,
+      params: { channel, language, maxItems },
+      tags: ["cases"],
+    });
+
+    return data || [];
+  }
+);
+
+export const getServicesForChannel = cache(
+  async (channel: string, language: string, maxItems = 8) => {
+    const { SERVICES_BY_CHANNEL_LIMIT_QUERY } = await import("@/sanity/lib/queries");
+
+    const { data } = await sanityFetch({
+      query: SERVICES_BY_CHANNEL_LIMIT_QUERY,
+      params: { channel, language, maxItems },
+      tags: ["services"],
+    });
+
+    return data || [];
+  }
+);
+
 export const getSmartPeople = cache(
   async (
-    channel: "1spWeb" | "msmWeb" | "studioco2Web",
+    channel: "1spWeb" | "flizrWeb" | "msmWeb" | "studioco2Web",
     maxItems: number,
   ) => {
     const { SMART_PEOPLE_QUERY } = await import("@/sanity/lib/queries");
@@ -453,7 +500,7 @@ export const getInteractiveCarouselCases = cache(
 
     const { data } = await sanityFetch({
       query: defineQuery(getInteractiveCarouselQuery(carouselField)),
-      params: { language, maxItems },
+      params: { channel: normalizedChannel, language, maxItems },
       tags: ["cases"],
     });
 
@@ -486,6 +533,7 @@ export const getAllCaseSlugs = cache(async () => {
     *[_type == "caseStudy" && isPublished == true && defined(slug.current)]{
       "slug": slug.current,
       language,
+      channel,
       _updatedAt
     }
   `);
@@ -498,7 +546,7 @@ export const getAllCaseSlugs = cache(async () => {
     stega: false,
   });
 
-  return (data as Array<{ slug: string; language: string; _updatedAt: string }>) || [];
+  return (data as Array<{ slug: string; language: string; channel?: string[]; _updatedAt: string }>) || [];
 });
 
 /**

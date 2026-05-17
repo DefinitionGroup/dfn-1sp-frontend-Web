@@ -1,0 +1,35 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["../../*"],
+      "@/app/*": ["./app/*"],
+      "@flzr/*": ["./*"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "components/**/*.ts",
+    "components/**/*.tsx",
+    "middleware.ts",
+    ".next/types/**/*.ts",
+    "../../components/**/*.ts",
+    "../../components/**/*.tsx",
+    "../../hooks/**/*.ts",
+    "../../lib/**/*.ts",
+    "../../lib/**/*.tsx",
+    "../../sanity/**/*.ts",
+    "../../sanity/**/*.tsx",
+    "../../types/**/*.ts",
+    "../../utils/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
+}

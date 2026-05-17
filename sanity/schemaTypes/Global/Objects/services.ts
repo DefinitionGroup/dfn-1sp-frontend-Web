@@ -1,5 +1,6 @@
 import { defineType, defineField } from 'sanity'
 import { ServiceBackgroundFocusInput } from '../../../lib/serviceBackgroundFocusInput'
+import { websiteChannelOptions } from '../../shared/channelOptions'
 
 const languageFilter = (docField: string) => ({ document }: { document: any }) => {
     const currentLanguage = document?.language || 'de'
@@ -19,6 +20,7 @@ export default defineType({
         { name: 'content', title: 'Content' },
         { name: 'media', title: 'Media' },
         { name: 'relations', title: 'Relations' },
+        { name: 'settings', title: 'Settings' },
     ],
     fields: [
         defineField({
@@ -76,6 +78,17 @@ export default defineType({
                 input: ServiceBackgroundFocusInput,
             },
             group: 'media',
+        }),
+        defineField({
+            name: 'channel',
+            title: 'Channel',
+            type: 'array',
+            of: [{ type: 'string' }],
+            options: {
+                list: websiteChannelOptions,
+            },
+            description: 'Websites where this service can be used.',
+            group: 'settings',
         }),
         defineField({
             name: 'unitsrel',

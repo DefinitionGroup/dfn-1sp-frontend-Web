@@ -2,6 +2,7 @@ import { defineType, defineField } from 'sanity'
 import { ChartBarHorizontal } from '@phosphor-icons/react'
 import { ChartBar } from '@phosphor-icons/react'
 import { Equalizer } from '@phosphor-icons/react'
+import { websiteChannelOptions } from '../../shared/channelOptions'
 
 export default defineType({
     name: 'caseStudy',
@@ -207,11 +208,7 @@ export default defineType({
             type: 'array',
             of: [{ type: 'string' }],
             options: {
-                list: [
-                    { title: '1sp Website', value: '1spWeb' },
-                    { title: 'MSM Website', value: 'msmWeb' },
-                    { title: 'Studio CO2 Website', value: 'studioco2Web' },
-                ],
+                list: websiteChannelOptions,
             },
             group: 'settings'
         },
@@ -248,6 +245,18 @@ export default defineType({
             hidden: ({ document }: { document: any }) => {
                 const channels = document?.channel || [];
                 return !channels.includes('studioco2Web');
+            },
+            group: 'settings'
+        },
+        {
+            name: 'connectedDataCarouselPromoFLZR',
+            title: 'ConnectedDataCarousel Promo FLZR',
+            type: 'boolean',
+            description: 'Include this case study in the Smart Carousel for FLZR Website',
+            initialValue: false,
+            hidden: ({ document }: { document: any }) => {
+                const channels = document?.channel || [];
+                return !channels.includes('flizrWeb');
             },
             group: 'settings'
         },

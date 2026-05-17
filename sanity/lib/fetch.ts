@@ -44,7 +44,7 @@ export async function sanityFetch<TData = any>({
 
   const data = await configuredClient.fetch<TData>(query, params, {
     next: {
-      revalidate: tags.length > 0 ? false : revalidate,
+      revalidate,
       tags,
     },
   });

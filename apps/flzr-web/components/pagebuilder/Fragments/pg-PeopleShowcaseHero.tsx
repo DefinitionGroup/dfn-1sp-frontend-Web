@@ -1,0 +1,465 @@
+"use client";
+import React, { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import type { CloudinaryAsset } from "@/types/sanity.types";
+import { assetUrl, optimizedVideoUrl, cloudinaryPosterUrl } from "@/utils/utils";
+import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
+import StaggeredFadeIn from "@flzr/components/ui/StaggeredFadeIn";
+import Image from "next/image";
+import Link from "next/link";
+import { createPortal } from "react-dom";
+import { useRobustInView } from "@/hooks/use-robust-in-view";
+import { hasVisibleText } from "@/lib/text-content";
+export interface MemberItem {
+  name?: string;
+  media?: (CloudinaryAsset & { resource_type?: string }) | null;
+  altText?: string;
+  fullname?: string;
+  email?: string;
+  profileUrl?: string;
+  position?: string;
+  unit?: {
+    _id?: string;
+    name?: string;
+    logoSignet?: CloudinaryAsset | null;
+  } | null;
+}
+
+function isVideoUrl(url?: string) {
+  if (!url) return false;
+  const lowered = url.toLowerCase();
+  return lowered.endsWith(".mp4") || lowered.includes("/video/");
+}
+
+function LazyVideo({
+  src,
+  className,
+  priority = false,
+}: {
+  src: string;
+  className?: string;
+  priority?: boolean;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { isInView, isMobile } = useRobustInView(ref, {
+    amount: 0.01,
+    margin: "0px 0px 200px 0px",
+    mobileAmount: 0.01,
+    mobileMargin: "0px 0px 280px 0px",
+    fallbackVisibleAfterMs: 500,
+  });
+  const [shouldMountVideo, setShouldMountVideo] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
+
+  // Derive poster image from Cloudinary video URL
+  const posterUrl = cloudinaryPosterUrl(src, { maxWidth: 640 });
+
+  React.useEffect(() => {
+    if (!isInView) return;
+
+    if (isMobile) {
+      setShouldMountVideo(true);
+      return;
+    }
+
+    const timer = setTimeout(() => setShouldMountVideo(true), 120);
+    return () => clearTimeout(timer);
+  }, [isInView, isMobile]);
+
+  return (
+    <div ref={ref} className={`w-full h-full relative pointer-events-none overflow-hidden bg-neutral-200 dark:bg-neutral-800 ${className ?? ""}`}>
+      {posterUrl ? (
+        <img
+          src={posterUrl}
+          alt=""
+          aria-hidden="true"
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+          fetchPriority={priority ? "high" : "auto"}
+          className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-300 group-hover:brightness-110 ${videoReady ? "opacity-0" : "opacity-100"}`}
+          style={{ zIndex: 1 }}
+        />
+      ) : (
+        <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800" />
+      )}
+
+      {shouldMountVideo && (
+        <video
+          src={optimizedVideoUrl(src, { maxWidth: 640 })}
+          poster={posterUrl || undefined}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload={isMobile ? "metadata" : "none"}
+          onLoadedData={() => setVideoReady(true)}
+          onCanPlay={() => setVideoReady(true)}
+          className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-300 group-hover:brightness-110 ${videoReady ? "opacity-100" : "opacity-0"}`}
+          style={{ zIndex: 0 }}
+        />
+      )}
+    </div>
+  );
+}
+
+function PeopleShowcaseHero({
+  members,
+  initialVisibleCount = Number.POSITIVE_INFINITY,
+}: {
+  members?: MemberItem[];
+  initialVisibleCount?: number;
+}) {
+  const [hoveredMember, setHoveredMember] = useState<string | null>(null);
+  const [activeModal, setActiveModal] = useState<MemberItem | null>(null);
+  const [isClient, setIsClient] = useState(false);
+  const modalOpenedAtRef = useRef(0);
+  const sectionRef = useRef<HTMLElement>(null);
+  const { isInView } = useRobustInView(sectionRef, {
+    amount: 0.01,
+    margin: "0px 0px 120px 0px",
+    mobileAmount: 0.01,
+    mobileMargin: "0px 0px 180px 0px",
+    fallbackVisibleAfterMs: 2500,
+  });
+  const [shouldRenderAll, setShouldRenderAll] = useState(
+    !Number.isFinite(initialVisibleCount)
+  );
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!activeModal) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [activeModal]);
+
+  const openModal = (
+    member: MemberItem,
+    event?: React.SyntheticEvent<HTMLElement>
+  ) => {
+    event?.preventDefault();
+    event?.stopPropagation();
+    modalOpenedAtRef.current = Date.now();
+    setActiveModal(member);
+  };
+
+  const closeModal = () => setActiveModal(null);
+
+  const handleBackdropClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    if (event.target !== event.currentTarget) return;
+    // Mobile browsers can dispatch a delayed synthetic click after opening.
+    if (Date.now() - modalOpenedAtRef.current < 250) return;
+    closeModal();
+  };
+
+  useEffect(() => {
+    if (shouldRenderAll || !isInView) return;
+
+    const win = window as Window & typeof globalThis & {
+      requestIdleCallback?: (
+        callback: IdleRequestCallback,
+        options?: IdleRequestOptions,
+      ) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+    const run = () => setShouldRenderAll(true);
+    if (win.requestIdleCallback) {
+      const idleId = win.requestIdleCallback(run, { timeout: 800 });
+      return () => {
+        if (win.cancelIdleCallback) {
+          win.cancelIdleCallback(idleId);
+        }
+      };
+    }
+
+    const timer = win.setTimeout(run, 180);
+    return () => win.clearTimeout(timer);
+  }, [isInView, shouldRenderAll]);
+
+  if (!members || members.length === 0) {
+    return null;
+  }
+
+  const visibleMembers =
+    shouldRenderAll || !Number.isFinite(initialVisibleCount)
+      ? members
+      : members.slice(0, initialVisibleCount);
+
+  return (
+    <section
+      ref={sectionRef}
+      className="flex flex-col items-start justify-start   w-full mx-auto"
+      data-component="people-showcase-hero"
+      aria-labelledby="people-showcase-title"
+    >
+      <div className="flex items-center justify-start  w-full overflow-x-auto">
+        <StaggeredSlideUp
+          className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[2px] w-full overflow-x-auto"
+          threshold={0.01}
+          rootMargin="0px 0px 160px 0px"
+        >
+          {visibleMembers.map((member, index) => {
+            const src = assetUrl(member.media as any);
+
+            // Skip rendering if no valid source URL
+            if (!src) {
+              return null;
+            }
+
+            const isVideo =
+              isVideoUrl(src) ||
+              (member.media as any)?.resource_type === "video";
+
+            const key = (member.name || member.fullname || "member") + index;
+            const label =
+              member.altText || member.fullname || member.name || "";
+            return (
+              <div
+                key={key}
+                className="group relative border-neutral-100 overflow-hidden flex-shrink-0  transition-transform duration-300 focus-within:scale-[1.02] aspect-square"
+                data-member={(
+                  member.name ||
+                  member.fullname ||
+                  ""
+                ).toLowerCase()}
+                onMouseEnter={() =>
+                  setHoveredMember(
+                    member.name || member.fullname || String(index)
+                  )
+                }
+                onMouseLeave={() => setHoveredMember(null)}
+              >
+                {isVideo ? (
+                  <LazyVideo src={src ?? ""} priority={index < 4} />
+                ) : (
+                  <Image
+                    src={src}
+                    alt={label}
+                    fill
+                    priority={index < 4}
+                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                    className="object-cover pointer-events-none transition-all duration-300 group-hover:brightness-110 "
+                  />
+                )}
+                {/* Unit Logo Signet */}
+                {member.unit?.logoSignet && (
+                  <div className="absolute top-4 left-4  w-12 h-12 z-10">
+                    <Image
+                      src={assetUrl(member.unit.logoSignet as any) || ""}
+                      alt={member.unit.name || "Unit logo"}
+                      fill
+                      sizes="40px"
+                      className="object-contain object-left border  relative border block left-0"
+                    />
+                  </div>
+                )}
+                <div className="absolute inset-0 hidden bg-gradient-to-t from-black/80 via-black/60 to-black/65 opacity-0 lg:flex lg:opacity-0 lg:group-hover:opacity-100 rounded-xs transition-opacity duration-300 flex-col justify-end p-4">
+                  <StaggeredFadeIn
+                    className="flex flex-col"
+                    triggerOnView={false}
+                    delay={0}
+                    staggerDelay={0.05}
+                    animate={
+                      hoveredMember ===
+                        (member.name || member.fullname || String(index))
+                        ? "visible"
+                        : "hidden"
+                    }
+                  >
+                    {hasVisibleText(member.fullname) && (
+                      <h3 className="text-white font-semibold text-lg mb-2">
+                        {member.fullname}
+                      </h3>
+                    )}
+                    {member.position && (
+                      <p className="text-white/80 text-sm mb-2 font-medium">
+                        {member.position}
+                      </p>
+                    )}
+                    {member.email && (
+                      <p className="text-white/90 text-sm mb-1 flex items-center">
+                        <svg
+                          className="w-4 h-4 mr-2"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                          <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                        </svg>
+                        {member.email}
+                      </p>
+                    )}
+                    {member.profileUrl && (
+                      <Link
+                        href={member.profileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-white/90 text-sm hover:text-lime-400 transition-colors flex items-center"
+                      >
+                        <Image
+                          src="/LinkedinLogo.svg"
+                          alt="LinkedIn"
+                          width={16}
+                          height={16}
+                          className="w-4 h-4 mr-2"
+                          style={{ height: "auto" }}
+                        />
+                        LinkedIn Profile
+                      </Link>
+                    )}
+                  </StaggeredFadeIn>
+                </div>
+                <button
+                  type="button"
+                  onClick={(e) => openModal(member, e)}
+                  onTouchEnd={(e) => openModal(member, e)}
+                  className="lg:hidden absolute bottom-3 left-3 z-20 inline-flex w-fit touch-manipulation items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-xs font-semibold text-neutral-900 shadow-lg cursor-pointer transition hover:-translate-y-[1px] hover:shadow-xl"
+                >
+                  View contact
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-4 w-4"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12h14" />
+                    <path d="M12 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+            );
+          })}
+        </StaggeredSlideUp>
+      </div>
+
+      {isClient &&
+        createPortal(
+          <AnimatePresence>
+            {activeModal && (
+              <motion.div
+                className="fixed inset-0 z-[120] grid place-items-center bg-black/70 backdrop-blur-sm px-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, transition: { duration: 0.2 } }}
+                onClick={handleBackdropClick}
+              >
+                <motion.div
+                  role="dialog"
+                  aria-modal="true"
+                  onClick={(e) => e.stopPropagation()}
+                  initial={{ opacity: 0, scale: 0.94, y: 12 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.96, y: 10, transition: { duration: 0.18 } }}
+                  transition={{ type: "spring", stiffness: 280, damping: 24 }}
+                  className="relative w-full max-w-sm rounded-2xl bg-neutral-900 p-5 text-white shadow-2xl"
+                >
+                  <button
+                    type="button"
+                    onClick={closeModal}
+                    className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
+                    aria-label="Close"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-5 w-5"
+                    >
+                      <path d="M18 6 6 18" />
+                      <path d="m6 6 12 12" />
+                    </svg>
+                  </button>
+                  <div className="flex items-center gap-3">
+                    {activeModal.media?.secure_url ? (
+                      <div className="relative h-14 w-14 overflow-hidden rounded-full bg-neutral-800">
+                        {isVideoUrl(activeModal.media.secure_url) ? (
+                          <video
+                            src={optimizedVideoUrl(activeModal.media.secure_url, { maxWidth: 112 })}
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <Image
+                            src={assetUrl(activeModal.media as any) || activeModal.media.secure_url}
+                            alt={activeModal.altText || activeModal.fullname || activeModal.name || "Profile image"}
+                            fill
+                            sizes="56px"
+                            className="object-cover"
+                          />
+                        )}
+                      </div>
+                    ) : null}
+                    <div className="flex flex-col max-w-2/3">
+                      <p className="text-xxs mb-4 uppercase tracking-[0.04em] text-neutral-400">Team contact</p>
+                      {hasVisibleText(activeModal.fullname || activeModal.name) ? (
+                        <h3 className="text-lg font-semibold leading-tight">
+                          {activeModal.fullname || activeModal.name}
+                        </h3>
+                      ) : null}
+                      {activeModal.position && (
+                        <p className="text-xs mt-2 text-neutral-400">{activeModal.position}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="mt-4 space-y-3 text-sm">
+                    {activeModal.email && (
+                      <a
+                        href={`mailto:${activeModal.email}`}
+                        className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2 transition hover:border-white/20 hover:bg-white/10"
+                      >
+                        <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white">
+                          @
+                        </span>
+                        <span className="break-all">{activeModal.email}</span>
+                      </a>
+                    )}
+                    {activeModal.profileUrl && (
+                      <Link
+                        href={activeModal.profileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2 transition hover:border-white/20 hover:bg-white/10"
+                      >
+                        <Image
+                          src="/LinkedinLogo.svg"
+                          alt="LinkedIn"
+                          width={16}
+                          height={16}
+                          className="h-5 w-5"
+                          style={{ height: "auto" }}
+                        />
+                        <span>LinkedIn profile</span>
+                      </Link>
+                    )}
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
+        )}
+    </section>
+  );
+}
+
+export default PeopleShowcaseHero;

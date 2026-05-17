@@ -74,7 +74,8 @@ export async function generateMetadata({
   }
 
   const title = page.metadata?.title || page.title || "Home";
-  const description = page.metadata?.description || SITE_BRAND.description;
+  const description =
+    page.metadata?.description || SITE_BRAND.seo.defaultDescription;
   const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
 
   const ogImages = ogImageUrl
