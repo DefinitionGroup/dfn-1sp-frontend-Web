@@ -1,4 +1,4 @@
-import { getUnitLogoGridUnits } from "@/lib/sanity/queries";
+import { getUnitLogoGridUnits } from "@1sp/sanity-queries";
 import UnitLogoGridClient from "../pg-UnitLogoGrid";
 import type { CloudinaryAsset, CTA } from "@1sp/sanity-types";
 

@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@1sp/site-config", "@1sp/sanity-types"],
+  transpilePackages: [
+    "@1sp/site-config",
+    "@1sp/sanity-types",
+    "@1sp/sanity-queries",
+    "@1sp/sanity-schema",
+  ],
   images: {
     remotePatterns: [
       {

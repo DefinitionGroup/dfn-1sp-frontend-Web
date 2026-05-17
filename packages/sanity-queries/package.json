@@ -1,0 +1,27 @@
+{
+  "name": "@1sp/sanity-queries",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./groq": "./src/groq.ts",
+    "./client": "./src/client.ts",
+    "./client-enhanced": "./src/client-enhanced.ts",
+    "./fetch": "./src/fetch.ts",
+    "./live": "./src/live.ts",
+    "./image": "./src/image.ts",
+    "./env": "./src/env.ts",
+    "./safe-fetch": "./src/safe-fetch.ts",
+    "./stega-utils": "./src/stega-utils.ts",
+    "./service-queries": "./src/service-queries.ts"
+  },
+  "types": "./src/index.ts",
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@1sp/site-config": "workspace:*",
+    "@1sp/sanity-types": "workspace:*"
+  }
+}

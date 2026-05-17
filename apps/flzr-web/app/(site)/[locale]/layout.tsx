@@ -38,7 +38,7 @@ export default async function SiteLayout({
       { StegaErrorHandler },
     ] = await Promise.all([
       import("next-sanity/visual-editing"),
-      import("@/sanity/lib/live"),
+      import("@1sp/sanity-queries/live"),
       import("@/components/DisableDraftMode"),
       import("@/components/StegaErrorHandler"),
     ]);

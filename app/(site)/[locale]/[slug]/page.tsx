@@ -24,12 +24,12 @@
  */
 import { PageBuilder } from "@/components/PageBuilder";
 // import CookieDeclaration from "@/components/CookieDeclaration";
-import { getAllCases, getAllPageSlugs, getAllServices, getPageBySlug } from "@/lib/sanity/queries";
+import { getAllCases, getAllPageSlugs, getAllServices, getPageBySlug } from "@1sp/sanity-queries";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
 import { getChannel } from "@1sp/site-config/server";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
-import { resolveImageUrl } from "@/sanity/lib/image";
+import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {

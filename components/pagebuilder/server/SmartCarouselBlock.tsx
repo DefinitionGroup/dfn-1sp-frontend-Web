@@ -1,6 +1,6 @@
 import {
   getInteractiveCarouselCases,
-} from "@/lib/sanity/queries";
+} from "@1sp/sanity-queries";
 import SmartCarouselClient from "../pg-SmartCarousel";
 import type { CloudinaryAsset } from "@1sp/sanity-types";
 

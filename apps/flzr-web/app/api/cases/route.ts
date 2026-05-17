@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAllCases } from "@/lib/sanity/queries";
+import { getAllCases } from "@1sp/sanity-queries";
 
 const sanitize = (value: string | null, fallback: string) => {
   const trimmed = value?.trim();

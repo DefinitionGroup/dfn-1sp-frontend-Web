@@ -4,7 +4,11 @@ const nextConfig: NextConfig = {
   experimental: {
     externalDir: true,
   },
-  transpilePackages: ["@1sp/site-config", "@1sp/sanity-types"],
+  transpilePackages: [
+    "@1sp/site-config",
+    "@1sp/sanity-types",
+    "@1sp/sanity-queries",
+  ],
   images: {
     remotePatterns: [
       {

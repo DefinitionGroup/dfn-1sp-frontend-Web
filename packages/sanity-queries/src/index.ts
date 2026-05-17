@@ -30,7 +30,7 @@
  */
 
 import { cache } from "react";
-import { sanityFetch } from "@/sanity/lib/fetch";
+import { sanityFetch } from "./fetch";
 import { defineQuery } from "next-sanity";
 import { getChannelFromEnv } from "@1sp/site-config";
 
@@ -261,7 +261,7 @@ export const getGlobalData = cache(
 export const getPageBySlug = cache(
   async (slug: string, channel: string, language: string) => {
     // Import the existing PAGE_QUERY to avoid duplication
-    const { PAGE_QUERY } = await import("@/sanity/lib/queries");
+    const { PAGE_QUERY } = await import("./groq");
 
     const { data } = await sanityFetch({
       query: PAGE_QUERY,
@@ -283,7 +283,7 @@ export const getPageBySlug = cache(
  */
 export const getHomePage = cache(async (channel: string, language: string) => {
   // Import the existing HOME_PAGE_QUERY
-  const { HOME_PAGE_QUERY } = await import("@/sanity/lib/queries");
+  const { HOME_PAGE_QUERY } = await import("./groq");
 
   const { data } = await sanityFetch({
     query: HOME_PAGE_QUERY,
@@ -302,7 +302,7 @@ export const getHomePage = cache(async (channel: string, language: string) => {
  * @param language - The language code
  */
 export const getCaseBySlug = cache(async (slug: string, channel: string, language: string) => {
-  const { CASE_STUDY_BY_SLUG_QUERY } = await import("@/sanity/lib/queries");
+  const { CASE_STUDY_BY_SLUG_QUERY } = await import("./groq");
 
   const { data } = await sanityFetch({
     query: CASE_STUDY_BY_SLUG_QUERY,
@@ -320,7 +320,7 @@ export const getCaseBySlug = cache(async (slug: string, channel: string, languag
  * @param language - The language code
  */
 export const getAllCases = cache(async (channel: string, language: string) => {
-  const { CASE_STUDIES_QUERY } = await import("@/sanity/lib/queries");
+  const { CASE_STUDIES_QUERY } = await import("./groq");
 
   const { data } = await sanityFetch({
     query: CASE_STUDIES_QUERY,
@@ -337,7 +337,7 @@ export const getAllCases = cache(async (channel: string, language: string) => {
  * @param language - The language code
  */
 export const getAllServices = cache(async (language: string) => {
-  const { SERVICES_QUERY } = await import("@/sanity/lib/queries");
+  const { SERVICES_QUERY } = await import("./groq");
 
   const { data } = await sanityFetch({
     query: SERVICES_QUERY,
@@ -355,7 +355,7 @@ export const getAllServices = cache(async (language: string) => {
  * pages keep their current behavior until they are migrated deliberately.
  */
 export const getAllServicesForChannel = cache(async (channel: string, language: string) => {
-  const { SERVICES_BY_CHANNEL_QUERY } = await import("@/sanity/lib/queries");
+  const { SERVICES_BY_CHANNEL_QUERY } = await import("./groq");
 
   const { data } = await sanityFetch({
     query: SERVICES_BY_CHANNEL_QUERY,
@@ -368,7 +368,7 @@ export const getAllServicesForChannel = cache(async (channel: string, language: 
 
 export const getCasesForChannel = cache(
   async (channel: string, language: string, maxItems = 6) => {
-    const { CASE_STUDIES_BY_CHANNEL_LIMIT_QUERY } = await import("@/sanity/lib/queries");
+    const { CASE_STUDIES_BY_CHANNEL_LIMIT_QUERY } = await import("./groq");
 
     const { data } = await sanityFetch({
       query: CASE_STUDIES_BY_CHANNEL_LIMIT_QUERY,
@@ -382,7 +382,7 @@ export const getCasesForChannel = cache(
 
 export const getServicesForChannel = cache(
   async (channel: string, language: string, maxItems = 8) => {
-    const { SERVICES_BY_CHANNEL_LIMIT_QUERY } = await import("@/sanity/lib/queries");
+    const { SERVICES_BY_CHANNEL_LIMIT_QUERY } = await import("./groq");
 
     const { data } = await sanityFetch({
       query: SERVICES_BY_CHANNEL_LIMIT_QUERY,
@@ -399,7 +399,7 @@ export const getSmartPeople = cache(
     channel: "1spWeb" | "flizrWeb" | "msmWeb" | "studioco2Web",
     maxItems: number,
   ) => {
-    const { SMART_PEOPLE_QUERY } = await import("@/sanity/lib/queries");
+    const { SMART_PEOPLE_QUERY } = await import("./groq");
 
       const { data } = await sanityFetch({
         query: SMART_PEOPLE_QUERY,
@@ -420,7 +420,7 @@ export const getSmartUnits = cache(
     maxItems: number,
     sortBy: "recent" | "name-asc" | "name-desc" = "recent",
   ) => {
-    const { SMART_UNITS_QUERY } = await import("@/sanity/lib/queries");
+    const { SMART_UNITS_QUERY } = await import("./groq");
 
     const sortExpression =
       sortBy === "name-asc"
@@ -445,7 +445,7 @@ export const getSmartUnits = cache(
 );
 
 export const getUnitLogoGridUnits = cache(async (language: string, maxItems: number) => {
-  const { UNIT_LOGO_GRID_QUERY } = await import("@/sanity/lib/queries");
+  const { UNIT_LOGO_GRID_QUERY } = await import("./groq");
 
   const { data } = await sanityFetch({
     query: UNIT_LOGO_GRID_QUERY,
@@ -460,7 +460,7 @@ export const getUnitLogoGridUnits = cache(async (language: string, maxItems: num
 });
 
 export const getUnitLogoFloatUnits = cache(async (language: string, maxItems: number) => {
-  const { UNIT_LOGO_FLOAT_QUERY } = await import("@/sanity/lib/queries");
+  const { UNIT_LOGO_FLOAT_QUERY } = await import("./groq");
 
   const { data } = await sanityFetch({
     query: UNIT_LOGO_FLOAT_QUERY,
@@ -476,7 +476,7 @@ export const getCaseStudiesByIds = cache(async (ids: string[]) => {
     return [];
   }
 
-  const { CASE_STUDIES_BY_IDS_QUERY } = await import("@/sanity/lib/queries");
+  const { CASE_STUDIES_BY_IDS_QUERY } = await import("./groq");
 
   const { data } = await sanityFetch({
     query: CASE_STUDIES_BY_IDS_QUERY,
@@ -496,7 +496,7 @@ export const getInteractiveCarouselCases = cache(
         normalizedChannel as keyof typeof INTERACTIVE_CAROUSEL_FIELD_MAP
       ];
 
-    const { getInteractiveCarouselQuery } = await import("@/sanity/lib/queries");
+    const { getInteractiveCarouselQuery } = await import("./groq");
 
     const { data } = await sanityFetch({
       query: defineQuery(getInteractiveCarouselQuery(carouselField)),

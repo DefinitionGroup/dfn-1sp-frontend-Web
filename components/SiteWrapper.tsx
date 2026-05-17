@@ -25,7 +25,7 @@
  * full case/service collections. Rich overlay data is loaded only
  * when a user opens that UI.
  */
-import { getGlobalData } from "@/lib/sanity/queries";
+import { getGlobalData } from "@1sp/sanity-queries";
 import FrontNavOverlay from "./menu/FrontNavOverlay";
 import Footer from "./menu/FooterNew";
 import { NavbarMenu, FooterMenu } from "@1sp/sanity-types/menu";

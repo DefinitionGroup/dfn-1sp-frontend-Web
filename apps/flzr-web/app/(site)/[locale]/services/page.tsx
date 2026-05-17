@@ -11,11 +11,11 @@
  * - Person/Unit JSON-LD for team members and business units in content
  * - Hero video poster preload for LCP optimization
  */
-import { getAllCases, getAllServicesForChannel, getPageBySlug } from "@/lib/sanity/queries";
+import { getAllCases, getAllServicesForChannel, getPageBySlug } from "@1sp/sanity-queries";
 import FlzrPageBuilder from "@flzr/components/FlzrPageBuilder";
 import NotFound from "@flzr/components/ui/not-found";
 import FlzrSiteWrapper from "@flzr/components/FlzrSiteWrapper";
-import { resolveImageUrl } from "@/sanity/lib/image";
+import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {

@@ -1,7 +1,7 @@
 import {
   getAllCases,
   getCaseStudiesByIds,
-} from "@/lib/sanity/queries";
+} from "@1sp/sanity-queries";
 import CasesGalleryFilteredClient from "../pg-CasesGalleryFiltered";
 
 interface SelectedCaseReference {

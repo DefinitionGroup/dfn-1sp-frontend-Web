@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@1sp/sanity-queries':
+        specifier: workspace:*
+        version: link:packages/sanity-queries
+      '@1sp/sanity-schema':
+        specifier: workspace:*
+        version: link:packages/sanity-schema
       '@1sp/sanity-types':
         specifier: workspace:*
         version: link:packages/sanity-types
@@ -120,6 +126,9 @@ importers:
 
   apps/flzr-web:
     dependencies:
+      '@1sp/sanity-queries':
+        specifier: workspace:*
+        version: link:../../packages/sanity-queries
       '@1sp/sanity-types':
         specifier: workspace:*
         version: link:../../packages/sanity-types
@@ -229,6 +238,17 @@ importers:
       typescript:
         specifier: ^5
         version: 5.9.2
+
+  packages/sanity-queries:
+    dependencies:
+      '@1sp/sanity-types':
+        specifier: workspace:*
+        version: link:../sanity-types
+      '@1sp/site-config':
+        specifier: workspace:*
+        version: link:../site-config
+
+  packages/sanity-schema: {}
 
   packages/sanity-types: {}
 

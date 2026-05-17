@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getGlobalData } from "@/lib/sanity/queries";
+import { getGlobalData } from "@1sp/sanity-queries";
 import { getSiteConfig } from "@1sp/site-config";
 import type { FooterMenu, NavbarMenu } from "@1sp/sanity-types/menu";
 

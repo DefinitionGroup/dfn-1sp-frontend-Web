@@ -15,9 +15,9 @@ import SiteWrapper from "@/components/SiteWrapper";
 import { getChannel } from "@1sp/site-config/server";
 import NotFound from "@/components/ui/not-found";
 import ContactForm from "@/components/ui/ContactForm";
-import { getAllCases, getAllServices, getPageBySlug } from "@/lib/sanity/queries";
+import { getAllCases, getAllServices, getPageBySlug } from "@1sp/sanity-queries";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
-import { resolveImageUrl } from "@/sanity/lib/image";
+import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {

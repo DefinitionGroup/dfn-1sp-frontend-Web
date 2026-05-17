@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getAllPageSitemapSlugs, getAllCaseSlugs } from "@/lib/sanity/queries";
+import { getAllPageSitemapSlugs, getAllCaseSlugs } from "@1sp/sanity-queries";
 import { CANONICAL_URL } from "@/lib/structured-data";
 
 /**

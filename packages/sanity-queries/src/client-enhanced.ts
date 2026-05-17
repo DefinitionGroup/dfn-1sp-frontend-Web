@@ -26,7 +26,7 @@
  * ```
  */
 
-import { client } from "@/sanity/lib/client";
+import { client } from "./client";
 import type { QueryParams } from "next-sanity";
 
 /**

@@ -1,5 +1,5 @@
 import { defineType, defineField } from 'sanity'
-import { ServiceBackgroundFocusInput } from '../../../lib/serviceBackgroundFocusInput'
+import { ServiceBackgroundFocusInput } from '../../serviceBackgroundFocusInput'
 import { websiteChannelOptions } from '../../shared/channelOptions'
 
 const languageFilter = (docField: string) => ({ document }: { document: any }) => {

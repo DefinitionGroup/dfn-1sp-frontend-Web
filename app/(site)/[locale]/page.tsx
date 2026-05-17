@@ -19,11 +19,11 @@
  * - OpenGraph + Twitter card metadata for social sharing
  * - Proper title template integration with root layout
  */
-import { getAllCases, getAllServices, getHomePage, getGlobalData } from "@/lib/sanity/queries";
+import { getAllCases, getAllServices, getHomePage, getGlobalData } from "@1sp/sanity-queries";
 import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
-import { resolveImageUrl } from "@/sanity/lib/image";
+import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import { getChannel } from "@1sp/site-config/server";

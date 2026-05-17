@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@1sp/sanity-queries": "workspace:*",
     "@1sp/sanity-types": "workspace:*",
     "@1sp/site-config": "workspace:*",
     "@phosphor-icons/react": "^2.1.10",

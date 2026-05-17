@@ -23,7 +23,7 @@
  * - Canonical URLs to prevent duplicate content
  * - Twitter card metadata for social sharing
  */
-import { getCaseBySlug, getAllCaseSlugs, getAllCases } from "@/lib/sanity/queries";
+import { getCaseBySlug, getAllCaseSlugs, getAllCases } from "@1sp/sanity-queries";
 import { notFound } from "next/navigation";
 import CaseStudyPageClient from "./CaseStudyPageClient";
 import SiteWrapper from "@/components/SiteWrapper";

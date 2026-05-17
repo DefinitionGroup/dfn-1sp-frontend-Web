@@ -24,10 +24,10 @@
  */
 import FlzrPageBuilder from "@flzr/components/FlzrPageBuilder";
 // import CookieDeclaration from "@/components/CookieDeclaration";
-import { getAllCases, getAllPageSlugs, getAllServicesForChannel, getPageBySlug } from "@/lib/sanity/queries";
+import { getAllCases, getAllPageSlugs, getAllServicesForChannel, getPageBySlug } from "@1sp/sanity-queries";
 import NotFound from "@flzr/components/ui/not-found";
 import FlzrSiteWrapper from "@flzr/components/FlzrSiteWrapper";
-import { resolveImageUrl } from "@/sanity/lib/image";
+import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {

@@ -1,4 +1,4 @@
-import { getAllCases } from "@/lib/sanity/queries";
+import { getAllCases } from "@1sp/sanity-queries";
 import CasesGalleryFilteredWithPaginationClient from "../pg-CasesGalleryFilteredWithPagination";
 
 interface CasesGalleryFilteredWithPaginationBlockProps {

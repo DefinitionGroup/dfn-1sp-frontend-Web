@@ -1,4 +1,4 @@
-import { getUnitLogoFloatUnits } from "@/lib/sanity/queries";
+import { getUnitLogoFloatUnits } from "@1sp/sanity-queries";
 import PageBuilderLogoFloatClient from "../pg-PageBuilderLogoFloat";
 import type { CloudinaryAsset } from "@1sp/sanity-types";
 

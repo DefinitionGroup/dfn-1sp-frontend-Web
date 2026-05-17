@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "next-sanity";
-import { apiVersion, dataset, projectId } from "@/sanity/env";
+import { apiVersion, dataset, projectId } from "@1sp/sanity-queries/env";
 
 const writeClient = createClient({
   projectId,

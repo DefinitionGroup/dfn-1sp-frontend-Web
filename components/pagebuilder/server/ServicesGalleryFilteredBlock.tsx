@@ -1,4 +1,4 @@
-import { getAllServices } from "@/lib/sanity/queries";
+import { getAllServices } from "@1sp/sanity-queries";
 import ServicesGalleryFilteredClient from "../pg-ServicesGalleryFiltered";
 
 interface ServicesGalleryFilteredBlockProps {

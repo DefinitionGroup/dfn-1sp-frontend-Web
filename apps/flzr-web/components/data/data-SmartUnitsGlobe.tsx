@@ -1,5 +1,5 @@
-import { client } from "@/sanity/lib/client";
-import { SMART_UNITS_GLOBE_QUERY } from "@/sanity/lib/queries";
+import { client } from "@1sp/sanity-queries/client";
+import { SMART_UNITS_GLOBE_QUERY } from "@1sp/sanity-queries/groq";
 import GlobalDataComponent from "@flzr/components/pagebuilder/pg-GlobalDataComponent";
 
 type CloudinaryAsset = {

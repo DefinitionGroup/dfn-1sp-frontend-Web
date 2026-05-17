@@ -14,8 +14,8 @@ import FlzrPageBuilder from "@flzr/components/FlzrPageBuilder";
 import FlzrSiteWrapper from "@flzr/components/FlzrSiteWrapper";
 import NotFound from "@flzr/components/ui/not-found";
 import ContactForm from "@flzr/components/ui/ContactForm";
-import { getAllCases, getAllServicesForChannel, getPageBySlug } from "@/lib/sanity/queries";
-import { resolveImageUrl } from "@/sanity/lib/image";
+import { getAllCases, getAllServicesForChannel, getPageBySlug } from "@1sp/sanity-queries";
+import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {

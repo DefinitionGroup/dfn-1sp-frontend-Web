@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAllCases } from "@/lib/sanity/queries";
+import { getAllCases } from "@1sp/sanity-queries";
 import { getChannelFromEnv } from "@1sp/site-config";
 
 const sanitize = (value: string | null, fallback: string) => {

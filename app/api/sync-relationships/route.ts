@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from 'next-sanity'
-import { apiVersion, dataset, projectId } from '@/sanity/env'
+import { apiVersion, dataset, projectId } from '@1sp/sanity-queries/env'
 
 // Create a client with write permissions for API routes
 const writeClient = createClient({
