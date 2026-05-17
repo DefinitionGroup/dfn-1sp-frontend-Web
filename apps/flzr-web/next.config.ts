@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
     "@1sp/site-config",
     "@1sp/sanity-types",
     "@1sp/sanity-queries",
+    "@1sp/pagebuilder-core",
   ],
   images: {
     remotePatterns: [

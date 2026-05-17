@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@1sp/pagebuilder-core':
+        specifier: workspace:*
+        version: link:packages/pagebuilder-core
       '@1sp/sanity-queries':
         specifier: workspace:*
         version: link:packages/sanity-queries
@@ -126,6 +129,9 @@ importers:
 
   apps/flzr-web:
     dependencies:
+      '@1sp/pagebuilder-core':
+        specifier: workspace:*
+        version: link:../../packages/pagebuilder-core
       '@1sp/sanity-queries':
         specifier: workspace:*
         version: link:../../packages/sanity-queries
@@ -238,6 +244,12 @@ importers:
       typescript:
         specifier: ^5
         version: 5.9.2
+
+  packages/pagebuilder-core:
+    dependencies:
+      react:
+        specifier: ^18 || ^19
+        version: 19.2.0
 
   packages/sanity-queries:
     dependencies:
