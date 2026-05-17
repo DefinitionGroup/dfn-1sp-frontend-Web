@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@1sp/site-config"],
+  transpilePackages: ["@1sp/site-config", "@1sp/sanity-types"],
   images: {
     remotePatterns: [
       {

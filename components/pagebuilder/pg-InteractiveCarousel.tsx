@@ -1,5 +1,5 @@
 "use client";
-import type { Carousel } from "@/types/sanity.types";
+import type { Carousel } from "@1sp/sanity-types";
 import InteractiveCarousel from "./Fragments/pg-InteractiveCarousel";
 
 

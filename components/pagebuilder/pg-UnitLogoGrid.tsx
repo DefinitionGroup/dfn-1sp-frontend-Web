@@ -5,7 +5,7 @@ import { resolveLink, assetUrl } from "@/utils/utils";
 import Link from "next/link";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import GridBackground from "@/components/ui/GridBackground";
-import type { CloudinaryAsset, CTA } from "@/types/sanity.types";
+import type { CloudinaryAsset, CTA } from "@1sp/sanity-types";
 import { hasVisibleText } from "@/lib/text-content";
 
 type Unit = {

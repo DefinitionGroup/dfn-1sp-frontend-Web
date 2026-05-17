@@ -1,5 +1,5 @@
 "use client";
-import type { GalleryHeroStep, CarouselItem } from "@/types/sanity.types";
+import type { GalleryHeroStep, CarouselItem } from "@1sp/sanity-types";
 import HeaderImageVideoComp2 from "@/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
 import GridBackground from "@/components/ui/GridBackground";
 import Badgemodule from "@/components/ui/Badgemodule";

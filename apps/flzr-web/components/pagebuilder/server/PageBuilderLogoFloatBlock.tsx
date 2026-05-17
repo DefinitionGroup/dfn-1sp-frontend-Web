@@ -1,6 +1,6 @@
 import { getUnitLogoFloatUnits } from "@/lib/sanity/queries";
 import PageBuilderLogoFloatClient from "../pg-PageBuilderLogoFloat";
-import type { CloudinaryAsset } from "@/types/sanity.types";
+import type { CloudinaryAsset } from "@1sp/sanity-types";
 
 type Unit = {
   _id: string;

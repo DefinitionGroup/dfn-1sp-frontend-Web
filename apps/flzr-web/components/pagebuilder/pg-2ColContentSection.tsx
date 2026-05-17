@@ -8,7 +8,7 @@ import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import Link from "next/link";
 import { assetUrl, optimizedVideoUrl } from "@/utils/utils";
-import type { CloudinaryAsset } from "@/types/sanity.types";
+import type { CloudinaryAsset } from "@1sp/sanity-types";
 import { hasVisibleNode, hasVisibleText } from "@/lib/text-content";
 
 import { motion, useScroll, useTransform } from "motion/react";

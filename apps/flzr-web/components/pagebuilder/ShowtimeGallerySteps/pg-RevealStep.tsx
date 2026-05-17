@@ -4,7 +4,7 @@ import React from "react";
 import GridBackground from "@flzr/components/ui/GridBackground";
 import Badgemodule from "@flzr/components/ui/Badgemodule";
 import TextReveal, { type RevealItem } from "@flzr/components/ui/TextReveal";
-import type { BadgeModule, CloudinaryAsset } from "@/types/sanity.types";
+import type { BadgeModule, CloudinaryAsset } from "@1sp/sanity-types";
 import { assetUrl } from "@/utils/utils";
 import HeaderImageVideoComp2 from "@flzr/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
 

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import GridBackground from "@flzr/components/ui/GridBackground";
-import type { CTA } from "@/types/sanity.types";
+import type { CTA } from "@1sp/sanity-types";
 import { ctaToButtonProps } from "@/utils/utils";
 import Button2 from "@flzr/components/ui/Button2";
 

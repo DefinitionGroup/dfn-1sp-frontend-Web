@@ -10,7 +10,7 @@ import type { PortableTextBlock } from "@portabletext/types";
 import type {
   OneSPHeader,
   CloudinaryAsset,
-} from "@/types/sanity.types";
+} from "@1sp/sanity-types";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { SMALL_TOUCH_LANDSCAPE_MEDIA_QUERY } from "@/lib/responsive";
 import { hasVisibleText } from "@/lib/text-content";

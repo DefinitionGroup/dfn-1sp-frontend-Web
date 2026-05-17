@@ -13,7 +13,7 @@ import {
 } from "motion/react";
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import type { CloudinaryAsset } from "@/types/sanity.types";
+import type { CloudinaryAsset } from "@1sp/sanity-types";
 import { assetUrl } from "@/utils/utils";
 
 export type RevealItem = {

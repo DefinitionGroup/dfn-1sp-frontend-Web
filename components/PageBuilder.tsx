@@ -11,9 +11,9 @@ import type {
   GalleryRevealStep as GalleryRevealStepType,
   GalleryOverview as GalleryOverviewType,
   Carousel as CarouselType,
-} from "@/types/sanity.types";
-import type { Page } from "@/types/sanity.types";
-import { HeroShowtime as HeroShowtimeType } from "@/types/sanity.types";
+} from "@1sp/sanity-types";
+import type { Page } from "@1sp/sanity-types";
+import { HeroShowtime as HeroShowtimeType } from "@1sp/sanity-types";
 import ErrorBoundary from "./ErrorBoundary";
 import HeadlineChallenge from "./pagebuilder/cases/pg-HeadlineChallenge";
 import ComponentLoader from "./ui/ComponentLoader";

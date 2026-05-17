@@ -13,7 +13,7 @@ import {
 import type {
   CarouselItem as SanityCarouselItem,
   CTA,
-} from "@/types/sanity.types";
+} from "@1sp/sanity-types";
 import { assetUrl, ctaToButtonProps } from "@/utils/utils";
 
 

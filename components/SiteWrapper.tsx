@@ -28,7 +28,7 @@
 import { getGlobalData } from "@/lib/sanity/queries";
 import FrontNavOverlay from "./menu/FrontNavOverlay";
 import Footer from "./menu/FooterNew";
-import { NavbarMenu, FooterMenu } from "@/types/menu.types";
+import { NavbarMenu, FooterMenu } from "@1sp/sanity-types/menu";
 import PageWithMapVertical from "./ui/PageWithMapVertical";
 import ScrollToTop from "./ui/ScrollToTop";
 import { FooterMenuProvider } from "./menu/FooterMenuContext";

@@ -3,7 +3,7 @@
 import { startTransition, useState } from "react";
 import ServiceGalleryComponent from "@flzr/components/data/data-ServiceGallery";
 import { getTranslations } from "@/lib/translations";
-import type { Service } from "@/types/sanity.types";
+import type { Service } from "@1sp/sanity-types";
 
 interface ServicesGalleryFilteredProps {
   locale?: string;

@@ -1,7 +1,7 @@
 "use client";
 import SmartCarouselData from "../data/data-InteractiveCarousel";
 
-import type { CloudinaryAsset } from "@/types/sanity.types";
+import type { CloudinaryAsset } from "@1sp/sanity-types";
 
 // Dereferenced case study from GROQ query
 interface DereferencedCase {

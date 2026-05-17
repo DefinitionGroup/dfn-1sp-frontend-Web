@@ -5,7 +5,7 @@ import Button2 from "@flzr/components/ui/Button2";
 import Link from "next/link";
 import { resolveLink } from "@/utils/utils";
 import { useParams } from "next/navigation";
-import type { CTA } from "@/types/sanity.types";
+import type { CTA } from "@1sp/sanity-types";
 import GridBackground from "@flzr/components/ui/GridBackground";
 import { hasVisibleText } from "@/lib/text-content";
 

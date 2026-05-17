@@ -6,7 +6,7 @@ import LineMinimap, { NavPoint } from "@flzr/components/ui/MapVertical";
 import { CasePageBuilder } from "@flzr/components/CasePageBuilder";
 import CasePoweredByContact from "@flzr/components/pagebuilder/cases/pg-CasePoweredByContact";
 import { getTranslations } from "@/lib/translations";
-import type { CaseStudyData } from "@/types/sanity.types";
+import type { CaseStudyData } from "@1sp/sanity-types";
 import { hasVisibleText } from "@/lib/text-content";
 
 interface CaseStudyPageClientProps {

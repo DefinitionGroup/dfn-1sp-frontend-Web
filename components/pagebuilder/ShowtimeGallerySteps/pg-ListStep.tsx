@@ -19,7 +19,7 @@ import type {
   CloudinaryAsset,
   CtaMiniComponent as CtaMiniComponentType,
   CtaSplitHeader as CtaSplitHeaderType,
-} from "@/types/sanity.types";
+} from "@1sp/sanity-types";
 
 import {
   ctaToButtonProps,

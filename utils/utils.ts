@@ -272,7 +272,7 @@ export const optimizedPortraitVideoUrl = (
     });
 
 
-import type { CTA, Link } from "@/types/sanity.types";
+import type { CTA, Link } from "@1sp/sanity-types";
 
 export const resolveLink = (link?: Link | null) => {
     if (!link) return "";

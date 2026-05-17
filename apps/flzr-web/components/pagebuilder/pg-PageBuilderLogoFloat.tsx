@@ -3,7 +3,7 @@
 import React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { assetUrl } from "@/utils/utils";
-import type { CloudinaryAsset } from "@/types/sanity.types";
+import type { CloudinaryAsset } from "@1sp/sanity-types";
 
 type Unit = {
   _id: string;

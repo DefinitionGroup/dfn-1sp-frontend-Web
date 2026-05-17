@@ -3,7 +3,7 @@ import React from "react";
 import type {
   ShowtimeGallery as ShowtimeGalleryType,
   GalleryStep,
-} from "@/types/sanity.types";
+} from "@1sp/sanity-types";
 
 
 import HeroStep from "./pg-GalleryHeroStep";

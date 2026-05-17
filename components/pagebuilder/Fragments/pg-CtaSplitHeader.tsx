@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import type { CtaSplitHeader as CtaSplitHeaderType } from "@/types/sanity.types";
+import type { CtaSplitHeader as CtaSplitHeaderType } from "@1sp/sanity-types";
 import { resolveLink } from "@/utils/utils";
 import CtaMiniComponent from "./pg-CtaMiniComponent";
 import { hasVisibleText } from "@/lib/text-content";

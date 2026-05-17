@@ -9,7 +9,7 @@ import Image from "next/image";
 import DeferredVideo from "@/components/ui/DeferredVideo";
 import { cloudinaryPosterUrl, withCacheKey } from "@/utils/utils";
 import { useRobustInView } from "@/hooks/use-robust-in-view";
-import type { CloudinaryImage, Service } from "@/types/sanity.types";
+import type { CloudinaryImage, Service } from "@1sp/sanity-types";
 
 function isVideoUrl(url: string | undefined): boolean {
   if (!url) return false;

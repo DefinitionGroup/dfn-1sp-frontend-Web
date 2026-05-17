@@ -1,5 +1,5 @@
 "use client";
-import type { GalleryOverview } from "@/types/sanity.types";
+import type { GalleryOverview } from "@1sp/sanity-types";
 import OverviewStep from "./ShowtimeGallerySteps/pg-OverviewStep";
 
 

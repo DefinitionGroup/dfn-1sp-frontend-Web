@@ -1,6 +1,6 @@
 import ExpandableCards from "@/components/pagebuilder/Fragments/pg-ExpandableCards";
 import { getSmartUnits } from "@/lib/sanity/queries";
-import type { CardItem, CloudinaryAsset, CTA } from "@/types/sanity.types";
+import type { CardItem, CloudinaryAsset, CTA } from "@1sp/sanity-types";
 
 type Unit = {
   _id: string;

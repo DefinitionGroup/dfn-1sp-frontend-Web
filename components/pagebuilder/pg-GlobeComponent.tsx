@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import type { GlobeComponent as GlobeComponentType } from "@/types/sanity.types";
+import type { GlobeComponent as GlobeComponentType } from "@1sp/sanity-types";
 import GlobalDataComponent from "@/components/pagebuilder/pg-GlobalDataComponent";
 
 

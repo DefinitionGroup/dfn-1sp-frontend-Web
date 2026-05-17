@@ -3,7 +3,7 @@
 import React, { useEffect, useId, useRef, useState, useMemo } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
-import type { CardItem, CloudinaryAsset } from "@/types/sanity.types";
+import type { CardItem, CloudinaryAsset } from "@1sp/sanity-types";
 import { assetUrl } from "@/utils/utils";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import { useRobustInView } from "@/hooks/use-robust-in-view";

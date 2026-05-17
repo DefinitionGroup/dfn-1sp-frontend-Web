@@ -10,7 +10,7 @@ import CtaMiniComponent from "@/components/pagebuilder/Fragments/pg-CtaMiniCompo
 import { getTranslations } from "@/lib/translations";
 import { useParams } from "next/navigation";
 import { resolveLink } from "@/utils/utils";
-import type { CTA } from "@/types/sanity.types";
+import type { CTA } from "@1sp/sanity-types";
 import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import { hasVisibleText } from "@/lib/text-content";

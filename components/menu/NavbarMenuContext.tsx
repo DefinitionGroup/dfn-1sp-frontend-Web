@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext } from "react";
-import { NavbarMenu } from "@/types/menu.types";
+import { NavbarMenu } from "@1sp/sanity-types/menu";
 
 interface NavbarMenuContextValue {
   menu: NavbarMenu | null;

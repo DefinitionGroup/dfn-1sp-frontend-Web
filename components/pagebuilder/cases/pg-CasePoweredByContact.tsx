@@ -5,7 +5,7 @@ import DeferredVideo from "@/components/ui/DeferredVideo";
 import Button2 from "@/components/ui/Button2";
 import { motion } from "motion/react";
 import { getTranslations } from "@/lib/translations";
-import type { CaseStudyData, CloudinaryAsset } from "@/types/sanity.types";
+import type { CaseStudyData, CloudinaryAsset } from "@1sp/sanity-types";
 import { assetUrl } from "@/utils/utils";
 
 type CaseUnit = NonNullable<CaseStudyData["units"]>[number];

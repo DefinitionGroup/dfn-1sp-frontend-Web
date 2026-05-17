@@ -3,7 +3,7 @@
 import React from "react";
 import GridBackground from "@flzr/components/ui/GridBackground";
 import TextHeadlineCombo from "@flzr/components/ui/TextHeadlineCombo";
-import type { GalleryOverview } from "@/types/sanity.types";
+import type { GalleryOverview } from "@1sp/sanity-types";
 
 export default function OverviewStep({ step }: { step: GalleryOverview }) {
   const {

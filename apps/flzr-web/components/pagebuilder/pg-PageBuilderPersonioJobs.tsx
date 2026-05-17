@@ -7,7 +7,7 @@ import GridBackground from "@flzr/components/ui/GridBackground";
 import { client } from "@/sanity/lib/client";
 import { UNIT_LOGO_FLOAT_QUERY } from "@/sanity/lib/queries";
 import { assetUrl } from "@/utils/utils";
-import type { CloudinaryAsset } from "@/types/sanity.types";
+import type { CloudinaryAsset } from "@1sp/sanity-types";
 import { hasVisibleText } from "@/lib/text-content";
 
 type PersonioJob = {

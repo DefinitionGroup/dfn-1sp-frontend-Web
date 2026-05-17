@@ -9,7 +9,7 @@ import { TracingBeam } from "@/components/ui/tracing-beam";
 import type {
   GalleryScrollHighlightStep,
   CloudinaryAsset,
-} from "@/types/sanity.types";
+} from "@1sp/sanity-types";
 import { assetUrl, resolveLink, withCacheKey } from "@/utils/utils";
 import { useParams } from "next/navigation";
 

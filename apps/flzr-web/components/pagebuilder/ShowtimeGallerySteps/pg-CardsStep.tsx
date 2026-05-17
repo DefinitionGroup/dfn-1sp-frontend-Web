@@ -8,7 +8,7 @@ import type {
   GalleryCardsStep,
   CardItem,
   CloudinaryAsset,
-} from "@/types/sanity.types";
+} from "@1sp/sanity-types";
 import { assetUrl } from "@/utils/utils";
 import { hasVisibleText } from "@/lib/text-content";
 

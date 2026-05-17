@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Badgemodule from "@flzr/components/ui/Badgemodule";
-import type { GalleryPeopleStep, CloudinaryAsset } from "@/types/sanity.types";
+import type { GalleryPeopleStep, CloudinaryAsset } from "@1sp/sanity-types";
 import PeopleShowcaseHero from "../Fragments/pg-PeopleShowcaseHero";
 import GridBackground from "@flzr/components/ui/GridBackground";
 import CtaMiniComponent from "../Fragments/pg-CtaMiniComponent";

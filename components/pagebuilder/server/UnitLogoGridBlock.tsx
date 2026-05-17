@@ -1,6 +1,6 @@
 import { getUnitLogoGridUnits } from "@/lib/sanity/queries";
 import UnitLogoGridClient from "../pg-UnitLogoGrid";
-import type { CloudinaryAsset, CTA } from "@/types/sanity.types";
+import type { CloudinaryAsset, CTA } from "@1sp/sanity-types";
 
 type Unit = {
   _id: string;

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { FooterMenu } from "@/types/menu.types";
+import { FooterMenu } from "@1sp/sanity-types/menu";
 import Image from "next/image";
 import { hasVisibleText } from "@/lib/text-content";
 

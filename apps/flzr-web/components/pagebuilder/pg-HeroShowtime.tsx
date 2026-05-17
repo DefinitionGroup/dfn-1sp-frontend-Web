@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import type { HeroShowtime as HeroShowtimeType } from "@/types/sanity.types";
+import type { HeroShowtime as HeroShowtimeType } from "@1sp/sanity-types";
 
 import HeaderImageVideoComp2 from "@flzr/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";

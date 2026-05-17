@@ -2,7 +2,7 @@ import {
   getInteractiveCarouselCases,
 } from "@/lib/sanity/queries";
 import SmartCarouselClient from "../pg-SmartCarousel";
-import type { CloudinaryAsset } from "@/types/sanity.types";
+import type { CloudinaryAsset } from "@1sp/sanity-types";
 
 interface DereferencedCase {
   _id: string;

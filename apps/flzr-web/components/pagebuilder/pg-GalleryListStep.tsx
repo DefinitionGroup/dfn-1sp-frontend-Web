@@ -1,5 +1,5 @@
 "use client";
-import type { GalleryListStep } from "@/types/sanity.types";
+import type { GalleryListStep } from "@1sp/sanity-types";
 import ListStep from "./ShowtimeGallerySteps/pg-ListStep";
 
 

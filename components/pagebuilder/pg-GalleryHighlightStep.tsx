@@ -1,5 +1,5 @@
 "use client";
-import type { GalleryScrollHighlightStep } from "@/types/sanity.types";
+import type { GalleryScrollHighlightStep } from "@1sp/sanity-types";
 import HighlightStep from "./ShowtimeGallerySteps/pg-HighlightStep";
 
 type Props = { data: GalleryScrollHighlightStep } | GalleryScrollHighlightStep;

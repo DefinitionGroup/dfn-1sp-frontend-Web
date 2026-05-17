@@ -8,7 +8,7 @@ import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-r
 import { usePathname } from "next/navigation";
 import CaseGalleryMenu from "../data/data-CaseGalleryMenu";
 import Button2 from "../ui/Button2";
-import { NavbarMenu } from "@/types/menu.types";
+import { NavbarMenu } from "@1sp/sanity-types/menu";
 
 interface CaseStudy {
   _id: string;
