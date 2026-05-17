@@ -16,7 +16,7 @@
  *
  * IMPORTANT: This module is pure (no `next/headers`) so it can be imported
  * safely from middleware and the edge runtime. Cookie-based resolution lives
- * in `lib/server-channel.ts`.
+ * in `@1sp/site-config/server`.
  */
 
 // =============================================================================
@@ -175,7 +175,7 @@ export function isKnownChannel(value: unknown): value is WebsiteChannel {
  *
  * Use this in contexts that can't await cookies — `generateStaticParams`,
  * top-level module init, middleware. For request-scoped resolution that also
- * respects the channel cookie, use `getChannel()` from `lib/server-channel.ts`.
+ * respects the channel cookie, use `getChannel()` from `@1sp/site-config/server`.
  */
 export function getChannelFromEnv(): WebsiteChannel {
   const fromEnv = process.env.NEXT_PUBLIC_CHANNEL?.trim();

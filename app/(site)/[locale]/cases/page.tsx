@@ -16,7 +16,7 @@ import SiteWrapper from "@/components/SiteWrapper";
 import { resolveImageUrl } from "@/sanity/lib/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
-import { getChannel } from "@/lib/server-channel";
+import { getChannel } from "@1sp/site-config/server";
 import {
   JsonLdScript,
   generateCollectionPageJsonLd,

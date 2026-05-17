@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextResponse as NextResponseType } from "next/server";
 import type { NextRequest } from "next/server";
-import { resolveChannelFromHost } from "@/lib/site-config";
+import { resolveChannelFromHost } from "@1sp/site-config";
 
 /**
  * Middleware — locale-free public URLs + (optional) host → channel cookie

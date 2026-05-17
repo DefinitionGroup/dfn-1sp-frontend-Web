@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAllCases } from "@/lib/sanity/queries";
-import { getChannelFromEnv } from "@/lib/site-config";
+import { getChannelFromEnv } from "@1sp/site-config";
 
 const sanitize = (value: string | null, fallback: string) => {
   const trimmed = value?.trim();

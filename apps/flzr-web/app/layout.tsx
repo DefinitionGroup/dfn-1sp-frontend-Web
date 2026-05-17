@@ -6,7 +6,7 @@ import { Analytics } from "@vercel/analytics/next";
 import CookiebotBanner from "@/components/CookiebotBanner";
 import GoogleAnalyticsConsent from "@/components/GoogleAnalyticsConsent";
 import { getMetadataBaseUrl } from "@/lib/site-url";
-import { getSiteConfig } from "@/lib/site-config";
+import { getSiteConfig } from "@1sp/site-config";
 
 const FLZR_SITE = getSiteConfig("flizrWeb");
 const GOOGLE_MEASUREMENT_ID = process.env.NEXT_PUBLIC_FLZR_GOOGLE_MEASUREMENT_ID;

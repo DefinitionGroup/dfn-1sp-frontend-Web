@@ -27,7 +27,7 @@ import { PageBuilder } from "@/components/PageBuilder";
 import { getAllCases, getAllPageSlugs, getAllServices, getPageBySlug } from "@/lib/sanity/queries";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
-import { getChannel } from "@/lib/server-channel";
+import { getChannel } from "@1sp/site-config/server";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 import { resolveImageUrl } from "@/sanity/lib/image";
 import type { Metadata } from "next";

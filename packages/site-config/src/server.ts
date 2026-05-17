@@ -5,7 +5,7 @@ import {
   type Channel,
   getChannelFromEnv,
   isKnownChannel,
-} from "@/lib/site-config";
+} from "./index";
 
 /**
  * Resolve the active channel for the current request.

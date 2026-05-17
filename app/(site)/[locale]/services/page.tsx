@@ -12,7 +12,7 @@
  * - Hero video poster preload for LCP optimization
  */
 import { getAllCases, getAllServices, getPageBySlug } from "@/lib/sanity/queries";
-import { getChannel } from "@/lib/server-channel";
+import { getChannel } from "@1sp/site-config/server";
 import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";

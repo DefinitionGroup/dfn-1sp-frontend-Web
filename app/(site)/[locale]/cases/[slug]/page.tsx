@@ -28,7 +28,7 @@ import { notFound } from "next/navigation";
 import CaseStudyPageClient from "./CaseStudyPageClient";
 import SiteWrapper from "@/components/SiteWrapper";
 import type { Metadata } from "next";
-import { getChannel } from "@/lib/server-channel";
+import { getChannel } from "@1sp/site-config/server";
 import {
   JsonLdScript,
   generateCaseStudyJsonLd,

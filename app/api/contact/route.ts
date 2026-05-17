@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "next-sanity";
 import { apiVersion, dataset, projectId } from "@/sanity/env";
-import { getChannelFromEnv } from "@/lib/site-config";
+import { getChannelFromEnv } from "@1sp/site-config";
 
 const writeClient = createClient({
   projectId,

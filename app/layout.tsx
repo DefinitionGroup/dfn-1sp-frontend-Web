@@ -6,7 +6,7 @@ import { Analytics } from "@vercel/analytics/next";
 import CookiebotBanner from "@/components/CookiebotBanner";
 import GoogleAnalyticsConsent from "@/components/GoogleAnalyticsConsent";
 import { getMetadataBaseUrl } from "@/lib/site-url";
-import { SITE_BRAND } from "@/lib/site-config";
+import { SITE_BRAND } from "@1sp/site-config";
 
 const aspekta = localFont({
   src: [

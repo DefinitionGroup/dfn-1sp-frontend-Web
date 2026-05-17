@@ -12,7 +12,7 @@
  */
 import { PageBuilder } from "@/components/PageBuilder";
 import SiteWrapper from "@/components/SiteWrapper";
-import { getChannel } from "@/lib/server-channel";
+import { getChannel } from "@1sp/site-config/server";
 import NotFound from "@/components/ui/not-found";
 import ContactForm from "@/components/ui/ContactForm";
 import { getAllCases, getAllServices, getPageBySlug } from "@/lib/sanity/queries";

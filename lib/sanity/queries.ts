@@ -32,7 +32,7 @@
 import { cache } from "react";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { defineQuery } from "next-sanity";
-import { getChannelFromEnv } from "@/lib/site-config";
+import { getChannelFromEnv } from "@1sp/site-config";
 
 const INTERACTIVE_CAROUSEL_FIELD_MAP = {
   "1spWeb": "connectedDataCarouselPromo1SP",

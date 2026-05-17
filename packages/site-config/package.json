@@ -1,0 +1,14 @@
+{
+  "name": "@1sp/site-config",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./server": "./src/server.ts"
+  },
+  "types": "./src/index.ts",
+  "files": [
+    "src"
+  ]
+}

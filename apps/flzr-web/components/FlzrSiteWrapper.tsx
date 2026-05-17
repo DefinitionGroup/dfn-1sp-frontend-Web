@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getGlobalData } from "@/lib/sanity/queries";
-import { getSiteConfig } from "@/lib/site-config";
+import { getSiteConfig } from "@1sp/site-config";
 import type { FooterMenu, NavbarMenu } from "@/types/menu.types";
 
 type FlzrSiteWrapperProps = {

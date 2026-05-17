@@ -13,7 +13,7 @@ import Image from "next/image";
 import { useFooterMenu } from "../menu/FooterMenuContext";
 import { useNavbarMenu } from "../menu/NavbarMenuContext";
 import { useNavColor } from "../menu/NavColorContext";
-import { SITE_BRAND } from "@/lib/site-config";
+import { SITE_BRAND } from "@1sp/site-config";
 
 const AuroraShaderBackground = dynamic(
   () => import("./AuroraShaderBackground"),
@@ -138,7 +138,6 @@ export default function HamburgerGradientMenu({
 
   const imageLogo =
     resolvedColor === "dark" ? SITE_BRAND.logo.dark : SITE_BRAND.logo.light;
-  const logoAlt = SITE_BRAND.logo.alt;
 
   useEffect(() => {
     if (open) {
@@ -213,7 +212,7 @@ export default function HamburgerGradientMenu({
       >
         <Image
           src={imageLogo}
-          alt={logoAlt}
+          alt={SITE_BRAND.logo.alt}
           width={64}
           height={64}
           className="block h-auto w-16 object-contain md:hidden"
@@ -296,7 +295,7 @@ function OverlayRoot({
         >
           <Image
             src={imageLogo}
-            alt={logoAlt}
+            alt={SITE_BRAND.logo.alt}
             width={190}
             height={190}
             className="object-contain "
@@ -326,7 +325,7 @@ function OverlayRoot({
               >
                 <Image
                   src={imageLogo}
-                  alt={logoAlt}
+                  alt={SITE_BRAND.logo.alt}
                   width={64}
                   height={64}
                   className="object-contain drop-shadow-[0_0_24px_rgba(0,0,0,0.35)]"
