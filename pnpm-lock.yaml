@@ -29,6 +29,12 @@ importers:
       '@phosphor-icons/react':
         specifier: ^2.1.10
         version: 2.1.10(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@portabletext/react':
+        specifier: ^4.0.3
+        version: 4.0.3(react@19.2.0)
+      '@portabletext/types':
+        specifier: ^2.0.15
+        version: 2.0.15
       '@react-three/drei':
         specifier: ^10.7.7
         version: 10.7.7(@react-three/fiber@9.4.0(@types/react@19.1.13)(immer@10.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(three@0.181.2))(@types/react@19.1.13)(@types/three@0.181.0)(immer@10.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(three@0.181.2)
@@ -150,6 +156,12 @@ importers:
       '@phosphor-icons/react':
         specifier: ^2.1.10
         version: 2.1.10(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@portabletext/react':
+        specifier: ^4.0.3
+        version: 4.0.3(react@19.2.0)
+      '@portabletext/types':
+        specifier: ^2.0.15
+        version: 2.0.15
       '@react-three/drei':
         specifier: ^10.7.7
         version: 10.7.7(@react-three/fiber@9.4.0(@types/react@19.1.13)(immer@10.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(three@0.181.2))(@types/react@19.1.13)(@types/three@0.181.0)(immer@10.2.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(three@0.181.2)
