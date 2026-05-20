@@ -194,9 +194,15 @@ export default defineType({
         // ---------------------------------------------------------------
         defineField({
             name: 'content1sp',
-            title: 'Content 1SP',
+            title: 'Content 1SP (legacy — read only)',
             type: 'array',
             group: 'content',
+            readOnly: true,
+            description:
+                'Legacy 1SP page-builder content. Replaced by the unified ' +
+                '"Content" field above. New edits should go into Content. ' +
+                'This field is kept for backward compatibility and will be ' +
+                'removed after the unify-page-content migration is complete.',
             of: [
                 { type: 'headlineChallenge', title: 'Headline Component' },
                 // { type: 'showtimeGallery' },
@@ -244,26 +250,38 @@ export default defineType({
 
         defineField({
             name: 'contentMSM',
-            title: 'Content MSM',
+            title: 'Content MSM (legacy — read only)',
             type: 'array',
             group: 'content',
+            readOnly: true,
+            description:
+                'Legacy MSM page-builder content. Use Content instead. ' +
+                'Will be removed after the unify-page-content migration.',
             of: [{ type: 'block' }],
             hidden: ({ parent }: any) => parent?.channel !== 'msmWeb',
         }),
 
         defineField({
             name: 'contentStudioCO2',
-            title: 'Content StudioCO2',
+            title: 'Content StudioCO2 (legacy — read only)',
             type: 'array',
             group: 'content',
+            readOnly: true,
+            description:
+                'Legacy Studio CO2 page-builder content. Use Content instead. ' +
+                'Will be removed after the unify-page-content migration.',
             of: [{ type: 'block' }],
             hidden: ({ parent }: any) => parent?.channel !== 'studioco2Web',
         }),
         defineField({
             name: 'contentStudioFlizr',
-            title: 'Content StudioFlizr',
+            title: 'Content FLZR (legacy — read only)',
             type: 'array',
             group: 'content',
+            readOnly: true,
+            description:
+                'Legacy FLZR page-builder content. Use Content instead. ' +
+                'Will be removed after the unify-page-content migration.',
             of: [
                 { type: 'headlineChallenge', title: 'Headline Component' },
                 { type: 'heroShowTime' },
