@@ -134,7 +134,64 @@ export default defineType({
             },
         }),
 
-        // channel-specific content arrays (hidden when not matching channel)
+        // ---------------------------------------------------------------
+        // Unified page-builder content (Phase 1A — replaces the per-channel
+        // content<Channel> arrays below). Available on every channel; each
+        // app's PageBuilder registry decides what to render.
+        //
+        // The legacy fields below remain in place during the transition so
+        // existing 1SP pages keep rendering. A migration (PR 3) copies their
+        // data into this field; later PRs deprecate then remove them.
+        // ---------------------------------------------------------------
+        defineField({
+            name: 'content',
+            title: 'Content',
+            type: 'array',
+            group: 'content',
+            description:
+                'Unified page-builder content. New pages should use this field. ' +
+                'Legacy per-channel fields (Content 1SP, Content MSM, etc.) are ' +
+                'kept temporarily for backward compatibility and will be removed.',
+            of: [
+                // 1SP / FLZR shared block set (29 types)
+                { type: 'headlineChallenge', title: 'Headline Component' },
+                { type: 'heroShowTime' },
+                { type: 'sublineComponent' },
+                { type: 'oneSPHeader' },
+                { type: 'contentSection' },
+                { type: 'twoColContentSection' },
+                { type: 'tabbedContentSection' },
+                { type: 'casesIntro' },
+                { type: 'casesGalleryFiltered' },
+                { type: 'casesGalleryFilteredWithPagination' },
+                { type: 'servicesGalleryFiltered' },
+                { type: 'servicesHeroWithBadge' },
+                { type: 'intertitleCTA' },
+                { type: 'galleryHeroStep' },
+                { type: 'galleryCardsStep' },
+                { type: 'galleryListStep' },
+                { type: 'galleryPeopleStep' },
+                { type: 'galleryScrollHighlightStep' },
+                { type: 'galleryRevealStep' },
+                { type: 'galleryOverview' },
+                { type: 'carousel' },
+                { type: 'smartCarousel' },
+                { type: 'smartPeople' },
+                { type: 'smartUnitsGallery' },
+                { type: 'smartUnitsGlobe' },
+                { type: 'globeComponent' },
+                { type: 'unitLogoGrid' },
+                { type: 'pageBuilderLogoFloat' },
+                { type: 'pageBuilderPersonioJobs' },
+                // Portable text — covers what contentMSM / contentStudioCO2 used to hold
+                { type: 'block' },
+            ],
+        }),
+
+        // ---------------------------------------------------------------
+        // Legacy per-channel content arrays (deprecated in PR 4, removed in
+        // PR 5). Do not use for new pages — use `content` above instead.
+        // ---------------------------------------------------------------
         defineField({
             name: 'content1sp',
             title: 'Content 1SP',
