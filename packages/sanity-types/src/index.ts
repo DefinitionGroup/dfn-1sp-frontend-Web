@@ -311,12 +311,21 @@ export interface Page {
         keywords?: string[];
         excludeFromSitemap?: boolean;
     };
-    channel?: "1spWeb" | "msmWeb" | "studioco2Web" | string;
+    channel?: "1spWeb" | "msmWeb" | "studioco2Web" | "flizrWeb" | string;
     navbarVariant?: "light" | "dark";
     contactForm?: ContactFormSettings;
 
-    // channel-specific content (kept generic)
+    // Phase 1A: unified content field. Use this for new code.
+    // The legacy per-channel fields below are kept during the transition
+    // and will be removed once data has migrated. NOTE: these declarations
+    // are hand-edited here pending TypeGen config update to write to
+    // packages/sanity-types/src/index.ts — the next regeneration will
+    // produce more precise types for `content`.
+    content?: Array<any | ShowtimeGallery | HeroShowtime | SublineComponent | OneSPHeader>;
+
+    // Legacy channel-specific content (kept generic; deprecated in PR 4).
     content1sp?: Array<any | ShowtimeGallery | HeroShowtime | SublineComponent | OneSPHeader>;
+    contentStudioFlizr?: Array<any | ShowtimeGallery | HeroShowtime | SublineComponent | OneSPHeader>;
     contentMSM?: Array<any>;
     contentStudioCO2?: Array<any>;
 }

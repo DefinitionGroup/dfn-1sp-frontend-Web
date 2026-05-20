@@ -109,14 +109,14 @@ export default async function CasesPage({
   // Extract case items from page builder content (manual selections)
   // plus fallback to allCaseItems for auto-mode galleries
   const caseItems = extractCaseItemsFromContent(
-    page?.contentStudioFlizr as any[] | undefined,
+    page?.content as any[] | undefined,
     allCaseItems,
   );
   const itemListId = `${CANONICAL_URL}/cases#case-list`;
   const ogImageUrl = resolveImageUrl(page?.metadata?.image, { width: 1200, height: 630 });
 
   // LCP optimization: preload hero poster image
-  const contentBlocks = page?.contentStudioFlizr as any[] | undefined;
+  const contentBlocks = page?.content as any[] | undefined;
   const heroPreload = getHeroPreloadData(contentBlocks);
 
   return (

@@ -406,10 +406,343 @@ const FLZR_CONTENT_PROJECTION = `contentStudioFlizr[]{
   }
 }`;
 
+// =============================================================================
+// Phase 1A: unified content projection
+// =============================================================================
+// PAGE_QUERY and HOME_PAGE_QUERY both project the new `content` field with
+// the same deep transformations as the legacy `content1sp` field, so that
+// once data has migrated to `content` (PR 3) the frontend keeps resolving
+// references correctly. The legacy `content1sp` and `contentStudioFlizr`
+// projections remain intact during the transition; consumers read
+// `page.content` first and fall back to the legacy fields. After PR 3
+// runs and PR 4 deprecates the legacy fields, the duplicated projection
+// bodies can be unified via a shared constant.
+// =============================================================================
+
 export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slug && channel == $channel && language == $language][0]{
   ...,
   ${FLZR_CONTENT_PROJECTION},
   content1sp[]{
+    ...,
+    cta{
+      ...,
+      link{
+        ...,
+        page->{slug}
+      }
+    },
+    ${ADDITIONAL_CONTENT_PROJECTION},
+    _type == 'showtimeGallery' => {
+      ...,
+      steps[]{
+        ...,
+        ctaMini{
+          _type,
+          heading,
+          paragraph,
+          buttonText,
+          variant,
+          alignment,
+          link{
+            _type,
+            linkType,
+            externalUrl,
+            page->{
+              _id,
+              slug
+            }
+          }
+        },
+        _type == 'galleryPeopleStep' => {
+          ...,
+          showBadgeMiniCta,
+          badgeMiniCta{
+            _type,
+            heading,
+            paragraph,
+            buttonText,
+            variant,
+            alignment,
+            link{
+              _type,
+              linkType,
+              externalUrl,
+              page->{
+                _id,
+                slug
+              }
+            }
+          },
+          teamMembers[]->{
+            _id,
+            name,
+            image{
+              ...,
+              secure_url,
+              resource_type,
+              public_id
+            },
+            video{
+              ...,
+              secure_url,
+              resource_type,
+              public_id
+            },
+            altText,
+            fullname,
+            position,
+            email,
+            profileUrl,
+            tagline,
+            channel,
+            unit->{
+              _id,
+              name,
+              logoSignet
+            }
+          }
+        },
+        _type == 'galleryScrollHighlightStep' => {
+          ...,
+          useCTAMini,
+          ctaMini{
+            _type,
+            heading,
+            paragraph,
+            buttonText,
+            variant,
+            alignment,
+            link{
+              _type,
+              linkType,
+              externalUrl,
+              page->{
+                _id,
+                slug
+              }
+            }
+          },
+          scrollHighlightContent{
+            ...,
+            contentType,
+            textItems,
+            serviceItems[]->{
+              _id,
+              _updatedAt,
+              _type,
+              name,
+              taglabel,
+              introText,
+              serviceBackground
+            }
+          }
+        },
+        _type == 'galleryListStep' => {
+          ...,
+          showBadgeMiniCta,
+          badgeMiniCta{
+            _type,
+            heading,
+            paragraph,
+            buttonText,
+            variant,
+            alignment,
+            link{
+              _type,
+              linkType,
+              externalUrl,
+              page->{
+                _id,
+                slug
+              }
+            }
+          },
+          ${ADDITIONAL_CONTENT_PROJECTION}
+        }
+      }
+    },
+    _type == 'galleryPeopleStep' => {
+      ...,
+      showBadgeMiniCta,
+      badgeMiniCta{
+        _type,
+        heading,
+        paragraph,
+        buttonText,
+        variant,
+        alignment,
+        link{
+          _type,
+          linkType,
+          externalUrl,
+          page->{
+            _id,
+            slug
+          }
+        }
+      },
+      teamMembers[]->{
+        _id,
+        name,
+        image{
+          ...,
+          secure_url,
+          resource_type,
+          public_id
+        },
+        video{
+          ...,
+          secure_url,
+          resource_type,
+          public_id
+        },
+        altText,
+        fullname,
+        position,
+        email,
+        profileUrl,
+        tagline,
+        channel,
+        unit->{
+          _id,
+          name,
+          logoSignet
+        }
+      }
+    },
+    _type == 'galleryScrollHighlightStep' => {
+      ...,
+      useCTAMini,
+      ctaMini{
+        _type,
+        heading,
+        paragraph,
+        buttonText,
+        variant,
+        alignment,
+        link{
+          _type,
+          linkType,
+          externalUrl,
+          page->{
+            _id,
+            slug
+          }
+        }
+      },
+      scrollHighlightContent{
+        ...,
+        contentType,
+        textItems,
+        serviceItems[]->{
+          _id,
+          _updatedAt,
+          _type,
+          name,
+          taglabel,
+          introText,
+          serviceBackground
+        }
+      }
+    },
+    _type == 'galleryListStep' => {
+      ...,
+      showBadgeMiniCta,
+      badgeMiniCta{
+        _type,
+        heading,
+        paragraph,
+        buttonText,
+        variant,
+        alignment,
+        link{
+          _type,
+          linkType,
+          externalUrl,
+          page->{
+            _id,
+            slug
+          }
+        }
+      },
+      ${ADDITIONAL_CONTENT_PROJECTION}
+    },
+    _type == 'smartCarousel' => {
+      ...,
+      selectedCases[]->{
+        _id,
+        title,
+        subtitle,
+        description,
+        services[]->{_id, name},
+        mainImage,
+        mainVideo,
+        client->{
+          _id,
+          name,
+          logo
+        },
+        slug
+      }
+    },
+    _type == 'casesGalleryFiltered' => {
+      ...,
+      selectedCases[]->{
+        _id,
+        title,
+        slug,
+        description,
+        "mainImageUrl": mainImage.secure_url
+      }
+    },
+    _type == 'casesGalleryFilteredWithPagination' => {
+      ...,
+      selectedCases[]->{
+        _id,
+        title,
+        slug,
+        description,
+        "mainImageUrl": mainImage.secure_url
+      }
+    },
+    _type == 'unitLogoGrid' => {
+      ...,
+      selectedUnits[]->{
+        _id,
+        _type,
+        name,
+        slug,
+        logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+        logoColor${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+        logoSignet${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+        cta{
+          ...,
+          link{
+            ...,
+            linkType,
+            externalUrl,
+            page->{
+              _id,
+              slug
+            }
+          }
+        }
+      }
+    },
+    _type == 'pageBuilderLogoFloat' => {
+      ...,
+      selectedUnits[]->{
+        _id,
+        _type,
+        name,
+        slug,
+        logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+        logoColor${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+        logoSignet${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
+      }
+    }
+  },
+  "content": coalesce(content, content1sp, contentStudioFlizr, contentMSM, contentStudioCO2)[]{
     ...,
     cta{
       ...,
@@ -735,6 +1068,254 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
   ...,
   ${FLZR_CONTENT_PROJECTION},
   content1sp[]{
+    ...,
+    cta{
+      ...,
+      link{
+        ...,
+        page->{slug}
+      }
+    },
+    ${ADDITIONAL_CONTENT_PROJECTION},
+    _type == 'showtimeGallery' => {
+      ...,
+      steps[]{
+        ...,
+        ctaMini{
+          _type,
+          heading,
+          paragraph,
+          buttonText,
+          variant,
+          alignment,
+          link{
+            _type,
+            linkType,
+            externalUrl,
+            page->{
+              _id,
+              slug
+            }
+          }
+        },
+        _type == 'galleryPeopleStep' => {
+          ...,
+          teamMembers[]->{
+            _id,
+            name,
+            image{
+              ...,
+              secure_url,
+              resource_type,
+              public_id
+            },
+            video{
+              ...,
+              secure_url,
+              resource_type,
+              public_id
+            },
+            altText,
+            fullname,
+            position,
+            email,
+            profileUrl,
+            tagline,
+            channel,
+            unit->{
+              _id,
+              name,
+              logoSignet
+            }
+          }
+        },
+        _type == 'galleryScrollHighlightStep' => {
+          ...,
+          useCTAMini,
+          ctaMini{
+            _type,
+            heading,
+            paragraph,
+            buttonText,
+            variant,
+            alignment,
+            link{
+              _type,
+              linkType,
+              externalUrl,
+              page->{
+                _id,
+                slug
+              }
+            }
+          },
+          scrollHighlightContent{
+            ...,
+            contentType,
+            textItems,
+            serviceItems[]->{
+              _id,
+              _updatedAt,
+              _type,
+              name,
+              taglabel,
+              introText,
+              serviceBackground
+            }
+          }
+        },
+        _type == 'galleryListStep' => {
+          ...,
+          ${ADDITIONAL_CONTENT_PROJECTION}
+        }
+      }
+    },
+    _type == 'galleryPeopleStep' => {
+      ...,
+      teamMembers[]->{
+        _id,
+        name,
+        image{
+          ...,
+          secure_url,
+          resource_type,
+          public_id
+        },
+        video{
+          ...,
+          secure_url,
+          resource_type,
+          public_id
+        },
+        altText,
+        fullname,
+        position,
+        email,
+        profileUrl,
+        tagline,
+        channel,
+        unit->{
+          _id,
+          name,
+          logoSignet
+        }
+      }
+    },
+    _type == 'galleryScrollHighlightStep' => {
+      ...,
+      useCTAMini,
+      ctaMini{
+        _type,
+        heading,
+        paragraph,
+        buttonText,
+        variant,
+        alignment,
+        link{
+          _type,
+          linkType,
+          externalUrl,
+          page->{
+            _id,
+            slug
+          }
+        }
+      },
+      scrollHighlightContent{
+        ...,
+        contentType,
+        textItems,
+        serviceItems[]->{
+          _id,
+          _updatedAt,
+          _type,
+          name,
+          taglabel,
+          introText,
+          serviceBackground
+        }
+      }
+    },
+    _type == 'galleryListStep' => {
+      ...,
+      ${ADDITIONAL_CONTENT_PROJECTION}
+    },
+    _type == 'smartCarousel' => {
+      ...,
+      selectedCases[]->{
+        _id,
+        title,
+        subtitle,
+        description,
+        services[]->{_id, name},
+        mainImage,
+        mainVideo,
+        client->{
+          _id,
+          name,
+          logo
+        },
+        slug
+      }
+    },
+    _type == 'casesGalleryFiltered' => {
+      ...,
+      selectedCases[]->{
+        _id,
+        title,
+        slug,
+        description,
+        "mainImageUrl": mainImage.secure_url
+      }
+    },
+    _type == 'casesGalleryFilteredWithPagination' => {
+      ...,
+      selectedCases[]->{
+        _id,
+        title,
+        slug,
+        description,
+        "mainImageUrl": mainImage.secure_url
+      }
+    },
+    _type == 'unitLogoGrid' => {
+      ...,
+      selectedUnits[]->{
+        _id,
+        _type,
+        name,
+        slug,
+        logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+        logoColor${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+        logoSignet${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+        cta{
+          ...,
+          link{
+            ...,
+            linkType,
+            externalUrl,
+            page->{
+              _id,
+              slug
+            }
+          }
+        }
+      }
+    },
+    _type == 'pageBuilderLogoFloat' => {
+      ...,
+      selectedUnits[]->{
+        _id,
+        _type,
+        name,
+        slug,
+        logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+        logoColor${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+        logoSignet${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
+      }
+    }
+  },
+  "content": coalesce(content, content1sp, contentStudioFlizr, contentMSM, contentStudioCO2)[]{
     ...,
     cta{
       ...,
