@@ -23,6 +23,12 @@
   "dependencies": {
     "@1sp/site-config": "workspace:*",
     "@1sp/sanity-types": "workspace:*",
-    "@1sp/utils": "workspace:*"
+    "@1sp/utils": "workspace:*",
+    "@sanity/image-url": "^1.2.0",
+    "@vercel/stega": "^0.1.2",
+    "next-sanity": "^11.6.3"
+  },
+  "peerDependencies": {
+    "react": "^18 || ^19"
   }
 }
