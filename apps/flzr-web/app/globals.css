@@ -1,12 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@source "../components";
-@source "../../../components";
-@source "../../../hooks";
-@source "../../../lib";
-@source "../../../utils";
-
 @custom-variant dark (&:is(.dark *));
 
 /* Targets landscape viewports with height ≤ 640 px (all iPhone landscape sizes).
@@ -32,12 +26,6 @@
 
   --font-sans: var(--font-aspekta), system-ui, sans-serif;
   --font-aspekta: var(--font-aspekta), system-ui, sans-serif;
-
-  --color-flzr-ink: #141414;
-  --color-flzr-paper: #f7f4ee;
-  --color-flzr-acid: #bfff2f;
-  --color-flzr-coral: #ff5f45;
-  --color-flzr-steel: #5d6b75;
 
   --radius-badge: 0.25rem;
   /* Default fallback */
@@ -177,8 +165,8 @@
 
 :root {
   --radius: 0.625rem;
-  --background: #f7f4ee;
-  --foreground: #141414;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);

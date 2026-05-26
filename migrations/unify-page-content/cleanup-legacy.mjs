@@ -4,7 +4,7 @@
  * Unsets the legacy per-channel content fields on documents where the unified
  * `content` field has been populated.
  *
- * This brings the dataset back below the Sanity attribute/datatype limit
+ * This brings® the dataset back below the Sanity attribute/datatype limit
  * (2k on Free, 10k on Growth). The previous step (unify-page-content/run.mjs)
  * duplicated content across paths; this step removes the duplication.
  *

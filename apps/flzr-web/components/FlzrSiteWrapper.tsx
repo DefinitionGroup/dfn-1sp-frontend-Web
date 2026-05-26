@@ -81,17 +81,7 @@ function FlzrNav({
           ))}
         </div>
 
-        <Link
-          href="/contact"
-          className={[
-            "inline-flex h-9 items-center border px-4 text-xs font-semibold uppercase tracking-[0.1em] transition-colors",
-            isDark
-              ? "border-flzr-ink text-flzr-ink hover:bg-flzr-ink hover:text-white"
-              : "border-white text-white hover:bg-white hover:text-flzr-ink",
-          ].join(" ")}
-        >
-          Start
-        </Link>
+   
       </nav>
     </header>
   );

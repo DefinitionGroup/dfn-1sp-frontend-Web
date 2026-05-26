@@ -188,57 +188,6 @@ export default defineType({
             ],
         }),
 
-        // ---------------------------------------------------------------
-        // Legacy per-channel content arrays (deprecated in PR 4, removed in
-        // PR 5). Do not use for new pages — use `content` above instead.
-        // ---------------------------------------------------------------
-        defineField({
-            name: 'content1sp',
-            title: 'Content 1SP (legacy — read only)',
-            type: 'array',
-            group: 'content',
-            readOnly: true,
-            description:
-                'Legacy 1SP page-builder content. Replaced by the unified ' +
-                '"Content" field above. New edits should go into Content. ' +
-                'This field is kept for backward compatibility and will be ' +
-                'removed after the unify-page-content migration is complete.',
-            of: [
-                { type: 'headlineChallenge', title: 'Headline Component' },
-                // { type: 'showtimeGallery' },
-                { type: 'heroShowTime' },
-                { type: 'sublineComponent' },
-                { type: 'oneSPHeader' },
-                { type: 'contentSection' },
-                { type: 'twoColContentSection' },
-                { type: 'tabbedContentSection' },
-                { type: 'casesIntro' },
-                { type: 'casesGalleryFiltered' },
-                { type: 'casesGalleryFilteredWithPagination' },
-                { type: 'servicesGalleryFiltered' },
-                { type: 'servicesHeroWithBadge' },
-                { type: 'intertitleCTA' },
-                // Individual gallery steps now available as standalone components
-                { type: 'galleryHeroStep' },
-                { type: 'galleryCardsStep' },
-                { type: 'galleryListStep' },
-                { type: 'galleryPeopleStep' },
-                { type: 'galleryScrollHighlightStep' },
-                { type: 'galleryRevealStep' },
-                { type: 'galleryOverview' },
-                // Carousel and smart components
-                { type: 'carousel' },
-                { type: 'smartCarousel' },
-                { type: 'smartPeople' },
-                { type: 'smartUnitsGallery' },
-                { type: 'smartUnitsGlobe' },
-                { type: 'globeComponent' },
-                { type: 'unitLogoGrid' },
-                { type: 'pageBuilderLogoFloat' },
-                { type: 'pageBuilderPersonioJobs' }
-            ],
-            hidden: ({ parent }: any) => parent?.channel !== '1spWeb',
-        }),
         defineField({
             name: 'contactForm',
             title: 'Contact Form',
@@ -248,73 +197,6 @@ export default defineType({
             hidden: ({ parent }: any) => parent?.slug?.current !== 'contact',
         }),
 
-        defineField({
-            name: 'contentMSM',
-            title: 'Content MSM (legacy — read only)',
-            type: 'array',
-            group: 'content',
-            readOnly: true,
-            description:
-                'Legacy MSM page-builder content. Use Content instead. ' +
-                'Will be removed after the unify-page-content migration.',
-            of: [{ type: 'block' }],
-            hidden: ({ parent }: any) => parent?.channel !== 'msmWeb',
-        }),
-
-        defineField({
-            name: 'contentStudioCO2',
-            title: 'Content StudioCO2 (legacy — read only)',
-            type: 'array',
-            group: 'content',
-            readOnly: true,
-            description:
-                'Legacy Studio CO2 page-builder content. Use Content instead. ' +
-                'Will be removed after the unify-page-content migration.',
-            of: [{ type: 'block' }],
-            hidden: ({ parent }: any) => parent?.channel !== 'studioco2Web',
-        }),
-        defineField({
-            name: 'contentStudioFlizr',
-            title: 'Content FLZR (legacy — read only)',
-            type: 'array',
-            group: 'content',
-            readOnly: true,
-            description:
-                'Legacy FLZR page-builder content. Use Content instead. ' +
-                'Will be removed after the unify-page-content migration.',
-            of: [
-                { type: 'headlineChallenge', title: 'Headline Component' },
-                { type: 'heroShowTime' },
-                { type: 'sublineComponent' },
-                { type: 'oneSPHeader' },
-                { type: 'contentSection' },
-                { type: 'twoColContentSection' },
-                { type: 'tabbedContentSection' },
-                { type: 'casesIntro' },
-                { type: 'casesGalleryFiltered' },
-                { type: 'casesGalleryFilteredWithPagination' },
-                { type: 'servicesGalleryFiltered' },
-                { type: 'servicesHeroWithBadge' },
-                { type: 'intertitleCTA' },
-                { type: 'galleryHeroStep' },
-                { type: 'galleryCardsStep' },
-                { type: 'galleryListStep' },
-                { type: 'galleryPeopleStep' },
-                { type: 'galleryScrollHighlightStep' },
-                { type: 'galleryRevealStep' },
-                { type: 'galleryOverview' },
-                { type: 'carousel' },
-                { type: 'smartCarousel' },
-                { type: 'smartPeople' },
-                { type: 'smartUnitsGallery' },
-                { type: 'smartUnitsGlobe' },
-                { type: 'globeComponent' },
-                { type: 'unitLogoGrid' },
-                { type: 'pageBuilderLogoFloat' },
-                { type: 'pageBuilderPersonioJobs' }
-            ],
-            hidden: ({ parent }: any) => parent?.channel !== 'flizrWeb',
-        }),
         defineField({
             name: 'channel',
             title: 'Channel',

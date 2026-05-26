@@ -322,12 +322,6 @@ export interface Page {
     // packages/sanity-types/src/index.ts — the next regeneration will
     // produce more precise types for `content`.
     content?: Array<any | ShowtimeGallery | HeroShowtime | SublineComponent | OneSPHeader>;
-
-    // Legacy channel-specific content (kept generic; deprecated in PR 4).
-    content1sp?: Array<any | ShowtimeGallery | HeroShowtime | SublineComponent | OneSPHeader>;
-    contentStudioFlizr?: Array<any | ShowtimeGallery | HeroShowtime | SublineComponent | OneSPHeader>;
-    contentMSM?: Array<any>;
-    contentStudioCO2?: Array<any>;
 }
 
 export interface Menu {
