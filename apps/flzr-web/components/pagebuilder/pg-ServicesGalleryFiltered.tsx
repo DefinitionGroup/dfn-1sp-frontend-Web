@@ -68,7 +68,7 @@ function ServicesGalleryFiltered({
                   }}
                   className={`px-6 py-2 rounded-full text-xs font-medium uppercase transition-all duration-100 ${
                     activeFilter === filter
-                      ? "bg-lime-500 text-black"
+                      ? "bg-violet-500 text-black"
                       : "bg-neutral-900 text-neutral-100 hover:bg-neutral-800"
                   }`}
                 >

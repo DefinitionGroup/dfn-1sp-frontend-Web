@@ -209,7 +209,7 @@ export default function ChallengeAndSolution({
                           : `${t.caseStudy.servicesDescription} ${services?.map((s) => s.name).join(", ")}`)
                       }
                       buttonText={ctaButton?.text || ""}
-                      buttonVariant={(ctaButton?.variant as any) || "limesmall"}
+                      buttonVariant={(ctaButton?.variant as any) || "violetsmall"}
                       url={
                         ctaButton?.link ? resolveLink(ctaButton.link) : undefined
                       }

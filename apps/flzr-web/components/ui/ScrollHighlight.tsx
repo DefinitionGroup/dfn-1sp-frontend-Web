@@ -121,7 +121,7 @@ function ScrollHighlightItem({
         )}
         {/* {isHighlighted && (
           <motion.button
-            className="text-xs text-white bg-lime-500 rounded-full inline-block w-fit px-4 py-2 hover:cursor-pointer hover:bg-black transition-all"
+            className="text-xs text-white bg-violet-500 rounded-full inline-block w-fit px-4 py-2 hover:cursor-pointer hover:bg-black transition-all"
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: "spring", }}

@@ -148,7 +148,7 @@ function CasesGalleryFilteredWithPagination({
                   }}
                   className={`px-6 py-2 rounded-full text-xs font-medium uppercase transition-all duration-100 ${
                     activeFilter === filter
-                      ? "bg-lime-500 text-black"
+                      ? "bg-violet-500 text-black"
                       : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
                   }`}
                 >
@@ -199,7 +199,7 @@ function CasesGalleryFilteredWithPagination({
                     onClick={() => handlePageChange(page)}
                     className={`w-8 h-8 rounded-full text-sm font-medium transition-colors ${
                       currentPage === page
-                        ? "bg-lime-500 text-black"
+                        ? "bg-violet-500 text-black"
                         : "bg-transparent text-neutral-600 hover:bg-neutral-100"
                     }`}
                   >

@@ -106,7 +106,7 @@ const PercentageDiagramVertical: React.FC<PercentageDiagramVerticalProps> = ({
         />
       </motion.svg>
       <motion.p
-        className="bg-lime-500 px-2 w-fit rounded-full text-black -ml-2 text-xxs absolute"
+        className="bg-violet-500 px-2 w-fit rounded-full text-black -ml-2 text-xxs absolute"
         style={{ left, top: topPos }}
         transition={transition}
       >

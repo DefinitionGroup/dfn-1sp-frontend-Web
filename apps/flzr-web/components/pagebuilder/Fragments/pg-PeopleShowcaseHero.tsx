@@ -301,7 +301,7 @@ function PeopleShowcaseHero({
                         href={member.profileUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-white/90 text-sm hover:text-lime-400 transition-colors flex items-center"
+                        className="text-white/90 text-sm hover:text-violet-400 transition-colors flex items-center"
                       >
                         <Image
                           src="/LinkedinLogo.svg"

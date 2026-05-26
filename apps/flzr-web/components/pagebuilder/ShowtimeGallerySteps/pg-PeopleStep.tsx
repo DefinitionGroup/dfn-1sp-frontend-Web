@@ -124,7 +124,7 @@ export default function PeopleStep({
                         heading={badgeMiniCta.heading || ""}
                         paragraph={badgeMiniCta.paragraph || ""}
                         buttonText={badgeMiniCta.buttonText || ""}
-                        buttonVariant={(badgeMiniCta.variant as any) || "limesmall"}
+                        buttonVariant={(badgeMiniCta.variant as any) || "violetsmall"}
                         align={(badgeMiniCta.alignment as any) || "left"}
                         url={badgeMiniUrl || undefined}
                       />
@@ -199,7 +199,7 @@ export default function PeopleStep({
                     heading={badgeMiniCta.heading || ""}
                     paragraph={badgeMiniCta.paragraph || ""}
                     buttonText={badgeMiniCta.buttonText || ""}
-                    buttonVariant={(badgeMiniCta.variant as any) || "limesmall"}
+                    buttonVariant={(badgeMiniCta.variant as any) || "violetsmall"}
                     align={(badgeMiniCta.alignment as any) || "left"}
                     url={badgeMiniUrl || undefined}
                   />

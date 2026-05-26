@@ -18,7 +18,7 @@ interface IntertitleCTAProps {
   title: string;
   subtitle: string;
   buttonText?: string;
-  buttonVariant?: "default" | "black" | "lime" | "limesmall";
+  buttonVariant?: "default" | "black" | "violet" | "violetsmall";
   href?: string;
   staggeredProps?: Partial<StaggeredSlideUpProps>;
   containerClassName?: string;
@@ -30,7 +30,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   title,
   subtitle,
   buttonText,
-  buttonVariant = "lime",
+  buttonVariant = "violet",
   href,
   staggeredProps = {},
   containerClassName = "flex-col w-full min-w-64 justify-center mx-auto ",

@@ -21,7 +21,7 @@ function CtaSplitHeader({ data }: { data: CtaSplitHeaderType }) {
             heading={cta.heading || ""}
             paragraph={cta.paragraph || ""}
             buttonText={cta.buttonText || ""}
-            buttonVariant={(cta.variant as any) || "limesmall"}
+            buttonVariant={(cta.variant as any) || "violetsmall"}
             align={(cta.alignment as any) || "left"}
             url={href}
           />

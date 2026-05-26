@@ -77,8 +77,8 @@ export const TextHeadlineCombo: React.FC<TextHeadlineComboProps> = ({
   animate = true,
   clamp,
   spacing = "normal",
-  gradientFrom = "from-lime-400",
-  gradientTo = "to-lime-500",
+  gradientFrom = "from-violet-400",
+  gradientTo = "to-violet-500",
   className = "",
 }) => {
   const sizes = sizeMap[size];
@@ -112,7 +112,7 @@ export const TextHeadlineCombo: React.FC<TextHeadlineComboProps> = ({
         {eyebrow && (
           <motion.span
             {...baseMotion(0)}
-            className={`tracking-widest uppercase ${sizes.eyebrow} font-semibold text-lime-500/90`}>
+            className={`tracking-widest uppercase ${sizes.eyebrow} font-semibold text-violet-500/90`}>
             {eyebrow}
           </motion.span>
         )}

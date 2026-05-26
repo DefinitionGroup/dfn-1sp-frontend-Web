@@ -97,7 +97,7 @@ export default function ContactForm({
         <div className="grid items-start gap-12 lg:grid-cols-[1.1fr_1fr]">
           <div className="space-y-3 max-w-2xl">
             <span className="inline-flex items-center gap-2 rounded-full  px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-700 ring-1 ring-neutral-200">
-              <span className="h-1.5 w-1.5 rounded-full bg-lime-500 shadow-[0_0_0_4px_rgba(132,204,22,0.14)]" aria-hidden />
+              <span className="h-1.5 w-1.5 rounded-full bg-violet-500 shadow-[0_0_0_4px_rgba(132,204,22,0.14)]" aria-hidden />
               Contact
             </span>
             {hasVisibleText(headline) ? (
@@ -109,7 +109,7 @@ export default function ContactForm({
 
           <div className="relative border border-neutral-200 p-6 shadow-sm transition duration-300 ease-out ">
             {status === "success" ? (
-              <div className="space-y-3 text-lime-700">
+              <div className="space-y-3 text-violet-700">
                 <p className="text-lg font-semibold">Thank you!</p>
                 <p>{successMessage}</p>
               </div>
@@ -122,7 +122,7 @@ export default function ContactForm({
                       required
                       value={formState.name}
                       onChange={handleChange("name")}
-                      className="w-full border border-neutral-300 bg-neutral-50 px-3 py-3 text-sm text-neutral-900 outline-none transition duration-200 placeholder:text-neutral-400 focus:border-lime-500 focus:ring-2 focus:ring-lime-500/20"
+                      className="w-full border border-neutral-300 bg-neutral-50 px-3 py-3 text-sm text-neutral-900 outline-none transition duration-200 placeholder:text-neutral-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
                       placeholder="Jane Doe"
                       autoComplete="name"
                     />
@@ -134,7 +134,7 @@ export default function ContactForm({
                       type="email"
                       value={formState.email}
                       onChange={handleChange("email")}
-                      className="w-full border border-neutral-300 bg-neutral-50 px-3 py-3 text-sm text-neutral-900 outline-none transition duration-200 placeholder:text-neutral-400 focus:border-lime-500 focus:ring-2 focus:ring-lime-500/20"
+                      className="w-full border border-neutral-300 bg-neutral-50 px-3 py-3 text-sm text-neutral-900 outline-none transition duration-200 placeholder:text-neutral-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
                       placeholder="you@example.com"
                       autoComplete="email"
                     />
@@ -145,7 +145,7 @@ export default function ContactForm({
                   <input
                     value={formState.company}
                     onChange={handleChange("company")}
-                    className="w-full border border-neutral-300 bg-neutral-50 px-3 py-3 text-sm text-neutral-900 outline-none transition duration-200 placeholder:text-neutral-400 focus:border-lime-500 focus:ring-2 focus:ring-lime-500/20"
+                    className="w-full border border-neutral-300 bg-neutral-50 px-3 py-3 text-sm text-neutral-900 outline-none transition duration-200 placeholder:text-neutral-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
                     placeholder="Company Inc."
                     autoComplete="organization"
                   />
@@ -156,7 +156,7 @@ export default function ContactForm({
                     required
                     value={formState.message}
                     onChange={handleChange("message")}
-                    className="min-h-[140px] w-full border border-neutral-300 bg-neutral-50 px-3 py-3 text-sm text-neutral-900 outline-none transition duration-200 placeholder:text-neutral-400 focus:border-lime-500 focus:ring-2 focus:ring-lime-500/20"
+                    className="min-h-[140px] w-full border border-neutral-300 bg-neutral-50 px-3 py-3 text-sm text-neutral-900 outline-none transition duration-200 placeholder:text-neutral-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
                     placeholder="Tell us about your goals, timeline, and budget."
                   />
                 </label>
@@ -170,7 +170,7 @@ export default function ContactForm({
                   <button
                     type="submit"
                     disabled={status === "submitting"}
-                    className="inline-flex items-center justify-center rounded-full bg-neutral-900 px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition duration-200 ease-out hover:-translate-y-[1px] hover:bg-neutral-800 hover:shadow-[0_14px_40px_rgba(0,0,0,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime-500 disabled:cursor-not-allowed disabled:opacity-70"
+                    className="inline-flex items-center justify-center rounded-full bg-neutral-900 px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition duration-200 ease-out hover:-translate-y-[1px] hover:bg-neutral-800 hover:shadow-[0_14px_40px_rgba(0,0,0,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500 disabled:cursor-not-allowed disabled:opacity-70"
                   >
                     {status === "submitting" ? "Sending..." : submitLabel}
                   </button>

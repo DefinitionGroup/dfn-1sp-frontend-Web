@@ -112,7 +112,7 @@ export default function PersonCard({ person, index }: PersonCardProps) {
           {person.email && (
             <a
               href={`mailto:${person.email}`}
-              className="flex items-center gap-1.5 text-black/90 border  group-hover:text-white cursor-pointer  hover:text-lime-500 transition-colors"
+              className="flex items-center gap-1.5 text-black/90 border  group-hover:text-white cursor-pointer  hover:text-violet-500 transition-colors"
               title={person.email}
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -129,7 +129,7 @@ export default function PersonCard({ person, index }: PersonCardProps) {
               href={person.profileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 cursor-pointer text-black/90 group-hover:text-white  hover:text-lime-500 transition-colors"
+              className="flex items-center gap-1.5 cursor-pointer text-black/90 group-hover:text-white  hover:text-violet-500 transition-colors"
               title="LinkedIn Profile"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">

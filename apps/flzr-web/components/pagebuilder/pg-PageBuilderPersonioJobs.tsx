@@ -73,8 +73,8 @@ type JobFilterMetadata = {
 const DEFAULT_JOB_LOGO_URL = "/1sp-fallback.svg";
 
 const tagToneClasses: Record<TagTone, string> = {
-  location: " bg-lime-400 font-bold text-black",
-  department: "text-lime-500 bg-black",
+  location: " bg-violet-400 font-bold text-black",
+  department: "text-violet-500 bg-black",
   employment: "text-neutral-500 bg-white",
   contract: "text-neutral-500 bg-white",
   seniority: "text-neutral-500 bg-white",
@@ -564,7 +564,7 @@ function PageBuilderPersonioJobs({
                         onClick={() => setSelectedUnitId("all")}
                         aria-pressed={selectedUnitId === "all"}
                         className={`px-3 py-1.5 rounded-full text-[8px] font-medium uppercase tracking-wide transition-colors ${selectedUnitId === "all"
-                          ? "bg-lime-500 text-black"
+                          ? "bg-violet-500 text-black"
                           : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
                           }`}
                       >
@@ -580,7 +580,7 @@ function PageBuilderPersonioJobs({
                             onClick={() => setSelectedUnitId(unit._id)}
                             aria-pressed={isActive}
                             className={`px-3 py-1.5 rounded-full text-[8px] font-medium uppercase tracking-wide transition-colors ${isActive
-                              ? "bg-lime-400 text-black"
+                              ? "bg-violet-400 text-black"
                               : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
                               }`}
                           >
@@ -689,7 +689,7 @@ function PageBuilderPersonioJobs({
                             <Button2
                               text={applyLabel}
                               href={job.url}
-                              variant="limesmallrounded"
+                              variant="violetsmallrounded"
                               magnetic={false}
 
                             />

@@ -308,7 +308,7 @@ function InteractiveCarousel({
                           <Button2 {...ctaToButtonProps(active.cta)} />
                         ) : active.linkHref ? (
                           <Button2
-                            variant="limesmall"
+                            variant="violetsmall"
                             href={active.linkHref}
                             text="View Case Study"
                           />
@@ -372,7 +372,7 @@ function InteractiveCarousel({
             {carouselItems.map((_, index) => (
               <motion.button
                 key={index}
-                className={`h-2 rounded-full transition-all hover:bg-lime-400 duration-300 cursor-pointer ${index === currentIndex ? "bg-lime-400 min-w-16" : "bg-gray-100 min-w-2"}`}
+                className={`h-2 rounded-full transition-all hover:bg-violet-400 duration-300 cursor-pointer ${index === currentIndex ? "bg-violet-400 min-w-16" : "bg-gray-100 min-w-2"}`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.8 }}
                 onClick={() => {

@@ -141,7 +141,7 @@ export default function CasePoweredByContact({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
-                className="mt-2 text-2xl sm:text-3xl lg:text-3xl tracking-tight leading-tight  text-lime-500"
+                className="mt-2 text-2xl sm:text-3xl lg:text-3xl tracking-tight leading-tight  text-violet-500"
               >
                 {`${personName}${personUnit ? ` @ ${personUnit}` : ""}`}
               </motion.p>
@@ -158,14 +158,14 @@ export default function CasePoweredByContact({
                 )}
                 {relatedPerson.email && (
                   <Button2
-                    variant="limesmallrounded"
+                    variant="violetsmallrounded"
                     magnetic={false}
                     text={relatedPerson.email}
                     href={`mailto:${relatedPerson.email}`}
                   />
                 )}
                 {relatedPerson.profileUrl && (
-                  <Button2 variant="limesmallrounded"
+                  <Button2 variant="violetsmallrounded"
                     magnetic={false}
                     text={t.caseStudy.linkedInProfile}
                     href={relatedPerson.profileUrl}

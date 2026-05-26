@@ -196,7 +196,7 @@ export default function CaseGalleryComponent({
                     className="min-w-[150px]"
                     onClick={() => handleViewCaseStudy(active.slug.current)}
                   >
-                    <Button2 variant="limesmall" text="View Case Study" />
+                    <Button2 variant="violetsmall" text="View Case Study" />
                   </motion.div>
                 </div>
               </div>

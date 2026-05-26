@@ -76,7 +76,7 @@ function SublineComponent({
                   return (
                     <Button2
                       key={`subline-cta-${idx}`}
-                      variant={(btn.variant as any) || "limesmall"}
+                      variant={(btn.variant as any) || "violetsmall"}
                       text={btn.text}
                       href={btn.href}
                       className="w-fit"

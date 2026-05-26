@@ -264,7 +264,7 @@ function ExpandableCards({
                       href={active.ctaLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-4 py-3 text-xs font-bold bg-lime-500 rounded-xs hover:bg-black transition-all duration-500 text-white"
+                      className="px-4 py-3 text-xs font-bold bg-violet-500 rounded-xs hover:bg-black transition-all duration-500 text-white"
                     >
                       {active.ctaText}
                     </motion.a>

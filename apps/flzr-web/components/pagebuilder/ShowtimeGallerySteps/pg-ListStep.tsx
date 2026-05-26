@@ -356,7 +356,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                 heading={badgeMiniCta.heading || ""}
                 paragraph={badgeMiniCta.paragraph || ""}
                 buttonText={badgeMiniCta.buttonText || ""}
-                buttonVariant={(badgeMiniCta.variant as any) || "limesmall"}
+                buttonVariant={(badgeMiniCta.variant as any) || "violetsmall"}
                 align={(badgeMiniCta.alignment as any) || "left"}
                 url={badgeMiniUrl || undefined}
               />
@@ -472,7 +472,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                   heading={m.heading || ""}
                   paragraph={m.paragraph || ""}
                   buttonText={m.buttonText || ""}
-                  buttonVariant={(m.variant as any) || "limesmall"}
+                  buttonVariant={(m.variant as any) || "violetsmall"}
                   align={(m.alignment as any) || "left"}
                   url={href || undefined}
                   {...(href ? { href } : {})}

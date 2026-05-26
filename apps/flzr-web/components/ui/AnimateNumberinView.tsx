@@ -70,7 +70,7 @@ const StyleSheet = () => {
         .number-section-post {
           font-size: 48px;
           opacity: 1;
-          color: var(--color-lime-500);
+          color: var(--color-violet-500);
           position: relative;
           bottom: 0px;
           align-self: flex-end;

@@ -308,7 +308,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 .map((item) => (
                   <span key={item._key} className={itemClass}>
                     <Link
-                      className="hover:text-lime-400  transition-colors "
+                      className="hover:text-violet-400  transition-colors "
                       href={`/${item.slug}`}
                       onClick={(e) => {
                         e.preventDefault();
@@ -324,7 +324,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             <>
               <span className={itemClass}>
                 <Link
-                  className="hover:text-lime-400 transition-colors"
+                  className="hover:text-violet-400 transition-colors"
                   href={`/${locale}`}
                   onClick={(e) => {
                     e.preventDefault();
@@ -336,7 +336,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               </span>
               <span className={itemClass}>
                 <Link
-                  className="hover:text-lime-400 transition-colors"
+                  className="hover:text-violet-400 transition-colors"
                   href={`/${locale}/whatwedo`}
                   onClick={(e) => {
                     e.preventDefault();
@@ -348,7 +348,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               </span>
               <span className={itemClass}>
                 <Link
-                  className="hover:text-lime-400 transition-colors"
+                  className="hover:text-violet-400 transition-colors"
                   href={`/${locale}/our-family`}
                   onClick={(e) => {
                     e.preventDefault();
@@ -360,7 +360,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               </span>
               <span className={itemClass}>
                 <Link
-                  className="hover:text-lime-400 transition-colors"
+                  className="hover:text-violet-400 transition-colors"
                   href={`/${locale}/whatwedo`}
                   onClick={(e) => {
                     e.preventDefault();
@@ -381,7 +381,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           {isCaseDetailRoute && (
             <button
               type="button"
-              className={`border rounded-full min-w-[80px] inline-block py-2 px-2 text-xxs font-bold cursor-pointer hover:text-lime-400 hover:border-lime-400 transition-colors`}
+              className={`border rounded-full min-w-[80px] inline-block py-2 px-2 text-xxs font-bold cursor-pointer hover:text-violet-400 hover:border-violet-400 transition-colors`}
               onClick={() => setShowOverlay(true)}
             >
               All Cases
@@ -389,7 +389,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           )}
           <div className="min-w-[110px] w-[50px] max-w-[110px] n block relative   -right-2 top-1 rounded-full ">
             <Button2
-              variant="limesmall"
+              variant="violetsmall"
               className="min-w-[110px] w-[50px] max-w-[110px] overflow-hidden block absolute  rounded-full "
               href={`/contact`}
               text="Contact us"

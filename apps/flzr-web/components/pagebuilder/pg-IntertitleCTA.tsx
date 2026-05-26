@@ -82,7 +82,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   }
   const buttonText = cta?.text;
   const buttonVariant =
-    (cta?.variant as "default" | "black" | "lime" | "limesmall") || "lime";
+    (cta?.variant as "default" | "black" | "violet" | "violetsmall") || "violet";
 
   // Generate section ID from title
   const sectionId = title

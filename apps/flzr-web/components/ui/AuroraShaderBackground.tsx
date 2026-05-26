@@ -118,11 +118,11 @@ const fragmentShaderSource = `
     
     // Calculate metaball field
     float field = 0.0;
-    float limeField = 0.0;
+    float violetField = 0.0;
     float blueField = 0.0;
     
-    // Define ball properties: position, radius, color type (0=lime, 1=blue)
-    // Lime balls
+    // Define ball properties: position, radius, color type (0=violet, 1=blue)
+    // Violet balls
     vec2 ball1 = getBallPosition(0.0, t);
     vec2 ball2 = getBallPosition(1.0, t);
     vec2 ball3 = getBallPosition(2.0, t);
@@ -140,10 +140,10 @@ const fragmentShaderSource = `
     float size5 = 0.28 + sin(t * 0.5 + 1.5) * 0.05;
     float size6 = 0.22 + sin(t * 1.0 + 2.5) * 0.03;
     
-    // Calculate lime metaballs
-    limeField += metaball(p, ball1, size1);
-    limeField += metaball(p, ball2, size2);
-    limeField += metaball(p, ball3, size3);
+    // Calculate violet metaballs
+    violetField += metaball(p, ball1, size1);
+    violetField += metaball(p, ball2, size2);
+    violetField += metaball(p, ball3, size3);
     
     // Calculate blue metaballs
     blueField += metaball(p, ball4, size4);
@@ -151,10 +151,10 @@ const fragmentShaderSource = `
     blueField += metaball(p, ball6, size6);
     
     // Total field for threshold
-    field = limeField * blueField;
+    field = violetField * blueField;
     
     // Colors
-    vec3 limeColor = vec3(0, 1.0, 0.5);      // Bright lime
+    vec3 violetColor = vec3(0, 1.0, 0.5);      // Bright violet
     vec3 blueColor = vec3(0, 2, 0);      // Vibrant blue
     vec3 bgColor = vec3(0,0,1);     // Dark gray background
     
@@ -163,12 +163,12 @@ const fragmentShaderSource = `
     float softness = 3.2;
     
     // Calculate color mixing based on field contributions
-    float totalField = limeField + blueField + 0.001;
-    float limeRatio = limeField / totalField;
+    float totalField = violetField + blueField + 0.001;
+    float violetRatio = violetField / totalField;
     float blueRatio = blueField / totalField;
     
     // Mix colors based on field dominance
-    vec3 ballColor = limeColor * limeRatio + blueColor * blueRatio;
+    vec3 ballColor = violetColor * violetRatio + blueColor * blueRatio;
     
     // Soft metaball edge with blur
     float alpha = smoothstep(threshold - softness, threshold + softness * 11.5, field);

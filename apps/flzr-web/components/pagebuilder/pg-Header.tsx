@@ -42,7 +42,7 @@ function highlightInline(text: string, highlight?: string): React.ReactNode {
   return (
     <>
       {before}
-      <span className="bg-gradient-to-r from-lime-300 to-lime-500 bg-clip-text text-transparent font-bold">
+      <span className="bg-gradient-to-r from-violet-300 to-violet-500 bg-clip-text text-transparent font-bold">
         {matched}
       </span>
       {after}
