@@ -21,8 +21,8 @@
 | **Sanity datasets** | `production` (untouched), `dev-dataset` (migrated copy of production) |
 | **Local 1SP dev** | `pnpm dev` at repo root → port 3000, reads `dev-dataset` (via `.env.local`) |
 | **Local FLZR dev** | `pnpm dev` inside `apps/flzr-web/` → port 3001, reads `dev-dataset` + channel `flizrWeb` |
-| **1SP production** | `main` branch → Vercel auto-deploys → reads `production` dataset (still old code) |
-| **1SP dev deploy** | `dev` branch → Vercel auto-deploys → has PRs 1-3 but still points at `production` dataset |
+| **1SP production** | `main` branch → Vercel auto-deploys → reads `production` dataset. `origin/main` HAS multi-site infrastructure (`packages/`, `apps/flzr-web/`) and Phase 1A PR 1 (the additive `content` field is in the schema, empty everywhere). Does NOT yet have PRs 2-5 — 1SP consumers still read `page.content1sp[]` **directly** (no coalesce, no fallback). |
+| **1SP dev deploy** | `dev` branch → Vercel auto-deploys → **older than `main` on the multi-site work**. `origin/dev` does NOT have `apps/flzr-web/`. PR #139 (mentioned in the earlier session as "Phase 1A merged to dev") appears to have been reverted or never landed — verify before relying on the dev deploy. |
 | **FLZR Vercel project** | **Not created yet** — see `docs/FLZR_DEPLOY.md` once made, or follow the guide in the prior session log |
 
 ---
@@ -97,37 +97,26 @@
    - Env vars: `NEXT_PUBLIC_CHANNEL=flizrWeb` + `NEXT_PUBLIC_SANITY_DATASET=dev-dataset` + Sanity tokens + Cloudinary
    - Known caveat: hero video will 404 (MP4s excluded from repo, migrate to Cloudinary later)
 
-### Gated path to production (must run in this order)
+### Gated path to production — see `migrations/unify-page-content/RUNBOOK.md`
 
-3. **Export `production` dataset** as the rollback snapshot:
-   ```bash
-   npx sanity@latest dataset export production \
-     ./migrations/unify-page-content/backups/production-$(date +%Y%m%d-%H%M).tar.gz
-   ```
+> ⚠️ **The order is not "migrate then merge" or "merge then migrate" — it's
+> interleaved.** Because `origin/main` still reads `page.content1sp[]`
+> directly (PR 2's coalesce has not shipped), running `cleanup-legacy.mjs`
+> on `production` BEFORE the new code merges to `main` would blank the live
+> 1SP site. RUNBOOK has the full sequencing.
 
-4. **Run the migration on production** — back-to-back, no human pause between:
-   ```bash
-   NEXT_PUBLIC_SANITY_DATASET=production \
-   SANITY_API_WRITE_TOKEN=<see .env.local> \
-     node migrations/unify-page-content/run.mjs --apply
+The short version:
 
-   NEXT_PUBLIC_SANITY_DATASET=production \
-   SANITY_API_WRITE_TOKEN=<see .env.local> \
-     node migrations/unify-page-content/cleanup-legacy.mjs --apply
-   ```
-   The dataset crosses the 2000-attribute limit briefly between these two commands. **Editors cannot write anything during that window.** Production sits at 1575 attributes today; expect a peak of ~2350 then back down to ~1450.
+3. **Export `production` dataset** as the rollback snapshot
+4. **Run `run.mjs --apply`** on production → populates `content[]`; legacy fields still present; dataset goes over the 2000-attribute limit; **editor writes blocked**
+5. **Merge `platform/multisite-monorepo` → `main`** → Vercel deploys new code → 1SP now reads `content[]` directly
+6. **Run `cleanup-legacy.mjs --apply`** on production → unsets legacy fields → dataset drops back under limit → **editor writes unblocked**
+7. **Smoke-test** the live site + Studio
+8. **Editor comms**: legacy `Content 1SP` etc. fields are gone; edit unified `Content` from now on
 
-5. **Smoke-test `production` dataset**:
-   - `curl .../v1/data/stats/production` → confirm under 2000
-   - Visit live 1SP site → pages render (still via coalesce in deployed code)
+Editor write blackout: from step 4 (`run.mjs`) until step 6 (`cleanup-legacy.mjs`) completes. Typically 5–15 minutes depending on Vercel deploy time. **Read traffic to the live site is unaffected the whole time** — production keeps rendering through the deploy.
 
-6. **Merge `platform/multisite-monorepo` → `dev` → `main`**:
-   - PR `platform/multisite-monorepo` → `dev` (or just push if you're on dev directly)
-   - Wait/smoke-test dev Vercel deploy
-   - PR `dev` → `main`
-   - Merge → Vercel auto-deploys 1SP production with PRs 1-5
-
-7. **Editor comms**: tell editors the legacy `Content 1SP` field is gone, edit the unified `Content` field from now on.
+For a zero-blackout alternative (more PRs, less time pressure), see the RUNBOOK § "Path B: split branches".
 
 ### Queued tech debt (none blocking)
 
