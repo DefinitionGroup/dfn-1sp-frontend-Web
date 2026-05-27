@@ -125,7 +125,7 @@ function PageBuilderLogoFloat({
                       delay: index * 0.05,
                       ease: "easeOut",
                     }}
-                    className="rounded-sm min-h-12 flex items-center justify-center  md:w-auto pointer-events-auto cursor-pointer"
+                    className=" min-h-12 flex items-center justify-center  md:w-auto pointer-events-auto cursor-pointer"
                     onClick={() => {
                       document
                         .getElementById("1sp-where-specialists-unite")

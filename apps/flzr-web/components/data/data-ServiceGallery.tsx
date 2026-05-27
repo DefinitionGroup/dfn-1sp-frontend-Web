@@ -160,7 +160,7 @@ export default function ServiceGalleryComponent({
                   duration: 0.025,
                 },
               }}
-              className="flex absolute top-2 right-2 lg:hidden items-center overflow-hidden justify-around rounded-full h-6 w-6 z-50"
+              className="flex absolute top-2 right-2 lg:hidden items-center overflow-hidden justify-around  h-6 w-6 z-50"
               onClick={closeService}
             >
               <CloseIcon />
@@ -181,7 +181,7 @@ export default function ServiceGalleryComponent({
               }}
               transition={{ type: "spring", visualDuration: 0.3, bounce: 0.2 }}
               ref={ref}
-              className="w-full z-50 max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[90%] rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
+              className="w-full z-50 max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[90%]  flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
             >      <motion.button
               key={`button-${active.name}-${id}`}
               layout
@@ -197,20 +197,20 @@ export default function ServiceGalleryComponent({
                   duration: 0.025,
                 },
               }}
-              className="flex absolute top-4 right-4 items-center overflow-hidden justify-around rounded-full h-6 w-6 z-50"
+              className="flex absolute top-4 right-4 items-center overflow-hidden justify-around  h-6 w-6 z-50"
               onClick={closeService}
             >
                 <CloseIcon />
               </motion.button>
               <motion.div
-                className="w-full sm:rounded-t-xl relative overflow-hidden h-full"
+                className="w-full  relative overflow-hidden h-full"
                 layoutId={`image-${active.name}-${id}`}
               >
                 {activeBg && isVideoUrl(activeBg) ? (
                   <DeferredVideo
                     src={activeBg}
                     maxWidth={1000}
-                    className="w-full min-h-[1000px] sm:rounded-t-xl object-cover"
+                    className="w-full min-h-[1000px]  object-cover"
                     mediaStyle={
                       activeObjectPosition
                         ? { objectPosition: activeObjectPosition }
@@ -225,7 +225,7 @@ export default function ServiceGalleryComponent({
                     height={400}
                     src={activeBg}
                     alt={active.serviceBackground?.alt || active.name}
-                    className="w-full min-h-[1000px]  sm:rounded-t-xl  opacity-50 object-cover"
+                    className="w-full min-h-[1000px]    opacity-50 object-cover"
                     style={
                       activeObjectPosition
                         ? { objectPosition: activeObjectPosition }
@@ -233,7 +233,7 @@ export default function ServiceGalleryComponent({
                     }
                   />
                 ) : (
-                  <div className="w-full h-full sm:rounded-t-xl bg-neutral-800 opacity-50" />
+                  <div className="w-full h-full  bg-neutral-800 opacity-50" />
                 )}
               </motion.div>
               <div className="flex justify-between absolute items-start m-8 pt-8 z-10 ">
@@ -285,7 +285,7 @@ export default function ServiceGalleryComponent({
                         {active.servicegrouprel.map((group) => (
                           <span
                             key={group._id}
-                            className="px-3 py-1 bg-neutral-700 rounded-full text-xs"
+                            className="px-3 py-1 bg-neutral-700  text-xs"
                           >
                             {group.name}
                           </span>
@@ -334,7 +334,7 @@ export default function ServiceGalleryComponent({
               >
                 <motion.div
                   layoutId={`image-${item.name}-${id}`}
-                  className="col-start-1 col-span-1  row-start-1 row-span-3 bg-black  overflow-hidden rounded-xl"
+                  className="col-start-1 col-span-1  row-start-1 row-span-3 bg-black  overflow-hidden "
                 >
                   {bg && isVideoUrl(bg) ? (
                     <div className="w-full h-full opacity-50 group-hover/card:opacity-100 transition-opacity">

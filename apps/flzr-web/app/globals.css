@@ -435,12 +435,12 @@
  */
 @keyframes heroClipReveal {
   0% {
-    clip-path: inset(6% 6% 6% 6% round 2rem);
+    clip-path: inset(6% 6% 6% 6% round 0rem);
     opacity: 0.92;
   }
 
   100% {
-    clip-path: inset(0% 0% 0% 0% round 2rem);
+    clip-path: inset(0% 0% 0% 0% round 0rem);
     opacity: 1;
   }
 }

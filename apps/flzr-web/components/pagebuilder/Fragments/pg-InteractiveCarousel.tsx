@@ -168,7 +168,7 @@ function InteractiveCarousel({
       >
         <div className="relative h-[800px] flex items-start">
           {/* Main Carousel */}
-          <div className="relative w-full rounded-xl overflow-hidden h-full perspective-1000">
+          <div className="relative w-full  overflow-hidden h-full perspective-1000">
             <AnimatePresence initial={false} custom={direction}>
               <motion.div
                 key={currentIndex}
@@ -276,7 +276,7 @@ function InteractiveCarousel({
                     >
                       <div>
                         {(active.logosrc || "/logos/Amazon_logo.svg") && (
-                          <motion.div className="w-fit px-3 text-black flex text-xs rounded-xs">
+                          <motion.div className="w-fit px-3 text-black flex text-xs ">
                             <Image
                               className="mb-8 invert  "
                               src={active.logosrc || "/logos/Amazon_logo.svg"}
@@ -324,7 +324,7 @@ function InteractiveCarousel({
 
           {/* Navigation Arrows (match Plaintext classes) */}
           <motion.button
-            className="hidden md:flex absolute -left-12 top-1/2 -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm rounded-xs items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
+            className="hidden md:flex absolute -left-12 top-1/2 -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm  items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => paginate(-1)}
@@ -345,7 +345,7 @@ function InteractiveCarousel({
           </motion.button>
 
           <motion.button
-            className="hidden md:flex absolute -right-12 top-1/2 -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm rounded-xs items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
+            className="hidden md:flex absolute -right-12 top-1/2 -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm  items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => paginate(1)}
@@ -368,11 +368,11 @@ function InteractiveCarousel({
 
         {/* Dots Indicator (match Plaintext positioning & style) */}
         <div className="absolute w-full bottom-[16px] z-30">
-          <div className="flex justify-center mt-8 mx-auto space-x-2 bg-gray-900/50 backdrop-blur-xl h-10 items-center px-8 rounded-full w-fit">
+          <div className="flex justify-center mt-8 mx-auto space-x-2 bg-gray-900/50 backdrop-blur-xl h-10 items-center px-8  w-fit">
             {carouselItems.map((_, index) => (
               <motion.button
                 key={index}
-                className={`h-2 rounded-full transition-all hover:bg-violet-400 duration-300 cursor-pointer ${index === currentIndex ? "bg-violet-400 min-w-16" : "bg-gray-100 min-w-2"}`}
+                className={`h-2  transition-all hover:bg-violet-400 duration-300 cursor-pointer ${index === currentIndex ? "bg-violet-400 min-w-16" : "bg-gray-100 min-w-2"}`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.8 }}
                 onClick={() => {

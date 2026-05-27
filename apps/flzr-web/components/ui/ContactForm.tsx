@@ -96,8 +96,8 @@ export default function ContactForm({
       <div className="container relative mx-auto px-4">
         <div className="grid items-start gap-12 lg:grid-cols-[1.1fr_1fr]">
           <div className="space-y-3 max-w-2xl">
-            <span className="inline-flex items-center gap-2 rounded-full  px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-700 ring-1 ring-neutral-200">
-              <span className="h-1.5 w-1.5 rounded-full bg-violet-500 shadow-[0_0_0_4px_rgba(132,204,22,0.14)]" aria-hidden />
+            <span className="inline-flex items-center gap-2   px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-700 ring-1 ring-neutral-200">
+              <span className="h-1.5 w-1.5  bg-violet-500 shadow-[0_0_0_4px_rgba(132,204,22,0.14)]" aria-hidden />
               Contact
             </span>
             {hasVisibleText(headline) ? (
@@ -170,7 +170,7 @@ export default function ContactForm({
                   <button
                     type="submit"
                     disabled={status === "submitting"}
-                    className="inline-flex items-center justify-center rounded-full bg-neutral-900 px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition duration-200 ease-out hover:-translate-y-[1px] hover:bg-neutral-800 hover:shadow-[0_14px_40px_rgba(0,0,0,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500 disabled:cursor-not-allowed disabled:opacity-70"
+                    className="inline-flex items-center justify-center  bg-neutral-900 px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition duration-200 ease-out hover:-translate-y-[1px] hover:bg-neutral-800 hover:shadow-[0_14px_40px_rgba(0,0,0,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500 disabled:cursor-not-allowed disabled:opacity-70"
                   >
                     {status === "submitting" ? "Sending..." : submitLabel}
                   </button>

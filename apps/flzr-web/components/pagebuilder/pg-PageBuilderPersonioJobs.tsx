@@ -162,7 +162,7 @@ const resolveJobContractCategory = (
 function Tag({ tone, children }: { tone: TagTone; children: React.ReactNode }) {
   return (
     <span
-      className={`inline-flex items-center   px-3 py-1 text-[10px] font-medium uppercase tracking-wide rounded-xl ${tagToneClasses[tone]} `}
+      className={`inline-flex items-center   px-3 py-1 text-[10px] font-medium uppercase tracking-wide  ${tagToneClasses[tone]} `}
     >
       {children}
     </span>
@@ -185,7 +185,7 @@ function SegmentedSwitch<T extends string>({
       <p className="text-[8px] font-medium uppercase tracking-wide text-neutral-500">
         {label}
       </p>
-      <div className="inline-flex w-full overflow-hidden rounded-full border border-neutral-200 bg-white">
+      <div className="inline-flex w-full overflow-hidden  border border-neutral-200 bg-white">
         {options.map((option) => {
           const isActive = option.value === value;
 
@@ -539,15 +539,15 @@ function PageBuilderPersonioJobs({
           </div>
 
           {isLoading ? (
-            <div className=" bg-white/80 px-5 py-8  text-center text-neutral-500 rounded-none">
+            <div className=" bg-white/80 px-5 py-8  text-center text-neutral-500 ">
               Loading open positions...
             </div>
           ) : error ? (
-            <div className=" bg-red-50 px-5 py-8 text-center text-red-700 rounded-none">
+            <div className=" bg-red-50 px-5 py-8 text-center text-red-700 ">
               {error}
             </div>
           ) : jobs.length === 0 ? (
-            <div className=" bg-white/80 px-5 py-8 text-center text-neutral-500 rounded-none">
+            <div className=" bg-white/80 px-5 py-8 text-center text-neutral-500 ">
               {emptyStateText}
             </div>
           ) : (
@@ -563,7 +563,7 @@ function PageBuilderPersonioJobs({
                         type="button"
                         onClick={() => setSelectedUnitId("all")}
                         aria-pressed={selectedUnitId === "all"}
-                        className={`px-3 py-1.5 rounded-full text-[8px] font-medium uppercase tracking-wide transition-colors ${selectedUnitId === "all"
+                        className={`px-3 py-1.5  text-[8px] font-medium uppercase tracking-wide transition-colors ${selectedUnitId === "all"
                           ? "bg-violet-500 text-black"
                           : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
                           }`}
@@ -579,7 +579,7 @@ function PageBuilderPersonioJobs({
                             type="button"
                             onClick={() => setSelectedUnitId(unit._id)}
                             aria-pressed={isActive}
-                            className={`px-3 py-1.5 rounded-full text-[8px] font-medium uppercase tracking-wide transition-colors ${isActive
+                            className={`px-3 py-1.5  text-[8px] font-medium uppercase tracking-wide transition-colors ${isActive
                               ? "bg-violet-400 text-black"
                               : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
                               }`}
@@ -611,7 +611,7 @@ function PageBuilderPersonioJobs({
                   <button
                     type="button"
                     onClick={resetFilters}
-                    className="mt-3 text-[8px] border rounded-xl px-6 font-medium uppercase tracking-wide text-neutral-200 hover:text-neutral-200 hover:bg-neutral-900 transition-colors"
+                    className="mt-3 text-[8px] border  px-6 font-medium uppercase tracking-wide text-neutral-200 hover:text-neutral-200 hover:bg-neutral-900 transition-colors"
                   >
                     Clear filters
                   </button>
@@ -619,7 +619,7 @@ function PageBuilderPersonioJobs({
               </div>
 
               {filteredJobs.length === 0 ? (
-                <div className=" bg-white/80 px-5 py-8 text-center text-neutral-500 rounded-none">
+                <div className=" bg-white/80 px-5 py-8 text-center text-neutral-500 ">
                   No open positions match the current filters.
                 </div>
               ) : null}
@@ -641,7 +641,7 @@ function PageBuilderPersonioJobs({
                       key={job.id}
                       className="p-1 flex flex-col justify-between "
                     >
-                      <div className=" bg-neutral-50/75 p-8  rounded-sm h-100 flex flex-col items-start justify-between gap-3">
+                      <div className=" bg-neutral-50/75 p-8   h-100 flex flex-col items-start justify-between gap-3">
                         <div className="flex  flex-col min-w-0  items-start">
                           <img
                             src={logoUrl}

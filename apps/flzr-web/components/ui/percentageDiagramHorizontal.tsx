@@ -110,7 +110,7 @@ const PercentageDiagramHorizontal: React.FC<
           fill="#84cc16"
         />
       </motion.svg>
-      {/* <div className="absolute top-[calc(50%)] flex items-center justify-center w-10 h-10 -right-25 -translate-x-1/2 text-neutral-700 font-mono text-sm bg-violet-500 rounded-full">
+      {/* <div className="absolute top-[calc(50%)] flex items-center justify-center w-10 h-10 -right-25 -translate-x-1/2 text-neutral-700 font-mono text-sm bg-violet-500 ">
         <span>{percent}</span>
       </div> */}
     </div>

@@ -44,9 +44,9 @@ const variantStyles: Record<
     container: "h-9",
   },
   violetsmallrounded: {
-    top: "border-violet-500/30 text-xxs rounded-full bg-violet-400 text-black! px-2 py-1 ",
+    top: "border-violet-500/30 text-xxs  bg-violet-400 text-black! px-2 py-1 ",
     bottom:
-      "border-neutral-800 text-xxs rounded-full  bg-neutral-800   text-white! px-2 py-1 ",
+      "border-neutral-800 text-xxs   bg-neutral-800   text-white! px-2 py-1 ",
     container: "h-9",
   },
 };
@@ -58,9 +58,9 @@ function Button2({ text, className, href, variant = "default", magnetic = true }
     variant in variantStyles ? variant : "default";
 
   const baseTop =
-    "pointer-events-auto text-xxs absolute rounded-xs top-0 left-0 border justify-between font-medium flex w-fit hover:cursor-pointer tracking-wider group-hover/btn:-top-12 transition-all duration-250 ease-in-out";
+    "pointer-events-auto text-xxs absolute  top-0 left-0 border justify-between font-medium flex w-fit hover:cursor-pointer tracking-wider group-hover/btn:-top-12 transition-all duration-250 ease-in-out";
   const baseBottom =
-    "pointer-events-auto text-xxs border absolute rounded-xs font-medium left-0 flex justify-between top-[100%] w-fit group-hover/btn:top-0 transition-all duration-250 ease-in-out p-3 hover:cursor-pointer tracking-wider";
+    "pointer-events-auto text-xxs border absolute  font-medium left-0 flex justify-between top-[100%] w-fit group-hover/btn:top-0 transition-all duration-250 ease-in-out p-3 hover:cursor-pointer tracking-wider";
 
   const topClass = cn(baseTop, variantStyles[safeVariant].top, className);
   const bottomClass = cn(

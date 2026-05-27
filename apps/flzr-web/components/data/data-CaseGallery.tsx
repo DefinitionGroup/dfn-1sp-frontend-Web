@@ -118,17 +118,17 @@ export default function CaseGalleryComponent({
               exit={{ opacity: 0, transition: { duration: 0.05 } }}
               transition={{ type: "spring", visualDuration: 0.3, bounce: 0.2 }}
               ref={ref}
-              className="w-[95vw] md:w-full max-w-[960px] min-h-[70vh] max-h-[100vh] rounded-xl grid bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
+              className="w-[95vw] md:w-full max-w-[960px] min-h-[70vh] max-h-[100vh]  grid bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
             >
               <motion.div
-                className="[grid-area:1/1] w-full sm:rounded-t-xl opacity-80  min-h-[70vh] max-h-[100vh] mediabackground"
+                className="[grid-area:1/1] w-full  opacity-80  min-h-[70vh] max-h-[100vh] mediabackground"
                 layoutId={`image-${active.title}-${id}`}
               >
                 {active.mainVideoUrl ? (
                   <DeferredVideo
                     src={active.mainVideoUrl}
                     maxWidth={900}
-                    className="w-full h-full sm:rounded-t-xl opacity-50 object-cover object-top"
+                    className="w-full h-full  opacity-50 object-cover object-top"
                     mountDelay={100}
                     posterFrame="0"
                   />
@@ -138,7 +138,7 @@ export default function CaseGalleryComponent({
                     height={1000}
                     src={active.mainImageUrl || "/placeholder.png"}
                     alt={active.title}
-                    className="w-full h-full min-h-full   sm:rounded-t-xl opacity-50 object-cover object-top"
+                    className="w-full h-full min-h-full    opacity-50 object-cover object-top"
                   />
                 )}
 
@@ -152,7 +152,7 @@ export default function CaseGalleryComponent({
                   initial={{ opacity: 1 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 1, transition: { duration: 0.05 } }}
-                  className="flex absolute top-4  md:top-10  right-4 lg items-center hover:cursor-pointer overflow-hidden justify-around rounded-full h-6 w-6 z-100"
+                  className="flex absolute top-4  md:top-10  right-4 lg items-center hover:cursor-pointer overflow-hidden justify-around  h-6 w-6 z-100"
                   onClick={closeCase}
                   aria-label="Close"
                 >

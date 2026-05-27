@@ -207,7 +207,7 @@ export default function SmartCarousel({
       >
         <div className="relative h-[60vh] sm:h-[70vh] iphone-landscape:!h-dvh md:h-[800px] flex items-start">
           {/* Main Carousel */}
-          <div className="relative w-full rounded-xl overflow-hidden h-full perspective-1000">
+          <div className="relative w-full  overflow-hidden h-full perspective-1000">
             <AnimatePresence initial={false} custom={direction}>
               <motion.div
                 key={currentIndex}
@@ -282,7 +282,7 @@ export default function SmartCarousel({
                     >
                       <div>
                         {(active.logosrc || "") && (
-                          <motion.div className="mb-2 sm:mb-4 max-h-6 sm:max-h-8 w-auto text-black flex items-start text-xs rounded-xs">
+                          <motion.div className="mb-2 sm:mb-4 max-h-6 sm:max-h-8 w-auto text-black flex items-start text-xs ">
                             <Image
                               className="invert h-5 sm:h-6 md:h-8 w-auto"
                               src={active.logosrc || ""}
@@ -328,7 +328,7 @@ export default function SmartCarousel({
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                   >
-                    <button className="w-6 h-6 cursor-pointer bg-black/50 backdrop-blur-sm rounded-xs flex items-center justify-center text-violet-400 hover:bg-white/100 hover:text-black transition-colors">
+                    <button className="w-6 h-6 cursor-pointer bg-black/50 backdrop-blur-sm  flex items-center justify-center text-violet-400 hover:bg-white/100 hover:text-black transition-colors">
                       <svg
                         width="11"
                         height="113"
@@ -347,7 +347,7 @@ export default function SmartCarousel({
 
           {/* Navigation Arrows (match Plaintext classes) */}
           <motion.button
-            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm rounded-xs items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
+            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm  items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => paginate(-1)}
@@ -368,7 +368,7 @@ export default function SmartCarousel({
           </motion.button>
 
           <motion.button
-            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm rounded-xs items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
+            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm  items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => paginate(1)}
@@ -391,11 +391,11 @@ export default function SmartCarousel({
 
         {/* Dots Indicator (match Plaintext positioning & style) */}
         <div className="absolute w-full bottom-2 sm:bottom-4 z-30">
-          <div className="flex justify-center mt-4 sm:mt-8 mx-auto space-x-1.5 sm:space-x-2 bg-gray-900/50 backdrop-blur-xl h-8 sm:h-10 items-center px-4 sm:px-8 rounded-full w-fit">
+          <div className="flex justify-center mt-4 sm:mt-8 mx-auto space-x-1.5 sm:space-x-2 bg-gray-900/50 backdrop-blur-xl h-8 sm:h-10 items-center px-4 sm:px-8  w-fit">
             {carouselItems.map((_, index) => (
               <motion.button
                 key={index}
-                className={`h-1.5 sm:h-2 rounded-full transition-all hover:bg-violet-400 duration-300 cursor-pointer ${index === currentIndex ? "bg-violet-400 min-w-8 sm:min-w-16" : "bg-gray-100 min-w-1.5 sm:min-w-2"}`}
+                className={`h-1.5 sm:h-2  transition-all hover:bg-violet-400 duration-300 cursor-pointer ${index === currentIndex ? "bg-violet-400 min-w-8 sm:min-w-16" : "bg-gray-100 min-w-1.5 sm:min-w-2"}`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.8 }}
                 onClick={() => {
@@ -418,7 +418,7 @@ export default function SmartCarousel({
               <Link
                 key={item.id}
                 href={item.linkHref || "#"}
-                className={`relative flex-shrink-0 w-10 sm:w-12 md:w-22 h-8 sm:h-12 md:h-18 rounded-xl overflow-hidden outline-1 sm:outline-2 md:outline-3 transition-all hover:scale-105 active:scale-95 ${index === currentIndex ? "outline-violet-500" : "outline-transparent"}`}
+                className={`relative flex-shrink-0 w-10 sm:w-12 md:w-22 h-8 sm:h-12 md:h-18  overflow-hidden outline-1 sm:outline-2 md:outline-3 transition-all hover:scale-105 active:scale-95 ${index === currentIndex ? "outline-violet-500" : "outline-transparent"}`}
               >
                 {item.image && (
                   <Image

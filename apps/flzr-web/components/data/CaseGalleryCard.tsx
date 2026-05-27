@@ -61,7 +61,7 @@ export default function CaseGalleryCard({
     >
       <motion.div
         layoutId={`image-${item.title}-${id}`}
-        className="col-start-1 col-span-1 row-start-1 bg-black   min-h-[260px] md:h-[300px] md:min-h-full rounded-xl shadow-lg overflow-hidden relative"
+        className="col-start-1 col-span-1 row-start-1 bg-black   min-h-[260px] md:h-[300px] md:min-h-full  shadow-lg overflow-hidden relative"
       >
         <motion.div style={{ y: springY }} className="w-full h-[120%]   relative -top-[10%]">
           {item.mainVideoUrl ? (
@@ -78,7 +78,7 @@ export default function CaseGalleryCard({
               height={1000}
               src={item.mainImageUrl || "/placeholder.png"}
               alt={item.title}
-              className="w-full h-full object-cover group-hover/card:opacity-100 object-top rounded-xl opacity-80 transition-all"
+              className="w-full h-full object-cover group-hover/card:opacity-100 object-top  opacity-80 transition-all"
             />
           )}
         </motion.div>

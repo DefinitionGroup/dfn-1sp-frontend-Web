@@ -113,7 +113,7 @@ export default function CasePoweredByContact({
 
         {relatedPerson && (
           <div
-            className="max-w-5xl mx-auto bg-white rounded-xl overflow-hidden shadow-2xl mt-14 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 items-end gap-8 lg:gap-10"
+            className="max-w-5xl mx-auto bg-white  overflow-hidden shadow-2xl mt-14 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 items-end gap-8 lg:gap-10"
           >
             <div className="lg:col-span-7 p-8">
               <motion.p
@@ -181,7 +181,7 @@ export default function CasePoweredByContact({
               transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
               className="lg:col-span-5"
             >
-              <div className="relative ml-auto w-full max-w-[440px] overflow-hidden rounded-sm bg-neutral-200 aspect-[5/4]">
+              <div className="relative ml-auto w-full max-w-[440px] overflow-hidden  bg-neutral-200 aspect-[5/4]">
                 {personMediaUrl ? (
                   personIsVideo ? (
                     <DeferredVideo

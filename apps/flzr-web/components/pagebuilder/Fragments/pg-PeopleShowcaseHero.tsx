@@ -260,7 +260,7 @@ function PeopleShowcaseHero({
                     />
                   </div>
                 )}
-                <div className="absolute inset-0 hidden bg-gradient-to-t from-black/80 via-black/60 to-black/65 opacity-0 lg:flex lg:opacity-0 lg:group-hover:opacity-100 rounded-xs transition-opacity duration-300 flex-col justify-end p-4">
+                <div className="absolute inset-0 hidden bg-gradient-to-t from-black/80 via-black/60 to-black/65 opacity-0 lg:flex lg:opacity-0 lg:group-hover:opacity-100  transition-opacity duration-300 flex-col justify-end p-4">
                   <StaggeredFadeIn
                     className="flex flex-col"
                     triggerOnView={false}
@@ -320,7 +320,7 @@ function PeopleShowcaseHero({
                   type="button"
                   onClick={(e) => openModal(member, e)}
                   onTouchEnd={(e) => openModal(member, e)}
-                  className="lg:hidden absolute bottom-3 left-3 z-20 inline-flex w-fit touch-manipulation items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-xs font-semibold text-neutral-900 shadow-lg cursor-pointer transition hover:-translate-y-[1px] hover:shadow-xl"
+                  className="lg:hidden absolute bottom-3 left-3 z-20 inline-flex w-fit touch-manipulation items-center gap-2  bg-white/95 px-4 py-2 text-xs font-semibold text-neutral-900 shadow-lg cursor-pointer transition hover:-translate-y-[1px] hover:shadow-xl"
                 >
                   View contact
                   <svg
@@ -363,12 +363,12 @@ function PeopleShowcaseHero({
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.96, y: 10, transition: { duration: 0.18 } }}
                   transition={{ type: "spring", stiffness: 280, damping: 24 }}
-                  className="relative w-full max-w-sm rounded-2xl bg-neutral-900 p-5 text-white shadow-2xl"
+                  className="relative w-full max-w-sm  bg-neutral-900 p-5 text-white shadow-2xl"
                 >
                   <button
                     type="button"
                     onClick={closeModal}
-                    className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
+                    className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center  bg-white/10 text-white transition hover:bg-white/20"
                     aria-label="Close"
                   >
                     <svg
@@ -387,7 +387,7 @@ function PeopleShowcaseHero({
                   </button>
                   <div className="flex items-center gap-3">
                     {activeModal.media?.secure_url ? (
-                      <div className="relative h-14 w-14 overflow-hidden rounded-full bg-neutral-800">
+                      <div className="relative h-14 w-14 overflow-hidden  bg-neutral-800">
                         {isVideoUrl(activeModal.media.secure_url) ? (
                           <video
                             src={optimizedVideoUrl(activeModal.media.secure_url, { maxWidth: 112 })}
@@ -425,9 +425,9 @@ function PeopleShowcaseHero({
                     {activeModal.email && (
                       <a
                         href={`mailto:${activeModal.email}`}
-                        className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2 transition hover:border-white/20 hover:bg-white/10"
+                        className="flex items-center gap-2  border border-white/10 bg-white/5 px-3 py-2 transition hover:border-white/20 hover:bg-white/10"
                       >
-                        <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white">
+                        <span className="inline-flex h-7 w-7 items-center justify-center  bg-white/10 text-white">
                           @
                         </span>
                         <span className="break-all">{activeModal.email}</span>
@@ -438,7 +438,7 @@ function PeopleShowcaseHero({
                         href={activeModal.profileUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2 transition hover:border-white/20 hover:bg-white/10"
+                        className="flex items-center gap-2  border border-white/10 bg-white/5 px-3 py-2 transition hover:border-white/20 hover:bg-white/10"
                       >
                         <Image
                           src="/LinkedinLogo.svg"

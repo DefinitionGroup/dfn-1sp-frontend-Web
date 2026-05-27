@@ -65,7 +65,7 @@ export default function PersonCard({ person, index }: PersonCardProps) {
   return (
     <div
       key={key}
-      className="group relative overflow-hidden rounded-xs transition-all duration-300 hover:cursor-pointer ease-out aspect-[3/4]"
+      className="group relative overflow-hidden  transition-all duration-300 hover:cursor-pointer ease-out aspect-[3/4]"
       data-member={(person.name || person.fullname || "").toLowerCase()}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

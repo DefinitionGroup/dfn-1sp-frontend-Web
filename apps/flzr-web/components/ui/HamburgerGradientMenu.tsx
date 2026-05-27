@@ -365,7 +365,7 @@ function OverlayRoot({
                     <Link
                       href={item.href}
                       ref={idx === 0 ? firstLinkRef : undefined}
-                      className="text-xl md:text-2xl tracking-tight text-neutral-50 hover:text-violet-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 rounded-xl transition-colors"
+                      className="text-xl md:text-2xl tracking-tight text-neutral-50 hover:text-violet-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400  transition-colors"
                       onClick={(event) => onNavigate(event, item.href)}
                     >
                       {item.label}
@@ -464,7 +464,7 @@ function OverlayRoot({
                     href={social.url || "#"}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-11 min-w-[44px] items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 transition hover:border-violet-300 hover:bg-white/10"
+                    className="inline-flex h-11 min-w-[44px] items-center justify-center  border border-white/10 bg-white/5 px-4 transition hover:border-violet-300 hover:bg-white/10"
                     aria-label={social.name || "social link"}
                   >
                     {social.icon?.secure_url ? (
@@ -488,7 +488,7 @@ function OverlayRoot({
         </div>
         <motion.button
           onClick={onClose}
-          className="mt-6 text-7xl fixed top-0 font-extralight uppercase tracking-wide text-neutral-100 hover:text-white focus:outline-none hover:rotate-45 transition focus-visible:ring-2 focus-visible:ring-violet-400 rounded-xl"
+          className="mt-6 text-7xl fixed top-0 font-extralight uppercase tracking-wide text-neutral-100 hover:text-white focus:outline-none hover:rotate-45 transition focus-visible:ring-2 focus-visible:ring-violet-400 "
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 0.8, y: 0 }}
           whileHover={{ opacity: 1 }}
@@ -530,7 +530,7 @@ function HamburgerButton({
       aria-expanded={open}
       aria-controls={ariaControls}
       onClick={onClick}
-      className={`m-3 sm:m-4 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-sm backdrop-blur-lgaa bg-black/22  ${className}`}
+      className={`m-3 sm:m-4 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center  backdrop-blur-lgaa bg-black/22  ${className}`}
     >
       <svg
         width="21"

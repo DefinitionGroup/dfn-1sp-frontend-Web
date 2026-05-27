@@ -68,23 +68,23 @@ export default function Badgemodule({
   const variantClasses = {
     default: {
       wrapper:
-        "border-t border-black/20 md:border-0 md:bg-black md:rounded-lg md:shadow-xl",
+        "border-t border-black/20 md:border-0 md:bg-black  md:shadow-xl",
       content: "text-gray-900 md:text-gray-100",
       footer:
-        "text-gray-500 md:bg-neutral-800 md:text-gray-200 md:rounded-b-lg",
+        "text-gray-500 md:bg-neutral-800 md:text-gray-200 ",
     },
     minimal: {
       wrapper:
-        "border-t border-black/50 md:border md:border-black/50 md:rounded-lg",
+        "border-t border-black/50 md:border md:border-black/50 ",
       content: "text-gray-800 md:text-neutral-600",
       footer:
         "text-gray-500 md:text-neutral-500 md:border-t md:border-black/50",
     },
     glass: {
-      wrapper: "border border-white/20 backdrop-blur-sm rounded-lg",
+      wrapper: "border border-white/20 backdrop-blur-sm ",
       content: "text-gray-100 md:text-gray-200",
       footer:
-        "text-gray-300 md:text-gray-200 md:rounded-b-lg md:border-t md:border-white/10",
+        "text-gray-300 md:text-gray-200  md:border-t md:border-white/10",
     },
   };
 

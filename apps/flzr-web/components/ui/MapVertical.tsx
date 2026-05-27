@@ -121,7 +121,7 @@ export default function LineMinimap({
               normalizedNavPoints.map((navPoint, navPointIndex) => (
                 <motion.div
                   key={navPoint.id}
-                  className="bg-gray-900 text-gray-200 hover:bg-gray-200 hover:text-gray-800 font-normal cursor-pointer pointer-events-auto flex px-2 py-1 items-center justify-start rounded-xl"
+                  className="bg-gray-900 text-gray-200 hover:bg-gray-200 hover:text-gray-800 font-normal cursor-pointer pointer-events-auto flex px-2 py-1 items-center justify-start "
                   style={{ width: LINE_HEIGHT_ACTIVE + 64 }}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -354,7 +354,7 @@ export function isActive(index: number, count: number): boolean {
 export function Indicator({ y }: { y: MotionValue<number> }) {
   return (
     <motion.div
-      className="flex bg-violet-500 h-[2px] rounded-full items-center absolute w-[32px] -top-0"
+      className="flex bg-violet-500 h-[2px]  items-center absolute w-[32px] -top-0"
       style={{ y }}
     >
       <svg

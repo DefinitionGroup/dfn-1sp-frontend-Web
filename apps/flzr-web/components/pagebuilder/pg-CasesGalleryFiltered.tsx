@@ -125,7 +125,7 @@ function CasesGalleryFiltered({
                         setActiveFilter(filter);
                       });
                     }}
-                    className={`px-3 py-1 md:px-2 rounded-full text-xs md:text-xs  md:font-medium uppercase transition-all  duration-100 ${activeFilter === filter
+                    className={`px-3 py-1 md:px-2  text-xs md:text-xs  md:font-medium uppercase transition-all  duration-100 ${activeFilter === filter
                       ? "bg-violet-500 text-black"
                       : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
                       }`}

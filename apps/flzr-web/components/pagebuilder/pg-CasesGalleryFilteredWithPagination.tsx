@@ -146,7 +146,7 @@ function CasesGalleryFilteredWithPagination({
                       setActiveFilter(filter);
                     });
                   }}
-                  className={`px-6 py-2 rounded-full text-xs font-medium uppercase transition-all duration-100 ${
+                  className={`px-6 py-2  text-xs font-medium uppercase transition-all duration-100 ${
                     activeFilter === filter
                       ? "bg-violet-500 text-black"
                       : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
@@ -182,7 +182,7 @@ function CasesGalleryFilteredWithPagination({
               <button
                 onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
                 disabled={currentPage === 1}
-                className={`p-2 rounded-full transition-colors ${
+                className={`p-2  transition-colors ${
                   currentPage === 1
                     ? "text-gray-300 cursor-not-allowed"
                     : "text-neutral-600 hover:bg-neutral-100"
@@ -197,7 +197,7 @@ function CasesGalleryFilteredWithPagination({
                   <button
                     key={page}
                     onClick={() => handlePageChange(page)}
-                    className={`w-8 h-8 rounded-full text-sm font-medium transition-colors ${
+                    className={`w-8 h-8  text-sm font-medium transition-colors ${
                       currentPage === page
                         ? "bg-violet-500 text-black"
                         : "bg-transparent text-neutral-600 hover:bg-neutral-100"
@@ -211,7 +211,7 @@ function CasesGalleryFilteredWithPagination({
               <button
                 onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
                 disabled={currentPage === totalPages}
-                className={`p-2 rounded-full transition-colors ${
+                className={`p-2  transition-colors ${
                   currentPage === totalPages
                     ? "text-gray-300 cursor-not-allowed"
                     : "text-neutral-600 hover:bg-neutral-100"
