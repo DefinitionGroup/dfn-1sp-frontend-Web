@@ -10,7 +10,7 @@ interface Button2Props {
   text?: string;
   className?: string;
   href?: string;
-  variant?: "default" | "black" | "violet" | "violetsmall" | "violetsmallrounded" | "ghost";
+  variant?: "default" | "black" | "violet" | "violetsmall" | "violetsmallrounded" | "limesmall" | "ghost";
   magnetic?: boolean;
 }
 
@@ -30,7 +30,7 @@ const variantStyles: Record<
   },
   ghost: {
     top: "border-neutral-800/30  p-2 pr-6 ",
-    bottom: " border-violet-400 bg-violet-400  text-violet-100  p-2 pr-6 ",
+    bottom: " border-violet-500 bg-violet-500  text-violet-100  p-2 pr-6 ",
     container: "h-10",
   },
   violet: {
@@ -39,7 +39,7 @@ const variantStyles: Record<
     container: "h-10",
   },
   violetsmall: {
-    top: "border-violet-500/30 bg-violet-400 text-neutral-900! px-4 py-2 ",
+    top: "border-violet-500/30 bg-violet-500 text-neutral-100! px-4 py-2 ",
     bottom: "border-neutral-800 bg-neutral-800 text-white! px-4  py-2 ",
     container: "h-9",
   },
@@ -47,6 +47,11 @@ const variantStyles: Record<
     top: "border-violet-500/30 text-xxs  bg-violet-400 text-black! px-2 py-1 ",
     bottom:
       "border-neutral-800 text-xxs   bg-neutral-800   text-white! px-2 py-1 ",
+    container: "h-9",
+  },
+  limesmall: {
+    top: "border-brand-lime/30 bg-brand-lime rounded-sm  text-neutral-900! px-4 py-1 ",
+    bottom: "border-neutral-800 bg-neutral-800 text-white! rounded-sm  px-4 py-1 ",
     container: "h-9",
   },
 };
