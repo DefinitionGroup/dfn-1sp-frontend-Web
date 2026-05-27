@@ -8,7 +8,6 @@ import type { Service } from "@1sp/sanity-types";
 interface ServicesGalleryFilteredProps {
   locale?: string;
   services?: Service[];
-  showGridBackground?: boolean;
   showFilters?: boolean;
   backgroundColor?: string;
   paddingY?: string;
@@ -18,7 +17,6 @@ interface ServicesGalleryFilteredProps {
 function ServicesGalleryFiltered({
   locale = "en",
   services = [],
-  showGridBackground = false,
   showFilters = true,
   backgroundColor = "neutral-100",
   paddingY = "32",

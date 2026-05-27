@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import GridBackground from "@flzr/components/ui/GridBackground";
 import type { CTA } from "@1sp/sanity-types";
 import { ctaToButtonProps } from "@1sp/utils/cloudinary";
 import Button2 from "@flzr/components/ui/Button2";
@@ -8,7 +7,6 @@ import Button2 from "@flzr/components/ui/Button2";
 
 type SublineComponentData = {
   description?: string;
-  showGridBackground?: boolean;
   additionalContent?: CTA[];
   sectionTitle?: string;
   navPointName?: string;
@@ -21,7 +19,6 @@ function SublineComponent({
 }) {
   const {
     description,
-    showGridBackground = true,
     additionalContent = [],
     sectionTitle,
     navPointName,
@@ -56,7 +53,6 @@ function SublineComponent({
       {...navPointDataAttr}
       className="grid grid-cols-12 z-1 mx-auto container relative font-aspekta"
     >
-      {showGridBackground && <GridBackground />}
 
       <div className="z-1 grid gap-8 col-span-12 py-4 col-start-1 container mx-auto row-start-1 grid-cols-12">
         <div className="z-1 col-span-12 md:col-span-3 md:col-start-10">

@@ -3,7 +3,6 @@
 import React from "react";
 import { useParams } from "next/navigation";
 import Button2 from "@flzr/components/ui/Button2";
-import GridBackground from "@flzr/components/ui/GridBackground";
 import { client } from "@1sp/sanity-queries/client";
 import { UNIT_LOGO_FLOAT_QUERY } from "@1sp/sanity-queries/groq";
 import { assetUrl } from "@1sp/utils/cloudinary";
@@ -225,7 +224,6 @@ interface PageBuilderPersonioJobsProps {
     showDescription?: boolean;
     showSchedule?: boolean;
     showUpdatedAt?: boolean;
-    showGridBackground?: boolean;
     navPointName?: string;
     hideFromNav?: boolean;
   };
@@ -254,7 +252,6 @@ function PageBuilderPersonioJobs({
     showDescription = true,
     showSchedule = true,
     showUpdatedAt = true,
-    showGridBackground = true,
     navPointName,
     hideFromNav = false,
   } = data || {};
@@ -523,7 +520,6 @@ function PageBuilderPersonioJobs({
       data-component="pg-pagebuilder-personio-jobs"
     >
       <div className="container mx-auto grid grid-cols-12 relative">
-        {showGridBackground && <GridBackground />}
         <div className="col-span-12 col-start-1 row-start-1 relative z-10">
           <div className="mx-auto mb-7  text-left md:mb-9">
             {hasVisibleText(headline) ? (

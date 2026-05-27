@@ -1,7 +1,6 @@
 "use client";
 
 import { startTransition, useEffect, useState } from "react";
-import GridBackground from "@flzr/components/ui/GridBackground";
 import CaseGalleryComponent from "@flzr/components/data/data-CaseGallery";
 import { getTranslations } from "@1sp/utils/translations";
 
@@ -34,7 +33,6 @@ interface SelectedCaseReference {
 interface CasesGalleryFilteredProps {
   locale?: string;
   caseStudies?: CaseStudy[];
-  showGridBackground?: boolean;
   showFilters?: boolean;
   paddingY?: string;
   marginBottom?: string;
@@ -46,7 +44,6 @@ interface CasesGalleryFilteredProps {
 function CasesGalleryFiltered({
   locale = "en",
   caseStudies = [],
-  showGridBackground = true,
   showFilters = true,
   paddingY = "16",
   marginBottom = "16",
@@ -102,7 +99,6 @@ function CasesGalleryFiltered({
       data-navpoint-name={navPointName}
       className={`grid grid-cols-12 z-1 mx-auto  container ${marginClass} relative font-aspekta`}
     >
-      {showGridBackground && <GridBackground />}
       <div
         className={`z-1 grid gap-responsive col-span-12 ${paddingClass} col-start-1 container row-start-1 grid-cols-12`}
       >
@@ -115,7 +111,7 @@ function CasesGalleryFiltered({
                 staggerDelay={0.05}
                 distance={11}
                 duration={1}
-                className="flex flex-wrap gap-1 justify-start md:gap-3  w-full md:justify-start"
+                className="flex flex-wrap gap-1 justify-start md:gap-3   w-full md:justify-start"
               >
                 {filters.map((filter) => (
                   <button
@@ -125,7 +121,7 @@ function CasesGalleryFiltered({
                         setActiveFilter(filter);
                       });
                     }}
-                    className={`px-3 py-1 md:px-2  text-xs md:text-xs  md:font-medium uppercase transition-all  duration-100 ${activeFilter === filter
+                    className={`px-3 py-1 md:px-2  text-sm md:text-xxs  md:font-medium uppercase transition-all  duration-100 ${activeFilter === filter
                       ? "bg-violet-500 text-black"
                       : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
                       }`}

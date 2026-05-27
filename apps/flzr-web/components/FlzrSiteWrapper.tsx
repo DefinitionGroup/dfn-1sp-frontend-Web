@@ -120,7 +120,7 @@ export default async function FlzrSiteWrapper({
         hasServices={hasServices}
       >
         <NavColorProvider color={navColor}>
-          <PageWithMapVertical>
+          {/* <PageWithMapVertical> */}
             <div className="min-h-screen bg-flzr-paper text-flzr-ink">
               <FrontNavOverlay
                 menuData={nav as NavbarMenu}
@@ -135,7 +135,7 @@ export default async function FlzrSiteWrapper({
               <FlzrFooter footer={footer as FooterMenu} />
               <ScrollToTop />
             </div>
-          </PageWithMapVertical>
+          {/* </PageWithMapVertical> */}
         </NavColorProvider>
       </NavbarMenuProvider>
     </FooterMenuProvider>

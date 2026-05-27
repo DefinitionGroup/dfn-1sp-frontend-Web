@@ -43,7 +43,7 @@ export default function TypewriterRotator({
 }
 
 const cursorStyle: React.CSSProperties = {
-  background: "#66ff00",
+  background: "#9900ff",
   width: "var(--tw-cursor-w)" as string,
   borderRadius: "var(--tw-cursor-radius)" as string,
   marginLeft: "var(--tw-cursor-ml)" as string,
@@ -54,9 +54,9 @@ const cursorStyle: React.CSSProperties = {
 const textStyle: React.CSSProperties = {
   fontSize: "var(--tw-text-size)",
   fontWeight: 500,
-  // lineHeight: "var(--tw-text-lh)",
+   lineHeight: "var(--tw-text-lh)",
   letterSpacing: "var(--tw-text-ls)",
-  textTransform: "uppercase",
+  textTransform: "",
   color: "var(--text-primary)",
   whiteSpace: "normal",
 };

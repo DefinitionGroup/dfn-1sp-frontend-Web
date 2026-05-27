@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import GridBackground from "@flzr/components/ui/GridBackground";
 import StaggeredFadeIn from "@flzr/components/ui/StaggeredFadeIn";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import { PortableText } from "@portabletext/react";
@@ -14,7 +13,6 @@ type ContentSectionData = {
   content?: PortableTextBlock[];
   contentSize?: string;
   columnSpan?: string;
-  showGridBackground?: boolean;
   paddingY?: string;
   navPointName?: string;
   hideFromNav?: boolean;
@@ -28,7 +26,6 @@ function ContentSection({ data }: { data: ContentSectionData }) {
     content,
     contentSize = "lg",
     columnSpan = "8",
-    showGridBackground = true,
     paddingY = "16",
     navPointName,
     hideFromNav = false,
@@ -154,7 +151,6 @@ function ContentSection({ data }: { data: ContentSectionData }) {
       {/* Introduction Section (if provided) */}
       {(hasVisibleText(introHeading) || hasVisibleText(introSubheading)) && (
         <div className="grid grid-cols-12 z-1 mx-auto container relative font-aspekta">
-          {showGridBackground && <GridBackground />}
           <div className="z-1 grid gap-8 col-span-12 pt-12 mt-24 col-start-1 container mx-auto row-start-1 grid-cols-12">
             <div className="z-1 col-span-12 col-start-1">
               <div className="flex flex-col items-start gap-2  justify-center w-full">
@@ -194,7 +190,6 @@ function ContentSection({ data }: { data: ContentSectionData }) {
         {...navPointDataAttr}
         className="grid grid-cols-12 z-1 mx-auto container relative font-aspekta"
       >
-        {showGridBackground && <GridBackground />}
         <div
           className={`z-1 grid gap-8 col-span-12 py-${paddingY} col-start-1 container mx-auto row-start-1 grid-cols-12`}
         >
@@ -208,7 +203,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
 
             {/* Content */}
             <StaggeredFadeIn viewThreshold={0.01}>
-              <div className="w-full px-12 md:w-2/4">
+              <div className="w-full  md:w-2/4">
                 <PortableText
                   value={content}
                   components={portableTextComponents}

@@ -107,7 +107,7 @@ export default function CaseStudyPageClient({
             className="max-w-full flex flex-col gap-3 sm:gap-4 lg:max-w-2/3 "
           >
             {hasVisibleText(caseStudy.subtitle) && (
-              <h2 className="text-neutral-50 text-[10px] sm:text-xs font-bold bg-violet-500  leading-compress  inline-block w-fit py-1 px-3 sm:px-4">
+              <h2 className="text-violet-500 text-[10px] sm:text-xs   leading-compress  inline-block w-fit py-1  ">
                 {caseStudy.subtitle}
               </h2>
             )}

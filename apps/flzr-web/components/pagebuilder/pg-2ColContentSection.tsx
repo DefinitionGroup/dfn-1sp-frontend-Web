@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef } from "react";
-import GridBackground from "@flzr/components/ui/GridBackground";
 import StaggeredFadeIn from "@flzr/components/ui/StaggeredFadeIn";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import { PortableText } from "@portabletext/react";
@@ -25,7 +24,6 @@ type TwoColContentSectionData = {
   mediaAlt?: string;
   reverseColumns?: boolean;
   backgroundColor?: "white" | "neutral-100" | "neutral-400" | "neutral-700" | "black";
-  showGridBackground?: boolean;
   paddingY?: string;
   navPointName?: string;
   hideFromNav?: boolean;
@@ -48,7 +46,6 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
     mediaAlt = "",
     reverseColumns = false,
     backgroundColor = "white",
-    showGridBackground = true,
     paddingY = "16",
     navPointName,
     hideFromNav = false,
@@ -279,11 +276,6 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
     >
       <div className="relative mx-auto container ">
         <div className="grid grid-cols-12 gap-6 md:gap-12 items-center">
-          {/* Grid Background */}
-          {showGridBackground && (
-            <GridBackground className="absolute inset-0" columns={12} />
-          )}
-
           {/* Two columns with configurable order */}
           {reverseColumns ? (
             <div className={`flex flex-col md:flex-row-reverse col-span-12 md:col-span-12 gap-8 md:gap-12 ${paddingClass} `}>

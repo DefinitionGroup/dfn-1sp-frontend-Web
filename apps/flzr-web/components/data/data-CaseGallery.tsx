@@ -212,7 +212,7 @@ export default function CaseGalleryComponent({
           distance={10}
           duration={1}
           once={true}
-          className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3  mx-auto w-full min-h-full"
+          className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1 mx-auto w-full min-h-full"
         >
           {filteredItems.map((item) => (
             <CaseGalleryCard

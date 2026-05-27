@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import GridBackground from "@flzr/components/ui/GridBackground";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import { getTranslations } from "@1sp/utils/translations";
 import { useParams } from "next/navigation";
@@ -11,7 +10,6 @@ interface HeadlineChallengeProps {
   title: string;
   headline?: string;
   description?: string;
-  showGridBackground?: boolean;
   paddingY?: string;
   navPointName?: string;
 }
@@ -20,7 +18,6 @@ export default function HeadlineChallenge({
   title,
   headline,
   description,
-  showGridBackground = true,
   paddingY = "16",
   navPointName,
 }: HeadlineChallengeProps) {
@@ -42,7 +39,6 @@ export default function HeadlineChallenge({
         data-navpoint-name={navPointName}
         className="grid grid-cols-12 z-1 mx-auto container relative font-aspekta"
       >
-        {showGridBackground && <GridBackground />}
         <div
           className={`z-1 grid gap-4 sm:gap-6 lg:gap-8 col-span-12 py-12 sm:py-16 lg:py-${paddingY} col-start-1 container mx-auto row-start-1 grid-cols-12 px-4 sm:px-6 lg:px-0`}
         >

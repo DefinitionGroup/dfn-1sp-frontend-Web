@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import GridBackground from "@flzr/components/ui/GridBackground";
 import Badgemodule from "@flzr/components/ui/Badgemodule";
 import ListContainerComponent from "@flzr/components/ui/ListContainerComponent";
 import ListItemComponent from "@flzr/components/ui/ListItemComponent";
@@ -335,8 +334,6 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
           enableParallax
         />
       )}
-
-      <GridBackground delay={delay} staggerDelay={staggerDelay} />
 
       <div className="z-1 grid col-span-12  col-start-1 pt-32 row-start-1 grid-cols-12 ">
         {/* Badge */}

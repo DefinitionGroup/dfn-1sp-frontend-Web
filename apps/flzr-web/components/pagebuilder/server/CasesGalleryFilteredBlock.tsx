@@ -14,7 +14,6 @@ interface SelectedCaseReference {
 interface CasesGalleryFilteredBlockProps {
   language?: string;
   channel?: string;
-  showGridBackground?: boolean;
   showFilters?: boolean;
   paddingY?: string;
   marginBottom?: string;

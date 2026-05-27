@@ -289,9 +289,9 @@
     --tw-cursor-w: 8px;
     --tw-cursor-radius: 4px;
     --tw-cursor-ml: 4px;
-    --tw-cursor-h: calc(20px + 3vw);
+    --tw-cursor-h: min(4vw, 12rem);
     --tw-text-size: min(4vw, 12rem);
-    --tw-text-lh: min(9vw, 12rem);
+    --tw-text-lh: min(5vw, 12rem);
     --tw-text-ls: -0.1rem;
   }
 

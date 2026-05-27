@@ -6,7 +6,6 @@ import Link from "next/link";
 import { resolveLink } from "@1sp/utils/cloudinary";
 import { useParams } from "next/navigation";
 import type { CTA } from "@1sp/sanity-types";
-import GridBackground from "@flzr/components/ui/GridBackground";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
 interface StaggeredSlideUpProps {
@@ -102,7 +101,6 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
     <div id={sectionId} {...navPointDataAttr} className={`${containerClassName} `}>
       <div className="grid z-1 mx-auto container relative font-aspekta">
         {/* Background grid (optional visual helper) */}
-        <GridBackground delay={0.2} staggerDelay={0.06} />
         <div className={`z-1   py-12 col-span-8   col-start-3  container mx-auto row-start-1 grid-cols-12 ${paddingTopClass}`}>
           <StaggeredSlideUp {...defaultStaggeredProps}>
             {hasVisibleText(title) ? <h3 className={titleClass}>{title}</h3> : null}

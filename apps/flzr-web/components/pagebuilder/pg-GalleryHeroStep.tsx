@@ -1,7 +1,6 @@
 "use client";
 import type { GalleryHeroStep, CarouselItem } from "@1sp/sanity-types";
 import HeaderImageVideoComp2 from "@flzr/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
-import GridBackground from "@flzr/components/ui/GridBackground";
 import Badgemodule from "@flzr/components/ui/Badgemodule";
 import { Typewriter } from "motion-plus/react";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
@@ -80,7 +79,6 @@ function GalleryHeroStepComponent(props: Props) {
 
       <div className="relative z-10 container mx-auto px-4  sm:px-6 lg:px-8 font-aspekta">
         {/* Background grid (optional visual helper) */}
-        <GridBackground delay={0.2} staggerDelay={0.06} />
 
         <div className="grid grid-cols-4 iphone-landscape:grid-cols-12 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 pt-16 sm:pt-24 lg:pt-32 pb-6 sm:pb-8 lg:pb-12">
           {/* Badge - Responsive positioning */}
