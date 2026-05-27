@@ -193,6 +193,7 @@ export default async function ContactPage({
             <FlzrPageBuilder
               content={contentBlocks}
               language={language}
+              channel={CHANNEL}
               deferAfter={2}
             />
           ) : null}

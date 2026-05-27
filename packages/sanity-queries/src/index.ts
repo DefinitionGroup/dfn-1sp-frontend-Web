@@ -471,21 +471,23 @@ export const getUnitLogoFloatUnits = cache(async (language: string, maxItems: nu
   return data || [];
 });
 
-export const getCaseStudiesByIds = cache(async (ids: string[]) => {
-  if (!ids.length) {
-    return [];
+export const getCaseStudiesByIds = cache(
+  async (ids: string[], channel?: string, language?: string) => {
+    if (!ids.length) {
+      return [];
+    }
+
+    const { CASE_STUDIES_BY_IDS_QUERY } = await import("./groq");
+
+    const { data } = await sanityFetch({
+      query: CASE_STUDIES_BY_IDS_QUERY,
+      params: { ids, channel: channel ?? null, language: language ?? null },
+      tags: ["cases"],
+    });
+
+    return data || [];
   }
-
-  const { CASE_STUDIES_BY_IDS_QUERY } = await import("./groq");
-
-  const { data } = await sanityFetch({
-    query: CASE_STUDIES_BY_IDS_QUERY,
-    params: { ids },
-    tags: ["cases"],
-  });
-
-  return data || [];
-});
+);
 
 export const getInteractiveCarouselCases = cache(
   async (channel: string, language: string, maxItems: number) => {

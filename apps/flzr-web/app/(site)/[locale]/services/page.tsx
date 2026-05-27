@@ -205,6 +205,7 @@ export default async function ServicesPage({
           <FlzrPageBuilder
             content={contentBlocks}
             language={language}
+            channel={CHANNEL}
             deferAfter={2}
           />
         ) : (

@@ -725,7 +725,13 @@ export const CASE_STUDIES_QUERY = defineQuery(`
 
 // Query for fetching specific case studies by IDs (for manual selection mode)
 export const CASE_STUDIES_BY_IDS_QUERY = defineQuery(`
-*[_type == "caseStudy" && _id in $ids && isPublished == true]{
+*[
+  _type == "caseStudy" &&
+  _id in $ids &&
+  (!defined($channel) || $channel in channel) &&
+  (!defined($language) || language == $language) &&
+  isPublished == true
+]{
   _id,
   title,
   subtitle,

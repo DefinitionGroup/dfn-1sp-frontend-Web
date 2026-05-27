@@ -241,6 +241,7 @@ const PageBuilderPersonioJobs = dynamic(
 type PageBuilderProps = {
   content: NonNullable<Page["content"]>;
   language?: string;
+  channel?: string;
   deferAfter?: number;
   renderMode?: "default" | "deferred";
 };
@@ -248,6 +249,7 @@ type PageBuilderProps = {
 export function PageBuilder({
   content,
   language = "de",
+  channel = "flizrWeb",
   deferAfter = Number.POSITIVE_INFINITY,
   renderMode = "default",
 }: PageBuilderProps) {
@@ -429,13 +431,23 @@ export function PageBuilder({
           case "casesGalleryFiltered":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <CasesGalleryFiltered key={key} {...block} language={language} />
+                <CasesGalleryFiltered
+                  key={key}
+                  {...block}
+                  language={language}
+                  channel={channel}
+                />
               </ErrorBoundary>
             );
           case "casesGalleryFilteredWithPagination":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <CasesGalleryFilteredWithPagination key={key} {...block} language={language} />
+                <CasesGalleryFilteredWithPagination
+                  key={key}
+                  {...block}
+                  language={language}
+                  channel={channel}
+                />
               </ErrorBoundary>
             );
           case "servicesGalleryFiltered":
@@ -516,6 +528,7 @@ export function PageBuilder({
           <PageBuilder
             content={deferredBlocks}
             language={language}
+            channel={channel}
             renderMode="deferred"
           />
         </DeferredSection>

@@ -227,6 +227,7 @@ export default async function Page({
             <FlzrPageBuilder
               content={contentBlocks}
               language={language}
+              channel={channel}
               deferAfter={2}
             />
             {/* {slug === "data-protection" && <CookieDeclaration />} */}

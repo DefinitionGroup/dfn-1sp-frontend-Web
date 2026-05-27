@@ -163,6 +163,7 @@ export default async function CasesPage({
           <FlzrPageBuilder
             content={contentBlocks}
             language={language}
+            channel={CHANNEL}
             deferAfter={2}
           />
         ) : (

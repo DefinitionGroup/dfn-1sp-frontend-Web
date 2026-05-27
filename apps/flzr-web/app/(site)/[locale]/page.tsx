@@ -197,6 +197,7 @@ export default async function Home({
           <FlzrPageBuilder
             content={contentBlocks}
             language={language}
+            channel={DEFAULT_CHANNEL}
             deferAfter={2}
           />
         ) : (

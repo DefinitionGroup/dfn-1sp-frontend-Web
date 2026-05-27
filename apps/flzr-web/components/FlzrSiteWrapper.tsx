@@ -1,91 +1,40 @@
 import Image from "next/image";
-import Link from "next/link";
 import { getGlobalData } from "@1sp/sanity-queries";
 import { getSiteConfig } from "@1sp/site-config";
 import type { FooterMenu, NavbarMenu } from "@1sp/sanity-types/menu";
+import FrontNavOverlay from "./menu/FrontNavOverlay";
+import { FooterMenuProvider } from "./menu/FooterMenuContext";
+import { NavbarMenuProvider } from "./menu/NavbarMenuContext";
+import { NavColorProvider } from "./menu/NavColorContext";
+import PageWithMapVertical from "./ui/PageWithMapVertical";
+import ScrollToTop from "./ui/ScrollToTop";
+
+type OverlayCaseStudy = {
+  _id: string;
+  title: string;
+  subtitle?: string;
+  slug: { current: string };
+  description?: string;
+  services?: { _id: string; name: string; taglabel?: string }[];
+  mainImageUrl?: string;
+  mainVideoUrl?: string;
+  client?: {
+    _id: string;
+    name: string;
+    logoUrl?: string;
+  };
+  websiteUrl?: string;
+  websiteUrlText?: string;
+};
 
 type FlzrSiteWrapperProps = {
   children: React.ReactNode;
   language?: string;
   navColor?: "light" | "dark";
+  overlayCaseStudies?: OverlayCaseStudy[];
 };
 
 const CHANNEL = "flizrWeb";
-const FALLBACK_LINKS = [
-  { href: "/cases", label: "Cases" },
-  { href: "/services", label: "Services" },
-  { href: "/contact", label: "Contact" },
-];
-
-function normalizePath(slug?: string | null): string {
-  if (!slug || slug === "home" || slug === "homepage" || slug === "index") {
-    return "/";
-  }
-
-  return `/${slug.replace(/^\/+/, "")}`;
-}
-
-function getNavLinks(menu: NavbarMenu | null | undefined) {
-  const cmsLinks =
-    menu?.menuItems
-      ?.map((item) => ({
-        href: normalizePath(item.slug),
-        label: item.displayName || item.title || item.slug || "",
-      }))
-      .filter((item) => item.label) ?? [];
-
-  return cmsLinks.length ? cmsLinks : FALLBACK_LINKS;
-}
-
-function FlzrNav({
-  menu,
-  navColor = "light",
-}: {
-  menu: NavbarMenu | null | undefined;
-  navColor?: "light" | "dark";
-}) {
-  const links = getNavLinks(menu);
-  const isDark = navColor === "dark";
-
-  return (
-    <header className="fixed inset-x-0 top-0 z-50 px-4 py-4 md:px-7">
-      <nav
-        aria-label="FLZR navigation"
-        className={[
-          "mx-auto flex h-14 max-w-[1480px] items-center justify-between border-b backdrop-blur-md",
-          isDark
-            ? "border-flzr-ink/15 text-flzr-ink"
-            : "border-white/20 text-white",
-        ].join(" ")}
-      >
-        <Link href="/" aria-label="FLZR home" className="flex items-center gap-3">
-          <Image
-            src="/units/FLZR/flzr_logo.svg"
-            alt="FLZR"
-            width={112}
-            height={32}
-            priority
-            className={isDark ? "h-8 w-auto" : "h-8 w-auto brightness-0 invert"}
-          />
-        </Link>
-
-        <div className="hidden items-center gap-6 text-sm font-medium uppercase tracking-[0.08em] md:flex">
-          {links.map((link) => (
-            <Link
-              key={`${link.href}-${link.label}`}
-              href={link.href}
-              className="transition-opacity hover:opacity-65"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
-
-   
-      </nav>
-    </header>
-  );
-}
 
 function FlzrFooter({ footer }: { footer: FooterMenu | null | undefined }) {
   const site = getSiteConfig(CHANNEL);
@@ -156,14 +105,39 @@ export default async function FlzrSiteWrapper({
   children,
   language = "en",
   navColor = "light",
+  overlayCaseStudies,
 }: FlzrSiteWrapperProps) {
-  const { nav, footer } = await getGlobalData(CHANNEL, language);
+  const { nav, footer, hasCaseStudies, hasServices } = await getGlobalData(
+    CHANNEL,
+    language
+  );
 
   return (
-    <div className="min-h-screen bg-flzr-paper text-flzr-ink">
-      <FlzrNav menu={nav as NavbarMenu} navColor={navColor} />
-      <main>{children}</main>
-      <FlzrFooter footer={footer as FooterMenu} />
-    </div>
+    <FooterMenuProvider menu={footer as FooterMenu}>
+      <NavbarMenuProvider
+        menu={nav as NavbarMenu}
+        hasCaseStudies={hasCaseStudies}
+        hasServices={hasServices}
+      >
+        <NavColorProvider color={navColor}>
+          <PageWithMapVertical>
+            <div className="min-h-screen bg-flzr-paper text-flzr-ink">
+              <FrontNavOverlay
+                menuData={nav as NavbarMenu}
+                color={navColor}
+                channel={CHANNEL}
+                locale={language}
+                hasCaseStudies={hasCaseStudies}
+                hasServices={hasServices}
+                initialCaseStudies={overlayCaseStudies}
+              />
+              <main>{children}</main>
+              <FlzrFooter footer={footer as FooterMenu} />
+              <ScrollToTop />
+            </div>
+          </PageWithMapVertical>
+        </NavColorProvider>
+      </NavbarMenuProvider>
+    </FooterMenuProvider>
   );
 }

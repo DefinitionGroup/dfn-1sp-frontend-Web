@@ -147,11 +147,21 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
   const textColor =
     detectedTheme === "dark" ? "text-neutral-800 " : "text-neutral-50 ";
+  const isFlzrChannel = channel === "flizrWeb";
   const imageLogo =
-    detectedTheme === "dark"
+    isFlzrChannel
+      ? "/units/FLZR/flzr_logo.svg"
+      : detectedTheme === "dark"
       ? "/ci/1sp-fulllogotype-blk.svg"
       : "/ci/1sp-fulllogotype.svg";
   const logoUrl = imageLogo;
+  const logoAlt = isFlzrChannel ? "FLZR Logo" : "1SP Logo";
+  const logoClassName = [
+    "object-contain transition-all duration-300",
+    isFlzrChannel && detectedTheme === "dark" ? "brightness-0" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   React.useEffect(() => {
     if (
@@ -220,7 +230,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               opacity: isNavVisible ? 1 : 0,
               y: isNavVisible ? 0 : -100,
               scale: 1,
-              clipPath: "inset(0% 0% 0% 0% round 2rem)",
+              clipPath: "inset(0% 0% 0% 0% round 0rem)",
               backdropFilter: "blur(12px)",
               backgroundColor: "rgba(111,111,111, 0.4)"
             }
@@ -229,9 +239,9 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               scale: [2, 1, 1],
               clipPath: [
                 "inset(49% 49% 49% 49% round 50%)", // tiny circle
-                "inset(0% 49% 0% 49% round 2rem)",       // full height pill
-                "inset(0% 49% 0% 49% round 2rem)",       // full height pill
-                "inset(0% 0% 0% 0% round 2rem)"          // full width menu
+                "inset(0% 49% 0% 49% round 0rem)",       // full height pill
+                "inset(0% 49% 0% 49% round 0rem)",       // full height pill
+                "inset(0% 0% 0% 0% round 0rem)"          // full width menu
               ],
               backdropFilter: "blur(12px)",
               backgroundColor: "rgba(111,111,111, 0.4)"
@@ -248,7 +258,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               delay: 0.7,
             }
         }
-        className={`floating-nav z-99999    hidden fixed top-6 left-0 backdrop-blur-xl rounded-4xl border border-white/20 w-fit h-16  px-6  right-0 md:grid items-center grid-cols-12 py-2 iphone-landscape:scale-70 iphone-landscape:top-2 mx-auto ${textColor} ${className}`}
+        className={`floating-nav z-99999    hidden fixed top-6 left-0 backdrop-blur-xl  border border-white/20 w-fit h-16  px-6  right-0 md:grid items-center grid-cols-12 py-2 iphone-landscape:scale-70 iphone-landscape:top-2 mx-auto ${textColor} ${className}`}
       >
         <div className="col-span-2 flex items-center pr-16  justify-start">
           <motion.div
@@ -265,10 +275,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             >
               <Image
                 src={logoUrl}
-                alt="1SP Logo"
+                alt={logoAlt}
                 width={64}
                 height={64}
-                className="object-contain transition-all duration-300"
+                className={logoClassName}
                 style={{ height: "auto" }}
               />
             </Link>
@@ -381,16 +391,16 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           {isCaseDetailRoute && (
             <button
               type="button"
-              className={`border rounded-full min-w-[80px] inline-block py-2 px-2 text-xxs font-bold cursor-pointer hover:text-violet-400 hover:border-violet-400 transition-colors`}
+              className={`border  min-w-[80px] inline-block py-2 px-2 text-xxs font-bold cursor-pointer hover:text-violet-400 hover:border-violet-400 transition-colors`}
               onClick={() => setShowOverlay(true)}
             >
               All Cases
             </button>
           )}
-          <div className="min-w-[110px] w-[50px] max-w-[110px] n block relative   -right-2 top-1 rounded-full ">
+          <div className="min-w-[110px] w-[50px] max-w-[110px] n block relative   -right-2 top-1  ">
             <Button2
               variant="violetsmall"
-              className="min-w-[110px] w-[50px] max-w-[110px] overflow-hidden block absolute  rounded-full "
+              className="min-w-[110px] w-[50px] max-w-[110px] overflow-hidden block absolute   "
               href={`/contact`}
               text="Contact us"
             />
@@ -411,7 +421,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               transition: { duration: 0.4, type: "spring", bounce: 0.06 },
             }}
             transition={{ type: "spring", visualDuration: 0.25, bounce: 0.56 }}
-            className="relative w-full max-w-[900px] max-h-[calc(100vh-4rem)] rounded-xl flex flex-col bg-neutral-100 dark:bg-neutral-900 shadow-2xl overflow-y-auto"
+            className="relative w-full max-w-[900px] max-h-[calc(100vh-4rem)]  flex flex-col bg-neutral-100 dark:bg-neutral-900 shadow-2xl overflow-y-auto"
           >
             <button
               aria-label="Close overlay"
