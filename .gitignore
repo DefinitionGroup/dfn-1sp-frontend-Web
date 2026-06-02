@@ -21,3 +21,6 @@ node_modules
 
 # Sanity dataset exports — never commit production data
 EXPORT/
+
+# git worktrees managed by Claude Code (never commit as gitlinks)
+.claude/worktrees/
