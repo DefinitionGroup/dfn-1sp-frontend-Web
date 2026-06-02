@@ -3,7 +3,6 @@ import ServicesGalleryFilteredClient from "../pg-ServicesGalleryFiltered";
 
 interface ServicesGalleryFilteredBlockProps {
   language?: string;
-  showGridBackground?: boolean;
   showFilters?: boolean;
   backgroundColor?: string;
   paddingY?: string;

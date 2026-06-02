@@ -1,149 +1,236 @@
-# Multi-site contract
+# Multi-site platform — state of play
 
-This codebase is being prepared to power multiple websites from a single Sanity
-backend, each deployed to its own Vercel project. This document captures the
-**Phase 0** state — what is configurable per deployment today, and the rules
-that future PRs must follow so the architecture stays multi-site-clean.
+This doc is the **operational handoff** for the multi-site work: where things
+are deployed, what's done, what's pending, and how to pick up.
 
-For the long-form rationale and full roadmap (Phases 0–6), see the chat
-discussion that produced this document. This file is the working contract.
+For the broader roadmap and conceptual rationale, see
+[`multisite-platform-plan.md`](./multisite-platform-plan.md).
 
-## Channels
+For the Sanity migration that completes Phase 1A, see
+[`../migrations/unify-page-content/RUNBOOK.md`](../migrations/unify-page-content/RUNBOOK.md).
 
-The Sanity dataset stores per-channel content. Known channels:
+---
 
-| Channel        | Default brand        |
-|----------------|----------------------|
-| `1spWeb`       | 1SP                  |
-| `msmWeb`       | MSM                  |
-| `studioco2Web` | Studio CO2           |
-| `flizrWeb`     | Flizr                |
+## Current state (last update: dev deploy via PR #139)
 
-Channel values live in `lib/site-config.ts` (`KNOWN_CHANNELS`). Add new
-channels there first — type-safety in the rest of the codebase keys off this
-list.
+| Surface | State |
+|---|---|
+| `main` branch | Old code — unaffected by this work. |
+| `dev` branch | New code merged via PR #139. Vercel deployed dev successfully. |
+| 1SP production deploy | Still on old `main` code. No visual change planned. |
+| 1SP dev deploy | New code. Reads `page.content` via GROQ coalesce → falls back to `content1sp` → renders identically. |
+| FLZR (`apps/flzr-web/`) | Code merged. Builds locally and on Vercel preview. **No production deploy** — no Vercel project pointed at it yet. |
+| Sanity Studio | Embedded in 1SP app. dev's Studio has the new schema (Content + readOnly legacy). Production Studio still has the old schema. |
+| Sanity dataset | **Untouched.** Migration not run. `page.content` is empty on every document. |
 
-## Resolving the active channel
+Everything done so far is invisible to the live 1SP site. The Sanity migration
+is the only step that mutates dataset state, and it has not run yet.
 
-A deployment knows which channel it serves through three mechanisms, in this
-order of precedence:
+---
 
-1. **`NEXT_PUBLIC_CHANNEL` env var** — primary mechanism for
-   one-deployment-per-brand setups. Set this in each Vercel project.
-2. **`channel` cookie** — written by middleware when
-   `NEXT_PUBLIC_HOST_CHANNEL_MAP` is configured (multi-host deployments), or
-   set manually for local development.
-3. **`DEFAULT_CHANNEL`** (`1spWeb`) — fallback so the historical 1SP behavior
-   is preserved when no env or cookie is set.
+## Phase status
 
-### Use the right helper for the context
+| Phase | What | Status |
+|---|---|---|
+| **0** | Channel + brand env config, host resolver, slug filtering | ✅ Done |
+| **1A** | Unify per-channel content arrays into one `content` field | ⚠️ Code shipped on dev. Migration not run. |
+| **1B** | Same treatment for `caseStudy.connectedDataCarouselPromo*` fields | ❌ Not started |
+| **2** | PageBuilder → registry pattern (`@1sp/pagebuilder-core`) | ⚠️ Plumbing exists, no PageBuilder migrated yet |
+| **3** | Monorepo with shared packages | ✅ Done — six `@1sp/*` packages |
+| **4** | Spin up FLZR as site #2 | ⚠️ Code merged, no Vercel project yet |
+| **5** | Webhook fan-out + per-site ops | ❌ Not started |
+| **6** | Add MSM, Studio CO2, other sites | ❌ Not started (deliberately — Phase 4 must prove first) |
 
-| Context                                  | Helper                                | Module                    |
-|------------------------------------------|---------------------------------------|---------------------------|
-| Server component, route handler          | `await getChannel()`                  | `@/lib/server-channel`    |
-| `generateStaticParams`, build-time, edge | `getChannelFromEnv()`                 | `@/lib/site-config`       |
-| Middleware                               | `resolveChannelFromHost(host)`        | `@/lib/site-config`       |
+---
 
-**Never** read `process.env.NEXT_PUBLIC_CHANNEL` directly in feature code —
-go through the helpers so behavior stays consistent.
+## Immediate next steps (in order)
 
-## Per-deployment env vars
+1. **Smoke-test the dev deploy.** Visit the dev URL and confirm:
+   - Homepage renders, hero plays
+   - A case study page renders
+   - `/contact`, `/services`, a dynamic slug page render
+   - `/studio` loads; pages show new empty `Content` field + legacy
+     `Content 1SP (legacy — read only)` populated and read-only
+   - `/sitemap.xml` is 1SP-only
 
-All defaults preserve current 1SP behavior. Override per Vercel project:
+2. **Wait 24–48h** on dev to let ISR revalidate and surface any latent issues.
 
-| Variable                              | Purpose                                                | Default                                 |
-|---------------------------------------|--------------------------------------------------------|-----------------------------------------|
-| `NEXT_PUBLIC_CHANNEL`                 | Pin this deployment to a Sanity channel                | _(unset → falls through to cookie)_     |
-| `NEXT_PUBLIC_HOST_CHANNEL_MAP`        | Comma-separated `host:channel` pairs for multi-host    | _(empty → middleware is pass-through)_  |
-| `NEXT_PUBLIC_SITE_NAME`               | Brand name in metadata + Open Graph                    | `1SP Agency`                            |
-| `NEXT_PUBLIC_SITE_SHORT_NAME`         | Short brand name in nav UI                             | `1SP`                                   |
-| `NEXT_PUBLIC_SITE_DESCRIPTION`        | Default meta description                               | _(1SP description)_                     |
-| `NEXT_PUBLIC_SITE_DEFAULT_TITLE`      | Root `<title>`                                         | `1SP Agency \| People-Powered Brand Engagement` |
-| `NEXT_PUBLIC_GA_MEASUREMENT_ID`       | Google Analytics ID (empty disables GA)                | `G-JTERFZC7J4`                          |
-| `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`| Search Console verification token                      | _(1SP token)_                           |
-| `NEXT_PUBLIC_LOGO_LIGHT`              | Logo path used on dark backgrounds                     | `/ci/1sp-fulllogotype.svg`              |
-| `NEXT_PUBLIC_LOGO_DARK`               | Logo path used on light backgrounds                    | `/ci/1sp-fulllogotype-blk.svg`          |
-| `NEXT_PUBLIC_LOGO_ALT`                | Logo `alt` text                                        | `1SP Logo`                              |
-| `NEXT_PUBLIC_SITE_URL`                | Canonical site URL (existing; used by sitemap & OG)    | `https://www.1sp.agency`                |
+3. **Open PR `dev` → `main`.** Diff is the same 14 commits as PR #139. No new code.
 
-Per-site assets that editors should be able to change without a redeploy
-(localized contact info, social URLs, locations) belong in Sanity, not in env
-vars. Phase 1 will introduce a `siteSettings` channel-scoped document for
-this.
+4. **Merge → Vercel auto-deploys main → 1SP production.** Smoke-test the live
+   site immediately (same checklist). Vercel rollback is one click if needed.
 
-### Example: deploying site #2
+5. **Run the Sanity migration** per
+   [`migrations/unify-page-content/RUNBOOK.md`](../migrations/unify-page-content/RUNBOOK.md).
+   This is the only irreversible step. Has a documented rollback path.
 
-In the Vercel project for the second brand:
+6. **Communicate to editors**: from now on, edit the **Content** field. The old
+   per-channel fields are read-only and will be removed in a later release.
+
+---
+
+## Pending follow-ups (queued, not blocking the above)
+
+### Tracked in the task list
+
+See current tasks via `TaskList` in tooling. Each has a description and
+dependencies.
+
+### Larger items not yet broken into tasks
+
+- **FLZR launch readiness**
+  - Create a Vercel project pointing at `apps/flzr-web/`.
+  - Set env vars: `NEXT_PUBLIC_CHANNEL=flizrWeb`, all `NEXT_PUBLIC_SANITY_*`.
+  - Migrate FLZR's video assets to Cloudinary (the MP4s under
+    `apps/flzr-web/public/video/` were deliberately excluded from the PR;
+    referenced paths will 404 until videos move).
+  - Wire up the FLZR domain.
+  - Remove FLZR's cross-app imports of `@/components/CookiebotBanner`,
+    `@/components/GoogleAnalyticsConsent`, `@/components/CookieDeclaration` —
+    these should be FLZR's own components (per-app visual code rule).
+
+- **TypeGen config**
+  - The schema → types pipeline still writes to the old `types/sanity.types.ts`
+    path. Add a `sanity-typegen.json` config that writes to
+    `packages/sanity-types/src/index.ts`. Add a `pnpm typegen` script. Until
+    this is done, manual edits to the generated file (see PR 2 of Phase 1A)
+    will be overwritten on the next regen.
+
+- **PageBuilder migration to `renderBlocks`**
+  - Both `components/PageBuilder.tsx` and `apps/flzr-web/components/FlzrPageBuilder.tsx`
+    are still ~525-line static switches. Migrate to
+    `@1sp/pagebuilder-core`'s `renderBlocks(content, registry)` when each is
+    next touched. The contract is documented in
+    `packages/pagebuilder-core/README.md`.
+
+- **Sanity workspaces (Phase 2-ish, when needed)**
+  - Currently 1SP and FLZR share all 29 page-builder blocks and MSM/StudioCO2
+    have no production content, so per-channel block whitelisting isn't
+    needed yet. When a channel introduces blocks that genuinely shouldn't
+    appear elsewhere, the right answer is `defineConfig([...])` with one
+    workspace per channel, each registering its own block subset. See the
+    discussion in `multisite-platform-plan.md`.
+
+- **Webhook fan-out (Phase 5)**
+  - Single Sanity → Vercel webhook today. At ≥3 sites, configure per-channel
+    Sanity webhooks (filtered by `channel == "X"`) pointing at each
+    deployment's `/api/revalidate`. Until then, all deployments revalidate on
+    any content change — wasteful but harmless.
+
+---
+
+## The contract (operational reference)
+
+### Channels
+
+Known channel values (defined in
+[`packages/site-config/src/index.ts`](../packages/site-config/src/index.ts)
+as `WebsiteChannel`):
+
+| Channel | Brand |
+|---|---|
+| `1spWeb` | 1SP Agency |
+| `msmWeb` | MSM |
+| `studioco2Web` | Studio CO2 |
+| `flizrWeb` | FLZR |
+
+Add new channels in `SITE_CONFIGS` first — TypeScript everywhere else keys
+off this list.
+
+### Resolving the active channel
+
+Resolution order:
+
+1. `NEXT_PUBLIC_CHANNEL` env var — primary, pins a deployment to a channel.
+2. `channel` cookie — set by middleware via host mapping, or manually for dev.
+3. `DEFAULT_CHANNEL` (`1spWeb`) — fallback.
+
+### Which helper to use
+
+| Context | Helper | Module |
+|---|---|---|
+| Server component, route handler | `await getChannel()` | `@1sp/site-config/server` |
+| `generateStaticParams`, build-time, edge, middleware | `getChannelFromEnv()` | `@1sp/site-config` |
+| Middleware host-based mapping | `resolveChannelFromHost(host)` | `@1sp/site-config` |
+
+**Never** read `process.env.NEXT_PUBLIC_CHANNEL` directly in feature code.
+
+### Per-deployment env vars
+
+| Variable | Purpose | Default |
+|---|---|---|
+| `NEXT_PUBLIC_CHANNEL` | Pin deployment to a channel | unset → falls through to cookie / `1spWeb` |
+| `NEXT_PUBLIC_HOST_CHANNEL_MAP` | Comma-separated `host:channel` for multi-host deployments | empty (middleware = pass-through) |
+| Sanity env vars (`NEXT_PUBLIC_SANITY_*`) | Standard Sanity wiring | configured per Vercel project |
+
+Brand-level configuration (name, SEO defaults, logo paths, GA ID, etc.) lives
+in `SITE_CONFIGS[channel]` in
+[`packages/site-config/src/index.ts`](../packages/site-config/src/index.ts) —
+**not** in env vars. To change brand metadata for an existing site, edit that
+file. To add a new site, add a new entry to `SITE_CONFIGS`.
+
+### Shared packages
 
 ```
-NEXT_PUBLIC_CHANNEL=msmWeb
-NEXT_PUBLIC_SITE_NAME=MSM
-NEXT_PUBLIC_SITE_SHORT_NAME=MSM
-NEXT_PUBLIC_SITE_DESCRIPTION="..."
-NEXT_PUBLIC_SITE_DEFAULT_TITLE="MSM | ..."
-NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXX
-NEXT_PUBLIC_LOGO_LIGHT=/ci/msm-logo.svg
-NEXT_PUBLIC_LOGO_DARK=/ci/msm-logo-dark.svg
-NEXT_PUBLIC_SITE_URL=https://www.msm-agency.com
+packages/
+├── site-config/         @1sp/site-config         channel + brand config + middleware host resolver
+├── sanity-types/        @1sp/sanity-types        TypeGen output + menu types
+├── sanity-schema/       @1sp/sanity-schema       all defineType/defineField schemas
+├── sanity-queries/      @1sp/sanity-queries      GROQ + cached fetch + client + env
+├── pagebuilder-core/    @1sp/pagebuilder-core    BlockRegistry type + renderBlocks plumbing
+└── utils/               @1sp/utils               cn, Cloudinary helpers, hooks
 ```
 
-The logo files need to exist in `public/ci/`. Until logos move to Sanity (see
-Phase 1), each site's logo SVGs must be committed to the repo.
+Rules:
+- **Share data and contracts. Don't share UI.**
+- Schema, queries, types, pure utils → packages.
+- Buttons, Heroes, Navs, PageBuilders, anything visual → per-app.
+- Each app declares its own dependencies (don't rely on root hoisting).
+- When a package adds a new import, declare it in that package's
+  `package.json`. Pnpm's isolated layout will catch the omission at build time.
 
-## Multi-host deployments (optional)
+### Rules for new code
 
-For preview/staging environments that serve multiple brands from one Next.js
-app, set:
-
-```
-NEXT_PUBLIC_HOST_CHANNEL_MAP="msm.staging.example:msmWeb,studioco2.staging.example:studioco2Web"
-```
-
-Middleware then writes the `channel` cookie based on the incoming Host
-header. Production sites should prefer separate deployments and skip the host
-map.
-
-## Rules for new code
-
-1. **Never hardcode a channel string.** Always go through `getChannel()` or
-   `getChannelFromEnv()`. The audit will fail PRs that introduce new
-   `"1spWeb"` / `"msmWeb"` literals outside `lib/site-config.ts` and
-   `KNOWN_CHANNELS`.
-2. **Never hardcode brand strings** (site name, GA ID, logo paths, default
-   description) in components. Use `SITE_BRAND` from `lib/site-config.ts`.
-3. **Filter Sanity queries by channel** when fetching channel-scoped content
-   (pages, menus). The existing `$channel` parameter pattern in
-   `sanity/lib/queries.ts` is the contract.
-4. **Static generation must filter by the active channel.**
-   `generateStaticParams` should call `getChannelFromEnv()` and pass it to
-   slug-listing helpers.
-5. **API routes** that accept a `channel` should default to
+1. Never hardcode a channel string. Use `getChannel()` / `getChannelFromEnv()`.
+2. Never hardcode brand strings. Use `SITE_BRAND` (active deployment) or
+   `getSiteConfig(channel)` (per-channel lookup).
+3. Filter Sanity queries by channel using the existing `$channel` parameter
+   pattern.
+4. `generateStaticParams` must call `getChannelFromEnv()` so each site only
+   pre-renders its own pages.
+5. API routes that accept a `channel` parameter should default to
    `getChannelFromEnv()`, not a literal.
+6. Visual components are per-app. Data + utilities can be shared via packages.
 
-## Known Phase-0 debt (intentional)
+---
 
-These are tolerated in Phase 0 because removing them requires schema or
-component changes that belong to later phases:
+## Known debt (intentional)
 
-- **Per-channel content arrays on `page.ts`** (`content1sp`, `contentMSM`,
-  `contentStudioCO2`, `contentStudioFlizr`). Refactored in **Phase 1**.
-- **Component prop defaults of `channel = "1spWeb"`** in `SiteWrapper`,
-  `ContactForm`, `FrontNavOverlay`, smart-data components, server block
-  wrappers. Callers now always pass an explicit channel; the defaults are
-  legacy fallbacks. Removed when callers are audited as exhaustive.
-- **`PageBuilder` is a static switch.** Refactored to a registry in
-  **Phase 2** for true per-site component swapping.
-- **`getSmartPeople` channel union type** still hardcodes three channels.
-  Will use the `Channel` type from `site-config` in Phase 1.
-- **`INTERACTIVE_CAROUSEL_FIELD_MAP` in `lib/sanity/queries.ts`** still falls
-  back to `"1spWeb"` for unknown channels. Fine until Phase 1 schema cleanup.
+- **Per-channel content arrays on `page.ts`** still exist alongside the new
+  unified `content` field. Removed in Phase 1A PR 4/PR 5 after migration runs.
+- **GROQ projection duplication.** The deep content body is duplicated for
+  `content` and `content1sp` projections in both `PAGE_QUERY` and
+  `HOME_PAGE_QUERY`. Cleanup-via-shared-constant is queued for after the
+  legacy fields are removed.
+- **Inline `optimizedImageUrl` copy** in `packages/sanity-queries/src/image.ts`
+  duplicates the canonical implementation in `@1sp/utils/cloudinary`. Was
+  necessary to avoid a circular dep during package extraction; cleanup is
+  trivial when convenient.
+- **`apps/flzr-web` cross-app reach** into root `@/components/*` for a few
+  cookie/analytics components. Should become FLZR's own.
+- **`docs/MULTI_SITE.md`** (this file) and `docs/multisite-platform-plan.md`
+  cover overlapping ground. Both exist intentionally: this one is
+  operational state, the other is forward-looking vision. Merge them only if
+  one becomes clearly stale.
 
-## Phase 0 changes (this commit's scope)
+---
 
-- Added `lib/site-config.ts` (pure) and `lib/server-channel.ts` (server-only).
-- Replaced literal `"1spWeb"` in all page routes and API route defaults.
-- Wired `app/layout.tsx` metadata + GA ID through `SITE_BRAND`.
-- `middleware.ts` resolves channel from host when
-  `NEXT_PUBLIC_HOST_CHANNEL_MAP` is set; no-op pass-through otherwise.
-- `getAllPageSlugs` and `getAllPageSitemapSlugs` filter by active channel.
-- Mobile menu (`HamburgerGradientMenu`) logo paths from `SITE_BRAND`.
+## How to pick up later
+
+1. Read this file top to bottom.
+2. Read `migrations/unify-page-content/RUNBOOK.md` if you're about to run the
+   migration.
+3. Read `multisite-platform-plan.md` if you're planning the next major step.
+4. `TaskList` in tooling shows the current task graph with dependencies.
+5. The branch `platform/multisite-monorepo` on origin holds all the work
+   that's been merged to dev. The PR history is preserved.

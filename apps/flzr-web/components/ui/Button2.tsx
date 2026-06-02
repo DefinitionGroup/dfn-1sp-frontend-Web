@@ -10,7 +10,7 @@ interface Button2Props {
   text?: string;
   className?: string;
   href?: string;
-  variant?: "default" | "black" | "lime" | "limesmall" | "limesmallrounded" | "ghost";
+  variant?: "default" | "black" | "violet" | "violetsmall" | "violetsmallrounded" | "limesmall" | "ghost";
   magnetic?: boolean;
 }
 
@@ -30,23 +30,28 @@ const variantStyles: Record<
   },
   ghost: {
     top: "border-neutral-800/30  p-2 pr-6 ",
-    bottom: " border-lime-400 bg-lime-400  text-lime-100  p-2 pr-6 ",
+    bottom: " border-violet-500 bg-violet-500  text-violet-100  p-2 pr-6 ",
     container: "h-10",
   },
-  lime: {
-    top: "border-lime-500/30 bg-lime-400 p-3  w-full",
+  violet: {
+    top: "border-violet-500/30 bg-violet-400 p-3  w-full",
     bottom: "border-neutral-800 bg-neutral-900 text-white  w-full ",
     container: "h-10",
   },
-  limesmall: {
-    top: "border-lime-500/30 bg-lime-400 text-neutral-900! px-4 py-2 ",
+  violetsmall: {
+    top: "border-violet-500/30 bg-violet-500 text-neutral-100! px-4 py-2 ",
     bottom: "border-neutral-800 bg-neutral-800 text-white! px-4  py-2 ",
     container: "h-9",
   },
-  limesmallrounded: {
-    top: "border-lime-500/30 text-xxs rounded-full bg-lime-400 text-black! px-2 py-1 ",
+  violetsmallrounded: {
+    top: "border-violet-500/30 text-xxs  bg-violet-400 text-black! px-2 py-1 ",
     bottom:
-      "border-neutral-800 text-xxs rounded-full  bg-neutral-800   text-white! px-2 py-1 ",
+      "border-neutral-800 text-xxs   bg-neutral-800   text-white! px-2 py-1 ",
+    container: "h-9",
+  },
+  limesmall: {
+    top: "border-brand-lime/30 bg-brand-lime rounded-sm  text-neutral-900! px-4 py-1 ",
+    bottom: "border-neutral-800 bg-neutral-800 text-white! rounded-sm  px-4 py-1 ",
     container: "h-9",
   },
 };
@@ -58,9 +63,9 @@ function Button2({ text, className, href, variant = "default", magnetic = true }
     variant in variantStyles ? variant : "default";
 
   const baseTop =
-    "pointer-events-auto text-xxs absolute rounded-xs top-0 left-0 border justify-between font-medium flex w-fit hover:cursor-pointer tracking-wider group-hover/btn:-top-12 transition-all duration-250 ease-in-out";
+    "pointer-events-auto text-xxs absolute  top-0 left-0 border justify-between font-medium flex w-fit hover:cursor-pointer tracking-wider group-hover/btn:-top-12 transition-all duration-250 ease-in-out";
   const baseBottom =
-    "pointer-events-auto text-xxs border absolute rounded-xs font-medium left-0 flex justify-between top-[100%] w-fit group-hover/btn:top-0 transition-all duration-250 ease-in-out p-3 hover:cursor-pointer tracking-wider";
+    "pointer-events-auto text-xxs border absolute  font-medium left-0 flex justify-between top-[100%] w-fit group-hover/btn:top-0 transition-all duration-250 ease-in-out p-3 hover:cursor-pointer tracking-wider";
 
   const topClass = cn(baseTop, variantStyles[safeVariant].top, className);
   const bottomClass = cn(

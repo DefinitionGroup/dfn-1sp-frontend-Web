@@ -83,7 +83,7 @@ export default function CaseStudyPageClient({
         {/* Background Image with Overlay */}
         {mainVideoUrl ? (
           <HeaderImageVideoComp
-            useVideo={true} className="z-1 rounded-xl overflow-hidden "
+            useVideo={true} className="z-1  overflow-hidden "
             videoSrc={mainVideoUrl}
             enableParallax={true}
             opacity="opacity-70"
@@ -107,7 +107,7 @@ export default function CaseStudyPageClient({
             className="max-w-full flex flex-col gap-3 sm:gap-4 lg:max-w-2/3 "
           >
             {hasVisibleText(caseStudy.subtitle) && (
-              <h2 className="text-neutral-50 text-[10px] sm:text-xs font-bold bg-lime-500 rounded-full leading-compress  inline-block w-fit py-1 px-3 sm:px-4">
+              <h2 className="text-violet-500 text-[10px] sm:text-xs   leading-compress  inline-block w-fit py-1  ">
                 {caseStudy.subtitle}
               </h2>
             )}
@@ -127,7 +127,7 @@ export default function CaseStudyPageClient({
                   hasVisibleText(unit.name) ? (
 
 
-                    <h2 key={unit._id} className="text-neutral-200 tracking-wider text-[10px] sm:text-xxs font-regular bg-gray-700 rounded-full inline-block w-fit py-1 px-3 sm:px-4">
+                    <h2 key={unit._id} className="text-neutral-200 tracking-wider text-[10px] sm:text-xxs font-regular bg-gray-700  inline-block w-fit py-1 px-3 sm:px-4">
                       {unit.name}
                     </h2>
                   ) : null

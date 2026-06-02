@@ -128,7 +128,7 @@ export default async function Home({
 
   // Structured data: get social links & logo (cached — deduped with SiteWrapper)
   const globalData = await getGlobalData(channel, language);
-  const contentBlocks = page?.content1sp as any[] | undefined;
+  const contentBlocks = page?.content as any[] | undefined;
   const needsAllCases = hasAutoCaseListingBlocks(contentBlocks);
   const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
 
@@ -201,9 +201,9 @@ export default async function Home({
       <HeroPreloadLinks {...heroPreload} />
       <HamburgerGradientMenu />
       <div className="  min-h-screen px-1 md:px-4 ">
-        {page?.content1sp ? (
+        {page?.content ? (
           <PageBuilder
-            content={page.content1sp}
+            content={page.content}
             language={language}
             deferAfter={2}
           />

@@ -19,10 +19,10 @@ export default function NotFound() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="lime">
+            <Button variant="violet">
               <Link href="/">Zur Startseite</Link>
             </Button>
-            <Button variant="lime">
+            <Button variant="violet">
               <Link href="/kontakt">Kontakt</Link>
             </Button>
           </div>

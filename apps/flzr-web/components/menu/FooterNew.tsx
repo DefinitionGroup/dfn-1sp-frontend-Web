@@ -178,7 +178,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                           href={social.url || "#"}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
+                          className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-violet-400 transition-colors duration-200"
                           aria-label={social.name || "social"}
                         >
                           {social.icon?.secure_url && (
@@ -200,7 +200,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                     <>
                       <Link
                         href="#"
-                        className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
+                        className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-violet-400 transition-colors duration-200"
                         aria-label="Meta"
                       >
                         <Image
@@ -213,7 +213,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                       </Link>
                       <Link
                         href="#"
-                        className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
+                        className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-violet-400 transition-colors duration-200"
                         aria-label="Instagram"
                       >
                         <Image
@@ -226,7 +226,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                       </Link>
                       <Link
                         href="#"
-                        className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
+                        className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-violet-400 transition-colors duration-200"
                         aria-label="TikTok"
                       >
                         <Image
@@ -239,7 +239,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                       </Link>
                       <Link
                         href="#"
-                        className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
+                        className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-violet-400 transition-colors duration-200"
                         aria-label="LinkedIn"
                       >
                         <Image

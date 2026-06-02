@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import GridBackground from "@flzr/components/ui/GridBackground";
 import TextHeadlineCombo from "@flzr/components/ui/TextHeadlineCombo";
 import type { GalleryOverview } from "@1sp/sanity-types";
 
@@ -14,16 +13,11 @@ export default function OverviewStep({ step }: { step: GalleryOverview }) {
     kicker,
     align = "left",
     size = "xl",
-    grid,
     navPointName,
   } = step || {};
 
   if (![eyebrow, headline, highlight, subhead, kicker].some(Boolean))
     return null;
-
-  const showGrid = !!grid?.hasGrid;
-  const delay = grid?.customAnimation ? grid?.delay : undefined;
-  const staggerDelay = grid?.customAnimation ? grid?.staggerDelay : undefined;
 
   // Generate section ID from headline
   const sectionId = headline
@@ -46,10 +40,6 @@ export default function OverviewStep({ step }: { step: GalleryOverview }) {
       className="bg-neutral-50 relative"
     >
       <div className="grid grid-cols-12 z-1 gap-8 mx-auto relative container font-aspekta">
-        {showGrid && (
-          <GridBackground delay={delay} staggerDelay={staggerDelay} />
-        )}
-
         <div className="z-1 grid col-span-12 relative top-0 py-64 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <div className="col-span-9 col-start-3 row-start-1 ">
             <TextHeadlineCombo

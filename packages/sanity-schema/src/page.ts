@@ -134,15 +134,27 @@ export default defineType({
             },
         }),
 
-        // channel-specific content arrays (hidden when not matching channel)
+        // ---------------------------------------------------------------
+        // Unified page-builder content (Phase 1A — replaces the per-channel
+        // content<Channel> arrays below). Available on every channel; each
+        // app's PageBuilder registry decides what to render.
+        //
+        // The legacy fields below remain in place during the transition so
+        // existing 1SP pages keep rendering. A migration (PR 3) copies their
+        // data into this field; later PRs deprecate then remove them.
+        // ---------------------------------------------------------------
         defineField({
-            name: 'content1sp',
-            title: 'Content 1SP',
+            name: 'content',
+            title: 'Content',
             type: 'array',
             group: 'content',
+            description:
+                'Unified page-builder content. New pages should use this field. ' +
+                'Legacy per-channel fields (Content 1SP, Content MSM, etc.) are ' +
+                'kept temporarily for backward compatibility and will be removed.',
             of: [
+                // 1SP / FLZR shared block set (29 types)
                 { type: 'headlineChallenge', title: 'Headline Component' },
-                // { type: 'showtimeGallery' },
                 { type: 'heroShowTime' },
                 { type: 'sublineComponent' },
                 { type: 'oneSPHeader' },
@@ -155,7 +167,6 @@ export default defineType({
                 { type: 'servicesGalleryFiltered' },
                 { type: 'servicesHeroWithBadge' },
                 { type: 'intertitleCTA' },
-                // Individual gallery steps now available as standalone components
                 { type: 'galleryHeroStep' },
                 { type: 'galleryCardsStep' },
                 { type: 'galleryListStep' },
@@ -163,7 +174,6 @@ export default defineType({
                 { type: 'galleryScrollHighlightStep' },
                 { type: 'galleryRevealStep' },
                 { type: 'galleryOverview' },
-                // Carousel and smart components
                 { type: 'carousel' },
                 { type: 'smartCarousel' },
                 { type: 'smartPeople' },
@@ -172,10 +182,12 @@ export default defineType({
                 { type: 'globeComponent' },
                 { type: 'unitLogoGrid' },
                 { type: 'pageBuilderLogoFloat' },
-                { type: 'pageBuilderPersonioJobs' }
+                { type: 'pageBuilderPersonioJobs' },
+                // Portable text — covers what contentMSM / contentStudioCO2 used to hold
+                { type: 'block' },
             ],
-            hidden: ({ parent }: any) => parent?.channel !== '1spWeb',
         }),
+
         defineField({
             name: 'contactForm',
             title: 'Contact Form',
@@ -185,61 +197,6 @@ export default defineType({
             hidden: ({ parent }: any) => parent?.slug?.current !== 'contact',
         }),
 
-        defineField({
-            name: 'contentMSM',
-            title: 'Content MSM',
-            type: 'array',
-            group: 'content',
-            of: [{ type: 'block' }],
-            hidden: ({ parent }: any) => parent?.channel !== 'msmWeb',
-        }),
-
-        defineField({
-            name: 'contentStudioCO2',
-            title: 'Content StudioCO2',
-            type: 'array',
-            group: 'content',
-            of: [{ type: 'block' }],
-            hidden: ({ parent }: any) => parent?.channel !== 'studioco2Web',
-        }),
-        defineField({
-            name: 'contentStudioFlizr',
-            title: 'Content StudioFlizr',
-            type: 'array',
-            group: 'content',
-            of: [
-                { type: 'headlineChallenge', title: 'Headline Component' },
-                { type: 'heroShowTime' },
-                { type: 'sublineComponent' },
-                { type: 'oneSPHeader' },
-                { type: 'contentSection' },
-                { type: 'twoColContentSection' },
-                { type: 'tabbedContentSection' },
-                { type: 'casesIntro' },
-                { type: 'casesGalleryFiltered' },
-                { type: 'casesGalleryFilteredWithPagination' },
-                { type: 'servicesGalleryFiltered' },
-                { type: 'servicesHeroWithBadge' },
-                { type: 'intertitleCTA' },
-                { type: 'galleryHeroStep' },
-                { type: 'galleryCardsStep' },
-                { type: 'galleryListStep' },
-                { type: 'galleryPeopleStep' },
-                { type: 'galleryScrollHighlightStep' },
-                { type: 'galleryRevealStep' },
-                { type: 'galleryOverview' },
-                { type: 'carousel' },
-                { type: 'smartCarousel' },
-                { type: 'smartPeople' },
-                { type: 'smartUnitsGallery' },
-                { type: 'smartUnitsGlobe' },
-                { type: 'globeComponent' },
-                { type: 'unitLogoGrid' },
-                { type: 'pageBuilderLogoFloat' },
-                { type: 'pageBuilderPersonioJobs' }
-            ],
-            hidden: ({ parent }: any) => parent?.channel !== 'flizrWeb',
-        }),
         defineField({
             name: 'channel',
             title: 'Channel',

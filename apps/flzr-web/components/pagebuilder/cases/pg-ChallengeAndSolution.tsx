@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import GridBackground from "@flzr/components/ui/GridBackground";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import Badgemodule from "@flzr/components/ui/Badgemodule";
 import ListContainerComponent from "@flzr/components/ui/ListContainerComponent";
@@ -40,7 +39,6 @@ interface ChallengeAndSolutionProps {
   showSolution?: boolean;
   solutionHeadline?: string;
   solution?: PortableTextBlock[] | string;
-  showGridBackground?: boolean;
   backgroundColor?: string;
   paddingY?: string;
   navPointName?: string;
@@ -103,7 +101,6 @@ export default function ChallengeAndSolution({
   showSolution = true,
   solutionHeadline,
   solution,
-  showGridBackground = true,
   backgroundColor = "bg-neutral-50",
   paddingY = "32",
   navPointName,
@@ -152,7 +149,6 @@ export default function ChallengeAndSolution({
         {...navPointDataAttr}
         className={`${backgroundColor} mt-8 relative font-aspekta`}
       >
-        {showGridBackground && <GridBackground />}
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className={`grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 py-16 sm:py-24 lg:py-${paddingY}`}>
@@ -209,7 +205,7 @@ export default function ChallengeAndSolution({
                           : `${t.caseStudy.servicesDescription} ${services?.map((s) => s.name).join(", ")}`)
                       }
                       buttonText={ctaButton?.text || ""}
-                      buttonVariant={(ctaButton?.variant as any) || "limesmall"}
+                      buttonVariant={(ctaButton?.variant as any) || "violetsmall"}
                       url={
                         ctaButton?.link ? resolveLink(ctaButton.link) : undefined
                       }

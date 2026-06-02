@@ -3,7 +3,6 @@ import React from "react";
 import Badgemodule from "@flzr/components/ui/Badgemodule";
 import type { GalleryPeopleStep, CloudinaryAsset } from "@1sp/sanity-types";
 import PeopleShowcaseHero from "../Fragments/pg-PeopleShowcaseHero";
-import GridBackground from "@flzr/components/ui/GridBackground";
 import CtaMiniComponent from "../Fragments/pg-CtaMiniComponent";
 import { resolveLink } from "@1sp/utils/cloudinary";
 import { useParams } from "next/navigation";
@@ -98,7 +97,6 @@ export default function PeopleStep({
       {...navPointDataAttr}
       className="relative grid grid-cols-12 z-0  font-aspekta"
     >
-      {/* <GridBackground /> */}
 
       <div className="relative z-2 col-span-12 col-start-1 row-start-1 w-full">
         <div className="container mx-auto ">
@@ -124,7 +122,7 @@ export default function PeopleStep({
                         heading={badgeMiniCta.heading || ""}
                         paragraph={badgeMiniCta.paragraph || ""}
                         buttonText={badgeMiniCta.buttonText || ""}
-                        buttonVariant={(badgeMiniCta.variant as any) || "limesmall"}
+                        buttonVariant={(badgeMiniCta.variant as any) || "violetsmall"}
                         align={(badgeMiniCta.alignment as any) || "left"}
                         url={badgeMiniUrl || undefined}
                       />
@@ -199,7 +197,7 @@ export default function PeopleStep({
                     heading={badgeMiniCta.heading || ""}
                     paragraph={badgeMiniCta.paragraph || ""}
                     buttonText={badgeMiniCta.buttonText || ""}
-                    buttonVariant={(badgeMiniCta.variant as any) || "limesmall"}
+                    buttonVariant={(badgeMiniCta.variant as any) || "violetsmall"}
                     align={(badgeMiniCta.alignment as any) || "left"}
                     url={badgeMiniUrl || undefined}
                   />

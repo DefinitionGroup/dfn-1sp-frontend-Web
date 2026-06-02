@@ -120,7 +120,7 @@ export default async function ContactPage({
   }
 
   const navbarVariant = page?.navbarVariant || "light";
-  const contentBlocks = page.content1sp as any[] | undefined;
+  const contentBlocks = page.content as any[] | undefined;
   const needsAllCases = hasAutoCaseListingBlocks(contentBlocks);
   const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
 
@@ -193,9 +193,9 @@ export default async function ContactPage({
       <HamburgerGradientMenu />
       <div className="min-h-screen">
         <div className="min-h-screen px-1 md:px-2">
-          {page.content1sp?.length ? (
+          {page.content?.length ? (
             <PageBuilder
-              content={page.content1sp}
+              content={page.content}
               language={language}
               deferAfter={2}
             />

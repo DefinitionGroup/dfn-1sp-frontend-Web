@@ -52,7 +52,7 @@ export default function CustomCursor() {
         }}
       >
         <motion.div
-          className="h-4 w-4 rounded-full bg-white"
+          className="h-4 w-4  bg-white"
           animate={{
             scale: isHovering ? 2.5 : 1,
             opacity: isHovering ? 0.8 : 1,

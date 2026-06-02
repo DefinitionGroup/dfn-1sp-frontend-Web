@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import GridBackground from "@flzr/components/ui/GridBackground";
 import Badgemodule from "@flzr/components/ui/Badgemodule";
 import ListContainerComponent from "@flzr/components/ui/ListContainerComponent";
 import ListItemComponent from "@flzr/components/ui/ListItemComponent";
@@ -336,8 +335,6 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
         />
       )}
 
-      <GridBackground delay={delay} staggerDelay={staggerDelay} />
-
       <div className="z-1 grid col-span-12  col-start-1 pt-32 row-start-1 grid-cols-12 ">
         {/* Badge */}
         <div className="hidden md:block md:col-start-1 md:col-span-2 md:sticky top-0 pr-4 iphone-landscape:!hidden">
@@ -356,7 +353,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                 heading={badgeMiniCta.heading || ""}
                 paragraph={badgeMiniCta.paragraph || ""}
                 buttonText={badgeMiniCta.buttonText || ""}
-                buttonVariant={(badgeMiniCta.variant as any) || "limesmall"}
+                buttonVariant={(badgeMiniCta.variant as any) || "violetsmall"}
                 align={(badgeMiniCta.alignment as any) || "left"}
                 url={badgeMiniUrl || undefined}
               />
@@ -472,7 +469,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                   heading={m.heading || ""}
                   paragraph={m.paragraph || ""}
                   buttonText={m.buttonText || ""}
-                  buttonVariant={(m.variant as any) || "limesmall"}
+                  buttonVariant={(m.variant as any) || "violetsmall"}
                   align={(m.alignment as any) || "left"}
                   url={href || undefined}
                   {...(href ? { href } : {})}

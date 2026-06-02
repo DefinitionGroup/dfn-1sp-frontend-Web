@@ -50,7 +50,7 @@ export default function ScrollToTop({
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
           onClick={scrollToTop}
-          className={`fixed bottom-6 right-6 z-50 p-3 rounded-xl 
+          className={`fixed bottom-6 right-6 z-50 p-3  
             bg-neutral-900 dark:bg-neutral-100 
             text-white dark:text-neutral-900
             shadow-lg hover:shadow-xl

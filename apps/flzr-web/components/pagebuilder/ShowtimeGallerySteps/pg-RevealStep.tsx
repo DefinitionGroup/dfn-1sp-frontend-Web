@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import GridBackground from "@flzr/components/ui/GridBackground";
 import Badgemodule from "@flzr/components/ui/Badgemodule";
 import TextReveal, { type RevealItem } from "@flzr/components/ui/TextReveal";
 import type { BadgeModule, CloudinaryAsset } from "@1sp/sanity-types";
@@ -62,11 +61,6 @@ export default function RevealStep({ step }: { step: GalleryRevealStep }) {
           enableParallax
         />
       )}
-
-      <GridBackground
-        delay={step?.grid?.delay}
-        staggerDelay={step?.grid?.staggerDelay}
-      />
 
       <div className="z-1 grid col-span-12 py-32 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12">
         {step?.badge && (

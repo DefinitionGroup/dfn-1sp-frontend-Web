@@ -117,7 +117,7 @@ export default async function ServicesPage({
   }
 
   const navbarVariant = page?.navbarVariant || "light";
-  const contentBlocks = page.contentStudioFlizr as any[] | undefined;
+  const contentBlocks = page.content as any[] | undefined;
   const needsAllCases = hasAutoCaseListingBlocks(contentBlocks);
   const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
 
@@ -205,6 +205,7 @@ export default async function ServicesPage({
           <FlzrPageBuilder
             content={contentBlocks}
             language={language}
+            channel={CHANNEL}
             deferAfter={2}
           />
         ) : (

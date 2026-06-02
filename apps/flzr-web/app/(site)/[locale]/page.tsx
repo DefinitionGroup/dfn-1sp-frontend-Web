@@ -125,7 +125,7 @@ export default async function Home({
 
   // Structured data: get social links & logo (cached — deduped with SiteWrapper)
   const globalData = await getGlobalData(DEFAULT_CHANNEL, language);
-  const contentBlocks = page?.contentStudioFlizr as any[] | undefined;
+  const contentBlocks = page?.content as any[] | undefined;
   const needsAllCases = hasAutoCaseListingBlocks(contentBlocks);
   const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
 
@@ -197,6 +197,7 @@ export default async function Home({
           <FlzrPageBuilder
             content={contentBlocks}
             language={language}
+            channel={DEFAULT_CHANNEL}
             deferAfter={2}
           />
         ) : (

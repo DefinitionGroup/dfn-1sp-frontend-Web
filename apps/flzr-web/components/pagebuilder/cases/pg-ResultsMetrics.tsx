@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import Badgemodule from "@flzr/components/ui/Badgemodule";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import HeaderImageVideoComp2 from "@flzr/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
@@ -158,7 +158,7 @@ export default function ResultsMetrics({
             {/* Metrics grid - Responsive layout */}
             {metrics && metrics.length > 0 && (
               <div className="col-span-4 sm:col-span-6 md:col-span-12 mt-8 md:mt-12">
-                <div className="bg-neutral-900/60 backdrop-blur-lg rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-10 lg:p-12">
+                <div className="bg-neutral-900/60 backdrop-blur-lg   p-6 sm:p-8 md:p-10 lg:p-12">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
                     {metrics.map((metric, index) => (
                       <div

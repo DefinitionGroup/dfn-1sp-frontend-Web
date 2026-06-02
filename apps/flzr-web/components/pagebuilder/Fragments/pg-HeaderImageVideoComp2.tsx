@@ -329,12 +329,12 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
   };
 
   const clipPathClosed = isHero
-    ? "inset(6% 6% 6% 6% round 2rem)"
-    : "inset(55% 44% 55% 44% round 2rem)";
+    ? "inset(6% 6% 6% 6% round 0rem)"
+    : "inset(55% 44% 55% 44% round 0rem)";
   const clipPathPreInView = isHero
-    ? "inset(3% 3% 3% 3% round 2rem)"
-    : "inset(55% 0% 0% 0% round 2rem)";
-  const clipPathOpen = "inset(0% 0% 0% 0% round 2rem)";
+    ? "inset(3% 3% 3% 3% round 0rem)"
+    : "inset(55% 0% 0% 0% round 0rem)";
+  const clipPathOpen = "inset(0% 0% 0% 0% round 0rem)";
   const preInViewOpacity = isHero ? 0.92 : 0.86;
 
   // Shared inner content rendered identically for both hero (CSS) and non-hero (Framer Motion) paths
@@ -428,7 +428,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
         <button
           type="button"
           onClick={handleManualPlay}
-          className="absolute bottom-4 right-4 z-[3] rounded-md border border-white/60 bg-black/45 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-white"
+          className="absolute bottom-4 right-4 z-[3]  border border-white/60 bg-black/45 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-white"
         >
           Tap to play
         </button>
@@ -444,7 +444,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
       {/* Hero: CSS-only clip-path animation — paints from SSR without waiting for JS */}
       {isHero ? (
         <div
-          className="absolute mx-auto rounded-xl inset-0 overflow-hidden hero-clip-reveal"
+          className="absolute mx-auto  inset-0 overflow-hidden hero-clip-reveal"
         >
           {innerContent}
         </div>
@@ -464,7 +464,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
             ease: [0.16, 1, 0.3, 1],
             opacity: { duration: 0.28 },
           }}
-          className="absolute mx-auto rounded-xl inset-0 overflow-hidden"
+          className="absolute mx-auto  inset-0 overflow-hidden"
           style={{
             willChange: "clip-path, opacity",
             transform: "translateZ(0)",

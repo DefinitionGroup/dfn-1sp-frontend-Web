@@ -239,7 +239,7 @@ const PageBuilderPersonioJobs = dynamic(
 );
 
 type PageBuilderProps = { 
-  content: NonNullable<Page["content1sp"]>;
+  content: NonNullable<Page["content"]>;
   language?: string;
   deferAfter?: number;
   renderMode?: "default" | "deferred";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import Badgemodule from "@/components/ui/Badgemodule";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import HeaderImageVideoComp2 from "@/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";

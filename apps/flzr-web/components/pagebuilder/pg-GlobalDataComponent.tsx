@@ -10,7 +10,7 @@ const World = dynamic(
     ssr: false,
     loading: () => (
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-32 h-32 rounded-full bg-neutral-200 dark:bg-neutral-800 animate-pulse" />
+        <div className="w-32 h-32  bg-neutral-200 dark:bg-neutral-800 animate-pulse" />
       </div>
     ),
   }
@@ -116,7 +116,7 @@ export default function GlobalDataComponent({
           <World data={arcs} globeConfig={globeConfig} />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-32 h-32 rounded-full bg-neutral-200 dark:bg-neutral-800 animate-pulse" />
+            <div className="w-32 h-32  bg-neutral-200 dark:bg-neutral-800 animate-pulse" />
           </div>
         )}
       </div>

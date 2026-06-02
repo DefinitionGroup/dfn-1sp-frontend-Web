@@ -197,7 +197,7 @@ function ExpandableCards({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.12, ease: "easeInOut" } }}
               transition={{ type: "spring", bounce: 0.18, visualDuration: 0.25 }}
-              className="w-full max-w-[900px] min-h-[70vh] iphone-landscape:min-h-[95vh] max-h-[600px] relative h-full  rounded-xl flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
+              className="w-full max-w-[900px] min-h-[70vh] iphone-landscape:min-h-[95vh] max-h-[600px] relative h-full   flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
             >
               {/* Media */} <motion.button
                 onClick={() => setActive(null)}
@@ -208,7 +208,7 @@ function ExpandableCards({
                 <CloseIcon />
               </motion.button>
               <motion.div
-                className="w-full h-100 sm:rounded-t-xl opacity-80 object-cover object-top"
+                className="w-full h-100  opacity-80 object-cover object-top"
                 layoutId={`image-${active.title}-${id}`}
               >
                 <Image
@@ -216,7 +216,7 @@ function ExpandableCards({
                   height={1200}
                   src={active.src}
                   alt={active.title}
-                  className="w-full h-full absolute min-h-[70vh] sm:rounded-t-xl opacity-50 object-cover object-top"
+                  className="w-full h-full absolute min-h-[70vh]  opacity-50 object-cover object-top"
                 />
               </motion.div>
 
@@ -264,7 +264,7 @@ function ExpandableCards({
                       href={active.ctaLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-4 py-3 text-xs font-bold bg-lime-500 rounded-xs hover:bg-black transition-all duration-500 text-white"
+                      className="px-4 py-3 text-xs font-bold bg-violet-500  hover:bg-black transition-all duration-500 text-white"
                     >
                       {active.ctaText}
                     </motion.a>
@@ -286,7 +286,7 @@ function ExpandableCards({
               layoutId={`card-${card.title}-${id}`}
               key={`card-${card.title}-${id}`}
               onClick={() => setActive(card)}
-              className={`col-span-1 grid grid-cols-1 grid-row-1 row-span-1 rounded-xl overflow-hidden cursor-pointer ${cardHeight} ${hoverScale}`}
+              className={`col-span-1 grid grid-cols-1 grid-row-1 row-span-1  overflow-hidden cursor-pointer ${cardHeight} ${hoverScale}`}
             >
               <motion.div
                 layoutId={`image-${card.title}-${id}`}

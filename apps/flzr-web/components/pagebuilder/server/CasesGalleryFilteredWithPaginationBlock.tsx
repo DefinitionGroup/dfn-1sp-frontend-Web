@@ -4,7 +4,6 @@ import CasesGalleryFilteredWithPaginationClient from "../pg-CasesGalleryFiltered
 interface CasesGalleryFilteredWithPaginationBlockProps {
   language?: string;
   channel?: string;
-  showGridBackground?: boolean;
   showFilters?: boolean;
   paddingY?: string;
   marginBottom?: string;

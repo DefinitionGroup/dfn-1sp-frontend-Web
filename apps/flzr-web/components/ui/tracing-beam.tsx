@@ -82,7 +82,7 @@ export const TracingBeam = ({
               delay: 0.5,
             }}
             animate={{}}
-            className="ml-[27px] flex h-4 w-4 items-center justify-center rounded-full"
+            className="ml-[27px] flex h-4 w-4 items-center justify-center "
           >
             <motion.div
               transition={{
@@ -92,7 +92,7 @@ export const TracingBeam = ({
               animate={{
                 backgroundColor: scrollYProgress.get() > 0 ? "#ffffff" : "#66ff00",
               }}
-              className="h-2 w-2 rounded-full bg-lemon-500"
+              className="h-2 w-2  bg-lemon-500"
             />
           </motion.div>
           <svg
@@ -133,7 +133,7 @@ export const TracingBeam = ({
               >
                 <stop stopColor="#ffffff" stopOpacity="0"></stop>
                 <stop stopColor="#ffffff"></stop>
-                <stop offset="0.325" stopColor="#00ff00"></stop>
+                <stop offset="0.325" stopColor="#9900ff"></stop>
                 <stop offset="1" stopColor="#6344F5" stopOpacity="0"></stop>
               </motion.linearGradient>
             </defs>

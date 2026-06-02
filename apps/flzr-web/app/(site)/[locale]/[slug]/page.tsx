@@ -144,7 +144,7 @@ export default async function Page({
   }
 
   const navbarVariant = page?.navbarVariant || "light";
-  const contentBlocks = page?.contentStudioFlizr as any[] | undefined;
+  const contentBlocks = page?.content as any[] | undefined;
   const needsAllCases = hasAutoCaseListingBlocks(contentBlocks);
   const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
 
@@ -227,6 +227,7 @@ export default async function Page({
             <FlzrPageBuilder
               content={contentBlocks}
               language={language}
+              channel={channel}
               deferAfter={2}
             />
             {/* {slug === "data-protection" && <CookieDeclaration />} */}

@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import GridBackground from "@flzr/components/ui/GridBackground";
 import StaggeredFadeIn from "@flzr/components/ui/StaggeredFadeIn";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import { PortableText } from "@portabletext/react";
@@ -19,7 +18,6 @@ type TabbedContentSectionData = {
   content2?: PortableTextBlock[];
   contentSize?: string;
   columnSpan?: string;
-  showGridBackground?: boolean;
   paddingY?: string;
   navPointName?: string;
   hideFromNav?: boolean;
@@ -36,7 +34,6 @@ function TabbedContentSection({ data }: { data: TabbedContentSectionData }) {
     content2,
     contentSize = "lg",
     columnSpan = "8",
-    showGridBackground = true,
     paddingY = "16",
     navPointName,
     hideFromNav = false,
@@ -138,7 +135,7 @@ function TabbedContentSection({ data }: { data: TabbedContentSectionData }) {
       ),
       em: ({ children }: any) => <em className="italic">{children}</em>,
       code: ({ children }: any) => (
-        <code className="bg-neutral-100 px-2 py-1 rounded text-sm font-mono text-neutral-800">
+        <code className="bg-neutral-100 px-2 py-1  text-sm font-mono text-neutral-800">
           {children}
         </code>
       ),
@@ -167,7 +164,6 @@ function TabbedContentSection({ data }: { data: TabbedContentSectionData }) {
       {/* Introduction Section (if provided) */}
       {(hasVisibleText(introHeading) || hasVisibleText(introSubheading)) && (
         <div className="grid grid-cols-12 z-1 mx-auto container relative font-aspekta">
-          {showGridBackground && <GridBackground />}
           <div className="z-1 grid gap-8 col-span-12 pt-12 mt-24 col-start-1 container mx-auto row-start-1 grid-cols-12">
             <div className="z-1 col-span-12 col-start-1">
               <div className="flex flex-col items-start gap-2 justify-center w-full">
@@ -207,7 +203,6 @@ function TabbedContentSection({ data }: { data: TabbedContentSectionData }) {
         {...navPointDataAttr}
         className="grid grid-cols-12 z-1 mx-auto container relative font-aspekta"
       >
-        {showGridBackground && <GridBackground />}
         <div
           className={`z-1 grid gap-8 col-span-12 py-${paddingY} col-start-1 container mx-auto row-start-1 grid-cols-12`}
         >

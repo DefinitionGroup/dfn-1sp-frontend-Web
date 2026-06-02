@@ -111,7 +111,7 @@ export default function CaseGalleryMenu({
               layoutId={`card-${item.title}-${id}`}
               key={`card-${item._id}-${id}`}
               onClick={() => setActive(item)}
-              className="flex-col min-h-[120px] group/card rounded-xl bg-white overflow-hidden h-[250px] cursor-pointer"
+              className="flex-col min-h-[120px] group/card  bg-white overflow-hidden h-[250px] cursor-pointer"
             >
               <motion.div
                 layoutId={`image-${item.title}-${id}`}
@@ -156,7 +156,7 @@ export default function CaseGalleryMenu({
                     e.stopPropagation();
                     handleViewCase(item.slug.current);
                   }}
-                  className="text-gray-700 hover:text-white transition mt-2 absolute  bottom-4 border hover:bg-black px-2 py-0.5 rounded-full font-medium text-xs "
+                  className="text-gray-700 hover:text-white transition mt-2 absolute  bottom-4 border hover:bg-black px-2 py-0.5  font-medium text-xs "
                 >
                   View Case
                 </motion.button>

@@ -15,7 +15,7 @@ interface ButtonProps
     | "onTransitionEnd"
   > {
   children: ReactNode;
-  variant?: "default" | "lime" | "outline" | "ghost";
+  variant?: "default" | "violet" | "outline" | "ghost";
   size?: "sm" | "md" | "lg";
   showArrow?: boolean;
   isLoading?: boolean;
@@ -26,7 +26,7 @@ interface ButtonProps
 const buttonVariants = {
   default:
     "bg-[#121212] text-[#f4f4f4] border-[#f4f4f4] border-b hover:bg-neutral-800 active:bg-neutral-900",
-  lime: "bg-[#afff40] text-[#121212] hover:bg-lime-300 active:bg-lime-500",
+  violet: "bg-[#afff40] text-[#121212] hover:bg-violet-300 active:bg-violet-500",
   outline:
     "border-2 border-[#f4f4f4] text-[#f4f4f4] bg-transparent hover:bg-[#f4f4f4] hover:text-[#121212]",
   ghost: "text-[#f4f4f4] hover:bg-[#f4f4f4]/10 active:bg-[#f4f4f4]/20",
@@ -90,7 +90,7 @@ export default function Button({
         {/* Loading Spinner */}
         {isLoading && (
           <motion.div
-            className="w-3 h-3 border border-current border-t-transparent rounded-full inline-block mr-2"
+            className="w-3 h-3 border border-current border-t-transparent  inline-block mr-2"
             animate={{ rotate: 360 }}
             transition={{
               duration: 1,
@@ -121,8 +121,8 @@ export function DefaultButton(props: Omit<ButtonProps, "variant">) {
   return <Button variant="default" {...props} />;
 }
 
-export function LimeButton(props: Omit<ButtonProps, "variant">) {
-  return <Button variant="lime" {...props} />;
+export function VioletButton(props: Omit<ButtonProps, "variant">) {
+  return <Button variant="violet" {...props} />;
 }
 
 export function OutlineButton(props: Omit<ButtonProps, "variant">) {

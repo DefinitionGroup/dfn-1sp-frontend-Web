@@ -5,15 +5,15 @@ import {
 import CasesGalleryFilteredClient from "../pg-CasesGalleryFiltered";
 
 interface SelectedCaseReference {
-  _ref: string;
-  _type: "reference";
+  _ref?: string;
+  _id?: string;
+  _type?: string;
   _key?: string;
 }
 
 interface CasesGalleryFilteredBlockProps {
   language?: string;
   channel?: string;
-  showGridBackground?: boolean;
   showFilters?: boolean;
   paddingY?: string;
   marginBottom?: string;
@@ -30,12 +30,12 @@ export default async function CasesGalleryFilteredBlock({
   ...props
 }: CasesGalleryFilteredBlockProps) {
   const selectedIds = (selectedCases ?? [])
-    .map((item) => item._ref)
-    .filter(Boolean);
+    .map((item) => item._ref ?? item._id)
+    .filter((id): id is string => Boolean(id));
 
   const rawCaseStudies =
     selectionMode === "manual" && selectedIds.length > 0
-      ? await getCaseStudiesByIds(selectedIds)
+      ? await getCaseStudiesByIds(selectedIds, channel, language)
       : await getAllCases(channel, language);
 
   const orderedCaseStudies =

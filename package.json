@@ -2,6 +2,10 @@
   "name": "1sp-web-proto1",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.7.0",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "dev:diag": "NEXT_PUBLIC_DIAG=1 next dev --turbopack",
@@ -21,6 +25,8 @@
     "@1sp/site-config": "workspace:*",
     "@1sp/utils": "workspace:*",
     "@phosphor-icons/react": "^2.1.10",
+    "@portabletext/react": "^4.0.3",
+    "@portabletext/types": "^2.0.15",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.0",
     "@sanity/document-internationalization": "^4.0.0",

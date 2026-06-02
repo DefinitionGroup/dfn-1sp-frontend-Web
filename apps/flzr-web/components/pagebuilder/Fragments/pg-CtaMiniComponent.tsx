@@ -10,7 +10,7 @@ interface CtaMiniProps {
   heading: string;
   paragraph: string;
   buttonText: string;
-  buttonVariant?: "default" | "black" | "lime" | "limesmall";
+  buttonVariant?: "default" | "black" | "violet" | "violetsmall";
   url?: string;
   align?: "left" | "right" | "center";
   delay?: number;
@@ -29,10 +29,10 @@ const buttonVariantStyles: Record<
     "border-white/30 text-white bg-transparent hover:bg-slate-100 hover:text-slate-900",
   black:
     "border-neutral-800/40 bg-neutral-900 text-white hover:bg-neutral-800",
-  lime:
-    "border-lime-500/40 bg-lime-400 text-neutral-900 hover:bg-neutral-900 hover:text-white",
-  limesmall:
-    "border-lime-500/40 bg-lime-400 text-neutral-900 hover:bg-neutral-900 hover:text-white",
+  violet:
+    "border-violet-500/40 bg-violet-400 text-neutral-900 hover:bg-neutral-900 hover:text-white",
+  violetsmall:
+    "border-violet-500/40 bg-violet-400 text-neutral-900 hover:bg-neutral-900 hover:text-white",
 };
 
 function CtaMiniComponent({
@@ -90,9 +90,9 @@ function CtaMiniComponent({
             <Link
               href={finalUrl}
               className={cn(
-                "inline-flex w-full md:w-fit items-center justify-between gap-3 rounded-xs border font-medium tracking-wider transition-colors duration-200",
+                "inline-flex w-full md:w-fit items-center justify-between gap-3  border font-medium tracking-wider transition-colors duration-200",
                 "text-[10px] sm:text-xxs md:text-xxs",
-                buttonVariant === "limesmall"
+                buttonVariant === "violetsmall"
                   ? "px-3 py-2 md:px-4 md:py-2"
                   : "px-3 py-2.5 md:px-4 md:py-3",
                 buttonVariantStyles[safeButtonVariant]

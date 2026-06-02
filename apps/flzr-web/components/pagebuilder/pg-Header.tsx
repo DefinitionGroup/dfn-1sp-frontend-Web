@@ -42,7 +42,7 @@ function highlightInline(text: string, highlight?: string): React.ReactNode {
   return (
     <>
       {before}
-      <span className="bg-gradient-to-r from-lime-300 to-lime-500 bg-clip-text text-transparent font-bold">
+      <span className="bg-gradient-to-r from-violet-300 to-violet-500 bg-clip-text text-transparent font-bold">
         {matched}
       </span>
       {after}
@@ -161,7 +161,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           animateImmediately={true}
         >
           {hasVisibleText(eyebrow) && (
-            <h3 className="text-neutral-50 uppercase  text-xs iphone-landscape:text-xxs border-b pb-1 border-white/50 font-medium max-w-1/4">
+            <h3 className="text-neutral-50 uppercase  text-xs iphone-landscape:text-xxs pb-1  font-medium max-w-1/4">
               {eyebrow}
             </h3>
           )}
@@ -191,17 +191,6 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
         </StaggeredSlideUp>
       </div>
 
-      {/* Corner labels */}
-      {leftMark && (
-        <div className="absolute bottom-[28px] left-[14px] text-white text-[7px] font-bold -rotate-90 origin-bottom-left">
-          {leftMark}
-        </div>
-      )}
-      {rightMark && (
-        <div className="absolute bottom-[28px] right-[12px] text-white text-[7px] text-eyebrow font-bold">
-          {rightMark}
-        </div>
-      )}
     </section>
   );
 }

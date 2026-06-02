@@ -1,7 +1,6 @@
 "use client";
 
 import { startTransition, useEffect, useState } from "react";
-import GridBackground from "@flzr/components/ui/GridBackground";
 import CaseGalleryComponent from "@flzr/components/data/data-CaseGallery";
 import { getTranslations } from "@1sp/utils/translations";
 
@@ -28,7 +27,6 @@ interface CaseStudy {
 interface CasesGalleryFilteredWithPaginationProps {
   locale?: string;
   caseStudies?: CaseStudy[];
-  showGridBackground?: boolean;
   showFilters?: boolean;
   paddingY?: string;
   marginBottom?: string;
@@ -39,7 +37,6 @@ interface CasesGalleryFilteredWithPaginationProps {
 function CasesGalleryFilteredWithPagination({
   locale = "en",
   caseStudies = [],
-  showGridBackground = true,
   showFilters = true,
   paddingY = "16",
   marginBottom = "16",
@@ -130,14 +127,13 @@ function CasesGalleryFilteredWithPagination({
       data-navpoint-name={navPointName}
       className={`grid grid-cols-12 z-1 mx-auto container ${marginClass} relative font-aspekta`}
     >
-      {showGridBackground && <GridBackground />}
       <div
         className={`z-1 grid gap-8 col-span-12 ${paddingClass} col-start-1 container mx-auto row-start-1 grid-cols-12`}
       >
         <div className="z-1 col-span-12 col-start-1">
           {/* Filter Buttons */}
           {showFilters && filters.length > 1 && (
-            <div className="flex flex-wrap gap-4 mb-8 justify-center md:justify-start">
+            <div className="flex flex-wrap gap-2 mb-8 justify-center md:justify-start">
               {filters.map((filter) => (
                 <button
                   key={filter}
@@ -146,10 +142,10 @@ function CasesGalleryFilteredWithPagination({
                       setActiveFilter(filter);
                     });
                   }}
-                  className={`px-6 py-2 rounded-full text-xs font-medium uppercase transition-all duration-100 ${
+                  className={`px-4 py-1 text-xxs font-medium uppercase rounded-md transition-all duration-100 ${
                     activeFilter === filter
-                      ? "bg-lime-500 text-black"
-                      : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
+                      ? "bg-violet-500 text-white"
+                      : "bg-neutral-100 text-neutral-400 hover:bg-neutral-900 cursor-pointer hover:text-neutral-100"
                   }`}
                 >
                   {filter}
@@ -182,7 +178,7 @@ function CasesGalleryFilteredWithPagination({
               <button
                 onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
                 disabled={currentPage === 1}
-                className={`p-2 rounded-full transition-colors ${
+                className={`p-2  transition-colors ${
                   currentPage === 1
                     ? "text-gray-300 cursor-not-allowed"
                     : "text-neutral-600 hover:bg-neutral-100"
@@ -197,9 +193,9 @@ function CasesGalleryFilteredWithPagination({
                   <button
                     key={page}
                     onClick={() => handlePageChange(page)}
-                    className={`w-8 h-8 rounded-full text-sm font-medium transition-colors ${
+                    className={`w-8 h-8  text-xs md:text-xxs font-medium transition-colors ${
                       currentPage === page
-                        ? "bg-lime-500 text-black"
+                        ? "bg-violet-500 text-white"
                         : "bg-transparent text-neutral-600 hover:bg-neutral-100"
                     }`}
                   >
@@ -211,7 +207,7 @@ function CasesGalleryFilteredWithPagination({
               <button
                 onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
                 disabled={currentPage === totalPages}
-                className={`p-2 rounded-full transition-colors ${
+                className={`p-2  transition-colors ${
                   currentPage === totalPages
                     ? "text-gray-300 cursor-not-allowed"
                     : "text-neutral-600 hover:bg-neutral-100"

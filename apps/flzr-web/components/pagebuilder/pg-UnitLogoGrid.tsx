@@ -4,7 +4,6 @@ import Image from "next/image";
 import { resolveLink, assetUrl } from "@1sp/utils/cloudinary";
 import Link from "next/link";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
-import GridBackground from "@flzr/components/ui/GridBackground";
 import type { CloudinaryAsset, CTA } from "@1sp/sanity-types";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
@@ -114,7 +113,6 @@ function UnitLogoGrid({
       <div className="container mx-auto px-4">
         {/* Grid background */}
         <div className="absolute inset-0 z-0">
-          <GridBackground delay={0.1} staggerDelay={0.04} />
         </div>
 
         {/* Headlines */}
@@ -143,7 +141,7 @@ function UnitLogoGrid({
             </div>
           ) : (
             <StaggeredSlideUp
-              className={`grid ${columnClasses[columns]} gap-0.5 rounded-sm w-full`}
+              className={`grid ${columnClasses[columns]} gap-0.5  w-full`}
               delay={0.1}
               staggerDelay={0.05}
             >
@@ -166,9 +164,9 @@ function UnitLogoGrid({
                     href={href}
                     target={unit.cta?.link?.linkType === "external" ? "_blank" : undefined}
                     rel={unit.cta?.link?.linkType === "external" ? "noopener noreferrer" : undefined}
-                    className={`group flex items-center justify-center hover:bg-neutral-200/20 rounded-sm   cursor-pointer p-2 md:p-4  ${bgClass} transition-all duration-300`}
+                    className={`group flex items-center justify-center hover:bg-neutral-200/20    cursor-pointer p-2 md:p-4  ${bgClass} transition-all duration-300`}
                   >
-                    <div className="relative w-full aspect-[3/2] flex-col cursor-pointer border border-neutral-200/90  rounded-sm   items-center justify-center overflow-hidden">
+                    <div className="relative w-full aspect-[3/2] flex-col cursor-pointer border border-neutral-200/90     items-center justify-center overflow-hidden">
                       <Image
                         src={logoUrl}
                         alt={unit.name || "Unit logo"}

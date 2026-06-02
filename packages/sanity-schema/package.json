@@ -9,5 +9,14 @@
   "types": "./src/index.ts",
   "files": [
     "src"
-  ]
+  ],
+  "dependencies": {
+    "@phosphor-icons/react": "^2.1.10",
+    "@sanity/icons": "^3.7.4",
+    "@sanity/ui": "^3.1.11",
+    "sanity": "^4.12.0"
+  },
+  "peerDependencies": {
+    "react": "^18 || ^19"
+  }
 }

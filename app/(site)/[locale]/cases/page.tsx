@@ -111,14 +111,14 @@ export default async function CasesPage({
   // Extract case items from page builder content (manual selections)
   // plus fallback to allCaseItems for auto-mode galleries
   const caseItems = extractCaseItemsFromContent(
-    page?.content1sp as any[] | undefined,
+    page?.content as any[] | undefined,
     allCaseItems,
   );
   const itemListId = `${CANONICAL_URL}/cases#case-list`;
   const ogImageUrl = resolveImageUrl(page?.metadata?.image, { width: 1200, height: 630 });
 
   // LCP optimization: preload hero poster image
-  const heroPreload = getHeroPreloadData(page?.content1sp as any[] | undefined);
+  const heroPreload = getHeroPreloadData(page?.content as any[] | undefined);
 
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
@@ -160,9 +160,9 @@ export default async function CasesPage({
       <HeroPreloadLinks {...heroPreload} />
 
       <div className="  min-h-screen px-1  md:px-4">
-        {page?.content1sp ? (
+        {page?.content ? (
           <PageBuilder
-            content={page.content1sp}
+            content={page.content}
             language={language}
             deferAfter={2}
           />

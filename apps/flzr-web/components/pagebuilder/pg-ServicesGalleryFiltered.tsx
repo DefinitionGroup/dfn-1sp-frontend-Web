@@ -8,7 +8,6 @@ import type { Service } from "@1sp/sanity-types";
 interface ServicesGalleryFilteredProps {
   locale?: string;
   services?: Service[];
-  showGridBackground?: boolean;
   showFilters?: boolean;
   backgroundColor?: string;
   paddingY?: string;
@@ -18,7 +17,6 @@ interface ServicesGalleryFilteredProps {
 function ServicesGalleryFiltered({
   locale = "en",
   services = [],
-  showGridBackground = false,
   showFilters = true,
   backgroundColor = "neutral-100",
   paddingY = "32",
@@ -66,9 +64,9 @@ function ServicesGalleryFiltered({
                       setActiveFilter(filter);
                     });
                   }}
-                  className={`px-6 py-2 rounded-full text-xs font-medium uppercase transition-all duration-100 ${
+                  className={`px-6 py-2  text-xs font-medium uppercase transition-all duration-100 ${
                     activeFilter === filter
-                      ? "bg-lime-500 text-black"
+                      ? "bg-violet-500 text-black"
                       : "bg-neutral-900 text-neutral-100 hover:bg-neutral-800"
                   }`}
                 >
