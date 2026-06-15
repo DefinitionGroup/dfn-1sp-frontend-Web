@@ -1,5 +1,6 @@
 import { defineType, defineField } from "sanity";
 import { TrendUp, ChartBar, ChartBarHorizontal, Equalizer } from "@phosphor-icons/react";
+import { hideForFlzrOnlyCase } from "../../shared/flzrVisibility";
 
 export default defineType({
     name: "resultsMetrics",
@@ -35,6 +36,7 @@ export default defineType({
             type: "string",
             description: "Small badge text (e.g., 'Results')",
             group: "content",
+            hidden: hideForFlzrOnlyCase,
         }),
         defineField({
             name: "badgeSubtitle",
@@ -42,6 +44,7 @@ export default defineType({
             type: "string",
             description: "Badge subtitle text",
             group: "content",
+            hidden: hideForFlzrOnlyCase,
         }),
         defineField({
             name: "badgeNumber",
@@ -50,6 +53,7 @@ export default defineType({
             description: "Number element for the badge (e.g., '003')",
             initialValue: "003",
             group: "content",
+            hidden: hideForFlzrOnlyCase,
         }),
         defineField({
             name: "title",

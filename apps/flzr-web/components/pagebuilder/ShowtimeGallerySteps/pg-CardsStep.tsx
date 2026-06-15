@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import Badgemodule from "@flzr/components/ui/Badgemodule";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import HeaderImageVideoComp2 from "@flzr/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
 import ExpandableCards from "../Fragments/pg-ExpandableCards";
@@ -56,13 +55,7 @@ export default function CardsStep({ step }: CardsStepProps) {
 
   const cards = pickCardItems(step);
 
-  // Generate section ID from badge text or title
-  const sectionId = step.badge?.text
-    ? step.badge.text
-      .replace(/[^a-zA-Z0-9\s]/g, "")
-      .replace(/\s+/g, "-")
-      .toLowerCase()
-    : title
+  const sectionId = title
       ? title
         .substring(0, 30)
         .replace(/[^a-zA-Z0-9\s]/g, "")
@@ -92,19 +85,8 @@ export default function CardsStep({ step }: CardsStepProps) {
       )}
 
       <div className="z-1 grid gap-8  col-span-12 py-8 col-start-1 container mx-auto row-start-1 grid-cols-12">
-        {/* Badge (left) */}
-        {step.badge && (
-          <Badgemodule
-            className={`hidden md:block iphone-landscape:!hidden ${step.badge.colSpan || "col-span-2"}`}
-            text={step.badge.text ?? ""}
-            subtitle={step.badge.subtitle ?? ""}
-            numberEl={step.badge.numberEl ?? ""}
-          />
-        )}
-
-        {/* Title + paragraph (center) */}
         {(title || description) && (
-          <div className="col-span-12 col-start-1 md:col-span-10 md:col-start-3 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 border">
+          <div className="col-span-12 col-start-1 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 border">
             <StaggeredSlideUp
               className="flex flex-col items-start justify-start"
               delay={0.1}
@@ -129,7 +111,7 @@ export default function CardsStep({ step }: CardsStepProps) {
         {/* Cards */}
 
         {cards.length > 0 && (
-          <div className="col-span-12 col-start-1 md:col-span-9 md:col-start-3 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 mt-8 ">
+          <div className="col-span-12 col-start-1 md:col-span-10 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 mt-8 ">
             <ExpandableCards
               items={cards}
               variant="compact"

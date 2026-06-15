@@ -7,9 +7,7 @@ type Props = { data: GalleryCardsStep } | GalleryCardsStep;
 
 function GalleryCardsStepWrapper(props: Props) {
   const step: GalleryCardsStep =
-    "expandableCards" in props || "badge" in props
-      ? props
-      : (props as any).data;
+    "data" in props ? props.data : props;
 
   if (!step) return null;
 

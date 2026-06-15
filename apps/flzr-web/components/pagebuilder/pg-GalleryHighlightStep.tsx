@@ -6,9 +6,7 @@ type Props = { data: GalleryScrollHighlightStep } | GalleryScrollHighlightStep;
 
 function GalleryHighlightStepWrapper(props: Props) {
   const step: GalleryScrollHighlightStep =
-    "scrollHighlightContent" in props || "badge" in props
-      ? props
-      : (props as any).data;
+    "data" in props ? props.data : props;
 
   if (!step) return null;
 

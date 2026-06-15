@@ -1,11 +1,7 @@
 "use client";
 import React from "react";
-import Badgemodule from "@flzr/components/ui/Badgemodule";
 import type { GalleryPeopleStep, CloudinaryAsset } from "@1sp/sanity-types";
 import PeopleShowcaseHero from "../Fragments/pg-PeopleShowcaseHero";
-import CtaMiniComponent from "../Fragments/pg-CtaMiniComponent";
-import { resolveLink } from "@1sp/utils/cloudinary";
-import { useParams } from "next/navigation";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
 type Member = {
@@ -46,16 +42,6 @@ export default function PeopleStep({
     media?: CloudinaryAsset;
   };
 }) {
-  const params = useParams();
-  const locale = (params?.locale as string) || "en";
-
-  const applyLocaleToPath = (url?: string | null) => {
-    if (!url) return undefined;
-    if (!url.startsWith("/")) return url || undefined;
-    if (url.startsWith(`/${locale}`)) return url;
-    return `/${locale}${url}`;
-  };
-
   const members = step.teamMembers ?? [];
   const header = step.header ?? {};
 
@@ -66,13 +52,7 @@ export default function PeopleStep({
     media: member.video || member.image || member.media,
   }));
 
-  // Generate section ID from badge text or header text
-  const sectionId = step.badge?.text
-    ? step.badge.text
-      .replace(/[^a-zA-Z0-9\s]/g, "")
-      .replace(/\s+/g, "-")
-      .toLowerCase()
-    : header.mainHeadline
+  const sectionId = header.mainHeadline
       ? header.mainHeadline
         .substring(0, 30)
         .replace(/[^a-zA-Z0-9\s]/g, "")
@@ -85,12 +65,6 @@ export default function PeopleStep({
     ? { "data-navpoint-name": step.navPointName }
     : {};
 
-  const shouldShowBadgeMiniCta = Boolean(
-    step.showBadgeMiniCta && step.badgeMiniCta
-  );
-  const badgeMiniCta = shouldShowBadgeMiniCta ? step.badgeMiniCta : undefined;
-  const badgeMiniUrl = applyLocaleToPath(resolveLink(badgeMiniCta?.link));
-
   return (
     <section
       id={sectionId}
@@ -102,38 +76,7 @@ export default function PeopleStep({
         <div className="container mx-auto ">
           <div className="grid grid-cols-4 iphone-landscape:grid-cols-12 sm:grid-cols-6 md:grid-cols-12 lg:gap-8 py-16 sm:py-24 lg:py-32">
 
-            {/* Badge + CTA Column */}
-            {(step.badge || shouldShowBadgeMiniCta) && (
-              <div className="hidden md:block md:col-span-2 md:mb-0 md:sticky md:top-24 self-start iphone-landscape:!hidden">
-                <div className="flex flex-col gap-6">
-                  {step.badge && (
-                    <Badgemodule
-                      text={step.badge.text ?? ""}
-                      subtitle={step.badge.subtitle ?? ""}
-                      numberEl={step.badge.numberEl ?? ""}
-                      variant="minimal"
-                      size="md"
-                    />
-                  )}
-
-                  {shouldShowBadgeMiniCta && badgeMiniCta && (
-                    <div className="hidden md:block">
-                      <CtaMiniComponent
-                        heading={badgeMiniCta.heading || ""}
-                        paragraph={badgeMiniCta.paragraph || ""}
-                        buttonText={badgeMiniCta.buttonText || ""}
-                        buttonVariant={(badgeMiniCta.variant as any) || "violetsmall"}
-                        align={(badgeMiniCta.alignment as any) || "left"}
-                        url={badgeMiniUrl || undefined}
-                      />
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Main Content Area */}
-            <div className={`col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 ${step.badge || shouldShowBadgeMiniCta ? "md:col-span-10 md:col-start-3" : "md:col-span-12"}`}>
+            <div className="col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-12">
 
               {/* Header Section */}
               <header className="border-t border-gray-200 pt-4 sm:pt-6 mb-8 md:mb-12">
@@ -189,20 +132,6 @@ export default function PeopleStep({
                   initialVisibleCount={Math.min(8, mappedMembers.length)}
                 />
               </div>
-
-              {/* Mobile CTA - shown at bottom on mobile */}
-              {shouldShowBadgeMiniCta && badgeMiniCta && (
-                <div className="mt-10 md:hidden">
-                  <CtaMiniComponent
-                    heading={badgeMiniCta.heading || ""}
-                    paragraph={badgeMiniCta.paragraph || ""}
-                    buttonText={badgeMiniCta.buttonText || ""}
-                    buttonVariant={(badgeMiniCta.variant as any) || "violetsmall"}
-                    align={(badgeMiniCta.alignment as any) || "left"}
-                    url={badgeMiniUrl || undefined}
-                  />
-                </div>
-              )}
             </div>
           </div>
         </div>

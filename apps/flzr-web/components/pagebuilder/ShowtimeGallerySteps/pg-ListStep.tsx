@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Badgemodule from "@flzr/components/ui/Badgemodule";
 import ListContainerComponent from "@flzr/components/ui/ListContainerComponent";
 import ListItemComponent from "@flzr/components/ui/ListItemComponent";
 import ExpandableCards from "../Fragments/pg-ExpandableCards";
@@ -284,18 +283,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
   const hasCtaMini = !hasCards && ctaMini.length > 0;
   const hasCtas = !hasCards && !hasCtaMini && ctas.length > 0;
 
-  // Layout for list column
-  const listColClass = hasCtaMini
-    ? "col-span-8 col-start-5"
-    : "col-span-6 col-start-7";
-
-  // Generate section ID from badge text or header text
-  const sectionId = step.badge?.text
-    ? step.badge.text
-      .replace(/[^a-zA-Z0-9\s]/g, "")
-      .replace(/\s+/g, "-")
-      .toLowerCase()
-    : header.mainHeadline
+  const sectionId = header.mainHeadline
       ? header.mainHeadline
         .substring(0, 30)
         .replace(/[^a-zA-Z0-9\s]/g, "")
@@ -308,12 +296,6 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
     ? { "data-navpoint-name": step.navPointName }
     : {};
 
-  const shouldShowBadgeMiniCta = Boolean(
-    step.showBadgeMiniCta && step.badgeMiniCta
-  );
-  const badgeMiniCta = shouldShowBadgeMiniCta ? step.badgeMiniCta : undefined;
-  const showBadgeMiniCta = shouldShowBadgeMiniCta;
-  const badgeMiniUrl = applyLocaleToPath(resolveLink(badgeMiniCta?.link));
   const ctaMiniUrls = ctaMini.map(
     (item) => applyLocaleToPath(resolveLink(item.link)) || ""
   );
@@ -336,37 +318,10 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
       )}
 
       <div className="z-1 grid col-span-12  col-start-1 pt-32 row-start-1 grid-cols-12 ">
-        {/* Badge */}
-        <div className="hidden md:block md:col-start-1 md:col-span-2 md:sticky top-0 pr-4 iphone-landscape:!hidden">
-
-          {step.badge && (
-            <Badgemodule
-              text={step.badge.text ?? ""}
-              subtitle={step.badge.subtitle ?? ""}
-              numberEl={step.badge.numberEl ?? ""}
-            />
-
-          )}
-          {showBadgeMiniCta && badgeMiniCta && (
-            <div className="col-span-12 col-start-1 md:col-span-2 px-1 md:mt-4 pr-8 ">
-              <CtaMiniComponent
-                heading={badgeMiniCta.heading || ""}
-                paragraph={badgeMiniCta.paragraph || ""}
-                buttonText={badgeMiniCta.buttonText || ""}
-                buttonVariant={(badgeMiniCta.variant as any) || "violetsmall"}
-                align={(badgeMiniCta.alignment as any) || "left"}
-                url={badgeMiniUrl || undefined}
-              />
-            </div>
-          )}
-        </div>
-
-
-
         {/* Header area */}
         {staggered
           ? ((staggeredHeader as any)?.title || paragraphLines.length > 0) && (
-            <div className="col-span-12  col-start-1 md:col-span-10 md:col-start-3 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1">
+            <div className="col-span-12 col-start-1 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1">
               <StaggeredSlideUp
                 className="flex flex-col items-start  justify-start"
                 delay={0}
@@ -398,7 +353,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
           : (header?.superText ||
             header?.mainHeadline ||
             header?.subHeadline) && (
-            <header className="col-span-12  px-4 md:px-0 md:col-span-6 col-start-1  iphone-landscape:!col-start-1 iphone-landscape:!col-span-12 md:col-start-3  md:mt-0  ">
+            <header className="col-span-12 px-4 md:px-0 md:col-span-6 col-start-1 iphone-landscape:!col-start-1 iphone-landscape:!col-span-12 md:mt-0">
               <div className="flex flex-col items-start justify-start w-full">
                 <div className="flex-1 flex flex-col min-w-0">
                   {header?.superText && (
@@ -459,7 +414,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
         {/* Left column when ctaMini is present */}
         {hasCtaMini && (
-          <div className="hidden md:block iphone-landscape:!hidden col-span-2 col-start-3 mt-8 pr-8 text-gray-100">
+          <div className="hidden md:block iphone-landscape:!hidden col-span-2 col-start-1 mt-8 pr-8 text-gray-100">
             {ctaMini.map((m, i) => {
               const href =
                 ctaMiniUrls[i] || applyLocaleToPath(resolveLink(m.link));
@@ -490,7 +445,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
         {/* Variant A: Cards present (no buttons) */}
         {hasCards && (
-          <div className="col-span-12 md:col-span-10 col-start-1 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-start-3 mt-8">
+          <div className="col-span-12 md:col-span-10 col-start-1 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 mt-8">
             <ExpandableCards
               items={cards}
               variant="default"
@@ -501,7 +456,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
 
         {/* Variant B (fallback): No cards, no ctaMini → plain CTA buttons */}
         {!hasCards && !hasCtaMini && hasCtas && (
-          <div className="col-span-12  col-start-1 md:col-span-2 md:col-start-3 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 mt-8 pr-8 ">
+          <div className="col-span-12 col-start-1 md:col-span-2 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 mt-8 pr-8 ">
             <div className="flex flex-col gap-4">
               {ctas.map((cta, idx) => {
                 const btn = ctaToButtonProps(cta);

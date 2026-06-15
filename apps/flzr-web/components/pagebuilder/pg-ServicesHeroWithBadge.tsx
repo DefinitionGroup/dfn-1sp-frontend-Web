@@ -2,7 +2,6 @@
 
 import { useParams } from "next/navigation";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
-import Badgemodule from "@flzr/components/ui/Badgemodule";
 import HeaderImageVideoComp2 from "@flzr/components/data/Fragments/data-HeaderImageVideoComp2";
 import ListContainerComponent from "@flzr/components/ui/ListContainerComponent";
 import ListItemComponent from "@flzr/components/ui/ListItemComponent";
@@ -12,9 +11,6 @@ import { getTranslations } from "@1sp/utils/translations";
 
 
 interface ServicesHeroWithBadgeProps {
-  badgeText?: string;
-  badgeSubtitle?: string;
-  badgeNumber?: string;
   useVideo?: boolean;
   backgroundImage?: {
     asset?: {
@@ -62,9 +58,6 @@ interface ServicesHeroWithBadgeProps {
 }
 
 function ServicesHeroWithBadge({
-  badgeText,
-  badgeSubtitle,
-  badgeNumber = "001",
   useVideo = false,
   backgroundImage,
   backgroundVideo,
@@ -103,21 +96,7 @@ function ServicesHeroWithBadge({
         <div
           className={`grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 py-16 sm:py-24 lg:py-${paddingY}`}
         >
-          {/* Badge Module - Responsive positioning */}
-          {badgeText && (
-            <div className="hidden md:block md:col-span-2 md:mb-0 md:sticky md:top-24 self-start iphone-landscape:!hidden">
-              <Badgemodule
-                text={badgeText}
-                subtitle={badgeSubtitle || ""}
-                numberEl={badgeNumber}
-                variant="glass"
-                size="md"
-              />
-            </div>
-          )}
-
-          {/* Title and Subtitle */}
-          <div className={`col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 ${badgeText ? "md:col-span-10 md:col-start-3" : "md:col-span-12"}`}>
+          <div className="col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-12">
             <StaggeredSlideUp
               className="flex flex-col items-start justify-start gap-4"
               delay={0.0}

@@ -1,5 +1,6 @@
 import { defineType, defineField } from 'sanity'
 import { UsersThree } from '@phosphor-icons/react'
+import { hideForFlzrPage } from '../../shared/flzrVisibility'
 
 export default defineType({
     name: 'galleryPeopleStep',
@@ -28,14 +29,15 @@ export default defineType({
             initialValue: false,
             group: 'navigation'
         }),
-        defineField({ name: 'badge', title: 'Badge', type: 'badgeModule', group: 'badge' }),
+        defineField({ name: 'badge', title: 'Badge', type: 'badgeModule', group: 'badge', hidden: hideForFlzrPage }),
         defineField({
             name: 'showBadgeMiniCta',
             title: 'Show Badge CTA mini',
             type: 'boolean',
             initialValue: false,
             description: 'Enable to display a CTA mini component beneath the badge.',
-            group: 'badge'
+            group: 'badge',
+            hidden: hideForFlzrPage
         }),
         defineField({
             name: 'badgeMiniCta',
@@ -43,7 +45,7 @@ export default defineType({
             type: 'ctaMiniComponent',
             description: 'Optional CTA mini component that renders under the badge.',
             group: 'badge',
-            hidden: ({ parent }) => !parent?.showBadgeMiniCta
+            hidden: (context) => hideForFlzrPage(context) || !context.parent?.showBadgeMiniCta
         }),
         defineField({
             name: 'header',

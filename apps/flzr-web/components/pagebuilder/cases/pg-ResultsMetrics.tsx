@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { motion } from "motion/react";
-import Badgemodule from "@flzr/components/ui/Badgemodule";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import HeaderImageVideoComp2 from "@flzr/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
 import AnimateNumberinView from "@flzr/components/ui/AnimateNumberinView";
@@ -31,9 +30,6 @@ interface Metric {
 interface ResultsMetricsProps {
   title: string;
   description?: string;
-  badgeText?: string;
-  badgeSubtitle?: string;
-  badgeNumber?: string;
   metrics?: Metric[];
   backgroundImage?: CloudinaryAsset;
   backgroundOpacity?: number;
@@ -45,9 +41,6 @@ interface ResultsMetricsProps {
 export default function ResultsMetrics({
   title,
   description,
-  badgeText,
-  badgeSubtitle,
-  badgeNumber = "003",
   metrics = [],
   backgroundImage,
   backgroundOpacity = 0.7,
@@ -122,19 +115,7 @@ export default function ResultsMetrics({
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
           <div className={`grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 py-16 sm:py-24 lg:py-${paddingY}`}>
-            {/* Badge Module - Responsive sticky */}
-            <div className="hidden md:block md:col-span-2 md:mb-0 md:sticky md:top-24 self-start iphone-landscape:!hidden">
-              <Badgemodule
-                text={badgeText || t.caseStudy.results}
-                subtitle={badgeSubtitle || t.caseStudy.resultsSubtitle}
-                numberEl={badgeNumber}
-                variant="glass"
-                size="md"
-              />
-            </div>
-
-            {/* Title and Description */}
-            <div className="col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-10 md:col-start-3">
+            <div className="col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-12">
               <StaggeredSlideUp
                 className="flex flex-col items-start justify-start gap-3"
                 delay={0.0}

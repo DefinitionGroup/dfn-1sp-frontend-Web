@@ -1,5 +1,6 @@
 import { defineType, defineField } from "sanity";
 import { Compass } from "@phosphor-icons/react";
+import { hideForFlzrOnlyCase } from "../../shared/flzrVisibility";
 
 export default defineType({
     name: "approachSection",
@@ -34,6 +35,7 @@ export default defineType({
             type: "string",
             description: "Small badge text (e.g., 'Approach')",
             group: "content",
+            hidden: hideForFlzrOnlyCase,
         }),
         defineField({
             name: "badgeSubtitle",
@@ -41,6 +43,7 @@ export default defineType({
             type: "string",
             description: "Badge subtitle text",
             group: "content",
+            hidden: hideForFlzrOnlyCase,
         }),
         defineField({
             name: "badgeNumber",
@@ -49,6 +52,7 @@ export default defineType({
             description: "Number element for the badge (e.g., '002')",
             initialValue: "002",
             group: "content",
+            hidden: hideForFlzrOnlyCase,
         }),
         defineField({
             name: "mainHeadline",

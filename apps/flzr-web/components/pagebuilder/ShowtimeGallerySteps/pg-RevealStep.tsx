@@ -1,15 +1,13 @@
 "use client";
 
 import React from "react";
-import Badgemodule from "@flzr/components/ui/Badgemodule";
 import TextReveal, { type RevealItem } from "@flzr/components/ui/TextReveal";
-import type { BadgeModule, CloudinaryAsset } from "@1sp/sanity-types";
+import type { CloudinaryAsset } from "@1sp/sanity-types";
 import { assetUrl } from "@1sp/utils/cloudinary";
 import HeaderImageVideoComp2 from "@flzr/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
 
 export type GalleryRevealStep = {
   _type?: "galleryRevealStep";
-  badge?: BadgeModule;
   items?: Array<{
     label?: string;
     image?: CloudinaryAsset;
@@ -34,13 +32,7 @@ export default function RevealStep({ step }: { step: GalleryRevealStep }) {
     !!mediaUrl &&
     (/\/video\//.test(mediaUrl) || /\.(mp4|webm|ogg)$/i.test(mediaUrl));
 
-  // Generate section ID from badge text
-  const sectionId = step?.badge?.text
-    ? step.badge.text
-        .replace(/[^a-zA-Z0-9\s]/g, "")
-        .replace(/\s+/g, "-")
-        .toLowerCase()
-    : "gallery-reveal";
+  const sectionId = "gallery-reveal";
 
   // Store the navPointName in a data attribute if provided
   const navPointDataAttr = step?.navPointName
@@ -63,16 +55,7 @@ export default function RevealStep({ step }: { step: GalleryRevealStep }) {
       )}
 
       <div className="z-1 grid col-span-12 py-32 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12">
-        {step?.badge && (
-          <Badgemodule
-            className={`hidden md:block iphone-landscape:!hidden ${step.badge.colSpan || "col-span-2"}`}
-            text={step.badge.text ?? ""}
-            subtitle={step.badge.subtitle ?? ""}
-            numberEl={step.badge.numberEl ?? ""}
-          />
-        )}
-
-        <div className="col-span-12 col-start-1 md:col-span-9 md:col-start-3 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1">
+        <div className="col-span-12 col-start-1 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1">
           <TextReveal items={items} />
         </div>
       </div>

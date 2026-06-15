@@ -1,5 +1,6 @@
 import { defineType, defineField } from 'sanity'
 import { Lightning } from '@phosphor-icons/react'
+import { hideForFlzrPage } from '../../shared/flzrVisibility'
 
 export default defineType({
     name: 'galleryScrollHighlightStep',
@@ -29,7 +30,7 @@ export default defineType({
             initialValue: false,
             group: 'navigation'
         }),
-        defineField({ name: 'badge', title: 'Badge', type: 'badgeModule', group: 'badge' }),
+        defineField({ name: 'badge', title: 'Badge', type: 'badgeModule', group: 'badge', hidden: hideForFlzrPage }),
         defineField({
             name: 'backgroundVideo',
             title: 'Background Video',

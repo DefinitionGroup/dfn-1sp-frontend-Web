@@ -1,5 +1,6 @@
 import { defineType, defineField } from 'sanity'
 import { VideoCamera } from '@phosphor-icons/react'
+import { hideForFlzrPage } from '../../shared/flzrVisibility'
 
 export default defineType({
     name: 'galleryHeroStep',
@@ -32,7 +33,8 @@ export default defineType({
             name: 'badge',
             title: 'Badge',
             type: 'badgeModule',
-            group: 'badge'
+            group: 'badge',
+            hidden: hideForFlzrPage
         }),
         defineField({
             name: 'typewriterText',

@@ -1,7 +1,6 @@
 "use client";
 import type { GalleryHeroStep, CarouselItem } from "@1sp/sanity-types";
 import HeaderImageVideoComp2 from "@flzr/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
-import Badgemodule from "@flzr/components/ui/Badgemodule";
 import { Typewriter } from "motion-plus/react";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import { useRef } from "react";
@@ -47,13 +46,7 @@ function GalleryHeroStepComponent(props: Props) {
   const language =
     (params?.locale as string) || (step as any)?.language || "en";
 
-  // Generate section ID from badge text or typewriter text
-  const sectionId = step.badge?.text
-    ? step.badge.text
-      .replace(/[^a-zA-Z0-9\s]/g, "")
-      .replace(/\s+/g, "-")
-      .toLowerCase()
-    : step.typewriterText
+  const sectionId = step.typewriterText
       ? step.typewriterText
         .substring(0, 30)
         .replace(/[^a-zA-Z0-9\s]/g, "")
@@ -81,21 +74,7 @@ function GalleryHeroStepComponent(props: Props) {
         {/* Background grid (optional visual helper) */}
 
         <div className="grid grid-cols-4 iphone-landscape:grid-cols-12 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 pt-16 sm:pt-24 lg:pt-32 pb-6 sm:pb-8 lg:pb-12">
-          {/* Badge - Responsive positioning */}
-          {step.badge && (
-            <div className="hidden md:block md:col-span-2 md:mb-0 iphone-landscape:!hidden">
-              <Badgemodule
-                text={step.badge.text ?? ""}
-                subtitle={step.badge.subtitle ?? ""}
-                numberEl={step.badge.numberEl ?? ""}
-                variant="minimal"
-                size="md"
-              />
-            </div>
-          )}
-
-          {/* Main Content */}
-          <div className={`col-span-4 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 sm:col-span-6 ${step.badge ? "md:col-span-10 md:col-start-3" : "md:col-span-12"}`}>
+          <div className="col-span-4 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 sm:col-span-6 md:col-span-12">
             {hasVisibleText(step.typewriterText) && (
               <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-regular tracking-tighter mb-4 text-neutral-800 md:mb-2">
                 <Typewriter

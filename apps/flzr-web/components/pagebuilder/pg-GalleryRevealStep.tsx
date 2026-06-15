@@ -7,7 +7,7 @@ type Props = { data: GalleryRevealStep } | GalleryRevealStep;
 
 function GalleryRevealStepWrapper(props: Props) {
   const step: GalleryRevealStep =
-    "items" in props || "badge" in props ? props : (props as any).data;
+    "data" in props ? props.data : props;
 
   if (!step) return null;
 

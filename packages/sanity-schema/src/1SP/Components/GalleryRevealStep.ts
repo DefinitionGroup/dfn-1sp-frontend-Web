@@ -1,5 +1,6 @@
 import { defineType, defineField } from "sanity";
 import { Eye } from "@phosphor-icons/react";
+import { hideForFlzrPage } from "../../shared/flzrVisibility";
 
 export default defineType({
     name: "galleryRevealStep",
@@ -33,6 +34,7 @@ export default defineType({
             title: "Badge",
             type: "badgeModule",
             group: "badge",
+            hidden: hideForFlzrPage,
         }),
         defineField({
             name: "items",

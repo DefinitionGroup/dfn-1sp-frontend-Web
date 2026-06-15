@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { hideForFlzrPage } from '../../shared/flzrVisibility'
 
 export default defineType({
     name: 'galleryStep',
@@ -21,7 +22,7 @@ export default defineType({
             }
         }),
         defineField({ name: 'headline', title: 'Headline', type: 'string' }),
-        defineField({ name: 'badge', title: 'Badge', type: 'badgeModule' }),
+        defineField({ name: 'badge', title: 'Badge', type: 'badgeModule', hidden: hideForFlzrPage }),
         defineField({ name: 'typewriter', title: 'Typewriter Text', type: 'string' }),
         defineField({ name: 'slideUpContent', title: 'Slide Up Content', type: 'slideUpContent' }),
         defineField({ name: 'carousel', title: 'Interactive Carousel', type: 'carousel' }),

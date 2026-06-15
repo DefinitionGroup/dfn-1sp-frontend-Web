@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import Badgemodule from "@flzr/components/ui/Badgemodule";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import ListContainerComponent from "@flzr/components/ui/ListContainerComponent";
 import ListItemComponent from "@flzr/components/ui/ListItemComponent";
@@ -23,9 +22,6 @@ interface ApproachSectionProps {
   subHeadline?: string;
   description?: string;
   approachDetails?: string[];
-  badgeText?: string;
-  badgeSubtitle?: string;
-  badgeNumber?: string;
   mediaType?: "image" | "video";
   backgroundImage?: CloudinaryAsset;
   backgroundVideo?: CloudinaryAsset;
@@ -39,9 +35,6 @@ export default function ApproachSection({
   subHeadline,
   description,
   approachDetails,
-  badgeText,
-  badgeSubtitle,
-  badgeNumber = "002",
   mediaType = "image",
   backgroundImage,
   backgroundVideo,
@@ -88,17 +81,7 @@ export default function ApproachSection({
         <div
           className={`z-1 grid col-span-12 py-${paddingY} gap-8 col-start-1  container mx-auto row-start-1 grid-cols-12`}
         >
-          <Badgemodule
-            className="hidden md:block md:col-start-1 md:col-span-2 md:sticky top-0 iphone-landscape:!hidden"
-            text={badgeText || t.caseStudy.approach}
-            subtitle={badgeSubtitle || t.caseStudy.approachSubtitle}
-            numberEl={badgeNumber}
-            variant="glass"
-
-          />
-
-
-          <div className="col-span-12 col-start-1 iphone-landscape:!col-span-12 px-4 md-px0 iphone-landscape:!col-start-1 md:col-span-10 md:col-start-3 mt-12 md:mt-0">
+          <div className="col-span-12 col-start-1 iphone-landscape:!col-span-12 px-4 md-px0 iphone-landscape:!col-start-1 mt-12 md:mt-0">
             <StaggeredSlideUp
               className="flex flex-col items-start gap-4 justify-start"
               delay={0.0}
@@ -125,7 +108,7 @@ export default function ApproachSection({
           </div>
 
           {approachDetails && approachDetails.length > 0 && (
-            <div className="col-span-12 col-start-1 iphone-landscape:!col-span-12 px-4 md:px-0  iphone-landscape:!col-start-1 md:col-span-8 md:col-start-3 mt-8 border-t border-white pt-4">
+            <div className="col-span-12 col-start-1 iphone-landscape:!col-span-12 px-4 md:px-0 iphone-landscape:!col-start-1 md:col-span-8 mt-8 border-t border-white pt-4">
               <ListContainerComponent>
                 {approachDetails.map((detail, idx) => (
                   <ListItemComponent key={idx} size="small" fontWeight="normal">

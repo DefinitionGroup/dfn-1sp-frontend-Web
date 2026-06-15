@@ -1,5 +1,6 @@
 import { defineType, defineField } from "sanity";
 import { Layout } from "@phosphor-icons/react";
+import { hideForFlzrPage } from "../../shared/flzrVisibility";
 
 export default defineType({
     name: "servicesHeroWithBadge",
@@ -38,12 +39,14 @@ export default defineType({
             title: "Badge Text",
             type: "string",
             group: "badge",
+            hidden: hideForFlzrPage,
         }),
         defineField({
             name: "badgeSubtitle",
             title: "Badge Subtitle",
             type: "string",
             group: "badge",
+            hidden: hideForFlzrPage,
         }),
         defineField({
             name: "badgeNumber",
@@ -51,6 +54,7 @@ export default defineType({
             type: "string",
             initialValue: "001",
             group: "badge",
+            hidden: hideForFlzrPage,
         }),
 
         // Background media
