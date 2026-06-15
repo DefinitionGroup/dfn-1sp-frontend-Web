@@ -57,6 +57,20 @@ The long-term platform should support more website channels without hardcoding c
 - Prefer membership checks like `$channel in channel` for channel arrays.
 - Pages and menus are website-specific and should continue to be scoped by channel and language.
 
+## Local Sanity Debugging Rule
+
+Before changing code for missing local pages, empty Studio lists, null Sanity results, wrong channel output, or local/prod content mismatches, verify environment and dataset first.
+
+Required first checks:
+
+- Confirm the loaded values for `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, `NEXT_PUBLIC_SANITY_API_VERSION`, and `NEXT_PUBLIC_CHANNEL`.
+- Run `npm run doctor:sanity` or `pnpm doctor:sanity` from the repo root.
+- Confirm the queried dataset contains the expected pages, homepage, menus, and global documents for the active channel/language.
+- Confirm Studio and frontend are using the same project ID, dataset, and API version.
+- Only inspect routing, schema, or GROQ code after env and dataset are verified.
+
+Never infer a code bug from `page === null`, empty Studio assigned lists, or missing channel content until the active Sanity dataset has been checked.
+
 ## Frontend Design Rules
 
 - Preserve existing website/design-system patterns when working inside the current 1SP site.
