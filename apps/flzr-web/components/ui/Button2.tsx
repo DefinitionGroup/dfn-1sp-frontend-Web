@@ -50,8 +50,8 @@ const variantStyles: Record<
     container: "h-9",
   },
   limesmall: {
-    top: "border-brand-lime/30 bg-brand-lime rounded-sm  text-neutral-900! px-4 py-1 ",
-    bottom: "border-neutral-800 bg-neutral-800 text-white! rounded-sm  px-4 py-1 ",
+    top: "border-brand-lime/30 bg-brand-lime rounded-full  text-neutral-900! px-4 py-1 ",
+    bottom: "border-neutral-800 bg-neutral-800 text-white! rounded-full  px-4 py-1 ",
     container: "h-9",
   },
 };
@@ -63,9 +63,9 @@ function Button2({ text, className, href, variant = "default", magnetic = true }
     variant in variantStyles ? variant : "default";
 
   const baseTop =
-    "pointer-events-auto text-xxs absolute  top-0 left-0 border justify-between font-medium flex w-fit hover:cursor-pointer tracking-wider group-hover/btn:-top-12 transition-all duration-250 ease-in-out";
+    "pointer-events-auto rounded-full text-xxs absolute  top-0 left-0 border justify-between font-medium flex w-fit hover:cursor-pointer tracking-wider group-hover/btn:-top-12 transition-all duration-250 ease-in-out";
   const baseBottom =
-    "pointer-events-auto text-xxs border absolute  font-medium left-0 flex justify-between top-[100%] w-fit group-hover/btn:top-0 transition-all duration-250 ease-in-out p-3 hover:cursor-pointer tracking-wider";
+    "pointer-events-auto rounded-full text-xxs border absolute  font-medium left-0 flex justify-between top-[100%] w-fit group-hover/btn:top-0 transition-all duration-250 ease-in-out p-3 hover:cursor-pointer tracking-wider";
 
   const topClass = cn(baseTop, variantStyles[safeVariant].top, className);
   const bottomClass = cn(

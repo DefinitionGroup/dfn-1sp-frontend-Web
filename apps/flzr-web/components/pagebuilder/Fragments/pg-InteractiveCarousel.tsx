@@ -164,7 +164,7 @@ function InteractiveCarousel({
     <section ref={sectionRef}>
       <div
         ref={containerRef}
-        className="container relative top-0 left-0 mx-auto w-full"
+        className="container  relative top-0 left-0  mx-auto w-full"
       >
         <div className="relative h-[800px] flex items-start">
           {/* Main Carousel */}
@@ -190,7 +190,7 @@ function InteractiveCarousel({
                 onMouseEnter={() => setIsAutoPlaying(false)}
                 onMouseLeave={() => setIsAutoPlaying(true)}
               >
-                <div className="relative w-full h-full overflow-hidden bg-gradient-to-brshadow-2xl">
+                <div className="relative w-full h-full   overflow-hidden bg-gradient-to-brshadow-2xl">
                   {/* Background media */}
                   {active.video && shouldLoadVideo(currentIndex) ? (
                     <motion.video

@@ -3,7 +3,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform, useInView } from "motion/react";
-import bg from "@/public/dot-background.png";
+import bg from "@flzr/public/dot-background.png";
 import { optimizedVideoUrl, cloudinaryPosterUrl } from "@1sp/utils/cloudinary";
 
 interface HeaderImageVideoCompProps {

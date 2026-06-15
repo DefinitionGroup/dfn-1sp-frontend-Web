@@ -70,7 +70,7 @@ function ScrollHighlightItem({
     >
 
       <motion.div
-        className="relative w-full  md:w-1/3 md:pr-4"
+        className="relative w-full  md:w-2/3 md:pr-4"
 
       >{(skill.video || skill.image) && (isMobile || isHighlighted) && (
 
@@ -79,13 +79,13 @@ function ScrollHighlightItem({
           initial={isMobile ? { opacity: 0.5, scale: 0.8 } : { opacity: 0.5, y: -112 }}
           animate={isMobile ? { opacity: isHighlighted ? 1 : 0.83, scale: isHighlighted ? 1 : 0.8 } : { opacity: 1, y: 0 }}
           transition={{ type: "spring", duration: isMobile ? 2.5 : 1.5 }}
-          className="skill-image pr-4 mb-8"
+          className="skill-image pr-4    mb-8"
         >
           {skill.video ? (
             <DeferredVideo
               src={skill.video}
-              maxWidth={400}
-              className=" w-full  object-cover absolute inset-0  h-full"
+              maxWidth={500}
+              className=" w-full  rounded-xl object-cover absolute inset-0  h-full"
               mountDelay={200}
             />
           ) : (
@@ -93,8 +93,8 @@ function ScrollHighlightItem({
               src={skill.image!}
               alt={skill.name || "Service background"}
               fill
-              sizes="(max-width: 640px) 75vw, 400px"
-              className=" w-full md:w-full object-cover"
+              sizes="(max-width: 640px) 75vw, 500px"
+              className=" w-full md:w-full rounded-2xl object-cover"
             />
           )}
         </motion.div>)}
@@ -119,20 +119,7 @@ function ScrollHighlightItem({
             {skill.text}
           </motion.p>
         )}
-        {/* {isHighlighted && (
-          <motion.button
-            className="text-xs text-white bg-violet-500  inline-block w-fit px-4 py-2 hover:cursor-pointer hover:bg-black transition-all"
-            initial={{ opacity: 0, y: 22 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: "spring", }}
-            onClick={(e) => {
-              e.stopPropagation();
-              onOpenModal?.(skill);
-            }}
-          >
-            {skill.buttonLabel || "Learn More"}
-          </motion.button>
-        )} */}
+
 
       </div>
     </motion.li >
@@ -368,7 +355,7 @@ function Stylesheet() {
         list-style: none;
         padding: 0;
         margin: 0;
-        color: white;
+        color: var(--color-neutral-600);
         display: flex;
         flex-direction: column;
         width: 100%;
@@ -399,7 +386,7 @@ function Stylesheet() {
       }
 
       @media (min-width: 640px) {
-        .skill-item {
+        .skill-item { 
           max-width: min(45ch, 80vw);
           padding: 1.5rem 0;
         }
@@ -422,7 +409,7 @@ function Stylesheet() {
         width: 100%;
         aspect-ratio: 16 / 12;
         border-radius: 0.5rem;
-        overflow: hidden;
+        overflow: hidden; 
       }
 
       @media (min-width: 640px) {

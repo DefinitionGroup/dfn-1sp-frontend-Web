@@ -152,8 +152,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
     isFlzrChannel
       ? "/units/FLZR/flzr_logo.svg"
       : detectedTheme === "dark"
-      ? "/ci/1sp-fulllogotype-blk.svg"
-      : "/ci/1sp-fulllogotype.svg";
+        ? "/ci/1sp-fulllogotype-blk.svg"
+        : "/ci/1sp-fulllogotype.svg";
   const logoUrl = imageLogo;
   const logoAlt = isFlzrChannel ? "FLZR Logo" : "1SP Logo";
   const logoClassName = [
@@ -258,7 +258,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               delay: 0.7,
             }
         }
-        className={`floating-nav z-99999    hidden fixed top-6 left-0 backdrop-blur-xl   rounded-md w-[90%] h-16   px-6  right-0 md:grid items-center grid-cols-12 py-2 iphone-landscape:scale-70 iphone-landscape:top-2 mx-auto ${textColor} ${className}`}
+        className={`floating-nav z-99999 rounded-full  hidden fixed top-6 left-0 backdrop-blur-md  w-fit h-16   px-6  right-0 md:grid items-center grid-cols-12 py-2 iphone-landscape:scale-70 iphone-landscape:top-2 mx-auto ${textColor} ${className}`}
       >
         <div className="col-span-2 flex items-center pr-16  justify-start">
           <motion.div

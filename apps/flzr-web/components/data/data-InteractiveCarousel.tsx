@@ -144,8 +144,8 @@ export default function SmartCarousel({
 
   if (!carouselItems.length) {
     return (
-      <section className="px-2 sm:px-4 md:px-0">
-        <div className="container mx-auto w-full">
+      <section className="px-2 sm:px-4  md:px-0">
+        <div className="container mx-auto border border-2  border-red-500  max-w-7xl">
           <div className="relative h-[60vh] sm:h-[70vh] iphone-landscape:!h-dvh md:h-[800px] flex items-center justify-center">
             <div className="text-gray-400 text-sm sm:text-base text-center px-4">
               No case studies found for Smart Carousel
@@ -203,7 +203,7 @@ export default function SmartCarousel({
     <section className="px-2 sm:px-4 md:px-0">
       <div
         ref={containerRef}
-        className=" relative top-0 mx-auto w-full"
+        className=" relative top-0 rounded-4xl overflow-hidden mx-auto w-full max-w-7xl "
       >
         <div className="relative h-[60vh] sm:h-[70vh] iphone-landscape:!h-dvh md:h-[800px] flex items-start">
           {/* Main Carousel */}
@@ -347,13 +347,13 @@ export default function SmartCarousel({
 
           {/* Navigation Arrows (match Plaintext classes) */}
           <motion.button
-            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm  items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
+            className="hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 w-12 h-12 hover:bg-gray-300 backdrop-blur-sm rounded-full  items-center justify-center text-black bg-white/20 transition-colors z-10"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => paginate(-1)}
           >
             <svg
-              className="w-12 h-12"
+              className="w-8 h-8"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -361,20 +361,20 @@ export default function SmartCarousel({
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth={1}
+                strokeWidth={0.5}
                 d="M15 19l-7-7 7-7"
               />
             </svg>
           </motion.button>
 
           <motion.button
-            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm  items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
+            className="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 hover:bg-gray-300 backdrop-blur-sm  items-center justify-center rounded-full  text-black bg-white/20 transition-colors z-10"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => paginate(1)}
           >
             <svg
-              className="w-12 h-12"
+              className="w-8 h-8"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -382,7 +382,7 @@ export default function SmartCarousel({
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth={1}
+                strokeWidth={0.51}
                 d="M9 5l7 7-7 7"
               />
             </svg>
@@ -391,12 +391,12 @@ export default function SmartCarousel({
 
         {/* Dots Indicator (match Plaintext positioning & style) */}
         <div className="absolute w-full bottom-2 sm:bottom-4 z-30">
-          <div className="flex justify-center mt-4 sm:mt-8 mx-auto space-x-1.5 sm:space-x-2 bg-gray-900/50 backdrop-blur-xl h-8 sm:h-10 items-center px-4 sm:px-8  w-fit">
+          <div className="flex justify-center mt-4 sm:mt-8 rounded-4xl mx-auto space-x-1.5 sm:space-x-2 bg-gray-900/50 backdrop-blur-md h-8 sm:h-10 items-center px-4 sm:px-8  w-fit">
             {carouselItems.map((_, index) => (
               <motion.button
                 key={index}
-                className={`h-1.5 sm:h-2  transition-all hover:bg-violet-400 duration-300 cursor-pointer ${index === currentIndex ? "bg-violet-400 min-w-8 sm:min-w-16" : "bg-gray-100 min-w-1.5 sm:min-w-2"}`}
-                whileHover={{ scale: 1.05 }}
+                className={`h-1.5 sm:h-2  transition-all rounded-full  hover:bg-violet-400 duration-300 cursor-pointer ${index === currentIndex ? "bg-violet-400 min-w-8 sm:min-w-16" : "bg-gray-100 min-w-1.5 sm:min-w-2"}`}
+                whileHover={{ scale: 1.15 }}
                 whileTap={{ scale: 0.8 }}
                 onClick={() => {
                   setDirection(index > currentIndex ? 1 : -1);
@@ -409,7 +409,7 @@ export default function SmartCarousel({
         </div>
 
         {/* Thumbnail Strip (match Plaintext absolute positioning) */}
-        <div className="absolute flex justify-center w-full hidden iphone:hidden md:block bottom-16 max-w-[100%] overflow-x-auto scrollbar-hide md:bottom-[64px] z-30 px-2">
+        <div className="absolute flex justify-center w-full hidden rounded-4xl iphone:hidden md:block bottom-16 max-w-[100%] overflow-x-auto scrollbar-hide md:bottom-[64px] z-30 px-2">
           <div
             ref={stripRef}
             className={`flex justify-center mt-4 sm:mt-8 space-x-1.5 sm:space-x-2 md:space-x-4 pt-2 sm:pt-4 md:pb-4 ${isScrollable ? "overflow-x-auto scrollbar-hide" : ""}`}
@@ -418,7 +418,7 @@ export default function SmartCarousel({
               <Link
                 key={item.id}
                 href={item.linkHref || "#"}
-                className={`relative flex-shrink-0 w-10 sm:w-12 md:w-22 h-8 sm:h-12 md:h-18  overflow-hidden outline-1 sm:outline-2 md:outline-3 transition-all hover:scale-105 active:scale-95 ${index === currentIndex ? "outline-violet-500" : "outline-transparent"}`}
+                className={`relative flex-shrink-0 w-10 rounded-2xl  sm:w-12 md:w-22 h-8 sm:h-12 md:h-18  overflow-hidden outline-1 sm:outline-2 md:outline-3 transition-all hover:scale-105 active:scale-95 ${index === currentIndex ? "outline-violet-500" : "outline-transparent"}`}
               >
                 {item.image && (
                   <Image
