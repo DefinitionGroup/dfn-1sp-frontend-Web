@@ -8,11 +8,12 @@ import {
   motion,
   AnimatePresence,
 } from "motion/react";
-import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
+import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
 import Image from "next/image";
 import { useFooterMenu } from "../menu/FooterMenuContext";
 import { useNavbarMenu } from "../menu/NavbarMenuContext";
 import { useNavColor } from "../menu/NavColorContext";
+import { SITE_BRAND } from "@1sp/site-config";
 
 const AuroraShaderBackground = dynamic(
   () => import("./AuroraShaderBackground"),
@@ -136,9 +137,7 @@ export default function HamburgerGradientMenu({
   const resolvedColor = color ?? navColor ?? "light";
 
   const imageLogo =
-    resolvedColor === "dark"
-      ? "/ci/1sp-fulllogotype-blk.svg"
-      : "/ci/1sp-fulllogotype.svg";
+    resolvedColor === "dark" ? SITE_BRAND.logo.dark : SITE_BRAND.logo.light;
 
   useEffect(() => {
     if (open) {
@@ -213,7 +212,7 @@ export default function HamburgerGradientMenu({
       >
         <Image
           src={imageLogo}
-          alt="1SP Logo"
+          alt={SITE_BRAND.logo.alt}
           width={64}
           height={64}
           className="block h-auto w-16 object-contain md:hidden"
@@ -296,13 +295,13 @@ function OverlayRoot({
         >
           <Image
             src={imageLogo}
-            alt="1SP Logo"
+            alt={SITE_BRAND.logo.alt}
             width={190}
             height={190}
             className="object-contain "
           />
           <span className="text-xs uppercase -tracking-[0.25em] text-neutral-200">
-            1SP
+            {SITE_BRAND.shortName}
           </span>
         </motion.div>
 
@@ -326,7 +325,7 @@ function OverlayRoot({
               >
                 <Image
                   src={imageLogo}
-                  alt="1SP Logo"
+                  alt={SITE_BRAND.logo.alt}
                   width={64}
                   height={64}
                   className="object-contain drop-shadow-[0_0_24px_rgba(0,0,0,0.35)]"

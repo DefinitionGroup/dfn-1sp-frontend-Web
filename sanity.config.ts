@@ -14,8 +14,8 @@ import { syncServiceGroupRelationships } from './sanity/lib/syncRelationships'
 import { revalidateAction } from './sanity/plugins/revalidateAction'
 
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
-import { apiVersion, dataset, projectId } from './sanity/env'
-import { schema } from './sanity/schemaTypes'
+import { apiVersion, dataset, projectId } from '@1sp/sanity-queries/env'
+import { schema } from '@1sp/sanity-schema'
 import { structure } from './sanity/structure'
 import { locations, mainDocuments } from './sanity/presentation/resolve';
 
@@ -49,6 +49,25 @@ const generateTemplates = (excludeBase = false) => {
         schemaType: 'menu',
         parameters: [{ name: 'channel', type: 'string' }, { name: 'language', type: 'string' }],
         value: (params: any) => ({ channel: params.channel || channel.id, language: params.language || lang }),
+      });
+
+      [
+        { schemaType: 'caseStudy', title: 'Case Study' },
+        { schemaType: 'services', title: 'Service' },
+        { schemaType: 'person', title: 'Person' },
+        { schemaType: 'client', title: 'Client' },
+        { schemaType: 'unit', title: 'Unit' },
+      ].forEach((template) => {
+        templates.push({
+          id: `${template.schemaType}-${channel.id}-${lang}`,
+          title: `${template.title} (${channel.title} - ${lang.toUpperCase()})`,
+          schemaType: template.schemaType,
+          parameters: [{ name: 'channel', type: 'string' }, { name: 'language', type: 'string' }],
+          value: (params: any) => ({
+            channel: [params.channel || channel.id],
+            language: params.language || lang,
+          }),
+        });
       });
     });
   });

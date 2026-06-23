@@ -11,13 +11,13 @@
  * - Person/Unit JSON-LD for team members and business units in content
  * - Hero video poster preload for LCP optimization
  */
-import { getAllCases, getAllServices, getPageBySlug } from "@/lib/sanity/queries";
-import { cookies } from "next/headers";
+import { getAllCases, getAllServices, getPageBySlug } from "@1sp/sanity-queries";
+import { getChannel } from "@1sp/site-config/server";
 import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
-import { resolveImageUrl } from "@/sanity/lib/image";
+import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
@@ -51,8 +51,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const cookieStore = await cookies();
-  const channel = cookieStore.get("channel")?.value || "1spWeb";
+  const channel = await getChannel();
   const { locale } = await params;
   const language = locale || "en";
 
@@ -105,8 +104,7 @@ export default async function ServicesPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const cookieStore = await cookies();
-  const channel = cookieStore.get("channel")?.value || "1spWeb";
+  const channel = await getChannel();
   const { locale } = await params;
   const language = locale || "en";
 
@@ -122,7 +120,7 @@ export default async function ServicesPage({
   }
 
   const navbarVariant = page?.navbarVariant || "light";
-  const contentBlocks = page.content1sp as any[] | undefined;
+  const contentBlocks = page.content as any[] | undefined;
   const needsAllCases = hasAutoCaseListingBlocks(contentBlocks);
   const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
 
@@ -207,9 +205,9 @@ export default async function ServicesPage({
       <HeroPreloadLinks {...heroPreload} />
       <HamburgerGradientMenu />
       <div className="min-h-screen px-1 md:px-2 mt-2">
-        {page.content1sp ? (
+        {page.content ? (
           <PageBuilder
-            content={page.content1sp}
+            content={page.content}
             language={language}
             deferAfter={2}
           />

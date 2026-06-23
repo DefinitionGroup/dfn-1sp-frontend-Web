@@ -1,15 +1,23 @@
 "use client";
 
 import React from "react";
-import type { HeroShowtime as HeroShowtimeType } from "@/types/sanity.types";
+import type { HeroShowtime as HeroShowtimeType } from "@1sp/sanity-types";
 
 import HeaderImageVideoComp2 from "@/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import Button2 from "../ui/Button2";
 import MixedType from "@/components/ui/MixedType";
 
-import { assetUrl, resolveLink, ctaToButtonProps } from "@/utils/utils";
+import { assetUrl, resolveLink, ctaToButtonProps } from "@1sp/utils/cloudinary";
 
+function isVideoAsset(asset?: unknown, url?: string): boolean {
+  const resourceType =
+    typeof asset === "object" && asset !== null && "resource_type" in asset
+      ? String((asset as { resource_type?: string }).resource_type)
+      : "";
+
+  return resourceType === "video" || /\.(mp4|webm|mov)(?:$|\?)/i.test(url ?? "");
+}
 
 function HeroShowtime({ data }: { data: HeroShowtimeType }) {
   const {
@@ -25,8 +33,11 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
     hideFromNav = false,
   } = (data || {}) as HeroShowtimeType & { hideFromNav?: boolean };
 
-  const imageUrl = assetUrl(backgroundImage) || "/hr.png";
-  const videoUrl = assetUrl(backgroundVideo);
+  const backgroundImageUrl = assetUrl(backgroundImage);
+  const backgroundImageIsVideo = isVideoAsset(backgroundImage, backgroundImageUrl);
+  const imageUrl = backgroundImageIsVideo ? "/hr.png" : backgroundImageUrl || "/hr.png";
+  const videoUrl = assetUrl(backgroundVideo) || (backgroundImageIsVideo ? backgroundImageUrl : undefined);
+  const shouldUseVideo = Boolean((useVideo || backgroundImageIsVideo) && videoUrl);
   const HeadingTag = headingTag === "h1" ? "h1" : "h2";
 
   // Generate section ID from heading or use a default
@@ -51,7 +62,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
     >
       {/* Background media wrapper */}
       <HeaderImageVideoComp2
-        useVideo={!!useVideo && !!videoUrl}
+        useVideo={shouldUseVideo}
         imageSrc={imageUrl}
         enableParallax={true}
         videoSrc={videoUrl}

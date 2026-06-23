@@ -1,13 +1,13 @@
 "use client";
 import React from "react";
 import Badgemodule from "@/components/ui/Badgemodule";
-import type { GalleryPeopleStep, CloudinaryAsset } from "@/types/sanity.types";
+import type { GalleryPeopleStep, CloudinaryAsset } from "@1sp/sanity-types";
 import PeopleShowcaseHero from "../Fragments/pg-PeopleShowcaseHero";
 import GridBackground from "@/components/ui/GridBackground";
 import CtaMiniComponent from "../Fragments/pg-CtaMiniComponent";
-import { resolveLink } from "@/utils/utils";
+import { resolveLink } from "@1sp/utils/cloudinary";
 import { useParams } from "next/navigation";
-import { hasVisibleText } from "@/lib/text-content";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 type Member = {
   _id?: string;

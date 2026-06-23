@@ -8,9 +8,9 @@ import type {
   GalleryCardsStep,
   CardItem,
   CloudinaryAsset,
-} from "@/types/sanity.types";
-import { assetUrl } from "@/utils/utils";
-import { hasVisibleText } from "@/lib/text-content";
+} from "@1sp/sanity-types";
+import { assetUrl } from "@1sp/utils/cloudinary";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 type CardsStepProps = {
   step: GalleryCardsStep & {

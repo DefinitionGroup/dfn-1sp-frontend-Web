@@ -3,17 +3,17 @@
 import React from "react";
 import HeroVideoComp from "@/components/pagebuilder/Fragments/HeroVideoComp";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
-import { assetUrl } from "@/utils/utils";
+import { assetUrl } from "@1sp/utils/cloudinary";
 import TypewriterRotator from "../ui/TypewriterRotator";
 import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import type {
   OneSPHeader,
   CloudinaryAsset,
-} from "@/types/sanity.types";
-import { useMediaQuery } from "@/hooks/use-media-query";
-import { SMALL_TOUCH_LANDSCAPE_MEDIA_QUERY } from "@/lib/responsive";
-import { hasVisibleText } from "@/lib/text-content";
+} from "@1sp/sanity-types";
+import { useMediaQuery } from "@1sp/utils/hooks/use-media-query";
+import { SMALL_TOUCH_LANDSCAPE_MEDIA_QUERY } from "@1sp/utils/responsive";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 function useIphoneLandscape(): boolean {
   return useMediaQuery(SMALL_TOUCH_LANDSCAPE_MEDIA_QUERY);

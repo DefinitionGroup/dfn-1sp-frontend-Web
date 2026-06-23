@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import ComponentLoader from "@/components/ui/ComponentLoader";
-import type { ShowtimeGallery as ShowtimeGalleryType } from "@/types/sanity.types";
+import type { ShowtimeGallery as ShowtimeGalleryType } from "@1sp/sanity-types";
 
 const ShowtimeGallery = dynamic(() => import("../pg-ShowtimeGallery"), {
   loading: () => <ComponentLoader />,

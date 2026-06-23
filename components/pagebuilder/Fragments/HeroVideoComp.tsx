@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { getHeroMediaVariants } from "@/lib/hero-media";
+import { getHeroMediaVariants } from "@1sp/utils/hero-media";
 
 const HERO_REVEAL_SETTLE_MS = 450;
 

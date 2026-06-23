@@ -4,11 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
-import { useOptimizedTransitionRouter } from "@/hooks/use-optimized-transition-router";
+import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
 import { usePathname } from "next/navigation";
 import CaseGalleryMenu from "../data/data-CaseGalleryMenu";
 import Button2 from "../ui/Button2";
-import { NavbarMenu } from "@/types/menu.types";
+import { NavbarMenu } from "@1sp/sanity-types/menu";
 
 interface CaseStudy {
   _id: string;

@@ -5,9 +5,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import CookiebotBanner from "@/components/CookiebotBanner";
 import GoogleAnalyticsConsent from "@/components/GoogleAnalyticsConsent";
-import { getMetadataBaseUrl } from "@/lib/site-url";
-
-const GOOGLE_MEASUREMENT_ID = "G-JTERFZC7J4";
+import { getMetadataBaseUrl } from "@1sp/utils/site-url";
+import { SITE_BRAND } from "@1sp/site-config";
 
 const aspekta = localFont({
   src: [
@@ -22,22 +21,21 @@ const aspekta = localFont({
 export const metadata: Metadata = {
   metadataBase: getMetadataBaseUrl(),
   title: {
-    default: "1SP Agency | People-Powered Brand Engagement",
+    default: SITE_BRAND.seo.defaultTitle,
     template: "%s",
   },
-  description:
-    "1SP is a full-service agency specializing in brand engagement, experiential marketing, creative content, and talent management.",
+  description: SITE_BRAND.seo.defaultDescription,
   openGraph: {
     type: "website",
-    siteName: "1SP Agency",
-    locale: "en",
+    siteName: SITE_BRAND.name,
+    locale: SITE_BRAND.defaultLocale,
   },
   twitter: {
     card: "summary_large_image",
   },
-  verification: {
-    google: "23_GTe316ns0X3IPPdTvXNPW1KYRji5n9GdrvFLBoWE",
-  },
+  verification: SITE_BRAND.seo.googleSiteVerification
+    ? { google: SITE_BRAND.seo.googleSiteVerification }
+    : undefined,
   robots: {
     index: true,
     follow: true,
@@ -60,7 +58,11 @@ export default function RootLayout({
       </head>
       <body className="antialiased" suppressHydrationWarning>
         {children}
-        <GoogleAnalyticsConsent measurementId={GOOGLE_MEASUREMENT_ID} />
+        {SITE_BRAND.tracking.googleAnalyticsId ? (
+          <GoogleAnalyticsConsent
+            measurementId={SITE_BRAND.tracking.googleAnalyticsId}
+          />
+        ) : null}
         <Analytics />
         <SpeedInsights />
       </body>

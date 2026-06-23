@@ -9,8 +9,8 @@ import { TracingBeam } from "@/components/ui/tracing-beam";
 import type {
   GalleryScrollHighlightStep,
   CloudinaryAsset,
-} from "@/types/sanity.types";
-import { assetUrl, resolveLink, withCacheKey } from "@/utils/utils";
+} from "@1sp/sanity-types";
+import { assetUrl, resolveLink, withCacheKey } from "@1sp/utils/cloudinary";
 import { useParams } from "next/navigation";
 
 type RawItem =

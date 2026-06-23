@@ -1,5 +1,5 @@
 "use client";
-import type { GalleryCardsStep } from "@/types/sanity.types";
+import type { GalleryCardsStep } from "@1sp/sanity-types";
 import CardsStep from "./ShowtimeGallerySteps/pg-CardsStep";
 
 

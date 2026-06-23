@@ -1,7 +1,7 @@
 import PeopleShowcaseHero, {
   type MemberItem,
 } from "@/components/pagebuilder/Fragments/pg-PeopleShowcaseHero";
-import { getSmartPeople } from "@/lib/sanity/queries";
+import { getSmartPeople } from "@1sp/sanity-queries";
 
 type CloudinaryAsset = {
   _type?: string;

@@ -23,11 +23,12 @@
  * - Canonical URLs to prevent duplicate content
  * - Twitter card metadata for social sharing
  */
-import { getCaseBySlug, getAllCaseSlugs, getAllCases } from "@/lib/sanity/queries";
+import { getCaseBySlug, getAllCaseSlugs, getAllCases } from "@1sp/sanity-queries";
 import { notFound } from "next/navigation";
 import CaseStudyPageClient from "./CaseStudyPageClient";
 import SiteWrapper from "@/components/SiteWrapper";
 import type { Metadata } from "next";
+import { getChannel } from "@1sp/site-config/server";
 import {
   JsonLdScript,
   generateCaseStudyJsonLd,
@@ -71,7 +72,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const channel = "1spWeb";
+  const channel = await getChannel();
   const language = locale || "en";
 
   const caseStudy = await getCaseBySlug(slug, channel, language);
@@ -130,7 +131,7 @@ export default async function CaseStudyPage({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params;
-  const channel = "1spWeb";
+  const channel = await getChannel();
   const language = locale || "en";
 
   // Uses cached fetch from centralized data layer

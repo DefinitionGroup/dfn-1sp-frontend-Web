@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import GridBackground from "@/components/ui/GridBackground";
-import type { CTA } from "@/types/sanity.types";
-import { ctaToButtonProps } from "@/utils/utils";
+import type { CTA } from "@1sp/sanity-types";
+import { ctaToButtonProps } from "@1sp/utils/cloudinary";
 import Button2 from "../ui/Button2";
 
 

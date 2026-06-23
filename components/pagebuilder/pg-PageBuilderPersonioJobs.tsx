@@ -4,11 +4,11 @@ import React from "react";
 import { useParams } from "next/navigation";
 import Button2 from "@/components/ui/Button2";
 import GridBackground from "@/components/ui/GridBackground";
-import { client } from "@/sanity/lib/client";
-import { UNIT_LOGO_FLOAT_QUERY } from "@/sanity/lib/queries";
-import { assetUrl } from "@/utils/utils";
-import type { CloudinaryAsset } from "@/types/sanity.types";
-import { hasVisibleText } from "@/lib/text-content";
+import { client } from "@1sp/sanity-queries/client";
+import { UNIT_LOGO_FLOAT_QUERY } from "@1sp/sanity-queries/groq";
+import { assetUrl } from "@1sp/utils/cloudinary";
+import type { CloudinaryAsset } from "@1sp/sanity-types";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 type PersonioJob = {
   id: string;

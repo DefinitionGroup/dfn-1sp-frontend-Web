@@ -24,12 +24,12 @@
  */
 import { PageBuilder } from "@/components/PageBuilder";
 // import CookieDeclaration from "@/components/CookieDeclaration";
-import { getAllCases, getAllPageSlugs, getAllServices, getPageBySlug } from "@/lib/sanity/queries";
+import { getAllCases, getAllPageSlugs, getAllServices, getPageBySlug } from "@1sp/sanity-queries";
 import NotFound from "@/components/ui/not-found";
-import { cookies } from "next/headers";
 import SiteWrapper from "@/components/SiteWrapper";
+import { getChannel } from "@1sp/site-config/server";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
-import { resolveImageUrl } from "@/sanity/lib/image";
+import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
@@ -72,8 +72,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const cookieStore = await cookies();
-  const channel = cookieStore.get("channel")?.value || "1spWeb";
+  const channel = await getChannel();
   const language = locale || "en";
 
   // Uses cached fetch - shared with page component
@@ -129,16 +128,14 @@ export default async function Page({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params;
-
-  const cookieStore = await cookies();
-  const channel = cookieStore.get("channel")?.value || "1spWeb";
+  const channel = await getChannel();
   const language = locale || "en";
 
   // Uses cached fetch - deduped with generateMetadata call
   const page = await getPageBySlug(slug, channel, language);
 
   const navbarVariant = page?.navbarVariant || "light";
-  const contentBlocks = page?.content1sp as any[] | undefined;
+  const contentBlocks = page?.content as any[] | undefined;
   const needsAllCases = hasAutoCaseListingBlocks(contentBlocks);
   const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
 
@@ -217,10 +214,10 @@ export default async function Page({
       <HeroPreloadLinks {...heroPreload} />
       <HamburgerGradientMenu />
       <div className="  min-h-screen px-1 md:px-2">
-        {page?.content1sp ? (
+        {page?.content ? (
           <>
             <PageBuilder
-              content={page.content1sp}
+              content={page.content}
               language={language}
               deferAfter={2}
             />

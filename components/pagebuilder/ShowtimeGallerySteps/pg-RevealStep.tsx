@@ -4,8 +4,8 @@ import React from "react";
 import GridBackground from "@/components/ui/GridBackground";
 import Badgemodule from "@/components/ui/Badgemodule";
 import TextReveal, { type RevealItem } from "../../ui/TextReveal";
-import type { BadgeModule, CloudinaryAsset } from "@/types/sanity.types";
-import { assetUrl } from "@/utils/utils";
+import type { BadgeModule, CloudinaryAsset } from "@1sp/sanity-types";
+import { assetUrl } from "@1sp/utils/cloudinary";
 import HeaderImageVideoComp2 from "@/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
 
 export type GalleryRevealStep = {

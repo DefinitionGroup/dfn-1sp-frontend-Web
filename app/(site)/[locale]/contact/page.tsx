@@ -10,14 +10,14 @@
  * - ContactPage JSON-LD + BreadcrumbList structured data
  * - Hero video poster preload for LCP optimization
  */
-import { cookies } from "next/headers";
 import { PageBuilder } from "@/components/PageBuilder";
 import SiteWrapper from "@/components/SiteWrapper";
+import { getChannel } from "@1sp/site-config/server";
 import NotFound from "@/components/ui/not-found";
 import ContactForm from "@/components/ui/ContactForm";
-import { getAllCases, getAllServices, getPageBySlug } from "@/lib/sanity/queries";
+import { getAllCases, getAllServices, getPageBySlug } from "@1sp/sanity-queries";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
-import { resolveImageUrl } from "@/sanity/lib/image";
+import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
@@ -51,8 +51,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const cookieStore = await cookies();
-  const channel = cookieStore.get("channel")?.value || "1spWeb";
+  const channel = await getChannel();
   const { locale } = await params;
   const language = locale || "en";
 
@@ -106,8 +105,7 @@ export default async function ContactPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const cookieStore = await cookies();
-  const channel = cookieStore.get("channel")?.value || "1spWeb";
+  const channel = await getChannel();
   const language = locale || "en";
 
   // Uses cached fetch from centralized data layer
@@ -122,7 +120,7 @@ export default async function ContactPage({
   }
 
   const navbarVariant = page?.navbarVariant || "light";
-  const contentBlocks = page.content1sp as any[] | undefined;
+  const contentBlocks = page.content as any[] | undefined;
   const needsAllCases = hasAutoCaseListingBlocks(contentBlocks);
   const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
 
@@ -195,9 +193,9 @@ export default async function ContactPage({
       <HamburgerGradientMenu />
       <div className="min-h-screen">
         <div className="min-h-screen px-1 md:px-2">
-          {page.content1sp?.length ? (
+          {page.content?.length ? (
             <PageBuilder
-              content={page.content1sp}
+              content={page.content}
               language={language}
               deferAfter={2}
             />

@@ -1,5 +1,5 @@
 "use client";
-import type { GalleryRevealStep } from "@/types/sanity.types";
+import type { GalleryRevealStep } from "@1sp/sanity-types";
 import RevealStep from "./ShowtimeGallerySteps/pg-RevealStep";
 
 

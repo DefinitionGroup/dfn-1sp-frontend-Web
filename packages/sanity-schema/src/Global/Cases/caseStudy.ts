@@ -1,0 +1,330 @@
+import { defineType, defineField } from 'sanity'
+import { ChartBarHorizontal } from '@phosphor-icons/react'
+import { ChartBar } from '@phosphor-icons/react'
+import { Equalizer } from '@phosphor-icons/react'
+import { websiteChannelOptions } from '../../shared/channelOptions'
+
+export default defineType({
+    name: 'caseStudy',
+    title: 'Case Study',
+    type: 'document',
+    groups: [
+        { name: 'content', title: 'Content' },
+        { name: 'media', title: 'Media' },
+        { name: 'relations', title: 'Relations' },
+        { name: 'pageBuilder', title: 'Page Builder' },
+        { name: 'settings', title: 'Settings' },
+    ],
+    fields: [
+        defineField({
+            name: 'language',
+            title: 'Language',
+            type: 'string',
+            readOnly: true,
+            hidden: true,
+            initialValue: 'de',
+            description: 'Managed by i18n tooling; do not edit manually.',
+            group: 'settings'
+        }),
+        {
+            name: 'title',
+            title: 'Title',
+            type: 'string',
+            validation: (Rule) => Rule.required(),
+            group: 'content'
+        },
+        {
+            name: 'slug',
+            title: 'Slug',
+            type: 'slug',
+            group: 'content',
+            options: {
+                source: 'title',
+                maxLength: 96,
+                slugify: (input: string) => {
+                    const baseSlug = input
+                        .toLowerCase()
+                        .replace(/\s+/g, "-")
+                        .replace(/[^\w-]+/g, "")
+                        .replace(/--+/g, "-")
+                        .replace(/^-+/, "")
+                        .replace(/-+$/, "");
+                    return baseSlug;
+                },
+                isUnique: async (
+                    slug: string,
+                    context: {
+                        document?: { _id: string; language?: string };
+                        getClient: (options: { apiVersion: string }) => any;
+                    }
+                ) => {
+                    const { document, getClient } = context;
+                    const language = document?.language || "de";
+                    const client = getClient({ apiVersion: "2021-03-25" });
+
+                    const baseId = document?._id.replace(/^drafts\./, "");
+
+                    const query = `*[
+                        _type == "caseStudy" && 
+                        slug.current == $slug && 
+                        language == $language && 
+                        !(_id in [$draftId, $publishedId])
+                    ][0]`;
+                    const params = {
+                        slug: slug,
+                        language: language,
+                        draftId: `drafts.${baseId}`,
+                        publishedId: baseId,
+                    };
+
+                    const existingDoc = await client.fetch(query, params);
+                    return !existingDoc;
+                },
+            },
+            validation: (Rule) => Rule.required()
+        },
+        {
+            name: 'description',
+            title: 'Description',
+            type: 'text',
+            rows: 4,
+            group: 'content'
+        },
+        {
+            name: 'subtitle',
+            title: 'Subtitle',
+            type: 'string',
+            description: 'A short subtitle or tagline for the case study',
+            group: 'content'
+        },
+        {
+            name: 'mainImage',
+            title: 'Main Image',
+            type: 'cloudinary.asset',
+            group: 'media'
+        },
+        {
+            name: 'isVerticalVideo',
+            title: 'Is Vertical Video',
+            type: 'boolean',
+            description: 'Indicates if the main video is vertical',
+            group: 'media'
+        },
+        {
+            name: 'mainVideo',
+            title: 'Main Video',
+            type: 'cloudinary.asset',
+            description: 'Optional video to display instead of main image',
+            group: 'media'
+        },
+        {
+            name: 'websiteUrl',
+            title: 'Website URL',
+            type: 'url',
+            description: 'External website URL',
+            group: 'content'
+        },
+        {
+            name: 'websiteUrlText',
+            title: 'Website URL Text',
+            type: 'string',
+            description: 'Text for the website link button (e.g., "Visit Website")',
+            group: 'content'
+        },
+        // {
+        //     name: 'mediaGallery',
+        //     title: 'Media Gallery',
+        //     type: 'array',
+        //     of: [{ type: 'mediaGalleryItem' }],
+        //     validation: (Rule) => Rule.max(4).warning('Maximum 4 media items recommended'),
+        //     description: 'Upload up to 4 media items (images or videos) for use in the case study page',
+        //     group: 'media'
+        // },
+
+        {
+            name: 'units',
+            title: 'Related Units',
+            type: 'array',
+            of: [
+                {
+                    type: 'reference',
+                    to: [{ type: 'unit' }],
+                    options: {
+                        filter: ({ document }: { document: any }) => {
+                            const currentLanguage = document?.language || 'de';
+                            return {
+                                filter: '_type == "unit" && language == $language',
+                                params: { language: currentLanguage }
+                            };
+                        }
+                    }
+                }
+            ],
+            description: 'Units related to this case study. Use "Save & Sync Relationships" to automatically update the units with this case study reference.',
+            group: 'relations'
+        },
+        {
+            name: 'client',
+            title: 'Related Client',
+            type: 'reference',
+            to: [{ type: 'client' }],
+            options: {
+                filter: ({ document }: { document: any }) => {
+                    const currentLanguage = document?.language || 'de';
+                    return {
+                        filter: '_type == "client" && language == $language',
+                        params: { language: currentLanguage }
+                    };
+                }
+            },
+            description: 'Client for this case study. Use "Save & Sync Relationships" to automatically update the client with this case study reference.',
+            group: 'relations'
+        },
+        {
+            name: 'people',
+            title: 'Related People',
+            type: 'array',
+            of: [{ type: 'personReference' }],
+            description: 'People involved in this case study. Mark one as primary contact. Use "Save & Sync Relationships" to automatically sync relationships.',
+            group: 'relations'
+        },
+        {
+            name: 'publishedAt',
+            title: 'Published At',
+            type: 'datetime',
+            initialValue: () => new Date().toISOString(),
+            group: 'settings'
+        },
+        {
+            name: 'isPublished',
+            title: 'Published',
+            type: 'boolean',
+            initialValue: true,
+            group: 'settings'
+        },
+        {
+            name: 'channel',
+            title: 'Channel',
+            type: 'array',
+            of: [{ type: 'string' }],
+            options: {
+                list: websiteChannelOptions,
+            },
+            group: 'settings'
+        },
+        {
+            name: 'connectedDataCarouselPromo1SP',
+            title: 'ConnectedDataCarousel Promo 1SP',
+            type: 'boolean',
+            description: 'Include this case study in the Smart Carousel for 1SP Website',
+            initialValue: false,
+            hidden: ({ document }: { document: any }) => {
+                const channels = document?.channel || [];
+                return !channels.includes('1spWeb');
+            },
+            group: 'settings'
+        },
+        {
+            name: 'connectedDataCarouselPromoMSM',
+            title: 'ConnectedDataCarousel Promo MSM',
+            type: 'boolean',
+            description: 'Include this case study in the Smart Carousel for MSM Website',
+            initialValue: false,
+            hidden: ({ document }: { document: any }) => {
+                const channels = document?.channel || [];
+                return !channels.includes('msmWeb');
+            },
+            group: 'settings'
+        },
+        {
+            name: 'connectedDataCarouselPromoStudioCO2',
+            title: 'ConnectedDataCarousel Promo Studio CO2',
+            type: 'boolean',
+            description: 'Include this case study in the Smart Carousel for Studio CO2 Website',
+            initialValue: false,
+            hidden: ({ document }: { document: any }) => {
+                const channels = document?.channel || [];
+                return !channels.includes('studioco2Web');
+            },
+            group: 'settings'
+        },
+        {
+            name: 'connectedDataCarouselPromoFLZR',
+            title: 'ConnectedDataCarousel Promo FLZR',
+            type: 'boolean',
+            description: 'Include this case study in the Smart Carousel for FLZR Website',
+            initialValue: false,
+            hidden: ({ document }: { document: any }) => {
+                const channels = document?.channel || [];
+                return !channels.includes('flizrWeb');
+            },
+            group: 'settings'
+        },
+        defineField({
+            name: 'services',
+            title: 'Services',
+            type: 'array',
+            of: [
+                {
+                    type: 'reference',
+                    to: [{ type: 'services' }],
+                    options: {
+                        filter: ({ document }: { document: any }) => {
+                            const currentLanguage = document?.language || 'de';
+                            return {
+                                filter: '_type == "services" && language == $language',
+                                params: { language: currentLanguage }
+                            };
+                        }
+                    }
+                },
+            ],
+            description: 'Services related to this case study. Use "Save & Sync Relationships" to automatically update the services with this case study reference.',
+            group: 'relations'
+        }),
+        defineField({
+            name: 'casesPageBuilder',
+            title: 'Cases Page Builder',
+            type: 'array',
+            of: [
+                { type: 'headlineChallenge' },
+                { type: 'challengeAndSolution' },
+                { type: 'approachSection' },
+                { type: 'resultsMetrics' },
+            ],
+            description: 'Build your case study page using modular components',
+            group: 'pageBuilder'
+        }),
+
+
+
+
+    ],
+    preview: {
+        select: {
+            title: 'title',
+            subtitle: 'subtitle',
+            media: 'mainImage',
+            clientLogo: 'client.logo',
+            isPublished: 'isPublished'
+        },
+        prepare(selection) {
+            const { title, subtitle, media, clientLogo, isPublished } = selection
+            return {
+                title,
+                subtitle: subtitle || (isPublished ? 'Published' : 'Draft'),
+                media: clientLogo || media,
+                badges: isPublished ? [] : [{ label: 'Unpublished', color: 'red' }]
+            }
+        }
+    },
+    orderings: [
+        {
+            title: 'Published Date, New',
+            name: 'publishedAtDesc',
+            by: [
+                { field: 'publishedAt', direction: 'desc' }
+            ]
+        }
+    ]
+})

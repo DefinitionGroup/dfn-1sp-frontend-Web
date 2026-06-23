@@ -2,8 +2,8 @@
 
 import { startTransition, useState } from "react";
 import ServiceGalleryComponent from "@/components/data/data-ServiceGallery";
-import { getTranslations } from "@/lib/translations";
-import type { Service } from "@/types/sanity.types";
+import { getTranslations } from "@1sp/utils/translations";
+import type { Service } from "@1sp/sanity-types";
 
 interface ServicesGalleryFilteredProps {
   locale?: string;

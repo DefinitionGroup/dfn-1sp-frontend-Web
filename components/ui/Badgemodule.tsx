@@ -3,8 +3,8 @@
 import { motion } from "motion/react";
 import { AnimateNumber } from "motion-plus/react";
 import { useState, useEffect, useRef } from "react";
-import { cn } from "@/lib/utils";
-import { useRobustInView } from "@/hooks/use-robust-in-view";
+import { cn } from "@1sp/utils/cn";
+import { useRobustInView } from "@1sp/utils/hooks/use-robust-in-view";
 
 interface BadgemoduleProps {
   text: string;

@@ -9,12 +9,12 @@ import {
   getCarouselLogoUrl,
   getCarouselPosterUrl,
   getCarouselVideoSources,
-} from "@/lib/carousel-media";
+} from "@1sp/utils/carousel-media";
 import type {
   CarouselItem as SanityCarouselItem,
   CTA,
-} from "@/types/sanity.types";
-import { assetUrl, ctaToButtonProps } from "@/utils/utils";
+} from "@1sp/sanity-types";
+import { assetUrl, ctaToButtonProps } from "@1sp/utils/cloudinary";
 
 
 interface UIItem {

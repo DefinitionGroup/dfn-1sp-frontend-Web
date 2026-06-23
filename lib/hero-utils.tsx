@@ -1,8 +1,8 @@
 import {
     cloudinaryPosterSrcSet,
     cloudinaryPosterUrl,
-} from "@/utils/utils";
-import { getHeroMediaVariants, type HeroMediaVariant } from "@/lib/hero-media";
+} from "@1sp/utils/cloudinary";
+import { getHeroMediaVariants, type HeroMediaVariant } from "@1sp/utils/hero-media";
 
 /**
  * Extract the hero video URL from page builder content.

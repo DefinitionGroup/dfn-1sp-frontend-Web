@@ -1,4 +1,4 @@
-import { CANONICAL_SITE_URL } from "@/lib/site-url";
+import { CANONICAL_SITE_URL } from "@1sp/utils/site-url";
 
 /**
  * Structured Data (JSON-LD) Generators

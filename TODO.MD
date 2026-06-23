@@ -1,3 +1,35 @@
+## Multisite Platform / FLZR
+
+### Current Priority
+
+- [x] Protect live 1SP behavior while platform work happens on `platform/flzr-web`.
+- [x] Formalize the content split:
+  - website-specific: pages, menus, navigation, footer, page-builder registry, layout, theme, fonts, SEO defaults, tracking, domains, locale strategy
+  - global reusable: cases, services, people, clients, units/assets
+- [x] Ensure all global content types needed by FLZR can be filtered by website/channel and language.
+- [x] Add or confirm `flizrWeb` channel support for cases, services, and people.
+- [x] Prefer array membership queries for global content, e.g. `$channel in channel`.
+- [x] Add a central site config for `1spWeb`, `flizrWeb`, `msmWeb`, and `studioco2Web`.
+- [x] Create an isolated FLZR frontend app shell alongside the existing 1SP app.
+- [ ] Give FLZR its own routing, layout, navigation, footer, page-builder registry, SEO, sitemap, robots, tracking, fonts, and theme.
+  - [x] Initial FLZR app-local wrapper, navigation, footer, and page-builder boundary
+  - [x] Initial FLZR channel routing, sitemap filtering, robots, tracking placeholders, and theme tokens
+  - [x] FLZR page-builder field remapped to the same module registry as 1SP for editor continuity
+  - [ ] Final FLZR visual system, fonts, page-builder component set, and production navigation/footer design
+- [ ] Extract shared case/global-content query contracts only where FLZR needs them first.
+- [ ] Configure FLZR as a separate Vercel project/app root with independent env vars and domain.
+- [ ] Verify FLZR preview and current 1SP build separately before merging platform work.
+- [x] Make FLZR first-class in Sanity Studio structure for pages, menus, and assigned global content.
+
+### Guardrails
+
+- [ ] Do not move the existing 1SP app into a monorepo app folder as the first step.
+- [ ] Do not replace existing `channel` fields with a new website model in one step.
+- [ ] Do not duplicate global cases, services, or people per website.
+- [ ] Do not use `platform/flzr-web` as a permanent deployment branch.
+
+---
+
 Globe: Editable text for headline/subcopy
 ~~Vertical Nav: Option to include component or not. Rogue 'Gradient' entry~~ ✅ DONE (2026-01-18)
 Logo sizing: Generally inconsistent

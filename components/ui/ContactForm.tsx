@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, type FormEvent, type ChangeEvent } from "react";
-import type { ContactFormSettings } from "@/types/sanity.types";
-import { hasVisibleText } from "@/lib/text-content";
+import type { ContactFormSettings } from "@1sp/sanity-types";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 type ContactFormProps = {
   language?: string;

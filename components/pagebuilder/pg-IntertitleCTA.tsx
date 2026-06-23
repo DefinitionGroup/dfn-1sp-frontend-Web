@@ -3,11 +3,11 @@ import React from "react";
 import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import Button2 from "@/components/ui/Button2";
 import Link from "next/link";
-import { resolveLink } from "@/utils/utils";
+import { resolveLink } from "@1sp/utils/cloudinary";
 import { useParams } from "next/navigation";
-import type { CTA } from "@/types/sanity.types";
+import type { CTA } from "@1sp/sanity-types";
 import GridBackground from "@/components/ui/GridBackground";
-import { hasVisibleText } from "@/lib/text-content";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 interface StaggeredSlideUpProps {
   className?: string;

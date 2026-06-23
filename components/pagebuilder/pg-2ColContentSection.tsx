@@ -7,9 +7,9 @@ import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import Link from "next/link";
-import { assetUrl, optimizedVideoUrl } from "@/utils/utils";
-import type { CloudinaryAsset } from "@/types/sanity.types";
-import { hasVisibleNode, hasVisibleText } from "@/lib/text-content";
+import { assetUrl, optimizedVideoUrl } from "@1sp/utils/cloudinary";
+import type { CloudinaryAsset } from "@1sp/sanity-types";
+import { hasVisibleNode, hasVisibleText } from "@1sp/utils/text-content";
 
 import { motion, useScroll, useTransform } from "motion/react";
 

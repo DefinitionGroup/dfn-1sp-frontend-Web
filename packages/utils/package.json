@@ -1,0 +1,35 @@
+{
+  "name": "@1sp/utils",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./cn": "./src/cn.ts",
+    "./cloudinary": "./src/cloudinary.ts",
+    "./clamp": "./src/clamp.tsx",
+    "./responsive": "./src/responsive.ts",
+    "./translations": "./src/translations.ts",
+    "./text-content": "./src/text-content.tsx",
+    "./site-url": "./src/site-url.ts",
+    "./carousel-media": "./src/carousel-media.ts",
+    "./hero-media": "./src/hero-media.ts",
+    "./hooks/use-media-query": "./src/hooks/use-media-query.ts",
+    "./hooks/use-robust-in-view": "./src/hooks/use-robust-in-view.ts",
+    "./hooks/use-optimized-transition-router": "./src/hooks/use-optimized-transition-router.ts",
+    "./hooks/use-outside-click": "./src/hooks/use-outside-click.ts",
+    "./hooks/use-client-safe": "./src/hooks/use-client-safe.ts"
+  },
+  "types": "./src/index.ts",
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@1sp/sanity-types": "workspace:*",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.3.1"
+  },
+  "peerDependencies": {
+    "react": "^18 || ^19"
+  }
+}

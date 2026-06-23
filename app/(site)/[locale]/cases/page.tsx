@@ -9,13 +9,14 @@
  *
  * Uses `getPageBySlug()` for cached data fetching.
  */
-import { getPageBySlug, getAllCases } from "@/lib/sanity/queries";
+import { getPageBySlug, getAllCases } from "@1sp/sanity-queries";
 import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
-import { resolveImageUrl } from "@/sanity/lib/image";
+import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
+import { getChannel } from "@1sp/site-config/server";
 import {
   JsonLdScript,
   generateCollectionPageJsonLd,
@@ -39,7 +40,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
-  const channel = "1spWeb";
+  const channel = await getChannel();
   const { locale } = await params;
   const language = locale || "en";
   const page = await getPageBySlug("cases", channel, language);
@@ -87,7 +88,7 @@ export default async function CasesPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const channel = "1spWeb";
+  const channel = await getChannel();
   const { locale } = await params;
   const language = locale || "en";
 
@@ -110,14 +111,14 @@ export default async function CasesPage({
   // Extract case items from page builder content (manual selections)
   // plus fallback to allCaseItems for auto-mode galleries
   const caseItems = extractCaseItemsFromContent(
-    page?.content1sp as any[] | undefined,
+    page?.content as any[] | undefined,
     allCaseItems,
   );
   const itemListId = `${CANONICAL_URL}/cases#case-list`;
   const ogImageUrl = resolveImageUrl(page?.metadata?.image, { width: 1200, height: 630 });
 
   // LCP optimization: preload hero poster image
-  const heroPreload = getHeroPreloadData(page?.content1sp as any[] | undefined);
+  const heroPreload = getHeroPreloadData(page?.content as any[] | undefined);
 
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>
@@ -159,9 +160,9 @@ export default async function CasesPage({
       <HeroPreloadLinks {...heroPreload} />
 
       <div className="  min-h-screen px-1  md:px-4">
-        {page?.content1sp ? (
+        {page?.content ? (
           <PageBuilder
-            content={page.content1sp}
+            content={page.content}
             language={language}
             deferAfter={2}
           />

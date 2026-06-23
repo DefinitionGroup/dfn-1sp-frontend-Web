@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { AnimateNumber } from "motion-plus/react";
-import { useRobustInView } from "@/hooks/use-robust-in-view";
+import { useRobustInView } from "@1sp/utils/hooks/use-robust-in-view";
 
 interface AnimateNumberinViewProps {
   number: string | number;

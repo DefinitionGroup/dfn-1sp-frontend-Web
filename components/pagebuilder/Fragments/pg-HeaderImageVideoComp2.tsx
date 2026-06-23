@@ -9,7 +9,7 @@ import {
   optimizedPortraitVideoUrl,
   cloudinaryPosterUrl,
   cloudinaryPosterSrcSet,
-} from "@/utils/utils";
+} from "@1sp/utils/cloudinary";
 
 /**
  * Helper to compute the hero poster URL for server-side <link rel="preload"> hints.
