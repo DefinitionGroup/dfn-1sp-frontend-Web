@@ -204,6 +204,34 @@ Rules:
 
 ---
 
+## Things to keep in mind
+
+### Content edits don't show instantly (≈60s lag)
+
+When you publish a content change in Studio and reload an app (any channel,
+including local dev), it can take **up to ~60 seconds** to appear. This is by
+design, not a bug — two cache layers stack:
+
+1. **Next.js data cache** — `sanityFetch` (`packages/sanity-queries/src/fetch.ts`)
+   sets `next: { revalidate: 60 }`, so each query result is cached for 60s.
+   This cache is active even under `next dev` (persisted in `.next/cache`).
+2. **Sanity CDN** — the published-perspective client uses `useCdn: true`, adding
+   its own ~60s edge propagation after a publish.
+
+To see an edit:
+- **Wait ~60s, then hard-reload** (Cmd/Ctrl+Shift+R). Usually enough.
+- Still stale? **Restart the dev server** (clears `.next` data cache).
+- Also confirm you actually **published** (not just saved a draft) — the apps
+  render the `published` perspective unless draft mode is on.
+
+For instant authoring feedback, use the **root app's `/studio`** Presentation
+tool with draft mode (`SanityLive` + `previewDrafts`) — standalone channel apps
+(e.g. `apps/msm-web`) don't mount the live preview. In production, edits surface
+via the tag-based `/api/revalidate` webhook (`pages`, `page:${slug}`, etc.); the
+60s `revalidate` is just the TTL fallback if a webhook is missed.
+
+---
+
 ## Known debt (intentional)
 
 - **Per-channel content arrays on `page.ts`** still exist alongside the new

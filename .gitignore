@@ -14,10 +14,13 @@ npm-debug.log
 
 node_modules
 .DS_Store
-.env
+# Ignore every env variant (incl. .env.local, backups like .env.local.bak-*) repo-wide…
+.env*
+# …except the committed templates.
+!.env.example
+!.env*.example
 *.tsbuildinfo
 .vercel
-.env*.local
 
 # Sanity dataset exports — never commit production data
 EXPORT/

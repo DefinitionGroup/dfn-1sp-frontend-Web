@@ -113,8 +113,11 @@ export const SITE_CONFIGS: Record<WebsiteChannel, SiteConfig> = {
     shortName: "MSM",
     defaultLocale: "en",
     locales: ["en", "de"],
-    domains: {},
+    domains: {
+      production: "https://www.msm.digital",
+    },
     seo: {
+      // TODO(MSM): replace with final brand-approved title/description copy.
       defaultTitle: "MSM",
       defaultDescription: "MSM website.",
     },
@@ -122,8 +125,9 @@ export const SITE_CONFIGS: Record<WebsiteChannel, SiteConfig> = {
       vercelAnalytics: true,
     },
     logo: {
-      light: "/ci/1sp-fulllogotype.svg",
-      dark: "/ci/1sp-fulllogotype-blk.svg",
+      // Single colour cube mark (works on dark). Swap to light/dark variants if produced.
+      light: "/ci/msm-logo.svg",
+      dark: "/ci/msm-logo.svg",
       alt: "MSM Logo",
     },
   },
