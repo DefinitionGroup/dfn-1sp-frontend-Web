@@ -1,8 +1,8 @@
 "use client";
 
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useId, useRef, useState } from "react";
-import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
+import { forwardRef, useEffect, useId, useRef, useState } from "react";
+import type { CSSProperties, ForwardedRef, HTMLAttributes, ReactNode } from "react";
 import styles from "./glass-surface.module.css";
 
 type Channel = "R" | "G" | "B";
@@ -82,7 +82,7 @@ function supportsSVGFilters(filterId: string) {
   return div.style.backdropFilter !== "";
 }
 
-export function GlassSurface({
+export const GlassSurface = forwardRef(function GlassSurface({
   backgroundOpacity = 0,
   blur = 11,
   borderRadius = 20,
@@ -108,7 +108,7 @@ export function GlassSurface({
   xChannel = "R",
   yChannel = "G",
   ...props
-}: GlassSurfaceProps) {
+}: GlassSurfaceProps, forwardedRef: ForwardedRef<HTMLDivElement>) {
   const uniqueId = useId().replace(/:/g, "-");
   const filterId = `glass-filter-${uniqueId}`;
   const redGradId = `red-grad-${uniqueId}`;
@@ -215,13 +215,18 @@ export function GlassSurface({
     setSvgSupported(supportsSVGFilters(filterId));
   }, [filterId]);
 
-  // IMPORTANT: set backdrop-filter inline (not via the CSS `var(--filter-id)`).
-  // Chromium computes `backdrop-filter: var(--filter-id) saturate(...)` to
-  // `none` in this app, so the SVG displacement never applies — the identical
-  // literal string works fine. `blur()` first gives a real frosted blur, then
-  // the SVG filter refracts that blurred backdrop.
+  // Set backdrop-filter inline (not via the CSS `var(--filter-id)`) purely for
+  // reliability — both paths compute identically here, inline just can't be
+  // defeated by cascade/specificity surprises.
+  //
+  // CRITICAL: do NOT prepend `blur(...)`. The aquamed reference applies only
+  // `url(#id) saturate(...)`; a leading backdrop blur smears the backdrop into
+  // a flat frost *before* the displacement map runs, so the chromatic
+  // refraction has no edges left to bend and the glass reads as a dull panel.
+  // The filter chain already ends in a small feGaussianBlur (`displace`) for
+  // softness — that's the only blur the effect needs.
   const backdropFilterValue = svgSupported
-    ? `blur(8px) url(#${filterId}) saturate(${saturation})`
+    ? `url(#${filterId}) saturate(${saturation})`
     : undefined;
 
   const containerStyle: GlassSurfaceStyle = {
@@ -239,7 +244,11 @@ export function GlassSurface({
 
   return (
     <div
-      ref={containerRef}
+      ref={(node) => {
+        containerRef.current = node;
+        if (typeof forwardedRef === "function") forwardedRef(node);
+        else if (forwardedRef) forwardedRef.current = node;
+      }}
       {...props}
       className={cx(
         "relative flex items-center justify-center overflow-hidden transition-opacity duration-[260ms] ease-out",
@@ -258,7 +267,15 @@ export function GlassSurface({
           <filter id={filterId} colorInterpolationFilters="sRGB" x="0%" y="0%" width="100%" height="100%">
             <feImage ref={feImageRef} x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="map" />
 
-            <feDisplacementMap ref={redChannelRef} in="SourceGraphic" in2="map" result="dispRed" />
+            <feDisplacementMap
+              ref={redChannelRef}
+              in="SourceGraphic"
+              in2="map"
+              result="dispRed"
+              scale={distortionScale + redOffset}
+              xChannelSelector={xChannel}
+              yChannelSelector={yChannel}
+            />
             <feColorMatrix
               in="dispRed"
               type="matrix"
@@ -269,7 +286,15 @@ export function GlassSurface({
               result="red"
             />
 
-            <feDisplacementMap ref={greenChannelRef} in="SourceGraphic" in2="map" result="dispGreen" />
+            <feDisplacementMap
+              ref={greenChannelRef}
+              in="SourceGraphic"
+              in2="map"
+              result="dispGreen"
+              scale={distortionScale + greenOffset}
+              xChannelSelector={xChannel}
+              yChannelSelector={yChannel}
+            />
             <feColorMatrix
               in="dispGreen"
               type="matrix"
@@ -280,7 +305,15 @@ export function GlassSurface({
               result="green"
             />
 
-            <feDisplacementMap ref={blueChannelRef} in="SourceGraphic" in2="map" result="dispBlue" />
+            <feDisplacementMap
+              ref={blueChannelRef}
+              in="SourceGraphic"
+              in2="map"
+              result="dispBlue"
+              scale={distortionScale + blueOffset}
+              xChannelSelector={xChannel}
+              yChannelSelector={yChannel}
+            />
             <feColorMatrix
               in="dispBlue"
               type="matrix"
@@ -293,7 +326,7 @@ export function GlassSurface({
 
             <feBlend in="red" in2="green" mode="screen" result="rg" />
             <feBlend in="rg" in2="blue" mode="screen" result="output" />
-            <feGaussianBlur ref={gaussianBlurRef} in="output" stdDeviation="0.7" />
+            <feGaussianBlur ref={gaussianBlurRef} in="output" stdDeviation={displace} />
           </filter>
         </defs>
       </svg>
@@ -320,6 +353,6 @@ export function GlassSurface({
       </div>
     </div>
   );
-}
+});
 
 export default GlassSurface;

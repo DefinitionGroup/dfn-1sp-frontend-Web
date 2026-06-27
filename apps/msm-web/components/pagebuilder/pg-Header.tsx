@@ -3,6 +3,7 @@
 import React from "react";
 import HeroVideoComp from "@msm/components/pagebuilder/Fragments/HeroVideoComp";
 import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
+import { GlassSurface, cardGlassSurfaceProps } from "@msm/components/ui/glass-surface";
 import { assetUrl } from "@1sp/utils/cloudinary";
 import TypewriterRotator from "@msm/components/ui/TypewriterRotator";
 import { PortableText } from "@portabletext/react";
@@ -147,10 +148,20 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
         />
       )}
 
-      {/* Foreground content */}
-      <div className="absolute bottom-24 md:bottom-24 iphone-landscape:bottom-0 md:relative z-10  max-w-9xl container md:mt-[50vh] iphone-landscape:mt-[50vh] mx-auto">
+      {/* Foreground content — wrapped in a glass card floating over the
+          textured hero video. The refraction reads here because the video
+          backdrop carries real high-frequency detail (see docs/MSM_NAV_GLASS.md). */}
+      <div className="absolute bottom-24 md:bottom-24 iphone-landscape:bottom-0 md:relative z-10  max-w-9xl container md:mt-[50vh] iphone-landscape:mt-[50vh] mx-auto px-4">
+        <GlassSurface
+          {...cardGlassSurfaceProps}
+          borderRadius={28}
+          width="fit-content"
+          height="auto"
+          className="max-w-[min(92vw,640px)]"
+          contentClassName="flex w-full flex-col items-start p-6 md:p-8"
+        >
         <StaggeredSlideUp
-          className="px-4 md:px-4 space-y-1 container mx-auto  "
+          className="space-y-1 w-full"
           delay={1}
           staggerDelay={0.08}
           duration={0.5}
@@ -189,6 +200,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
             </div>
           )}
         </StaggeredSlideUp>
+        </GlassSurface>
       </div>
 
     </section>

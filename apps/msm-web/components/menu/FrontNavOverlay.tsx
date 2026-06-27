@@ -40,6 +40,25 @@ interface FrontNavOverlayProps {
   initialCaseStudies?: CaseStudy[];
 }
 
+// Same shader as the hero glass card (`cardGlassSurfaceProps`), but pushed
+// harder for the nav. The bar is thin and usually sits over the darker top
+// strip of the hero, so it gets less "free" refraction than the card (which
+// floats over the vibrant lower video). A stronger displacement + a lighter
+// tint make the glass read here too. See docs/MSM_NAV_GLASS.md.
+const msmNavGlassSurfaceProps = {
+  ...menuGlassSurfaceProps,
+  distortionScale: -340, // stronger bending (preset is -255)
+  tintOpacity: 0.39, // lighter than the card's 0.42 so the refraction shows over dark frames
+};
+
+// The entrance/scroll animation MUST live on the glass element itself, not on a
+// wrapper above it: a `transform`/`opacity`/`clip-path` on an ANCESTOR of a
+// backdrop-filter element makes that ancestor a "backdrop root", so the SVG
+// filter samples the (empty) wrapper instead of the page/hero behind it — i.e.
+// no refraction. Animating the GlassSurface itself keeps the backdrop = the page.
+// See docs/MSM_NAV_GLASS.md.
+const MotionGlassSurface = motion.create(GlassSurface);
+
 const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   className = "",
   color = "light",
@@ -218,68 +237,58 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   }, [channel, hasLoadedCases, isCaseDetailRoute, isCasesLoading, locale, showOverlay]);
 
   const itemClass = `text-xs leading-compress tracking-wide font-medium mr-8 inline-block `;
+  const navGlassRadius = 32;
 
   return (
     <>
-      <motion.nav
-
+      <nav
         ref={navRef}
-        initial={{ opacity: 0, scale: 0.95, y: 0, clipPath: "inset(45% 49.9% 45% 49.9% round 48%)" }}
-        animate={
-          hasInitialAnimationCompleted
-            ? {
-              opacity: isNavVisible ? 1 : 0,
-              y: isNavVisible ? 0 : -100,
-              scale: 1,
-              clipPath: "inset(0% 0% 0% 0% round 0rem)",
-            }
-            : {
-              opacity: [0, 1, 1],
-              scale: [2, 1, 1],
-              clipPath: [
-                "inset(49% 49% 49% 49% round 50%)", // tiny circle
-                "inset(0% 49% 0% 49% round 0rem)",       // full height pill
-                "inset(0% 49% 0% 49% round 0rem)",       // full height pill
-                "inset(0% 0% 0% 0% round 0rem)"          // full width menu
-              ],
-            }
-        }
-        transition={
-          hasInitialAnimationCompleted
-            ? {
-              duration: 0.3,
-              ease: [0.4, 0, 0.2, 1]
-            }
-            : {
-              duration: 1,
-              delay: 0.7,
-            }
-        }
-        className={`floating-nav z-99999 rounded-full  hidden fixed top-6 left-0  w-fit h-16   px-6  right-0 md:grid items-center grid-cols-12 py-2 iphone-landscape:scale-70 iphone-landscape:top-2 mx-auto ${textColor} ${className}`}
+        style={{ zIndex: 99999 }}
+        className={`floating-nav z-99999 hidden fixed top-6 left-0 w-fit h-16 right-0 md:block iphone-landscape:scale-70 iphone-landscape:top-2 mx-auto ${textColor} ${className}`}
       >
-        {/* Liquid-glass background (ported from mhw-web-aquamed) */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 -z-10"
+        <MotionGlassSurface
+          key={hasInitialAnimationCompleted ? "settled" : "intro"}
+          {...msmNavGlassSurfaceProps}
+          borderRadius={navGlassRadius}
+          contentClassName="pointer-events-auto grid h-full w-full grid-cols-12 items-center px-6 py-2"
+          width="fit-content"
+          height="100%"
+          initial={
+            hasInitialAnimationCompleted
+              ? false
+              : { opacity: 0, scale: 0.95, y: 0, clipPath: "inset(45% 49.9% 45% 49.9% round 999px)" }
+          }
+          animate={
+            hasInitialAnimationCompleted
+              ? {
+                opacity: isNavVisible ? 1 : 0,
+                y: isNavVisible ? 0 : -100,
+                scale: 1,
+                clipPath: "inset(0% 0% 0% 0% round 999px)",
+              }
+              : {
+                opacity: [0, 1, 1],
+                scale: [2, 1, 1],
+                clipPath: [
+                  "inset(49% 49% 49% 49% round 50%)", // tiny circle
+                  "inset(0% 49% 0% 49% round 999px)",       // full height pill
+                  "inset(0% 49% 0% 49% round 999px)",       // full height pill
+                  "inset(0% 0% 0% 0% round 999px)"          // full width menu
+                ],
+              }
+          }
+          transition={
+            hasInitialAnimationCompleted
+              ? {
+                duration: 0.3,
+                ease: [0.4, 0, 0.2, 1]
+              }
+              : {
+                duration: 1,
+                delay: 0.7,
+              }
+          }
         >
-          {/*
-            key remounts the surface when the intro animation settles, so the
-            SVG displacement map is regenerated at the final, un-transformed
-            size. The nav animates via scale/clipPath (transforms), which a
-            ResizeObserver can't see — without this the refraction map stays
-            captured at the scaled intro size and the glass effect never renders.
-          */}
-          <GlassSurface
-            key={hasInitialAnimationCompleted ? "settled" : "intro"}
-            {...menuGlassSurfaceProps}
-            borderRadius={0}
-            width="100%"
-            height="100%">
-                
-            </GlassSurface>
-        
-        </div>
-
         <div className="col-span-2 flex items-center pr-16  justify-start">
           <motion.div
 
@@ -428,7 +437,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         </div>
 
 
-      </motion.nav>
+        </MotionGlassSurface>
+      </nav>
       {/* Cases overlay */}
       {showOverlay && (
         <div className="fixed inset-0 flex items-center justify-center p-8 backdrop-blur-lg z-[100] bg-black/20 overflow-hidden">
