@@ -26,8 +26,6 @@ export type MosaicButtonProps = {
   ariaLabel?: string;
   children?: ReactNode;
   className?: string;
-  /** Indicator tile color; defaults to a random logo color per mount. */
-  cornerColor?: string;
   /** Keep the mosaic permanently filled (static mosaic look; also useful for previews). */
   defaultFilled?: boolean;
   fullWidth?: boolean;
@@ -40,6 +38,8 @@ export type MosaicButtonProps = {
   /** Lattice rows per button height — higher means smaller tiles. */
   tileRows?: number;
   type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
+  /** Faint outline of the mosaic endstate behind the tiles. */
+  wireframe?: boolean;
 };
 
 // The 15 fills of the MSM logo mark.
@@ -78,9 +78,12 @@ const STAGGER_IN = 0.35;
 const STAGGER_OUT = 0.28;
 const RIPPLE_STAGGER = 0.22; // click ripple wavefront across the button
 const RIPPLE_DURATION = 0.5; // seconds per tile spin
-const BEAT_DURATION = 0.9; // idle heartbeat flip of the indicator
-const BEAT_PAUSE_MIN = 3.5; // seconds between heartbeats
-const BEAT_PAUSE_VAR = 3.0;
+// atmospheric idle: random tiles flip in, linger, flip out
+const AMBIENT_MAX = 3; // concurrent ambient tiles
+const AMBIENT_SPAWN_MIN = 0.7; // seconds between spawn attempts
+const AMBIENT_SPAWN_VAR = 1.8;
+const AMBIENT_LINGER_MIN = 2.0; // seconds a tile stays up
+const AMBIENT_LINGER_VAR = 3.0;
 
 function mulberry32(seed: number) {
   return () => {
@@ -107,9 +110,10 @@ function easeOutBack(p: number) {
 }
 
 type Tile = {
+  /** absolute ms until which this tile stays up as an ambient accent */
+  ambientUntil: number;
   axis: "x" | "y";
   color: string;
-  corner: boolean;
   cx: number;
   cy: number;
   /** current stagger delay (s), recomputed from the hover origin */
@@ -134,7 +138,6 @@ function buildLattice(
   cssH: number,
   rows: number,
   rand: () => number,
-  cornerColor: string,
   filled: boolean,
 ): Tile[] {
   const triH = cssH / rows;
@@ -145,19 +148,13 @@ function buildLattice(
   const maxDist = Math.hypot(cssW, cssH) || 1;
   const tiles: Tile[] = [];
 
-  // The anchor tile is the arrow-like indicator: the right-pointing ▶
-  // triangle vertically centered on the left edge. Its lattice slot is
-  // k = rows - 1; the parity below makes that slot right-pointing.
-  const kAnchor = rows - 1;
-  const parityRight = ((kAnchor % 2) + 2) % 2;
-
   for (let i = 0; i < cols; i += 1) {
     const xL = i * triW;
     const xR = xL + triW;
     for (let k = -1; k <= slots; k += 1) {
       const yB = cssH - k * step;
       if (yB < 0 || yB - triH > cssH) continue;
-      const right = (((i + k) % 2) + 2) % 2 === parityRight;
+      const right = (((i + k) % 2) + 2) % 2 === 0;
       const pts: [number, number][] = right
         ? [
             [xL, yB],
@@ -171,22 +168,19 @@ function buildLattice(
           ];
       const cx = (pts[0][0] + pts[1][0] + pts[2][0]) / 3;
       const cy = (pts[0][1] + pts[1][1] + pts[2][1]) / 3;
-      const corner = i === 0 && k === kAnchor;
-      // initial fill radiates from the left-center indicator; hover events
-      // recompute delays from the actual pointer origin
+      // initial fill radiates from left-center; hover events recompute
+      // delays from the actual pointer origin
       const dist = Math.hypot(cx, cssH / 2 - cy) / maxDist;
       tiles.push({
+        ambientUntil: 0,
         axis: rand() < 0.5 ? "x" : "y",
-        color: corner
-          ? cornerColor
-          : MOSAIC_PALETTE[Math.floor(rand() * MOSAIC_PALETTE.length)],
-        corner,
+        color: MOSAIC_PALETTE[Math.floor(rand() * MOSAIC_PALETTE.length)],
         cx,
         cy,
-        delay: corner ? 0 : dist * STAGGER_IN,
+        delay: dist * STAGGER_IN,
         dir: rand() < 0.5 ? 1 : -1,
         jitter: rand(),
-        p: corner || filled ? 1 : 0,
+        p: filled ? 1 : 0,
         pts,
         rippleAt: -1,
       });
@@ -196,11 +190,8 @@ function buildLattice(
 }
 
 type MosaicInstance = {
-  beatNext: number;
-  beatStart: number;
-  beatSwapped: boolean;
+  ambientNext: number;
   camera?: import("three").PerspectiveCamera;
-  cornerColorNow: string;
   cssH: number;
   cssW: number;
   ctx: CanvasRenderingContext2D;
@@ -385,9 +376,43 @@ class MosaicRenderer {
       const elapsed = (now - inst.hoverChangedAt) / 1000;
       let changed = false;
 
+      // atmospheric idle: pop a random tile in a fresh logo color; it
+      // lingers a few seconds, then flips back out
+      if (
+        !inst.hover &&
+        !inst.pinned &&
+        inst.visible &&
+        !this.reduceMotion &&
+        now >= inst.ambientNext
+      ) {
+        inst.ambientNext =
+          now + (AMBIENT_SPAWN_MIN + Math.random() * AMBIENT_SPAWN_VAR) * 1000;
+        const active = inst.tiles.reduce(
+          (n, t) => n + (t.ambientUntil > now ? 1 : 0),
+          0,
+        );
+        if (active < AMBIENT_MAX) {
+          const idle = inst.tiles.filter(
+            (t) => t.p === 0 && t.ambientUntil <= now,
+          );
+          if (idle.length > 0) {
+            const tile = idle[Math.floor(Math.random() * idle.length)];
+            tile.color =
+              MOSAIC_PALETTE[Math.floor(Math.random() * MOSAIC_PALETTE.length)];
+            tile.mesh?.material.color.set(tile.color);
+            tile.delay = 0;
+            tile.ambientUntil =
+              now +
+              (AMBIENT_LINGER_MIN + Math.random() * AMBIENT_LINGER_VAR) * 1000;
+            changed = true;
+          }
+        }
+      }
+
       for (const tile of inst.tiles) {
         if (tile.rippleAt >= 0) changed = true;
-        const target = inst.hover || inst.pinned || tile.corner ? 1 : 0;
+        const target =
+          inst.hover || inst.pinned || tile.ambientUntil > now ? 1 : 0;
         if (tile.p === target) continue;
         if (this.reduceMotion) {
           tile.p = target;
@@ -400,40 +425,6 @@ class MosaicRenderer {
           target > tile.p
             ? Math.min(1, tile.p + dp)
             : Math.max(0, tile.p - dp);
-        changed = true;
-      }
-
-      // idle heartbeat: the indicator flips lazily about its horizontal
-      // axis (the ▶ is symmetric there) and lands in a new logo color,
-      // swapped at the edge-on midpoint of the flip
-      if (inst.beatStart >= 0) {
-        const q = (now - inst.beatStart) / (BEAT_DURATION * 1000);
-        if (q >= 0.5 && !inst.beatSwapped) {
-          inst.beatSwapped = true;
-          const pool = MOSAIC_PALETTE.filter((c) => c !== inst.cornerColorNow);
-          const next = pool[Math.floor(Math.random() * pool.length)];
-          inst.cornerColorNow = next;
-          const indicator = inst.tiles.find((t) => t.corner);
-          if (indicator) {
-            indicator.color = next;
-            indicator.mesh?.material.color.set(next);
-          }
-        }
-        if (q >= 1) {
-          inst.beatStart = -1;
-          inst.beatNext =
-            now + (BEAT_PAUSE_MIN + Math.random() * BEAT_PAUSE_VAR) * 1000;
-        }
-        changed = true;
-      } else if (
-        !inst.hover &&
-        !inst.pinned &&
-        inst.visible &&
-        !this.reduceMotion &&
-        now >= inst.beatNext
-      ) {
-        inst.beatStart = now;
-        inst.beatSwapped = false;
         changed = true;
       }
 
@@ -468,7 +459,7 @@ class MosaicRenderer {
       if (!mesh.visible) continue;
       const s = Math.max(0.0001, easeOutBack(p));
       const r = (1 - easeOutCubic(p)) * Math.PI * tile.dir;
-      let rx = tile.axis === "x" ? r : 0;
+      const rx = tile.axis === "x" ? r : 0;
       let ry = tile.axis === "y" ? r : 0;
       let z = Math.sin(Math.min(1, p) * Math.PI) * lift;
 
@@ -483,15 +474,6 @@ class MosaicRenderer {
         }
       } else if (tile.rippleAt >= 0 && this.reduceMotion) {
         tile.rippleAt = -1;
-      }
-
-      // heartbeat flip of the indicator tile
-      if (tile.corner && inst.beatStart >= 0) {
-        const q = (now - inst.beatStart) / (BEAT_DURATION * 1000);
-        if (q > 0 && q < 1) {
-          rx += easeInOutCubic(q) * Math.PI;
-          z += Math.sin(q * Math.PI) * lift * 0.5;
-        }
       }
 
       mesh.scale.setScalar(s);
@@ -518,8 +500,8 @@ class MosaicRenderer {
   }
 }
 
-// Flat 2D paint of the resting state (indicator tile) — shown instantly on
-// mount and kept as the fallback if WebGL/three never becomes available.
+// Flat 2D paint of the resting state — shown instantly on mount and kept
+// as the fallback if WebGL/three never becomes available.
 function paintIdleFrame(inst: MosaicInstance) {
   const { ctx, pxW, pxH, cssW } = inst;
   if (pxW < 1 || pxH < 1 || cssW < 1) return;
@@ -540,28 +522,31 @@ function paintIdleFrame(inst: MosaicInstance) {
 export type MosaicActions = {
   /** trigger a click ripple from a point in button-local css px */
   ripple: (x: number, y: number) => void;
-  /** set hover state; origin (css px) defaults to the indicator tile */
+  /** set hover state; origin (css px) defaults to left-center */
   setHover: (hover: boolean, x?: number, y?: number) => void;
 };
 
+type WireframeState = { h: number; polys: string[]; w: number };
+
 type MosaicCanvasProps = {
   actionsRef: RefObject<MosaicActions | null>;
-  cornerColor: string;
   defaultFilled: boolean;
   rootRef: RefObject<HTMLDivElement | null>;
   seed: number;
   tileRows: number;
+  wireframe: boolean;
 };
 
 function MosaicCanvas({
   actionsRef,
-  cornerColor,
   defaultFilled,
   rootRef,
   seed,
   tileRows,
+  wireframe,
 }: MosaicCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [wire, setWire] = useState<WireframeState | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -572,12 +557,7 @@ function MosaicCanvas({
     if (!renderer || !ctx) return;
 
     const inst: MosaicInstance = {
-      beatNext:
-        performance.now() +
-        (BEAT_PAUSE_MIN + Math.random() * BEAT_PAUSE_VAR) * 1000,
-      beatStart: -1,
-      beatSwapped: false,
-      cornerColorNow: cornerColor,
+      ambientNext: performance.now() + 400 + Math.random() * 1200,
       cssH: 0,
       cssW: 0,
       ctx,
@@ -608,12 +588,20 @@ function MosaicCanvas({
         inst.cssH,
         tileRows,
         mulberry32(seed),
-        inst.cornerColorNow,
         defaultFilled,
       );
       inst.needsBuild = true;
       paintIdleFrame(inst);
       renderer.renderInstance(inst);
+      if (wireframe) {
+        setWire({
+          h: inst.cssH,
+          polys: inst.tiles.map((t) =>
+            t.pts.map(([x, y]) => `${x},${y}`).join(" "),
+          ),
+          w: inst.cssW,
+        });
+      }
     };
     resize();
     const resizeObserver = new window.ResizeObserver(() => {
@@ -634,7 +622,7 @@ function MosaicCanvas({
 
     // recompute stagger delays from the actual pointer origin so the
     // mosaic grows from wherever the cursor enters (and drains from
-    // wherever it leaves); keyboard focus uses the indicator as origin
+    // wherever it leaves); keyboard focus uses left-center as origin
     const setHover = (hover: boolean, x?: number, y?: number) => {
       inst.hover = hover;
       inst.hoverChangedAt = performance.now();
@@ -643,7 +631,6 @@ function MosaicCanvas({
       const maxDist = Math.hypot(inst.cssW, inst.cssH) || 1;
       const stagger = hover ? STAGGER_IN : STAGGER_OUT;
       for (const tile of inst.tiles) {
-        if (tile.corner) continue;
         const dist = Math.hypot(tile.cx - ox, tile.cy - oy) / maxDist;
         tile.delay = dist * stagger + tile.jitter * 0.07;
       }
@@ -667,15 +654,37 @@ function MosaicCanvas({
       resizeObserver.disconnect();
       io.disconnect();
     };
-  }, [rootRef, actionsRef, seed, cornerColor, tileRows, defaultFilled]);
+  }, [rootRef, actionsRef, seed, tileRows, defaultFilled, wireframe]);
 
   return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 z-1 h-full w-full"
-    >
-      <canvas className="block h-full w-full" ref={canvasRef} />
-    </div>
+    <>
+      {wireframe && wire ? (
+        <svg
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-0 h-full w-full"
+          preserveAspectRatio="none"
+          viewBox={`0 0 ${wire.w} ${wire.h}`}
+        >
+          {wire.polys.map((points, i) => (
+            <polygon
+              fill="none"
+              key={i}
+              points={points}
+              stroke="#f4f4f4"
+              strokeOpacity={0.03}
+              strokeWidth={1}
+              vectorEffect="non-scaling-stroke"
+            />
+          ))}
+        </svg>
+      ) : null}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-1 h-full w-full"
+      >
+        <canvas className="block h-full w-full" ref={canvasRef} />
+      </div>
+    </>
   );
 }
 
@@ -683,7 +692,6 @@ export default function MosaicButton({
   ariaLabel,
   children,
   className,
-  cornerColor,
   defaultFilled = false,
   fullWidth = false,
   href,
@@ -694,6 +702,7 @@ export default function MosaicButton({
   text,
   tileRows = 2,
   type = "button",
+  wireframe = true,
 }: MosaicButtonProps) {
   // Measured via an absolutely positioned div: clientWidth/ResizeObserver
   // report 0 for the inline-flex anchor/button element itself.
@@ -702,12 +711,8 @@ export default function MosaicButton({
   const router = useOptimizedTransitionRouter();
   const isExternal = !!href && /^(https?:|mailto:|tel:)/.test(href);
 
-  // one random logo element per mount (stable across re-renders)
+  // one random tile arrangement per mount (stable across re-renders)
   const [seed] = useState(() => Math.floor(Math.random() * 2 ** 31));
-  const [randomCorner] = useState(
-    () => MOSAIC_PALETTE[Math.floor(Math.random() * MOSAIC_PALETTE.length)],
-  );
-  const corner = cornerColor ?? randomCorner;
 
   const classes = cn(
     "group/mosaic-btn relative inline-flex cursor-pointer items-center overflow-hidden bg-msm-surface font-medium tracking-wider text-white shadow-[0_10px_28px_rgba(0,0,0,0.45)] transition-transform duration-200 hover:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-msm-cyan focus:ring-offset-2 focus:ring-offset-msm-paper",
@@ -728,11 +733,11 @@ export default function MosaicButton({
       <div aria-hidden className="pointer-events-none absolute inset-0" ref={rootRef} />
       <MosaicCanvas
         actionsRef={actionsRef}
-        cornerColor={corner}
         defaultFilled={defaultFilled}
         rootRef={rootRef}
         seed={seed}
         tileRows={tileRows}
+        wireframe={wireframe}
       />
       {/* scrim keeps the label readable once the mosaic fills in */}
       <span
