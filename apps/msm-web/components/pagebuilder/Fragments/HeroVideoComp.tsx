@@ -150,7 +150,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     return (
         <div ref={containerRef} className="absolute mt-4 inset-0 overflow-visible mx-auto">
             {/* CSS-only clip-path reveal — paints from SSR HTML, no JS needed */}
-            <div className="absolute mx-auto max-w-7xl rounded-4xl  inset-0 overflow-hidden hero-clip-reveal">
+            <div className="absolute mx-auto   inset-0 overflow-hidden hero-clip-reveal">
                 {useVideo ? (
                     <div className="relative w-full h-full">
                         {/* Poster — the LCP element. Loads eagerly, high priority. */}

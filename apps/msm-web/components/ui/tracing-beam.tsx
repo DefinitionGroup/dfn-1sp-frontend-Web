@@ -90,9 +90,9 @@ export const TracingBeam = ({
                 delay: 0.5,
               }}
               animate={{
-                backgroundColor: scrollYProgress.get() > 0 ? "#ffffff" : "#66ff00",
+                backgroundColor: scrollYProgress.get() > 0 ? "#ffffff" : "#03b8d4",
               }}
-              className="h-2 w-2  bg-lemon-500"
+              className="h-2 w-2 bg-msm-cyan"
             />
           </motion.div>
           <svg

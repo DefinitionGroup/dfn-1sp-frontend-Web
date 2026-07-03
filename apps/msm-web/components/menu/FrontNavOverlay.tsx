@@ -244,14 +244,14 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       <nav
         ref={navRef}
         style={{ zIndex: 99999 }}
-        className={`floating-nav z-99999 hidden fixed top-6 left-0 w-fit h-16 right-0 md:block iphone-landscape:scale-70 iphone-landscape:top-2 mx-auto ${textColor} ${className}`}
+        className={`floating-nav z-99999 hidden fixed  left-0 w-full h-20 right-0 md:block iphone-landscape:scale-70 iphone-landscape:top-2 mx-auto ${textColor} ${className}`}
       >
         <MotionGlassSurface
           key={hasInitialAnimationCompleted ? "settled" : "intro"}
           {...msmNavGlassSurfaceProps}
           borderRadius={navGlassRadius}
-          contentClassName="pointer-events-auto grid h-full w-full grid-cols-12 items-center px-6 py-2"
-          width="fit-content"
+          contentClassName="pointer-events-auto  w-[100vw]  w-full items-center px-6 py-2"
+          width="100%"
           height="100%"
           initial={
             hasInitialAnimationCompleted
@@ -264,16 +264,15 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 opacity: isNavVisible ? 1 : 0,
                 y: isNavVisible ? 0 : -100,
                 scale: 1,
-                clipPath: "inset(0% 0% 0% 0% round 999px)",
+                clipPath: "inset(0% 0% 0% 0%  1)",
               }
               : {
                 opacity: [0, 1, 1],
                 scale: [2, 1, 1],
                 clipPath: [
-                  "inset(49% 49% 49% 49% round 50%)", // tiny circle
-                  "inset(0% 49% 0% 49% round 999px)",       // full height pill
-                  "inset(0% 49% 0% 49% round 999px)",       // full height pill
-                  "inset(0% 0% 0% 0% round 999px)"          // full width menu
+                  "inset(0% 49% 0% 49%  1)",       // full height pill
+                  "inset(0% 49% 0% 49%  1)",       // full height pill
+                  "inset(0% 0% 0% 0%  9919px)"          // full width menu
                 ],
               }
           }
@@ -289,152 +288,152 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               }
           }
         >
-        <div className="col-span-2 flex items-center pr-16  justify-start">
+          <div className="col-span-2 flex items-center pr-16 ml-32 justify-start">
+            <motion.div
+
+              className=" flex items-start  justify-center">
+              <Link
+                href={`/`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push(`/`);
+                }}
+                aria-label="Home"
+                className="flex items-center justify-center"
+              >
+                <Image
+                  src={logoUrl}
+                  alt={logoAlt}
+                  width={32}
+                  height={32}
+                  className={logoClassName}
+                  style={{ height: "auto" }}
+                />
+              </Link>
+            </motion.div>
+          </div>
+
           <motion.div
 
-            className=" flex items-start  justify-center">
-            <Link
-              href={`/`}
-              onClick={(e) => {
-                e.preventDefault();
-                router.push(`/`);
-              }}
-              aria-label="Home"
-              className="flex items-center justify-center"
-            >
-              <Image
-                src={logoUrl}
-                alt={logoAlt}
-                width={32}
-                height={32}
-                className={logoClassName}
-                style={{ height: "auto" }}
-              />
-            </Link>
+            className="col-span-7   flex items-center "
+          >
+
+
+            {menuData?.menuItems && menuData.menuItems.length > 0 ? (
+              <StaggeredSlideUp
+                className="flex items-center "
+                delay={1.3}
+                staggerDelay={0.08}
+                duration={0.5}
+                distance={10}
+                easing="spring"
+                rootMargin="0px 0px -20px 0px"
+                once={true}
+                animateImmediately={true}
+              >
+                {menuData.menuItems
+                  .filter((item) => {
+                    const isCasesPage = item.slug?.includes("cases");
+                    const isServicesPage = item.slug?.includes("services");
+                    if (isCasesPage && !hasCaseStudies) {
+                      return false;
+                    }
+                    if (isServicesPage && !hasServices) {
+                      return false;
+                    }
+                    return true;
+                  })
+                  .map((item) => (
+                    <span key={item._key} className={itemClass}>
+                      <Link
+                        className="hover:text-violet-400  transition-colors "
+                        href={`/${item.slug}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          router.push(`/${item.slug}`);
+                        }}
+                      >
+                        {item.displayName || item.title}
+                      </Link>
+                    </span>
+                  ))}
+              </StaggeredSlideUp>
+            ) : (
+              <>
+                <span className={itemClass}>
+                  <Link
+                    className="hover:text-violet-400 transition-colors"
+                    href={`/${locale}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push(`/${locale}`);
+                    }}
+                  >
+                    Home
+                  </Link>
+                </span>
+                <span className={itemClass}>
+                  <Link
+                    className="hover:text-violet-400 transition-colors"
+                    href={`/${locale}/whatwedo`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push(`/${locale}/whatwedo`);
+                    }}
+                  >
+                    Services
+                  </Link>
+                </span>
+                <span className={itemClass}>
+                  <Link
+                    className="hover:text-violet-400 transition-colors"
+                    href={`/${locale}/our-family`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push(`/${locale}/our-family`);
+                    }}
+                  >
+                    Our Family
+                  </Link>
+                </span>
+                <span className={itemClass}>
+                  <Link
+                    className="hover:text-violet-400 transition-colors"
+                    href={`/${locale}/whatwedo`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push(`/${locale}/whatwedo`);
+                    }}
+                  >
+                    Work with us
+                  </Link>
+                </span>
+              </>
+            )}
+
+
           </motion.div>
-        </div>
 
-        <motion.div
-
-          className="col-span-7   flex items-center "
-        >
-
-
-          {menuData?.menuItems && menuData.menuItems.length > 0 ? (
-            <StaggeredSlideUp
-              className="flex items-center "
-              delay={1.3}
-              staggerDelay={0.08}
-              duration={0.5}
-              distance={10}
-              easing="spring"
-              rootMargin="0px 0px -20px 0px"
-              once={true}
-              animateImmediately={true}
-            >
-              {menuData.menuItems
-                .filter((item) => {
-                  const isCasesPage = item.slug?.includes("cases");
-                  const isServicesPage = item.slug?.includes("services");
-                  if (isCasesPage && !hasCaseStudies) {
-                    return false;
-                  }
-                  if (isServicesPage && !hasServices) {
-                    return false;
-                  }
-                  return true;
-                })
-                .map((item) => (
-                  <span key={item._key} className={itemClass}>
-                    <Link
-                      className="hover:text-violet-400  transition-colors "
-                      href={`/${item.slug}`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        router.push(`/${item.slug}`);
-                      }}
-                    >
-                      {item.displayName || item.title}
-                    </Link>
-                  </span>
-                ))}
-            </StaggeredSlideUp>
-          ) : (
-            <>
-              <span className={itemClass}>
-                <Link
-                  className="hover:text-violet-400 transition-colors"
-                  href={`/${locale}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push(`/${locale}`);
-                  }}
-                >
-                  Home
-                </Link>
-              </span>
-              <span className={itemClass}>
-                <Link
-                  className="hover:text-violet-400 transition-colors"
-                  href={`/${locale}/whatwedo`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push(`/${locale}/whatwedo`);
-                  }}
-                >
-                  Services
-                </Link>
-              </span>
-              <span className={itemClass}>
-                <Link
-                  className="hover:text-violet-400 transition-colors"
-                  href={`/${locale}/our-family`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push(`/${locale}/our-family`);
-                  }}
-                >
-                  Our Family
-                </Link>
-              </span>
-              <span className={itemClass}>
-                <Link
-                  className="hover:text-violet-400 transition-colors"
-                  href={`/${locale}/whatwedo`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push(`/${locale}/whatwedo`);
-                  }}
-                >
-                  Work with us
-                </Link>
-              </span>
-            </>
-          )}
-
-
-        </motion.div>
-
-        <div className="col-span-3 flex relative justify-end items-center align-start   gap-1">
-          {/* All Cases button only on case detail pages */}
-          {isCaseDetailRoute && (
-            <button
-              type="button"
-              className={`border  min-w-[80px] inline-block py-2 px-2 text-xxs font-bold cursor-pointer hover:text-violet-400 hover:border-violet-400 transition-colors`}
-              onClick={() => setShowOverlay(true)}
-            >
-              All Cases
-            </button>
-          )}
-          <div className="min-w-[110px] w-[50px] max-w-[110px] n block relative   -right-2 top-1  ">
-            <Button2
-              variant="limesmall"
-              className="min-w-[110px] w-[50px] max-w-[110px] overflow-hidden block absolute   "
-              href="https://1sp.agency"
-              text="1sp.agency"
-            />
+          <div className=" flex relative justify-end w-full h-full items-center align-start   gap-1">
+            {/* All Cases button only on case detail pages */}
+            {isCaseDetailRoute && (
+              <button
+                type="button"
+                className={`border  min-w-[80px] inline-block py-2 px-2 text-xxs font-bold cursor-pointer hover:text-violet-400 hover:border-violet-400 transition-colors`}
+                onClick={() => setShowOverlay(true)}
+              >
+                All Cases
+              </button>
+            )}
+            <div className=" min-w-[110px] w-[50px]  h-full  relative  top-2 right-22   ">
+              <Button2
+                variant="violet"
+                className="overflow-hidden block absolute   "
+                href="https://1sp.agency"
+                text="1sp.agency"
+              />
+            </div>
           </div>
-        </div>
 
 
         </MotionGlassSurface>

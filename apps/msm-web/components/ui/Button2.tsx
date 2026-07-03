@@ -22,7 +22,7 @@ const sizeMap: Record<NonNullable<Button2Props["variant"]>, MosaicButtonSize> = 
   limesmall: "sm",
 };
 
-function Button2({ text, className, href, variant = "default", magnetic = true }: Button2Props) {
+function Button2({ text, className, href, variant = "default", magnetic = false }: Button2Props) {
   return (
     <MosaicButton
       className={className}

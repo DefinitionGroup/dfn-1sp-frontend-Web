@@ -94,7 +94,7 @@ export default function HighlightStep({
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="z-12 mx-auto mt-8 min-h-[60vh] relative bg-neutral-50 font-aspekta text-neutral-600"
+      className="z-12 mx-auto mt-8 min-h-[60vh] relative bg-msm-paper font-aspekta text-neutral-50"
     >
       <div className="relative z-10 container mx-auto px-4 sm:px-6  lg:px-8">
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 pt-16 pb-16">
@@ -108,11 +108,11 @@ export default function HighlightStep({
           {/* Mobile CTA - shown at bottom on mobile */}
           {showCta && (
             <div className="col-span-4 sm:col-span-6 md:hidden iphone-landscape:!block iphone-landscape:col-span-12 mt-8">
-              <div className="flex flex-col border-t border-neutral-600 pt-8 items-start gap-4">
+              <div className="flex flex-col border-t border-white/20 pt-8 items-start gap-4">
 
                 <CtaMiniComponent
                   {...({
-                    className: "font-regular text-neutral-600 line-height-normal",
+                    className: "font-regular text-neutral-200 line-height-normal",
                     heading: cta?.paragraph,
 
                     buttonText: cta?.buttonText,

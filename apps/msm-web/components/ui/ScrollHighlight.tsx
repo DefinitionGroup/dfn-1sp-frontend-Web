@@ -355,7 +355,7 @@ function Stylesheet() {
         list-style: none;
         padding: 0;
         margin: 0;
-        color: var(--color-neutral-600);
+        color: var(--color-neutral-50);
         display: flex;
         flex-direction: column;
         width: 100%;

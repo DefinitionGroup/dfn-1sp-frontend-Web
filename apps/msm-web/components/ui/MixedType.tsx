@@ -10,7 +10,9 @@ interface MixedTypeProps {
 export default function MixedType({
   text,
   className,
-  serifClassName = "font-nyghtserif italic",
+  // MSM typography paradigm: Cooper Hewitt only — no serifs, no italics.
+  // The *emphasis* syntax now renders as accent color instead of a serif.
+  serifClassName = "text-msm-cyan",
 }: MixedTypeProps) {
   if (!text) return null;
 

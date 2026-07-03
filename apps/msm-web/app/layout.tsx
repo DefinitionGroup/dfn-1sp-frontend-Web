@@ -11,14 +11,17 @@ import { getSiteConfig } from "@1sp/site-config";
 const MSM_SITE = getSiteConfig("msmWeb");
 const GOOGLE_MEASUREMENT_ID = process.env.NEXT_PUBLIC_MSM_GOOGLE_MEASUREMENT_ID;
 
-const aspekta = localFont({
+const cooperHewitt = localFont({
   src: [
-    { path: "./fonts/AspektaVF.woff2", style: "normal" },
-    { path: "./fonts/AspektaVF.ttf", style: "normal" },
+    { path: "./fonts/CooperHewitt-Light.woff2", weight: "300", style: "normal" },
+    { path: "./fonts/CooperHewitt-Book.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/CooperHewitt-BookItalic.woff2", weight: "400", style: "italic" },
+    { path: "./fonts/CooperHewitt-Medium.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/CooperHewitt-Semibold.woff2", weight: "600", style: "normal" },
+    { path: "./fonts/CooperHewitt-Bold.woff2", weight: "700", style: "normal" },
   ],
-  variable: "--font-aspekta",
+  variable: "--font-cooper-hewitt",
   display: "swap",
-  weight: "50 1000",
 });
 
 export const metadata: Metadata = {
@@ -50,7 +53,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${aspekta.variable} `}
+      className={`dark ${cooperHewitt.variable} `}
       suppressHydrationWarning
     >
       <head>

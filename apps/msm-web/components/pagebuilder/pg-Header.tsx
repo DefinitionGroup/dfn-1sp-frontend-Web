@@ -3,9 +3,8 @@
 import React from "react";
 import HeroVideoComp from "@msm/components/pagebuilder/Fragments/HeroVideoComp";
 import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
-import { GlassSurface, cardGlassSurfaceProps } from "@msm/components/ui/glass-surface";
 import { assetUrl } from "@1sp/utils/cloudinary";
-import TypewriterRotator from "@msm/components/ui/TypewriterRotator";
+import DecryptRotator from "@msm/components/ui/DecryptRotator";
 import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import type {
@@ -148,20 +147,10 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
         />
       )}
 
-      {/* Foreground content — wrapped in a glass card floating over the
-          textured hero video. The refraction reads here because the video
-          backdrop carries real high-frequency detail (see docs/MSM_NAV_GLASS.md). */}
-      <div className="absolute bottom-24 md:bottom-24 iphone-landscape:bottom-0 md:relative z-10  max-w-9xl container md:mt-[50vh] iphone-landscape:mt-[50vh] mx-auto px-4">
-        <GlassSurface
-          {...cardGlassSurfaceProps}
-          borderRadius={28}
-          width="fit-content"
-          height="auto"
-          className="max-w-[min(92vw,640px)]"
-          contentClassName="flex w-full flex-col items-start p-6 md:p-8"
-        >
+      {/* Foreground content */}
+      <div className="absolute bottom-24 md:bottom-24 iphone-landscape:bottom-0 md:relative z-10  max-w-9xl container md:mt-[50vh] iphone-landscape:mt-[50vh] mx-auto">
         <StaggeredSlideUp
-          className="space-y-1 w-full"
+          className="px-4 md:px-4 space-y-1 container mx-auto  "
           delay={1}
           staggerDelay={0.08}
           duration={0.5}
@@ -172,17 +161,17 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           animateImmediately={true}
         >
           {hasVisibleText(eyebrow) && (
-            <h3 className="text-neutral-50 uppercase  text-xs iphone-landscape:text-xxs pb-1  font-medium max-w-1/4">
+            <h3 className="text-neutral-50 uppercase  text-base iphone-landscape:text-base pb-1  font-medium max-w-1/4">
               {eyebrow}
             </h3>
           )}
 
-          {/* Typewriter words */}
-          {words.length > 0 && <TypewriterRotator text={words} />}
+          {/* Decrypt-style rotating words */}
+          {words.length > 0 && <DecryptRotator text={words} />}
 
           {/* Desktop paragraphs (rich text) */}
           {paragraphs.length > 0 && (
-            <div className="hidden md:block iphone-landscape:!hidden space-y-4 text-neutral-50 ">
+            <div className="hidden md:block iphone-landscape:!hidden space-y-4 text-balance text-neutral-50 font-medium text-4xl ">
               <PortableText
                 value={paragraphs}
                 components={portableTextComponentsWithHighlight}
@@ -200,7 +189,6 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
             </div>
           )}
         </StaggeredSlideUp>
-        </GlassSurface>
       </div>
 
     </section>
