@@ -5,7 +5,8 @@
       "name": "msm-web",
       "runtimeExecutable": "pnpm",
       "runtimeArgs": ["--filter", "msm-web", "dev"],
-      "port": 3000
+      "port": 3000,
+      "autoPort": true
     }
   ]
 }
