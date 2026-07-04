@@ -1,4 +1,5 @@
 import { draftMode } from "next/headers";
+import HtmlLangSetter from "@/components/HtmlLangSetter";
 
 /**
  * Locale-aware layout
@@ -9,8 +10,8 @@ import { draftMode } from "next/headers";
  * - Accessibility: Screen readers use `lang` for pronunciation
  * - i18n: Browsers use `lang` for spell-checking and font selection
  *
- * Note: We override the `<html>` lang attribute via a script because the root
- * layout renders the `<html>` tag and nested layouts cannot re-render it.
+ * Note: We override the `<html>` lang attribute via HtmlLangSetter because the
+ * root layout renders the `<html>` tag and nested layouts cannot re-render it.
  */
 export default async function SiteLayout({
   children,
@@ -56,11 +57,7 @@ export default async function SiteLayout({
   return (
     <>
       {/* Dynamically set lang attribute based on current locale */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `document.documentElement.lang="${locale || "en"}";`,
-        }}
-      />
+      <HtmlLangSetter locale={locale || "en"} />
       {diagnostics}
       {children}
       {previewTools}

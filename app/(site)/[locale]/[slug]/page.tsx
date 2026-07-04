@@ -31,6 +31,7 @@ import { getChannel } from "@1sp/site-config/server";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
   JsonLdScript,
@@ -133,6 +134,10 @@ export default async function Page({
 
   // Uses cached fetch - deduped with generateMetadata call
   const page = await getPageBySlug(slug, channel, language);
+
+  if (!page) {
+    notFound();
+  }
 
   const navbarVariant = page?.navbarVariant || "light";
   const contentBlocks = page?.content as any[] | undefined;

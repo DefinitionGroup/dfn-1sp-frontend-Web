@@ -78,6 +78,11 @@ interface LocationForSchema {
 /**
  * Renders a `<script type="application/ld+json">` tag.
  * Google reads JSON-LD from anywhere on the page (head or body).
+ *
+ * React 19 renders non-executable "data block" script types (like ld+json)
+ * in place without warnings — its dev error "Encountered a script tag while
+ * rendering React component" only applies to executable scripts, which are
+ * never run when client-rendered.
  */
 export function JsonLdScript({ data }: { data: JsonLdEntity | JsonLdEntity[] }) {
   return (
