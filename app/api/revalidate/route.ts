@@ -160,7 +160,7 @@ async function handleRevalidation(body: SanityWebhookBody) {
      * can remain stale indefinitely on Vercel even though Studio/local dev
      * already shows the new content.
      */
-    revalidateTag("sanity");
+    revalidateTag("sanity", "max");
     revalidatedTags.push("sanity");
 
     // ==========================================================================
@@ -172,11 +172,11 @@ async function handleRevalidation(body: SanityWebhookBody) {
     switch (_type) {
         case "page":
             // Invalidate page-specific cache
-            revalidateTag("pages");
+            revalidateTag("pages", "max");
             revalidatedTags.push("pages");
 
             if (slug?.current) {
-                revalidateTag(`page:${slug.current}`);
+                revalidateTag(`page:${slug.current}`, "max");
                 revalidatedTags.push(`page:${slug.current}`);
             }
 
@@ -189,12 +189,12 @@ async function handleRevalidation(body: SanityWebhookBody) {
         case "case":
         case "caseStudy":
             // Case studies affect: their own page + nav overlay + any page showing cases
-            revalidateTag("cases");
-            revalidateTag("global"); // Cases appear in nav overlay
+            revalidateTag("cases", "max");
+            revalidateTag("global", "max"); // Cases appear in nav overlay
             revalidatedTags.push("cases", "global");
 
             if (slug?.current) {
-                revalidateTag(`case:${slug.current}`);
+                revalidateTag(`case:${slug.current}`, "max");
                 revalidatedTags.push(`case:${slug.current}`);
 
                 pushLocalizedPath(`/cases/${slug.current}`);
@@ -206,7 +206,7 @@ async function handleRevalidation(body: SanityWebhookBody) {
 
         case "person":
             // Team members appear on pages via PageBuilder components
-            revalidateTag("people");
+            revalidateTag("people", "max");
             revalidatedTags.push("people");
 
             if (slug?.current) {
@@ -217,9 +217,9 @@ async function handleRevalidation(body: SanityWebhookBody) {
         case "service":
         case "services":
             // Services affect: their own page + nav overlay + any page showing services
-            revalidateTag("services");
-            revalidateTag("pages");
-            revalidateTag("global"); // Services appear in nav overlay
+            revalidateTag("services", "max");
+            revalidateTag("pages", "max");
+            revalidateTag("global", "max"); // Services appear in nav overlay
             revalidatedTags.push("services", "pages", "global");
 
             pushLocalizedPath("/services");
@@ -227,8 +227,8 @@ async function handleRevalidation(body: SanityWebhookBody) {
 
         case "serviceGroup":
             // Service groups affect service listings
-            revalidateTag("services");
-            revalidateTag("pages");
+            revalidateTag("services", "max");
+            revalidateTag("pages", "max");
             revalidatedTags.push("services", "pages");
 
             pushLocalizedPath("/services");
@@ -237,7 +237,7 @@ async function handleRevalidation(body: SanityWebhookBody) {
         case "menu":
             // Menu changes affect navigation across ALL pages
             // This is the one case where we need broad invalidation
-            revalidateTag("global");
+            revalidateTag("global", "max");
             revalidatedTags.push("global");
 
             // Also invalidate layout to refresh nav/footer everywhere
@@ -247,10 +247,10 @@ async function handleRevalidation(body: SanityWebhookBody) {
         case "siteSettings":
         case "globalSettings":
             // Global changes affect everything - this is the nuclear option
-            revalidateTag("global");
-            revalidateTag("pages");
-            revalidateTag("cases");
-            revalidateTag("services");
+            revalidateTag("global", "max");
+            revalidateTag("pages", "max");
+            revalidateTag("cases", "max");
+            revalidateTag("services", "max");
             revalidatedTags.push("global", "pages", "cases", "services");
 
             pushPath("/", "layout");
@@ -258,8 +258,8 @@ async function handleRevalidation(body: SanityWebhookBody) {
 
         case "unit":
             // Units appear in various components
-            revalidateTag("units");
-            revalidateTag("pages");
+            revalidateTag("units", "max");
+            revalidateTag("pages", "max");
             revalidatedTags.push("units", "pages");
 
             // Unit references can be embedded in page-builder payloads, so
@@ -269,13 +269,13 @@ async function handleRevalidation(body: SanityWebhookBody) {
 
         case "client":
             // Clients are referenced in case studies
-            revalidateTag("cases");
+            revalidateTag("cases", "max");
             revalidatedTags.push("cases");
             break;
 
         default:
             // For unknown document types, be conservative and invalidate pages
-            revalidateTag("pages");
+            revalidateTag("pages", "max");
             revalidatedTags.push("pages");
 
             pushPath("/", "layout");

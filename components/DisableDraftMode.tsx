@@ -1,11 +1,16 @@
 "use client";
 
-import { useDraftModeEnvironment } from "next-sanity/hooks";
+import { useVisualEditingEnvironment } from "next-sanity/hooks";
 import Link from "next/link";
 export function DisableDraftMode() {
-  const environment = useDraftModeEnvironment();
+  const environment = useVisualEditingEnvironment();
 
-  if (environment !== "live" && environment !== "unknown") {
+  // Only show the toggle when previewing outside the Presentation Tool —
+  // inside the Studio iframe/window, Presentation manages draft mode itself.
+  if (
+    environment === "presentation-iframe" ||
+    environment === "presentation-window"
+  ) {
     return null;
   }
 

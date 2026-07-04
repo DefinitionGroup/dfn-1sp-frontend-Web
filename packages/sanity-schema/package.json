@@ -12,9 +12,9 @@
   ],
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
-    "@sanity/icons": "^3.7.4",
-    "@sanity/ui": "^3.1.11",
-    "sanity": "^4.12.0"
+    "@sanity/icons": "^4.1.0",
+    "@sanity/ui": "^3.3.1",
+    "sanity": "^6.3.0"
   },
   "peerDependencies": {
     "react": "^18 || ^19"

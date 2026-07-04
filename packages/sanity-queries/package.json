@@ -24,9 +24,9 @@
     "@1sp/site-config": "workspace:*",
     "@1sp/sanity-types": "workspace:*",
     "@1sp/utils": "workspace:*",
-    "@sanity/image-url": "^1.2.0",
+    "@sanity/image-url": "^2.1.1",
     "@vercel/stega": "^0.1.2",
-    "next-sanity": "^11.6.3"
+    "next-sanity": "^13.1.1"
   },
   "peerDependencies": {
     "react": "^18 || ^19"
