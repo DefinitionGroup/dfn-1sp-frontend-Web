@@ -416,6 +416,7 @@ export interface OneSPHeader {
     paragraphs?: any[];
     mobileParagraphs?: any[];
     highlight?: string;
+    cta?: CTA;
 
     // decoration
     cornerLeftText?: string;

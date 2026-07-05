@@ -3,8 +3,11 @@
 import React from "react";
 import HeroVideoComp from "@msm/components/pagebuilder/Fragments/HeroVideoComp";
 import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
-import { assetUrl } from "@1sp/utils/cloudinary";
+import { assetUrl, resolveLink } from "@1sp/utils/cloudinary";
+import { useParams } from "next/navigation";
+import Button2 from "@msm/components/ui/Button2";
 import DecryptRotator from "@msm/components/ui/DecryptRotator";
+import CornerMarkers from "@msm/components/ui/CornerMarkers";
 import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import type {
@@ -53,6 +56,15 @@ function highlightInline(text: string, highlight?: string): React.ReactNode {
 /** --- component --- */
 function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   const isIphoneLandscape = useIphoneLandscape();
+  const params = useParams();
+  const locale = (params?.locale as string) || "en";
+
+  // Optional CTA below the hero copy (schema: oneSPHeader.cta)
+  let ctaHref = step.cta?.link ? resolveLink(step.cta.link) : undefined;
+  if (ctaHref && ctaHref.startsWith("/") && !ctaHref.startsWith(`/${locale}`)) {
+    ctaHref = `/${locale}${ctaHref}`;
+  }
+  const ctaText = step.cta?.text;
   const mediaUrl = assetUrl(step.media as CloudinaryAsset | undefined);
   const useVideo = isVideoUrl(mediaUrl);
 
@@ -138,6 +150,9 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     >
       {seoTitle && <h1 className="sr-only">{seoTitle}</h1>}
 
+      {/* Blueprint corner markers (Vast grammar) */}
+      <CornerMarkers inset="1.25rem" />
+
       {/* Background media */}
       {mediaUrl && (
         <HeroVideoComp
@@ -161,7 +176,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           animateImmediately={true}
         >
           {hasVisibleText(eyebrow) && (
-            <h3 className="text-neutral-50 uppercase  text-base iphone-landscape:text-base pb-1  font-medium max-w-1/4">
+            <h3 className="eyebrow text-msm-cyan pb-1 max-w-1/4">
               {eyebrow}
             </h3>
           )}
@@ -186,6 +201,13 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
                 value={mobileParagraphsToRender}
                 components={portableTextComponentsWithHighlight}
               />
+            </div>
+          )}
+
+          {/* Optional CTA (mosaic button) */}
+          {ctaHref && ctaText && (
+            <div className="pt-6">
+              <Button2 text={ctaText} href={ctaHref} />
             </div>
           )}
         </StaggeredSlideUp>

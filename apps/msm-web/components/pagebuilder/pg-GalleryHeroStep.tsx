@@ -8,6 +8,7 @@ import { assetUrl } from "@1sp/utils/cloudinary";
 import { useInView } from "motion/react";
 import { useParams } from "next/navigation";
 import { hasVisibleText } from "@1sp/utils/text-content";
+import Badgemodule from "@msm/components/ui/Badgemodule";
 
 
 type Props =
@@ -70,13 +71,26 @@ function GalleryHeroStepComponent(props: Props) {
         <HeaderImageVideoComp2 useVideo videoSrc={videoSrc} enableParallax />
       )}
 
-      <div className="relative z-10 container mx-auto px-4  sm:px-6 lg:px-8 font-aspekta">
+      <div className="relative z-10 container mx-auto px-[var(--container-padding)] font-aspekta border-t border-white/10">
         {/* Background grid (optional visual helper) */}
 
         <div className="grid grid-cols-4 iphone-landscape:grid-cols-12 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 pt-16 sm:pt-24 lg:pt-32 pb-6 sm:pb-8 lg:pb-12">
-          <div className="col-span-4 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 sm:col-span-6 md:col-span-12">
+          {/* Badge — responsive positioning (reinstated, mirrors root) */}
+          {(step as any).badge?.text && (
+            <div className="hidden md:block md:col-span-2 md:mb-0 iphone-landscape:!hidden">
+              <Badgemodule
+                text={(step as any).badge.text ?? ""}
+                subtitle={(step as any).badge.subtitle ?? ""}
+                numberEl={(step as any).badge.numberEl ?? ""}
+                variant="glass"
+                size="md"
+              />
+            </div>
+          )}
+
+          <div className={`col-span-4 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 sm:col-span-6 ${(step as any).badge?.text ? "md:col-span-10 md:col-start-3" : "md:col-span-12"}`}>
             {hasVisibleText(step.typewriterText) && (
-              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-regular tracking-tighter mb-4 text-neutral-800 md:mb-2">
+              <h2 className="headline-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-4 text-neutral-50 md:mb-2">
                 <Typewriter
                   ref={typewriterref}
                   play={isInView}
@@ -101,7 +115,7 @@ function GalleryHeroStepComponent(props: Props) {
                 distance={40}
               >
                 {step.description?.map((p, i) => (
-                  <p key={i} className="text-base overflow-visible sm:text-lg text-gray-600 max-w-2xl leading-normal">
+                  <p key={i} className="text-base overflow-visible sm:text-lg text-neutral-400 max-w-2xl leading-normal">
                     {p}
                   </p>
                 ))}

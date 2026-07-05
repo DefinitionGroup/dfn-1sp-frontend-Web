@@ -118,7 +118,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
     <div id={sectionId} {...navPointDataAttr} className={`${containerClassName} `}>
       <div className="grid z-1 mx-auto container relative font-aspekta">
         {/* Background grid (optional visual helper) */}
-        <div className={`z-1 py-20 md:py-28 col-span-12 px-4 md:px-8 container mx-auto row-start-1 grid-cols-12 ${paddingTopClass}`}>
+        <div className={`z-1 py-20 md:py-28 col-span-12 px-[var(--container-padding)] container mx-auto row-start-1 grid-cols-12 ${paddingTopClass}`}>
           <StaggeredSlideUp {...defaultStaggeredProps}>
             {hasVisibleText(title) ? <h3 className={titleClass}>{title}</h3> : null}
             <p className={subtitleClass} style={{ color: pickAccent(subtitle || title || "") }}>

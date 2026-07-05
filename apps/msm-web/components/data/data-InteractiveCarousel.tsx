@@ -328,7 +328,7 @@ export default function SmartCarousel({
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                   >
-                    <button className="w-6 h-6 cursor-pointer bg-black/50 backdrop-blur-sm  flex items-center justify-center text-violet-400 hover:bg-white/100 hover:text-black transition-colors">
+                    <button className="w-6 h-6 cursor-pointer bg-black/50 backdrop-blur-sm  flex items-center justify-center text-msm-magenta hover:bg-white/100 hover:text-black transition-colors">
                       <svg
                         width="11"
                         height="113"
@@ -395,7 +395,7 @@ export default function SmartCarousel({
             {carouselItems.map((_, index) => (
               <motion.button
                 key={index}
-                className={`h-1.5 sm:h-2  transition-all rounded-full  hover:bg-violet-400 duration-300 cursor-pointer ${index === currentIndex ? "bg-violet-400 min-w-8 sm:min-w-16" : "bg-gray-100 min-w-1.5 sm:min-w-2"}`}
+                className={`h-1.5 sm:h-2  transition-all rounded-full  hover:bg-msm-magenta duration-300 cursor-pointer ${index === currentIndex ? "bg-msm-magenta min-w-8 sm:min-w-16" : "bg-white/25 min-w-1.5 sm:min-w-2"}`}
                 whileHover={{ scale: 1.15 }}
                 whileTap={{ scale: 0.8 }}
                 onClick={() => {
@@ -418,7 +418,7 @@ export default function SmartCarousel({
               <Link
                 key={item.id}
                 href={item.linkHref || "#"}
-                className={`relative flex-shrink-0 w-10 rounded-2xl  sm:w-12 md:w-22 h-8 sm:h-12 md:h-18  overflow-hidden outline-1 sm:outline-2 md:outline-3 transition-all hover:scale-105 active:scale-95 ${index === currentIndex ? "outline-violet-500" : "outline-transparent"}`}
+                className={`relative flex-shrink-0 w-10 rounded-2xl  sm:w-12 md:w-22 h-8 sm:h-12 md:h-18  overflow-hidden outline-1 sm:outline-2 md:outline-3 transition-all hover:scale-105 active:scale-95 ${index === currentIndex ? "outline-msm-magenta" : "outline-transparent"}`}
               >
                 {item.image && (
                   <Image

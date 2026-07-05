@@ -1,4 +1,5 @@
 "use client";
+// @sacred — B/W portrait treatment stays (Martin, July 2026). Chrome around it may evolve; the imagery treatment may not.
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";

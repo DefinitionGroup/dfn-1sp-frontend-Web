@@ -72,7 +72,7 @@ const StaggeredFadeIn: React.FC<StaggeredFadeInProps> = ({
       y: 0,
       transition: {
         duration: prefersReducedMotion ? 0.01 : duration,
-        ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number], // Custom easing for smooth animation
+        ease: [0.62, 0.05, 0.01, 0.99] as [number, number, number, number], // Vast precision bezier
       },
     },
   };

@@ -34,6 +34,15 @@
   /* MSM headline paradigm: gently relaxed tracking for display type */
   --headline-tracking: -0.02em;
 
+  /* ── Vast Space motion grammar (design-reskin-vastspace) ─────────
+     Precision easing: fast entry, slow exact landing. Overshoot for
+     hovers/entrances. All durations multiply by --motion (1|0) so
+     prefers-reduced-motion kills animation in one switch. */
+  --ease-vast-bezier: cubic-bezier(0.62, 0.05, 0.01, 0.99);
+  --ease-vast-overshoot: cubic-bezier(0.4, 1.35, 0.5, 0.97);
+  --default-transition-timing-function: var(--ease-vast-bezier);
+  --default-transition-duration: calc(300ms * var(--motion, 1));
+
   --animate-fade-in-up: fadeInUp 0.6s ease-out;
 
   /* ── MSM brand palette (cube mark) ───────────────────────────── */
@@ -188,6 +197,19 @@
 }
 
 :root {
+  /* Vast motion multiplier: 1 = animate, 0 = reduced-motion kills all */
+  --motion: 1;
+  --duration-primary: calc(0.65s * var(--motion));
+  --duration-fast: calc(0.5s * var(--motion));
+  --stagger: calc(0.07s * var(--motion));
+  /* Vast spacing rhythm */
+  --container-padding: clamp(1.5rem, 4vw, 4rem);
+  --nav-height: 8rem;
+  --gap-xs: 0.8rem;
+  --gap-s: 1.6rem;
+  --gap-m: 3.2rem;
+  --gap-xxl: 6.4rem;
+
   --radius: 0;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -254,6 +276,29 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+}
+
+/* Vast motion kill-switch: one variable disables every tokenized animation */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion: 0;
+  }
+}
+
+/* Selection color as brand signal (Vast grammar, MSM cyan) */
+::selection {
+  background-color: var(--color-msm-cyan);
+  color: var(--color-msm-paper);
+}
+
+/* ── Eyebrow: small technical label above headings (Vast grammar).
+   Color comes from a text-* utility per zone; layout/tracking here. */
+@utility eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  font-style: normal;
 }
 
 /* ── MSM typography paradigm ──────────────────────────────────────

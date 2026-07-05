@@ -6,6 +6,7 @@ import HeaderImageVideoComp2 from "@msm/components/data/Fragments/data-HeaderIma
 import ListContainerComponent from "@msm/components/ui/ListContainerComponent";
 import ListItemComponent from "@msm/components/ui/ListItemComponent";
 import CtaMiniComponent from "@msm/components/data/Fragments/data-CtaMiniComponent";
+import Badgemodule from "@msm/components/ui/Badgemodule";
 import { hasVisibleText } from "@1sp/utils/text-content";
 import { getTranslations } from "@1sp/utils/translations";
 
@@ -55,6 +56,9 @@ interface ServicesHeroWithBadgeProps {
   minHeight?: string;
   paddingY?: string;
   navPointName?: string;
+  badgeText?: string;
+  badgeSubtitle?: string;
+  badgeNumber?: string | number;
 }
 
 function ServicesHeroWithBadge({
@@ -70,6 +74,9 @@ function ServicesHeroWithBadge({
   minHeight = "66vh",
   paddingY = "64",
   navPointName,
+  badgeText,
+  badgeSubtitle,
+  badgeNumber,
 }: ServicesHeroWithBadgeProps) {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
@@ -96,7 +103,20 @@ function ServicesHeroWithBadge({
         <div
           className={`grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 py-16 sm:py-24 lg:py-${paddingY}`}
         >
-          <div className="col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-12">
+          {/* Badge Module — responsive positioning (reinstated, mirrors root) */}
+          {badgeText && (
+            <div className="hidden md:block md:col-span-2 md:mb-0 md:sticky md:top-24 self-start iphone-landscape:!hidden">
+              <Badgemodule
+                text={badgeText}
+                subtitle={badgeSubtitle || ""}
+                numberEl={badgeNumber ?? ""}
+                variant="glass"
+                size="md"
+              />
+            </div>
+          )}
+
+          <div className={`col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 ${badgeText ? "md:col-span-10 md:col-start-3" : "md:col-span-12"}`}>
             <StaggeredSlideUp
               className="flex flex-col items-start justify-start gap-4"
               delay={0.0}

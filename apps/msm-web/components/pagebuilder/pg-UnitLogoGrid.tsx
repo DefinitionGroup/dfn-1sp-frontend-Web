@@ -110,7 +110,7 @@ function UnitLogoGrid({
       {...(hideFromNav ? { "data-nav-hidden": "true" } : {})}
       className="relative py-16 md:py-24"
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-[var(--container-padding)] border-t border-white/10 pt-12 md:pt-16">
         {/* Grid background */}
         <div className="absolute inset-0 z-0">
         </div>
@@ -122,11 +122,11 @@ function UnitLogoGrid({
             delay={0.1}
             staggerDelay={0.1}
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light tracking-tight leading-normal text-gray-800 dark:text-gray-100">
+            <h2 className="headline-display text-3xl md:text-4xl lg:text-5xl text-neutral-50">
               {headline}
             </h2>
             {subheadline && (
-              <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl">
+              <p className="text-lg md:text-xl text-neutral-400 max-w-2xl">
                 {subheadline}
               </p>
             )}
@@ -164,9 +164,9 @@ function UnitLogoGrid({
                     href={href}
                     target={unit.cta?.link?.linkType === "external" ? "_blank" : undefined}
                     rel={unit.cta?.link?.linkType === "external" ? "noopener noreferrer" : undefined}
-                    className={`group flex items-center justify-center hover:bg-neutral-200/20    cursor-pointer p-2 md:p-4  ${bgClass} transition-all duration-300`}
+                    className={`group flex items-center justify-center hover:bg-white/5 cursor-pointer p-2 md:p-4  ${bgClass} transition-all duration-300`}
                   >
-                    <div className="relative w-full aspect-[3/2] flex-col cursor-pointer border border-neutral-200/90     items-center justify-center overflow-hidden">
+                    <div className="relative w-full aspect-[3/2] flex-col cursor-pointer border border-white/15 items-center justify-center overflow-hidden">
                       <Image
                         src={logoUrl}
                         alt={unit.name || "Unit logo"}

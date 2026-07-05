@@ -85,12 +85,12 @@ export default function PeopleStep({
                   <div className="col-span-4 sm:col-span-3 md:col-span-4 iphone-landscape:col-span-4">
                     <div className="flex flex-col gap-2 sm:gap-4">
                       {hasVisibleText(header.superText) && (
-                        <h2 className="text-xs sm:text-sm text-neutral-700 font-semibold tracking-tight">
+                        <h2 className="eyebrow text-msm-teal">
                           {header.superText}
                         </h2>
                       )}
                       {hasVisibleText(header.mainHeadline) && (
-                        <h3 className="text-4xl sm:text-4xl md:text-4xl lg:text-5xl text-neutral-900 tracking-tighter leading-[1.1]">
+                        <h3 className="headline-display text-4xl sm:text-4xl md:text-4xl lg:text-5xl text-neutral-50">
                           {header.mainHeadline}
                         </h3>
                       )}
@@ -98,7 +98,7 @@ export default function PeopleStep({
                       {(header.creativityTitle || header.uniquePeopleText) && (
                         <div className="flex flex-col mt-2">
                           {header.creativityTitle && (
-                            <span className="text-lg sm:text-xl md:text-2xl text-neutral-900">
+                            <span className="text-lg sm:text-xl md:text-2xl text-neutral-50">
                               {header.creativityTitle}
                             </span>
                           )}

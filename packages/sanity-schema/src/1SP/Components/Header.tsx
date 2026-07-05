@@ -125,6 +125,14 @@ export default defineType({
       group: "content",
       initialValue: "one Superagency.",
     }),
+    defineField({
+      name: "cta",
+      title: "CTA Button",
+      description:
+        "Optional call-to-action button shown below the hero paragraphs.",
+      type: "cta",
+      group: "content",
+    }),
 
     // LAYOUT / DECORATION
 

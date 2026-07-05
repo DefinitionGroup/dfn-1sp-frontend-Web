@@ -1,4 +1,5 @@
 "use client";
+// @sacred — thin wrapper over MosaicButton (protected). All CTAs stay mosaic buttons.
 import MosaicButton, { type MosaicButtonSize } from "./MosaicButton";
 
 interface Button2Props {

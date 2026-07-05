@@ -45,7 +45,9 @@ const textColorClasses: Record<NonNullable<ListItemProps["color"]>, string> = {
   "gray-600": "text-gray-600",
   "gray-700": "text-gray-700",
   white: "text-white",
-  black: "text-black",
+  // MSM is a dark-only channel: legacy content with "black" ink would be
+  // invisible on the paper background, so it renders as light ink instead.
+  black: "text-neutral-50",
 };
 
 const lineColorClasses: Record<NonNullable<ListItemProps["color"]>, string> = {

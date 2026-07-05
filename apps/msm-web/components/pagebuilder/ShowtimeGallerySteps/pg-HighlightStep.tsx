@@ -96,7 +96,7 @@ export default function HighlightStep({
       {...navPointDataAttr}
       className="z-12 mx-auto mt-8 min-h-[60vh] relative bg-msm-paper font-aspekta text-neutral-50"
     >
-      <div className="relative z-10 container mx-auto px-4 sm:px-6  lg:px-8">
+      <div className="relative z-10 container mx-auto px-[var(--container-padding)]">
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 pt-16 pb-16">
 
           <div className={`col-span-1 sm:col-span-2  not-first: iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 ${showCta ? "md:col-span-9" : "md:col-span-12"}`}>

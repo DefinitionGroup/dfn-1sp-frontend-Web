@@ -1,4 +1,5 @@
 "use client";
+// @sacred — approved hero mechanic (decrypt/descramble), tuned by Martin. Do not replace.
 
 import React, { useEffect, useRef, useState } from "react";
 
@@ -39,8 +40,10 @@ export default function DecryptRotator({
   text?: string[];
 }) {
   const words = text.filter((w) => w.trim().length > 0);
+  // First paint must be deterministic (server HTML === client hydration),
+  // so start with the plain word — the mount effect scrambles immediately.
   const [display, setDisplay] = useState(() =>
-    words.length > 0 ? scramble(words[0], 0) : ""
+    words.length > 0 ? words[0] : ""
   );
   const indexRef = useRef(0);
   const wordsRef = useRef(words);

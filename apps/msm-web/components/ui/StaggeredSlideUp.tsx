@@ -8,9 +8,12 @@ import { useRobustInView } from "@1sp/utils/hooks/use-robust-in-view";
 type EasingPreset = "smooth" | "spring" | "ease-out" | "bounce";
 type Cubic = [number, number, number, number];
 
+// Vast Space motion grammar: "smooth" = precision bezier (fast entry,
+// slow exact landing), "spring" = overshoot-and-settle. Changing these
+// presets upgrades every caller site-wide.
 const EASING: Record<EasingPreset, Cubic> = {
-  smooth: [0.33, 1, 0.68, 1],
-  spring: [0.16, 1, 0.3, 1],
+  smooth: [0.62, 0.05, 0.01, 0.99],
+  spring: [0.4, 1.35, 0.5, 0.97],
   "ease-out": [0, 0, 0.2, 1],
   bounce: [0.68, -0.55, 0.265, 1.55],
 };

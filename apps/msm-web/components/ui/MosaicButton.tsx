@@ -1,4 +1,5 @@
 "use client";
+// @sacred — purpose-built MSM signature component. Never redesign, replace or restyle. (Martin, July 2026)
 
 import { useEffect, useRef, useState } from "react";
 import type {
