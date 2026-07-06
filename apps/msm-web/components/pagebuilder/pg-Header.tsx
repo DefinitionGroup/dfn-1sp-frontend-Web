@@ -162,8 +162,10 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
         />
       )}
 
-      {/* Foreground content */}
-      <div className="absolute bottom-24 md:bottom-24 iphone-landscape:bottom-0 md:relative z-10  max-w-9xl container md:mt-[50vh] iphone-landscape:mt-[50vh] mx-auto">
+      {/* Foreground content — corner markers frame the text/headline/CTA
+          group (system pattern, hero zone → cyan) */}
+      <div className="absolute bottom-24 md:bottom-24 iphone-landscape:bottom-0 md:relative z-10  max-w-9xl container md:mt-[50vh] iphone-landscape:mt-[50vh] mx-auto py-5">
+        <CornerMarkers className="text-msm-cyan/50 text-xs" inset="0.125rem" />
         <StaggeredSlideUp
           className="px-4 md:px-4 space-y-1 container mx-auto  "
           delay={1}

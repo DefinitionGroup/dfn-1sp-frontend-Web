@@ -5,6 +5,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Button2 from "@msm/components/ui/Button2";
+import CornerMarkers from "@msm/components/ui/CornerMarkers";
 import {
   getCarouselImageUrl,
   getCarouselLogoUrl,
@@ -271,7 +272,7 @@ export default function SmartCarousel({
                     <motion.div
                       initial="hidden"
                       animate="visible"
-                      className="flex-col items-start justify-start p-2 sm:p-4 md:p-8 max-w-full sm:max-w-2xl md:max-w-3xl space-y-2"
+                      className="relative flex-col items-start justify-start p-4 sm:p-6 md:p-8 max-w-full sm:max-w-2xl md:max-w-3xl space-y-2"
                       variants={{
                         hidden: { opacity: 0 },
                         visible: {
@@ -280,6 +281,9 @@ export default function SmartCarousel({
                         },
                       }}
                     >
+                      {/* System pattern: corner markers frame the text+CTA
+                          area (cases zone → magenta) */}
+                      <CornerMarkers className="text-msm-magenta/50 text-xs" inset="0.375rem" />
                       <div>
                         {(active.logosrc || "") && (
                           <motion.div className="mb-2 sm:mb-4 max-h-6 sm:max-h-8 w-auto text-black flex items-start text-xs ">
@@ -294,7 +298,7 @@ export default function SmartCarousel({
                           </motion.div>
                         )}
                         {active.title && (
-                          <motion.h3 className="text-xl sm:text-2xl md:text-5xl tracking-tighter leading-tight md:leading-none   pb-0 md:pb-4 md:pt-4 ">
+                          <motion.h3 className="headline-display pb-0 md:pb-4 md:pt-4">
                             {active.title}
                           </motion.h3>
                         )}
