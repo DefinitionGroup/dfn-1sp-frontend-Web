@@ -204,7 +204,7 @@ export default function SmartCarousel({
     <section className="px-2 sm:px-4 md:px-0">
       <div
         ref={containerRef}
-        className=" relative top-0 rounded-4xl overflow-hidden mx-auto w-full max-w-7xl "
+        className=" relative top-0 rounded-4xl overflow-hidden mx-auto w-full  "
       >
         <div className="relative h-[60vh] sm:h-[70vh] iphone-landscape:!h-dvh md:h-[800px] flex items-start">
           {/* Main Carousel */}
@@ -309,14 +309,14 @@ export default function SmartCarousel({
                         </motion.p>
                       )} */}
                       {active.description && (
-                        <motion.p className="text-gray-100 text-sm sm:text-base max-w-xs sm:max-w-md md:max-w-lg mb-2 sm:mb-4 line-clamp-3 sm:line-clamp-none">
+                        <motion.p className="text-gray-100 text-sm sm:text-base leading-relaxed font-medium max-w-xs sm:max-w-md md:max-w-lg mb-2 sm:mb-4 line-clamp-3 sm:line-clamp-none">
                           {active.description}
                         </motion.p>
                       )}
                       <motion.div className="text-gray-100 text-sm max-w-2xl">
                         {active.linkHref && (
                           <Button2
-                            variant="violetsmall"
+                            variant="violet"
                             href={active.linkHref}
                             text="View Case Study"
                             magnetic={false}
