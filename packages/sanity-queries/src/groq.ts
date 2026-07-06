@@ -318,7 +318,7 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
     },
     _type == 'smartCarousel' => {
       ...,
-      selectedCases[]->{
+      selectedCases[$channel in @->channel]->{
         _id,
         title,
         subtitle,
@@ -336,7 +336,7 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
     },
     _type == 'casesGalleryFiltered' => {
       ...,
-      selectedCases[]->{
+      selectedCases[$channel in @->channel]->{
         _id,
         title,
         slug,
@@ -346,7 +346,7 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
     },
     _type == 'casesGalleryFilteredWithPagination' => {
       ...,
-      selectedCases[]->{
+      selectedCases[$channel in @->channel]->{
         _id,
         title,
         slug,
@@ -570,7 +570,7 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
     },
     _type == 'smartCarousel' => {
       ...,
-      selectedCases[]->{
+      selectedCases[$channel in @->channel]->{
         _id,
         title,
         subtitle,
@@ -588,7 +588,7 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
     },
     _type == 'casesGalleryFiltered' => {
       ...,
-      selectedCases[]->{
+      selectedCases[$channel in @->channel]->{
         _id,
         title,
         slug,
@@ -598,7 +598,7 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
     },
     _type == 'casesGalleryFilteredWithPagination' => {
       ...,
-      selectedCases[]->{
+      selectedCases[$channel in @->channel]->{
         _id,
         title,
         slug,

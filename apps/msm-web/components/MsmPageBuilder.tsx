@@ -389,7 +389,9 @@ export function PageBuilder({
           case "smartCarousel":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <SmartCarousel key={key} {...(block as any)} language={language} />
+                {/* channel must be explicit — SmartCarouselBlock's auto mode
+                    falls back to 1spWeb otherwise */}
+                <SmartCarousel key={key} {...(block as any)} channel="msmWeb" language={language} />
               </ErrorBoundary>
             );
           case "smartPeople":
