@@ -148,6 +148,14 @@ const SmartCarousel = dynamic(
   }
 );
 
+const ServicesCarousel = dynamic(
+  () => import("./pagebuilder/server/ServicesCarouselBlock"),
+  {
+    loading: () => <ComponentLoader />,
+    ssr: true,
+  }
+);
+
 const SmartPeople = dynamic(() => import("./data/data-SmartPeople"), {
   loading: () => <ComponentLoader />,
   ssr: true,
@@ -392,6 +400,12 @@ export function PageBuilder({
                 {/* channel must be explicit — SmartCarouselBlock's auto mode
                     falls back to 1spWeb otherwise */}
                 <SmartCarousel key={key} {...(block as any)} channel="msmWeb" language={language} />
+              </ErrorBoundary>
+            );
+          case "smartServicesCarousel":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <ServicesCarousel key={key} {...(block as any)} channel="msmWeb" language={language} />
               </ErrorBoundary>
             );
           case "smartPeople":

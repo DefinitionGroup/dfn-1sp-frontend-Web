@@ -334,6 +334,17 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
         slug
       }
     },
+    _type == 'smartServicesCarousel' => {
+      ...,
+      selectedServices[$channel in @->channel]->{
+        _id,
+        name,
+        taglabel,
+        introText,
+        serviceDescription,
+        "backgroundAsset": serviceBackground.asset
+      }
+    },
     _type == 'casesGalleryFiltered' => {
       ...,
       selectedCases[$channel in @->channel]->{
@@ -584,6 +595,17 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
           logo
         },
         slug
+      }
+    },
+    _type == 'smartServicesCarousel' => {
+      ...,
+      selectedServices[$channel in @->channel]->{
+        _id,
+        name,
+        taglabel,
+        introText,
+        serviceDescription,
+        "backgroundAsset": serviceBackground.asset
       }
     },
     _type == 'casesGalleryFiltered' => {
@@ -923,6 +945,18 @@ export const SERVICES_BY_CHANNEL_QUERY = defineQuery(`
     backgroundImage,
     cta
   }
+}
+`);
+
+// Auto mode for the smart services carousel: all channel services, capped
+export const INTERACTIVE_SERVICES_CAROUSEL_QUERY = defineQuery(`
+*[_type == "services" && $channel in channel && language == $language] | order(name asc) [0...$maxItems] {
+  _id,
+  name,
+  taglabel,
+  introText,
+  serviceDescription,
+  "backgroundAsset": serviceBackground.asset
 }
 `);
 

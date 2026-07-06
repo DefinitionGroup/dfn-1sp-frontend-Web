@@ -510,6 +510,20 @@ export const getInteractiveCarouselCases = cache(
   }
 );
 
+export const getInteractiveCarouselServices = cache(
+  async (channel: string, language: string, maxItems: number) => {
+    const { INTERACTIVE_SERVICES_CAROUSEL_QUERY } = await import("./groq");
+
+    const { data } = await sanityFetch({
+      query: INTERACTIVE_SERVICES_CAROUSEL_QUERY,
+      params: { channel, language, maxItems },
+      tags: ["services"],
+    });
+
+    return data || [];
+  }
+);
+
 // =============================================================================
 // STATIC GENERATION HELPERS
 // =============================================================================

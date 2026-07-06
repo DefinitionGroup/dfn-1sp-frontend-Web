@@ -20,6 +20,7 @@ import member from "./1SP/Items/member";
 
 import carousel from "./1SP/Components/carousel";
 import smartCarousel from "./1SP/Components/smartCarousel";
+import smartServicesCarousel from "./1SP/Components/smartServicesCarousel";
 import smartPeople from "./1SP/Components/smartPeople";
 import smartUnitsGallery from "./1SP/Components/smartUnitsGallery";
 import smartUnitsGlobe from "./1SP/Components/smartUnitsGlobe";
@@ -74,6 +75,7 @@ const oneSPComponents = [
     // Carousel and smart components as standalone
     carousel,
     smartCarousel,
+    smartServicesCarousel,
     smartPeople,
     smartUnitsGallery,
     smartUnitsGlobe,

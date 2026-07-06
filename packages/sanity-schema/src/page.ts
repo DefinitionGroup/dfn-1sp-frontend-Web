@@ -176,6 +176,7 @@ export default defineType({
                 { type: 'galleryOverview' },
                 { type: 'carousel' },
                 { type: 'smartCarousel' },
+                { type: 'smartServicesCarousel' },
                 { type: 'smartPeople' },
                 { type: 'smartUnitsGallery' },
                 { type: 'smartUnitsGlobe' },
