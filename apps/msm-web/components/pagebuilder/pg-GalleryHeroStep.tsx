@@ -90,7 +90,7 @@ function GalleryHeroStepComponent(props: Props) {
 
           <div className={`col-span-4 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 sm:col-span-6 ${(step as any).badge?.text ? "md:col-span-10 md:col-start-3" : "md:col-span-12"}`}>
             {hasVisibleText(step.typewriterText) && (
-              <h2 className="headline-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-4 text-neutral-50 md:mb-2">
+              <h2 className="headline-display mb-4 text-neutral-50 md:mb-2">
                 <Typewriter
                   ref={typewriterref}
                   play={isInView}

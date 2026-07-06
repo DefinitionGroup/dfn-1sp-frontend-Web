@@ -120,7 +120,8 @@ export default function DecryptRotator({
 
 const textStyle: React.CSSProperties = {
   fontSize: "var(--tw-text-size)",
-  fontWeight: 300,
+  // Unified headline paradigm: bold everywhere (Martin, July 2026)
+  fontWeight: 700,
   lineHeight: "var(--tw-text-lh)",
   letterSpacing: "var(--tw-text-ls)",
   color: "#ffffff",

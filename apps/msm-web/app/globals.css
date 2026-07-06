@@ -21,9 +21,9 @@
 @theme extend {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-cooper-hewitt), system-ui, sans-serif;
+  --font-sans: var(--font-aspekta-vf), system-ui, sans-serif;
   /* Legacy alias — `font-aspekta` utilities now resolve to Cooper Hewitt */
-  --font-aspekta: var(--font-cooper-hewitt), system-ui, sans-serif;
+  --font-aspekta: var(--font-aspekta-vf), system-ui, sans-serif;
 
   /* Default fallback */
   --headline-line-height: 1.1;
@@ -33,6 +33,9 @@
 
   /* MSM headline paradigm: gently relaxed tracking for display type */
   --headline-tracking: -0.02em;
+  /* One headline size across the whole channel (hero + sections):
+     36px on mobile fluidly up to 72px on desktop. */
+  --headline-size: clamp(2.25rem, 1.2rem + 3.5vw, 4.5rem);
 
   /* ── Vast Space motion grammar (design-reskin-vastspace) ─────────
      Precision easing: fast entry, slow exact landing. Overshoot for
@@ -302,17 +305,16 @@
 }
 
 /* ── MSM typography paradigm ──────────────────────────────────────
-   Headlines are ALWAYS: Cooper Hewitt, weight 500, sentence case,
-   relaxed tracking. No serifs, no italics anywhere on this channel.
-   Use this utility for every headline; size stays per-instance via
-   text-* classes. */
+   Headlines are ALWAYS: AspektaVF, BOLD, sentence case, one unified
+   size (--headline-size, hero included), relaxed tracking. No serifs,
+   no italics anywhere on this channel. Do not add text-* size classes
+   next to this utility — the token owns the size. */
 @utility headline-display {
-  font-family: var(--font-cooper-hewitt), system-ui, sans-serif;
+  font-family: var(--font-aspekta-vf), system-ui, sans-serif;
+  font-size: var(--headline-size);
   letter-spacing: var(--headline-tracking);
-  font-weight: 400;
-  /* Cooper Hewitt has tall ascenders/deep descenders — below ~1.15 the
-     lines visually shear each other at display sizes. --tw-leading makes
-     this win over the line-height baked into text-* size utilities. */
+  font-weight: 700;
+  /* --tw-leading makes the line-height win over any text-* utility */
   --tw-leading: 1.18;
   line-height: 1.18;
   font-style: normal;
@@ -323,7 +325,7 @@
   body {
     @apply bg-background text-foreground;
     font-family:
-      var(--font-cooper-hewitt),
+      var(--font-aspekta-vf),
       system-ui,
       -apple-system,
       sans-serif;
@@ -371,15 +373,17 @@
     @apply focus:outline-none focus:ring-2 focus:ring-brand-lime-500 focus:ring-offset-2;
   }
 
-  /* Typewriter rotator — responsive custom properties */
+  /* Typewriter/decrypt rotator — the hero headline uses the SAME unified
+     size token as every section headline (--headline-size, fluid clamp),
+     so the responsive media overrides collapsed away. */
   .typewriter-rotator {
     --tw-cursor-w: 8px;
     --tw-cursor-radius: 4px;
     --tw-cursor-ml: 4px;
-    --tw-cursor-h: min(4vw, 12rem);
-    --tw-text-size: min(4vw, 12rem);
-    --tw-text-lh: min(5vw, 12rem);
-    --tw-text-ls: 0.16rem;
+    --tw-text-size: var(--headline-size);
+    --tw-text-lh: calc(var(--headline-size) * 1.18);
+    --tw-text-ls: var(--headline-tracking);
+    --tw-cursor-h: var(--tw-text-lh);
   }
 
   @media (max-width: 768px) {
@@ -387,20 +391,6 @@
       --tw-cursor-w: 4px;
       --tw-cursor-radius: 2px;
       --tw-cursor-ml: 2px;
-      --tw-text-size: clamp(1.875rem, 8vw, 3.75rem);
-      --tw-text-lh: calc(var(--tw-text-size) * 1.05);
-      --tw-cursor-h: var(--tw-text-lh);
-    }
-  }
-
-  @media (orientation: landscape) and (pointer: coarse) and (max-height: 500px) {
-    .typewriter-rotator {
-      --tw-cursor-w: 3px;
-      --tw-cursor-radius: 2px;
-      --tw-cursor-ml: 2px;
-      --tw-text-size: min(2vw, 1.25rem);
-      --tw-text-lh: calc(var(--tw-text-size) * 1.05);
-      --tw-cursor-h: var(--tw-text-lh);
     }
   }
 

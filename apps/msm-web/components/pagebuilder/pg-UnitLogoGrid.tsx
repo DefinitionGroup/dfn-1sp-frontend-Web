@@ -122,7 +122,7 @@ function UnitLogoGrid({
             delay={0.1}
             staggerDelay={0.1}
           >
-            <h2 className="headline-display text-3xl md:text-4xl lg:text-5xl text-neutral-50">
+            <h2 className="headline-display text-neutral-50">
               {headline}
             </h2>
             {subheadline && (

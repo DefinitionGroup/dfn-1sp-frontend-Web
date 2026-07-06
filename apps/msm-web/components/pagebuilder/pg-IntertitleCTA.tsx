@@ -82,7 +82,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
     ...staggeredProps,
   };
 
-  const titleClass = `headline-display text-4xl md:text-6xl lg:text-7xl text-neutral-50 text-balance ${isLeftAligned ? "text-left" : "text-center"}`;
+  const titleClass = `headline-display text-neutral-50 text-balance ${isLeftAligned ? "text-left" : "text-center"}`;
   const subtitleClass = `mt-5 text-2xl md:text-4xl font-semibold leading-snug ${isLeftAligned ? "text-left" : "text-center"}`;
   const buttonContainerClass = `w-fit min-w-40 ${isLeftAligned ? "self-start" : "mx-auto"} mt-10 block`;
 

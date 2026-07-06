@@ -362,7 +362,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                     </h4>
                   )}
                   {hasVisibleText(header?.mainHeadline) && (
-                    <h2 className="headline-display text-3xl md:text-7xl iphone-landscape:text-5xl text-neutral-50">
+                    <h2 className="headline-display text-neutral-50">
                       {header.mainHeadline}
                     </h2>
                   )}
