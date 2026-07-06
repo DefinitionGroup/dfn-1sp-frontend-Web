@@ -3,15 +3,21 @@
   "configurations": [
     {
       "name": "msm-web",
-      "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--filter", "msm-web", "dev"],
+      "runtimeExecutable": "zsh",
+      "runtimeArgs": [
+        "-c",
+        "export PATH=\"$HOME/.nvm/versions/node/v22.14.0/bin:$PATH\"; pnpm --filter msm-web dev"
+      ],
       "port": 3000,
       "autoPort": true
     },
     {
       "name": "1sp-web",
-      "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["dev"],
+      "runtimeExecutable": "zsh",
+      "runtimeArgs": [
+        "-c",
+        "export PATH=\"$HOME/.nvm/versions/node/v22.14.0/bin:$PATH\"; pnpm dev"
+      ],
       "port": 3000,
       "autoPort": true
     }
