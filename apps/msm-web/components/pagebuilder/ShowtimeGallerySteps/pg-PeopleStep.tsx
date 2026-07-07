@@ -2,6 +2,7 @@
 import React from "react";
 import type { GalleryPeopleStep, CloudinaryAsset } from "@1sp/sanity-types";
 import PeopleShowcaseHero from "../Fragments/pg-PeopleShowcaseHero";
+import CornerMarkers from "@msm/components/ui/CornerMarkers";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
 type Member = {
@@ -78,8 +79,10 @@ export default function PeopleStep({
 
             <div className="col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-12">
 
-              {/* Header Section */}
-              <header className="border-t border-gray-200 pt-4 sm:pt-6 mb-8 md:mb-12">
+              {/* Header Section — corner-marked field (people zone → teal)
+                  instead of border-t rule */}
+              <header className="relative p-4 sm:p-6 mb-8 md:mb-12">
+                <CornerMarkers className="text-msm-teal/50 text-xs" inset="0.375rem" />
                 <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-10 iphone-landscape:grid-cols-4 gap-4 sm:gap-6">
                   {/* Left: Titles */}
                   <div className="col-span-4 sm:col-span-3 md:col-span-4 iphone-landscape:col-span-4">
@@ -115,7 +118,7 @@ export default function PeopleStep({
                   {/* Right: Description */}
                   {step.description && step.description.trim().length > 0 && (
                     <div className="col-span-4 sm:col-span-3 md:col-span-5 md:col-start-6 iphone-landscape:col-span-4 iphone-landscape:col-start-1 mt-4 sm:mt-0 iphone-landscape:mt-4">
-                      <div className="border-t border-gray-200 pt-4 sm:pt-6 md:border-t-0 md:pt-0">
+                      <div className="pt-4 sm:pt-6 md:pt-0">
                         <p className="text-sm sm:text-base text-neutral-500 leading-relaxed">
                           {step.description}
                         </p>

@@ -5,6 +5,7 @@ import type { CloudinaryAsset } from "@1sp/sanity-types";
 import { assetUrl, optimizedVideoUrl, cloudinaryPosterUrl } from "@1sp/utils/cloudinary";
 import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
 import StaggeredFadeIn from "@msm/components/ui/StaggeredFadeIn";
+import CornerMarkers from "@msm/components/ui/CornerMarkers";
 import Image from "next/image";
 import Link from "next/link";
 import { createPortal } from "react-dom";
@@ -248,18 +249,12 @@ function PeopleShowcaseHero({
                     className="object-cover pointer-events-none transition-all duration-300 group-hover:brightness-110 "
                   />
                 )}
-                {/* Unit Logo Signet */}
-                {member.unit?.logoSignet && (
-                  <div className="absolute top-4 left-4  w-12 h-12 z-10">
-                    <Image
-                      src={assetUrl(member.unit.logoSignet as any) || ""}
-                      alt={member.unit.name || "Unit logo"}
-                      fill
-                      sizes="40px"
-                      className="object-contain object-left border  relative border block left-0"
-                    />
-                  </div>
-                )}
+                {/* System pattern: corner markers frame each portrait
+                    (people zone → teal); hover follows active-white grammar */}
+                <CornerMarkers
+                  className="text-msm-teal/50 group-hover:text-white transition-colors duration-300 text-[10px]"
+                  inset="4px"
+                />
                 <div className="absolute inset-0 hidden bg-gradient-to-t from-black/80 via-black/60 to-black/65 opacity-0 lg:flex lg:opacity-0 lg:group-hover:opacity-100  transition-opacity duration-300 flex-col justify-end p-4">
                   <StaggeredFadeIn
                     className="flex flex-col"

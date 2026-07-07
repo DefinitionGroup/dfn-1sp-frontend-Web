@@ -122,7 +122,7 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
               }
             }
           },
-          teamMembers[]->{
+          teamMembers[$channel in @->channel]->{
             _id,
             name,
             image{
@@ -230,7 +230,7 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
           }
         }
       },
-      teamMembers[]->{
+      teamMembers[$channel in @->channel]->{
         _id,
         name,
         image{
@@ -439,7 +439,7 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
         },
         _type == 'galleryPeopleStep' => {
           ...,
-          teamMembers[]->{
+          teamMembers[$channel in @->channel]->{
             _id,
             name,
             image{
@@ -511,7 +511,7 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
     },
     _type == 'galleryPeopleStep' => {
       ...,
-      teamMembers[]->{
+      teamMembers[$channel in @->channel]->{
         _id,
         name,
         image{
