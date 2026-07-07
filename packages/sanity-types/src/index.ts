@@ -426,6 +426,29 @@ export interface OneSPHeader {
     navPointName?: string;
 }
 
+/** Client reference resolved inside a clientLogoCarousel block */
+export interface ClientLogoItem {
+    _id?: SanityID;
+    name?: string;
+    slug?: { current?: string };
+    logo?: CloudinaryAsset;
+}
+
+/** Infinite client-logo marquee (schema: clientLogoCarousel) */
+export interface ClientLogoCarousel {
+    _type?: "clientLogoCarousel";
+    eyebrow?: string;
+    headline?: string;
+    selectionMode?: "auto" | "manual";
+    selectedClients?: ClientLogoItem[];
+    /** Populated by GROQ when selectionMode is "auto" */
+    autoClients?: ClientLogoItem[];
+    speed?: "slow" | "normal" | "fast";
+    grayscale?: boolean;
+    navPointName?: string;
+    hideFromNav?: boolean;
+}
+
 /* Service Management Types */
 export interface Services {
     _id?: SanityID;

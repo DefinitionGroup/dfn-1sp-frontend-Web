@@ -400,6 +400,23 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
         logoColor${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
         logoSignet${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
       }
+    },
+    _type == 'clientLogoCarousel' => {
+      ...,
+      selectedClients[]->{
+        _id,
+        name,
+        slug,
+        logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
+      },
+      selectionMode == "auto" => {
+        "autoClients": *[_type == "client" && $channel in channel && defined(logo)] | order(name asc) {
+          _id,
+          name,
+          slug,
+          logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
+        }
+      }
     }
   }
 }`);
@@ -662,6 +679,23 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
         logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
         logoColor${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
         logoSignet${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
+      }
+    },
+    _type == 'clientLogoCarousel' => {
+      ...,
+      selectedClients[]->{
+        _id,
+        name,
+        slug,
+        logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
+      },
+      selectionMode == "auto" => {
+        "autoClients": *[_type == "client" && $channel in channel && defined(logo)] | order(name asc) {
+          _id,
+          name,
+          slug,
+          logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
+        }
       }
     }
   }

@@ -183,6 +183,7 @@ export default defineType({
                 { type: 'globeComponent' },
                 { type: 'unitLogoGrid' },
                 { type: 'pageBuilderLogoFloat' },
+                { type: 'clientLogoCarousel' },
                 { type: 'pageBuilderPersonioJobs' },
                 // Portable text — covers what contentMSM / contentStudioCO2 used to hold
                 { type: 'block' },
