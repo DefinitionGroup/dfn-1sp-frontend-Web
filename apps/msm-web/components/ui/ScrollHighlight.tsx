@@ -103,7 +103,7 @@ function ScrollHighlightItem({
 
       <div className=" flex  flex-col ">
         {hasVisibleText(skill.name) ? (
-          <h3 className="skill-name relative leading-none font-medium max-w-[20ch] ">
+          <h3 className="skill-name headline-display relative max-w-[20ch] ">
             {skill.name}
           </h3>
         ) : null}
@@ -375,37 +375,34 @@ function Stylesheet() {
 
       .skill-item {
         will-change: opacity, transform;
-        font-size: clamp(1.25rem, 5vw, 2rem);
-        font-weight: 300;
         max-width: 100%;
         margin: 0;
-    
+
         text-transform: none;
         display: flex;
-   
+
       }
 
       @media (min-width: 640px) {
         .skill-item { 
-          max-width: min(45ch, 80vw);
           padding: 1.5rem 0;
         }
       }
 
      
-      }
-
+   
       .skill-name {
         white-space: normal;
         word-wrap: break-word;
         overflow-wrap: break-word;
         hyphens: auto;
-        line-height: 1.1;
+        /* Step-specific exception: half the unified headline size,
+           weight/family/tracking still come from headline-display */
+        font-size: calc(var(--headline-size) * 0.5);
       }
 
       .skill-image {
         position: relative;
-   
         width: 100%;
         aspect-ratio: 16 / 12;
         border-radius: 0.5rem;

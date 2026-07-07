@@ -1,9 +1,10 @@
 "use client";
 import React from "react";
-import ScrollHighlight from "@msm/components/ui/ScrollHighlight";
+import StickyCardStack from "@msm/components/ui/StickyCardStack";
 import ArrowBig from "@msm/components/ui/arrowBig";
+import Badgemodule from "@msm/components/ui/Badgemodule";
+import CornerMarkers from "@msm/components/ui/CornerMarkers";
 import CtaMiniComponent from "../Fragments/pg-CtaMiniComponent";
-import { TracingBeam } from "@msm/components/ui/tracing-beam";
 import type {
   GalleryScrollHighlightStep,
   CloudinaryAsset,
@@ -80,6 +81,7 @@ export default function HighlightStep({
     ? { "data-navpoint-name": step.navPointName }
     : {};
 
+  const badge = (step as any).badge ?? null;
   const cta = (step as any).ctaMini ?? null;
   const showCta = !!(step as any).useCTAMini && !!cta;
   const baseCtaUrl = showCta && cta?.link ? resolveLink(cta.link) : undefined;
@@ -97,12 +99,46 @@ export default function HighlightStep({
       className="z-12 mx-auto mt-8 min-h-[60vh] relative bg-msm-paper font-aspekta text-neutral-50"
     >
       <div className="relative z-10 container mx-auto px-[var(--container-padding)]">
+        {/* System pattern: corner markers frame the step (services zone → cyan) */}
+        <CornerMarkers className="text-msm-cyan/40 text-xs" inset="0.5rem" />
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 pt-16 pb-16">
 
-          <div className={`col-span-1 sm:col-span-2  not-first: iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 ${showCta ? "md:col-span-9" : "md:col-span-12"}`}>
-            <TracingBeam className="">
-              {items.length > 0 && <ScrollHighlight items={items} />}
-            </TracingBeam>
+          {/* Left column: sticky badge + desktop CTA */}
+          {(badge || showCta) && (
+            <div className="hidden md:flex md:col-span-3 md:mb-0 md:sticky md:top-24 self-start flex-col gap-4 iphone-landscape:!hidden">
+              {badge && (
+                <Badgemodule
+                  text={badge.text ?? ""}
+                  subtitle={badge.subtitle ?? ""}
+                  numberEl={badge.numberEl ?? ""}
+                  size="md"
+                />
+              )}
+              {showCta && (
+                <div className="mt-8">
+                  <ArrowBig
+                    animate={true}
+                    size={48}
+                    color="white"
+                    className="mb-4 fill-white text-white iphone-landscape:hidden"
+                  />
+                  <CtaMiniComponent
+                    {...({
+                      className: "font-regular text-neutral-200 line-height-normal",
+                      heading: cta?.paragraph,
+                      buttonText: cta?.buttonText,
+                      buttonVariant: cta?.variant ?? cta?.buttonVariant ?? "limesmall",
+                      url: ctaUrl,
+                      align: "left",
+                    } as any)}
+                  />
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className={`col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 ${badge || showCta ? "md:col-span-9" : "md:col-span-12"}`}>
+            <StickyCardStack items={items} />
           </div>
 
           {/* Mobile CTA - shown at bottom on mobile */}

@@ -175,7 +175,7 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
             ...,
             contentType,
             textItems,
-            serviceItems[]->{
+            serviceItems[$channel in @->channel]->{
               _id,
               _updatedAt,
               _type,
@@ -283,7 +283,7 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
         ...,
         contentType,
         textItems,
-        serviceItems[]->{
+        serviceItems[$channel in @->channel]->{
           _id,
           _updatedAt,
           _type,
@@ -492,7 +492,7 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
             ...,
             contentType,
             textItems,
-            serviceItems[]->{
+            serviceItems[$channel in @->channel]->{
               _id,
               _updatedAt,
               _type,
@@ -564,7 +564,7 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
         ...,
         contentType,
         textItems,
-        serviceItems[]->{
+        serviceItems[$channel in @->channel]->{
           _id,
           _updatedAt,
           _type,
