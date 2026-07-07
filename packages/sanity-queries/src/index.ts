@@ -405,7 +405,9 @@ export const getSmartPeople = cache(
         query: SMART_PEOPLE_QUERY,
         params: {
           channel,
-          maxItems: Math.max(0, maxItems - 1),
+          // GROQ [0...$maxItems] is exclusive, so pass the count as-is —
+          // subtracting 1 here returned one fewer person than requested.
+          maxItems: Math.max(0, maxItems),
         },
         tags: ["people"],
       });
