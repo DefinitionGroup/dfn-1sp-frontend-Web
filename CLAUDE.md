@@ -71,7 +71,7 @@ The revalidation webhook uses a tag hierarchy: `sanity` (global), `pages`, `page
 ### Sanity CMS
 
 - Project ID: `wu6i3y0h`, dataset: `production`
-- Types are auto-generated via Sanity Typegen → `types/sanity.types.ts`
+- Sanity types are **hand-maintained** in the `@1sp/sanity-types` package (`packages/sanity-types/src`), not generated. GROQ query return types are also hand-written (e.g. per-block interfaces in the server blocks). TODO (deferred): adopt Sanity Typegen (`sanity schema extract` + `sanity typegen generate`) to derive types from the schema and `defineQuery()` calls, then switch imports to the generated file. Not set up yet — there is no typegen script or `sanity.types.ts` to run.
 - Images/videos managed through Cloudinary (`sanity-plugin-cloudinary`)
 - Multi-language via `@sanity/document-internationalization` (DE, EN, PL)
 - Internationalized document types: page, menu, caseStudy, unit, client, person, services, serviceGroup

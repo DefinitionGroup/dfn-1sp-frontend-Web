@@ -35,7 +35,7 @@
   - `@1sp/site-config` — channel + brand config, host resolver
   - `@1sp/sanity-schema` — all Sanity schema definitions
   - `@1sp/sanity-queries` — GROQ, cached fetch, client, env
-  - `@1sp/sanity-types` — TypeGen output + menu types
+  - `@1sp/sanity-types` — hand-written Sanity/content types + menu types (Sanity Typegen not set up yet; deferred — see CLAUDE.md)
   - `@1sp/pagebuilder-core` — `BlockRegistry` + `renderBlocks` plumbing
   - `@1sp/utils` — `cn()`, Cloudinary helpers, hooks
 - Channel hardcoding eliminated; resolved via `getChannel()` / `getChannelFromEnv()`
