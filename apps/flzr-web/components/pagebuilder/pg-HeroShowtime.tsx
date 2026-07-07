@@ -7,6 +7,7 @@ import HeaderImageVideoComp2 from "@flzr/components/pagebuilder/Fragments/pg-Hea
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import Button2 from "@flzr/components/ui/Button2";
 import MixedType from "@flzr/components/ui/MixedType";
+import Eyebrow from "@flzr/components/ui/Eyebrow";
 
 import { assetUrl, resolveLink, ctaToButtonProps } from "@1sp/utils/cloudinary";
 
@@ -68,37 +69,27 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
         videoSrc={videoUrl}
       />
 
-      <div className="z-1 grid col-span-12 py-section gap-responsive  col-start-1 container-responsive row-start-1 grid-cols-12">
-        {/* Left column */}
-        <div className="col-span-12 md:col-span-8 lg:col-span-5  col-start-1 flex flex-col px-4 md:px-8 justify-center  ">
-          <StaggeredSlideUp
-            className="flex flex-col items-start  justify-center"
-            delay={0.5}
-            staggerDelay={0.2}
-            duration={0.75}
-            distance={80}
-          >
-            {heading ? (
-              <HeadingTag className="text-4xl md:text-6xl iphone-landscape:!text-4xl font-aspekta leading-none pb-2">
-                <MixedType text={heading} />
-              </HeadingTag>
-            ) : null}
-            {subheading ? (
-              <p className="text-xl iphone-landscape:!text-base text-gray-100  max-w-sm mx-auto">
-                {subheading}
-              </p>
-            ) : null}
-          </StaggeredSlideUp>
-        </div>
-
-        {/* [TODO] Right column */}
-        <div className="col-span-12 md:col-span-7  md:col-start-6 flex flex-col items-start  justify-center">
-          {Array.isArray(paragraphs) &&
-            paragraphs.length > 0 &&
-            paragraphs.map((p, idx) => <p className="mb-4 text-lg" key={`para-${idx}`}>{p}</p>)}
+      {/* Single stacked column — eyebrow, headline, CTA, paragraphs —
+          constrained to the same max-w-7xl frame as the media/hero */}
+      <div className="z-1 col-span-12 col-start-1 row-start-1 flex w-full max-w-7xl mx-auto flex-col justify-center px-8 md:px-16 py-section">
+        <StaggeredSlideUp
+          className="flex flex-col items-start"
+          delay={0.5}
+          staggerDelay={0.15}
+          duration={0.75}
+          distance={40}
+        >
+          {subheading ? (
+            <Eyebrow className="pb-4 text-white/80">{subheading}</Eyebrow>
+          ) : null}
+          {heading ? (
+            <HeadingTag className="text-display iphone-landscape:!text-4xl font-aspekta pb-2">
+              <MixedType text={heading} />
+            </HeadingTag>
+          ) : null}
 
           {Array.isArray(additionalContent) && additionalContent.length > 0 && (
-            <div className="mt-8 flex flex-wrap min-w-[140px] items-start justify-start gap-4 md:gap-8">
+            <div className="mt-6 flex flex-wrap items-start justify-start gap-4">
               {additionalContent.map((cta: any, idx: number) => {
                 const btn = ctaToButtonProps(cta);
                 const href = resolveLink(cta?.link);
@@ -109,7 +100,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
                     key={`cta-${idx}`}
                     variant={btn.variant as any}
                     text={btn.text}
-                    className="w-fit min-w-[140px] text-sm"
+                    className="w-fit min-w-[140px]"
                     href={href}
                     aria-label={btn.text || "CTA"}
                     {...(isExternal
@@ -120,7 +111,17 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
               })}
             </div>
           )}
-        </div>
+
+          {Array.isArray(paragraphs) && paragraphs.length > 0 && (
+            <div className="mt-8 flex flex-col max-w-[38em]">
+              {paragraphs.map((p, idx) => (
+                <p className="mb-4 text-lg" key={`para-${idx}`}>
+                  {p}
+                </p>
+              ))}
+            </div>
+          )}
+        </StaggeredSlideUp>
       </div>
     </section>
   );

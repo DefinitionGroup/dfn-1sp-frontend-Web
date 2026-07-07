@@ -122,7 +122,7 @@ function UnitLogoGrid({
             delay={0.1}
             staggerDelay={0.1}
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light tracking-tight leading-normal text-gray-800 dark:text-gray-100">
+            <h2 className="text-title">
               {headline}
             </h2>
             {subheadline && (
@@ -141,7 +141,7 @@ function UnitLogoGrid({
             </div>
           ) : (
             <StaggeredSlideUp
-              className={`grid ${columnClasses[columns]} gap-0.5  w-full`}
+              className={`grid ${columnClasses[columns]} gap-0.5 w-full rounded-[2rem] overflow-hidden`}
               delay={0.1}
               staggerDelay={0.05}
             >

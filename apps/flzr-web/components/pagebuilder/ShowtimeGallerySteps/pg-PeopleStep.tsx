@@ -90,7 +90,7 @@ export default function PeopleStep({
                         </h2>
                       )}
                       {hasVisibleText(header.mainHeadline) && (
-                        <h3 className="text-4xl sm:text-4xl md:text-4xl lg:text-5xl text-neutral-900 tracking-tighter leading-[1.1]">
+                        <h3 className="text-4xl sm:text-4xl md:text-4xl lg:text-5xl tracking-tighter leading-[1.1]">
                           {header.mainHeadline}
                         </h3>
                       )}

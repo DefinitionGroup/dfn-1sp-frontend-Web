@@ -181,7 +181,7 @@ export default function ServiceGalleryComponent({
               }}
               transition={{ type: "spring", visualDuration: 0.3, bounce: 0.2 }}
               ref={ref}
-              className="w-full z-50 max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[90%]  flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
+              className="w-full z-50 max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[90%]  flex flex-col bg-neutral-900 dark:bg-neutral-900 rounded-2xl overflow-hidden"
             >      <motion.button
               key={`button-${active.name}-${id}`}
               layout

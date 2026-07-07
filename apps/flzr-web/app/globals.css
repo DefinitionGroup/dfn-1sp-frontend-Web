@@ -33,7 +33,7 @@
   --body-line-height: 1.5;
   /* Default fallback */
 
-  --animate-fade-in-up: fadeInUp 0.6s ease-out;
+  --animate-fade-in-up: fadeInUp 0.65s var(--ease-flzr);
   /* Brand Colors - From Figma Design */
   --color-brand-lime: #afff40;
   /* Primary lime from button */
@@ -43,6 +43,56 @@
   /* Pink background */
   --leading-compress: 0.75;
   /* 85% for compressed leading */
+
+  /* ============================================================
+     FLZR design language — violet ink + paper, mono telemetry,
+     pronounced radii. Single rationed accent: flzr-violet.
+     ============================================================ */
+  --color-flzr-violet: #7c5cff;
+  /* Accent — max 3 appearances per viewport */
+  --color-flzr-lavender: #d6ccff;
+  /* Soft tint (secondary accent surface) */
+  --color-flzr-ink: #131019;
+  /* Dark passages — violet-tinted, never #000 */
+  --color-flzr-paper: #f6f4f9;
+  /* Light page background */
+  --color-flzr-hairline: #e6e1f0;
+  /* 1px dividers on light */
+  --color-flzr-hairline-dark: rgb(255 255 255 / 0.15);
+  /* 1px dividers on dark */
+
+  /* Align the Tailwind violet ramp with the flzr accent so existing
+     violet-* utilities (Button2 variants) pick up the brand value. */
+  --color-violet-400: #9d85ff;
+  --color-violet-500: #7c5cff;
+  --color-violet-600: #6a48f0;
+
+  /* Fluid type scale (16px root, 375px → 1440px interpolation) */
+  --text-display: clamp(2.75rem, 2.05rem + 3vw, 4.75rem);
+  --text-display--line-height: 0.9;
+  --text-display--letter-spacing: -0.03em;
+  --text-display--font-weight: 700;
+  --text-title: clamp(2rem, 1.65rem + 1.5vw, 3rem);
+  --text-title--line-height: 1;
+  --text-title--letter-spacing: -0.02em;
+  --text-title--font-weight: 700;
+  --text-body-fluid: clamp(1rem, 0.97rem + 0.25vw, 1.125rem);
+  --text-body-fluid--line-height: 1.33;
+
+  /* Motion constants — one entrance system per page */
+  --ease-flzr: cubic-bezier(0.62, 0.05, 0.01, 0.99);
+  --ease-flzr-overshoot: cubic-bezier(0.4, 1.35, 0.5, 0.97);
+  --duration-flzr: 0.65s;
+  --duration-flzr-fast: 0.5s;
+
+  /* Pronounced radius scale — the flzr statement */
+  --radius-card: 2rem;
+  --radius-media: 2.5rem;
+  --radius-2xl: 2.5rem;
+  --radius-3xl: 3rem;
+  --radius-4xl: 3.5rem;
+
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   /* Brand Colors - Extended Palette */
   --color-brand-lime-50: oklch(0.98 0.02 120);
   --color-brand-lime-100: oklch(0.95 0.05 120);
@@ -55,24 +105,24 @@
   --color-brand-lime-800: oklch(0.45 0.15 120);
   --color-brand-lime-900: oklch(0.35 0.12 120);
 
-  /* Neutral Grays - From Figma Design */
-  --color-neutral-50: #f4f4f4;
-  /* Light background */
-  --color-neutral-100: #f0f0f0;
-  /* Badge text light */
-  --color-neutral-200: #bbbbbb;
+  /* Neutral scale — violet-tinted inks (retints all existing
+     bg-neutral-* / text-neutral-* usage into the flzr language) */
+  --color-neutral-50: #f6f4f9;
+  /* Paper */
+  --color-neutral-100: #efecf5;
+  /* Raised paper */
+  --color-neutral-200: oklch(0.78 0.02 300);
   /* Secondary text */
-  --color-neutral-300: oklch(0.85 0 0);
-  --color-neutral-400: oklch(0.708 0 0);
-  --color-neutral-500: oklch(0.556 0 0);
-  --color-neutral-600: #2f2f2f;
-  /* Dark gray */
-  --color-neutral-700: oklch(0.35 0 0);
-  --color-neutral-800: oklch(0.269 0 0);
-  --color-neutral-900: #121212;
-  /* Dark background */
-  --color-neutral-950: #000000;
-  /* Pure black */
+  --color-neutral-300: oklch(0.85 0.015 300);
+  --color-neutral-400: oklch(0.708 0.02 300);
+  --color-neutral-500: oklch(0.556 0.025 300);
+  --color-neutral-600: oklch(0.34 0.03 300);
+  --color-neutral-700: oklch(0.3 0.035 300);
+  --color-neutral-800: oklch(0.25 0.04 300);
+  --color-neutral-900: #131019;
+  /* Ink — dark passages */
+  --color-neutral-950: #0d0a12;
+  /* Deepest ink, replaces pure black */
 
   /* Accent Colors */
   --color-purple-400: oklch(0.7 0.2 300);
@@ -163,25 +213,25 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --radius: 1.5rem;
+  --background: #f6f4f9;
+  --foreground: #131019;
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: #131019;
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --popover-foreground: #131019;
+  --primary: #7c5cff;
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --secondary: #efecf5;
+  --secondary-foreground: #131019;
+  --muted: #efecf5;
+  --muted-foreground: oklch(0.556 0.025 300);
+  --accent: #efecf5;
+  --accent-foreground: #131019;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --border: #e6e1f0;
+  --input: #e6e1f0;
+  --ring: #7c5cff;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -241,6 +291,71 @@
       sans-serif;
   }
 
+  ::selection {
+    background: var(--color-flzr-violet);
+    color: #fff;
+  }
+
+  /* flzr headline voice — bold violet by default across the channel.
+     Explicit text-* / font-* utilities on a heading still win (utilities
+     layer beats base), so context overrides like white card names hold. */
+  h1,
+  h2,
+  h3,
+  .text-display,
+  .text-title {
+    font-weight: 700;
+    color: var(--color-flzr-violet);
+  }
+
+  /* Telemetry eyebrow — 12px uppercase mono; the flzr signature label.
+     Pair with .status-dot for live-data readouts. */
+  .eyebrow-mono {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .status-dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background: var(--color-flzr-violet);
+    animation: statusPulse 2.4s var(--ease-flzr) infinite;
+  }
+
+  @keyframes statusPulse {
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  /* Hairline dividers */
+  .hairline-b {
+    border-bottom: 1px solid var(--color-flzr-hairline);
+  }
+
+  .section-dark .hairline-b,
+  .hairline-b-dark {
+    border-bottom-color: var(--color-flzr-hairline-dark);
+  }
+
+  /* Dark full-bleed passage */
+  .section-dark {
+    background: var(--color-flzr-ink);
+    color: var(--color-flzr-paper);
+  }
+
   /* Gradient Text Utilities */
   .text-gradient-lime {
     background: linear-gradient(135deg,
@@ -263,7 +378,7 @@
 
   /* Animation Utilities */
   .animate-fade-in-up {
-    animation: fadeInUp 0.6s ease-out;
+    animation: fadeInUp 0.65s var(--ease-flzr);
   }
 
   @keyframes fadeInUp {
@@ -283,15 +398,15 @@
     @apply focus:outline-none focus:ring-2 focus:ring-brand-lime-500 focus:ring-offset-2;
   }
 
-  /* Typewriter rotator — responsive custom properties */
+  /* Typewriter rotator — display-scale fluid sizing (≥4× body) */
   .typewriter-rotator {
     --tw-cursor-w: 8px;
     --tw-cursor-radius: 4px;
     --tw-cursor-ml: 4px;
-    --tw-cursor-h: min(4vw, 12rem);
-    --tw-text-size: min(4vw, 12rem);
-    --tw-text-lh: min(5vw, 12rem);
-    --tw-text-ls: -0.1rem;
+    --tw-text-size: clamp(3.4rem, 2.5rem + 3.75vw, 6rem);
+    --tw-text-lh: calc(var(--tw-text-size) * 0.95);
+    --tw-cursor-h: var(--tw-text-lh);
+    --tw-text-ls: -0.03em;
   }
 
   @media (max-width: 768px) {
@@ -327,10 +442,10 @@
   outline: 1px dotted red;
 }
 
-/* View transition choreography */
+/* View transition choreography — capped at the 0.8s motion ceiling */
 :root {
-  --vt-duration: 1022ms;
-  --vt-ease: cubic-bezier(0.33, 1, 0.68, 1);
+  --vt-duration: 800ms;
+  --vt-ease: cubic-bezier(0.62, 0.05, 0.01, 0.99);
 }
 
 ::view-transition-group(root) {
@@ -434,18 +549,19 @@
  */
 @keyframes heroClipReveal {
   0% {
-    clip-path: inset(6% 6% 6% 6% round 0rem);
+    clip-path: inset(6% 6% 6% 6% round var(--radius-media));
     opacity: 0.92;
   }
 
   100% {
-    clip-path: inset(0% 0% 0% 0% round 0rem);
+    clip-path: inset(0.75rem 0.75rem 0.75rem 0.75rem round var(--radius-media));
     opacity: 1;
   }
 }
 
+/* Hero media lands as an inset frame with the flzr statement radius */
 .hero-clip-reveal {
-  animation: heroClipReveal 0.22s cubic-bezier(0.16, 1, 0.3, 1) 0.18s both;
+  animation: heroClipReveal 0.65s var(--ease-flzr) 0.18s both;
   will-change: clip-path, opacity;
   transform: translateZ(0);
 }
@@ -454,6 +570,16 @@
   .logo-marquee-track {
     animation: logo-marquee var(--marquee-duration, 220s) linear infinite;
     width: max-content;
+  }
+
+  .logo-marquee-pausable:hover .logo-marquee-track {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-marquee-track {
+      animation: none;
+    }
   }
 
   .logo-carousel-mask {

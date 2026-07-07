@@ -107,7 +107,7 @@ export default function ContactForm({
             {description ? <p className="text-neutral-500">{description}</p> : null}
           </div>
 
-          <div className="relative border border-neutral-200 p-6 shadow-sm transition duration-300 ease-out ">
+          <div className="relative border border-neutral-200 rounded-[2rem] p-6 transition duration-300 ease-out ">
             {status === "success" ? (
               <div className="space-y-3 text-violet-700">
                 <p className="text-lg font-semibold">Thank you!</p>

@@ -34,8 +34,8 @@ function GlobeComponent({ data }: GlobeComponentProps) {
     ? { "data-navpoint-name": navPointName }
     : {};
 
-  // Transform locations data into globe arcs format
-  const colors = ["#00ff33", "#55ff55", "#33ff77"];
+  // Transform locations data into globe arcs format — flzr violet family
+  const colors = ["#7c5cff", "#9d85ff", "#d6ccff"];
 
   // Create arcs connecting consecutive locations
   const arcs = locations.map((location, index) => {
@@ -65,7 +65,7 @@ function GlobeComponent({ data }: GlobeComponentProps) {
     emissive: "#ffffff",
     emissiveIntensity: 22,
     shininess: 1,
-    polygonColor: "rgba(1,255,2,1)",
+    polygonColor: "rgba(124,92,255,1)",
     ambientLight: "#ffffff",
     directionalLeftLight: "#ffffff",
     directionalTopLight: "#ffffff",
@@ -75,8 +75,8 @@ function GlobeComponent({ data }: GlobeComponentProps) {
     rings: 1,
     maxRings: 3,
     initialPosition: {
-      lat: locations[0]?.coordinateLat || 30.3193,
-      lng: locations[0]?.coordinateLon || 2.1694,
+      lat: 40,
+      lng: 10,
     },
     autoRotate: true,
     autoRotateSpeed: 0.15,

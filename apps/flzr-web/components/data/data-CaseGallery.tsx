@@ -118,7 +118,7 @@ export default function CaseGalleryComponent({
               exit={{ opacity: 0, transition: { duration: 0.05 } }}
               transition={{ type: "spring", visualDuration: 0.3, bounce: 0.2 }}
               ref={ref}
-              className="w-[95vw] md:w-full max-w-[960px] min-h-[70vh] max-h-[100vh]  grid bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
+              className="w-[95vw] md:w-full max-w-[960px] min-h-[70vh] max-h-[100vh]  grid bg-neutral-900 dark:bg-neutral-900 rounded-2xl overflow-hidden"
             >
               <motion.div
                 className="[grid-area:1/1] w-full  opacity-80  min-h-[70vh] max-h-[100vh] mediabackground"

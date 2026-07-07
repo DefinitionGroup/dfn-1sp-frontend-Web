@@ -103,7 +103,7 @@ export default function GlobalDataComponent({
           className="div"
         >
           {hasVisibleText(title) ? (
-            <h2 className="text-center text-xl md:text-5xl tracking-tight dark:text-white">
+            <h2 className="text-center text-xl md:text-5xl leading-[1.15] tracking-tight dark:text-white">
               {title}
             </h2>
           ) : null}

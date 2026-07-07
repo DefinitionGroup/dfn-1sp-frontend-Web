@@ -16,14 +16,19 @@ export default function TypewriterRotator({
     "Gaming",
     "Technology",
   ],
+  align = "left",
 }: {
   text?: string[];
+  align?: "left" | "center";
 }) {
   const [index, setIndex] = useState(0);
+  const isCentered = align === "center";
 
   return (
-    <h2 className="typewriter-rotator  flex flex-col flex-wrap items-start  w-full font-aspekta font-medium leading-[0.8] text-accent"
-      style={{ maxWidth: 900 }}>
+    <h2
+      className={`typewriter-rotator flex flex-col flex-wrap ${isCentered ? "items-center" : "items-start"} w-full font-aspekta leading-[0.8]`}
+      style={{ maxWidth: 900 }}
+    >
       <Typewriter
         as="div"
         variance={2.8}
@@ -31,7 +36,10 @@ export default function TypewriterRotator({
         backspace="character"
         cursorBlinkDuration={0.26}
         cursorStyle={cursorStyle}
-        textStyle={textStyle}
+        textStyle={{
+          ...textStyle,
+          textAlign: isCentered ? "center" : "left",
+        }}
         onComplete={() => {
           delay(() => setIndex(wrap(0, text.length, index + 1)), 1);
         }}
@@ -43,7 +51,7 @@ export default function TypewriterRotator({
 }
 
 const cursorStyle: React.CSSProperties = {
-  background: "#9900ff",
+  background: "var(--color-flzr-violet)",
   width: "var(--tw-cursor-w)" as string,
   borderRadius: "var(--tw-cursor-radius)" as string,
   marginLeft: "var(--tw-cursor-ml)" as string,
@@ -53,10 +61,10 @@ const cursorStyle: React.CSSProperties = {
 
 const textStyle: React.CSSProperties = {
   fontSize: "var(--tw-text-size)",
-  fontWeight: 500,
+  fontWeight: 700,
    lineHeight: "var(--tw-text-lh)",
   letterSpacing: "var(--tw-text-ls)",
   textTransform: "",
-  color: "var(--text-primary)",
+  color: "var(--color-flzr-violet)",
   whiteSpace: "normal",
 };

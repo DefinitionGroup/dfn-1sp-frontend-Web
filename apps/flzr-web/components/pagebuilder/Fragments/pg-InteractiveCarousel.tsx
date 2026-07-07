@@ -190,7 +190,7 @@ function InteractiveCarousel({
                 onMouseEnter={() => setIsAutoPlaying(false)}
                 onMouseLeave={() => setIsAutoPlaying(true)}
               >
-                <div className="relative w-full h-full   overflow-hidden bg-gradient-to-brshadow-2xl">
+                <div className="relative w-full h-full   overflow-hidden rounded-4xl">
                   {/* Background media */}
                   {active.video && shouldLoadVideo(currentIndex) ? (
                     <motion.video

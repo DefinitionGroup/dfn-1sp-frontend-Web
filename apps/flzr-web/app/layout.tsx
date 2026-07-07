@@ -1,4 +1,5 @@
 import localFont from "next/font/local";
+import { Geist_Mono } from "next/font/google";
 import type { Metadata } from "next";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -10,6 +11,13 @@ import { getSiteConfig } from "@1sp/site-config";
 
 const FLZR_SITE = getSiteConfig("flizrWeb");
 const GOOGLE_MEASUREMENT_ID = process.env.NEXT_PUBLIC_FLZR_GOOGLE_MEASUREMENT_ID;
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+  display: "swap",
+  weight: ["400", "500", "600"],
+});
 
 const aspekta = localFont({
   src: [
@@ -50,7 +58,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${aspekta.variable} `}
+      className={`${aspekta.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
       <head>

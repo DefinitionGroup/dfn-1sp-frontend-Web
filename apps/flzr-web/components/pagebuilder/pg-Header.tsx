@@ -1,9 +1,11 @@
 "use client";
 
 import React from "react";
+import { useParams } from "next/navigation";
 import HeroVideoComp from "@flzr/components/pagebuilder/Fragments/HeroVideoComp";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
-import { assetUrl } from "@1sp/utils/cloudinary";
+import Button2 from "@flzr/components/ui/Button2";
+import { assetUrl, resolveLink } from "@1sp/utils/cloudinary";
 import TypewriterRotator from "@flzr/components/ui/TypewriterRotator";
 import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
@@ -53,6 +55,15 @@ function highlightInline(text: string, highlight?: string): React.ReactNode {
 /** --- component --- */
 function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   const isIphoneLandscape = useIphoneLandscape();
+  const params = useParams();
+  const locale = (params?.locale as string) || "en";
+
+  // Optional CTA below the hero copy (schema: oneSPHeader.cta)
+  let ctaHref = step.cta?.link ? resolveLink(step.cta.link) : undefined;
+  if (ctaHref && ctaHref.startsWith("/") && !ctaHref.startsWith(`/${locale}`)) {
+    ctaHref = `/${locale}${ctaHref}`;
+  }
+  const ctaText = step.cta?.text;
   const mediaUrl = assetUrl(step.media as CloudinaryAsset | undefined);
   const useVideo = isVideoUrl(mediaUrl);
 
@@ -88,7 +99,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   const portableTextComponents = {
     block: {
       normal: ({ children }: { children?: React.ReactNode }) => (
-        <p className={`text-neutral-50 ${paragraphSizeClass} iphone-landscape:max-w-[66.6667%] lg:max-w-[50%]`}>
+        <p className={`text-neutral-50 ${paragraphSizeClass} max-w-[38em]`}>
           {children}
         </p>
       ),
@@ -115,13 +126,13 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           // If highlight matched, render the highlighted version
           if (highlighted !== plainText) {
             return (
-              <p className={`text-neutral-500 ${paragraphSizeClass} iphone-landscape:max-w-1/2  lg:max-w-1/2`}>
+              <p className={`text-neutral-500 ${paragraphSizeClass} max-w-[38em]`}>
                 {highlighted}
               </p>
             );
           }
           return (
-            <p className={`text-neutral-500 ${paragraphSizeClass} iphone-landscape:max-w-1/2  lg:max-w-1/2`}>
+            <p className={`text-neutral-500 ${paragraphSizeClass} max-w-[38em]`}>
               {children}
             </p>
           );
@@ -147,10 +158,11 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
         />
       )}
 
-      {/* Foreground content */}
-      <div className="absolute bottom-24 md:bottom-24 iphone-landscape:bottom-0 md:relative z-10  max-w-9xl container md:mt-[50vh] iphone-landscape:mt-[50vh] mx-auto">
+      {/* Foreground content — constrained to the max-w-7xl media frame so
+          the type never escapes the rounded video, centered like the frame */}
+      <div className="absolute inset-x-0 bottom-24 iphone-landscape:bottom-8 md:relative z-10 max-w-7xl md:mt-[45vh] iphone-landscape:mt-[50vh] mx-auto">
         <StaggeredSlideUp
-          className="px-4 md:px-4 space-y-1 container mx-auto  "
+          className="px-8 md:px-16 space-y-1 flex flex-col items-center text-center"
           delay={1}
           staggerDelay={0.08}
           duration={0.5}
@@ -161,17 +173,18 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           animateImmediately={true}
         >
           {hasVisibleText(eyebrow) && (
-            <h3 className="text-neutral-50 uppercase  text-xs iphone-landscape:text-xxs pb-1  font-medium max-w-1/4">
+            <h3 className="eyebrow-mono flex items-center justify-center gap-2 text-neutral-50 pb-2">
+              <span className="status-dot self-start mt-0.5" aria-hidden="true" />
               {eyebrow}
             </h3>
           )}
 
           {/* Typewriter words */}
-          {words.length > 0 && <TypewriterRotator text={words} />}
+          {words.length > 0 && <TypewriterRotator text={words} align="center" />}
 
           {/* Desktop paragraphs (rich text) */}
           {paragraphs.length > 0 && (
-            <div className="hidden md:block iphone-landscape:!hidden space-y-4 text-neutral-50 ">
+            <div className="hidden md:flex iphone-landscape:!hidden flex-col items-center space-y-4 text-neutral-50">
               <PortableText
                 value={paragraphs}
                 components={portableTextComponentsWithHighlight}
@@ -181,11 +194,18 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
           {/* Mobile + iPhone landscape paragraphs (rich text) */}
           {mobileParagraphsToRender.length > 0 && (
-            <div className="block md:hidden iphone-landscape:!block space-y-4 text-neutral-50 lg:max-w-3/4">
+            <div className="flex md:hidden iphone-landscape:!flex flex-col items-center space-y-4 text-neutral-50">
               <PortableText
                 value={mobileParagraphsToRender}
                 components={portableTextComponentsWithHighlight}
               />
+            </div>
+          )}
+
+          {/* Optional CTA (as in the msm header) */}
+          {ctaHref && ctaText && (
+            <div className="pt-6">
+              <Button2 text={ctaText} href={ctaHref} className="min-w-[140px]" />
             </div>
           )}
         </StaggeredSlideUp>

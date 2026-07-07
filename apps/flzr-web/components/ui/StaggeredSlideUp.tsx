@@ -70,13 +70,17 @@ const StaggeredItem = React.memo(
 
     // Clip-path: reveal from bottom, runs ~40 % longer so it never
     // cuts the content while the slide is still in progress.
+    // The final state uses a NEGATIVE inset: inset(0%) keeps clipping at
+    // the border box and permanently cuts descenders of tight-leading
+    // headlines (line-height <= 1). Expanding past the box ends with no
+    // visible clip.
     const clipWrapper = useClipPath ? (
       <motion.div
-        initial={{ clipPath: "inset(0% 0% 100% 0%)" }}
+        initial={{ clipPath: "inset(-20% -5% 100% -5%)" }}
         animate={
           isVisible
-            ? { clipPath: "inset(0% 0% 0% 0%)" }
-            : { clipPath: "inset(0% 0% 100% 0%)" }
+            ? { clipPath: "inset(-20% -5% -25% -5%)" }
+            : { clipPath: "inset(-20% -5% 100% -5%)" }
         }
         transition={{
           duration: duration * 1.4,

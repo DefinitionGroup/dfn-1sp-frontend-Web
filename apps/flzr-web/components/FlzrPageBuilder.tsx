@@ -223,6 +223,14 @@ const PageBuilderLogoFloat = dynamic(
     ssr: true,
   }
 );
+
+const ClientLogoCarousel = dynamic(
+  () => import("./pagebuilder/pg-ClientLogoCarousel"),
+  {
+    loading: () => <ComponentLoader />,
+    ssr: true,
+  }
+);
 const UnitLogoGrid = dynamic(
   () => import("./pagebuilder/server/UnitLogoGridBlock"),
   {
@@ -478,6 +486,12 @@ export function PageBuilder({
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <UnitLogoGrid key={key} {...(block as any)} language={language} />
+              </ErrorBoundary>
+            );
+          case "clientLogoCarousel":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <ClientLogoCarousel key={key} data={block as any} />
               </ErrorBoundary>
             );
           case "pageBuilderLogoFloat":

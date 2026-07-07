@@ -421,7 +421,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               transition: { duration: 0.4, type: "spring", bounce: 0.06 },
             }}
             transition={{ type: "spring", visualDuration: 0.25, bounce: 0.56 }}
-            className="relative w-full max-w-[900px] max-h-[calc(100vh-4rem)]  flex flex-col bg-neutral-100 dark:bg-neutral-900 shadow-2xl overflow-y-auto"
+            className="relative w-full max-w-[900px] max-h-[calc(100vh-4rem)]  flex flex-col bg-neutral-100 dark:bg-neutral-900 rounded-2xl overflow-y-auto"
           >
             <button
               aria-label="Close overlay"

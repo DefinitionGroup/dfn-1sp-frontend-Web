@@ -2,6 +2,16 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "flzr-web",
+      "runtimeExecutable": "zsh",
+      "runtimeArgs": [
+        "-c",
+        "export PATH=\"$HOME/.nvm/versions/node/v22.14.0/bin:$PATH\"; pnpm --filter @1sp/flzr-web dev"
+      ],
+      "port": 3000,
+      "autoPort": true
+    },
+    {
       "name": "msm-web",
       "runtimeExecutable": "zsh",
       "runtimeArgs": [

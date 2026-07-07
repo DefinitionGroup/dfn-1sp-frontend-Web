@@ -17,12 +17,22 @@ extend({ ThreeGlobe: ThreeGlobe });
 
 const RING_PROPAGATION_SPEED = 1;
 const aspect = 1;
-const CAMERA_FORWARD = 160;
-const CAMERA_HEIGHT = 100;
 const CAMERA_TARGET = new Vector3(0, 30, 0);
-const CAMERA_RADIUS = Math.sqrt(
-  CAMERA_FORWARD * CAMERA_FORWARD + CAMERA_HEIGHT * CAMERA_HEIGHT
-);
+/* Closer than the previous ~189 — tighter framing of the globe */
+const CAMERA_RADIUS = 150;
+const DEFAULT_VIEW = { lat: 40, lng: 10 };
+
+/** Camera position facing a lat/lng point (matches this globe's render
+ *  orientation — verified empirically, theta = lng + 180°) */
+function latLngToCameraPosition(lat: number, lng: number, radius: number) {
+  const phi = ((90 - lat) * Math.PI) / 180;
+  const theta = ((lng + 180) * Math.PI) / 180;
+  return [
+    radius * Math.sin(phi) * Math.cos(theta),
+    radius * Math.cos(phi),
+    radius * Math.sin(phi) * Math.sin(theta),
+  ] as const;
+}
 
 type Position = {
   order: number;
@@ -160,7 +170,8 @@ export function Globe({ globeConfig, data }: WorldProps) {
     globeRef.current
       .hexPolygonsData(countries.features)
       .hexPolygonResolution(4)
-      .hexPolygonMargin(0.3)
+      .hexPolygonMargin(0.55)
+      .hexPolygonUseDots(true)
       .showAtmosphere(defaultProps.showAtmosphere)
       .atmosphereColor(defaultProps.atmosphereColor)
       .atmosphereAltitude(defaultProps.atmosphereAltitude)
@@ -311,11 +322,11 @@ function ArcLabels({ data }: Pick<WorldProps, "data">) {
           center
           distanceFactor={120}
           style={{
-            color: point.color,
-            fontWeight: 400,
+            color: "#ffffff",
+            fontWeight: 600,
             fontSize: "0.5rem",
-            backgroundColor: "rgba(0,0,0,0.5)",
-            padding: "0.13rem 0.25rem",
+            backgroundColor: "#7c5cff",
+            padding: "0.13rem 0.3rem",
             borderRadius: "100px",
             textTransform: "uppercase",
             whiteSpace: "nowrap",
@@ -352,13 +363,20 @@ function CameraAspectController() {
   return null;
 }
 
-function CameraTopHalfFocus() {
+function CameraInitialView({
+  initialPosition,
+}: {
+  initialPosition?: { lat: number; lng: number };
+}) {
   const { camera } = useThree();
+  const lat = initialPosition?.lat ?? DEFAULT_VIEW.lat;
+  const lng = initialPosition?.lng ?? DEFAULT_VIEW.lng;
 
   useEffect(() => {
-    camera.position.set(0, CAMERA_HEIGHT, CAMERA_FORWARD);
+    const [x, y, z] = latLngToCameraPosition(lat, lng, CAMERA_RADIUS);
+    camera.position.set(x, y, z);
     camera.lookAt(CAMERA_TARGET);
-  }, [camera]);
+  }, [camera, lat, lng]);
 
   return null;
 }
@@ -371,20 +389,22 @@ export function World(props: WorldProps) {
     <Canvas scene={scene} camera={new PerspectiveCamera(50, aspect, 0.1, 2000)}>
       <WebGLRendererConfig />
       <CameraAspectController />
-      <CameraTopHalfFocus />
+      <CameraInitialView initialPosition={globeConfig.initialPosition} />
       <ambientLight color={globeConfig.ambientLight} intensity={1.8} />
 
       <Globe {...props} />
       <ArcLabels data={data} />
+      {/* enableZoom=false: distance is pinned anyway (min === max), and a
+          wheel listener here would swallow page scrolling over the globe */}
       <OrbitControls
         enablePan={false}
-        enableZoom={true}
+        enableZoom={false}
         minDistance={CAMERA_RADIUS}
         maxDistance={CAMERA_RADIUS}
         target={[CAMERA_TARGET.x, CAMERA_TARGET.y, CAMERA_TARGET.z]}
-        autoRotateSpeed={1.1}
-        autoRotate={true}
-        minPolarAngle={Math.PI / 3.2}
+        autoRotateSpeed={globeConfig.autoRotateSpeed ?? 0.15}
+        autoRotate={globeConfig.autoRotate ?? true}
+        minPolarAngle={Math.PI / 4}
         maxPolarAngle={Math.PI / 2}
       />
     </Canvas>

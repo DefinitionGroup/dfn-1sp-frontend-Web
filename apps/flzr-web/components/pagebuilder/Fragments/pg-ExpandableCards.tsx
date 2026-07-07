@@ -197,7 +197,7 @@ function ExpandableCards({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.12, ease: "easeInOut" } }}
               transition={{ type: "spring", bounce: 0.18, visualDuration: 0.25 }}
-              className="w-full max-w-[900px] min-h-[70vh] iphone-landscape:min-h-[95vh] max-h-[600px] relative h-full   flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden"
+              className="w-full max-w-[900px] min-h-[70vh] iphone-landscape:min-h-[95vh] max-h-[600px] relative h-full   flex flex-col bg-neutral-900 dark:bg-neutral-900 rounded-2xl overflow-hidden"
             >
               {/* Media */} <motion.button
                 onClick={() => setActive(null)}

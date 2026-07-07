@@ -103,7 +103,7 @@ function ScrollHighlightItem({
 
       <div className=" flex  flex-col ">
         {hasVisibleText(skill.name) ? (
-          <h3 className="skill-name relative leading-none font-medium max-w-[20ch] ">
+          <h3 className="skill-name relative leading-none max-w-[20ch]">
             {skill.name}
           </h3>
         ) : null}
@@ -209,7 +209,7 @@ export default function ScrollHighlight({ items }: { items?: SkillItem[] }) {
               exit={{ opacity: 0, scale: 0.97, y: 5, transition: { duration: 0.15, ease: "easeIn" } }}
               transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
               ref={modalRef}
-              className="w-full z-9 max-w-[900px] relative h-full md:h-fit md:max-h-[90%]  flex flex-col bg-neutral-900 dark:bg-neutral-900 shadow-2xl overflow-hidden will-change-transform"
+              className="w-full z-9 max-w-[900px] relative h-full md:h-fit md:max-h-[90%]  flex flex-col bg-neutral-900 dark:bg-neutral-900 rounded-2xl overflow-hidden will-change-transform"
             >
               <motion.button
                 key={`button-inner-${activeModal.name}-${id}`}

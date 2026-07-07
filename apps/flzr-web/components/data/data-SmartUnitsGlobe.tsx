@@ -53,8 +53,8 @@ export default async function SmartUnitsGlobe({
   arcLength = 0.95,
   rings = 1,
   maxRings = 3,
-  initialLat = 30.3193,
-  initialLng = 2.1694,
+  initialLat = 40,
+  initialLng = 10,
   autoRotate = true,
   autoRotateSpeed = 0.15,
 }: SmartUnitsGlobeProps) {
@@ -79,8 +79,8 @@ export default async function SmartUnitsGlobe({
     );
   }
 
-  // Transform units data into globe arcs format
-  const colors = ["#00ff33", "#55ff55", "#33ff77"];
+  // Transform units data into globe arcs format — flzr violet family
+  const colors = ["#7c5cff", "#9d85ff", "#d6ccff"];
 
   // Create arcs: each unit connects from the PREVIOUS unit to the CURRENT unit
   // Unit 2 -> Unit 0
@@ -113,7 +113,7 @@ export default async function SmartUnitsGlobe({
     emissive: "#ffffff",
     emissiveIntensity: 1,
     shininess: 1,
-    polygonColor: "rgba(1,255,2,1)",
+    polygonColor: "rgba(124,92,255,1)",
     ambientLight: "#ffffff",
     directionalLeftLight: "#ffffff",
     directionalTopLight: "#ffffff",
