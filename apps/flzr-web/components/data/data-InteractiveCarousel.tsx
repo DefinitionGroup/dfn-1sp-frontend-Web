@@ -418,7 +418,7 @@ export default function SmartCarousel({
               <Link
                 key={item.id}
                 href={item.linkHref || "#"}
-                className={`relative flex-shrink-0 w-10 rounded-2xl  sm:w-12 md:w-22 h-8 sm:h-12 md:h-18  overflow-hidden outline-1 sm:outline-2 md:outline-3 transition-all hover:scale-105 active:scale-95 ${index === currentIndex ? "outline-violet-500" : "outline-transparent"}`}
+                className={`relative flex-shrink-0 w-10 rounded-[20px]  sm:w-12 md:w-22 h-8 sm:h-12 md:h-18  overflow-hidden outline-1 sm:outline-2 md:outline-3 transition-all hover:scale-105 active:scale-95 ${index === currentIndex ? "outline-violet-500" : "outline-transparent"}`}
               >
                 {item.image && (
                   <Image

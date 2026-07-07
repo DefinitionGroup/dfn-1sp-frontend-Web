@@ -397,14 +397,11 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               All Cases
             </button>
           )}
-          <div className="min-w-[110px] w-[50px] max-w-[110px] n block relative   -right-2 top-1  ">
-            <Button2
-              variant="limesmall"
-              className="min-w-[110px] w-[50px] max-w-[110px] overflow-hidden block absolute   "
-              href="https://1sp.agency"
-              text="1sp.agency"
-            />
-          </div>
+          <Button2
+            variant="limesmall"
+            href="https://1sp.agency"
+            text="1sp.agency"
+          />
         </div>
 
 

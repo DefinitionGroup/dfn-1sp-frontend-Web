@@ -5,10 +5,13 @@ import { assetUrl } from "@1sp/utils/cloudinary";
 import Eyebrow from "@flzr/components/ui/Eyebrow";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
-const SPEED_DURATION: Record<string, string> = {
-  slow: "60s",
-  normal: "40s",
-  fast: "22s",
+/* Seconds per logo, so perceived speed stays constant no matter how many
+   logos (or set repeats) the track holds. Editable per block in Studio
+   via the "Scroll Speed" field. */
+const SPEED_SECONDS_PER_LOGO: Record<string, number> = {
+  slow: 10,
+  normal: 7,
+  fast: 4,
 };
 
 /**
@@ -60,29 +63,40 @@ function ClientLogoCarousel({ data }: { data: ClientLogoCarouselType }) {
     ...(hideFromNav ? { "data-nav-hidden": "true" } : {}),
   };
 
-  const renderLogos = (ariaHidden: boolean) => (
+  // Each half of the -50% loop must be wider than any viewport, otherwise
+  // the loop point exposes whitespace. Repeat the set until a half holds
+  // at least 12 logos (~12 * 136px > 1600px).
+  const repeats = Math.max(1, Math.ceil(12 / withLogos.length));
+  const logosPerHalf = repeats * withLogos.length;
+  const secondsPerLogo =
+    SPEED_SECONDS_PER_LOGO[speed] ?? SPEED_SECONDS_PER_LOGO.normal;
+  const marqueeDuration = `${logosPerHalf * secondsPerLogo}s`;
+
+  const renderHalf = (ariaHidden: boolean) => (
     <div
-      className="flex items-center gap-14 pr-14"
+      className="flex items-center gap-10 pr-10"
       aria-hidden={ariaHidden || undefined}
     >
-      {withLogos.map((client, idx) => (
-        <div
-          key={`${client._id || client.name || "client"}-${idx}${ariaHidden ? "-dup" : ""}`}
-          className={`relative h-10 w-32 shrink-0 md:h-12 md:w-40 ${
-            grayscale
-              ? "grayscale opacity-60 transition-all duration-300 hover:grayscale-0 hover:opacity-100"
-              : ""
-          }`}
-        >
-          <Image
-            src={assetUrl(client.logo as any) || ""}
-            alt={ariaHidden ? "" : client.name || "Client logo"}
-            fill
-            sizes="160px"
-            className="object-contain"
-          />
-        </div>
-      ))}
+      {Array.from({ length: repeats }).flatMap((_, rep) =>
+        withLogos.map((client, idx) => (
+          <div
+            key={`${client._id || client.name || "client"}-${rep}-${idx}${ariaHidden ? "-dup" : ""}`}
+            className={`relative h-6 w-24 shrink-0 md:h-8 md:w-28 ${
+              grayscale
+                ? "grayscale opacity-60 transition-all duration-300 hover:grayscale-0 hover:opacity-100"
+                : ""
+            }`}
+          >
+            <Image
+              src={assetUrl(client.logo as any) || ""}
+              alt={ariaHidden || rep > 0 ? "" : client.name || "Client logo"}
+              fill
+              sizes="112px"
+              className="object-contain"
+            />
+          </div>
+        ))
+      )}
     </div>
   );
 
@@ -103,14 +117,14 @@ function ClientLogoCarousel({ data }: { data: ClientLogoCarouselType }) {
           </div>
         )}
 
-        <div className="logo-marquee-pausable rounded-[2rem] border border-[var(--color-flzr-hairline)] bg-white px-2 py-8 md:py-10">
+        <div className="logo-marquee-pausable py-6 md:py-8">
           <div className="logo-carousel-mask overflow-hidden">
             <div
               className="logo-marquee-track flex"
-              style={{ "--marquee-duration": SPEED_DURATION[speed] || SPEED_DURATION.normal } as React.CSSProperties}
+              style={{ "--marquee-duration": marqueeDuration } as React.CSSProperties}
             >
-              {renderLogos(false)}
-              {renderLogos(true)}
+              {renderHalf(false)}
+              {renderHalf(true)}
             </div>
           </div>
         </div>

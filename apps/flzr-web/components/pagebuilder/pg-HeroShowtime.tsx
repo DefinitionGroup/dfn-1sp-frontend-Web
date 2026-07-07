@@ -70,10 +70,12 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
       />
 
       {/* Single stacked column — eyebrow, headline, CTA, paragraphs —
-          constrained to the same max-w-7xl frame as the media/hero */}
-      <div className="z-1 col-span-12 col-start-1 row-start-1 flex w-full max-w-7xl mx-auto flex-col justify-center px-8 md:px-16 py-section">
+          constrained to the same max-w-7xl frame as the media/hero.
+          Content sits on a frosted glass panel matching the navbar
+          (backdrop-blur + rgba(111,111,111,0.4)). */}
+      <div className="z-1 col-span-12 col-start-1 row-start-1 flex w-full max-w-7xl mx-auto flex-col justify-end items-start px-8 md:px-16 py-section">
         <StaggeredSlideUp
-          className="flex flex-col items-start"
+          className="flex w-fit max-w-full flex-col items-start rounded-[2.5rem] bg-[rgba(111,111,111,0.4)] backdrop-blur-md px-6 py-8 md:px-12 md:py-12"
           delay={0.5}
           staggerDelay={0.15}
           duration={0.75}
@@ -83,7 +85,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
             <Eyebrow className="pb-4 text-white/80">{subheading}</Eyebrow>
           ) : null}
           {heading ? (
-            <HeadingTag className="text-display iphone-landscape:!text-4xl font-aspekta pb-2">
+            <HeadingTag className="text-display iphone-landscape:!text-4xl font-aspekta pb-2 text-white">
               <MixedType text={heading} />
             </HeadingTag>
           ) : null}

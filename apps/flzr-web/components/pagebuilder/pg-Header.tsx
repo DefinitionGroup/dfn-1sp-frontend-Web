@@ -182,9 +182,10 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           {/* Typewriter words */}
           {words.length > 0 && <TypewriterRotator text={words} align="center" />}
 
-          {/* Desktop paragraphs (rich text) */}
+          {/* Desktop paragraphs (rich text) — pt-8 keeps ≥2rem below the
+              tight-leading typewriter (space-y only gives 0.25rem) */}
           {paragraphs.length > 0 && (
-            <div className="hidden md:flex iphone-landscape:!hidden flex-col items-center space-y-4 text-neutral-50">
+            <div className="hidden md:flex iphone-landscape:!hidden flex-col items-center space-y-4 text-neutral-50 pt-8">
               <PortableText
                 value={paragraphs}
                 components={portableTextComponentsWithHighlight}
@@ -194,7 +195,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
           {/* Mobile + iPhone landscape paragraphs (rich text) */}
           {mobileParagraphsToRender.length > 0 && (
-            <div className="flex md:hidden iphone-landscape:!flex flex-col items-center space-y-4 text-neutral-50">
+            <div className="flex md:hidden iphone-landscape:!flex flex-col items-center space-y-4 text-neutral-50 pt-8">
               <PortableText
                 value={mobileParagraphsToRender}
                 components={portableTextComponentsWithHighlight}

@@ -1,12 +1,56 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import type { CloudinaryAsset } from "@1sp/sanity-types";
 import { assetUrl, optimizedVideoUrl, cloudinaryPosterUrl } from "@1sp/utils/cloudinary";
-import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import Image from "next/image";
 import Link from "next/link";
 import { useRobustInView } from "@1sp/utils/hooks/use-robust-in-view";
 import { hasVisibleText } from "@1sp/utils/text-content";
+
+/* flzr entrance system: decelerating bezier, 0.65s, 0.07s stagger.
+   Cards slide up first; each card's frosted panel follows 0.2s later. */
+const EASE_FLZR = [0.62, 0.05, 0.01, 0.99] as const;
+
+const gridVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.07 } },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 32 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.65, ease: EASE_FLZR },
+  },
+};
+
+/* Frosted panel: slow fade after its card lands, then the contents
+   cascade — name, position, then the contact icons. `beforeChildren`
+   holds the children until the glass itself has fully faded in. */
+const panelVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 0.8,
+      delay: 0.25,
+      ease: EASE_FLZR,
+      when: "beforeChildren",
+      staggerChildren: 0.14,
+    },
+  },
+};
+
+const panelItemVariants = {
+  hidden: { opacity: 0, y: 8 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.45, ease: EASE_FLZR },
+  },
+};
 export interface MemberItem {
   name?: string;
   media?: (CloudinaryAsset & { resource_type?: string }) | null;
@@ -64,7 +108,7 @@ function LazyVideo({
   }, [isInView, isMobile]);
 
   return (
-    <div ref={ref} className={`w-full h-full relative pointer-events-none overflow-hidden bg-neutral-200 dark:bg-neutral-800 ${className ?? ""}`}>
+    <div ref={ref} className={`w-full h-full relative pointer-events-none overflow-hidden bg-white ${className ?? ""}`}>
       {posterUrl ? (
         <img
           src={posterUrl}
@@ -77,7 +121,7 @@ function LazyVideo({
           style={{ zIndex: 1 }}
         />
       ) : (
-        <div className="w-full h-full bg-neutral-200 dark:bg-neutral-800" />
+        <div className="w-full h-full bg-white" />
       )}
 
       {shouldMountVideo && (
@@ -107,6 +151,7 @@ function PeopleShowcaseHero({
   initialVisibleCount?: number;
 }) {
   const sectionRef = useRef<HTMLElement>(null);
+  const reducedMotion = useReducedMotion();
   const { isInView } = useRobustInView(sectionRef, {
     amount: 0.01,
     margin: "0px 0px 120px 0px",
@@ -159,10 +204,12 @@ function PeopleShowcaseHero({
       aria-labelledby="people-showcase-title"
     >
       <div className="flex items-center justify-start w-full">
-        <StaggeredSlideUp
+        <motion.div
           className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 w-full"
-          threshold={0.01}
-          rootMargin="0px 0px 160px 0px"
+          variants={gridVariants}
+          initial={reducedMotion ? false : "hidden"}
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.05, margin: "0px 0px -60px 0px" }}
         >
           {visibleMembers.map((member, index) => {
             const src = assetUrl(member.media as any);
@@ -180,8 +227,9 @@ function PeopleShowcaseHero({
             const label =
               member.altText || member.fullname || member.name || "";
             return (
-              <div
+              <motion.div
                 key={key}
+                variants={cardVariants}
                 className="group relative overflow-hidden rounded-[2rem] flex-shrink-0 aspect-square bg-neutral-100"
                 data-member={(
                   member.name ||
@@ -214,20 +262,35 @@ function PeopleShowcaseHero({
                   </div>
                 )}
 
-                {/* Always-visible info — no hover needed */}
-                <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col gap-0.5 bg-gradient-to-t from-[#131019]/90 via-[#131019]/55 to-transparent px-4 pb-4 pt-10 sm:px-5 sm:pb-5">
+                {/* Always-visible info — frosted glass panel bottom-left,
+                    same recipe as the navbar (blur + rgba(111,111,111,0.4)).
+                    Inherits the card's variant timeline, entering 0.2s after
+                    its card via panelVariants. */}
+                <motion.div
+                  variants={panelVariants}
+                  className="absolute bottom-3 left-3 z-10 flex w-fit max-w-[calc(100%-1.5rem)] flex-col gap-0.5 rounded-[1.5rem] bg-[rgba(111,111,111,0.4)] backdrop-blur-md px-4 py-3 sm:px-5 sm:py-4"
+                >
                   {hasVisibleText(member.fullname || member.name) && (
-                    <h3 className="text-white font-aspekta font-semibold text-sm sm:text-base leading-tight">
+                    <motion.h3
+                      variants={panelItemVariants}
+                      className="text-white font-aspekta font-semibold text-sm sm:text-base leading-tight"
+                    >
                       {member.fullname || member.name}
-                    </h3>
+                    </motion.h3>
                   )}
                   {member.position && (
-                    <p className="text-white/70 text-xs leading-snug">
+                    <motion.p
+                      variants={panelItemVariants}
+                      className="text-white/70 text-xs leading-snug"
+                    >
                       {member.position}
-                    </p>
+                    </motion.p>
                   )}
                   {(member.email || member.profileUrl) && (
-                    <div className="mt-2 flex items-center gap-2">
+                    <motion.div
+                      variants={panelItemVariants}
+                      className="mt-2 flex items-center gap-2"
+                    >
                       {member.email && (
                         <a
                           href={`mailto:${member.email}`}
@@ -265,13 +328,13 @@ function PeopleShowcaseHero({
                           </svg>
                         </Link>
                       )}
-                    </div>
+                    </motion.div>
                   )}
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             );
           })}
-        </StaggeredSlideUp>
+        </motion.div>
       </div>
     </section>
   );

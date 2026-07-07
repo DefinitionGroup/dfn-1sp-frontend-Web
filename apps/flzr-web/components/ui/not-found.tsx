@@ -3,7 +3,7 @@ import Button from "./Button";
 
 export default function NotFound() {
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+    <main className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900">
       <div className="text-center px-4">
         <div className="max-w-md mx-auto">
           <div className="mb-8">
