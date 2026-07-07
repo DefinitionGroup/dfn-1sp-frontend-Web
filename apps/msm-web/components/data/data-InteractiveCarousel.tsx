@@ -64,10 +64,15 @@ export default function SmartCarousel({
     return caseStudies
       .map((cs) => {
         const rawImage = assetUrl(cs.mainImage);
-        const image = getCarouselImageUrl(rawImage);
-        const thumbnail = getCarouselThumbnailUrl(rawImage) || image;
-        const logosrc = getCarouselLogoUrl(assetUrl(cs.client?.logo));
         const video = assetUrl(cs.mainVideo);
+        const image = getCarouselImageUrl(rawImage);
+        // Video-only items (e.g. services): fall back to a video poster frame
+        // so the thumbnail strip isn't empty
+        const thumbnail =
+          getCarouselThumbnailUrl(rawImage) ||
+          image ||
+          getCarouselPosterUrl(video);
+        const logosrc = getCarouselLogoUrl(assetUrl(cs.client?.logo));
         const linkHref = cs.slug?.current
           ? `/cases/${cs.slug.current}`
           : undefined;
@@ -393,13 +398,13 @@ export default function SmartCarousel({
           </motion.button>
         </div>
 
-        {/* Dots Indicator (match Plaintext positioning & style) */}
+        {/* Dots Indicator — bare strip, each dot is its own marked field */}
         <div className="absolute w-full bottom-2 sm:bottom-4 z-30">
-          <div className="flex justify-center mt-4 sm:mt-8 rounded-4xl mx-auto space-x-1.5 sm:space-x-2 bg-gray-900/50 backdrop-blur-md h-8 sm:h-10 items-center px-4 sm:px-8  w-fit">
+          <div className="flex justify-center mt-4 sm:mt-8 mx-auto space-x-1.5 sm:space-x-2 items-center w-fit">
             {carouselItems.map((_, index) => (
               <motion.button
                 key={index}
-                className={`h-1.5 sm:h-2  transition-all rounded-full  hover:bg-msm-magenta duration-300 cursor-pointer ${index === currentIndex ? "bg-msm-magenta min-w-8 sm:min-w-16" : "bg-white/25 min-w-1.5 sm:min-w-2"}`}
+                className="group relative p-1.5 sm:p-2 cursor-pointer"
                 whileHover={{ scale: 1.15 }}
                 whileTap={{ scale: 0.8 }}
                 onClick={() => {
@@ -407,7 +412,15 @@ export default function SmartCarousel({
                   setCurrentIndex(index);
                   resetAutoPlayTimer();
                 }}
-              />
+              >
+                <CornerMarkers
+                  className={`text-[8px] transition-colors duration-300 ${index === currentIndex ? "text-white" : "text-msm-magenta/50"}`}
+                  inset="0px"
+                />
+                <span
+                  className={`block h-1.5 sm:h-2 transition-all group-hover:bg-msm-magenta duration-300 ${index === currentIndex ? "bg-msm-magenta min-w-8 sm:min-w-16" : "bg-white/25 min-w-1.5 sm:min-w-2"}`}
+                />
+              </motion.button>
             ))}
           </div>
         </div>
@@ -422,9 +435,9 @@ export default function SmartCarousel({
               <Link
                 key={item.id}
                 href={item.linkHref || "#"}
-                className={`relative flex-shrink-0 w-10 rounded-2xl  sm:w-12 md:w-22 h-8 sm:h-12 md:h-18  overflow-hidden outline-1 sm:outline-2 md:outline-3 transition-all hover:scale-105 active:scale-95 ${index === currentIndex ? "outline-msm-magenta" : "outline-transparent"}`}
+                className="relative flex-shrink-0 w-10 sm:w-12 md:w-22 h-8 sm:h-12 md:h-18 overflow-hidden transition-all hover:scale-105 active:scale-95"
               >
-                {item.image && (
+                {(item.thumbnail || item.image) && (
                   <Image
                     src={item.thumbnail || item.image}
                     alt={item.title}
@@ -433,6 +446,10 @@ export default function SmartCarousel({
                     className="object-cover"
                   />
                 )}
+                <CornerMarkers
+                  className={`text-[10px] transition-colors duration-300 ${index === currentIndex ? "text-white" : "text-msm-magenta/60"}`}
+                  inset="2px"
+                />
               </Link>
             ))}
           </div>
