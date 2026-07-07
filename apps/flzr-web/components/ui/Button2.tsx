@@ -330,22 +330,22 @@ const variantStyles: Record<
   { pill: string; label: string; restBg: string }
 > = {
   violet: {
-    pill: "border border-violet-400/40",
+    pill: "",
     label: "text-white",
     restBg: "bg-violet-500",
   },
   dark: {
-    pill: "border border-white/10",
+    pill: "",
     label: "text-neutral-50",
     restBg: "bg-neutral-900",
   },
   glass: {
-    pill: "border border-white/30 backdrop-blur-md",
+    pill: "backdrop-blur-md",
     label: "text-white",
     restBg: "bg-white/10",
   },
   ghost: {
-    pill: "border border-neutral-900/20",
+    pill: "",
     label: "text-neutral-900",
     restBg: "bg-transparent",
   },
