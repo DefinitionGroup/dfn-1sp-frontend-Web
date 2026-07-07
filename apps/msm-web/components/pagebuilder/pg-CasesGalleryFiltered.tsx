@@ -5,6 +5,7 @@ import CaseGalleryComponent from "@msm/components/data/data-CaseGallery";
 import { getTranslations } from "@1sp/utils/translations";
 
 import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
+import CornerMarkers from "@msm/components/ui/CornerMarkers";
 
 interface CaseStudy {
   _id: string;
@@ -121,11 +122,21 @@ function CasesGalleryFiltered({
                         setActiveFilter(filter);
                       });
                     }}
-                    className={`px-3 py-1 md:px-2  text-sm md:text-xxs  md:font-medium uppercase transition-all  duration-100 ${activeFilter === filter
-                      ? "bg-violet-500 text-black"
-                      : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
+                    /* Ghost buttons: grey text + border. Hover fades text to
+                       white, drops the border, reveals corner markers. Active
+                       state is violet text + violet markers (no border). */
+                    className={`group relative px-3 py-1 md:px-2 text-sm md:text-xxs md:font-medium uppercase border transition-all duration-200 cursor-pointer ${activeFilter === filter
+                      ? "border-transparent text-violet-400"
+                      : "border-neutral-600 text-neutral-400 hover:border-transparent hover:text-white"
                       }`}
                   >
+                    <CornerMarkers
+                      className={`text-[8px] transition-opacity duration-200 ${activeFilter === filter
+                        ? "text-violet-400 opacity-100"
+                        : "text-white/80 opacity-0 group-hover:opacity-100"
+                        }`}
+                      inset="1px"
+                    />
                     {filter}
                   </button>
                 ))}
