@@ -158,9 +158,9 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
         />
       )}
 
-      {/* Foreground content — constrained to the max-w-7xl media frame so
-          the type never escapes the rounded video, centered like the frame */}
-      <div className="absolute inset-x-0 bottom-24 iphone-landscape:bottom-8 md:relative z-10 max-w-7xl md:mt-[45vh] iphone-landscape:mt-[50vh] mx-auto">
+      {/* Foreground content — matches the media frame width (site container)
+          so the type never escapes the rounded video, centered like the frame */}
+      <div className="absolute inset-x-0 bottom-24 iphone-landscape:bottom-8 md:relative z-10 container md:mt-[45vh] iphone-landscape:mt-[50vh] mx-auto">
         <StaggeredSlideUp
           className="px-8 md:px-16 space-y-1 flex flex-col items-center text-center"
           delay={1}
