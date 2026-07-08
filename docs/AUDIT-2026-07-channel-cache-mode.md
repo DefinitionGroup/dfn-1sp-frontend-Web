@@ -106,6 +106,30 @@ isolation, and cherry-picked to `main` / `multisite/msmdesign`.
 - Confirm a manual selection renders exactly the curated set (and empty when
   nothing matches the channel), and auto renders the full channel list.
 
+## Multi-app scope (important)
+
+This is a monorepo with **three separate apps**, each with its own copy of the
+PageBuilder, page-builder blocks, and `(site)` pages:
+
+| App | Location | PageBuilder |
+|-----|----------|-------------|
+| 1SP | root `app/` + `components/` | `components/PageBuilder.tsx` |
+| FLZR | `apps/flzr-web/` | `components/FlzrPageBuilder.tsx` |
+| MSM | `apps/msm-web/` | `components/MsmPageBuilder.tsx` |
+
+Only `@1sp/sanity-queries` (and the other `packages/*`) is shared. The stale-
+cache `useCdn:false` fix lives there, so it already covers all three apps. Every
+other fix above (channel threading, services channel filter, mode-drop) lived in
+per-app files and had to be applied **three times**. All three apps now carry
+BUG-1..4 fixes (1SP, flzr-web, msm-web commits).
+
+> **Maintenance hazard:** the same block logic is triplicated across the three
+> apps, which is exactly why one bug appeared three times and each fix had to be
+> repeated. Worth extracting the data-fetching block bodies (cases/services/
+> people galleries) into a shared `packages/*` module so future fixes land once.
+> The per-app PageBuilder shells can stay divergent (they drive each app's
+> distinct design).
+
 ## Out of scope / follow-ups
 
 - BUG-5 (per-channel Smart People promo flag + language filter) — needs a schema
