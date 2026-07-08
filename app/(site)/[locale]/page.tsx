@@ -205,6 +205,7 @@ export default async function Home({
           <PageBuilder
             content={page.content}
             language={language}
+            channel={channel}
             deferAfter={2}
           />
         ) : (

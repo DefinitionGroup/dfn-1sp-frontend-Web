@@ -238,9 +238,15 @@ const PageBuilderPersonioJobs = dynamic(
   }
 );
 
-type PageBuilderProps = { 
+type PageBuilderProps = {
   content: NonNullable<Page["content"]>;
   language?: string;
+  /**
+   * Active site channel. Threaded to every data-fetching block so re-fetches
+   * (cases/services/people galleries, smart carousel) query the correct
+   * channel instead of the "1spWeb" default. See docs/AUDIT-2026-07-*.
+   */
+  channel?: string;
   deferAfter?: number;
   renderMode?: "default" | "deferred";
 };
@@ -248,6 +254,7 @@ type PageBuilderProps = {
 export function PageBuilder({
   content,
   language = "de",
+  channel = "1spWeb",
   deferAfter = Number.POSITIVE_INFINITY,
   renderMode = "default",
 }: PageBuilderProps) {
@@ -387,13 +394,13 @@ export function PageBuilder({
           case "smartCarousel":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <SmartCarousel key={key} {...(block as any)} language={language} />
+                <SmartCarousel key={key} {...(block as any)} language={language} channel={channel} />
               </ErrorBoundary>
             );
           case "smartPeople":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <SmartPeople key={key} {...(block as any)} />
+                <SmartPeople key={key} {...(block as any)} channel={channel} />
               </ErrorBoundary>
             );
           case "smartUnitsGallery":
@@ -429,19 +436,19 @@ export function PageBuilder({
           case "casesGalleryFiltered":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <CasesGalleryFiltered key={key} {...block} language={language} />
+                <CasesGalleryFiltered key={key} {...block} language={language} channel={channel} />
               </ErrorBoundary>
             );
           case "casesGalleryFilteredWithPagination":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <CasesGalleryFilteredWithPagination key={key} {...block} language={language} />
+                <CasesGalleryFilteredWithPagination key={key} {...block} language={language} channel={channel} />
               </ErrorBoundary>
             );
           case "servicesGalleryFiltered":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <ServicesGalleryFiltered key={key} {...block} language={language} />
+                <ServicesGalleryFiltered key={key} {...block} language={language} channel={channel} />
               </ErrorBoundary>
             );
           case "servicesHeroWithBadge":
@@ -516,6 +523,7 @@ export function PageBuilder({
           <PageBuilder
             content={deferredBlocks}
             language={language}
+            channel={channel}
             renderMode="deferred"
           />
         </DeferredSection>

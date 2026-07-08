@@ -41,7 +41,7 @@ type Person = {
 interface SmartPeopleProps {
   maxItems?: number;
   language?: string;
-  channel?: "1spWeb" | "msmWeb" | "studioco2Web";
+  channel?: string;
 }
 
 export default async function SmartPeople({

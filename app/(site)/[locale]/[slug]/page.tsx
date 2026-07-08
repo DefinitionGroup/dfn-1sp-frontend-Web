@@ -229,6 +229,7 @@ export default async function Page({
             <PageBuilder
               content={page.content}
               language={language}
+              channel={channel}
               deferAfter={2}
             />
             {/* {slug === "data-protection" && <CookieDeclaration />} */}

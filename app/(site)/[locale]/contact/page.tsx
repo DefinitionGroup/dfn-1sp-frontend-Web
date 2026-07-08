@@ -197,6 +197,7 @@ export default async function ContactPage({
             <PageBuilder
               content={page.content}
               language={language}
+              channel={channel}
               deferAfter={2}
             />
           ) : null}

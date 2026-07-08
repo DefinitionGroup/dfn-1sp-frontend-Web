@@ -22,7 +22,7 @@ interface DereferencedCase {
 
 interface SmartCarouselBlockProps {
   language?: string;
-  channel?: "1spWeb" | "msmWeb" | "studioco2Web";
+  channel?: string;
   maxItems?: number;
   selectionMode?: "auto" | "manual";
   selectedCases?: DereferencedCase[];

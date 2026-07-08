@@ -396,7 +396,7 @@ export const getServicesForChannel = cache(
 
 export const getSmartPeople = cache(
   async (
-    channel: "1spWeb" | "flizrWeb" | "msmWeb" | "studioco2Web",
+    channel: string,
     maxItems: number,
   ) => {
     const { SMART_PEOPLE_QUERY } = await import("./groq");

@@ -164,6 +164,7 @@ export default async function CasesPage({
           <PageBuilder
             content={page.content}
             language={language}
+            channel={channel}
             deferAfter={2}
           />
         ) : (

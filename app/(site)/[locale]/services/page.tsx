@@ -209,6 +209,7 @@ export default async function ServicesPage({
           <PageBuilder
             content={page.content}
             language={language}
+            channel={channel}
             deferAfter={2}
           />
         ) : (
