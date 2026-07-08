@@ -397,13 +397,13 @@ export function PageBuilder({
           case "smartCarousel":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <SmartCarousel key={key} {...(block as any)} language={language} />
+                <SmartCarousel key={key} {...(block as any)} language={language} channel={channel} />
               </ErrorBoundary>
             );
           case "smartPeople":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <SmartPeople key={key} {...(block as any)} />
+                <SmartPeople key={key} {...(block as any)} channel={channel} />
               </ErrorBoundary>
             );
           case "smartUnitsGallery":
@@ -461,7 +461,7 @@ export function PageBuilder({
           case "servicesGalleryFiltered":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <ServicesGalleryFiltered key={key} {...block} language={language} />
+                <ServicesGalleryFiltered key={key} {...block} language={language} channel={channel} />
               </ErrorBoundary>
             );
           case "servicesHeroWithBadge":

@@ -22,7 +22,7 @@ interface DereferencedCase {
 
 interface SmartCarouselBlockProps {
   language?: string;
-  channel?: "1spWeb" | "msmWeb" | "studioco2Web";
+  channel?: string;
   maxItems?: number;
   selectionMode?: "auto" | "manual";
   selectedCases?: DereferencedCase[];
@@ -32,7 +32,7 @@ interface SmartCarouselBlockProps {
 
 export default async function SmartCarouselBlock({
   language = "en",
-  channel = "1spWeb",
+  channel = "flizrWeb",
   maxItems = 5,
   selectionMode = "auto",
   selectedCases = [],
