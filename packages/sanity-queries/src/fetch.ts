@@ -38,7 +38,12 @@ export async function sanityFetch<TData = any>({
   const configuredClient = client.withConfig({
     perspective: resolvedPerspective,
     stega: resolvedStega ? { studioUrl: "/studio" } : false,
-    useCdn: !draftEnabled && resolvedPerspective === "published",
+    // Keep the CDN off for server reads. We rely on Next's Data Cache with
+    // tag-based invalidation (`revalidateTag`) + a 60s TTL. Stacking Sanity's
+    // apicdn cache underneath makes tag purges unreliable — a published change
+    // can stay stale even after the revalidate webhook fires. Reads hit the
+    // live API so revalidation is predictable; the 60s TTL bounds latency cost.
+    useCdn: false,
     token: draftEnabled ? process.env.SANITY_VIEWER_TOKEN : undefined,
   });
 

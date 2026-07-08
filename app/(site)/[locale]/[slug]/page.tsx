@@ -55,6 +55,11 @@ import {
 // Allow new pages to be rendered on-demand (ISR)
 export const dynamicParams = true;
 
+// Time-based fallback so content self-heals even if a tag-based revalidate
+// webhook is missed. Tag invalidation (`revalidateTag`) remains the primary
+// path; this bounds worst-case staleness to 60s.
+export const revalidate = 60;
+
 /**
  * Generate static params for all pages at build time.
  */
