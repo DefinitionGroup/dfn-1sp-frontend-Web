@@ -1,8 +1,9 @@
-import { getAllServices } from "@1sp/sanity-queries";
+import { getAllServicesForChannel } from "@1sp/sanity-queries";
 import ServicesGalleryFilteredClient from "../pg-ServicesGalleryFiltered";
 
 interface ServicesGalleryFilteredBlockProps {
   language?: string;
+  channel?: string;
   showGridBackground?: boolean;
   showFilters?: boolean;
   backgroundColor?: string;
@@ -12,9 +13,11 @@ interface ServicesGalleryFilteredBlockProps {
 
 export default async function ServicesGalleryFilteredBlock({
   language = "en",
+  channel = "1spWeb",
   ...props
 }: ServicesGalleryFilteredBlockProps) {
-  const services = await getAllServices(language);
+  // Channel-scoped: only services assigned to the active channel. (BUG-2)
+  const services = await getAllServicesForChannel(channel, language);
 
   return (
     <ServicesGalleryFilteredClient

@@ -15,7 +15,7 @@ import SiteWrapper from "@/components/SiteWrapper";
 import { getChannel } from "@1sp/site-config/server";
 import NotFound from "@/components/ui/not-found";
 import ContactForm from "@/components/ui/ContactForm";
-import { getAllCases, getAllServices, getPageBySlug } from "@1sp/sanity-queries";
+import { getAllCases, getAllServicesForChannel, getPageBySlug } from "@1sp/sanity-queries";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
 import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
@@ -126,7 +126,7 @@ export default async function ContactPage({
 
   const [allCasesRaw, allServicesRaw] = await Promise.all([
     needsAllCases ? getAllCases(channel, language) : Promise.resolve([]),
-    hasServicesGallery ? getAllServices(language) : Promise.resolve([]),
+    hasServicesGallery ? getAllServicesForChannel(channel, language) : Promise.resolve([]),
   ]);
 
   // LCP optimization: preload hero poster image

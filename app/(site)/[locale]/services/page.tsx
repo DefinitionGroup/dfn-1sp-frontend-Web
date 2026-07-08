@@ -11,7 +11,7 @@
  * - Person/Unit JSON-LD for team members and business units in content
  * - Hero video poster preload for LCP optimization
  */
-import { getAllCases, getAllServices, getPageBySlug } from "@1sp/sanity-queries";
+import { getAllCases, getAllServicesForChannel, getPageBySlug } from "@1sp/sanity-queries";
 import { getChannel } from "@1sp/site-config/server";
 import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
@@ -126,7 +126,7 @@ export default async function ServicesPage({
 
   const [allCasesRaw, allServicesRaw] = await Promise.all([
     needsAllCases ? getAllCases(channel, language) : Promise.resolve([]),
-    hasServicesGallery ? getAllServices(language) : Promise.resolve([]),
+    hasServicesGallery ? getAllServicesForChannel(channel, language) : Promise.resolve([]),
   ]);
 
   // LCP optimization: preload hero poster image

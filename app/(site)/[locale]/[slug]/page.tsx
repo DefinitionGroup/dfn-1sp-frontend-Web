@@ -24,7 +24,7 @@
  */
 import { PageBuilder } from "@/components/PageBuilder";
 // import CookieDeclaration from "@/components/CookieDeclaration";
-import { getAllCases, getAllPageSlugs, getAllServices, getPageBySlug } from "@1sp/sanity-queries";
+import { getAllCases, getAllPageSlugs, getAllServicesForChannel, getPageBySlug } from "@1sp/sanity-queries";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
 import { getChannel } from "@1sp/site-config/server";
@@ -151,7 +151,7 @@ export default async function Page({
 
   const [allCasesRaw, allServicesRaw] = await Promise.all([
     needsAllCases ? getAllCases(channel, language) : Promise.resolve([]),
-    hasServicesGallery ? getAllServices(language) : Promise.resolve([]),
+    hasServicesGallery ? getAllServicesForChannel(channel, language) : Promise.resolve([]),
   ]);
 
   // LCP optimization: preload hero poster image

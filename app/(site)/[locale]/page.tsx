@@ -19,7 +19,7 @@
  * - OpenGraph + Twitter card metadata for social sharing
  * - Proper title template integration with root layout
  */
-import { getAllCases, getAllServices, getHomePage, getGlobalData } from "@1sp/sanity-queries";
+import { getAllCases, getAllServicesForChannel, getHomePage, getGlobalData } from "@1sp/sanity-queries";
 import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
@@ -134,7 +134,7 @@ export default async function Home({
 
   const [allCasesRaw, allServicesRaw] = await Promise.all([
     needsAllCases ? getAllCases(channel, language) : Promise.resolve([]),
-    hasServicesGallery ? getAllServices(language) : Promise.resolve([]),
+    hasServicesGallery ? getAllServicesForChannel(channel, language) : Promise.resolve([]),
   ]);
 
   // LCP optimization: preload hero poster image so the browser discovers it
