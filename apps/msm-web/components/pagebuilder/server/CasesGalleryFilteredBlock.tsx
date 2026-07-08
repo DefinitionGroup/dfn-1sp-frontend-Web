@@ -24,7 +24,7 @@ interface CasesGalleryFilteredBlockProps {
 
 export default async function CasesGalleryFilteredBlock({
   language = "en",
-  channel = "1spWeb",
+  channel = "msmWeb",
   selectionMode = "auto",
   selectedCases = [],
   ...props
@@ -33,19 +33,22 @@ export default async function CasesGalleryFilteredBlock({
     .map((item) => item._ref ?? item._id)
     .filter((id): id is string => Boolean(id));
 
-  const rawCaseStudies =
-    selectionMode === "manual" && selectedIds.length > 0
-      ? await getCaseStudiesByIds(selectedIds, channel, language)
-      : await getAllCases(channel, language);
+  // Branch on the editor's chosen mode alone so a manual selection that
+  // resolves to zero items (e.g. none assigned to this channel) renders empty
+  // instead of falling back to the full auto list. (BUG-4)
+  const isManual = selectionMode === "manual";
 
-  const orderedCaseStudies =
-    selectionMode === "manual" && selectedIds.length > 0
-      ? selectedIds
+  const rawCaseStudies = isManual
+    ? await getCaseStudiesByIds(selectedIds, channel, language)
+    : await getAllCases(channel, language);
+
+  const orderedCaseStudies = isManual
+    ? selectedIds
         .map((id) =>
           rawCaseStudies.find((caseStudy: { _id: string }) => caseStudy._id === id)
         )
         .filter(Boolean)
-      : rawCaseStudies;
+    : rawCaseStudies;
 
   return (
     <CasesGalleryFilteredClient

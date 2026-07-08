@@ -13,7 +13,7 @@ interface DereferencedService {
 
 interface ServicesCarouselBlockProps {
   language?: string;
-  channel?: "1spWeb" | "msmWeb" | "studioco2Web" | "flizrWeb";
+  channel?: string;
   maxItems?: number;
   selectionMode?: "auto" | "manual";
   selectedServices?: DereferencedService[];
@@ -23,7 +23,7 @@ interface ServicesCarouselBlockProps {
 
 export default async function ServicesCarouselBlock({
   language = "en",
-  channel = "1spWeb",
+  channel = "msmWeb",
   maxItems = 5,
   selectionMode = "auto",
   selectedServices = [],

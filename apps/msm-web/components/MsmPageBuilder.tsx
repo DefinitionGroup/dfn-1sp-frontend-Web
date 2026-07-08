@@ -397,21 +397,19 @@ export function PageBuilder({
           case "smartCarousel":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                {/* channel must be explicit — SmartCarouselBlock's auto mode
-                    falls back to 1spWeb otherwise */}
-                <SmartCarousel key={key} {...(block as any)} channel="msmWeb" language={language} />
+                <SmartCarousel key={key} {...(block as any)} channel={channel} language={language} />
               </ErrorBoundary>
             );
           case "smartServicesCarousel":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <ServicesCarousel key={key} {...(block as any)} channel="msmWeb" language={language} />
+                <ServicesCarousel key={key} {...(block as any)} channel={channel} language={language} />
               </ErrorBoundary>
             );
           case "smartPeople":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <SmartPeople key={key} {...(block as any)} />
+                <SmartPeople key={key} {...(block as any)} channel={channel} />
               </ErrorBoundary>
             );
           case "smartUnitsGallery":
@@ -469,7 +467,7 @@ export function PageBuilder({
           case "servicesGalleryFiltered":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <ServicesGalleryFiltered key={key} {...block} language={language} />
+                <ServicesGalleryFiltered key={key} {...block} language={language} channel={channel} />
               </ErrorBoundary>
             );
           case "servicesHeroWithBadge":
