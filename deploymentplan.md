@@ -1,6 +1,6 @@
 # Monorepo Test Deployment Plan
 
-Status: **Phase 1 safeguards implemented locally; commit, push, and Vercel project creation pending**
+Status: **Phase 2 baseline complete; three isolated `dev-dataset` test projects are Ready**
 
 Last verified: **2026-07-11**
 
@@ -39,20 +39,20 @@ deployment.
 | Authoritative build controls | Preview Deployments disabled; `scripts/vercel-ignore.mjs` filters the allowed branch; native skipping disabled |
 | Search indexing | `noindex, nofollow`, with header and robots defenses |
 | Production tracking | Google Analytics and Cookiebot disabled |
-| Vercel observability | Vercel Analytics and Speed Insights remain enabled per test project |
+| Vercel observability | Components are present; project features remain disabled pending explicit cost approval |
 | Integration scope | Full test functionality against `dev-dataset` |
 | Mutation-route hardening | Deferred; recorded as an accepted test-phase risk |
 | Locale acceptance | 1SP EN, FLZR EN, MSM EN/DE; known content gaps are non-blocking |
 
 ## 3. Verified current repository state
 
-The following was checked from the current `multisite/flzr` checkout before this plan
-was written:
+The following was checked from the original `multisite/flzr` checkout and refreshed
+after the first `multisite/test` rollout:
 
 - The repo is a pnpm workspace containing the root 1SP app, `apps/msm-web`,
   `apps/flzr-web`, and shared `packages/*` workspaces.
-- Current HEAD is `0e8952dfc7dc6cb470025c22fca96831d5dcd9e7` on
-  `multisite/flzr`, 62 commits ahead of `origin/main` at the time of inspection.
+- The deployed baseline is commit `5c9807270942c61405bdade3bb62495331aa41fe` on
+  `multisite/test`.
 - Local root, MSM, and FLZR environments resolve to Sanity project `wu6i3y0h`, API
   version `2025-09-16`, and `dev-dataset`.
 - `pnpm build`, `pnpm --filter msm-web build`, and
@@ -64,8 +64,9 @@ was written:
   isolated test projects, but it means the current live project must not be treated as
   a verified deployment template.
 - GitHub currently reports `main` as unprotected.
-- The local Vercel CLI link points to `dfn-1sp-frontend-web`, but the CLI session was
-  not authenticated, so dashboard settings and failure logs were not verified.
+- The Vercel CLI was authenticated against team `definition-groups-projects`. The
+  existing projects and the three new projects were read back through the Vercel API;
+  the original workspace's local production-project link was not changed.
 - Three versioned `vercel.json` files and `scripts/vercel-ignore.mjs` already exist on
   the monorepo branch.
 - `origin/main` does not contain the versioned Vercel guard/config files. A normal
@@ -74,9 +75,9 @@ was written:
 - Existing deployment documentation is partly stale: it references branch names and
   dataset choices that do not match the approved strategy in this document.
 
-The existing production project and `flzr-prototype` must be audited in the Vercel
-dashboard before rollout. No dashboard assumption in an older Markdown file should be
-accepted without checking the actual project setting.
+The existing production project and `flzr-prototype` were audited before rollout. No
+dashboard assumption in an older Markdown file was accepted without checking the live
+project state.
 
 ## 4. Target architecture
 
@@ -418,6 +419,16 @@ closes that race where no branch override supersedes it. If a default-branch can
 runs install/application build or becomes Ready, delete and recreate the still-
 unpublished test project.
 
+Operational note from the 2026-07-11 bootstrap: Vercel CLI `50.38.1` did not expose a
+production-branch option. The projects were connected with `vercel git connect`, then
+the branch was set through the same dashboard endpoint used by Vercel's Terraform
+provider: `PATCH /v9/projects/{projectId}/branch` with
+`{"branch":"multisite/test"}`. This endpoint is not part of Vercel's supported public
+REST contract and may change. It is a bootstrap implementation detail, not a required
+ongoing deployment dependency. Each project's `link.productionBranch` was read back
+as `multisite/test`, and all three deployment lists were still empty before the first
+intentional baseline was created.
+
 References:
 
 - <https://vercel.com/docs/git>
@@ -713,30 +724,36 @@ These tasks are documented but intentionally do not block the approved test depl
 
 ### Phase 0 — protect the baseline
 
-- [ ] Confirm the current live 1SP URL still serves successfully.
-- [ ] Capture the current production deployment ID and rollback target.
-- [ ] Inspect the latest `main` Vercel failures separately; do not fix them as a side
+- [x] Confirm the current live 1SP URL still serves successfully.
+- [x] Capture the current production deployment ID and rollback target.
+- [x] Inspect the latest `main` Vercel failures separately; do not fix them as a side
       effect of this test-project rollout.
-- [ ] Confirm the existing 1SP project still tracks `main` and uses `production`.
-- [ ] Inspect `flzr-prototype` and record its branch, root, and environment settings.
-- [ ] On both existing projects, confirm the actual Root Directory and that the
+- [x] Confirm the existing 1SP project still tracks `main` and uses `production`.
+- [x] Inspect `flzr-prototype` and record its branch, root, and environment settings.
+- [x] On both existing projects, confirm the actual Root Directory and that the
       `multisite/test` copy of its `vercel.json` resolves to the branch guard.
-- [ ] Confirm `MONOREPO_TEST_PROJECT` is absent from both existing projects.
-- [ ] Before exposing system variables on either existing project, set/verify its
+- [x] Confirm `MONOREPO_TEST_PROJECT` is absent from both existing projects.
+- [x] Before exposing system variables on either existing project, set/verify its
       explicit correct `NEXT_PUBLIC_SITE_URL`; then verify the Git-ref variables are
       available to the ignore command.
-- [ ] Verify the Vercel plan permits five projects on one repository and has enough
+- [x] Verify the Vercel plan permits five projects on one repository and has enough
       deployment/concurrency capacity for ignored candidates plus intended builds.
-- [ ] Verify whether the Sanity plan supports dataset-scoped Custom Access Control;
+- [x] Verify whether the Sanity plan supports dataset-scoped Custom Access Control;
       record the broader-token residual risk if it does not.
-- [ ] Export or otherwise snapshot `dev-dataset` before enabling public writes.
+- [x] Export or otherwise snapshot `dev-dataset` before enabling public writes.
+
+Phase 0 evidence: `https://www.1sp.agency` returned HTTP 200. The live rollback target
+remained deployment `dpl_BL3KnMQf1zqhJDSVGYrtoh1LJ7f4` from 2026-05-14 while the
+five latest `main` production attempts were in Error. The existing projects rejected
+the `multisite/test` push through their Ignored Build Step, so neither compiled the
+new monorepo baseline. The team is on Pro with one concurrent build slot; the three
+test projects therefore use Standard build machines and were deployed serially.
 
 ### Phase 1 — prepare repository controls
 
-- [ ] Review and commit the intended monorepo revision; preserve unrelated working-tree
+- [x] Review and commit the intended monorepo revision; preserve unrelated working-tree
       changes.
-- [x] Create the local `multisite/test` branch from the selected monorepo HEAD; it has
-      not been pushed and still carries unrelated working-tree changes.
+- [x] Create and push `multisite/test` from the selected monorepo revision.
 - [x] Add branch/project gating and shared-root dependency classification to
       `scripts/vercel-ignore.mjs`.
 - [x] Add automated path-classification tests for the Vercel ignore script.
@@ -747,42 +764,60 @@ These tasks are documented but intentionally do not block the approved test depl
 - [x] Clearly supersede stale Vercel deployment documentation.
 - [x] Run all three builds, runtime SEO checks, deployment-guard tests, and dataset
       doctor checks.
-- [ ] Push `multisite/test`.
+- [x] Push `multisite/test`.
 
 ### Phase 2 — create the three projects
 
 For each project, follow section 7.5 in order:
 
-- [ ] Create a blank, unconnected Vercel project; do not click Import-and-Deploy.
-- [ ] Set the approved project name and Root Directory before Git connection.
-- [ ] Set Node.js `22.x`.
-- [ ] For MSM/FLZR, enable outside-root source inclusion.
-- [ ] Disable Preview Deployments and native affected-project skipping.
-- [ ] Configure the permanent project-level branch wrapper.
-- [ ] Enable system environment variables.
-- [ ] Add `MONOREPO_TEST_PROJECT=true` and the matching `MONOREPO_TEST_SITE` to
+- [x] Create a blank, unconnected Vercel project; do not click Import-and-Deploy.
+- [x] Set the approved project name and Root Directory before Git connection.
+- [x] Set Node.js `22.x`.
+- [x] For MSM/FLZR, enable outside-root source inclusion.
+- [x] Disable Preview Deployments and native affected-project skipping.
+- [x] Configure the permanent project-level branch wrapper.
+- [x] Enable system environment variables.
+- [x] Add `MONOREPO_TEST_PROJECT=true` and the matching `MONOREPO_TEST_SITE` to
       Production and Preview.
-- [ ] Add all required Sanity/channel/test-tier variables.
-- [ ] Do not add viewer, write, revalidation, or external integration secrets before
+- [x] Add all required Sanity/channel/test-tier variables.
+- [x] Do not add viewer, write, revalidation, or external integration secrets before
       Git connection and branch verification.
-- [ ] Leave custom domains empty.
-- [ ] Link the isolated local checkout to the new project, verify its project ID, and
+- [x] Leave custom domains empty.
+- [x] Link the isolated local checkout to the new project, verify its project ID, and
       run `vercel git connect`.
-- [ ] Set Production Branch to `multisite/test` immediately after Git connection.
-- [ ] Confirm any default-`main` candidate cancels at the ignored-build step or fails
-      before install because its Root Directory is absent; if install/application build
-      runs or it becomes Ready, delete and recreate the unpublished project.
-- [ ] If the baseline needs authenticated reads, add a dedicated read-only viewer token
-      as a Sensitive Production-only variable after branch verification.
-- [ ] Create and record one Ready `multisite/test` baseline deployment.
+- [x] Set Production Branch to `multisite/test` immediately after Git connection.
+- [x] Confirm Git connection created no default-`main` candidate. If a future bootstrap
+      creates one, it must cancel before install; otherwise delete and recreate the
+      unpublished project.
+- [x] Confirm the baseline does not need an authenticated read token; no token was added.
+- [x] Create and record one Ready `multisite/test` baseline deployment per project.
+
+Baseline release record (2026-07-11):
+
+| Site | Project ID | Exact public URL | Ready deployment | SHA |
+|---|---|---|---|---|
+| 1SP | `prj_aGGAUdjJbb5Bmhip2tOIARP0lvkR` | `https://1sp-monorepo-test.vercel.app` | `dpl_6dDDEHQkiWkRiibfdJQdzxuehofG` | `5c9807270942c61405bdade3bb62495331aa41fe` |
+| MSM | `prj_cfopf3J47m4cvxoepDSy24AmHZZK` | `https://msm-monorepo-test.vercel.app` | `dpl_FQTTnQKNLm5YLBjBirSe2TXkVVTy` | `5c9807270942c61405bdade3bb62495331aa41fe` |
+| FLZR | `prj_p9sSCkEnWfan6uw2mMWQyhCpS64b` | `https://flzr-monorepo-test.vercel.app` | `dpl_EVDzBxnRHwdKrgAhWxokM2nvRNN9` | `5c9807270942c61405bdade3bb62495331aa41fe` |
+
+All three exact URLs returned HTTP 200, emitted the strict `X-Robots-Tag`, served
+`robots.txt` with `Disallow: /`, rendered strict robots and Googlebot metadata, used
+the exact project URL as canonical, and contained no Google Analytics, Google Tag
+Manager, or Cookiebot marker in the initial HTML.
+
+The `dev-dataset` pre-rollout snapshot is
+`/private/tmp/1sp-dev-dataset-pre-vercel-2026-07-11.tar.gz` with SHA-256
+`400171076c205a8ff2909e4f94b74d352ace9b32754f2b9b0da3d268748c2852`. It is a local
+operational artifact and must be copied to controlled durable storage before enabling
+public mutation testing.
 
 ### Phase 3 — apply exact URLs and Sanity wiring
 
-- [ ] Reconfirm each actual generated Vercel URL and its
+- [x] Reconfirm each actual generated Vercel URL and its
       `VERCEL_PROJECT_PRODUCTION_URL` value.
-- [ ] Confirm the corresponding `NEXT_PUBLIC_SITE_URL` is an exact match; redeploy only
+- [x] Confirm the corresponding `NEXT_PUBLIC_SITE_URL` is an exact match; redeploy only
       if it changed.
-- [ ] Verify the baseline is `dev-dataset`, noindex, and free of production tracking;
+- [x] Verify the baseline is `dev-dataset`, noindex, and free of production tracking;
       confirm the `dev-dataset` snapshot exists.
 - [ ] Add the approved viewer, write, revalidation, and external integration secrets as
       Sensitive **Production-only** variables, then redeploy for full integration
@@ -901,7 +936,8 @@ Additional locale checks:
 | MSM/FLZR JSON-LD still uses hardcoded 1SP identity | Medium for public noindex test; high for future SEO | Record as accepted test defect; make structured data site-aware before any indexable rollout |
 | MSM/FLZR locale routes use locale-free canonicals and lack complete `hreflang` | Medium for public noindex test; high for future SEO | Keep test sites noindex; define and implement the locale SEO contract before production |
 | Feature previews are disabled by decision | Operational tradeoff | Require local/CI validation before merge to `multisite/test` |
-| Vercel dashboard state could not be authenticated from this session | Medium uncertainty | Manual dashboard audit is Phase 0/2 evidence requirement |
+| Dashboard UI was logged out, while CLI/API authentication worked | Low operational limitation | Live settings were read back through authenticated CLI/API; use dashboard login only for UI-only controls |
+| Enabling Speed Insights on Pro has a per-project monthly base fee | Medium cost risk | Keep disabled until the owner explicitly approves the current Vercel charge for all three projects |
 
 ## 16. Explicit non-goals and future production cutover
 
