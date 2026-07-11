@@ -829,10 +829,28 @@ public mutation testing.
 ### Phase 4 — prove deployment isolation
 
 - [ ] Run the trigger probes from section 6.4, including the rename/move case.
-- [ ] Confirm unaffected projects show custom `Canceled`, not Ready.
-- [ ] Confirm no existing project compiles `multisite/test`.
+- [x] Confirm a documentation-only change makes all three test projects show
+      `Canceled`, not Ready, with zero build outputs.
+- [x] Confirm neither existing project compiles the documentation-only
+      `multisite/test` revision.
 - [ ] Confirm feature branches create no usable test preview.
-- [ ] Save dashboard evidence for the release record.
+- [x] Save authenticated Vercel API evidence for the release record.
+
+Documentation-only isolation probe at SHA
+`7b333c1d4265cf80f3e5fe67e51c9aee4bf746b6`:
+
+| Project | Candidate | Result |
+|---|---|---|
+| `1sp-monorepo-test` | `dpl_BGGefegRpRdXyk3JokYW7b5DfAU4` | Canceled; zero build outputs |
+| `msm-monorepo-test` | `dpl_4izoYrsFZBB5TqRx4UXL9MCL7sK3` | Canceled |
+| `flzr-monorepo-test` | `dpl_J18sfENLy8ozRPM6m5Az9Ugjk2V7` | Canceled; zero build outputs |
+| `dfn-1sp-frontend-web` | `dpl_51YChUfCRqBNrDWqQn8xNFTPLXP2` | Canceled; zero build outputs |
+| `flzr-prototype` | `dpl_4Nog7rJxLW6PbnoK36hhZapr6qUe` | Canceled |
+
+This proves the non-runtime path. The three app-only and rename/move probes remain
+open because running them requires deliberate probe commits on the shared release
+branch; they should be executed before enabling mutation credentials or treated as
+the first controlled application changes after the baseline.
 
 ### Phase 5 — application smoke test
 
