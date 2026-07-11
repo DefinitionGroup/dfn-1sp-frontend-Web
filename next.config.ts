@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { getDeploymentHeaders } from "@1sp/utils/deployment-tier";
 
 const nextConfig: NextConfig = {
   transpilePackages: [
@@ -29,6 +30,7 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
+  headers: () => getDeploymentHeaders("1sp"),
 
 };
 

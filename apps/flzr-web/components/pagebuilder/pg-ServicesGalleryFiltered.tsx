@@ -44,47 +44,51 @@ function ServicesGalleryFiltered({
   const paddingClass = `py-${paddingY}`;
 
   return (
-    <div
+    <section
       id={sectionId}
       data-navpoint-name={navPointName}
-      className={`grid grid-cols-12 z-50 mx-auto ${bgColorClass} min-h-[90vh] relative font-aspekta`}
+      className={`relative z-10 overflow-hidden ${bgColorClass} ${paddingClass} font-aspekta`}
     >
-      <div
-        className={`z-2 grid gap-8  col-span-12 ${paddingClass} col-start-1 container mx-auto row-start-1 grid-cols-12`}
-      >
-        <div className="col-span-12 col-start-1">
-          {/* Filter Buttons */}
-          {showFilters && filters.length > 1 && (
-            <div className="flex flex-wrap gap-4 mb-8 justify-center md:justify-start">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_82%_12%,rgba(124,92,255,0.09),transparent_28%)]" />
+      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+        {showFilters && filters.length > 1 && (
+          <div className="mb-8 overflow-x-auto border-b border-neutral-900/15 [scrollbar-width:none] md:mb-10 [&::-webkit-scrollbar]:hidden">
+            <div
+              className="flex w-max min-w-full gap-7"
+              role="tablist"
+              aria-label="Filter services"
+            >
               {filters.map((filter) => (
                 <button
                   key={filter}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeFilter === filter}
                   onClick={() => {
                     startTransition(() => {
                       setActiveFilter(filter);
                     });
                   }}
-                  className={`px-6 py-2  text-xs font-medium uppercase transition-all duration-100 ${
+                  className={`relative pb-3 text-xs uppercase tracking-normal transition-colors duration-300 ${
                     activeFilter === filter
-                      ? "bg-violet-500 text-black"
-                      : "bg-neutral-900 text-neutral-100 hover:bg-neutral-800"
+                      ? "text-neutral-900 after:absolute after:inset-x-0 after:bottom-[-1px] after:h-[2px] after:bg-violet-500"
+                      : "text-neutral-500 hover:text-neutral-900"
                   }`}
                 >
                   {filter}
                 </button>
               ))}
             </div>
-          )}
-          <ServiceGalleryComponent
-            services={services}
-            activeFilter={activeFilter}
-            locale={locale}
-            filterAllText={t.services.filterAll}
-            initialVisibleCount={Math.min(6, services.length)}
-          />
-        </div>
+          </div>
+        )}
+        <ServiceGalleryComponent
+          services={services}
+          activeFilter={activeFilter}
+          locale={locale}
+          filterAllText={t.services.filterAll}
+        />
       </div>
-    </div>
+    </section>
   );
 }
 

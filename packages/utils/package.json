@@ -12,6 +12,7 @@
     "./translations": "./src/translations.ts",
     "./text-content": "./src/text-content.tsx",
     "./site-url": "./src/site-url.ts",
+    "./deployment-tier": "./src/deployment-tier.ts",
     "./carousel-media": "./src/carousel-media.ts",
     "./hero-media": "./src/hero-media.ts",
     "./hooks/use-media-query": "./src/hooks/use-media-query.ts",

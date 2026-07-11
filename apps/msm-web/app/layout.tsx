@@ -5,11 +5,16 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import CookiebotBanner from "@/components/CookiebotBanner";
 import GoogleAnalyticsConsent from "@/components/GoogleAnalyticsConsent";
+import {
+  getRobotsMetadata,
+  shouldLoadProductionTracking,
+} from "@1sp/utils/deployment-tier";
 import { getMetadataBaseUrl } from "@1sp/utils/site-url";
 import { getSiteConfig } from "@1sp/site-config";
 
 const MSM_SITE = getSiteConfig("msmWeb");
 const GOOGLE_MEASUREMENT_ID = process.env.NEXT_PUBLIC_MSM_GOOGLE_MEASUREMENT_ID;
+const LOAD_PRODUCTION_TRACKING = shouldLoadProductionTracking();
 
 // Back to AspektaVF (variable font, shared identity with 1SP) — Cooper
 // Hewitt was trialed July 2026 and reverted per Martin's font decision.
@@ -38,10 +43,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: getRobotsMetadata(),
 };
 
 export default function RootLayout({
@@ -55,12 +57,10 @@ export default function RootLayout({
       className={`dark ${aspekta.variable} `}
       suppressHydrationWarning
     >
-      <head>
-        <CookiebotBanner />
-      </head>
+      <head>{LOAD_PRODUCTION_TRACKING ? <CookiebotBanner /> : null}</head>
       <body className="antialiased" suppressHydrationWarning>
         {children}
-        {GOOGLE_MEASUREMENT_ID ? (
+        {LOAD_PRODUCTION_TRACKING && GOOGLE_MEASUREMENT_ID ? (
           <GoogleAnalyticsConsent measurementId={GOOGLE_MEASUREMENT_ID} />
         ) : null}
         <Analytics />

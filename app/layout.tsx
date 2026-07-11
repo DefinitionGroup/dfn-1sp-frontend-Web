@@ -5,8 +5,14 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import CookiebotBanner from "@/components/CookiebotBanner";
 import GoogleAnalyticsConsent from "@/components/GoogleAnalyticsConsent";
+import {
+  getRobotsMetadata,
+  shouldLoadProductionTracking,
+} from "@1sp/utils/deployment-tier";
 import { getMetadataBaseUrl } from "@1sp/utils/site-url";
 import { SITE_BRAND } from "@1sp/site-config";
+
+const LOAD_PRODUCTION_TRACKING = shouldLoadProductionTracking();
 
 const aspekta = localFont({
   src: [
@@ -33,13 +39,10 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
   },
-  verification: SITE_BRAND.seo.googleSiteVerification
+  verification: LOAD_PRODUCTION_TRACKING && SITE_BRAND.seo.googleSiteVerification
     ? { google: SITE_BRAND.seo.googleSiteVerification }
     : undefined,
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: getRobotsMetadata(),
 };
 
 export default function RootLayout({
@@ -53,12 +56,10 @@ export default function RootLayout({
       className={`${aspekta.variable} `}
       suppressHydrationWarning
     >
-      <head>
-        <CookiebotBanner />
-      </head>
+      <head>{LOAD_PRODUCTION_TRACKING ? <CookiebotBanner /> : null}</head>
       <body className="antialiased" suppressHydrationWarning>
         {children}
-        {SITE_BRAND.tracking.googleAnalyticsId ? (
+        {LOAD_PRODUCTION_TRACKING && SITE_BRAND.tracking.googleAnalyticsId ? (
           <GoogleAnalyticsConsent
             measurementId={SITE_BRAND.tracking.googleAnalyticsId}
           />

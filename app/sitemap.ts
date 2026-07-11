@@ -32,12 +32,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     // Case studies from Sanity (includes real _updatedAt dates)
     const cases = await getAllCaseSlugs();
-    const caseEntries: MetadataRoute.Sitemap = cases.map((cs) => ({
+    const caseEntries: MetadataRoute.Sitemap = cases
+      .filter((cs) => cs.channel?.includes("1spWeb"))
+      .map((cs) => ({
         url: `${CANONICAL_URL}/cases/${cs.slug}`,
         lastModified: cs._updatedAt ? new Date(cs._updatedAt) : new Date(),
         changeFrequency: "monthly",
         priority: 0.7,
-    }));
+      }));
 
     return [...homePages, ...pageEntries, ...caseEntries];
 }

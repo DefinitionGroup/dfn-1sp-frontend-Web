@@ -1,15 +1,33 @@
 "use client";
 
-import React, { startTransition, useEffect, useId, useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
-import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
-import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
-import { useOutsideClick } from "@1sp/utils/hooks/use-outside-click";
+import {
+  startTransition,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type WheelEvent as ReactWheelEvent,
+} from "react";
+import { createPortal } from "react-dom";
+import {
+  AnimatePresence,
+  animate,
+  motion,
+  useDragControls,
+  useMotionValue,
+  useReducedMotion,
+  type PanInfo,
+} from "motion/react";
 import Image from "next/image";
 import DeferredVideo from "@flzr/components/ui/DeferredVideo";
-import { cloudinaryPosterUrl, withCacheKey } from "@1sp/utils/cloudinary";
-import { useRobustInView } from "@1sp/utils/hooks/use-robust-in-view";
+import {
+  cloudinaryPosterUrl,
+  withCacheKey,
+} from "@1sp/utils/cloudinary";
+import { useOutsideClick } from "@1sp/utils/hooks/use-outside-click";
 import type { CloudinaryImage, Service } from "@1sp/sanity-types";
+
+const EASE_FLZR = [0.62, 0.05, 0.01, 0.99] as const;
 
 function isVideoUrl(url: string | undefined): boolean {
   if (!url) return false;
@@ -23,8 +41,43 @@ function clampFocus(value?: number): number {
 
 function getObjectPosition(image?: CloudinaryImage | null): string | undefined {
   if (image?.focusMode !== "manual") return undefined;
-
   return `${clampFocus(image.focusX)}% ${clampFocus(image.focusY)}%`;
+}
+
+function getServiceMedia(service: Service) {
+  const cacheKey = service._updatedAt;
+  const background = withCacheKey(
+    service.serviceBackground?.asset?.secure_url ||
+      service.serviceBackground?.asset?.url ||
+      service.iconUrl,
+    cacheKey,
+  );
+  const icon = withCacheKey(
+    service.serviceicon?.asset?.secure_url ||
+      service.serviceicon?.asset?.url ||
+      service.iconUrl,
+    cacheKey,
+  );
+
+  return {
+    background,
+    icon,
+    objectPosition: getObjectPosition(service.serviceBackground),
+  };
+}
+
+function getPageTargets(viewportWidth: number, limit: number): number[] {
+  if (limit <= 0) return [0];
+
+  const pageDistance = viewportWidth * 0.88;
+  const targets = [0];
+
+  for (let distance = pageDistance; distance < limit; distance += pageDistance) {
+    targets.push(-distance);
+  }
+  targets.push(-limit);
+
+  return targets;
 }
 
 interface ServiceGalleryProps {
@@ -32,409 +85,563 @@ interface ServiceGalleryProps {
   activeFilter?: string;
   locale?: string;
   filterAllText?: string;
-  initialVisibleCount?: number;
 }
 
 export default function ServiceGalleryComponent({
   services = [],
   activeFilter = "All",
-  locale = "en",
   filterAllText = "All",
-  initialVisibleCount = Number.POSITIVE_INFINITY,
 }: ServiceGalleryProps) {
-  const router = useOptimizedTransitionRouter();
-  const [active, setActive] = useState<Service | null>(null);
-  const ref = useRef<HTMLDivElement>(null);
-  const gridRef = useRef<HTMLUListElement>(null);
-  const id = useId();
-  const { isInView } = useRobustInView(gridRef, {
-    amount: 0.01,
-    margin: "0px 0px 120px 0px",
-    mobileAmount: 0.01,
-    mobileMargin: "0px 0px 180px 0px",
-    fallbackVisibleAfterMs: 2500,
-  });
-  const [shouldRenderAll, setShouldRenderAll] = useState(
-    !Number.isFinite(initialVisibleCount)
-  );
-  const openService = (service: Service) => {
-    startTransition(() => {
-      setActive(service);
-    });
-  };
-  const closeService = () => {
-    startTransition(() => {
-      setActive(null);
-    });
-  };
+  const reducedMotion = useReducedMotion();
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLUListElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const didDragRef = useRef(false);
+  const maxOffsetRef = useRef(0);
+  const wheelEndTimerRef = useRef<number | null>(null);
+  const titleId = useId();
+  const dragControls = useDragControls();
+  const trackX = useMotionValue(0);
 
-  // Filter items based on active filter - using service groups
+  const [active, setActive] = useState<Service | null>(null);
+  const [maxOffset, setMaxOffset] = useState(0);
+  const [pageTargets, setPageTargets] = useState<number[]>([0]);
+  const [currentPage, setCurrentPage] = useState(0);
+
   const filteredItems =
     activeFilter === filterAllText
       ? services
       : services.filter((item) =>
-        item.servicegrouprel?.some((group) => group.name === activeFilter)
-      );
+          item.servicegrouprel?.some((group) => group.name === activeFilter),
+        );
+
+  const measureTrack = () => {
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+    if (!viewport || !track) return;
+
+    const styles = window.getComputedStyle(viewport);
+    const horizontalPadding =
+      Number.parseFloat(styles.paddingLeft) +
+      Number.parseFloat(styles.paddingRight);
+    const visibleWidth = viewport.clientWidth - horizontalPadding;
+    const nextMaxOffset = Math.max(0, track.scrollWidth - visibleWidth);
+
+    maxOffsetRef.current = nextMaxOffset;
+    setMaxOffset(nextMaxOffset);
+    setPageTargets(getPageTargets(viewport.clientWidth, nextMaxOffset));
+
+    const clampedX = Math.max(-nextMaxOffset, Math.min(0, trackX.get()));
+    if (clampedX !== trackX.get()) trackX.set(clampedX);
+  };
 
   useEffect(() => {
-    if (shouldRenderAll || !isInView) return;
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+    if (!viewport || !track) return;
 
-    const win = window as Window & typeof globalThis & {
-      requestIdleCallback?: (
-        callback: IdleRequestCallback,
-        options?: IdleRequestOptions,
-      ) => number;
-      cancelIdleCallback?: (handle: number) => void;
-    };
-    const run = () => setShouldRenderAll(true);
-    if (win.requestIdleCallback) {
-      const idleId = win.requestIdleCallback(run, { timeout: 800 });
-      return () => {
-        if (win.cancelIdleCallback) {
-          win.cancelIdleCallback(idleId);
-        }
-      };
-    }
+    trackX.stop();
+    trackX.set(0);
+    setCurrentPage(0);
+    measureTrack();
 
-    const timer = win.setTimeout(run, 180);
-    return () => win.clearTimeout(timer);
-  }, [isInView, shouldRenderAll]);
+    const observer = new ResizeObserver(measureTrack);
+    observer.observe(viewport);
+    observer.observe(track);
 
-  useEffect(() => {
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        closeService();
+    // Motion lays out the track after the first client commit. Measure again
+    // once those card widths exist so the controls never start falsely disabled.
+    let followupFrame = 0;
+    const initialFrame = requestAnimationFrame(() => {
+      followupFrame = requestAnimationFrame(measureTrack);
+    });
+
+    return () => {
+      cancelAnimationFrame(initialFrame);
+      cancelAnimationFrame(followupFrame);
+      if (wheelEndTimerRef.current !== null) {
+        window.clearTimeout(wheelEndTimerRef.current);
       }
-    }
+      observer.disconnect();
+    };
+  }, [activeFilter, filteredItems.length]);
 
-    if (active) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+  useEffect(() => {
+    if (!active) return;
 
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setActive(null);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [active]);
 
-  useOutsideClick(ref, closeService);
+  useOutsideClick(modalRef, () => setActive(null));
 
-  const activeCacheKey = active?._updatedAt;
-  const activeBg =
-    withCacheKey(
-      active?.serviceBackground?.asset?.secure_url ||
-        active?.serviceBackground?.asset?.url ||
-        active?.iconUrl,
-      activeCacheKey
+  const animateTrackTo = (value: number) => {
+    const clamped = Math.max(-maxOffsetRef.current, Math.min(0, value));
+    const viewport = viewportRef.current;
+    trackX.stop();
+
+    if (viewport) {
+      const targets = getPageTargets(
+        viewport.clientWidth,
+        maxOffsetRef.current,
+      );
+      const closestIndex = targets.reduce(
+        (closest, target, index) =>
+          Math.abs(target - clamped) < Math.abs(targets[closest] - clamped)
+            ? index
+            : closest,
+        0,
+      );
+      setCurrentPage(closestIndex);
+    }
+
+    if (reducedMotion) {
+      trackX.set(clamped);
+      return;
+    }
+
+    animate(trackX, clamped, {
+      type: "spring",
+      stiffness: 250,
+      damping: 32,
+      mass: 0.9,
+    });
+  };
+
+  const scrollPage = (direction: -1 | 1) => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+
+    const limit = maxOffsetRef.current;
+    const currentX = trackX.get();
+    const isAtStart = currentX >= -4;
+    const isAtEnd = currentX <= -limit + 4;
+    const pageDistance = viewport.clientWidth * 0.88;
+    const nextX =
+      direction === 1 && isAtEnd
+        ? 0
+        : direction === -1 && isAtStart
+          ? -limit
+          : currentX - direction * pageDistance;
+
+    animateTrackTo(nextX);
+  };
+
+  const snapTrack = (velocity = 0) => {
+    const viewport = viewportRef.current;
+    if (!viewport || maxOffsetRef.current <= 0) return;
+
+    const limit = maxOffsetRef.current;
+    const projectedX = Math.max(
+      -limit,
+      Math.min(0, trackX.get() + velocity * 0.16),
     );
-  const activeIcon =
-    withCacheKey(
-      active?.serviceicon?.asset?.secure_url ||
-        active?.serviceicon?.asset?.url ||
-        active?.iconUrl,
-      activeCacheKey
+    const targets = getPageTargets(viewport.clientWidth, limit);
+
+    const closestTarget = targets.reduce((closest, target) =>
+      Math.abs(target - projectedX) < Math.abs(closest - projectedX)
+        ? target
+        : closest,
     );
-  const activeObjectPosition = getObjectPosition(active?.serviceBackground);
-  const visibleItems =
-    shouldRenderAll || !Number.isFinite(initialVisibleCount)
-      ? filteredItems
-      : filteredItems.slice(0, initialVisibleCount);
+
+    animateTrackTo(closestTarget);
+  };
+
+  const handleDragStart = () => {
+    trackX.stop();
+    didDragRef.current = true;
+  };
+
+  const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    snapTrack(info.velocity.x);
+    window.setTimeout(() => {
+      didDragRef.current = false;
+    }, 0);
+  };
+
+  const handleWheel = (event: ReactWheelEvent<HTMLDivElement>) => {
+    const horizontalDelta =
+      Math.abs(event.deltaX) > Math.abs(event.deltaY)
+        ? event.deltaX
+        : event.shiftKey
+          ? event.deltaY
+          : 0;
+
+    if (horizontalDelta === 0 || maxOffsetRef.current <= 0) return;
+
+    event.preventDefault();
+    trackX.stop();
+    trackX.set(
+      Math.max(
+        -maxOffsetRef.current,
+        Math.min(0, trackX.get() - horizontalDelta),
+      ),
+    );
+
+    if (wheelEndTimerRef.current !== null) {
+      window.clearTimeout(wheelEndTimerRef.current);
+    }
+    wheelEndTimerRef.current = window.setTimeout(() => snapTrack(), 120);
+  };
+
+  const openService = (service: Service) => {
+    if (didDragRef.current) return;
+    startTransition(() => setActive(service));
+  };
+
+  if (filteredItems.length === 0) return null;
+
+  const activeMedia = active ? getServiceMedia(active) : null;
 
   return (
     <>
-      <AnimatePresence>
-        {active ? (
-          <div className=" grid place-items-center fixed inset-0 bg-black/50 h-full backdrop-blur-lg w-full z-50">
-            <motion.button
-              key={`button-${active.name}-${id}`}
-              layout
-              initial={{
-                opacity: 1,
-              }}
-              animate={{
-                opacity: 1,
-              }}
-              exit={{
-                opacity: 1,
-                transition: {
-                  duration: 0.025,
-                },
-              }}
-              className="flex absolute top-2 right-2 lg:hidden items-center overflow-hidden justify-around  h-6 w-6 z-50"
-              onClick={closeService}
+      <div className="relative" data-component="flzr-services-carousel">
+        <div className="mb-5 flex items-end justify-between gap-6 md:mb-7">
+          <p className="text-xs uppercase tracking-normal text-neutral-500">
+            {String(filteredItems.length).padStart(2, "0")} services
+          </p>
+
+          <div className="flex items-center gap-2" aria-label="Carousel controls">
+            <button
+              type="button"
+              onClick={() => scrollPage(-1)}
+              disabled={filteredItems.length <= 1}
+              aria-label="Previous services"
+              className="grid h-11 w-11 place-items-center rounded-full border border-neutral-900/15 text-neutral-900 transition-[background-color,color,opacity,transform] duration-300 hover:bg-neutral-900 hover:text-white active:scale-95 disabled:pointer-events-none disabled:opacity-25"
             >
-              <CloseIcon />
-            </motion.button>
+              <ArrowIcon direction="back" />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollPage(1)}
+              disabled={filteredItems.length <= 1}
+              aria-label="Next services"
+              className="grid h-11 w-11 place-items-center rounded-full bg-neutral-900 text-white transition-[background-color,color,opacity,transform] duration-300 hover:bg-violet-500 active:scale-95 disabled:pointer-events-none disabled:opacity-25"
+            >
+              <ArrowIcon direction="forward" />
+            </button>
+          </div>
+        </div>
+
+        <div
+          ref={viewportRef}
+          role="region"
+          aria-label="Services carousel"
+          tabIndex={0}
+          onKeyDown={(event) => {
+            if (event.key === "ArrowLeft") scrollPage(-1);
+            if (event.key === "ArrowRight") scrollPage(1);
+          }}
+          onPointerDown={(event) => {
+            dragControls.start(event, { distanceThreshold: 6 });
+          }}
+          onWheel={handleWheel}
+          className="-mx-4 touch-pan-y select-none overflow-hidden px-4 pb-2 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0"
+        >
+          <motion.ul
+            ref={trackRef}
+            key={activeFilter}
+            drag="x"
+            dragControls={dragControls}
+            dragListener={false}
+            dragConstraints={{ left: -maxOffset, right: 0 }}
+            dragElastic={0.06}
+            dragMomentum={false}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+            style={{ x: trackX }}
+            initial={reducedMotion ? false : "hidden"}
+            whileInView="visible"
+            whileDrag={{ cursor: "grabbing" }}
+            viewport={{ once: true, amount: 0.08 }}
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.07 } },
+            }}
+            className="flex w-max cursor-grab gap-3 will-change-transform md:gap-4"
+          >
+            {filteredItems.map((item, index) => {
+              const { background, objectPosition } = getServiceMedia(item);
+              const groups = item.servicegrouprel?.map((group) => group.name) ?? [];
+
+              return (
+                <motion.li
+                  key={item._id || `${item.name}-${index}`}
+                  variants={{
+                    hidden: { opacity: 0, y: 34 },
+                    visible: {
+                      opacity: 1,
+                      y: 0,
+                      transition: { duration: 0.65, ease: EASE_FLZR },
+                    },
+                  }}
+                  className="w-[78vw] max-w-[25rem] shrink-0 [scroll-snap-align:start] sm:w-[45vw] lg:w-[calc((100vw-8rem)/3.15)] lg:max-w-[26rem] 2xl:w-[calc((100vw-10rem)/4.15)] 2xl:max-w-[22rem]"
+                >
+                  <button
+                    type="button"
+                    onClick={() => openService(item)}
+                    aria-label={`Open details for ${item.name}`}
+                    className="group relative block aspect-[6/7] w-full overflow-hidden rounded-[2rem] bg-neutral-900 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-500"
+                  >
+                    <div className="absolute inset-0 overflow-hidden">
+                      {background && isVideoUrl(background) ? (
+                        <DeferredVideo
+                          src={background}
+                          maxWidth={640}
+                          className="pointer-events-none h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.045]"
+                          mediaStyle={objectPosition ? { objectPosition } : undefined}
+                          style={{ pointerEvents: "none" }}
+                          posterUrl={cloudinaryPosterUrl(background, {
+                            maxWidth: 640,
+                            frame: "0",
+                          })}
+                          mountDelay={index < 4 ? 80 : 240}
+                        />
+                      ) : background ? (
+                        <Image
+                          src={background}
+                          alt={item.serviceBackground?.alt || item.name}
+                          fill
+                          priority={index < 4}
+                          sizes="(max-width: 640px) 78vw, (max-width: 1024px) 45vw, 25vw"
+                          draggable={false}
+                          className="pointer-events-none object-cover transition-transform duration-700 ease-out group-hover:scale-[1.045]"
+                          style={objectPosition ? { objectPosition } : undefined}
+                        />
+                      ) : (
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgba(124,92,255,0.65),transparent_38%),linear-gradient(145deg,#2b2335,#131019_65%)]" />
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#131019]/65 via-transparent to-[#131019]/10 opacity-80 transition-opacity duration-500 group-hover:opacity-55" />
+                    </div>
+
+                    <div className="pointer-events-none absolute left-4 top-4 flex items-center gap-3">
+                      <Image
+                        src="/units/FLZR/flzr_logo.svg"
+                        alt="FLZR"
+                        width={84}
+                        height={20}
+                        draggable={false}
+                        className="pointer-events-none h-auto w-[4.75rem] object-contain object-left"
+                      />
+                      <span className="text-xxs tracking-normal text-white/75">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+
+                    <motion.div
+                      initial={reducedMotion ? false : { opacity: 0, y: 12 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.55, delay: 0.18, ease: EASE_FLZR }}
+                      className="absolute bottom-3 left-3 z-10 w-fit max-w-[calc(100%-1.5rem)] rounded-[1.5rem] bg-[rgba(111,111,111,0.4)] px-4 py-3 text-white backdrop-blur-md sm:px-5 sm:py-4"
+                    >
+                      <div className="flex items-end justify-between gap-4">
+                        <div className="min-w-0">
+                          <h3 className="text-lg font-semibold leading-[1.05] tracking-[-0.02em] text-white sm:text-xl">
+                            {item.name}
+                          </h3>
+                          {item.taglabel ? (
+                            <p className="mt-1.5 line-clamp-2 text-xs leading-snug tracking-normal text-white/70">
+                              {item.taglabel}
+                            </p>
+                          ) : groups.length > 0 ? (
+                            <p className="mt-1.5 truncate text-xs tracking-normal text-white/65">
+                              {groups.join(" · ")}
+                            </p>
+                          ) : null}
+                        </div>
+                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white text-neutral-900 transition-transform duration-500 group-hover:rotate-[-35deg] group-hover:scale-105">
+                          <ArrowUpRightIcon />
+                        </span>
+                      </div>
+                    </motion.div>
+                  </button>
+                </motion.li>
+              );
+            })}
+          </motion.ul>
+        </div>
+
+        <div className="mt-6 flex w-full justify-center">
+          <div className="flex h-8 w-fit items-center justify-center space-x-1.5 rounded-4xl bg-gray-900/50 px-4 backdrop-blur-md sm:h-10 sm:space-x-2 sm:px-8">
+            {pageTargets.map((target, index) => (
+              <motion.button
+                key={`${target}-${index}`}
+                type="button"
+                aria-label={`Go to services page ${index + 1}`}
+                aria-current={index === currentPage ? "true" : undefined}
+                className={`h-1.5 cursor-pointer rounded-full transition-all duration-300 hover:bg-violet-400 sm:h-2 ${
+                  index === currentPage
+                    ? "min-w-8 bg-violet-400 sm:min-w-16"
+                    : "min-w-1.5 bg-gray-100 sm:min-w-2"
+                }`}
+                whileHover={{ scale: 1.15 }}
+                whileTap={{ scale: 0.8 }}
+                onClick={() => animateTrackTo(target)}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {typeof document !== "undefined"
+        ? createPortal(
+            <AnimatePresence>
+              {active && activeMedia ? (
+                <motion.div
+            className="fixed inset-0 z-[2147483647] isolate grid place-items-center bg-[#131019]/65 p-3 backdrop-blur-xl sm:p-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: reducedMotion ? 0 : 0.25 }}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={titleId}
+          >
             <motion.div
-              layoutId={`card-${active.name}-${id}`}
-              initial={{
-                opacity: 0,
-              }}
-              animate={{
-                opacity: 1,
-              }}
-              exit={{
-                opacity: 0,
-                transition: {
-                  duration: 0.05,
-                },
-              }}
-              transition={{ type: "spring", visualDuration: 0.3, bounce: 0.2 }}
-              ref={ref}
-              className="w-full z-50 max-w-[900px] min-h-[70vh] relative h-full md:h-fit md:max-h-[90%]  flex flex-col bg-neutral-900 dark:bg-neutral-900 rounded-2xl overflow-hidden"
-            >      <motion.button
-              key={`button-${active.name}-${id}`}
-              layout
-              initial={{
-                opacity: 1,
-              }}
-              animate={{
-                opacity: 1,
-              }}
-              exit={{
-                opacity: 1,
-                transition: {
-                  duration: 0.025,
-                },
-              }}
-              className="flex absolute top-4 right-4 items-center overflow-hidden justify-around  h-6 w-6 z-50"
-              onClick={closeService}
+              ref={modalRef}
+              initial={reducedMotion ? false : { opacity: 0, y: 24, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 12, scale: 0.985 }}
+              transition={{ duration: 0.55, ease: EASE_FLZR }}
+              className="relative grid h-[min(90dvh,54rem)] w-full max-w-6xl overflow-hidden rounded-[2rem] bg-neutral-900 text-white md:grid-cols-[1.25fr_0.75fr]"
             >
-                <CloseIcon />
-              </motion.button>
-              <motion.div
-                className="w-full  relative overflow-hidden h-full"
-                layoutId={`image-${active.name}-${id}`}
-              >
-                {activeBg && isVideoUrl(activeBg) ? (
+              <div className="relative min-h-[42dvh] overflow-hidden md:min-h-0">
+                {activeMedia.background && isVideoUrl(activeMedia.background) ? (
                   <DeferredVideo
-                    src={activeBg}
-                    maxWidth={1000}
-                    className="w-full min-h-[1000px]  object-cover"
+                    src={activeMedia.background}
+                    maxWidth={1200}
+                    className="pointer-events-none h-full w-full object-cover"
                     mediaStyle={
-                      activeObjectPosition
-                        ? { objectPosition: activeObjectPosition }
+                      activeMedia.objectPosition
+                        ? { objectPosition: activeMedia.objectPosition }
                         : undefined
                     }
-                    mountDelay={100}
-                    style={{ opacity: 0.5 }}
+                    style={{ pointerEvents: "none" }}
+                    posterUrl={cloudinaryPosterUrl(activeMedia.background, {
+                      maxWidth: 1200,
+                      frame: "0",
+                    })}
+                    mountDelay={0}
                   />
-                ) : activeBg ? (
+                ) : activeMedia.background ? (
                   <Image
-                    width={1000}
-                    height={400}
-                    src={activeBg}
+                    src={activeMedia.background}
                     alt={active.serviceBackground?.alt || active.name}
-                    className="w-full min-h-[1000px]    opacity-50 object-cover"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 65vw"
+                    draggable={false}
+                    className="pointer-events-none object-cover"
                     style={
-                      activeObjectPosition
-                        ? { objectPosition: activeObjectPosition }
+                      activeMedia.objectPosition
+                        ? { objectPosition: activeMedia.objectPosition }
                         : undefined
                     }
                   />
                 ) : (
-                  <div className="w-full h-full  bg-neutral-800 opacity-50" />
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_15%,rgba(124,92,255,0.7),transparent_35%),linear-gradient(145deg,#2b2335,#131019_65%)]" />
                 )}
-              </motion.div>
-              <div className="flex justify-between absolute items-start m-8 pt-8 z-10 ">
-                <div className="flex justify-between relative top-0 flex-col items-start z-10 left-0">
-                  {activeIcon && (
-                    <motion.img
-                      layoutId={`logo-${active.name}-${id}`}
-                      src={activeIcon}
-                      alt={active.name}
-                      className="w-5 h-5 mb-12  object-contain "
+                <div className="absolute inset-0 bg-gradient-to-t from-neutral-900/55 via-transparent to-neutral-900/10 md:bg-gradient-to-r md:from-transparent md:to-neutral-900/30" />
+              </div>
+
+              <div className="relative flex min-h-0 flex-col justify-between overflow-y-auto p-7 sm:p-10 md:p-12">
+                <button
+                  type="button"
+                  onClick={() => setActive(null)}
+                  className="absolute right-5 top-5 grid h-10 w-10 place-items-center rounded-full border border-white/20 text-white transition-colors hover:bg-white hover:text-neutral-900"
+                  aria-label="Close service details"
+                >
+                  <CloseIcon />
+                </button>
+
+                <div className="pt-12">
+                  {activeMedia.icon ? (
+                    <Image
+                      src={activeMedia.icon}
+                      alt=""
+                      width={48}
+                      height={48}
+                      draggable={false}
+                      className="pointer-events-none mb-8 h-12 w-12 object-contain brightness-0 invert"
                     />
-                  )}
-                  <div className="">
-                    <motion.h3
-                      layoutId={`title-${active.name}-${id}`}
-                      className="text-white text-5xl max-w-2/3 dark:text-neutral-200 mb-4"
-                    >
-                      {active.name}
-                    </motion.h3>
-                    {active.taglabel && (
-                      <motion.p
-                        layoutId={`description-${active.taglabel}-${id}`}
-                        className="text-neutral-100 text-xl dark:text-neutral-400 mb-4"
-                      >
-                        {active.taglabel}
-                      </motion.p>
-                    )}
-                    {active.serviceDescription && (
-                      <motion.p
-                        layoutId={`Servicedescription-${active.serviceDescription}-${id}`}
-                        className="text-neutral-100 text-xl md:max-w-1/2 dark:text-neutral-400 "
-                      >
-                        {active.serviceDescription}
-                      </motion.p>
-                    )}
-                  </div>
-                  {active.servicegrouprel &&
-                    active.servicegrouprel.length > 0 && (
-                      <motion.div
-                        transition={{ duration: 0.3, delay: 0.5 }}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="text-white text-sm md:text-sm lg:text-base mt-8 max-w-1/2 mb-2 md:h-fit pb-8 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
-                      >
-                        <div className="text-sm text-neutral-300 mb-2">
-                          Service Groups:
-                        </div>
-                        {active.servicegrouprel.map((group) => (
-                          <span
-                            key={group._id}
-                            className="px-3 py-1 bg-neutral-700  text-xs"
-                          >
-                            {group.name}
-                          </span>
-                        ))}
-                      </motion.div>
-                    )}
+                  ) : null}
+                  <p className="mb-4 text-xs uppercase tracking-normal text-violet-400">
+                    Service
+                  </p>
+                  <h3
+                    id={titleId}
+                    className="text-4xl font-semibold leading-[0.95] tracking-[-0.04em] sm:text-5xl"
+                  >
+                    {active.name}
+                  </h3>
+                  {active.taglabel ? (
+                    <p className="mt-5 text-lg leading-snug text-white/72">
+                      {active.taglabel}
+                    </p>
+                  ) : null}
+                  {active.serviceDescription ? (
+                    <p className="mt-7 text-sm leading-relaxed text-white/65 sm:text-base">
+                      {active.serviceDescription}
+                    </p>
+                  ) : null}
                 </div>
+
+                {active.servicegrouprel?.length ? (
+                  <div className="mt-10 border-t border-white/15 pt-5">
+                    <p className="text-xxs uppercase tracking-normal text-white/45">
+                      {active.servicegrouprel.map((group) => group.name).join(" / ")}
+                    </p>
+                  </div>
+                ) : null}
               </div>
             </motion.div>
-          </div>
-        ) : null}
-      </AnimatePresence>
-      <ul ref={gridRef} className="w-full">
-        <StaggeredSlideUp
-          key={activeFilter}
-          staggerDelay={0.0225}
-          distance={30}
-          duration={1}
-          threshold={0.2}
-          rootMargin="0px 0px -100px 0px"
-          once={true}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto w-full min-h-full"
-        >
-          {visibleItems.map((item) => {
-            const cacheKey = item._updatedAt;
-            const bg = withCacheKey(
-              item.serviceBackground?.asset?.secure_url ||
-                item.serviceBackground?.asset?.url ||
-                item.iconUrl,
-              cacheKey
-            );
-            const icon = withCacheKey(
-              item.serviceicon?.asset?.secure_url ||
-                item.serviceicon?.asset?.url ||
-                item.iconUrl,
-              cacheKey
-            );
-            const objectPosition = getObjectPosition(item.serviceBackground);
-
-            return (
-              <motion.div
-                layoutId={`card-${item.name}-${id}`}
-                key={`card-${item.name}-${id}`}
-                onClick={() => openService(item)}
-                className="col-span-1 grid grid-cols-1 grid-rows-4 row-span-1  h-[350px] group/card overflow-hidden cursor-pointer"
-              >
-                <motion.div
-                  layoutId={`image-${item.name}-${id}`}
-                  className="col-start-1 col-span-1  row-start-1 row-span-3 bg-black  overflow-hidden "
-                >
-                  {bg && isVideoUrl(bg) ? (
-                    <div className="w-full h-full opacity-50 group-hover/card:opacity-100 transition-opacity">
-                      <DeferredVideo
-                        src={bg}
-                        maxWidth={600}
-                        className="w-full h-full object-cover min-h-[320px]"
-                        mediaStyle={
-                          objectPosition
-                            ? { objectPosition }
-                            : undefined
-                        }
-                        posterUrl={cloudinaryPosterUrl(bg, { maxWidth: 600, frame: "0" })}
-                        mountDelay={200}
-                      />
-                    </div>
-                  ) : bg ? (
-                    <Image
-                      width={1000}
-                      height={600}
-                      src={bg}
-                      alt={item.serviceBackground?.alt || item.name}
-                      className="w-full h-full object-cover min-h-[320px] group-hover/card:opacity-100 opacity-80 transition-all"
-                      style={
-                        objectPosition
-                          ? { objectPosition }
-                          : undefined
-                      }
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-neutral-800 border opacity-80 min-h-[200px] group-hover/card:opacity-100 transition-all" />
-                  )}
                 </motion.div>
-                <div className="w-full flex row-span-1  justify-start opacity-100  mb-16 z-1">
-                  <div className="flex  justify-end items-start gap-4 w-full">
-                    {/* {icon && (
-                      <motion.img
-                        layoutId={`logo-${item.name}-${id}`}
-                        src={icon}
-                        alt={item.name}
-                        className="w-10 h-10 object-contain mb-2"
-                      />
-                    )} */}
-                    <div className="flex flex-col items-end">
-                      <motion.h3
-                        layoutId={`title-${item.name}-${id}`}
-                        className="font-medium text-xl leading-snug tracking-tight text-neutral-700 dark:text-neutral-200 text-right"
-                      >
-                        {item.name}
-                      </motion.h3>
-                      {item.taglabel && (
-                        <motion.p
-                          layoutId={`description-${item.taglabel}-${id}`}
-                          className="text-neutral-500  text-sm dark:text-neutral-400"
-                        >
-                          {item.taglabel}
-                        </motion.p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </StaggeredSlideUp>
-      </ul>
+              ) : null}
+            </AnimatePresence>,
+            document.body,
+          )
+        : null}
     </>
   );
 }
 
-export const CloseIcon = () => {
+function ArrowIcon({ direction }: { direction: "back" | "forward" }) {
   return (
-    <motion.svg
-      whileHover={{ rotate: 90 }}
-      initial={{
-        opacity: 0,
-      }}
-      animate={{
-        opacity: 1,
-      }}
-      exit={{
-        opacity: 0,
-        transition: {
-          duration: 0.05,
-        },
-      }}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
       fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="h-6 w-6 text-white"
+      aria-hidden="true"
+      className={direction === "back" ? "rotate-180" : undefined}
     >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M18 6l-12 12" />
-      <path d="M6 6l12 12" />
-    </motion.svg>
+      <path d="M3.75 9h10.5M10.25 5l4 4-4 4" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
-};
+}
+
+function ArrowUpRightIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+      <path d="M3.25 11.75 11.75 3.25M5 3.25h6.75V10" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 17 17" fill="none" aria-hidden="true">
+      <path d="m4 4 9 9M13 4l-9 9" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" />
+    </svg>
+  );
+}

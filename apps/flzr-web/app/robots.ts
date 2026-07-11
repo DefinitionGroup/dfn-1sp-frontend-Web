@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { getRobotsRoute } from "@1sp/utils/deployment-tier";
 import { CANONICAL_URL } from "@/lib/structured-data";
 
 /**
@@ -8,14 +9,5 @@ import { CANONICAL_URL } from "@/lib/structured-data";
  * @see https://nextjs.org/docs/app/api-reference/file-conventions/metadata/robots
  */
 export default function robots(): MetadataRoute.Robots {
-    return {
-        rules: [
-            {
-                userAgent: "*",
-                allow: "/",
-                disallow: ["/studio", "/studio/", "/api/"],
-            },
-        ],
-        sitemap: `${CANONICAL_URL}/sitemap.xml`,
-    };
+  return getRobotsRoute(`${CANONICAL_URL}/sitemap.xml`);
 }

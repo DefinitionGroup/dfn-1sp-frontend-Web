@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { getDeploymentHeaders } from "@1sp/utils/deployment-tier";
 
 const nextConfig: NextConfig = {
   experimental: {
@@ -31,6 +32,7 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
+  headers: () => getDeploymentHeaders("flzr"),
 
 };
 
