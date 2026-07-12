@@ -1,19 +1,28 @@
 .root {
-  /* Establish a local stacking and paint context without clipping full-bleed,
-     sticky, or portal-based 1SP components. */
+  /* Keep every positioned 1SP child anchored to the reusable group instead of
+     the host page. This boundary is required by components that use absolute
+     layers, local z-indexes, and full-bleed media. */
   isolation: isolate;
   position: relative;
+  z-index: 0;
   display: flow-root;
-  width: 100%;
+  width: calc(100% - (var(--onesp-group-gutter) * 2));
+  max-width: 1400px;
+  margin-inline: auto;
+  border-radius: var(--onesp-group-radius);
+  overflow: clip;
   color-scheme: only light;
+
+  --onesp-group-gutter: clamp(1rem, 3vw, 2rem);
+  --onesp-group-radius: clamp(1.25rem, 2.5vw, 2.5rem);
 
   /* Canonical 1SP surface and palette. Tailwind v4 utilities resolve these
      variables at the element, so host-site FLZR/MSM theme values cannot leak
      into the embedded group. */
-  --background: #ffffff;
-  --foreground: #121212;
-  --color-background: #ffffff;
-  --color-foreground: #121212;
+  --background: #000000;
+  --foreground: #f4f4f4;
+  --color-background: #000000;
+  --color-foreground: #f4f4f4;
   --color-brand-lime: #afff40;
   --color-brand-orange: #ff8800;
   --color-brand-pink: #e5c0c0;
