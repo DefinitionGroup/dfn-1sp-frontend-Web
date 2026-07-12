@@ -18,6 +18,15 @@ import ErrorBoundary from "@msm/components/ErrorBoundary";
 import HeadlineChallenge from "./pagebuilder/cases/pg-HeadlineChallenge";
 import ComponentLoader from "@msm/components/ui/ComponentLoader";
 import DeferredSection from "@msm/components/ui/DeferredSection";
+import OneSpScope from "@/components/onesp-group/OneSpScope";
+
+const CanonicalOneSpPageBuilder = dynamic(
+  () => import("@/components/PageBuilder").then((module) => module.PageBuilder),
+  {
+    loading: () => <ComponentLoader />,
+    ssr: true,
+  },
+);
 
 // Dynamically import heavy components to reduce initial bundle size
 const ShowtimeGallery = dynamic(
@@ -488,6 +497,27 @@ export function PageBuilder({
                 <HeadlineChallenge key={key} {...block} />
               </ErrorBoundary>
             );
+          case "oneSpComponentGroupReference": {
+            const group = block.group;
+            if (!group || !Array.isArray(group.content) || group.content.length === 0) {
+              return null;
+            }
+
+            const dataChannel = block.dataScope === "1spWeb" ? "1spWeb" : channel;
+
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <OneSpScope groupId={group._id}>
+                  <CanonicalOneSpPageBuilder
+                    content={group.content}
+                    language={language}
+                    channel={dataChannel}
+                    groupDepth={1}
+                  />
+                </OneSpScope>
+              </ErrorBoundary>
+            );
+          }
           case "unitLogoGrid":
             return (
               <ErrorBoundary key={`error-${key}`}>

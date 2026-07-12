@@ -21,7 +21,9 @@ import clientReference from './Global/Objects/clientReference'
 import metadata from './Global/Objects/metadata'
 import contactForm from './Global/Objects/contactForm'
 import contactSubmission from './Global/contactSubmission'
+import oneSpComponentGroup from './Global/oneSpComponentGroup'
+import oneSpComponentGroupReference from './Global/Objects/oneSpComponentGroupReference'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [page, menu, caseStudy, unitCase, client, person, contactSubmission, ...OneSPschemaTypes, ...CaseStudySchemaTypes, link, cta, paragraph, size, services, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata, contactForm],
+  types: [page, menu, oneSpComponentGroup, caseStudy, unitCase, client, person, contactSubmission, ...OneSPschemaTypes, ...CaseStudySchemaTypes, link, cta, paragraph, size, services, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata, contactForm, oneSpComponentGroupReference],
 }

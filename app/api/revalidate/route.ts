@@ -170,6 +170,13 @@ async function handleRevalidation(body: SanityWebhookBody) {
     // were tagged with that specific tag, regardless of which page they're on.
 
     switch (_type) {
+        case "oneSpComponentGroup":
+            // A reusable group can be referenced by pages in every frontend.
+            revalidateTag("pages", "max");
+            revalidatedTags.push("pages");
+            pushPath("/", "layout");
+            break;
+
         case "page":
             // Invalidate page-specific cache
             revalidateTag("pages", "max");

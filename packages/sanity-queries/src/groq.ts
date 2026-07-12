@@ -60,6 +60,41 @@ const ADDITIONAL_CONTENT_PROJECTION = `additionalContent[]{
   }
 }`;
 
+/**
+ * Resolve reusable 1SP component groups as part of the page request. Keeping
+ * the group payload in the page query avoids client-side waterfalls and lets
+ * the host app render the canonical 1SP blocks during SSR.
+ *
+ * The group schema intentionally allows only presentation-oriented blocks, so
+ * this nested projection only needs the shared CTA/reference expansion used by
+ * those blocks. If the portable allowlist grows, extend this projection with
+ * the matching block-specific projection at the same time.
+ */
+const ONE_SP_COMPONENT_GROUP_PROJECTION = `_type == 'oneSpComponentGroupReference' => {
+  ...,
+  group->{
+    _id,
+    _type,
+    _rev,
+    title,
+    language,
+    content[]{
+      ...,
+      cta{
+        ...,
+        link{
+          ...,
+          page->{
+            _id,
+            slug
+          }
+        }
+      },
+      ${ADDITIONAL_CONTENT_PROJECTION}
+    }
+  }
+}`;
+
 // =============================================================================
 // Unified content projection
 // =============================================================================
@@ -73,6 +108,7 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
   ...,
   content[]{
     ...,
+    ${ONE_SP_COMPONENT_GROUP_PROJECTION},
     cta{
       ...,
       link{
@@ -425,6 +461,7 @@ export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == t
   ...,
   content[]{
     ...,
+    ${ONE_SP_COMPONENT_GROUP_PROJECTION},
     cta{
       ...,
       link{

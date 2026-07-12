@@ -326,6 +326,28 @@ export interface ContentSection {
     navPointName?: string;
 }
 
+export interface OneSpComponentGroup {
+    _id?: SanityID;
+    _type?: "oneSpComponentGroup";
+    _rev?: string;
+    title?: string;
+    language?: string;
+    content?: PageBuilderBlock[];
+}
+
+export interface OneSpComponentGroupReference {
+    _type: "oneSpComponentGroupReference";
+    _key?: string;
+    group?: OneSpComponentGroup | null;
+    dataScope?: "hostChannel" | "1spWeb";
+}
+
+export interface PageBuilderBlock {
+    _type?: string;
+    _key?: string;
+    [key: string]: any;
+}
+
 /* Documents */
 export interface Page {
     _id?: SanityID;
@@ -351,7 +373,7 @@ export interface Page {
     // are hand-edited here pending TypeGen config update to write to
     // packages/sanity-types/src/index.ts — the next regeneration will
     // produce more precise types for `content`.
-    content?: Array<any | ShowtimeGallery | HeroShowtime | SublineComponent | OneSPHeader>;
+    content?: PageBuilderBlock[];
 }
 
 export interface Menu {
@@ -401,7 +423,7 @@ export interface Unit {
 }
 
 /* Root union of schema types (handy) */
-export type SanityDocument = Page | Menu | CaseStudy | Unit;
+export type SanityDocument = Page | Menu | CaseStudy | Unit | OneSpComponentGroup;
 
 export type OneSPTypes =
     | BadgeModule

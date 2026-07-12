@@ -153,6 +153,10 @@ export default defineType({
                 'Legacy per-channel fields (Content 1SP, Content MSM, etc.) are ' +
                 'kept temporarily for backward compatibility and will be removed.',
             of: [
+                {
+                    type: 'oneSpComponentGroupReference',
+                    title: '1SP Component Group',
+                },
                 // 1SP / FLZR shared block set (29 types)
                 { type: 'headlineChallenge', title: 'Headline Component' },
                 { type: 'heroShowTime' },

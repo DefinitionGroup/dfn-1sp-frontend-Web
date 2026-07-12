@@ -127,7 +127,7 @@ export default defineConfig({
         return [...prev, syncServiceGroupRelationships, revalidateAction]
       }
 
-      if (schemaType === 'page' || schemaType === 'menu') {
+      if (schemaType === 'page' || schemaType === 'menu' || schemaType === 'oneSpComponentGroup') {
         return [...prev, revalidateAction]
       }
 
@@ -149,7 +149,8 @@ export default defineConfig({
         "client",
         "person",
         "services",
-        "serviceGroup"
+        "serviceGroup",
+        "oneSpComponentGroup"
       ],
       weakReferences: true,
     }),

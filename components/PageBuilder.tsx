@@ -18,6 +18,7 @@ import ErrorBoundary from "./ErrorBoundary";
 import HeadlineChallenge from "./pagebuilder/cases/pg-HeadlineChallenge";
 import ComponentLoader from "./ui/ComponentLoader";
 import DeferredSection from "./ui/DeferredSection";
+import OneSpScope from "./onesp-group/OneSpScope";
 
 // Dynamically import heavy components to reduce initial bundle size
 const ShowtimeGallery = dynamic(
@@ -249,6 +250,8 @@ type PageBuilderProps = {
   channel?: string;
   deferAfter?: number;
   renderMode?: "default" | "deferred";
+  /** Runtime guard against malformed or legacy nested group references. */
+  groupDepth?: number;
 };
 
 export function PageBuilder({
@@ -257,6 +260,7 @@ export function PageBuilder({
   channel = "1spWeb",
   deferAfter = Number.POSITIVE_INFINITY,
   renderMode = "default",
+  groupDepth = 0,
 }: PageBuilderProps) {
   if (!Array.isArray(content) || content.length === 0) return null;
 
@@ -469,6 +473,33 @@ export function PageBuilder({
                 <HeadlineChallenge key={key} {...block} />
               </ErrorBoundary>
             );
+          case "oneSpComponentGroupReference": {
+            const group = block.group;
+            if (
+              groupDepth > 0 ||
+              !group ||
+              !Array.isArray(group.content) ||
+              group.content.length === 0
+            ) {
+              return null;
+            }
+
+            const dataChannel = block.dataScope === "1spWeb" ? "1spWeb" : channel;
+
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <OneSpScope groupId={group._id}>
+                  <PageBuilder
+                    content={group.content}
+                    language={language}
+                    channel={dataChannel}
+                    renderMode={renderMode}
+                    groupDepth={groupDepth + 1}
+                  />
+                </OneSpScope>
+              </ErrorBoundary>
+            );
+          }
           case "unitLogoGrid":
             return (
               <ErrorBoundary key={`error-${key}`}>
@@ -525,6 +556,7 @@ export function PageBuilder({
             language={language}
             channel={channel}
             renderMode="deferred"
+            groupDepth={groupDepth}
           />
         </DeferredSection>
       )}
