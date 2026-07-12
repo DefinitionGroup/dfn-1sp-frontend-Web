@@ -1,10 +1,18 @@
 "use client";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion } from "motion/react";
+import dynamic from "next/dynamic";
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+} from "motion/react";
 import { cn } from "@1sp/utils/cn";
 import { ArrowRightIcon } from "@phosphor-icons/react";
 import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
+
+const Strands = dynamic(() => import("./Strands"), { ssr: false });
 
 /**
  * FLZR pill button — violet aurora WebGL shader that follows the pointer,
@@ -18,15 +26,18 @@ import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-tra
 type LegacyVariant =
   | "default"
   | "black"
+  | "glass"
+  | "lime"
   | "violet"
   | "violetsmall"
   | "violetsmallrounded"
   | "limesmall"
   | "ghost"
   | "outline"
+  | "strands"
   | "compact";
 
-type Variant = "violet" | "dark" | "glass" | "ghost";
+type Variant = "violet" | "dark" | "glass" | "ghost" | "strands";
 type Size = "sm" | "md" | "lg";
 
 interface Button2Props {
@@ -43,6 +54,7 @@ interface Button2Props {
 function normalize(variant: LegacyVariant): { variant: Variant; size: Size } {
   switch (variant) {
     case "violet":
+    case "lime":
       return { variant: "violet", size: "md" };
     case "violetsmall":
     case "violetsmallrounded":
@@ -50,6 +62,10 @@ function normalize(variant: LegacyVariant): { variant: Variant; size: Size } {
       return { variant: "violet", size: "sm" };
     case "black":
       return { variant: "dark", size: "md" };
+    case "glass":
+      return { variant: "glass", size: "md" };
+    case "strands":
+      return { variant: "strands", size: "md" };
     case "ghost":
     case "outline":
       return { variant: "ghost", size: "md" };
@@ -340,7 +356,7 @@ const variantStyles: Record<
     restBg: "bg-neutral-900",
   },
   glass: {
-    pill: "backdrop-blur-md",
+    pill: "backdrop-blur-md transition-colors duration-300",
     label: "text-white",
     restBg: "bg-white/10",
   },
@@ -348,6 +364,11 @@ const variantStyles: Record<
     pill: "",
     label: "text-neutral-900",
     restBg: "bg-transparent",
+  },
+  strands: {
+    pill: "isolate",
+    label: "text-white",
+    restBg: "bg-neutral-900",
   },
 };
 
@@ -375,6 +396,19 @@ function Button2({
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const [hovered, setHovered] = useState(false);
   const [pressed, setPressed] = useState(false);
+  const [hasActivatedStrands, setHasActivatedStrands] = useState(false);
+  const strandsPointerX = useMotionValue(0);
+  const strandsPointerY = useMotionValue(0);
+  const strandsX = useSpring(strandsPointerX, {
+    stiffness: 115,
+    damping: 18,
+    mass: 0.85,
+  });
+  const strandsY = useSpring(strandsPointerY, {
+    stiffness: 115,
+    damping: 18,
+    mass: 0.85,
+  });
 
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     const el = pillRef.current;
@@ -382,17 +416,26 @@ function Button2({
     const r = el.getBoundingClientRect();
     mouseRef.current.x = (e.clientX - r.left) / r.width;
     mouseRef.current.y = (e.clientY - r.top) / r.height;
-  }, []);
+    strandsPointerX.set((mouseRef.current.x - 0.5) * 18);
+    strandsPointerY.set((mouseRef.current.y - 0.5) * 10);
+  }, [strandsPointerX, strandsPointerY]);
 
   const shaderActive = hovered && !reducedMotion;
 
   const content = (
     <motion.div
       ref={pillRef}
-      onHoverStart={() => setHovered(true)}
+      onHoverStart={() => {
+        setHovered(true);
+        if (v === "strands" || v === "violet" || v === "glass") {
+          setHasActivatedStrands(true);
+        }
+      }}
       onHoverEnd={() => {
         setHovered(false);
         setPressed(false);
+        strandsPointerX.set(0);
+        strandsPointerY.set(0);
       }}
       onPointerMove={onPointerMove}
       onPointerDown={() => setPressed(true)}
@@ -404,12 +447,16 @@ function Button2({
         "group/flzrbtn relative inline-flex w-full items-center justify-between overflow-hidden rounded-full cursor-pointer select-none",
         sizeStyles[s].pill,
         variantStyles[v].pill,
-        variantStyles[v].restBg
+        variantStyles[v].restBg,
+        hovered && v === "glass" && "bg-violet-500",
       )}
       style={{ willChange: reducedMotion ? undefined : "transform" }}
     >
       {/* pointer-reactive violet aurora */}
-      {!reducedMotion && (
+      {!reducedMotion &&
+        v !== "strands" &&
+        v !== "violet" &&
+        v !== "glass" && (
         <AuroraCanvas
           dark={v === "dark"}
           active={shaderActive}
@@ -418,11 +465,70 @@ function Button2({
         />
       )}
 
+      {((v === "strands" || v === "violet" || v === "glass") &&
+        hasActivatedStrands) && (
+        <motion.div
+          className={cn(
+            "pointer-events-none absolute -inset-x-3 -inset-y-2 z-0 overflow-hidden rounded-[inherit]",
+          )}
+          initial={false}
+          animate={
+            reducedMotion
+              ? { opacity: hovered ? 1 : 0 }
+              : hovered
+                ? {
+                    opacity: 1,
+                    clipPath: "inset(0% 0% 0% 0% round 999px)",
+                  }
+                : {
+                    opacity: 0,
+                    clipPath: "inset(0% 100% 0% 0% round 999px)",
+                  }
+          }
+          transition={{
+            opacity: { duration: hovered ? 0.32 : 0.22, ease: "easeOut" },
+            clipPath: {
+              duration: hovered ? 0.52 : 0.24,
+              ease: [0.22, 1, 0.36, 1],
+            },
+          }}
+          style={
+            reducedMotion
+              ? undefined
+              : { x: strandsX, y: strandsY, willChange: "transform, opacity, clip-path" }
+          }
+        >
+          {reducedMotion ? (
+            <div className="h-full w-full bg-[linear-gradient(110deg,#131019,#7c5cff_55%,#131019)]" />
+          ) : (
+            <Strands
+              active={hovered}
+              colors={["#7C5CFF", "#D6CCFF", "#FFFFFF"]}
+              count={2}
+              speed={0.95}
+              amplitude={0.8}
+              waviness={1.55}
+              thickness={0.72}
+              glow={3.4}
+              taper={2.4}
+              spread={1.05}
+              intensity={0.95}
+              saturation={1.35}
+              opacity={1}
+              scale={5}
+              glass={false}
+            />
+          )}
+        </motion.div>
+      )}
+
       <span
         className={cn(
           "font-aspekta font-semibold relative z-10 transition-colors duration-200 whitespace-nowrap",
           variantStyles[v].label,
-          hovered && v === "ghost" && "text-white"
+          hovered && v === "ghost" && "text-white",
+          hovered && (v === "strands" || v === "violet" || v === "glass") &&
+            "text-violet-500",
         )}
       >
         {text}
@@ -434,7 +540,9 @@ function Button2({
           "relative z-10 transition-[rotate,translate] duration-300",
           hovered ? "rotate-0 translate-x-0.5" : "-rotate-45",
           variantStyles[v].label,
-          hovered && v === "ghost" && "text-white"
+          hovered && v === "ghost" && "text-white",
+          hovered && (v === "strands" || v === "violet" || v === "glass") &&
+            "text-violet-500",
         )}
         style={{ transitionTimingFunction: "var(--ease-flzr-overshoot)" }}
       />

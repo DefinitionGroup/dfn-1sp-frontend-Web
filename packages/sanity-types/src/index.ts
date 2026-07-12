@@ -225,6 +225,36 @@ export interface GalleryPeopleStep extends GalleryBase {
     showBadgeMiniCta?: boolean;
 }
 
+export interface IntroBlockTypoSophisticated {
+    _type?: "introBlockTypoSophisticated";
+    header?: {
+        superText?: string;
+        mainHeadline?: string;
+        creativityTitle?: string;
+        uniquePeopleText?: string;
+    };
+    description?: string;
+    navPointName?: string;
+    hideFromNav?: boolean;
+}
+
+export interface CardInsideComponent {
+    _key?: string;
+    _type?: "cardInsideComponent";
+    media?: CloudinaryAsset;
+    altText?: string;
+    headline?: string;
+    text?: string;
+}
+
+export interface CardContainerComponent {
+    _type?: "cardContainerComponent";
+    columns?: 2 | 3 | 5 | 6;
+    cards?: CardInsideComponent[];
+    navPointName?: string;
+    hideFromNav?: boolean;
+}
+
 export interface GalleryScrollHighlightStep extends GalleryBase {
     type: "highlight";
     highlightText?: string;

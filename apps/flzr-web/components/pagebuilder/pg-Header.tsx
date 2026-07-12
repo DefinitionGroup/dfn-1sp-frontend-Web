@@ -99,7 +99,11 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     ...(navPointName ? { "data-navpoint-name": navPointName } : {}),
     ...(hideFromNav ? { "data-nav-hidden": "true" } : {}),
   };
-  const paragraphSizeClass = isIphoneLandscape ? "text-xs" : "text-base";
+  const paragraphSizeClass = isIphoneLandscape
+    ? "text-xs"
+    : useHeadlineReveal
+      ? "text-2xl"
+      : "text-base";
 
   const portableTextComponents = {
     block: {
@@ -147,8 +151,8 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     : portableTextComponents;
 
   const eyebrowContent = hasVisibleText(eyebrow) ? (
-    <h3 className="eyebrow-mono flex items-center justify-center gap-2 text-neutral-50 pb-2">
-      <span className="status-dot self-start mt-0.5" aria-hidden="true" />
+    <h3 className="text-xs font-book flex items-center justify-center gap-2 text-neutral-50 pb-2">
+      <span className="status-dot self-start mt-1.5" aria-hidden="true" />
       {eyebrow}
     </h3>
   ) : null;

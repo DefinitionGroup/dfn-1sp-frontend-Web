@@ -2,7 +2,7 @@
 import React from "react";
 import type { GalleryPeopleStep, CloudinaryAsset } from "@1sp/sanity-types";
 import PeopleShowcaseHero from "../Fragments/pg-PeopleShowcaseHero";
-import { hasVisibleText } from "@1sp/utils/text-content";
+import PeopleIntroLayout from "../Fragments/PeopleIntroLayout";
 
 type Member = {
   _id?: string;
@@ -78,52 +78,10 @@ export default function PeopleStep({
 
             <div className="col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-12">
 
-              {/* Header Section */}
-              <header className="border-t border-gray-200 pt-4 sm:pt-6 mb-8 md:mb-12">
-                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-10 iphone-landscape:grid-cols-4 gap-4 sm:gap-6">
-                  {/* Left: Titles */}
-                  <div className="col-span-4 sm:col-span-3 md:col-span-4 iphone-landscape:col-span-4">
-                    <div className="flex flex-col gap-2 sm:gap-4">
-                      {hasVisibleText(header.superText) && (
-                        <h2 className="text-xs sm:text-sm text-neutral-700 font-semibold tracking-tight">
-                          {header.superText}
-                        </h2>
-                      )}
-                      {hasVisibleText(header.mainHeadline) && (
-                        <h3 className="text-4xl sm:text-4xl md:text-4xl lg:text-5xl tracking-tighter leading-[1.1]">
-                          {header.mainHeadline}
-                        </h3>
-                      )}
-
-                      {(header.creativityTitle || header.uniquePeopleText) && (
-                        <div className="flex flex-col mt-2">
-                          {header.creativityTitle && (
-                            <span className="text-lg sm:text-xl md:text-2xl text-neutral-900">
-                              {header.creativityTitle}
-                            </span>
-                          )}
-                          {header.uniquePeopleText && (
-                            <span className="text-lg sm:text-xl md:text-2xl text-neutral-400">
-                              {header.uniquePeopleText}
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Right: Description */}
-                  {step.description && step.description.trim().length > 0 && (
-                    <div className="col-span-4 sm:col-span-3 md:col-span-5 md:col-start-6 iphone-landscape:col-span-4 iphone-landscape:col-start-1 mt-4 sm:mt-0 iphone-landscape:mt-4">
-                      <div className="border-t border-gray-200 pt-4 sm:pt-6 md:border-t-0 md:pt-0">
-                        <p className="text-sm sm:text-base text-neutral-500 leading-relaxed">
-                          {step.description}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </header>
+              <PeopleIntroLayout
+                header={header}
+                description={step.description}
+              />
 
               {/* People Grid */}
               <div className="mt-8 sm:mt-10 md:mt-12">

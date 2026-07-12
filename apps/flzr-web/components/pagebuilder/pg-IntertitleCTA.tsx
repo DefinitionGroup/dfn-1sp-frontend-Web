@@ -65,8 +65,8 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
     ...staggeredProps,
   };
 
-  const titleClass = `text-title ${isLeftAligned ? "text-left" : "text-center"}`;
-  const subtitleClass = `text-title text-neutral-400 ${isLeftAligned ? "text-left" : "text-center"}`;
+  const titleClass = `text-3xl text-balance font-medium ${isLeftAligned ? "text-left" : "text-center"}`;
+  const subtitleClass = `text-xl mt-8  text-balance text-neutral-800 ${isLeftAligned ? "text-left" : "text-center"}`;
   const buttonContainerClass = `w-fit min-w-40 ${isLeftAligned ? "self-start" : "mx-auto"} mt-8 block`;
 
   // Resolve CTA link and props
@@ -101,7 +101,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
     <div id={sectionId} {...navPointDataAttr} className={`${containerClassName} `}>
       <div className="grid z-1 mx-auto container relative font-aspekta">
         {/* Background grid (optional visual helper) */}
-        <div className={`z-1   py-12 col-span-8   col-start-3  container mx-auto row-start-1 grid-cols-12 ${paddingTopClass}`}>
+        <div className={`z-1   py-12 col-span-8   col-start-3 container mx-auto row-start-1 grid-cols-12 ${paddingTopClass}`}>
           <StaggeredSlideUp {...defaultStaggeredProps}>
             {hasVisibleText(title) ? <h3 className={titleClass}>{title}</h3> : null}
             <p className={subtitleClass}>{subtitle}</p>

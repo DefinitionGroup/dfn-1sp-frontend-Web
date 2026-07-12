@@ -11,12 +11,15 @@ import casesGalleryFilteredWithPagination from "./1SP/Components/casesGalleryFil
 import servicesGalleryFiltered from "./1SP/Components/servicesGalleryFiltered";
 import servicesHeroWithBadge from "./1SP/Components/servicesHeroWithBadge";
 import intertitleCTA from "./1SP/Components/intertitleCTA";
+import introBlockTypoSophisticated from "./1SP/Components/introBlockTypoSophisticated";
+import cardContainerComponent from "./1SP/Components/cardContainerComponent";
 
 import badgeModule from "./1SP/Items/badgeModule";
 import carouselItem from "./1SP/Items/carouselItem";
 import slideUpText from "./1SP/Items/slideUpText";
 import cardItem from "./1SP/Items/cardItem";
 import member from "./1SP/Items/member";
+import cardInsideComponent from "./1SP/Items/cardInsideComponent";
 
 import carousel from "./1SP/Components/carousel";
 import smartCarousel from "./1SP/Components/smartCarousel";
@@ -65,6 +68,8 @@ const oneSPComponents = [
     servicesGalleryFiltered,
     servicesHeroWithBadge,
     intertitleCTA,
+    introBlockTypoSophisticated,
+    cardContainerComponent,
     // Individual gallery steps now available as standalone components
     galleryHeroStep,
     galleryCardsStep,
@@ -92,6 +97,7 @@ const oneSPItems = [
     slideUpText,
     cardItem,
     member,
+    cardInsideComponent,
     grid
 ];
 const oneSPObjects = [

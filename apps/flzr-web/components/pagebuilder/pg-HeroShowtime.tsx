@@ -69,11 +69,10 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
         videoSrc={videoUrl}
       />
 
-      {/* Single stacked column — eyebrow, headline, CTA, paragraphs —
-          constrained to the same max-w-7xl frame as the media/hero.
+      {/* Single stacked column — eyebrow, headline, CTA, paragraphs.
           Content sits on a frosted glass panel matching the navbar
           (backdrop-blur + rgba(111,111,111,0.4)). */}
-      <div className="z-1 col-span-12 col-start-1 row-start-1 flex w-full max-w-7xl mx-auto flex-col justify-end items-start px-8 md:px-16 py-section">
+      <div className="z-1 col-span-12 col-start-1 row-start-1 flex w-full container mx-auto flex-col justify-end items-start py-section">
         <StaggeredSlideUp
           className="flex w-fit max-w-full flex-col items-start rounded-[2.5rem] bg-[rgba(111,111,111,0.4)] backdrop-blur-md px-6 py-8 md:px-12 md:py-12"
           delay={0.5}

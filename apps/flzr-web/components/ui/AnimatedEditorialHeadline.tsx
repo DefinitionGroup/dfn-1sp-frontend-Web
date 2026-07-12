@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
+import GradientText from "./GradientText";
 
 const EASE_FLZR = [0.62, 0.05, 0.01, 0.99] as const;
 
@@ -14,41 +15,32 @@ export default function AnimatedEditorialHeadline({
   delay = 0.35,
 }: AnimatedEditorialHeadlineProps) {
   const prefersReducedMotion = useReducedMotion();
-  const lines = text
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean);
+  const headline = text.trim();
 
-  if (lines.length === 0) return null;
+  if (!headline) return null;
 
   return (
-    <h1
-      aria-label={lines.join(" ")}
-      className="mx-auto max-w-[15ch] text-balance font-aspekta text-[clamp(2.5rem,2rem+4vw,6rem)] font-bold leading-[0.92] tracking-[-0.04em] text-[var(--color-flzr-violet)]"
+    <motion.h1
+      className="mx-auto max-w-[20ch] text-balance whitespace-pre-line font-aspekta text-[clamp(1.9rem,1.4rem+2.6vw,4.25rem)] font-medium leading-[0.98] tracking-[-0.025em]"
+      initial={prefersReducedMotion ? false : { opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, amount: 0.45 }}
+      transition={{
+        duration: prefersReducedMotion ? 0 : 0.7,
+        delay: prefersReducedMotion ? 0 : delay,
+        ease: EASE_FLZR,
+      }}
     >
-      <span aria-hidden="true">
-        {lines.map((line, index) => (
-          <span
-            key={`${line}-${index}`}
-            className="block overflow-hidden pb-[0.08em]"
-          >
-            <motion.span
-              className="block"
-              initial={
-                prefersReducedMotion ? false : { transform: "translateY(105%)" }
-              }
-              animate={{ transform: "translateY(0%)" }}
-              transition={{
-                duration: prefersReducedMotion ? 0 : 0.7,
-                delay: prefersReducedMotion ? 0 : delay + index * 0.09,
-                ease: EASE_FLZR,
-              }}
-            >
-              {line}
-            </motion.span>
-          </span>
-        ))}
-      </span>
-    </h1>
+      <GradientText
+        colors={["#7c5cff", "#d6ccff", "#ffffff", "#9d85ff", "#7c5cff"]}
+        animationSpeed={4}
+        direction="horizontal"
+        pauseOnHover={false}
+        yoyo={true}
+        showBorder={false}
+      >
+        {headline}
+      </GradientText>
+    </motion.h1>
   );
 }

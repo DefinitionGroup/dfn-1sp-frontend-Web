@@ -107,7 +107,7 @@ function ClientLogoCarousel({ data }: { data: ClientLogoCarouselType }) {
       className="w-full py-16 md:py-24"
       data-component="client-logo-carousel"
     >
-      <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
+      <div className="container mx-auto w-full">
         {(hasVisibleText(eyebrow) || hasVisibleText(headline)) && (
           <div className="mb-8 flex flex-col items-center gap-3 text-center md:mb-12">
             {hasVisibleText(eyebrow) && <Eyebrow>{eyebrow}</Eyebrow>}

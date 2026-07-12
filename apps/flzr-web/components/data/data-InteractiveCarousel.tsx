@@ -145,7 +145,7 @@ export default function SmartCarousel({
   if (!carouselItems.length) {
     return (
       <section className="px-2 sm:px-4  md:px-0">
-        <div className="container mx-auto border border-2  border-red-500  max-w-7xl">
+        <div className="container mx-auto w-full">
           <div className="relative h-[60vh] sm:h-[70vh] iphone-landscape:!h-dvh md:h-[800px] flex items-center justify-center">
             <div className="text-gray-400 text-sm sm:text-base text-center px-4">
               No case studies found for Smart Carousel
@@ -203,7 +203,7 @@ export default function SmartCarousel({
     <section className="px-2 sm:px-4 md:px-0">
       <div
         ref={containerRef}
-        className=" relative top-0 rounded-4xl overflow-hidden mx-auto w-full max-w-7xl "
+        className="container relative top-0 rounded-4xl overflow-hidden mx-auto w-full"
       >
         <div className="relative h-[60vh] sm:h-[70vh] iphone-landscape:!h-dvh md:h-[800px] flex items-start">
           {/* Main Carousel */}

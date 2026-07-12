@@ -2,7 +2,7 @@ import { defineType, defineField } from 'sanity'
 
 /**
  * CTA object used by Button2
- * - Adds `variant` aligned with Button2 variants: "default" | "black" | "lime" | "limesmall"
+ * - Adds `variant` aligned with Button2 variants.
  * - Keeps your existing `link` object for internal/external routing
  */
 export default defineType({
@@ -27,13 +27,14 @@ export default defineType({
       title: 'Variant',
       type: 'string',
       description: 'Maps directly to Button2 variants',
-      initialValue: 'default',
+      initialValue: 'glass',
       options: {
         list: [
-          { title: 'Default', value: 'default' },
+          { title: 'Glass', value: 'glass' },
+          { title: 'Violet', value: 'violet' },
+          { title: 'Violet (Small)', value: 'violetsmall' },
           { title: 'Black', value: 'black' },
-          { title: 'Lime', value: 'lime' },
-          { title: 'Lime (Small)', value: 'limesmall' },
+          { title: 'Animated Strands', value: 'strands' },
         ],
         layout: 'radio',
       },

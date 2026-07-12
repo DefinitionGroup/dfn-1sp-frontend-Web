@@ -11,6 +11,8 @@ import type {
   GalleryRevealStep as GalleryRevealStepType,
   GalleryOverview as GalleryOverviewType,
   Carousel as CarouselType,
+  IntroBlockTypoSophisticated as IntroBlockTypoSophisticatedType,
+  CardContainerComponent as CardContainerComponentType,
 } from "@1sp/sanity-types";
 import type { Page } from "@1sp/sanity-types";
 import { HeroShowtime as HeroShowtimeType } from "@1sp/sanity-types";
@@ -72,6 +74,22 @@ const TabbedContentSection = dynamic(
     loading: () => <ComponentLoader />,
     ssr: true,
   }
+);
+
+const IntroBlockTypoSophisticated = dynamic(
+  () => import("./pagebuilder/pg-IntroBlockTypoSophisticated"),
+  {
+    loading: () => <ComponentLoader />,
+    ssr: true,
+  },
+);
+
+const CardContainerComponent = dynamic(
+  () => import("./pagebuilder/pg-CardContainerComponent"),
+  {
+    loading: () => <ComponentLoader />,
+    ssr: true,
+  },
 );
 
 // Gallery step components - now available as standalone components
@@ -319,6 +337,24 @@ export function PageBuilder({
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <TabbedContentSection key={key} data={block} />
+              </ErrorBoundary>
+            );
+          case "introBlockTypoSophisticated":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <IntroBlockTypoSophisticated
+                  key={key}
+                  data={block as IntroBlockTypoSophisticatedType}
+                />
+              </ErrorBoundary>
+            );
+          case "cardContainerComponent":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <CardContainerComponent
+                  key={key}
+                  data={block as CardContainerComponentType}
+                />
               </ErrorBoundary>
             );
 

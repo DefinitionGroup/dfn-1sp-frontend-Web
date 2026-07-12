@@ -167,6 +167,8 @@ export default defineType({
                 { type: 'servicesGalleryFiltered' },
                 { type: 'servicesHeroWithBadge' },
                 { type: 'intertitleCTA' },
+                { type: 'introBlockTypoSophisticated' },
+                { type: 'cardContainerComponent' },
                 { type: 'galleryHeroStep' },
                 { type: 'galleryCardsStep' },
                 { type: 'galleryListStep' },

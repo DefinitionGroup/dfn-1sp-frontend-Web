@@ -34,13 +34,14 @@ export default defineType({
             title: 'Variant',
             type: 'string',
             description: 'Maps directly to Button2 variants',
-            initialValue: 'default',
+            initialValue: 'glass',
             options: {
                 list: [
-                    { title: 'Default', value: 'default' },
+                    { title: 'Glass', value: 'glass' },
+                    { title: 'Violet', value: 'violet' },
+                    { title: 'Violet (Small)', value: 'violetsmall' },
                     { title: 'Black', value: 'black' },
-                    { title: 'Lime', value: 'lime' },
-                    { title: 'Lime (Small)', value: 'limesmall' },
+                    { title: 'Animated Strands', value: 'strands' },
                 ],
                 layout: 'radio',
             },
