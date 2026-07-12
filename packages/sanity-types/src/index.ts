@@ -412,6 +412,8 @@ export interface OneSPHeader {
     // content
     eyebrow?: string;
     seoTitle?: string;
+    headlineMode?: "typewriter" | "headlineReveal";
+    headline?: string;
     rotatingText?: string[];
     paragraphs?: any[];
     mobileParagraphs?: any[];

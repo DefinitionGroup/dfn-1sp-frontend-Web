@@ -2,6 +2,13 @@ import React from "react";
 import { defineType, defineField, defineArrayMember } from "sanity";
 import { TextT } from "@phosphor-icons/react";
 
+type HeaderParent = {
+  headlineMode?: "typewriter" | "headlineReveal";
+};
+
+const isFlzrPage = (document?: unknown) =>
+  (document as { channel?: string } | undefined)?.channel === "flizrWeb";
+
 export default defineType({
   name: "oneSPHeader",
   title: "Header",
@@ -66,12 +73,66 @@ export default defineType({
       group: "content",
     }),
     defineField({
+      name: "headlineMode",
+      title: "Headline Style",
+      type: "string",
+      description:
+        "Choose a rotating typewriter for short words or an animated editorial headline for longer copy.",
+      initialValue: "typewriter",
+      options: {
+        list: [
+          { title: "Rotating Typewriter", value: "typewriter" },
+          { title: "Animated Editorial Headline", value: "headlineReveal" },
+        ],
+        layout: "radio",
+      },
+      hidden: ({ document }) => !isFlzrPage(document),
+      group: "content",
+    }),
+    defineField({
+      name: "headline",
+      title: "Editorial Headline",
+      type: "text",
+      rows: 3,
+      description:
+        "One visible H1. Line breaks are preserved and revealed as separate lines. Maximum 140 characters.",
+      hidden: ({ document, parent }) =>
+        !isFlzrPage(document) ||
+        (parent as HeaderParent | undefined)?.headlineMode !== "headlineReveal",
+      validation: (Rule) =>
+        Rule.max(140).custom((value, context) => {
+          const parent = context.parent as HeaderParent | undefined;
+          if (
+            isFlzrPage(context.document) &&
+            parent?.headlineMode === "headlineReveal" &&
+            !value?.trim()
+          ) {
+            return "An editorial headline is required in headline reveal mode.";
+          }
+          return true;
+        }),
+      group: "content",
+    }),
+    defineField({
       name: "rotatingText",
       title: "Typewriter Words",
       type: "array",
       of: [defineArrayMember({ type: "string" })],
       group: "content",
-      validation: (r) => r.min(1),
+      hidden: ({ document, parent }) =>
+        isFlzrPage(document) &&
+        (parent as HeaderParent | undefined)?.headlineMode === "headlineReveal",
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          const parent = context.parent as HeaderParent | undefined;
+          const mode = parent?.headlineMode ?? "typewriter";
+          if (!isFlzrPage(context.document) || mode !== "typewriter") return true;
+
+          const hasText = Array.isArray(value)
+            ? value.some((item) => typeof item === "string" && item.trim())
+            : false;
+          return hasText || "Add at least one typewriter word.";
+        }),
     }),
     defineField({
       name: "paragraphs",
@@ -155,13 +216,17 @@ export default defineType({
     select: {
       eyebrow: "eyebrow",
       words: "rotatingText",
-    
+      headlineMode: "headlineMode",
+      headline: "headline",
     },
-    prepare({ eyebrow, words }) {
+    prepare({ eyebrow, words, headlineMode, headline }) {
       const count = Array.isArray(words) ? words.length : 0;
+      const isHeadline = headlineMode === "headlineReveal";
       return {
-        title: `Header : ${eyebrow  || "Header – Typewriter"}`,
-        subtitle: `${count} word${count === 1 ? "" : "s"} • Parallax media`,
+        title: `Header : ${eyebrow || "Header"}`,
+        subtitle: isHeadline
+          ? `Editorial headline • ${headline?.slice(0, 60) || "Missing headline"}`
+          : `${count} word${count === 1 ? "" : "s"} • Typewriter • Parallax media`,
       };
     },
   },

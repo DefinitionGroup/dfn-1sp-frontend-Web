@@ -1,9 +1,17 @@
 import type { NextConfig } from "next";
+import path from "node:path";
 import { getDeploymentHeaders } from "@1sp/utils/deployment-tier";
 
 const nextConfig: NextConfig = {
   experimental: {
     externalDir: true,
+  },
+  // Pin Turbopack to this pnpm workspace so it can resolve the FLZR app and
+  // linked workspace packages. Without this, an unrelated
+  // /Users/martin/package-lock.json makes Next infer /Users/martin as the
+  // workspace root and PostCSS tries to resolve Tailwind from /Users/martin/DEV.
+  turbopack: {
+    root: path.resolve(process.cwd(), "../.."),
   },
   transpilePackages: [
     "@1sp/site-config",

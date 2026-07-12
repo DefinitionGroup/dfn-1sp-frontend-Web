@@ -2,11 +2,11 @@
 
 import { delay, wrap } from "motion";
 import { Typewriter } from "motion-plus/react";
+import { useReducedMotion } from "motion/react";
 import React, { useState } from "react";
 
 export default function TypewriterRotator({
   text = [
-    "",
     "One.",
     "Shared.",
     "Passion.",
@@ -22,30 +22,55 @@ export default function TypewriterRotator({
   align?: "left" | "center";
 }) {
   const [index, setIndex] = useState(0);
+  const prefersReducedMotion = useReducedMotion();
   const isCentered = align === "center";
+  const items = text.map((item) => item.trim()).filter(Boolean);
+  const activeText = items[index] ?? items[0] ?? "";
+
+  if (!activeText) return null;
 
   return (
     <h2
+      aria-label={activeText}
       className={`typewriter-rotator flex flex-col flex-wrap ${isCentered ? "items-center" : "items-start"} w-full font-aspekta leading-[0.8]`}
       style={{ maxWidth: 900 }}
     >
-      <Typewriter
-        as="div"
-        variance={2.8}
-        speed="slow"
-        backspace="character"
-        cursorBlinkDuration={0.26}
-        cursorStyle={cursorStyle}
-        textStyle={{
-          ...textStyle,
-          textAlign: isCentered ? "center" : "left",
-        }}
-        onComplete={() => {
-          delay(() => setIndex(wrap(0, text.length, index + 1)), 1);
-        }}
-      >
-        {text[index + 1]}
-      </Typewriter>
+      {prefersReducedMotion ? (
+        <span
+          aria-hidden="true"
+          style={{
+            ...textStyle,
+            textAlign: isCentered ? "center" : "left",
+          }}
+        >
+          {activeText}
+        </span>
+      ) : (
+        <Typewriter
+          key={`${index}-${activeText}`}
+          as="div"
+          aria-hidden="true"
+          variance={2.8}
+          speed="slow"
+          backspace="character"
+          cursorBlinkDuration={0.26}
+          cursorStyle={cursorStyle}
+          textStyle={{
+            ...textStyle,
+            textAlign: isCentered ? "center" : "left",
+          }}
+          onComplete={() => {
+            if (items.length < 2) return;
+            delay(
+              () =>
+                setIndex((current) => wrap(0, items.length, current + 1)),
+              1,
+            );
+          }}
+        >
+          {activeText}
+        </Typewriter>
+      )}
     </h2>
   );
 }
