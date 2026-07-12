@@ -419,15 +419,6 @@ export const structure: StructureResolver = (S) =>
             ])
         ),
 
-      S.listItem()
-        .title("Reusable 1SP Component Groups")
-        .icon(SquaresFour)
-        .child(
-          S.documentTypeList("oneSpComponentGroup")
-            .title("Reusable 1SP Component Groups")
-        ),
-      S.divider(),
-
       // --- Per-channel sections ---
       createChannelStructure(S, "1SP", "1spWeb", Buildings),
       createChannelStructure(S, "MSM", "msmWeb", Buildings),
@@ -447,7 +438,6 @@ export const structure: StructureResolver = (S) =>
             "person",
             "services",
             "serviceGroup",
-            "oneSpComponentGroup",
           ].includes(listItem.getId?.() || "")
       ),
     ]);

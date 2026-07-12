@@ -90,7 +90,187 @@ const ONE_SP_COMPONENT_GROUP_PROJECTION = `_type == 'oneSpComponentGroupReferenc
           }
         }
       },
-      ${ADDITIONAL_CONTENT_PROJECTION}
+      ${ADDITIONAL_CONTENT_PROJECTION},
+      _type == 'galleryPeopleStep' => {
+        ...,
+        showBadgeMiniCta,
+        badgeMiniCta{
+          _type,
+          heading,
+          paragraph,
+          buttonText,
+          variant,
+          alignment,
+          link{
+            _type,
+            linkType,
+            externalUrl,
+            page->{
+              _id,
+              slug
+            }
+          }
+        },
+        teamMembers[$channel in @->channel]->{
+          _id,
+          name,
+          image{
+            ...,
+            secure_url,
+            resource_type,
+            public_id
+          },
+          video{
+            ...,
+            secure_url,
+            resource_type,
+            public_id
+          },
+          altText,
+          fullname,
+          position,
+          email,
+          profileUrl,
+          tagline,
+          channel,
+          unit->{
+            _id,
+            name,
+            logoSignet
+          }
+        }
+      },
+      _type == 'galleryScrollHighlightStep' => {
+        ...,
+        useCTAMini,
+        ctaMini{
+          _type,
+          heading,
+          paragraph,
+          buttonText,
+          variant,
+          alignment,
+          link{
+            _type,
+            linkType,
+            externalUrl,
+            page->{
+              _id,
+              slug
+            }
+          }
+        },
+        scrollHighlightContent{
+          ...,
+          contentType,
+          textItems,
+          serviceItems[$channel in @->channel]->{
+            _id,
+            _updatedAt,
+            _type,
+            name,
+            taglabel,
+            introText,
+            serviceBackground
+          }
+        }
+      },
+      _type == 'galleryListStep' => {
+        ...,
+        showBadgeMiniCta,
+        badgeMiniCta{
+          _type,
+          heading,
+          paragraph,
+          buttonText,
+          variant,
+          alignment,
+          link{
+            _type,
+            linkType,
+            externalUrl,
+            page->{
+              _id,
+              slug
+            }
+          }
+        },
+        ${ADDITIONAL_CONTENT_PROJECTION}
+      },
+      _type == 'smartCarousel' => {
+        ...,
+        selectedCases[$channel in @->channel]->{
+          _id,
+          title,
+          subtitle,
+          description,
+          services[]->{_id, name},
+          mainImage,
+          mainVideo,
+          client->{
+            _id,
+            name,
+            logo
+          },
+          slug
+        }
+      },
+      _type == 'casesGalleryFiltered' => {
+        ...,
+        selectedCases[$channel in @->channel]->{
+          _id,
+          title,
+          slug,
+          description,
+          "mainImageUrl": mainImage.secure_url
+        }
+      },
+      _type == 'casesGalleryFilteredWithPagination' => {
+        ...,
+        selectedCases[$channel in @->channel]->{
+          _id,
+          title,
+          slug,
+          description,
+          "mainImageUrl": mainImage.secure_url
+        }
+      },
+      _type == 'unitLogoGrid' => {
+        ...,
+        selectedUnits[]->{
+          _id,
+          _type,
+          name,
+          slug,
+          logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+          logoColor${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+          logoSignet${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+          cta{
+            ...,
+            link{
+              ...,
+              linkType,
+              externalUrl,
+              page->{
+                _id,
+                slug
+              }
+            }
+          }
+        }
+      },
+      _type == 'pageBuilderLogoFloat' => {
+        ...,
+        selectedUnits[]->{
+          _id,
+          _type,
+          name,
+          slug,
+          logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+          logoColor${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+          logoSignet${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
+        }
+      }
     }
   }
 }`;
