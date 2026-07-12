@@ -1,5 +1,7 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { SquaresFour } from "@phosphor-icons/react";
+import { OneSpComponentGroupContentInput } from "./OneSpComponentGroupContentInput";
+import { ONE_SP_REUSABLE_COMPONENT_TYPES } from "./oneSpComponentGroupImport";
 
 /**
  * Reusable, route-less groups of canonical 1SP page-builder blocks.
@@ -40,40 +42,17 @@ export default defineType({
       description:
         "A reusable sequence rendered with the canonical 1SP implementation and visual tokens on every host site.",
       validation: (Rule) => Rule.required().min(1).max(30),
-      of: [
+      components: {
+        input: OneSpComponentGroupContentInput,
+      },
+      of: ONE_SP_REUSABLE_COMPONENT_TYPES.map((componentType) =>
         defineArrayMember({
-          type: "headlineChallenge",
-          title: "Headline Component",
+          type: componentType,
+          ...(componentType === "headlineChallenge"
+            ? { title: "Headline Component" }
+            : {}),
         }),
-        defineArrayMember({ type: "heroShowTime" }),
-        defineArrayMember({ type: "sublineComponent" }),
-        defineArrayMember({ type: "oneSPHeader" }),
-        defineArrayMember({ type: "contentSection" }),
-        defineArrayMember({ type: "twoColContentSection" }),
-        defineArrayMember({ type: "tabbedContentSection" }),
-        defineArrayMember({ type: "casesIntro" }),
-        defineArrayMember({ type: "casesGalleryFiltered" }),
-        defineArrayMember({ type: "casesGalleryFilteredWithPagination" }),
-        defineArrayMember({ type: "servicesGalleryFiltered" }),
-        defineArrayMember({ type: "servicesHeroWithBadge" }),
-        defineArrayMember({ type: "intertitleCTA" }),
-        defineArrayMember({ type: "galleryHeroStep" }),
-        defineArrayMember({ type: "galleryCardsStep" }),
-        defineArrayMember({ type: "galleryListStep" }),
-        defineArrayMember({ type: "galleryPeopleStep" }),
-        defineArrayMember({ type: "galleryScrollHighlightStep" }),
-        defineArrayMember({ type: "galleryRevealStep" }),
-        defineArrayMember({ type: "galleryOverview" }),
-        defineArrayMember({ type: "carousel" }),
-        defineArrayMember({ type: "smartCarousel" }),
-        defineArrayMember({ type: "smartPeople" }),
-        defineArrayMember({ type: "smartUnitsGallery" }),
-        defineArrayMember({ type: "smartUnitsGlobe" }),
-        defineArrayMember({ type: "globeComponent" }),
-        defineArrayMember({ type: "unitLogoGrid" }),
-        defineArrayMember({ type: "pageBuilderLogoFloat" }),
-        defineArrayMember({ type: "pageBuilderPersonioJobs" }),
-      ],
+      ),
     }),
   ],
   preview: {
