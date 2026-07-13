@@ -62,7 +62,7 @@ function GlobeComponent({ data }: GlobeComponentProps) {
 
   // Globe configuration
   const globeConfig = {
-    pointSize: 1,
+    pointSize: 0.5,
     globeColor: "#f6f6f6",
     showAtmosphere: false,
     atmosphereColor: "#ffffff",

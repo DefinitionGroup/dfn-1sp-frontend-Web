@@ -12,8 +12,8 @@ import {
 } from "three";
 import ThreeGlobe from "three-globe";
 import { useThree, Canvas, extend, useFrame } from "@react-three/fiber";
-import { Html, OrbitControls } from "@react-three/drei";
-import { cellToChildren, cellToLatLng, polygonToCells } from "h3-js";
+import { Html, Line, OrbitControls } from "@react-three/drei";
+import { cellToLatLng, polygonToCells } from "h3-js";
 import countries from "@/data/globe.json";
 declare module "@react-three/fiber" {
   interface ThreeElements {
@@ -30,13 +30,15 @@ const aspect = 1;
 const CAMERA_TARGET = new Vector3(0, 0, 0);
 const CAMERA_RADIUS = 165;
 const DEFAULT_VIEW = { lat: 50, lng: 10 };
-const LAND_DOT_BASE_RESOLUTION = 4;
-const LAND_DOT_DENSITY_MULTIPLIER = 2;
+const LAND_DOT_RESOLUTION = 5;
 const LAND_DOT_SIZE_MULTIPLIER = 0.75;
 const LAND_DOT_BASE_SIZE = 0.32;
 const LAND_DOT_SIZE = LAND_DOT_BASE_SIZE * LAND_DOT_SIZE_MULTIPLIER;
 const LAND_DOT_ALTITUDE = 0.002;
-const LAND_DOT_CHILD_INDICES = [1, 4] as const;
+const LABEL_CONNECTOR_START_ALTITUDE = 0.012;
+const LABEL_ALTITUDE = 0.08;
+const LABEL_HORIZONTAL_OFFSET = 5;
+const LABEL_VERTICAL_OFFSET = 4;
 
 /** Camera position facing a lat/lng point using ThreeGlobe's coordinate
  *  orientation, so the configured location lands in the opening view. */
@@ -102,7 +104,7 @@ type GlobeFeatureGeometry = {
 };
 
 function buildLandDotPositions() {
-  const baseCells = new Set<string>();
+  const landCells = new Set<string>();
 
   for (const feature of countries.features) {
     const geometry = feature.geometry as GlobeFeatureGeometry;
@@ -114,18 +116,18 @@ function buildLandDotPositions() {
     for (const polygon of polygons) {
       for (const cell of polygonToCells(
         polygon,
-        LAND_DOT_BASE_RESOLUTION,
+        LAND_DOT_RESOLUTION,
         true
       )) {
-        baseCells.add(cell);
+        landCells.add(cell);
       }
     }
   }
 
-  const cells = Array.from(baseCells);
-  const positions = new Float32Array(
-    cells.length * LAND_DOT_DENSITY_MULTIPLIER * 3
-  );
+  // Keep every cell at one resolution. Partial child-cell sampling creates
+  // visible gaps; a complete H3 lattice keeps the land dots evenly spaced.
+  const cells = Array.from(landCells);
+  const positions = new Float32Array(cells.length * 3);
   let positionIndex = 0;
 
   const addCellPosition = (cell: string) => {
@@ -137,12 +139,7 @@ function buildLandDotPositions() {
     positionIndex += 3;
   };
 
-  for (const cell of cells) {
-    const children = cellToChildren(cell, LAND_DOT_BASE_RESOLUTION + 1);
-    for (const childIndex of LAND_DOT_CHILD_INDICES) {
-      addCellPosition(children[childIndex]);
-    }
-  }
+  for (const cell of cells) addCellPosition(cell);
 
   return positions;
 }
@@ -380,12 +377,39 @@ function ArcLabels({ data }: Pick<WorldProps, "data">) {
   const labelPoints = useMemo(
     () =>
       data.map((arc, idx) => {
-        const vector = latLngToVector3(arc.endLat, arc.endLng, 0.08);
+        const connectorStart = latLngToVector3(
+          arc.endLat,
+          arc.endLng,
+          LABEL_CONNECTOR_START_ALTITUDE
+        );
+        const normal = connectorStart.clone().normalize();
+        const horizontalTangent = new Vector3(
+          -normal.z,
+          0,
+          normal.x
+        ).normalize();
+        const verticalTangent = horizontalTangent
+          .clone()
+          .cross(normal)
+          .normalize();
+        const side = idx % 2 === 0 ? 1 : -1;
+        const vector = latLngToVector3(
+          arc.endLat,
+          arc.endLng,
+          LABEL_ALTITUDE
+        )
+          .add(horizontalTangent.multiplyScalar(side * LABEL_HORIZONTAL_OFFSET))
+          .add(
+            verticalTangent.multiplyScalar(
+              LABEL_VERTICAL_OFFSET + (idx % 3) * 1.5
+            )
+          );
         return {
           key: `${arc.label}-${idx}`,
           vector,
           normal: vector.clone().normalize(),
           position: vector.toArray() as [number, number, number],
+          connectorStart: connectorStart.toArray() as [number, number, number],
           color: arc.color,
           text: arc.label,
         };
@@ -418,31 +442,39 @@ function ArcLabels({ data }: Pick<WorldProps, "data">) {
   return (
     <group>
       {labelPoints.map((point) => (
-        <Html
-          key={point.key}
-          ref={(instance) => {
-            if (instance) {
-              labelRefs.current[point.key] = instance;
-            } else {
-              delete labelRefs.current[point.key];
-            }
-          }}
-          position={point.position}
-          center
-          distanceFactor={45}
-          style={{
-            color: "#ffffff",
-            fontWeight: 600,
-            fontSize: "0.5rem",
-            backgroundColor: "#7c5cff",
-            padding: "0.13rem 0.3rem",
-            borderRadius: "100px",
-            textTransform: "uppercase",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {point.text}
-        </Html>
+        <group key={point.key}>
+          <Line
+            points={[point.connectorStart, point.position]}
+            color={point.color}
+            lineWidth={1}
+            opacity={0.72}
+            transparent
+          />
+          <Html
+            ref={(instance) => {
+              if (instance) {
+                labelRefs.current[point.key] = instance;
+              } else {
+                delete labelRefs.current[point.key];
+              }
+            }}
+            position={point.position}
+            center
+            distanceFactor={45}
+            style={{
+              color: "#ffffff",
+              fontWeight: 600,
+              fontSize: "1.125rem",
+              backgroundColor: "#7c5cff",
+              padding: "0.195rem 0.45rem",
+              borderRadius: "100px",
+              textTransform: "uppercase",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {point.text}
+          </Html>
+        </group>
       ))}
     </group>
   );
