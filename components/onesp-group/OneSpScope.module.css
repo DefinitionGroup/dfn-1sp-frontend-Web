@@ -8,6 +8,7 @@
   display: flow-root;
   width: calc(100% - (var(--onesp-group-gutter) * 2));
   max-width: 1400px;
+  margin-block: 4rem;
   margin-inline: auto;
   border-radius: var(--onesp-group-radius);
   overflow: clip;
@@ -47,6 +48,7 @@
   --headline-tracking: -0.04em;
   --body-line-height: 1.5;
   --leading-compress: 0.75;
+  --text-primary: #f4f4f4;
 
   background: var(--background);
   color: var(--foreground);
@@ -67,6 +69,70 @@
 .root :global(select) {
   color: inherit;
   font: inherit;
+}
+
+/* The host apps define their own display-scale typewriter variables. Restore
+   the canonical 1SP scale inside a reusable group and keep long rotating copy
+   within the group's content width. */
+.root :global(.typewriter-rotator) {
+  min-width: 0;
+  max-width: 100% !important;
+  --tw-cursor-w: 8px;
+  --tw-cursor-radius: 4px;
+  --tw-cursor-ml: 4px;
+  --tw-cursor-h: calc(20px + 3vw);
+  --tw-text-size: min(4vw, 12rem);
+  --tw-text-lh: min(9vw, 12rem);
+  --tw-text-ls: -0.1rem;
+}
+
+.root :global(.typewriter-rotator > *) {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+/* FLZR gives every h3 its violet brand color at the global base layer. The
+   scroll-highlight labels are h3 elements, so explicitly restore the 1SP lime
+   treatment within the portable boundary. */
+.root :global(.scroll-highlight-container) {
+  margin-block: 4rem;
+}
+
+.root :global(.scroll-highlight-container .skill-name) {
+  color: var(--color-brand-lime);
+}
+
+/* The standalone 1SP logo wall is fixed to the page viewport. In a portable
+   group it must instead be positioned against the group's relative boundary,
+   otherwise a group placed later on a host page is either clipped or floats
+   over unrelated host content. */
+.root :global([data-component="pg-pagebuilder-logo-float"]) {
+  position: absolute;
+  inset: 0;
+  height: min(100vh, 100%);
+}
+
+@media (max-width: 768px) {
+  .root :global(.typewriter-rotator) {
+    --tw-cursor-w: 4px;
+    --tw-cursor-radius: 2px;
+    --tw-cursor-ml: 2px;
+    --tw-text-size: clamp(1.875rem, 8vw, 3.75rem);
+    --tw-text-lh: calc(var(--tw-text-size) * 1.05);
+    --tw-cursor-h: var(--tw-text-lh);
+  }
+}
+
+@media (orientation: landscape) and (pointer: coarse) and (max-height: 500px) {
+  .root :global(.typewriter-rotator) {
+    --tw-cursor-w: 3px;
+    --tw-cursor-radius: 2px;
+    --tw-cursor-ml: 2px;
+    --tw-text-size: min(2vw, 1.25rem);
+    --tw-text-lh: calc(var(--tw-text-size) * 1.05);
+    --tw-cursor-h: var(--tw-text-lh);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

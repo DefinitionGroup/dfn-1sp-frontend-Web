@@ -37,10 +37,21 @@ function PageBuilderLogoFloat({
     hideFromNav = true,
   } = data || {};
   const [visible, setVisible] = React.useState(true);
+  const sectionRef = React.useRef<HTMLElement>(null);
 
   React.useEffect(() => {
+    const group = sectionRef.current?.closest<HTMLElement>(
+      "[data-onesp-component-group]",
+    );
+
     function onScroll() {
-      setVisible(window.scrollY < 24);
+      if (!group) {
+        setVisible(window.scrollY < 24);
+        return;
+      }
+
+      const bounds = group.getBoundingClientRect();
+      setVisible(bounds.top < window.innerHeight && bounds.bottom > 0);
     }
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
@@ -96,6 +107,7 @@ function PageBuilderLogoFloat({
 
   return (
     <section
+      ref={sectionRef}
       id={sectionId}
       {...navPointDataAttr}
       {...(hideFromNav ? { "data-nav-hidden": "true" } : {})}

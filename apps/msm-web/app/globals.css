@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Reusable 1SP groups render the canonical components from the repository
+   root. Include those files in Tailwind's source scan so host pages receive
+   every utility used by the embedded blocks. */
+@source "../../../components";
+
 @custom-variant dark (&:is(.dark *));
 
 /* Targets landscape viewports with height ≤ 640 px (all iPhone landscape sizes).
