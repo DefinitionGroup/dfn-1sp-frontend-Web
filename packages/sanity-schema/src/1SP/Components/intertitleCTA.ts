@@ -40,6 +40,14 @@ export default defineType({
             description: "Main title text",
         }),
         defineField({
+            name: "subline",
+            title: "Subline (optional)",
+            type: "text",
+            rows: 2,
+            group: "content",
+            description: "Optional secondary line between the large title and the supporting copy. Rendered smaller than the title.",
+        }),
+        defineField({
             name: "subtitle",
             title: "Subtitle",
             type: "text",

@@ -56,12 +56,12 @@ export default function HeadlineChallenge({
                   </h2>
                 ) : null}
                 {hasVisibleText(title) ? (
-                  <h3 className="text-4xl md:text-4xl tracking-tight leading-tight lg:text-5xl text-neutral-700   font-aspekta">
+                  <h3 className="text-4xl md:text-4xl tracking-tight leading-tight lg:text-5xl text-flzr-violet font-aspekta">
                     {title}
                   </h3>
                 ) : null}
                 {hasVisibleText(description) && (
-                  <h2 className="text-4xl md:text-4xl lg:text-5xl tracking-tight leading-tighter text-neutral-300 pb-2 sm:pb-3 leading-none font-aspekta">
+                  <h2 className="text-4xl md:text-4xl lg:text-5xl tracking-tight leading-tighter text-neutral-800 pb-2 sm:pb-3 leading-none font-aspekta">
                     {description}
                   </h2>
                 )}

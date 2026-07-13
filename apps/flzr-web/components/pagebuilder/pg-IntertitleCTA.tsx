@@ -1,28 +1,16 @@
 "use client";
 import React from "react";
-import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import Button2 from "@flzr/components/ui/Button2";
-import Link from "next/link";
 import { resolveLink } from "@1sp/utils/cloudinary";
 import { useParams } from "next/navigation";
 import type { CTA } from "@1sp/sanity-types";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
-interface StaggeredSlideUpProps {
-  className?: string;
-  delay?: number;
-  debug?: boolean;
-  easing?: "smooth" | "spring" | "ease-out" | "bounce";
-  staggerDelay?: number;
-  duration?: number;
-  distance?: number;
-}
-
 interface IntertitleCTAProps {
   title: string;
+  subline?: string;
   subtitle: string;
   cta?: CTA;
-  staggeredProps?: Partial<StaggeredSlideUpProps>;
   containerClassName?: string;
   alignment?: "center" | "left";
   paddingTop?: "0" | "12" | "24" | "48";
@@ -32,10 +20,10 @@ interface IntertitleCTAProps {
 
 const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   title,
+  subline,
   subtitle,
   cta,
-  staggeredProps = {},
-  containerClassName = "flex-col w-full  md:min-w-64 justify-center mx-auto ",
+  containerClassName = "w-full",
   alignment = "center",
   paddingTop = "0",
   navPointName,
@@ -53,21 +41,12 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
     "48": "pt-48",
   };
   const paddingTopClass = paddingTopMap[paddingTop] || "";
+  const hasSubline = hasVisibleText(subline);
 
-  const defaultStaggeredProps: StaggeredSlideUpProps = {
-    className: `flex flex-col ${isLeftAligned ? "items-start" : "items-center"} font-normal justify-center  w-full min-w-full `,
-    delay: 0.0,
-    debug: false,
-    easing: "smooth",
-    staggerDelay: 0.1,
-    duration: 0.5,
-    distance: 20,
-    ...staggeredProps,
-  };
-
-  const titleClass = `text-3xl text-balance font-medium ${isLeftAligned ? "text-left" : "text-center"}`;
-  const subtitleClass = `text-xl mt-8  text-balance text-neutral-800 ${isLeftAligned ? "text-left" : "text-center"}`;
-  const buttonContainerClass = `w-fit min-w-40 ${isLeftAligned ? "self-start" : "mx-auto"} mt-8 block`;
+  const titleClass = `max-w-5xl text-balance text-[clamp(2.25rem,3.2vw,4.25rem)] font-semibold leading-[0.98] tracking-[-0.035em] text-flzr-violet ${isLeftAligned ? "text-left" : "text-center"}`;
+  const sublineClass = `mt-6 max-w-3xl text-balance text-[clamp(1.35rem,2.25vw,2.25rem)] font-regular leading-[1.15] tracking-[-0.02em] text-neutral-500 sm:mt-8 ${isLeftAligned ? "text-left" : "text-center"}`;
+  const subtitleClass = `${hasSubline ? "mt-6 sm:mt-8" : "mt-8 sm:mt-10"} max-w-3xl text-pretty text-base leading-[1.55] text-neutral-800 sm:text-lg lg:text-xl ${isLeftAligned ? "text-left" : "text-center"}`;
+  const buttonContainerClass = `mt-10 block w-fit min-w-40 sm:mt-12 ${isLeftAligned ? "self-start" : "mx-auto"}`;
 
   // Resolve CTA link and props
   let buttonHref = cta?.link ? resolveLink(cta.link) : undefined;
@@ -81,7 +60,8 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   }
   const buttonText = cta?.text;
   const buttonVariant =
-    (cta?.variant as "default" | "black" | "violet" | "violetsmall") || "violet";
+    (cta?.variant as "default" | "black" | "violet" | "violetsmall") ||
+    "violet";
 
   // Generate section ID from title
   const sectionId = title
@@ -98,14 +78,28 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   };
 
   return (
-    <div id={sectionId} {...navPointDataAttr} className={`${containerClassName} `}>
-      <div className="grid z-1 mx-auto container relative font-aspekta">
-        {/* Background grid (optional visual helper) */}
-        <div className={`z-1   py-12 col-span-8   col-start-3 container mx-auto row-start-1 grid-cols-12 ${paddingTopClass}`}>
-          <StaggeredSlideUp {...defaultStaggeredProps}>
+    <section
+      id={sectionId}
+      {...navPointDataAttr}
+      className={`relative overflow-hidden ${containerClassName}`}
+    >
+      <div
+        className={`relative mx-auto w-full max-w-[1480px] px-4 font-aspekta sm:px-6 lg:px-8 ${paddingTopClass}`}
+      >
+        <div className="relative border-t border-neutral-900/15 py-16 sm:py-20 lg:py-28">
+          <span
+            aria-hidden="true"
+            className={`mb-8 block h-[3px] w-12 bg-flzr-violet sm:mb-10 ${isLeftAligned ? "" : "mx-auto"}`}
+          />
+          <div
+            className={`flex w-full flex-col ${isLeftAligned ? "items-start" : "items-center"}`}
+          >
             {hasVisibleText(title) ? <h3 className={titleClass}>{title}</h3> : null}
-            <p className={subtitleClass}>{subtitle}</p>
-          </StaggeredSlideUp>
+            {hasSubline ? <p className={sublineClass}>{subline}</p> : null}
+            {hasVisibleText(subtitle) ? (
+              <p className={subtitleClass}>{subtitle}</p>
+            ) : null}
+          </div>
           {buttonHref && buttonText && (
             <div className={buttonContainerClass}>
               <Button2
@@ -117,7 +111,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
           )}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
