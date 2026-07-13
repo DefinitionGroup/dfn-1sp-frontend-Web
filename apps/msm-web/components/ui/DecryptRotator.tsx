@@ -107,10 +107,24 @@ export default function DecryptRotator({
 
   return (
     <h2
-      className="typewriter-rotator flex flex-col flex-wrap items-start w-full font-aspekta font-medium leading-[0.8] text-white"
+      className="typewriter-rotator relative inline-grid max-w-full items-start font-aspekta font-medium leading-[0.8] text-white"
       style={{ maxWidth: 900 }}
     >
-      <span aria-hidden style={textStyle}>
+      {words.map((word, index) => (
+        <span
+          key={`${word}-${index}`}
+          aria-hidden
+          className="invisible col-start-1 row-start-1"
+          style={textStyle}
+        >
+          {word}
+        </span>
+      ))}
+      <span
+        aria-hidden
+        className="col-start-1 row-start-1"
+        style={textStyle}
+      >
         {display}
       </span>
       <span className="sr-only">{words.join(" ")}</span>

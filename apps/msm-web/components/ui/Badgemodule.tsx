@@ -8,7 +8,7 @@
 // The public API is kept compatible with the root Badgemodule: `numberEl`
 // and `variant` are accepted but no longer rendered.
 
-import { motion } from "motion/react";
+import { motion, useInView } from "motion/react";
 import { cn } from "@1sp/utils/cn";
 import { useRef } from "react";
 import { useRobustInView } from "@1sp/utils/hooks/use-robust-in-view";
@@ -38,6 +38,11 @@ export default function Badgemodule({
   const { isInView } = useRobustInView(ref, {
     amount: 0.1,
     margin: "0px 0px 120px 0px",
+  });
+  const markersInView = useInView(ref, {
+    once: true,
+    amount: 0.1,
+    margin: "0px 0px -5% 0px",
   });
 
   const sizes = {
@@ -74,7 +79,16 @@ export default function Badgemodule({
         },
       }}
     >
-      <CornerMarkers className="text-white/30 text-xs" inset="0.25rem" />
+      <CornerMarkers
+        className="text-white/30 text-[18px]"
+        inset="0.375rem"
+        animateOnView
+        animationDelay={0.35}
+        stagger={0.06}
+        flickerDuration={0.18}
+        pronounced
+        visible={markersInView}
+      />
 
       {/* Living MSM mark (replaces the count-up number) */}
       <motion.div

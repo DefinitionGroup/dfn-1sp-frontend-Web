@@ -716,7 +716,7 @@ export default function MosaicButton({
   const [seed] = useState(() => Math.floor(Math.random() * 2 ** 31));
 
   const classes = cn(
-    "group/mosaic-btn relative inline-flex cursor-pointer items-center overflow-hidden bg-msm-surface font-medium tracking-wider text-white shadow-[0_10px_28px_rgba(0,0,0,0.45)] transition-transform duration-200 hover:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-msm-cyan focus:ring-offset-2 focus:ring-offset-msm-paper",
+    "group/mosaic-btn relative inline-flex cursor-pointer items-center overflow-hidden bg-msm-surface font-medium tracking-wider text-white shadow-[0_10px_28px_rgba(0,0,0,0.45)] transition-[transform,color] duration-200 hover:scale-[0.99] hover:text-black focus-visible:text-black focus:outline-none focus:ring-2 focus:ring-msm-cyan focus:ring-offset-2 focus:ring-offset-msm-paper",
     sizes[size],
     fullWidth && "w-full",
     className,
@@ -740,19 +740,9 @@ export default function MosaicButton({
         tileRows={tileRows}
         wireframe={wireframe}
       />
-      {/* scrim keeps the label readable once the mosaic fills in */}
-      <span
-        aria-hidden
-        className={cn(
-          "pointer-events-none absolute inset-0 z-2 bg-black/30 transition-opacity duration-500",
-          defaultFilled
-            ? "opacity-100"
-            : "opacity-0 group-hover/mosaic-btn:opacity-100",
-        )}
-      />
       <span
         className={cn(
-          "relative z-10 inline-flex flex-1 items-center justify-between gap-6",
+          "relative z-10 inline-flex flex-1 items-center justify-between gap-6 font-bold tracking-normal uppercase",
           textSizes[size],
         )}
       >

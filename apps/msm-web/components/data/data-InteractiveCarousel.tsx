@@ -1,6 +1,11 @@
 "use client";
 
-import { motion, AnimatePresence, PanInfo } from "motion/react";
+import {
+  motion,
+  AnimatePresence,
+  PanInfo,
+  useReducedMotion,
+} from "motion/react";
 import { useState, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -49,6 +54,14 @@ interface SmartCarouselProps {
   caseStudies?: CaseStudy[];
 }
 
+const THUMBNAIL_CORNER_START = 0.08;
+const THUMBNAIL_CORNER_ITEM_STAGGER = 0.08;
+const THUMBNAIL_CORNER_STAGGER = 0.035;
+const THUMBNAIL_CORNER_FLICKER_DURATION = 0.12;
+const THUMBNAIL_FADE_GAP = 0.06;
+const THUMBNAIL_FADE_STAGGER = 0.12;
+const THUMBNAIL_FADE_DURATION = 0.42;
+
 export default function SmartCarousel({
   caseStudies = [],
 }: SmartCarouselProps) {
@@ -56,6 +69,7 @@ export default function SmartCarousel({
   const [direction, setDirection] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isScrollable, setIsScrollable] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
   const stripRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -204,6 +218,12 @@ export default function SmartCarousel({
   const active = carouselItems[currentIndex];
   const activeVideoSources = getCarouselVideoSources(active.video);
   const activePosterUrl = getCarouselPosterUrl(active.video);
+  const thumbnailFadeStart =
+    THUMBNAIL_CORNER_START +
+    Math.max(0, carouselItems.length - 1) * THUMBNAIL_CORNER_ITEM_STAGGER +
+    3 * THUMBNAIL_CORNER_STAGGER +
+    THUMBNAIL_CORNER_FLICKER_DURATION +
+    THUMBNAIL_FADE_GAP;
 
   return (
     <section className="px-2 sm:px-4 md:px-0">
@@ -303,7 +323,14 @@ export default function SmartCarousel({
                           </motion.div>
                         )}
                         {active.title && (
-                          <motion.h3 className="headline-display pb-0 md:pb-4 md:pt-4">
+                          <motion.h3
+                            className="headline-display pb-0 md:pb-4 md:pt-4"
+                            style={{
+                              fontSize:
+                                "clamp(1.875rem, 1.05rem + 2.9vw, 3.75rem)",
+                              lineHeight: 1.02,
+                            }}
+                          >
                             {active.title}
                           </motion.h3>
                         )}
@@ -435,20 +462,49 @@ export default function SmartCarousel({
               <Link
                 key={item.id}
                 href={item.linkHref || "#"}
-                className="relative flex-shrink-0 w-10 sm:w-12 md:w-22 h-8 sm:h-12 md:h-18 overflow-hidden transition-all hover:scale-105 active:scale-95"
+                className="relative flex-shrink-0 w-[60px] sm:w-[72px] md:w-[132px] h-[48px] sm:h-[72px] md:h-[108px] overflow-hidden transition-all hover:scale-105 active:scale-95"
               >
                 {(item.thumbnail || item.image) && (
-                  <Image
-                    src={item.thumbnail || item.image}
-                    alt={item.title}
-                    fill
-                    sizes="88px"
-                    className="object-cover"
-                  />
+                  <motion.div
+                    className="absolute inset-0"
+                    initial={
+                      prefersReducedMotion
+                        ? false
+                        : { opacity: 0, transform: "translateX(-32px)" }
+                    }
+                    whileInView={{ opacity: 1, transform: "translateX(0px)" }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{
+                      duration: prefersReducedMotion
+                        ? 0
+                        : THUMBNAIL_FADE_DURATION,
+                      delay: prefersReducedMotion
+                        ? 0
+                        : thumbnailFadeStart +
+                          index * THUMBNAIL_FADE_STAGGER,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                  >
+                    <Image
+                      src={item.thumbnail || item.image}
+                      alt={item.title}
+                      fill
+                      sizes="(min-width: 768px) 132px, (min-width: 640px) 72px, 60px"
+                      className="object-cover"
+                    />
+                  </motion.div>
                 )}
                 <CornerMarkers
-                  className={`text-[10px] transition-colors duration-300 ${index === currentIndex ? "text-white" : "text-msm-magenta/60"}`}
-                  inset="2px"
+                  className={`text-[15px] transition-colors duration-300 ${index === currentIndex ? "text-white" : "text-msm-magenta/60"}`}
+                  inset="3px"
+                  animateOnView
+                  animationDelay={
+                    THUMBNAIL_CORNER_START +
+                    index * THUMBNAIL_CORNER_ITEM_STAGGER
+                  }
+                  stagger={THUMBNAIL_CORNER_STAGGER}
+                  flickerDuration={THUMBNAIL_CORNER_FLICKER_DURATION}
+                  pronounced
                 />
               </Link>
             ))}

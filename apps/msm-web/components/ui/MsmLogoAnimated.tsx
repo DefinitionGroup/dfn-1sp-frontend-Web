@@ -1,5 +1,6 @@
 "use client";
 
+import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
 /**
@@ -39,6 +40,8 @@ const AMBIENT_SPAWN_MIN = 0.7;
 const AMBIENT_SPAWN_VAR = 1.8;
 const AMBIENT_LINGER_MIN = 2.0;
 const AMBIENT_LINGER_VAR = 3.0;
+const FACET_FLIP_DURATION = 0.36;
+const FACET_FLIP_EASE = [0.45, 0, 0.55, 1] as const;
 
 export default function MsmLogoAnimated({
   size = 48,
@@ -73,7 +76,12 @@ export default function MsmLogoAnimated({
           // borrow a color from a different facet — stays inside the mark's
           // own palette, like the mosaic's "fresh logo color"
           let donor = idx;
-          while (donor === idx) donor = Math.floor(Math.random() * FACETS.length);
+          while (
+            donor === idx ||
+            FACETS[donor].fill === FACETS[idx].fill
+          ) {
+            donor = Math.floor(Math.random() * FACETS.length);
+          }
           const color = FACETS[donor].fill;
           setOverrides((o) => ({ ...o, [idx]: color }));
           later(() => {
@@ -103,18 +111,39 @@ export default function MsmLogoAnimated({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
+      style={{ perspective: `${Math.max(size * 4, 120)}px` }}
       aria-hidden
     >
-      {FACETS.map((f, i) => (
-        <path
-          key={i}
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d={f.d}
-          fill={overrides[i] ?? f.fill}
-          style={{ transition: "fill 0.5s cubic-bezier(0.62, 0.05, 0.01, 0.99)" }}
-        />
-      ))}
+      {FACETS.map((facet, index) => {
+        const fill = overrides[index] ?? facet.fill;
+
+        return (
+          <g key={index}>
+            <AnimatePresence initial={false} mode="wait">
+              <motion.path
+                key={`${index}-${fill}`}
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d={facet.d}
+                fill={fill}
+                initial={{ transform: "rotateY(-90deg)" }}
+                animate={{ transform: "rotateY(0deg)" }}
+                exit={{ transform: "rotateY(90deg)" }}
+                transition={{
+                  duration: FACET_FLIP_DURATION,
+                  ease: FACET_FLIP_EASE,
+                }}
+                style={{
+                  backfaceVisibility: "hidden",
+                  transformBox: "fill-box",
+                  transformOrigin: "center",
+                  transformStyle: "preserve-3d",
+                }}
+              />
+            </AnimatePresence>
+          </g>
+        );
+      })}
     </svg>
   );
 }

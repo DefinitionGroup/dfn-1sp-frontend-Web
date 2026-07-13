@@ -8,6 +8,7 @@ import { useParams } from "next/navigation";
 import Button2 from "@msm/components/ui/Button2";
 import DecryptRotator from "@msm/components/ui/DecryptRotator";
 import CornerMarkers from "@msm/components/ui/CornerMarkers";
+import MsmLogoAnimated from "@msm/components/ui/MsmLogoAnimated";
 import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import type {
@@ -151,7 +152,12 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
       {seoTitle && <h1 className="sr-only">{seoTitle}</h1>}
 
       {/* Blueprint corner markers (Vast grammar) */}
-      <CornerMarkers inset="1.25rem" />
+      <CornerMarkers
+        inset="1.25rem"
+        animateOnView
+        animationDelay={0.12}
+        stagger={0.15}
+      />
 
       {/* Background media */}
       {mediaUrl && (
@@ -162,57 +168,74 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
         />
       )}
 
-      {/* Foreground content — corner markers frame the text/headline/CTA
-          group (system pattern, hero zone → cyan) */}
+      {/* Foreground content — white corner markers frame the
+          eyebrow/headline/copy/CTA group. */}
       <div className="absolute bottom-24 md:bottom-24 iphone-landscape:bottom-0 md:relative z-10  max-w-9xl container md:mt-[50vh] iphone-landscape:mt-[50vh] mx-auto py-5">
-        <CornerMarkers className="text-msm-cyan/50 text-xs" inset="0.125rem" />
-        <StaggeredSlideUp
-          className="px-4 md:px-4 space-y-1 container mx-auto  "
-          delay={1}
-          staggerDelay={0.08}
-          duration={0.5}
-          distance={20}
-          easing="spring"
-          rootMargin="0px 0px -20px 0px"
-          once={true}
-          animateImmediately={true}
-        >
-          {hasVisibleText(eyebrow) && (
-            <h3 className="eyebrow text-msm-cyan pb-1 max-w-1/4">
-              {eyebrow}
-            </h3>
-          )}
-
-          {/* Decrypt-style rotating words */}
-          {words.length > 0 && <DecryptRotator text={words} />}
-
-          {/* Desktop paragraphs (rich text) */}
-          {paragraphs.length > 0 && (
-            <div className="hidden md:block iphone-landscape:!hidden space-y-4 text-balance text-neutral-50 font-medium text-4xl ">
-              <PortableText
-                value={paragraphs}
-                components={portableTextComponentsWithHighlight}
+        <div className="relative inline-block max-w-full md:pr-16">
+          <CornerMarkers
+            className="text-white text-xs"
+            inset="0.125rem"
+            animateOnView
+            animationDelay={0.65}
+            stagger={0.18}
+            flickerDuration={0.24}
+            pronounced
+          />
+          <StaggeredSlideUp
+            className="px-4 md:px-4 space-y-1"
+            delay={1}
+            staggerDelay={0.08}
+            duration={0.5}
+            distance={20}
+            easing="spring"
+            rootMargin="0px 0px -20px 0px"
+            once={true}
+            animateImmediately={true}
+          >
+            <div className="pb-3 md:pb-4">
+              <MsmLogoAnimated
+                size={44}
+                className="h-11 w-11"
               />
             </div>
-          )}
 
-          {/* Mobile + iPhone landscape paragraphs (rich text) */}
-          {mobileParagraphsToRender.length > 0 && (
-            <div className="block md:hidden iphone-landscape:!block space-y-4 text-neutral-50 lg:max-w-3/4">
-              <PortableText
-                value={mobileParagraphsToRender}
-                components={portableTextComponentsWithHighlight}
-              />
-            </div>
-          )}
+            {hasVisibleText(eyebrow) && (
+              <h3 className="eyebrow text-msm-cyan pb-1 max-w-1/4">
+                {eyebrow}
+              </h3>
+            )}
 
-          {/* Optional CTA (mosaic button) */}
-          {ctaHref && ctaText && (
-            <div className="pt-6">
-              <Button2 text={ctaText} href={ctaHref} />
-            </div>
-          )}
-        </StaggeredSlideUp>
+            {/* Decrypt-style rotating words */}
+            {words.length > 0 && <DecryptRotator text={words} />}
+
+            {/* Desktop paragraphs (rich text) */}
+            {paragraphs.length > 0 && (
+              <div className="hidden md:block iphone-landscape:!hidden space-y-4 text-balance text-neutral-50 font-medium text-4xl ">
+                <PortableText
+                  value={paragraphs}
+                  components={portableTextComponentsWithHighlight}
+                />
+              </div>
+            )}
+
+            {/* Mobile + iPhone landscape paragraphs (rich text) */}
+            {mobileParagraphsToRender.length > 0 && (
+              <div className="block md:hidden iphone-landscape:!block space-y-4 text-neutral-50 lg:max-w-3/4">
+                <PortableText
+                  value={mobileParagraphsToRender}
+                  components={portableTextComponentsWithHighlight}
+                />
+              </div>
+            )}
+
+            {/* Optional CTA (mosaic button) */}
+            {ctaHref && ctaText && (
+              <div className="pt-6">
+                <Button2 text={ctaText} href={ctaHref} />
+              </div>
+            )}
+          </StaggeredSlideUp>
+        </div>
       </div>
 
     </section>
