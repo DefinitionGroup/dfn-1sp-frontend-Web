@@ -157,8 +157,9 @@ export default defineType({
                     type: 'oneSpComponentGroupReference',
                     title: '1SP Component Group',
                 },
-                // 1SP / FLZR shared block set (29 types)
+                // 1SP / FLZR shared block set
                 { type: 'headlineChallenge', title: 'Headline Component' },
+                { type: 'resultsMetrics', title: 'Results & Metrics' },
                 { type: 'heroShowTime' },
                 { type: 'sublineComponent' },
                 { type: 'oneSPHeader' },

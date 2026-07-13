@@ -231,6 +231,21 @@ export default defineType({
                 layout: "radio",
             },
         }),
+        defineField({
+            name: "fullWidth",
+            title: "Full-width section",
+            type: "boolean",
+            description:
+                "Expand the Results & Metrics media to the full available width. Content remains aligned to the site container.",
+            initialValue: false,
+            group: "layout",
+            hidden: ({ document }: any) => {
+                const channel = document?.channel;
+                return Array.isArray(channel)
+                    ? !channel.includes("flizrWeb")
+                    : channel !== "flizrWeb";
+            },
+        }),
     ],
     preview: {
         select: {

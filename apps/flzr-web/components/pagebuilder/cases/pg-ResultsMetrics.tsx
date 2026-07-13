@@ -34,6 +34,7 @@ interface ResultsMetricsProps {
   backgroundImage?: CloudinaryAsset;
   backgroundOpacity?: number;
   enableParallax?: boolean;
+  fullWidth?: boolean;
   paddingY?: string;
   navPointName?: string;
 }
@@ -45,6 +46,7 @@ export default function ResultsMetrics({
   backgroundImage,
   backgroundOpacity = 0.7,
   enableParallax = false,
+  fullWidth = false,
   paddingY = "32",
   navPointName,
 }: ResultsMetricsProps) {
@@ -61,6 +63,10 @@ export default function ResultsMetrics({
 
   // Get the image URL
   const imageUrl = backgroundImage ? assetUrl(backgroundImage) : "";
+  const effectiveBackgroundOpacity = Math.max(
+    0,
+    Math.min(1, backgroundOpacity * 0.5),
+  );
 
   // Get the diagram component based on the metric type
   const getDiagramComponent = (
@@ -100,7 +106,11 @@ export default function ResultsMetrics({
   };
 
   return (
-    <section className="relative overflow-hidden">
+    <section
+      className={`${
+        fullWidth ? "w-full max-w-none" : "container mx-auto"
+      } relative overflow-hidden`}
+    >
       <div
         id={sectionId}
         data-navpoint-name={navPointName}
@@ -108,13 +118,13 @@ export default function ResultsMetrics({
       >
         <HeaderImageVideoComp2
           useVideo={false}
-          opacity={backgroundOpacity}
+          opacity={effectiveBackgroundOpacity}
           imageSrc={imageUrl}
           enableParallax={enableParallax}
         />
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 py-16 sm:py-24 lg:py-${paddingY}`}>
+          <div className={`grid min-h-[80vh] grid-cols-4 content-between gap-4 py-16 sm:grid-cols-6 sm:gap-6 sm:py-24 md:min-h-[90vh] md:grid-cols-12 lg:gap-8 lg:py-${paddingY}`}>
             <div className="col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-12">
               <StaggeredSlideUp
                 className="flex flex-col items-start justify-start gap-3"
@@ -138,9 +148,9 @@ export default function ResultsMetrics({
 
             {/* Metrics grid - Responsive layout */}
             {metrics && metrics.length > 0 && (
-              <div className="col-span-4 sm:col-span-6 md:col-span-12 mt-8 md:mt-12">
-                <div className="bg-neutral-900/60 backdrop-blur-lg   p-6 sm:p-8 md:p-10 lg:p-12">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
+              <div className="col-span-4 mt-8 self-end sm:col-span-6 md:col-span-12 md:mt-12">
+                <div className="rounded-[2.5rem] bg-[rgba(111,111,111,0.4)] p-6 backdrop-blur-md sm:p-8 md:p-10 lg:p-12">
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8">
                     {metrics.map((metric, index) => (
                       <div
                         key={index}
@@ -152,7 +162,7 @@ export default function ResultsMetrics({
                               number={metric.value}
                               format={{ minimumIntegerDigits: 1 }}
                               suffix={metric.suffix || ""}
-                              className="number text-gray-100"
+                              className="number !text-[40px] text-gray-100 sm:!text-[44px] md:!text-[80px]"
                               delay={300}
                             />
                           </div>
@@ -179,7 +189,7 @@ export default function ResultsMetrics({
                                 number={Math.abs(metric.value)}
                                 format={{ minimumIntegerDigits: 2 }}
                                 suffix="%"
-                                className="text-2xl sm:text-3xl md:text-[96px] font-light tracking-tighter"
+                                className="text-2xl font-light tracking-tighter sm:text-3xl md:text-[80px]"
                                 delay={300}
                               />
                             </motion.div>

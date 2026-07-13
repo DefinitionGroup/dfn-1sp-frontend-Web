@@ -30,6 +30,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
     subheading = "Your subheading here",
     paragraphs = [],
     additionalContent = [],
+    fullWidth = false,
     navPointName,
     hideFromNav = false,
   } = (data || {}) as HeroShowtimeType & { hideFromNav?: boolean };
@@ -59,7 +60,9 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="container grid grid-cols-12 z-1 mx-auto min-h-[85vh] relative font-aspekta text-white"
+      className={`${
+        fullWidth ? "w-full max-w-none" : "container mx-auto"
+      } grid grid-cols-12 z-1 min-h-[85vh] relative font-aspekta text-white`}
     >
       {/* Background media wrapper */}
       <HeaderImageVideoComp2
@@ -69,7 +72,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
         videoSrc={videoUrl}
       />
 
-      {/* Single stacked column — eyebrow, headline, CTA, paragraphs.
+      {/* Single stacked column — eyebrow, headline, paragraphs, CTA.
           Content sits on a frosted glass panel matching the navbar
           (backdrop-blur + rgba(111,111,111,0.4)). */}
       <div className="z-1 col-span-12 col-start-1 row-start-1 flex w-full container mx-auto flex-col justify-end items-start px-4 py-section sm:px-6 lg:px-8">
@@ -88,6 +91,16 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
               <MixedType text={heading} />
             </HeadingTag>
           ) : null}
+
+          {Array.isArray(paragraphs) && paragraphs.length > 0 && (
+            <div className="mt-8 flex flex-col max-w-[38em]">
+              {paragraphs.map((p, idx) => (
+                <p className="mb-4 text-lg" key={`para-${idx}`}>
+                  {p}
+                </p>
+              ))}
+            </div>
+          )}
 
           {Array.isArray(additionalContent) && additionalContent.length > 0 && (
             <div className="mt-6 flex flex-wrap items-start justify-start gap-4">
@@ -110,16 +123,6 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
                   />
                 );
               })}
-            </div>
-          )}
-
-          {Array.isArray(paragraphs) && paragraphs.length > 0 && (
-            <div className="mt-8 flex flex-col max-w-[38em]">
-              {paragraphs.map((p, idx) => (
-                <p className="mb-4 text-lg" key={`para-${idx}`}>
-                  {p}
-                </p>
-              ))}
             </div>
           )}
         </StaggeredSlideUp>

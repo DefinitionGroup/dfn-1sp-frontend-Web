@@ -301,6 +301,7 @@ export interface HeroShowtime {
     backgroundImage?: CloudinaryAsset;
     backgroundVideo?: CloudinaryAsset;
     useVideo?: boolean;
+    fullWidth?: boolean;
     navPointName?: string;
 }
 
@@ -650,6 +651,7 @@ export interface ResultsMetricsComponent {
     backgroundImage?: CloudinaryAsset;
     backgroundOpacity?: number;
     enableParallax?: boolean;
+    fullWidth?: boolean;
     navPointName?: string;
     paddingY?: string;
 }

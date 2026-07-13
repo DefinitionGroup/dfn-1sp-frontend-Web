@@ -30,6 +30,7 @@ export default defineType({
   groups: [
     { name: "media", title: "Media" },
     { name: "content", title: "Content" },
+    { name: "layout", title: "Layout" },
     { name: "navigation", title: "Navigation" },
   ],
   fields: [
@@ -98,6 +99,18 @@ export default defineType({
       description: "Shown as a placeholder when video is enabled.",
       group: "media",
       hidden: ({ parent }) => (parent as MediaParent)?.useVideo === false,
+    }),
+
+    // LAYOUT
+    defineField({
+      name: "fullWidth",
+      title: "Full-width section",
+      type: "boolean",
+      description:
+        "Expand the Showtime media to the full available width. Content remains aligned to the site container.",
+      initialValue: false,
+      group: "layout",
+      hidden: ({ document }: any) => document?.channel !== "flizrWeb",
     }),
 
     // CONTENT

@@ -13,6 +13,7 @@ import type {
   Carousel as CarouselType,
   IntroBlockTypoSophisticated as IntroBlockTypoSophisticatedType,
   CardContainerComponent as CardContainerComponentType,
+  ResultsMetricsComponent as ResultsMetricsComponentType,
 } from "@1sp/sanity-types";
 import type { Page } from "@1sp/sanity-types";
 import { HeroShowtime as HeroShowtimeType } from "@1sp/sanity-types";
@@ -242,6 +243,14 @@ const IntertitleCTA = dynamic(() => import("./pagebuilder/pg-IntertitleCTA"), {
   loading: () => <ComponentLoader height="h-32" />,
   ssr: true,
 });
+
+const ResultsMetrics = dynamic(
+  () => import("./pagebuilder/cases/pg-ResultsMetrics"),
+  {
+    loading: () => <ComponentLoader />,
+    ssr: true,
+  },
+);
 
 const PageBuilderLogoFloat = dynamic(
   () => import("./pagebuilder/server/PageBuilderLogoFloatBlock"),
@@ -525,6 +534,15 @@ export function PageBuilder({
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <HeadlineChallenge key={key} {...block} />
+              </ErrorBoundary>
+            );
+          case "resultsMetrics":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <ResultsMetrics
+                  key={key}
+                  {...(block as ResultsMetricsComponentType)}
+                />
               </ErrorBoundary>
             );
           case "oneSpComponentGroupReference": {
