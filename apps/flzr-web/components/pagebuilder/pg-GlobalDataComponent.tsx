@@ -48,6 +48,7 @@ interface GlobeConfig {
   initialPosition: { lat: number; lng: number };
   autoRotate: boolean;
   autoRotateSpeed: number;
+  verticalOffset?: number;
 }
 
 interface GlobalDataComponentProps {
@@ -55,13 +56,15 @@ interface GlobalDataComponentProps {
   globeConfig: GlobeConfig;
   title?: string;
   description?: string;
+  backgroundTone?: "default" | "muted";
 }
 
 export default function GlobalDataComponent({
   arcs,
   globeConfig,
   title = "We are global.",
-  description = "You will find us connecting businesses and people across the world.",
+  description,
+  backgroundTone = "default",
 }: GlobalDataComponentProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [shouldLoadGlobe, setShouldLoadGlobe] = useState(false);
@@ -85,9 +88,13 @@ export default function GlobalDataComponent({
   return (
     <div
       ref={containerRef}
-      className="flex flex-row items-center justify-center py-20 h-screen md:h-auto dark:bg-black bg-white relative w-full"
+      className={`flex flex-row items-center justify-center py-20 h-screen md:h-auto relative w-full ${
+        backgroundTone === "muted"
+          ? "bg-[#f4f3f6] dark:bg-neutral-900"
+          : "bg-white dark:bg-black"
+      }`}
     >
-      <div className="max-w-7xl mx-auto z-10 w-full relative overflow-hidden h-full md:h-[40rem] px-4">
+      <div className="pointer-events-none max-w-7xl mx-auto z-10 flex w-full h-full md:h-[44rem] flex-col relative px-4">
         <motion.div
           initial={{
             opacity: 0,
@@ -100,23 +107,33 @@ export default function GlobalDataComponent({
           transition={{
             duration: 1,
           }}
-          className="div"
+          className="relative z-20"
         >
           {hasVisibleText(title) ? (
             <h2 className="text-center text-xl md:text-5xl leading-[1.15] tracking-tight dark:text-white">
               {title}
             </h2>
           ) : null}
-          <p className="text-center text-base md:text-lg font-normal text-neutral-400 dark:text-neutral-200 max-w-md mt-2 mx-auto">
-            {description}
-          </p>
+          {hasVisibleText(description) ? (
+            <p className="mx-auto mt-3 max-w-2xl text-balance text-center text-base font-normal leading-relaxed text-neutral-600 dark:text-neutral-200 md:text-lg">
+              {description}
+            </p>
+          ) : null}
         </motion.div>
-        <div className="absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b pointer-events-none select-none from-transparent dark:to-black to-white z-40" />
+      </div>
+      <div
+        className={`absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b pointer-events-none select-none from-transparent z-40 ${
+          backgroundTone === "muted"
+            ? "to-[#f4f3f6] dark:to-neutral-900"
+            : "to-white dark:to-black"
+        }`}
+      />
+      <div className="absolute inset-0 z-0">
         {shouldLoadGlobe ? (
           <World data={arcs} globeConfig={globeConfig} />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-32 h-32  bg-neutral-200 dark:bg-neutral-800 animate-pulse" />
+            <div className="w-32 h-32 bg-neutral-200 dark:bg-neutral-800 animate-pulse" />
           </div>
         )}
       </div>

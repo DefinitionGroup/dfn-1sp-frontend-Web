@@ -667,6 +667,7 @@ export interface GlobeComponent {
     _key?: string;
     navPointName?: string;
     sectionTitle?: string;
+    sectionSubtitle?: string;
     locations: GlobeLocation[];
 }
 

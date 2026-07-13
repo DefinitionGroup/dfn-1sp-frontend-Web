@@ -59,7 +59,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="grid grid-cols-12 z-1 mx-auto min-h-[85vh] relative font-aspekta text-white"
+      className="container grid grid-cols-12 z-1 mx-auto min-h-[85vh] relative font-aspekta text-white"
     >
       {/* Background media wrapper */}
       <HeaderImageVideoComp2
@@ -72,7 +72,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
       {/* Single stacked column — eyebrow, headline, CTA, paragraphs.
           Content sits on a frosted glass panel matching the navbar
           (backdrop-blur + rgba(111,111,111,0.4)). */}
-      <div className="z-1 col-span-12 col-start-1 row-start-1 flex w-full container mx-auto flex-col justify-end items-start py-section">
+      <div className="z-1 col-span-12 col-start-1 row-start-1 flex w-full container mx-auto flex-col justify-end items-start px-4 py-section sm:px-6 lg:px-8">
         <StaggeredSlideUp
           className="flex w-fit max-w-full flex-col items-start rounded-[2.5rem] bg-[rgba(111,111,111,0.4)] backdrop-blur-md px-6 py-8 md:px-12 md:py-12"
           delay={0.5}

@@ -198,6 +198,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      h3-js:
+        specifier: ^4.3.0
+        version: 4.3.0
       motion:
         specifier: ^12.23.12
         version: 12.42.2(@emotion/is-prop-valid@1.4.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)

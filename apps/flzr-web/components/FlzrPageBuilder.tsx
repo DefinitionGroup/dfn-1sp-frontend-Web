@@ -537,14 +537,16 @@ export function PageBuilder({
 
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <OneSpScope groupId={group._id}>
-                  <CanonicalOneSpPageBuilder
-                    content={group.content}
-                    language={language}
-                    channel={dataChannel}
-                    groupDepth={1}
-                  />
-                </OneSpScope>
+                <div className="container mx-auto">
+                  <OneSpScope groupId={group._id} fullWidth>
+                    <CanonicalOneSpPageBuilder
+                      content={group.content}
+                      language={language}
+                      channel={dataChannel}
+                      groupDepth={1}
+                    />
+                  </OneSpScope>
+                </div>
               </ErrorBoundary>
             );
           }

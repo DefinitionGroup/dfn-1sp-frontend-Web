@@ -35,6 +35,14 @@ export default defineType({
             group: 'content',
         }),
         defineField({
+            name: 'sectionSubtitle',
+            title: 'Section Subheadline',
+            type: 'text',
+            rows: 2,
+            description: 'Optional supporting line displayed below the section title.',
+            group: 'content',
+        }),
+        defineField({
             name: 'locations',
             title: 'Locations',
             type: 'array',

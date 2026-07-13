@@ -465,8 +465,7 @@ function Button2({
         />
       )}
 
-      {((v === "strands" || v === "violet" || v === "glass") &&
-        hasActivatedStrands) && (
+      {(v === "strands" || v === "violet" || v === "glass") && (
         <motion.div
           className={cn(
             "pointer-events-none absolute -inset-x-3 -inset-y-2 z-0 overflow-hidden rounded-[inherit]",
@@ -486,10 +485,10 @@ function Button2({
                   }
           }
           transition={{
-            opacity: { duration: hovered ? 0.32 : 0.22, ease: "easeOut" },
+            opacity: { duration: hovered ? 0.42 : 0.24, ease: "easeOut" },
             clipPath: {
-              duration: hovered ? 0.52 : 0.24,
-              ease: [0.22, 1, 0.36, 1],
+              duration: hovered ? 0.72 : 0.28,
+              ease: [0.25, 0.8, 0.25, 1],
             },
           }}
           style={
@@ -498,27 +497,29 @@ function Button2({
               : { x: strandsX, y: strandsY, willChange: "transform, opacity, clip-path" }
           }
         >
-          {reducedMotion ? (
-            <div className="h-full w-full bg-[linear-gradient(110deg,#131019,#7c5cff_55%,#131019)]" />
-          ) : (
-            <Strands
-              active={hovered}
-              colors={["#7C5CFF", "#D6CCFF", "#FFFFFF"]}
-              count={2}
-              speed={0.95}
-              amplitude={0.8}
-              waviness={1.55}
-              thickness={0.72}
-              glow={3.4}
-              taper={2.4}
-              spread={1.05}
-              intensity={0.95}
-              saturation={1.35}
-              opacity={1}
-              scale={5}
-              glass={false}
-            />
-          )}
+          {hasActivatedStrands ? (
+            reducedMotion ? (
+              <div className="h-full w-full bg-[linear-gradient(110deg,#131019,#7c5cff_55%,#131019)]" />
+            ) : (
+              <Strands
+                active={hovered}
+                colors={["#7C5CFF", "#D6CCFF", "#FFFFFF"]}
+                count={2}
+                speed={0.95}
+                amplitude={0.8}
+                waviness={1.55}
+                thickness={0.72}
+                glow={3.4}
+                taper={2.4}
+                spread={1.05}
+                intensity={0.95}
+                saturation={1.35}
+                opacity={1}
+                scale={5}
+                glass={false}
+              />
+            )
+          ) : null}
         </motion.div>
       )}
 

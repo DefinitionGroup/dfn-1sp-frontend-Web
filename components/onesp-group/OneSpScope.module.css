@@ -55,6 +55,11 @@
   font-family: var(--font-aspekta), sans-serif;
 }
 
+.fullWidth {
+  width: 100%;
+  max-width: none;
+}
+
 .root,
 .root :global(*) {
   box-sizing: border-box;

@@ -202,7 +202,7 @@ async function FlzrFooter({
   ];
 
   return (
-    <footer className="overflow-hidden bg-flzr-ink px-4 text-flzr-paper md:px-7">
+    <footer className="container mx-auto mb-12 w-[calc(100%-0.5rem)] overflow-hidden rounded-4xl bg-flzr-ink px-4 text-flzr-paper md:px-7">
       <div className="mx-auto max-w-[1480px] border-t border-white/15">
         <div className="grid gap-10 py-10 md:grid-cols-12 md:py-14">
           <div className="md:col-span-6 lg:col-span-5">

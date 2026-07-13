@@ -9,7 +9,12 @@ interface GlobeComponentProps {
 }
 
 function GlobeComponent({ data }: GlobeComponentProps) {
-  const { locations = [], sectionTitle, navPointName } = data || {};
+  const {
+    locations = [],
+    sectionTitle,
+    sectionSubtitle,
+    navPointName,
+  } = data || {};
 
   if (!locations || locations.length === 0) {
     return (
@@ -75,21 +80,26 @@ function GlobeComponent({ data }: GlobeComponentProps) {
     rings: 1,
     maxRings: 3,
     initialPosition: {
-      lat: 40,
+      lat: 50,
       lng: 10,
     },
-    autoRotate: true,
+    autoRotate: false,
     autoRotateSpeed: 0.15,
+    verticalOffset: 1 / 3,
   };
 
   return (
-    <section id={sectionId} {...navPointDataAttr} className="relative w-full">
+    <section
+      id={sectionId}
+      {...navPointDataAttr}
+      className="container relative mx-auto overflow-hidden rounded-4xl"
+    >
       <GlobalDataComponent
         arcs={arcs}
         globeConfig={globeConfig}
         title={sectionTitle || "Our Locations"}
-        //description={`Connecting ${locations.length} location${locations.length !== 1 ? "s" : ""} around the world.`}
-        description="" 
+        description={sectionSubtitle}
+        backgroundTone="muted"
       />
     </section>
   );

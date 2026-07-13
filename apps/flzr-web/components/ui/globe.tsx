@@ -1,9 +1,19 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Color, Scene, PerspectiveCamera, Vector3, Group } from "three";
+import {
+  BufferAttribute,
+  BufferGeometry,
+  CanvasTexture,
+  Color,
+  Group,
+  PerspectiveCamera,
+  Scene,
+  Vector3,
+} from "three";
 import ThreeGlobe from "three-globe";
 import { useThree, Canvas, extend, useFrame } from "@react-three/fiber";
 import { Html, OrbitControls } from "@react-three/drei";
+import { cellToChildren, cellToLatLng, polygonToCells } from "h3-js";
 import countries from "@/data/globe.json";
 declare module "@react-three/fiber" {
   interface ThreeElements {
@@ -17,16 +27,22 @@ extend({ ThreeGlobe: ThreeGlobe });
 
 const RING_PROPAGATION_SPEED = 1;
 const aspect = 1;
-const CAMERA_TARGET = new Vector3(0, 30, 0);
-/* Closer than the previous ~189 — tighter framing of the globe */
-const CAMERA_RADIUS = 150;
-const DEFAULT_VIEW = { lat: 40, lng: 10 };
+const CAMERA_TARGET = new Vector3(0, 0, 0);
+const CAMERA_RADIUS = 165;
+const DEFAULT_VIEW = { lat: 50, lng: 10 };
+const LAND_DOT_BASE_RESOLUTION = 4;
+const LAND_DOT_DENSITY_MULTIPLIER = 2;
+const LAND_DOT_SIZE_MULTIPLIER = 0.75;
+const LAND_DOT_BASE_SIZE = 0.32;
+const LAND_DOT_SIZE = LAND_DOT_BASE_SIZE * LAND_DOT_SIZE_MULTIPLIER;
+const LAND_DOT_ALTITUDE = 0.002;
+const LAND_DOT_CHILD_INDICES = [1, 4] as const;
 
-/** Camera position facing a lat/lng point (matches this globe's render
- *  orientation — verified empirically, theta = lng + 180°) */
+/** Camera position facing a lat/lng point using ThreeGlobe's coordinate
+ *  orientation, so the configured location lands in the opening view. */
 function latLngToCameraPosition(lat: number, lng: number, radius: number) {
   const phi = ((90 - lat) * Math.PI) / 180;
-  const theta = ((lng + 180) * Math.PI) / 180;
+  const theta = ((90 - lng) * Math.PI) / 180;
   return [
     radius * Math.sin(phi) * Math.cos(theta),
     radius * Math.cos(phi),
@@ -69,6 +85,7 @@ export type GlobeConfig = {
   };
   autoRotate?: boolean;
   autoRotateSpeed?: number;
+  verticalOffset?: number;
 };
 
 interface WorldProps {
@@ -78,6 +95,103 @@ interface WorldProps {
 
 const numbersOfRings = [0];
 const GLOBE_RADIUS = 100;
+
+type GlobeFeatureGeometry = {
+  type: "Polygon" | "MultiPolygon";
+  coordinates: number[][][] | number[][][][];
+};
+
+function buildLandDotPositions() {
+  const baseCells = new Set<string>();
+
+  for (const feature of countries.features) {
+    const geometry = feature.geometry as GlobeFeatureGeometry;
+    const polygons =
+      geometry.type === "Polygon"
+        ? [geometry.coordinates as number[][][]]
+        : (geometry.coordinates as number[][][][]);
+
+    for (const polygon of polygons) {
+      for (const cell of polygonToCells(
+        polygon,
+        LAND_DOT_BASE_RESOLUTION,
+        true
+      )) {
+        baseCells.add(cell);
+      }
+    }
+  }
+
+  const cells = Array.from(baseCells);
+  const positions = new Float32Array(
+    cells.length * LAND_DOT_DENSITY_MULTIPLIER * 3
+  );
+  let positionIndex = 0;
+
+  const addCellPosition = (cell: string) => {
+    const [lat, lng] = cellToLatLng(cell);
+    const position = latLngToVector3(lat, lng, LAND_DOT_ALTITUDE);
+    positions[positionIndex] = position.x;
+    positions[positionIndex + 1] = position.y;
+    positions[positionIndex + 2] = position.z;
+    positionIndex += 3;
+  };
+
+  for (const cell of cells) {
+    const children = cellToChildren(cell, LAND_DOT_BASE_RESOLUTION + 1);
+    for (const childIndex of LAND_DOT_CHILD_INDICES) {
+      addCellPosition(children[childIndex]);
+    }
+  }
+
+  return positions;
+}
+
+function LandDotPattern({ color }: { color: string }) {
+  const positions = useMemo(() => buildLandDotPositions(), []);
+  const geometry = useMemo(() => {
+    const nextGeometry = new BufferGeometry();
+    nextGeometry.setAttribute("position", new BufferAttribute(positions, 3));
+    return nextGeometry;
+  }, [positions]);
+  const texture = useMemo(() => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 32;
+    canvas.height = 32;
+    const context = canvas.getContext("2d");
+
+    if (context) {
+      context.fillStyle = "#ffffff";
+      context.beginPath();
+      context.arc(16, 16, 15, 0, Math.PI * 2);
+      context.fill();
+    }
+
+    return new CanvasTexture(canvas);
+  }, []);
+
+  useEffect(
+    () => () => {
+      geometry.dispose();
+      texture.dispose();
+    },
+    [geometry, texture]
+  );
+
+  return (
+    <points geometry={geometry}>
+      <pointsMaterial
+        alphaTest={0.5}
+        color={color}
+        depthWrite={false}
+        map={texture}
+        size={LAND_DOT_SIZE}
+        sizeAttenuation
+        transparent
+      />
+    </points>
+  );
+}
 
 export function Globe({ globeConfig, data }: WorldProps) {
   const globeRef = useRef<ThreeGlobe | null>(null);
@@ -168,14 +282,9 @@ export function Globe({ globeConfig, data }: WorldProps) {
     );
 
     globeRef.current
-      .hexPolygonsData(countries.features)
-      .hexPolygonResolution(4)
-      .hexPolygonMargin(0.55)
-      .hexPolygonUseDots(true)
       .showAtmosphere(defaultProps.showAtmosphere)
       .atmosphereColor(defaultProps.atmosphereColor)
-      .atmosphereAltitude(defaultProps.atmosphereAltitude)
-      .hexPolygonColor(() => defaultProps.polygonColor);
+      .atmosphereAltitude(defaultProps.atmosphereAltitude);
 
     globeRef.current
       .arcsData(data)
@@ -196,7 +305,7 @@ export function Globe({ globeConfig, data }: WorldProps) {
       .pointColor((e) => (e as { color: string }).color)
       .pointsMerge(true)
       .pointAltitude(0.0)
-      .pointRadius(2);
+      .pointRadius((e) => (e as { size: number }).size);
 
     globeRef.current
       .ringsData([])
@@ -320,7 +429,7 @@ function ArcLabels({ data }: Pick<WorldProps, "data">) {
           }}
           position={point.position}
           center
-          distanceFactor={120}
+          distanceFactor={45}
           style={{
             color: "#ffffff",
             fontWeight: 600,
@@ -351,14 +460,31 @@ export function WebGLRendererConfig() {
   return null;
 }
 
-function CameraAspectController() {
+function CameraAspectController({
+  verticalOffset,
+}: {
+  verticalOffset: number;
+}) {
   const { camera, size } = useThree();
 
   useEffect(() => {
     const perspectiveCamera = camera as PerspectiveCamera;
     perspectiveCamera.aspect = size.width / size.height;
-    perspectiveCamera.updateProjectionMatrix();
-  }, [camera, size]);
+    perspectiveCamera.clearViewOffset();
+
+    if (verticalOffset !== 0) {
+      perspectiveCamera.setViewOffset(
+        size.width,
+        size.height,
+        0,
+        -size.height * verticalOffset,
+        size.width,
+        size.height
+      );
+    } else {
+      perspectiveCamera.updateProjectionMatrix();
+    }
+  }, [camera, size, verticalOffset]);
 
   return null;
 }
@@ -388,11 +514,14 @@ export function World(props: WorldProps) {
   return (
     <Canvas scene={scene} camera={new PerspectiveCamera(50, aspect, 0.1, 2000)}>
       <WebGLRendererConfig />
-      <CameraAspectController />
+      <CameraAspectController
+        verticalOffset={globeConfig.verticalOffset ?? 0}
+      />
       <CameraInitialView initialPosition={globeConfig.initialPosition} />
       <ambientLight color={globeConfig.ambientLight} intensity={1.8} />
 
       <Globe {...props} />
+      <LandDotPattern color={globeConfig.polygonColor ?? "#7c5cff"} />
       <ArcLabels data={data} />
       {/* enableZoom=false: distance is pinned anyway (min === max), and a
           wheel listener here would swallow page scrolling over the globe */}
