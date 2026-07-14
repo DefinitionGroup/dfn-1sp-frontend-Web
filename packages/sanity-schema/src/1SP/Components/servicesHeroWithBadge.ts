@@ -123,11 +123,20 @@ export default defineType({
 
         // CTA section
         defineField({
+            name: "showCta",
+            title: "Show CTA",
+            type: "boolean",
+            description: "Toggle the CTA content on or off.",
+            initialValue: true,
+            group: "cta",
+        }),
+        defineField({
             name: "cta",
             title: "CTA Component",
             type: "ctaMiniComponent",
             description: "Call-to-action section",
             group: "cta",
+            hidden: ({ parent }) => parent?.showCta === false,
         }),
 
         // List items

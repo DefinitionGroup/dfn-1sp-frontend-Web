@@ -55,15 +55,15 @@ function CasesIntro({
                 delay={0.19}
                 staggerDelay={0.03}
                 distance={100}
-                className="md:max-w-3/4 lg:max-w-2/4"
+                className="w-full md:w-2/3"
               >
                 {hasVisibleText(title) ? (
-                  <TitleTag className="text-3xl md:text-4xl leading-none text-neutral-700 pb-3 font-aspekta font-medium">
+                  <TitleTag className="text-3xl md:text-4xl leading-none text-msm-cyan pb-3 font-aspekta font-medium">
                     {title}
                   </TitleTag>
                 ) : null}
                 {hasVisibleText(subtitle) && (
-                  <h2 className="text-3xl  md:text-4xl leading-none text-neutral-400 pb-3 font-aspekta">
+                  <h2 className="text-xl md:text-2xl leading-tight text-white pb-3 font-aspekta">
                     {subtitle}
                   </h2>
                 )}

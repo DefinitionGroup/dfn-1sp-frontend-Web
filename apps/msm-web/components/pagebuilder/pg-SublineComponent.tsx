@@ -59,7 +59,7 @@ function SublineComponent({
           {/* Description + CTAs */}
           <div className="flex flex-col items-start gap-8 justify-center w-full">
             {description && (
-              <p className="text-xs leading-normal text-neutral-800 font-aspekta font-normal">
+              <p className="text-xs leading-normal text-white font-aspekta font-normal">
                 {description}
               </p>
             )}

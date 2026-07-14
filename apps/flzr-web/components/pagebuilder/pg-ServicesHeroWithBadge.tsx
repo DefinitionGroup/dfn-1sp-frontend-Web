@@ -32,6 +32,7 @@ interface ServicesHeroWithBadgeProps {
   title: string;
   titleTag?: "h1" | "h2";
   subtitle?: string;
+  showCta?: boolean;
   cta?: {
     heading: string;
     paragraph?: string;
@@ -65,6 +66,7 @@ function ServicesHeroWithBadge({
   title,
   titleTag = "h2",
   subtitle,
+  showCta = true,
   cta,
   listItems = [],
   minHeight = "66vh",
@@ -77,6 +79,7 @@ function ServicesHeroWithBadge({
 
   const sectionId = t.ids.top;
   const TitleTag = titleTag === "h1" ? "h1" : "h2";
+  const shouldShowCta = showCta && Boolean(cta);
 
   return (
     <section
@@ -118,7 +121,7 @@ function ServicesHeroWithBadge({
           </div>
 
           {/* CTA Section - Improved responsive layout */}
-          {cta && (
+          {shouldShowCta && cta && (
             <div className="col-span-4 sm:col-span-3 md:col-span-2 md:col-start-3 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 text-white mt-6 md:mt-8">
               <CtaMiniComponent
                 heading={cta.heading}
@@ -137,7 +140,7 @@ function ServicesHeroWithBadge({
 
           {/* List Items - Improved responsive layout */}
           {listItems && listItems.length > 0 && (
-            <div className={`col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 ${cta ? "md:col-span-4 md:col-start-5" : "md:col-span-8 md:col-start-3"} mt-6 md:mt-8`}>
+            <div className={`col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 ${shouldShowCta ? "md:col-span-4 md:col-start-5" : "md:col-span-8 md:col-start-3"} mt-6 md:mt-8`}>
               <ListContainerComponent>
                 {listItems.map((item, index) => (
                   <ListItemComponent
