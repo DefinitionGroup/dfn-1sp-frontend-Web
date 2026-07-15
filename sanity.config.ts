@@ -34,6 +34,48 @@ const CHANNELS = WEBSITE_CHANNELS.map((id) => ({
   languages: SITE_CONFIGS[id].locales,
 }));
 
+const LANGUAGE_FIELD_OPTIONS = SUPPORTED_LANGUAGES.map((language) => ({
+  title: language.title,
+  value: language.id,
+}));
+
+/**
+ * Content Agent reads the deployed document schema, not only the Studio plugin
+ * configuration. Expose the shared locale matrix on every translated
+ * document's language field so EN/DE/PL are unambiguous to Dashboard tools.
+ */
+const schemaTypesWithLanguageOptions = schema.types.map((schemaType: any) => {
+  if (
+    !TRANSLATABLE_SCHEMA_TYPES.includes(schemaType.name) ||
+    !Array.isArray(schemaType.fields)
+  ) {
+    return schemaType;
+  }
+
+  return {
+    ...schemaType,
+    ...(schemaType.i18n
+      ? {
+          i18n: {
+            ...schemaType.i18n,
+            languages: [...SUPPORTED_LANGUAGES],
+          },
+        }
+      : {}),
+    fields: schemaType.fields.map((field: any) =>
+      field.name === 'language'
+        ? {
+            ...field,
+            options: {
+              ...field.options,
+              list: LANGUAGE_FIELD_OPTIONS,
+            },
+          }
+        : field,
+    ),
+  };
+});
+
 // Helper to generate templates
 const generateTemplates = (excludeBase = false) => {
   const templates: any[] = [];
@@ -157,7 +199,7 @@ export default defineConfig({
   projectId,
   dataset,
   schema: {
-    types: schema.types,
+    types: schemaTypesWithLanguageOptions,
     // Add all templates to the array
     templates: (prev) => [
       ...prev,
