@@ -43,9 +43,24 @@ const SITE_DESCRIPTION =
 
 // Localized breadcrumb labels
 const BREADCRUMB_LABELS: Record<string, Record<string, string>> = {
-  en: { home: "Home", cases: "Cases", services: "Services", contact: "Contact" },
-  de: { home: "Startseite", cases: "Projekte", services: "Leistungen", contact: "Kontakt" },
-  es: { home: "Inicio", cases: "Casos", services: "Servicios", contact: "Contacto" },
+  en: {
+    home: "Home",
+    cases: "Cases",
+    services: "Services",
+    contact: "Contact",
+  },
+  de: {
+    home: "Startseite",
+    cases: "Projekte",
+    services: "Leistungen",
+    contact: "Kontakt",
+  },
+  es: {
+    home: "Inicio",
+    cases: "Casos",
+    services: "Servicios",
+    contact: "Contacto",
+  },
 };
 
 // =============================================================================
@@ -84,7 +99,11 @@ interface LocationForSchema {
  * rendering React component" only applies to executable scripts, which are
  * never run when client-rendered.
  */
-export function JsonLdScript({ data }: { data: JsonLdEntity | JsonLdEntity[] }) {
+export function JsonLdScript({
+  data,
+}: {
+  data: JsonLdEntity | JsonLdEntity[];
+}) {
   return (
     <script
       type="application/ld+json"
@@ -105,10 +124,12 @@ export function getBreadcrumbLabel(locale: string, key: string): string {
 }
 
 function toSchemaFragment(value: string): string {
-  return value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "") || "item";
+  return (
+    value
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "item"
+  );
 }
 
 // =============================================================================
@@ -182,7 +203,9 @@ export function generateHomepageJsonLd(options: {
  *
  * SEO Impact: Breadcrumb rich results in Google Search
  */
-export function generateBreadcrumbJsonLd(items: BreadcrumbItem[]): JsonLdEntity {
+export function generateBreadcrumbJsonLd(
+  items: BreadcrumbItem[],
+): JsonLdEntity {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -215,8 +238,15 @@ export function generateCaseStudyJsonLd(options: {
   units?: Array<{ name: string }> | null;
 }): JsonLdEntity {
   const {
-    title, slug, description, locale,
-    imageUrl, publishedAt, clientName, services, units,
+    title,
+    slug,
+    description,
+    locale,
+    imageUrl,
+    publishedAt,
+    clientName,
+    services,
+    units,
   } = options;
 
   const pageUrl = `${CANONICAL_URL}/cases/${slug}`;
@@ -233,7 +263,11 @@ export function generateCaseStudyJsonLd(options: {
       image: { "@type": "ImageObject", url: imageUrl },
     }),
     ...(publishedAt && { datePublished: publishedAt }),
-    author: { "@type": "Organization", "@id": `${CANONICAL_URL}/#organization`, name: SITE_NAME },
+    author: {
+      "@type": "Organization",
+      "@id": `${CANONICAL_URL}/#organization`,
+      name: SITE_NAME,
+    },
     publisher: {
       "@type": "Organization",
       "@id": `${CANONICAL_URL}/#organization`,
@@ -345,8 +379,9 @@ export function generateServiceCatalogJsonLd(options: {
   } = options;
 
   const catalogId = id || `${url}#service-catalog`;
-  const serviceIds = services.map((service, index) =>
-    `${catalogId}-service-${index + 1}-${toSchemaFragment(service.name)}`
+  const serviceIds = services.map(
+    (service, index) =>
+      `${catalogId}-service-${index + 1}-${toSchemaFragment(service.name)}`,
   );
 
   return {
@@ -386,9 +421,10 @@ export function generateLocalBusinessJsonLd(options: {
   locations?: LocationForSchema[] | null;
   socialLinks?: Array<{ url: string }> | null;
 }): JsonLdEntity {
-  const locations = options.locations?.filter(
-    (location) => location?.name || location?.address
-  ) || [];
+  const locations =
+    options.locations?.filter(
+      (location) => location?.name || location?.address,
+    ) || [];
 
   const baseBusiness = {
     "@type": ["LocalBusiness", "ProfessionalService", "MarketingAgency"],
@@ -412,10 +448,12 @@ export function generateLocalBusinessJsonLd(options: {
     "@context": "https://schema.org",
     "@graph": locations.map((location, index) => ({
       "@id": `${CANONICAL_URL}/#local-business-${index + 1}-${toSchemaFragment(
-        location.name || location.address || "location"
+        location.name || location.address || "location",
       )}`,
       ...baseBusiness,
-      ...(location.name && { branchOf: { "@id": `${CANONICAL_URL}/#organization` } }),
+      ...(location.name && {
+        branchOf: { "@id": `${CANONICAL_URL}/#organization` },
+      }),
       ...(location.name && { name: `${SITE_NAME} ${location.name}` }),
       ...(location.address && {
         address: {
@@ -480,7 +518,8 @@ export function generateBusinessUnitJsonLd(options: {
   email?: string | null;
   coordinates?: { lat: number; lon: number } | null;
 }): JsonLdEntity {
-  const { name, description, logoUrl, address, phone, email, coordinates } = options;
+  const { name, description, logoUrl, address, phone, email, coordinates } =
+    options;
 
   return {
     "@type": "Organization",
@@ -488,15 +527,16 @@ export function generateBusinessUnitJsonLd(options: {
     ...(description && { description }),
     ...(logoUrl && { logo: logoUrl }),
     parentOrganization: { "@id": `${CANONICAL_URL}/#organization` },
-    ...(address && (address.street || address.city) && {
-      address: {
-        "@type": "PostalAddress",
-        ...(address.street && { streetAddress: address.street }),
-        ...(address.postalCode && { postalCode: address.postalCode }),
-        ...(address.city && { addressLocality: address.city }),
-        ...(address.country && { addressCountry: address.country }),
-      },
-    }),
+    ...(address &&
+      (address.street || address.city) && {
+        address: {
+          "@type": "PostalAddress",
+          ...(address.street && { streetAddress: address.street }),
+          ...(address.postalCode && { postalCode: address.postalCode }),
+          ...(address.city && { addressLocality: address.city }),
+          ...(address.country && { addressCountry: address.country }),
+        },
+      }),
     ...(phone && { telephone: phone }),
     ...(email && { email }),
     ...(coordinates && {
@@ -628,9 +668,19 @@ export function extractCaseItemsFromContent(
     switch (block._type) {
       // SmartCarousel: selectedCases are fully dereferenced in GROQ
       case "smartCarousel": {
-        if (block.selectionMode === "manual" && Array.isArray(block.selectedCases)) {
+        if (
+          block.selectionMode === "manual" &&
+          Array.isArray(block.selectedCases)
+        ) {
           for (const cs of block.selectedCases) {
             if (!cs?.title || !cs?.slug?.current) continue;
+            const localizedCase = allCases?.find(
+              (candidate) => candidate.slug === cs.slug.current,
+            );
+            if (localizedCase) {
+              addItem(localizedCase);
+              continue;
+            }
             addItem({
               title: cs.title,
               slug: cs.slug.current,
@@ -648,10 +698,20 @@ export function extractCaseItemsFromContent(
       // CasesGalleryFiltered / WithPagination: selectedCases dereferenced via GROQ projection
       case "casesGalleryFiltered":
       case "casesGalleryFilteredWithPagination": {
-        if (block.selectionMode === "manual" && Array.isArray(block.selectedCases)) {
+        if (
+          block.selectionMode === "manual" &&
+          Array.isArray(block.selectedCases)
+        ) {
           for (const cs of block.selectedCases) {
             // Dereferenced via GROQ: { _id, title, slug: { current }, description, mainImageUrl }
             if (!cs?.title || !cs?.slug?.current) continue;
+            const localizedCase = allCases?.find(
+              (candidate) => candidate.slug === cs.slug.current,
+            );
+            if (localizedCase) {
+              addItem(localizedCase);
+              continue;
+            }
             addItem({
               title: cs.title,
               slug: cs.slug.current,
@@ -669,6 +729,21 @@ export function extractCaseItemsFromContent(
   }
 
   return items;
+}
+
+/** True when a page contains any case-listing block, manual or automatic. */
+export function hasCaseListingBlocks(
+  contentBlocks: any[] | null | undefined,
+): boolean {
+  return Boolean(
+    contentBlocks?.some((block) =>
+      [
+        "smartCarousel",
+        "casesGalleryFiltered",
+        "casesGalleryFilteredWithPagination",
+      ].includes(block?._type),
+    ),
+  );
 }
 
 /**
@@ -700,7 +775,9 @@ export function hasServicesGalleryBlock(
 ): boolean {
   if (!contentBlocks || !Array.isArray(contentBlocks)) return false;
 
-  return contentBlocks.some((block) => block?._type === "servicesGalleryFiltered");
+  return contentBlocks.some(
+    (block) => block?._type === "servicesGalleryFiltered",
+  );
 }
 
 /**
@@ -725,8 +802,8 @@ export function mapServicesToCatalogItems(
         null,
       groupNames: Array.isArray(service.servicegrouprel)
         ? service.servicegrouprel
-          .map((group: any) => group?.name)
-          .filter(Boolean)
+            .map((group: any) => group?.name)
+            .filter(Boolean)
         : [],
     }));
 }
@@ -799,7 +876,10 @@ export function extractPeopleFromContent(
   };
 
   const extractFromBlock = (block: any) => {
-    if (block?._type === "galleryPeopleStep" && Array.isArray(block.teamMembers)) {
+    if (
+      block?._type === "galleryPeopleStep" &&
+      Array.isArray(block.teamMembers)
+    ) {
       for (const member of block.teamMembers) addPerson(member);
     }
   };
@@ -880,7 +960,8 @@ export function extractUnitsFromContent(
     if (!block?._type) continue;
 
     if (
-      (block._type === "unitLogoGrid" || block._type === "pageBuilderLogoFloat") &&
+      (block._type === "unitLogoGrid" ||
+        block._type === "pageBuilderLogoFloat") &&
       Array.isArray(block.selectedUnits)
     ) {
       for (const unit of block.selectedUnits) addUnit(unit);

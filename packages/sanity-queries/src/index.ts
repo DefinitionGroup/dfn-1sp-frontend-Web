@@ -33,6 +33,7 @@ import { cache } from "react";
 import { sanityFetch } from "./fetch";
 import { defineQuery } from "next-sanity";
 import { getChannelFromEnv } from "@1sp/site-config";
+import type { NavbarMenu } from "@1sp/sanity-types/menu";
 
 const INTERACTIVE_CAROUSEL_FIELD_MAP = {
   "1spWeb": "connectedDataCarouselPromo1SP",
@@ -157,6 +158,76 @@ const GLOBAL_DATA_QUERY = defineQuery(/* groq */ `{
   "hasServices": count(*[_type == "services" && language == $language]) > 0
 }`);
 
+const LOCALIZED_NAVIGATION_QUERY = defineQuery(/* groq */ `{
+  "exactMenu": *[
+    _type == "menu" &&
+    menuType == "Navbar" &&
+    channel == $channel &&
+    language == $language
+  ][0]{
+    _id,
+    title,
+    menuType,
+    imageCloud,
+    "logoUrl": imageCloud.secure_url,
+    menuItems[]{
+      _key,
+      displayName,
+      "page": page->{
+        _id,
+        title,
+        language,
+        channel,
+        slug
+      }
+    }
+  },
+  "sourceMenu": *[
+    _type == "menu" &&
+    menuType == "Navbar" &&
+    channel == $channel &&
+    language == $sourceLanguage
+  ][0]{
+    _id,
+    title,
+    menuType,
+    imageCloud,
+    "logoUrl": imageCloud.secure_url,
+    menuItems[]{
+      _key,
+      displayName,
+      "page": page->{
+        _id,
+        title,
+        language,
+        channel,
+        slug
+      }
+    }
+  },
+  "translationFamilies": *[
+    _type == "translation.metadata" &&
+    "page" in schemaTypes
+  ]{
+    translations[]{
+      "value": value->{
+        _id,
+        _type,
+        title,
+        language,
+        channel,
+        slug,
+        isHomepage
+      }
+    }
+  },
+  "availableLocales": *[
+    _type == "page" &&
+    channel == $channel &&
+    isHomepage == true
+  ].language
+}`);
+
 // =============================================================================
 // TYPES
 // =============================================================================
@@ -213,6 +284,38 @@ export interface GlobalData {
   hasServices: boolean;
 }
 
+type NavigationPage = {
+  _id: string;
+  title?: string | null;
+  language?: string | null;
+  channel?: string | null;
+  slug?: { current?: string | null } | null;
+};
+
+type NavigationMenu = Omit<NavbarMenu, "menuItems"> & {
+  menuItems?: Array<{
+    _key: string;
+    displayName?: string | null;
+    page?: NavigationPage | null;
+  }>;
+};
+
+type TranslationFamily = {
+  translations?: Array<{ value?: NavigationPage | null }>;
+};
+
+type LocalizedNavigationQueryResult = {
+  exactMenu?: NavigationMenu | null;
+  sourceMenu?: NavigationMenu | null;
+  translationFamilies?: TranslationFamily[] | null;
+  availableLocales?: Array<string | null> | null;
+};
+
+export interface LocalizedNavigationData {
+  menu: NavbarMenu | null;
+  availableLocales: string[];
+}
+
 // =============================================================================
 // CACHED DATA FETCHING FUNCTIONS
 // =============================================================================
@@ -239,13 +342,101 @@ export const getGlobalData = cache(
       tags: ["global"],
     });
 
-    return (data as GlobalData) || {
-      nav: null,
-      footer: null,
-      hasCaseStudies: false,
-      hasServices: false,
+    return (
+      (data as GlobalData) || {
+        nav: null,
+        footer: null,
+        hasCaseStudies: false,
+        hasServices: false,
+      }
+    );
+  },
+);
+
+/**
+ * Resolve a language-safe navbar for a channel.
+ *
+ * If a localized menu document does not exist yet, the source-language menu
+ * supplies ordering only. Every referenced page is mapped through its
+ * translation family and missing translations are omitted. This prevents an
+ * English page reference from leaking into a German or Polish navbar while
+ * keeping menu structure synchronized as page translations are added.
+ */
+export const getLocalizedNavigation = cache(
+  async (
+    channel: string,
+    language: string,
+    sourceLanguage = "en",
+  ): Promise<LocalizedNavigationData> => {
+    const { data } = await sanityFetch({
+      query: LOCALIZED_NAVIGATION_QUERY,
+      params: { channel, language, sourceLanguage },
+      tags: ["navigation", "translations"],
+    });
+
+    const result = (data ?? {}) as LocalizedNavigationQueryResult;
+    const baseMenu = result.exactMenu ?? result.sourceMenu ?? null;
+    const usesSourceMenu = !result.exactMenu && Boolean(result.sourceMenu);
+    const families = result.translationFamilies ?? [];
+
+    const resolvePage = (page?: NavigationPage | null) => {
+      if (!page?._id) return null;
+      if (page.language === language && page.channel === channel) return page;
+
+      const family = families.find((candidate) =>
+        candidate.translations?.some(
+          (translation) => translation.value?._id === page._id,
+        ),
+      );
+
+      return (
+        family?.translations
+          ?.map((translation) => translation.value)
+          .find(
+            (candidate) =>
+              candidate?.language === language && candidate.channel === channel,
+          ) ?? null
+      );
     };
-  }
+
+    const menu = baseMenu
+      ? {
+          _id: baseMenu._id,
+          title: baseMenu.title,
+          menuType: "Navbar" as const,
+          imageCloud: baseMenu.imageCloud,
+          logoUrl: baseMenu.logoUrl,
+          menuItems: (baseMenu.menuItems ?? []).flatMap((item) => {
+            const page = resolvePage(item.page);
+            const slug = page?.slug?.current;
+            if (!page || !slug) return [];
+
+            return [
+              {
+                _key: item._key,
+                slug,
+                title: page.title ?? undefined,
+                displayName:
+                  usesSourceMenu || item.page?.language !== language
+                    ? undefined
+                    : (item.displayName ?? undefined),
+              },
+            ];
+          }),
+        }
+      : null;
+
+    return {
+      menu,
+      availableLocales: Array.from(
+        new Set(
+          (result.availableLocales ?? []).filter((locale): locale is string =>
+            Boolean(locale),
+          ),
+        ),
+      ),
+    };
+  },
 );
 
 /**
@@ -270,7 +461,7 @@ export const getPageBySlug = cache(
     });
 
     return data;
-  }
+  },
 );
 
 /**
@@ -301,17 +492,19 @@ export const getHomePage = cache(async (channel: string, language: string) => {
  * @param channel - The channel (e.g., "1spWeb")
  * @param language - The language code
  */
-export const getCaseBySlug = cache(async (slug: string, channel: string, language: string) => {
-  const { CASE_STUDY_BY_SLUG_QUERY } = await import("./groq");
+export const getCaseBySlug = cache(
+  async (slug: string, channel: string, language: string) => {
+    const { CASE_STUDY_BY_SLUG_QUERY } = await import("./groq");
 
-  const { data } = await sanityFetch({
-    query: CASE_STUDY_BY_SLUG_QUERY,
-    params: { slug, channel, language },
-    tags: ["cases", `case:${slug}`],
-  });
+    const { data } = await sanityFetch({
+      query: CASE_STUDY_BY_SLUG_QUERY,
+      params: { slug, channel, language },
+      tags: ["cases", `case:${slug}`],
+    });
 
-  return data;
-});
+    return data;
+  },
+);
 
 /**
  * Fetch all case studies (for listings).
@@ -354,17 +547,19 @@ export const getAllServices = cache(async (language: string) => {
  * This is intentionally separate from `getAllServices()` so existing 1SP
  * pages keep their current behavior until they are migrated deliberately.
  */
-export const getAllServicesForChannel = cache(async (channel: string, language: string) => {
-  const { SERVICES_BY_CHANNEL_QUERY } = await import("./groq");
+export const getAllServicesForChannel = cache(
+  async (channel: string, language: string) => {
+    const { SERVICES_BY_CHANNEL_QUERY } = await import("./groq");
 
-  const { data } = await sanityFetch({
-    query: SERVICES_BY_CHANNEL_QUERY,
-    params: { channel, language },
-    tags: ["services"],
-  });
+    const { data } = await sanityFetch({
+      query: SERVICES_BY_CHANNEL_QUERY,
+      params: { channel, language },
+      tags: ["services"],
+    });
 
-  return data || [];
-});
+    return data || [];
+  },
+);
 
 export const getCasesForChannel = cache(
   async (channel: string, language: string, maxItems = 6) => {
@@ -377,7 +572,7 @@ export const getCasesForChannel = cache(
     });
 
     return data || [];
-  }
+  },
 );
 
 export const getServicesForChannel = cache(
@@ -391,29 +586,26 @@ export const getServicesForChannel = cache(
     });
 
     return data || [];
-  }
+  },
 );
 
 export const getSmartPeople = cache(
-  async (
-    channel: string,
-    maxItems: number,
-  ) => {
+  async (channel: string, maxItems: number) => {
     const { SMART_PEOPLE_QUERY } = await import("./groq");
 
-      const { data } = await sanityFetch({
-        query: SMART_PEOPLE_QUERY,
-        params: {
-          channel,
-          // GROQ [0...$maxItems] is exclusive, so pass the count as-is —
-          // subtracting 1 here returned one fewer person than requested.
-          maxItems: Math.max(0, maxItems),
-        },
-        tags: ["people"],
-      });
+    const { data } = await sanityFetch({
+      query: SMART_PEOPLE_QUERY,
+      params: {
+        channel,
+        // GROQ [0...$maxItems] is exclusive, so pass the count as-is —
+        // subtracting 1 here returned one fewer person than requested.
+        maxItems: Math.max(0, maxItems),
+      },
+      tags: ["people"],
+    });
 
     return data || [];
-  }
+  },
 );
 
 export const getSmartUnits = cache(
@@ -433,7 +625,7 @@ export const getSmartUnits = cache(
 
     const { data } = await sanityFetch({
       query: defineQuery(
-        SMART_UNITS_QUERY.replace("order(_createdAt desc)", sortExpression)
+        SMART_UNITS_QUERY.replace("order(_createdAt desc)", sortExpression),
       ),
       params: {
         language,
@@ -443,35 +635,39 @@ export const getSmartUnits = cache(
     });
 
     return data || [];
-  }
+  },
 );
 
-export const getUnitLogoGridUnits = cache(async (language: string, maxItems: number) => {
-  const { UNIT_LOGO_GRID_QUERY } = await import("./groq");
+export const getUnitLogoGridUnits = cache(
+  async (language: string, maxItems: number) => {
+    const { UNIT_LOGO_GRID_QUERY } = await import("./groq");
 
-  const { data } = await sanityFetch({
-    query: UNIT_LOGO_GRID_QUERY,
-    params: {
-      language,
-      maxItems: Math.max(0, maxItems - 1),
-    },
-    tags: ["units"],
-  });
+    const { data } = await sanityFetch({
+      query: UNIT_LOGO_GRID_QUERY,
+      params: {
+        language,
+        maxItems: Math.max(0, maxItems - 1),
+      },
+      tags: ["units"],
+    });
 
-  return data || [];
-});
+    return data || [];
+  },
+);
 
-export const getUnitLogoFloatUnits = cache(async (language: string, maxItems: number) => {
-  const { UNIT_LOGO_FLOAT_QUERY } = await import("./groq");
+export const getUnitLogoFloatUnits = cache(
+  async (language: string, maxItems: number) => {
+    const { UNIT_LOGO_FLOAT_QUERY } = await import("./groq");
 
-  const { data } = await sanityFetch({
-    query: UNIT_LOGO_FLOAT_QUERY,
-    params: { language, maxItems },
-    tags: ["units"],
-  });
+    const { data } = await sanityFetch({
+      query: UNIT_LOGO_FLOAT_QUERY,
+      params: { language, maxItems },
+      tags: ["units"],
+    });
 
-  return data || [];
-});
+    return data || [];
+  },
+);
 
 export const getCaseStudiesByIds = cache(
   async (ids: string[], channel?: string, language?: string) => {
@@ -479,16 +675,49 @@ export const getCaseStudiesByIds = cache(
       return [];
     }
 
-    const { CASE_STUDIES_BY_IDS_QUERY } = await import("./groq");
+    const { CASE_STUDIES_BY_IDS_QUERY, CASE_TRANSLATION_MAPPINGS_QUERY } =
+      await import("./groq");
+
+    const resolvedIds = language
+      ? await (async () => {
+          const { data: mappings } = await sanityFetch({
+            query: CASE_TRANSLATION_MAPPINGS_QUERY,
+            params: { ids, language },
+            tags: ["cases", "translations"],
+          });
+          const mappingBySourceId = new Map(
+            (
+              (mappings ?? []) as Array<{
+                sourceId?: string | null;
+                translatedId?: string | null;
+              }>
+            )
+              .filter((mapping) => mapping.sourceId && mapping.translatedId)
+              .map((mapping) => [
+                mapping.sourceId as string,
+                mapping.translatedId as string,
+              ]),
+          );
+
+          return ids.map((id) => mappingBySourceId.get(id) ?? id);
+        })()
+      : ids;
 
     const { data } = await sanityFetch({
       query: CASE_STUDIES_BY_IDS_QUERY,
-      params: { ids, channel: channel ?? null, language: language ?? null },
+      params: {
+        ids: resolvedIds,
+        channel: channel ?? null,
+        language: language ?? null,
+      },
       tags: ["cases"],
     });
 
-    return data || [];
-  }
+    const caseStudies = (data ?? []) as Array<{ _id: string }>;
+    return resolvedIds
+      .map((id) => caseStudies.find((caseStudy) => caseStudy._id === id))
+      .filter(Boolean);
+  },
 );
 
 export const getInteractiveCarouselCases = cache(
@@ -509,7 +738,7 @@ export const getInteractiveCarouselCases = cache(
     });
 
     return data || [];
-  }
+  },
 );
 
 export const getInteractiveCarouselServices = cache(
@@ -523,7 +752,7 @@ export const getInteractiveCarouselServices = cache(
     });
 
     return data || [];
-  }
+  },
 );
 
 // =============================================================================
@@ -564,7 +793,14 @@ export const getAllCaseSlugs = cache(async () => {
     stega: false,
   });
 
-  return (data as Array<{ slug: string; language: string; channel?: string[]; _updatedAt: string }>) || [];
+  return (
+    (data as Array<{
+      slug: string;
+      language: string;
+      channel?: string[];
+      _updatedAt: string;
+    }>) || []
+  );
 });
 
 /**
@@ -577,8 +813,9 @@ export const getAllCaseSlugs = cache(async () => {
  *
  * Pass an explicit `channel` to override (e.g. internal tooling).
  */
-export const getAllPageSlugs = cache(async (channel: string = getChannelFromEnv()) => {
-  const PAGE_SLUGS_QUERY = defineQuery(/* groq */ `
+export const getAllPageSlugs = cache(
+  async (channel: string = getChannelFromEnv()) => {
+    const PAGE_SLUGS_QUERY = defineQuery(/* groq */ `
     *[_type == "page" && defined(slug.current) && !isHomepage && channel == $channel]{
       "slug": slug.current,
       language,
@@ -587,17 +824,23 @@ export const getAllPageSlugs = cache(async (channel: string = getChannelFromEnv(
     }
   `);
 
-  const { data } = await sanityFetch({
-    query: PAGE_SLUGS_QUERY,
-    params: { channel },
-    perspective: "published",
-    stega: false,
-  });
+    const { data } = await sanityFetch({
+      query: PAGE_SLUGS_QUERY,
+      params: { channel },
+      perspective: "published",
+      stega: false,
+    });
 
-  return (
-    (data as Array<{ slug: string; language: string; channel: string; _updatedAt: string }>) || []
-  );
-});
+    return (
+      (data as Array<{
+        slug: string;
+        language: string;
+        channel: string;
+        _updatedAt: string;
+      }>) || []
+    );
+  },
+);
 
 /**
  * Get all page slugs that should be included in sitemap.xml.
@@ -605,8 +848,9 @@ export const getAllPageSlugs = cache(async (channel: string = getChannelFromEnv(
  * Filters by the deployment's active channel — each site's sitemap only
  * includes pages belonging to its channel.
  */
-export const getAllPageSitemapSlugs = cache(async (channel: string = getChannelFromEnv()) => {
-  const PAGE_SITEMAP_SLUGS_QUERY = defineQuery(/* groq */ `
+export const getAllPageSitemapSlugs = cache(
+  async (channel: string = getChannelFromEnv()) => {
+    const PAGE_SITEMAP_SLUGS_QUERY = defineQuery(/* groq */ `
     *[
       _type == "page" &&
       defined(slug.current) &&
@@ -621,14 +865,20 @@ export const getAllPageSitemapSlugs = cache(async (channel: string = getChannelF
     }
   `);
 
-  const { data } = await sanityFetch({
-    query: PAGE_SITEMAP_SLUGS_QUERY,
-    params: { channel },
-    perspective: "published",
-    stega: false,
-  });
+    const { data } = await sanityFetch({
+      query: PAGE_SITEMAP_SLUGS_QUERY,
+      params: { channel },
+      perspective: "published",
+      stega: false,
+    });
 
-  return (
-    (data as Array<{ slug: string; language: string; channel: string; _updatedAt: string }>) || []
-  );
-});
+    return (
+      (data as Array<{
+        slug: string;
+        language: string;
+        channel: string;
+        _updatedAt: string;
+      }>) || []
+    );
+  },
+);

@@ -1,4 +1,5 @@
 import {
+  getCaseStudiesByIds,
   getInteractiveCarouselCases,
 } from "@1sp/sanity-queries";
 import SmartCarouselClient from "../pg-SmartCarousel";
@@ -38,9 +39,13 @@ export default async function SmartCarouselBlock({
   selectedCases = [],
   ...props
 }: SmartCarouselBlockProps) {
+  const selectedIds = selectedCases
+    .map((caseStudy) => caseStudy._id)
+    .filter(Boolean);
+
   const caseStudies =
     selectionMode === "manual"
-      ? selectedCases
+      ? await getCaseStudiesByIds(selectedIds, channel, language)
       : await getInteractiveCarouselCases(channel, language, maxItems);
 
   return (

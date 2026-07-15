@@ -284,7 +284,8 @@ const ONE_SP_COMPONENT_GROUP_PROJECTION = `_type == 'oneSpComponentGroupReferenc
 // unify-page-content migration ran.
 // =============================================================================
 
-export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slug && channel == $channel && language == $language][0]{
+export const PAGE_QUERY =
+  defineQuery(`*[_type == "page" && slug.current == $slug && channel == $channel && language == $language][0]{
   ...,
   content[]{
     ...,
@@ -637,7 +638,8 @@ export const PAGE_QUERY = defineQuery(`*[_type == "page" && slug.current == $slu
   }
 }`);
 
-export const HOME_PAGE_QUERY = defineQuery(`*[_type == "page" && isHomepage == true && channel == $channel && language == $language][0]{
+export const HOME_PAGE_QUERY =
+  defineQuery(`*[_type == "page" && isHomepage == true && channel == $channel && language == $language][0]{
   ...,
   content[]{
     ...,
@@ -1029,6 +1031,16 @@ export const CASE_STUDIES_BY_IDS_QUERY = defineQuery(`
   websiteUrl,
   websiteUrlText,
   publishedAt
+}
+`);
+
+export const CASE_TRANSLATION_MAPPINGS_QUERY = defineQuery(`
+*[
+  _type == "translation.metadata" &&
+  count(translations[value._ref in $ids]) > 0
+]{
+  "sourceId": translations[value._ref in $ids][0].value._ref,
+  "translatedId": translations[value->language == $language][0].value._ref
 }
 `);
 

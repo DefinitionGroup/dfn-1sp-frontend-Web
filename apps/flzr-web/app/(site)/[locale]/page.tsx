@@ -32,7 +32,7 @@ import {
   generateBreadcrumbJsonLd,
   generateItemListJsonLd,
   extractCaseItemsFromContent,
-  hasAutoCaseListingBlocks,
+  hasCaseListingBlocks,
   hasServicesGalleryBlock,
   mapCasesToItemList,
   mapServicesToCatalogItems,
@@ -126,7 +126,7 @@ export default async function Home({
   // Structured data: get social links & logo (cached — deduped with SiteWrapper)
   const globalData = await getGlobalData(DEFAULT_CHANNEL, language);
   const contentBlocks = page?.content as any[] | undefined;
-  const needsAllCases = hasAutoCaseListingBlocks(contentBlocks);
+  const needsAllCases = hasCaseListingBlocks(contentBlocks);
   const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
 
   const [allCasesRaw, allServicesRaw] = await Promise.all([

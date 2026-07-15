@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import CaseGalleryMenu from "../data/data-CaseGalleryMenu";
 import Button2 from "../ui/Button2";
 import { NavbarMenu } from "@1sp/sanity-types/menu";
+import LanguageSelector, { type LanguageOption } from "./LanguageSelector";
 
 interface CaseStudy {
   _id: string;
@@ -37,7 +38,45 @@ interface FrontNavOverlayProps {
   hasCaseStudies?: boolean;
   hasServices?: boolean;
   initialCaseStudies?: CaseStudy[];
+  languageOptions?: LanguageOption[];
 }
+
+const NAV_COPY: Record<
+  string,
+  {
+    allCases: string;
+    projects: string;
+    services: string;
+    loading: string;
+    error: string;
+    empty: string;
+  }
+> = {
+  en: {
+    allCases: "All Cases",
+    projects: "Projects",
+    services: "Services",
+    loading: "Loading cases...",
+    error: "Unable to load cases right now.",
+    empty: "No cases available right now.",
+  },
+  de: {
+    allCases: "Alle Cases",
+    projects: "Projekte",
+    services: "Leistungen",
+    loading: "Cases werden geladen...",
+    error: "Cases können gerade nicht geladen werden.",
+    empty: "Aktuell sind keine Cases verfügbar.",
+  },
+  pl: {
+    allCases: "Wszystkie realizacje",
+    projects: "Realizacje",
+    services: "Usługi",
+    loading: "Ładowanie realizacji...",
+    error: "Nie można teraz załadować realizacji.",
+    empty: "Obecnie brak dostępnych realizacji.",
+  },
+};
 
 const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   className = "",
@@ -48,22 +87,28 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   hasCaseStudies = false,
   hasServices = false,
   initialCaseStudies = [],
+  languageOptions = [],
 }) => {
   const router = useOptimizedTransitionRouter();
   const pathname = usePathname() || "";
   const [showOverlay, setShowOverlay] = React.useState(false);
-  const [caseStudies, setCaseStudies] = React.useState<CaseStudy[]>(initialCaseStudies);
+  const [caseStudies, setCaseStudies] =
+    React.useState<CaseStudy[]>(initialCaseStudies);
   const [isCasesLoading, setIsCasesLoading] = React.useState(false);
   const [hasLoadedCases, setHasLoadedCases] = React.useState(
-    initialCaseStudies.length > 0
+    initialCaseStudies.length > 0,
   );
-  const [casesLoadError, setCasesLoadError] = React.useState<string | null>(null);
+  const [casesLoadError, setCasesLoadError] = React.useState<string | null>(
+    null,
+  );
   const navRef = React.useRef<HTMLElement>(null);
+  const copy = NAV_COPY[locale] ?? NAV_COPY.en;
 
   // Scroll direction detection for show/hide navbar
   const { scrollY } = useScroll();
   const [isNavVisible, setIsNavVisible] = React.useState(true);
-  const [hasInitialAnimationCompleted, setHasInitialAnimationCompleted] = React.useState(false);
+  const [hasInitialAnimationCompleted, setHasInitialAnimationCompleted] =
+    React.useState(false);
   const lastScrollY = React.useRef(0);
 
   // Mark initial animation as complete after delay
@@ -112,7 +157,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   }, [isCaseDetailRoute, isAnyCasesRoute, color]);
 
   const [detectedTheme, setDetectedTheme] = React.useState<"light" | "dark">(
-    effectiveColor
+    effectiveColor,
   );
 
   // Keep detectedTheme in sync with effectiveColor prop
@@ -127,19 +172,19 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       const scrollY = window.scrollY;
 
       // Prevent scrolling on both html and body
-      document.documentElement.style.overflow = 'hidden';
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
       document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = '100%';
+      document.body.style.width = "100%";
 
       // Cleanup: restore scroll when overlay closes
       return () => {
-        document.documentElement.style.overflow = '';
-        document.body.style.overflow = '';
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.width = '';
+        document.documentElement.style.overflow = "";
+        document.body.style.overflow = "";
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
         window.scrollTo(0, scrollY);
       };
     }
@@ -148,12 +193,11 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   const textColor =
     detectedTheme === "dark" ? "text-neutral-800 " : "text-neutral-50 ";
   const isFlzrChannel = channel === "flizrWeb";
-  const imageLogo =
-    isFlzrChannel
-      ? "/units/FLZR/flzr_logo.svg"
-      : detectedTheme === "dark"
-        ? "/ci/1sp-fulllogotype-blk.svg"
-        : "/ci/1sp-fulllogotype.svg";
+  const imageLogo = isFlzrChannel
+    ? "/units/FLZR/flzr_logo.svg"
+    : detectedTheme === "dark"
+      ? "/ci/1sp-fulllogotype-blk.svg"
+      : "/ci/1sp-fulllogotype.svg";
   const logoUrl = imageLogo;
   const logoAlt = isFlzrChannel ? "FLZR Logo" : "1SP Logo";
   const logoClassName = [
@@ -182,15 +226,19 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
         const response = await fetch(
           `/api/cases?channel=${encodeURIComponent(channel)}&language=${encodeURIComponent(locale)}`,
-          { cache: "no-store" }
+          { cache: "no-store" },
         );
 
         if (!response.ok) {
-          throw new Error(`Cases request failed with status ${response.status}`);
+          throw new Error(
+            `Cases request failed with status ${response.status}`,
+          );
         }
 
         const payload = await response.json();
-        const data = Array.isArray(payload?.caseStudies) ? payload.caseStudies : [];
+        const data = Array.isArray(payload?.caseStudies)
+          ? payload.caseStudies
+          : [];
 
         if (!isCancelled) {
           setCaseStudies(data);
@@ -198,7 +246,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         }
       } catch (error) {
         if (!isCancelled) {
-          setCasesLoadError("Unable to load cases right now.");
+          setCasesLoadError(copy.error);
           setHasLoadedCases(true);
         }
         console.error("Error fetching case studies for overlay:", error);
@@ -214,56 +262,93 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
     return () => {
       isCancelled = true;
     };
-  }, [channel, hasLoadedCases, isCaseDetailRoute, isCasesLoading, locale, showOverlay]);
+  }, [
+    channel,
+    copy.error,
+    hasLoadedCases,
+    isCaseDetailRoute,
+    isCasesLoading,
+    locale,
+    showOverlay,
+  ]);
 
   const itemClass = `text-xs leading-compress tracking-wide font-medium mr-8 inline-block `;
+  const syncedMenuItems =
+    menuData?.menuItems && menuData.menuItems.length > 0
+      ? menuData.menuItems
+      : isFlzrChannel
+        ? [
+            ...(hasCaseStudies
+              ? [
+                  {
+                    _key: "localized-cases",
+                    slug: "cases",
+                    title: copy.projects,
+                  },
+                ]
+              : []),
+            ...(hasServices
+              ? [
+                  {
+                    _key: "localized-services",
+                    slug: "services",
+                    title: copy.services,
+                  },
+                ]
+              : []),
+          ]
+        : [];
 
   return (
     <>
       <motion.nav
-
         ref={navRef}
-        initial={{ opacity: 0, scale: 0.95, y: 0, clipPath: "inset(45% 49.9% 45% 49.9% round 48%)", backdropFilter: "blur(2px)", backgroundColor: "rgba(255, 255, 255, 1)" }}
+        initial={{
+          opacity: 0,
+          scale: 0.95,
+          y: 0,
+          clipPath: "inset(45% 49.9% 45% 49.9% round 48%)",
+          backdropFilter: "blur(2px)",
+          backgroundColor: "rgba(255, 255, 255, 1)",
+        }}
         animate={
           hasInitialAnimationCompleted
             ? {
-              opacity: isNavVisible ? 1 : 0,
-              y: isNavVisible ? 0 : -100,
-              scale: 1,
-              clipPath: "inset(0% 0% 0% 0% round 0rem)",
-              backdropFilter: "blur(12px)",
-              backgroundColor: "rgba(111,111,111, 0.4)"
-            }
+                opacity: isNavVisible ? 1 : 0,
+                y: isNavVisible ? 0 : -100,
+                scale: 1,
+                clipPath: "inset(0% 0% 0% 0% round 0rem)",
+                backdropFilter: "blur(12px)",
+                backgroundColor: "rgba(111,111,111, 0.4)",
+              }
             : {
-              opacity: [0, 1, 1],
-              scale: [2, 1, 1],
-              clipPath: [
-                "inset(49% 49% 49% 49% round 50%)", // tiny circle
-                "inset(0% 49% 0% 49% round 0rem)",       // full height pill
-                "inset(0% 49% 0% 49% round 0rem)",       // full height pill
-                "inset(0% 0% 0% 0% round 0rem)"          // full width menu
-              ],
-              backdropFilter: "blur(112px)",
-              backgroundColor: "rgba(111,111,111, 0.4)"
-            }
+                opacity: [0, 1, 1],
+                scale: [2, 1, 1],
+                clipPath: [
+                  "inset(49% 49% 49% 49% round 50%)", // tiny circle
+                  "inset(0% 49% 0% 49% round 0rem)", // full height pill
+                  "inset(0% 49% 0% 49% round 0rem)", // full height pill
+                  "inset(0% 0% 0% 0% round 0rem)", // full width menu
+                ],
+                backdropFilter: "blur(112px)",
+                backgroundColor: "rgba(111,111,111, 0.4)",
+              }
         }
         transition={
           hasInitialAnimationCompleted
             ? {
-              duration: 0.3,
-              ease: [0.4, 0, 0.2, 1]
-            }
+                duration: 0.3,
+                ease: [0.4, 0, 0.2, 1],
+              }
             : {
-              duration: 1,
-              delay: 0.7,
-            }
+                duration: 1,
+                delay: 0.7,
+              }
         }
         className={`floating-nav z-99999 rounded-full  hidden fixed top-6 left-0 backdrop-blur-md  w-fit h-16   px-6  right-0 md:grid items-center grid-cols-12 py-2 iphone-landscape:scale-70 iphone-landscape:top-2 mx-auto ${textColor} ${className}`}
       >
         <div className="col-span-2 flex items-center pr-16  justify-start">
-          <motion.div
-
-            className=" flex items-start  justify-center">
+          <motion.div className=" flex items-start  justify-center">
             <Link
               href={`/`}
               onClick={(e) => {
@@ -285,13 +370,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           </motion.div>
         </div>
 
-        <motion.div
-
-          className="col-span-7   flex items-center "
-        >
-
-
-          {menuData?.menuItems && menuData.menuItems.length > 0 ? (
+        <motion.div className="col-span-7   flex items-center ">
+          {menuData ? (
             <StaggeredSlideUp
               className="flex items-center "
               delay={1.3}
@@ -303,7 +383,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               once={true}
               animateImmediately={true}
             >
-              {menuData.menuItems
+              {syncedMenuItems
                 .filter((item) => {
                   const isCasesPage = item.slug?.includes("cases");
                   const isServicesPage = item.slug?.includes("services");
@@ -319,10 +399,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                   <span key={item._key} className={itemClass}>
                     <Link
                       className="hover:text-violet-400  transition-colors "
-                      href={`/${item.slug}`}
+                      href={`/${locale}/${item.slug}`}
                       onClick={(e) => {
                         e.preventDefault();
-                        router.push(`/${item.slug}`);
+                        router.push(`/${locale}/${item.slug}`);
                       }}
                     >
                       {item.displayName || item.title}
@@ -382,8 +462,6 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               </span>
             </>
           )}
-
-
         </motion.div>
 
         <div className="col-span-3 flex relative justify-end items-center align-start   gap-1">
@@ -394,17 +472,53 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               className={`border  min-w-[80px] inline-block py-2 px-2 text-xxs font-bold cursor-pointer hover:text-violet-400 hover:border-violet-400 transition-colors`}
               onClick={() => setShowOverlay(true)}
             >
-              All Cases
+              {copy.allCases}
             </button>
           )}
+          {languageOptions.length ? (
+            <LanguageSelector
+              currentLocale={locale}
+              options={languageOptions}
+            />
+          ) : null}
           <Button2
             variant="limesmall"
             href="https://1sp.agency"
             text="1sp.agency"
           />
         </div>
-
-
+      </motion.nav>
+      <motion.nav
+        initial={{ opacity: 0, y: -12 }}
+        animate={{ opacity: isNavVisible ? 1 : 0, y: isNavVisible ? 0 : -80 }}
+        transition={{ duration: 0.3, delay: 0.15 }}
+        className={`fixed left-3 right-3 top-3 z-99999 flex h-14 items-center justify-between rounded-full border border-white/15 bg-neutral-600/40 px-4 shadow-lg backdrop-blur-xl md:hidden ${textColor}`}
+      >
+        <Link
+          href={`/${locale}`}
+          aria-label="Home"
+          className="flex items-center"
+          onClick={(event) => {
+            event.preventDefault();
+            router.push(`/${locale}`);
+          }}
+        >
+          <Image
+            src={logoUrl}
+            alt={logoAlt}
+            width={54}
+            height={24}
+            className={logoClassName}
+            style={{ height: "auto" }}
+          />
+        </Link>
+        {languageOptions.length ? (
+          <LanguageSelector
+            currentLocale={locale}
+            options={languageOptions}
+            compact
+          />
+        ) : null}
       </motion.nav>
       {/* Cases overlay */}
       {showOverlay && (
@@ -444,7 +558,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             <div className="pb-8">
               {isCasesLoading ? (
                 <div className="px-8 py-20 text-sm text-neutral-500">
-                  Loading cases...
+                  {copy.loading}
                 </div>
               ) : casesLoadError ? (
                 <div className="px-8 py-20 text-sm text-neutral-500">
@@ -452,7 +566,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 </div>
               ) : caseStudies.length === 0 ? (
                 <div className="px-8 py-20 text-sm text-neutral-500">
-                  No cases available right now.
+                  {copy.empty}
                 </div>
               ) : (
                 <CaseGalleryMenu caseStudies={caseStudies} locale={locale} />

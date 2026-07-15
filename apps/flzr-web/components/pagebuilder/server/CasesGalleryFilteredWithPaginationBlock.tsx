@@ -41,19 +41,11 @@ export default async function CasesGalleryFilteredWithPaginationBlock({
     ? await getCaseStudiesByIds(selectedIds, channel, language)
     : await getAllCases(channel, language);
 
-  const caseStudies = isManual
-    ? selectedIds
-        .map((id) =>
-          rawCaseStudies.find((caseStudy: { _id: string }) => caseStudy._id === id),
-        )
-        .filter(Boolean)
-    : rawCaseStudies;
-
   return (
     <CasesGalleryFilteredWithPaginationClient
       {...props}
       locale={language}
-      caseStudies={caseStudies}
+      caseStudies={rawCaseStudies}
     />
   );
 }

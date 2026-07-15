@@ -1,7 +1,4 @@
-import {
-  getAllCases,
-  getCaseStudiesByIds,
-} from "@1sp/sanity-queries";
+import { getAllCases, getCaseStudiesByIds } from "@1sp/sanity-queries";
 import CasesGalleryFilteredClient from "../pg-CasesGalleryFiltered";
 
 interface SelectedCaseReference {
@@ -42,19 +39,11 @@ export default async function CasesGalleryFilteredBlock({
     ? await getCaseStudiesByIds(selectedIds, channel, language)
     : await getAllCases(channel, language);
 
-  const orderedCaseStudies = isManual
-    ? selectedIds
-        .map((id) =>
-          rawCaseStudies.find((caseStudy: { _id: string }) => caseStudy._id === id)
-        )
-        .filter(Boolean)
-    : rawCaseStudies;
-
   return (
     <CasesGalleryFilteredClient
       {...props}
       locale={language}
-      caseStudies={orderedCaseStudies}
+      caseStudies={rawCaseStudies}
     />
   );
 }

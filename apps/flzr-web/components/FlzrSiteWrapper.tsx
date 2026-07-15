@@ -5,13 +5,18 @@ import {
   getAllServicesForChannel,
   getGlobalData,
   getHomePage,
+  getLocalizedNavigation,
 } from "@1sp/sanity-queries";
-import { getSiteConfig } from "@1sp/site-config";
+import {
+  getLanguageDefinition,
+  getSiteConfig,
+  type LocaleCode,
+} from "@1sp/site-config";
 import type { PageBuilderBlock } from "@1sp/sanity-types";
 import type { FooterMenu, NavbarMenu } from "@1sp/sanity-types/menu";
 import {
   extractCaseItemsFromContent,
-  hasAutoCaseListingBlocks,
+  hasCaseListingBlocks,
   mapCasesToItemList,
 } from "@/lib/structured-data";
 import FrontNavOverlay from "./menu/FrontNavOverlay";
@@ -48,6 +53,43 @@ type FlzrSiteWrapperProps = {
 
 const CHANNEL = "flizrWeb";
 
+const FOOTER_COPY: Record<
+  string,
+  {
+    startProject: string;
+    cases: string;
+    services: string;
+    locations: string;
+    company: string;
+    companyLinks: [string, string, string, string];
+  }
+> = {
+  en: {
+    startProject: "Start a project",
+    cases: "Cases",
+    services: "Services",
+    locations: "Locations",
+    company: "Company",
+    companyLinks: ["About us", "Jobs", "Disclaimer", "Data protection"],
+  },
+  de: {
+    startProject: "Projekt starten",
+    cases: "Projekte",
+    services: "Leistungen",
+    locations: "Standorte",
+    company: "Unternehmen",
+    companyLinks: ["Über uns", "Jobs", "Impressum", "Datenschutz"],
+  },
+  pl: {
+    startProject: "Rozpocznij projekt",
+    cases: "Realizacje",
+    services: "Usługi",
+    locations: "Lokalizacje",
+    company: "Firma",
+    companyLinks: ["O nas", "Praca", "Informacje prawne", "Ochrona danych"],
+  },
+};
+
 type FooterService = {
   _id?: string;
   name: string;
@@ -70,17 +112,11 @@ function getHomepageLocations(
 
     return block.locations
       .filter((location: { name?: string }) => Boolean(location?.name))
-      .map(
-        (location: {
-          _key?: string;
-          name: string;
-          subtitle?: string;
-        }) => ({
-          _key: location._key,
-          name: location.name,
-          detail: location.subtitle,
-        }),
-      );
+      .map((location: { _key?: string; name: string; subtitle?: string }) => ({
+        _key: location._key,
+        name: location.name,
+        detail: location.subtitle,
+      }));
   });
 
   if (homepageLocations.length) return homepageLocations;
@@ -103,8 +139,8 @@ function getSelectedServices(content: PageBuilderBlock[]): FooterService[] {
       return [];
     }
 
-    return block.selectedServices.filter(
-      (service: FooterService) => Boolean(service?.name),
+    return block.selectedServices.filter((service: FooterService) =>
+      Boolean(service?.name),
     ) as FooterService[];
   });
 
@@ -164,9 +200,10 @@ async function FlzrFooter({
   homePage: { content?: PageBuilderBlock[] } | null | undefined;
 }) {
   const site = getSiteConfig(CHANNEL);
+  const copy = FOOTER_COPY[language] ?? FOOTER_COPY.en;
   const socialLinks = footer?.socialLinks ?? [];
   const content = Array.isArray(homePage?.content) ? homePage.content : [];
-  const needsAllCases = hasAutoCaseListingBlocks(content);
+  const needsAllCases = hasCaseListingBlocks(content);
   const showsAllServices = content.some(
     (block) => block._type === "servicesGalleryFiltered",
   );
@@ -195,10 +232,10 @@ async function FlzrFooter({
   )?.headline as string | undefined;
 
   const companyLinks = [
-    { label: "About us", href: `/${language}/about-us` },
-    { label: "Jobs", href: `/${language}/jobs` },
-    { label: "Disclaimer", href: `/${language}/disclaimer` },
-    { label: "Data protection", href: `/${language}/data-protection` },
+    { label: copy.companyLinks[0], href: `/${language}/about-us` },
+    { label: copy.companyLinks[1], href: `/${language}/jobs` },
+    { label: copy.companyLinks[2], href: `/${language}/disclaimer` },
+    { label: copy.companyLinks[3], href: `/${language}/data-protection` },
   ];
 
   return (
@@ -224,7 +261,7 @@ async function FlzrFooter({
               href={`/${language}/contact`}
               className="group flex w-full items-center justify-between border-b border-white/30 py-4 text-base font-semibold text-white transition-colors duration-300 hover:border-flzr-violet md:max-w-sm"
             >
-              <span>Start a project</span>
+              <span>{copy.startProject}</span>
               <span
                 aria-hidden="true"
                 className="text-xl transition-transform duration-300 group-hover:translate-x-1"
@@ -239,7 +276,7 @@ async function FlzrFooter({
           <div>
             <FooterColumnHeading
               index="01"
-              title="Cases"
+              title={copy.cases}
               href={`/${language}/cases`}
             />
             <ul className="space-y-3">
@@ -262,7 +299,7 @@ async function FlzrFooter({
           <div>
             <FooterColumnHeading
               index="02"
-              title="Services"
+              title={copy.services}
               href={`/${language}/services`}
             />
             <ul className="space-y-3">
@@ -283,10 +320,12 @@ async function FlzrFooter({
           </div>
 
           <div>
-            <FooterColumnHeading index="03" title="Locations" />
+            <FooterColumnHeading index="03" title={copy.locations} />
             <ul className="space-y-4">
               {locations.map((location) => (
-                <li key={location._key ?? `${location.name}-${location.detail}`}>
+                <li
+                  key={location._key ?? `${location.name}-${location.detail}`}
+                >
                   <Link
                     href={`/${language}#globe-component`}
                     className={footerLinkClassName}
@@ -311,7 +350,7 @@ async function FlzrFooter({
           </div>
 
           <div>
-            <FooterColumnHeading index="04" title="Company" />
+            <FooterColumnHeading index="04" title={copy.company} />
             <ul className="space-y-3">
               {companyLinks.map((link) => (
                 <li key={link.label}>
@@ -358,11 +397,20 @@ export default async function FlzrSiteWrapper({
   navColor = "light",
   overlayCaseStudies,
 }: FlzrSiteWrapperProps) {
-  const [{ nav, footer, hasCaseStudies, hasServices }, homePage] =
+  const [{ footer, hasCaseStudies, hasServices }, homePage, navigation] =
     await Promise.all([
       getGlobalData(CHANNEL, language),
       getHomePage(CHANNEL, language),
+      getLocalizedNavigation(CHANNEL, language),
     ]);
+  const site = getSiteConfig(CHANNEL);
+  const nav = navigation.menu;
+  const availableLocales = new Set(navigation.availableLocales);
+  const languageOptions = site.locales.map((locale) => ({
+    id: locale,
+    label: getLanguageDefinition(locale as LocaleCode).title,
+    available: availableLocales.has(locale),
+  }));
 
   return (
     <FooterMenuProvider menu={footer as FooterMenu}>
@@ -373,24 +421,25 @@ export default async function FlzrSiteWrapper({
       >
         <NavColorProvider color={navColor}>
           {/* <PageWithMapVertical> */}
-            <div className="min-h-screen bg-flzr-paper text-flzr-ink">
-              <FrontNavOverlay
-                menuData={nav as NavbarMenu}
-                color={navColor}
-                channel={CHANNEL}
-                locale={language}
-                hasCaseStudies={hasCaseStudies}
-                hasServices={hasServices}
-                initialCaseStudies={overlayCaseStudies}
-              />
-              <main>{children}</main>
-              <FlzrFooter
-                footer={footer as FooterMenu}
-                language={language}
-                homePage={homePage}
-              />
-              <ScrollToTop />
-            </div>
+          <div className="min-h-screen bg-flzr-paper text-flzr-ink">
+            <FrontNavOverlay
+              menuData={nav as NavbarMenu}
+              color={navColor}
+              channel={CHANNEL}
+              locale={language}
+              hasCaseStudies={hasCaseStudies}
+              hasServices={hasServices}
+              initialCaseStudies={overlayCaseStudies}
+              languageOptions={languageOptions}
+            />
+            <main>{children}</main>
+            <FlzrFooter
+              footer={footer as FooterMenu}
+              language={language}
+              homePage={homePage}
+            />
+            <ScrollToTop />
+          </div>
           {/* </PageWithMapVertical> */}
         </NavColorProvider>
       </NavbarMenuProvider>

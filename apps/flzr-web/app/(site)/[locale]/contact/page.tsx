@@ -23,7 +23,7 @@ import {
   generateContactPageJsonLd,
   generateBreadcrumbJsonLd,
   generateItemListJsonLd,
-  hasAutoCaseListingBlocks,
+  hasCaseListingBlocks,
   hasServicesGalleryBlock,
   mapCasesToItemList,
   mapServicesToCatalogItems,
@@ -118,7 +118,7 @@ export default async function ContactPage({
 
   const navbarVariant = page?.navbarVariant || "light";
   const contentBlocks = page.content as any[] | undefined;
-  const needsAllCases = hasAutoCaseListingBlocks(contentBlocks);
+  const needsAllCases = hasCaseListingBlocks(contentBlocks);
   const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
 
   const [allCasesRaw, allServicesRaw] = await Promise.all([
