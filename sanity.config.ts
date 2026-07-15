@@ -16,16 +16,23 @@ import { revalidateAction } from './sanity/plugins/revalidateAction'
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
 import { apiVersion, dataset, projectId } from '@1sp/sanity-queries/env'
 import { schema } from '@1sp/sanity-schema'
+import {
+  ALL_PLATFORM_LOCALES,
+  GLOBAL_CONTENT_SOURCE_LOCALE,
+  SITE_CONFIGS,
+  SUPPORTED_LANGUAGES,
+  TRANSLATABLE_SCHEMA_TYPES,
+  WEBSITE_CHANNELS,
+} from '@1sp/site-config'
 import { structure } from './sanity/structure'
 import { locations, mainDocuments } from './sanity/presentation/resolve';
 
-// Channel Configuration
-const CHANNELS = [
-  { id: '1spWeb', title: '1SP', languages: ['en'] },
-  { id: 'msmWeb', title: 'MSM', languages: ['en', 'de'] },
-  { id: 'studioco2Web', title: 'Studio CO2', languages: ['en'] },
-  { id: 'flizrWeb', title: 'Flizr', languages: ['en', 'de', 'pl'] },
-];
+// Studio templates derive from the same channel/locale policy as the frontends.
+const CHANNELS = WEBSITE_CHANNELS.map((id) => ({
+  id,
+  title: SITE_CONFIGS[id].shortName,
+  languages: SITE_CONFIGS[id].locales,
+}));
 
 // Helper to generate templates
 const generateTemplates = (excludeBase = false) => {
@@ -70,6 +77,45 @@ const generateTemplates = (excludeBase = false) => {
         });
       });
     });
+
+    templates.push({
+      id: `translationGuidelines-${channel.id}`,
+      title: `Translation Guidelines (${channel.title})`,
+      schemaType: 'translationGuidelines',
+      parameters: [{ name: 'scope', type: 'string' }],
+      value: () => ({
+        scope: channel.id,
+        sourceLanguage: SITE_CONFIGS[channel.id].defaultLocale,
+        targetLanguages: channel.languages.filter(
+          (language) => language !== SITE_CONFIGS[channel.id].defaultLocale,
+        ),
+        doNotTranslate: [channel.title],
+        reviewChecklist: [
+          'Check meaning, claims, dates, names, and calls to action.',
+          'Confirm approved terminology and protected brand terms.',
+          'Review SEO title, description, links, and locale-specific URLs.',
+        ],
+      }),
+    });
+  });
+
+  templates.push({
+    id: 'translationGuidelines-global',
+    title: 'Translation Guidelines (Global Content)',
+    schemaType: 'translationGuidelines',
+    parameters: [{ name: 'scope', type: 'string' }],
+    value: () => ({
+      scope: 'global',
+      sourceLanguage: GLOBAL_CONTENT_SOURCE_LOCALE,
+      targetLanguages: ALL_PLATFORM_LOCALES.filter(
+        (language) => language !== GLOBAL_CONTENT_SOURCE_LOCALE,
+      ),
+      reviewChecklist: [
+        'Check meaning, claims, dates, names, and calls to action.',
+        'Confirm the wording works for every assigned website channel.',
+        'Confirm approved terminology and protected brand terms.',
+      ],
+    }),
   });
 
   // Base templates if needed
@@ -136,22 +182,8 @@ export default defineConfig({
   },
   plugins: [
     documentInternationalization({
-      supportedLanguages: [
-        { id: "de", title: "German" },
-        { id: "en", title: "English" },
-        { id: "pl", title: "Polish" },
-      ],
-      schemaTypes: [
-        "page",
-        "menu",
-        "caseStudy",
-        "unit",
-        "client",
-        "person",
-        "services",
-        "serviceGroup",
-        "oneSpComponentGroup"
-      ],
+      supportedLanguages: [...SUPPORTED_LANGUAGES],
+      schemaTypes: [...TRANSLATABLE_SCHEMA_TYPES],
       weakReferences: true,
     }),
     structureTool({ structure }),

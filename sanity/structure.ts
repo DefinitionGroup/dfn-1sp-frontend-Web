@@ -13,26 +13,23 @@ import {
   SquaresFour,
   UserCircle,
 } from "@phosphor-icons/react";
+import {
+  getChannelLanguageDefinitions,
+  SITE_CONFIGS,
+  WEBSITE_CHANNELS,
+  type LanguageDefinition,
+  type WebsiteChannel,
+} from "@1sp/site-config";
 
-// Define language type
-type Language = {
-  id: string;
-  title: string;
-};
-
-const supportedLanguages: Language[] = [
-  { id: "de", title: "German" },
-  { id: "en", title: "English" },
-  { id: "pl", title: "Polish" },
-];
+type Language = LanguageDefinition;
 
 // Per-channel supported languages
-const CHANNEL_LANGUAGES: Record<string, Language[]> = {
-  '1spWeb': [supportedLanguages[1]],
-  'msmWeb': [supportedLanguages[1], supportedLanguages[0]],
-  'studioco2Web': [supportedLanguages[1]],
-  'flizrWeb': [supportedLanguages[1], supportedLanguages[0], supportedLanguages[2]],
-};
+const CHANNEL_LANGUAGES = Object.fromEntries(
+  WEBSITE_CHANNELS.map((channel) => [
+    channel,
+    getChannelLanguageDefinitions(channel),
+  ]),
+) as Record<WebsiteChannel, Language[]>;
 
 // Helper for initial value templates
 const createDocWithChannel = (
@@ -83,7 +80,7 @@ const createAssignedGlobalListItem = (
 const createChannelStructure = (
   S: any,
   channelTitle: string,
-  channelValue: string,
+  channelValue: WebsiteChannel,
   channelIcon: React.ComponentType
 ): ListItemBuilder =>
   S.listItem()
@@ -192,12 +189,45 @@ const createChannelStructure = (
         )
     );
 
+const createTranslationGuidelinesStructure = (S: any): ListItemBuilder =>
+  S.listItem()
+    .title("Translation Guidelines")
+    .icon(Translate)
+    .child(
+      S.list()
+        .title("Translation Guidelines")
+        .items([
+          S.listItem()
+            .title("Global Content")
+            .icon(Translate)
+            .child(
+              S.document()
+                .schemaType("translationGuidelines")
+                .documentId("translation-guidelines-global")
+                .initialValueTemplate("translationGuidelines-global")
+            ),
+          ...WEBSITE_CHANNELS.map((channel) =>
+            S.listItem()
+              .title(SITE_CONFIGS[channel].name)
+              .icon(Translate)
+              .child(
+                S.document()
+                  .schemaType("translationGuidelines")
+                  .documentId(`translation-guidelines-${channel}`)
+                  .initialValueTemplate(`translationGuidelines-${channel}`)
+              )
+          ),
+        ])
+    );
+
 // --------- Main Structure Export ---------
 
 export const structure: StructureResolver = (S) =>
   S.list()
     .title("Content")
     .items([
+      createTranslationGuidelinesStructure(S),
+      S.divider(),
       // --- Globals section at the top ---
       S.listItem()
         .title("Globals")
@@ -420,10 +450,14 @@ export const structure: StructureResolver = (S) =>
         ),
 
       // --- Per-channel sections ---
-      createChannelStructure(S, "1SP", "1spWeb", Buildings),
-      createChannelStructure(S, "MSM", "msmWeb", Buildings),
-      createChannelStructure(S, "Studio CO2", "studioco2Web", Buildings),
-      createChannelStructure(S, "Flizr", "flizrWeb", Buildings),
+      ...WEBSITE_CHANNELS.map((channel) =>
+        createChannelStructure(
+          S,
+          SITE_CONFIGS[channel].shortName,
+          channel,
+          Buildings,
+        )
+      ),
       S.divider(),
 
       // Hide these types from "all documents"
@@ -438,6 +472,7 @@ export const structure: StructureResolver = (S) =>
             "person",
             "services",
             "serviceGroup",
+            "translationGuidelines",
           ].includes(listItem.getId?.() || "")
       ),
     ]);

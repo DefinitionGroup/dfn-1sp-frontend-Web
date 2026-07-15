@@ -26,6 +26,11 @@
 export type WebsiteChannel = "1spWeb" | "flizrWeb" | "msmWeb" | "studioco2Web";
 export type LocaleCode = "en" | "de" | "pl";
 
+export type LanguageDefinition = {
+  id: LocaleCode;
+  title: string;
+};
+
 /** Back-compat alias — prefer `WebsiteChannel` in new code. */
 export type Channel = WebsiteChannel;
 
@@ -152,6 +157,96 @@ export const SITE_CONFIGS: Record<WebsiteChannel, SiteConfig> = {
     },
   },
 };
+
+// =============================================================================
+// LOCALIZATION & TRANSLATION POLICY
+// =============================================================================
+
+/**
+ * Shared language labels for Studio, translation tooling, and frontend code.
+ * Per-channel availability remains defined by SITE_CONFIGS[*].locales.
+ */
+export const SUPPORTED_LANGUAGES: readonly LanguageDefinition[] = [
+  { id: "en", title: "English" },
+  { id: "de", title: "German" },
+  { id: "pl", title: "Polish" },
+];
+
+/** Global reusable content is authored from English. */
+export const GLOBAL_CONTENT_SOURCE_LOCALE: LocaleCode = "en";
+
+/** Every locale currently used by at least one website channel. */
+export const ALL_PLATFORM_LOCALES: readonly LocaleCode[] =
+  SUPPORTED_LANGUAGES.map((language) => language.id).filter((locale) =>
+    Object.values(SITE_CONFIGS).some((site) => site.locales.includes(locale)),
+  );
+
+/** Website-owned documents use the locale matrix of their assigned channel. */
+export const SITE_SPECIFIC_TRANSLATION_TYPES = ["page", "menu"] as const;
+
+/** Reusable documents currently share the global English/German policy. */
+export const GLOBAL_TRANSLATION_TYPES = [
+  "caseStudy",
+  "unit",
+  "client",
+  "person",
+  "services",
+  "serviceGroup",
+  "oneSpComponentGroup",
+] as const;
+
+export const TRANSLATABLE_SCHEMA_TYPES = [
+  ...SITE_SPECIFIC_TRANSLATION_TYPES,
+  ...GLOBAL_TRANSLATION_TYPES,
+] as const;
+
+export type TranslatableSchemaType =
+  (typeof TRANSLATABLE_SCHEMA_TYPES)[number];
+
+export function getLanguageDefinition(
+  locale: LocaleCode,
+): LanguageDefinition {
+  const language = SUPPORTED_LANGUAGES.find((item) => item.id === locale);
+
+  if (!language) {
+    throw new Error(`Missing language definition for locale '${locale}'.`);
+  }
+
+  return language;
+}
+
+export function getChannelLanguageDefinitions(
+  channel: WebsiteChannel,
+): LanguageDefinition[] {
+  return SITE_CONFIGS[channel].locales.map(getLanguageDefinition);
+}
+
+export function getGlobalLanguageDefinitions(): LanguageDefinition[] {
+  return ALL_PLATFORM_LOCALES.map(getLanguageDefinition);
+}
+
+/**
+ * A global document needs the union of locales from its assigned channels.
+ * Unassigned globals are treated as available platform-wide and need all
+ * platform locales.
+ */
+export function getRequiredGlobalDocumentLocales(
+  channels: readonly WebsiteChannel[],
+): LocaleCode[] {
+  const assignedChannels = channels.filter((channel) =>
+    WEBSITE_CHANNELS.includes(channel),
+  );
+
+  if (assignedChannels.length === 0) {
+    return [...ALL_PLATFORM_LOCALES];
+  }
+
+  const requiredLocales = new Set(
+    assignedChannels.flatMap((channel) => SITE_CONFIGS[channel].locales),
+  );
+
+  return ALL_PLATFORM_LOCALES.filter((locale) => requiredLocales.has(locale));
+}
 
 // =============================================================================
 // CHANNEL CONSTANTS & PREDICATES
