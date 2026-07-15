@@ -15,6 +15,7 @@ import {
 } from "@phosphor-icons/react";
 import {
   getChannelLanguageDefinitions,
+  getGlobalLanguageDefinitions,
   SITE_CONFIGS,
   WEBSITE_CHANNELS,
   type LanguageDefinition,
@@ -30,6 +31,8 @@ const CHANNEL_LANGUAGES = Object.fromEntries(
     getChannelLanguageDefinitions(channel),
   ]),
 ) as Record<WebsiteChannel, Language[]>;
+
+const GLOBAL_LANGUAGES = getGlobalLanguageDefinitions();
 
 // Helper for initial value templates
 const createDocWithChannel = (
@@ -242,34 +245,27 @@ export const structure: StructureResolver = (S) =>
                 .child(
                   S.list()
                     .title("Case Studies by Language")
-                    .items([
-                      S.listItem()
-                        .title("English (EN)")
-                        .icon(Translate)
-                        .child(
-                          S.documentTypeList("caseStudy")
-                            .title("English Case Studies")
-                            .filter('_type == "caseStudy" && language == "en"')
-                            .initialValueTemplates([
-                              S.initialValueTemplateItem("caseStudy-en", {
-                                language: "en",
-                              }),
-                            ])
-                        ),
-                      S.listItem()
-                        .title("German (DE)")
-                        .icon(Translate)
-                        .child(
-                          S.documentTypeList("caseStudy")
-                            .title("German Case Studies")
-                            .filter('_type == "caseStudy" && language == "de"')
-                            .initialValueTemplates([
-                              S.initialValueTemplateItem("caseStudy-de", {
-                                language: "de",
-                              }),
-                            ])
-                        ),
-                    ])
+                    .items(
+                      GLOBAL_LANGUAGES.map((language) =>
+                        S.listItem()
+                          .title(`${language.title} (${language.id.toUpperCase()})`)
+                          .icon(Translate)
+                          .child(
+                            S.documentTypeList("caseStudy")
+                              .title(`${language.title} Case Studies`)
+                              .filter(
+                                '_type == "caseStudy" && language == $language',
+                              )
+                              .params({ language: language.id })
+                              .initialValueTemplates([
+                                S.initialValueTemplateItem(
+                                  `caseStudy-${language.id}`,
+                                  { language: language.id },
+                                ),
+                              ])
+                          ),
+                      ),
+                    )
                 ),
               S.listItem()
                 .title("Units")
