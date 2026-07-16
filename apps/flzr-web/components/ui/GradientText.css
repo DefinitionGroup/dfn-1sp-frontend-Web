@@ -16,6 +16,10 @@
   padding: 0.35rem 0.75rem;
 }
 
+.animated-gradient-text:not(.with-border) {
+  overflow: visible;
+}
+
 .gradient-text-overlay {
   position: absolute;
   inset: 0;
