@@ -108,7 +108,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   const portableTextComponents = {
     block: {
       normal: ({ children }: { children?: React.ReactNode }) => (
-        <p className={`text-neutral-50 ${paragraphSizeClass} max-w-[38em]`}>
+        <p className={`text-balance text-neutral-50 ${paragraphSizeClass} max-w-[38em]`}>
           {children}
         </p>
       ),
@@ -135,13 +135,13 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           // If highlight matched, render the highlighted version
           if (highlighted !== plainText) {
             return (
-              <p className={`text-neutral-500 ${paragraphSizeClass} max-w-[38em]`}>
+              <p className={`text-balance text-neutral-500 ${paragraphSizeClass} max-w-[38em]`}>
                 {highlighted}
               </p>
             );
           }
           return (
-            <p className={`text-neutral-500 ${paragraphSizeClass} max-w-[38em]`}>
+            <p className={`text-balance text-neutral-500 ${paragraphSizeClass} max-w-[38em]`}>
               {children}
             </p>
           );

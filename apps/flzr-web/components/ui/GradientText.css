@@ -46,6 +46,7 @@
   z-index: 2;
   display: inline-block;
   color: transparent;
+  -webkit-text-fill-color: transparent;
   background-clip: text;
   -webkit-background-clip: text;
 }

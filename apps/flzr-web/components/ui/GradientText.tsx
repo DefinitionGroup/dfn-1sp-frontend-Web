@@ -41,7 +41,7 @@ export default function GradientText({
   yoyo = true,
   showBorder = false,
 }: GradientTextProps) {
-  const rootRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLSpanElement>(null);
   const elapsedRef = useRef(0);
   const lastTimeRef = useRef<number | null>(null);
   const [isPaused, setIsPaused] = useState(false);
@@ -119,18 +119,18 @@ export default function GradientText({
   };
 
   return (
-    <div
+    <span
       ref={rootRef}
       className={`animated-gradient-text ${showBorder ? "with-border" : ""} ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       {showBorder && (
-        <motion.div className="gradient-text-overlay" style={gradientStyle} />
+        <motion.span className="gradient-text-overlay" style={gradientStyle} />
       )}
-      <motion.div className="gradient-text-content" style={gradientStyle}>
+      <motion.span className="gradient-text-content" style={gradientStyle}>
         {children}
-      </motion.div>
-    </div>
+      </motion.span>
+    </span>
   );
 }
