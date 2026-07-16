@@ -21,7 +21,7 @@ export default function AnimatedEditorialHeadline({
 
   return (
     <motion.h1
-      className="mx-auto max-w-[20ch] text-balance whitespace-pre-line font-aspekta text-[clamp(1.9rem,1.4rem+2.6vw,4.25rem)] font-medium leading-[1.05] tracking-[-0.025em]"
+      className="mx-auto max-w-[20ch] text-balance whitespace-pre-line font-aspekta text-[clamp(1.9rem,1.4rem+2.6vw,4.25rem)] font-medium leading-[1] tracking-[-0.025em]"
       initial={prefersReducedMotion ? false : { opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, amount: 0.45 }}
