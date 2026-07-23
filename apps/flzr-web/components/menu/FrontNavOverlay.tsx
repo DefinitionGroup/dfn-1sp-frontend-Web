@@ -78,6 +78,12 @@ const NAV_COPY: Record<
   },
 };
 
+const NAV_COMPACT_SCROLL_Y = 64;
+const NAV_HIDE_SCROLL_Y = 228;
+const NAV_DIRECTION_THRESHOLD = 4;
+
+type NavState = "expanded" | "compact" | "hidden";
+
 const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   className = "",
   color = "light",
@@ -104,34 +110,44 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   const navRef = React.useRef<HTMLElement>(null);
   const copy = NAV_COPY[locale] ?? NAV_COPY.en;
 
-  // Scroll direction detection for show/hide navbar
+  // The nav starts in page flow, compacts into the floating treatment after
+  // 64px, hides while scrolling down past 228px, and returns on scroll up.
   const { scrollY } = useScroll();
-  const [isNavVisible, setIsNavVisible] = React.useState(true);
-  const [hasInitialAnimationCompleted, setHasInitialAnimationCompleted] =
-    React.useState(false);
+  const [navState, setNavState] = React.useState<NavState>("expanded");
   const lastScrollY = React.useRef(0);
+  const isExpanded = navState === "expanded";
+  const isNavVisible = navState !== "hidden";
 
-  // Mark initial animation as complete after delay
   React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setHasInitialAnimationCompleted(true);
-    }, 1700); // Wait for initial animation (1s duration + 0.7s delay)
-    return () => clearTimeout(timer);
+    const currentScrollY = window.scrollY;
+    lastScrollY.current = currentScrollY;
+
+    if (currentScrollY <= NAV_COMPACT_SCROLL_Y) {
+      setNavState("expanded");
+    } else if (currentScrollY <= NAV_HIDE_SCROLL_Y) {
+      setNavState("compact");
+    } else {
+      setNavState("hidden");
+    }
   }, []);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    if (!hasInitialAnimationCompleted) return; // Don't hide during initial animation
+    const delta = latest - lastScrollY.current;
 
-    const direction = latest > lastScrollY.current ? "down" : "up";
-    const threshold = 10; // Minimum scroll distance to trigger show/hide
+    if (Math.abs(delta) < NAV_DIRECTION_THRESHOLD) {
+      return;
+    }
 
-    if (Math.abs(latest - lastScrollY.current) > threshold) {
-      if (direction === "down" && latest > 100) {
-        setIsNavVisible(false);
-      } else if (direction === "up") {
-        setIsNavVisible(true);
-      }
-      lastScrollY.current = latest;
+    lastScrollY.current = latest;
+
+    if (latest <= NAV_COMPACT_SCROLL_Y) {
+      setNavState("expanded");
+    } else if (delta < 0) {
+      setNavState("compact");
+    } else if (latest >= NAV_HIDE_SCROLL_Y) {
+      setNavState("hidden");
+    } else {
+      setNavState("compact");
     }
   });
 
@@ -301,225 +317,262 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
   return (
     <>
-      <motion.nav
-        ref={navRef}
-        initial={{
-          opacity: 0,
-          scale: 0.95,
-          y: 0,
-          clipPath: "inset(45% 49.9% 45% 49.9% round 48%)",
-          backdropFilter: "blur(2px)",
-          backgroundColor: "rgba(255, 255, 255, 1)",
-        }}
-        animate={
-          hasInitialAnimationCompleted
-            ? {
-                opacity: isNavVisible ? 1 : 0,
-                y: isNavVisible ? 0 : -100,
-                scale: 1,
-                clipPath: "inset(0% 0% 0% 0% round 0rem)",
-                backdropFilter: "blur(12px)",
-                backgroundColor: "rgba(111,111,111, 0.4)",
-              }
-            : {
-                opacity: [0, 1, 1],
-                scale: [2, 1, 1],
-                clipPath: [
-                  "inset(49% 49% 49% 49% round 50%)", // tiny circle
-                  "inset(0% 49% 0% 49% round 0rem)", // full height pill
-                  "inset(0% 49% 0% 49% round 0rem)", // full height pill
-                  "inset(0% 0% 0% 0% round 0rem)", // full width menu
-                ],
-                backdropFilter: "blur(112px)",
-                backgroundColor: "rgba(111,111,111, 0.4)",
-              }
-        }
-        transition={
-          hasInitialAnimationCompleted
-            ? {
-                duration: 0.3,
-                ease: [0.4, 0, 0.2, 1],
-              }
-            : {
-                duration: 1,
-                delay: 0.7,
-              }
-        }
-        className={`floating-nav z-99999 rounded-full  hidden fixed top-6 left-0 backdrop-blur-md  w-fit h-16   px-6  right-0 md:grid items-center grid-cols-12 py-2 iphone-landscape:scale-70 iphone-landscape:top-2 mx-auto ${textColor} ${className}`}
-      >
-        <div className="col-span-2 flex items-center pr-16  justify-start">
-          <motion.div className=" flex items-start  justify-center">
-            <Link
-              href={`/`}
-              onClick={(e) => {
-                e.preventDefault();
-                router.push(`/`);
+      <div className="container relative z-[99998] mx-auto h-20 px-3 pt-3 md:h-28 md:px-4 md:pt-6">
+        <motion.nav
+          ref={navRef}
+          layout
+          initial={{ opacity: 0, y: 16 }}
+          animate={{
+            opacity: isNavVisible ? 1 : 0,
+            y: isNavVisible ? 0 : -96,
+          }}
+          transition={{
+            layout: {
+              type: "spring",
+              bounce: 0.08,
+              visualDuration: 0.45,
+            },
+            opacity: { duration: 0.32, ease: "easeOut" },
+            y: { duration: 0.42, ease: [0.22, 1, 0.36, 1] },
+          }}
+          aria-hidden={!isNavVisible}
+          inert={!isNavVisible}
+          className={`floating-nav z-99999 hidden h-16 items-center grid-cols-12 bg-neutral-600/40 py-2 backdrop-blur-md md:grid ${
+            isExpanded
+              ? "relative mx-auto w-full rounded-[2rem] px-6"
+              : "fixed left-0 right-0 top-6 mx-auto w-fit rounded-full px-6 iphone-landscape:top-2 iphone-landscape:scale-70"
+          } ${isNavVisible ? "" : "pointer-events-none"} ${textColor} ${className}`}
+        >
+          <div className="col-span-2 flex items-center pr-16  justify-start">
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.32,
+                delay: 0.34,
+                ease: [0.22, 1, 0.36, 1],
               }}
+              className=" flex items-start  justify-center"
+            >
+              <Link
+                href={`/`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push(`/`);
+                }}
+                aria-label="Home"
+                className="flex items-center justify-center"
+              >
+                <Image
+                  src={logoUrl}
+                  alt={logoAlt}
+                  width={64}
+                  height={64}
+                  className={logoClassName}
+                  style={{ height: "auto" }}
+                />
+              </Link>
+            </motion.div>
+          </div>
+
+          <motion.div className="col-span-7   flex items-center ">
+            {menuData ? (
+              <StaggeredSlideUp
+                className="flex items-center "
+                delay={0.42}
+                staggerDelay={0.07}
+                duration={0.36}
+                distance={8}
+                easing="spring"
+                rootMargin="0px 0px -20px 0px"
+                once={true}
+                animateImmediately={true}
+              >
+                {syncedMenuItems
+                  .filter((item) => {
+                    const isCasesPage = item.slug?.includes("cases");
+                    const isServicesPage = item.slug?.includes("services");
+                    if (isCasesPage && !hasCaseStudies) {
+                      return false;
+                    }
+                    if (isServicesPage && !hasServices) {
+                      return false;
+                    }
+                    return true;
+                  })
+                  .map((item) => (
+                    <span key={item._key} className={itemClass}>
+                      <Link
+                        className="hover:text-violet-400  transition-colors "
+                        href={`/${locale}/${item.slug}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          router.push(`/${locale}/${item.slug}`);
+                        }}
+                      >
+                        {item.displayName || item.title}
+                      </Link>
+                    </span>
+                  ))}
+              </StaggeredSlideUp>
+            ) : (
+              <>
+                <span className={itemClass}>
+                  <Link
+                    className="hover:text-violet-400 transition-colors"
+                    href={`/${locale}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push(`/${locale}`);
+                    }}
+                  >
+                    Home
+                  </Link>
+                </span>
+                <span className={itemClass}>
+                  <Link
+                    className="hover:text-violet-400 transition-colors"
+                    href={`/${locale}/whatwedo`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push(`/${locale}/whatwedo`);
+                    }}
+                  >
+                    Services
+                  </Link>
+                </span>
+                <span className={itemClass}>
+                  <Link
+                    className="hover:text-violet-400 transition-colors"
+                    href={`/${locale}/our-family`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push(`/${locale}/our-family`);
+                    }}
+                  >
+                    Our Family
+                  </Link>
+                </span>
+                <span className={itemClass}>
+                  <Link
+                    className="hover:text-violet-400 transition-colors"
+                    href={`/${locale}/whatwedo`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push(`/${locale}/whatwedo`);
+                    }}
+                  >
+                    Work with us
+                  </Link>
+                </span>
+              </>
+            )}
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.32,
+              delay: 0.62,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="col-span-3 flex relative justify-end items-center align-start gap-1"
+          >
+            {/* All Cases button only on case detail pages */}
+            {isCaseDetailRoute && (
+              <button
+                type="button"
+                className={`border  min-w-[80px] inline-block py-2 px-2 text-xxs font-bold cursor-pointer hover:text-violet-400 hover:border-violet-400 transition-colors`}
+                onClick={() => setShowOverlay(true)}
+              >
+                {copy.allCases}
+              </button>
+            )}
+            {languageOptions.length ? (
+              <LanguageSelector
+                currentLocale={locale}
+                options={languageOptions}
+              />
+            ) : null}
+            <Button2
+              variant="limesmall"
+              href="https://1sp.agency"
+              text="1sp.agency"
+            />
+          </motion.div>
+        </motion.nav>
+        <motion.nav
+          layout
+          initial={{ opacity: 0, y: 14 }}
+          animate={{
+            opacity: isNavVisible ? 1 : 0,
+            y: isNavVisible ? 0 : -80,
+          }}
+          transition={{
+            layout: {
+              type: "spring",
+              bounce: 0.08,
+              visualDuration: 0.4,
+            },
+            opacity: { duration: 0.25 },
+            y: { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
+          }}
+          aria-hidden={!isNavVisible}
+          inert={!isNavVisible}
+          className={`z-99999 flex h-14 items-center justify-between rounded-full border border-white/15 bg-neutral-600/40 px-4 shadow-lg backdrop-blur-xl md:hidden ${
+            isExpanded
+              ? "relative mx-auto w-full"
+              : "fixed left-3 right-3 top-3"
+          } ${isNavVisible ? "" : "pointer-events-none"} ${textColor}`}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 7 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.3,
+              delay: 0.3,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+          >
+            <Link
+              href={`/${locale}`}
               aria-label="Home"
-              className="flex items-center justify-center"
+              className="flex items-center"
+              onClick={(event) => {
+                event.preventDefault();
+                router.push(`/${locale}`);
+              }}
             >
               <Image
                 src={logoUrl}
                 alt={logoAlt}
-                width={64}
-                height={64}
+                width={54}
+                height={24}
                 className={logoClassName}
                 style={{ height: "auto" }}
               />
             </Link>
           </motion.div>
-        </div>
-
-        <motion.div className="col-span-7   flex items-center ">
-          {menuData ? (
-            <StaggeredSlideUp
-              className="flex items-center "
-              delay={1.3}
-              staggerDelay={0.08}
-              duration={0.5}
-              distance={10}
-              easing="spring"
-              rootMargin="0px 0px -20px 0px"
-              once={true}
-              animateImmediately={true}
-            >
-              {syncedMenuItems
-                .filter((item) => {
-                  const isCasesPage = item.slug?.includes("cases");
-                  const isServicesPage = item.slug?.includes("services");
-                  if (isCasesPage && !hasCaseStudies) {
-                    return false;
-                  }
-                  if (isServicesPage && !hasServices) {
-                    return false;
-                  }
-                  return true;
-                })
-                .map((item) => (
-                  <span key={item._key} className={itemClass}>
-                    <Link
-                      className="hover:text-violet-400  transition-colors "
-                      href={`/${locale}/${item.slug}`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        router.push(`/${locale}/${item.slug}`);
-                      }}
-                    >
-                      {item.displayName || item.title}
-                    </Link>
-                  </span>
-                ))}
-            </StaggeredSlideUp>
-          ) : (
-            <>
-              <span className={itemClass}>
-                <Link
-                  className="hover:text-violet-400 transition-colors"
-                  href={`/${locale}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push(`/${locale}`);
-                  }}
-                >
-                  Home
-                </Link>
-              </span>
-              <span className={itemClass}>
-                <Link
-                  className="hover:text-violet-400 transition-colors"
-                  href={`/${locale}/whatwedo`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push(`/${locale}/whatwedo`);
-                  }}
-                >
-                  Services
-                </Link>
-              </span>
-              <span className={itemClass}>
-                <Link
-                  className="hover:text-violet-400 transition-colors"
-                  href={`/${locale}/our-family`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push(`/${locale}/our-family`);
-                  }}
-                >
-                  Our Family
-                </Link>
-              </span>
-              <span className={itemClass}>
-                <Link
-                  className="hover:text-violet-400 transition-colors"
-                  href={`/${locale}/whatwedo`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push(`/${locale}/whatwedo`);
-                  }}
-                >
-                  Work with us
-                </Link>
-              </span>
-            </>
-          )}
-        </motion.div>
-
-        <div className="col-span-3 flex relative justify-end items-center align-start   gap-1">
-          {/* All Cases button only on case detail pages */}
-          {isCaseDetailRoute && (
-            <button
-              type="button"
-              className={`border  min-w-[80px] inline-block py-2 px-2 text-xxs font-bold cursor-pointer hover:text-violet-400 hover:border-violet-400 transition-colors`}
-              onClick={() => setShowOverlay(true)}
-            >
-              {copy.allCases}
-            </button>
-          )}
-          {languageOptions.length ? (
-            <LanguageSelector
-              currentLocale={locale}
-              options={languageOptions}
-            />
-          ) : null}
-          <Button2
-            variant="limesmall"
-            href="https://1sp.agency"
-            text="1sp.agency"
-          />
-        </div>
-      </motion.nav>
-      <motion.nav
-        initial={{ opacity: 0, y: -12 }}
-        animate={{ opacity: isNavVisible ? 1 : 0, y: isNavVisible ? 0 : -80 }}
-        transition={{ duration: 0.3, delay: 0.15 }}
-        className={`fixed left-3 right-3 top-3 z-99999 flex h-14 items-center justify-between rounded-full border border-white/15 bg-neutral-600/40 px-4 shadow-lg backdrop-blur-xl md:hidden ${textColor}`}
-      >
-        <Link
-          href={`/${locale}`}
-          aria-label="Home"
-          className="flex items-center"
-          onClick={(event) => {
-            event.preventDefault();
-            router.push(`/${locale}`);
-          }}
-        >
-          <Image
-            src={logoUrl}
-            alt={logoAlt}
-            width={54}
-            height={24}
-            className={logoClassName}
-            style={{ height: "auto" }}
-          />
-        </Link>
-        {languageOptions.length ? (
-          <LanguageSelector
-            currentLocale={locale}
-            options={languageOptions}
-            compact
-          />
-        ) : null}
-      </motion.nav>
+          <motion.div
+            initial={{ opacity: 0, y: 7 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.3,
+              delay: 0.38,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+          >
+            {languageOptions.length ? (
+              <LanguageSelector
+                currentLocale={locale}
+                options={languageOptions}
+                compact
+              />
+            ) : null}
+          </motion.div>
+        </motion.nav>
+      </div>
       {/* Cases overlay */}
       {showOverlay && (
         <div className="fixed inset-0 flex items-center justify-center p-8 backdrop-blur-lg z-[100] bg-black/20 overflow-hidden">
