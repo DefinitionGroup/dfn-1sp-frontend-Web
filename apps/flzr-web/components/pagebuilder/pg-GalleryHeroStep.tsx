@@ -70,7 +70,7 @@ function GalleryHeroStepComponent(props: Props) {
         <HeaderImageVideoComp2 useVideo videoSrc={videoSrc} enableParallax />
       )}
 
-      <div className="relative z-10 container mx-auto px-4  sm:px-6 lg:px-8 font-aspekta">
+      <div className="relative z-10 container mx-auto px-4  sm:px-6 lg:px-8 font-flzr">
         {/* Background grid (optional visual helper) */}
 
         <div className="grid grid-cols-4 iphone-landscape:grid-cols-12 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 pt-16 sm:pt-24 lg:pt-32 pb-6 sm:pb-8 lg:pb-12">

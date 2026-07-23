@@ -32,7 +32,7 @@ export default function TypewriterRotator({
   return (
     <h2
       aria-label={activeText}
-      className={`typewriter-rotator flex flex-col flex-wrap ${isCentered ? "items-center" : "items-start"} w-full font-aspekta leading-[0.8]`}
+      className={`typewriter-rotator flex flex-col flex-wrap ${isCentered ? "items-center" : "items-start"} w-full font-flzr leading-[0.8]`}
       style={{ maxWidth: 900 }}
     >
       {prefersReducedMotion ? (

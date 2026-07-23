@@ -85,7 +85,7 @@ function ServicesHeroWithBadge({
     <section
       id={sectionId}
       data-navpoint-name={navPointName}
-      className="relative font-aspekta"
+      className="relative font-flzr"
       style={{ minHeight }}
     >
       <HeaderImageVideoComp2

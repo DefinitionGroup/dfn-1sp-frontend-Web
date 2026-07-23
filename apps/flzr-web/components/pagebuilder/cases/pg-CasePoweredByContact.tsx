@@ -81,7 +81,7 @@ export default function CasePoweredByContact({
 
   return (
     <section
-      className="relative bg-neutral-100 py-16 sm:py-20 lg:py-24 font-aspekta"
+      className="relative bg-neutral-100 py-16 sm:py-20 lg:py-24 font-flzr"
       data-component="case-powered-by-contact"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

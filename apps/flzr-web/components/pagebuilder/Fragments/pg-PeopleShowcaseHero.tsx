@@ -273,7 +273,7 @@ function PeopleShowcaseHero({
                   {hasVisibleText(member.fullname || member.name) && (
                     <motion.h3
                       variants={panelItemVariants}
-                      className="text-white font-aspekta font-semibold text-sm sm:text-base leading-tight"
+                      className="text-white font-flzr font-semibold text-sm sm:text-base leading-tight"
                     >
                       {member.fullname || member.name}
                     </motion.h3>

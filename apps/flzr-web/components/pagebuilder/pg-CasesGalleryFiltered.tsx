@@ -97,7 +97,7 @@ function CasesGalleryFiltered({
     <div
       id={sectionId}
       data-navpoint-name={navPointName}
-      className={`grid grid-cols-12 z-1 mx-auto  container ${marginClass} relative font-aspekta`}
+      className={`grid grid-cols-12 z-1 mx-auto  container ${marginClass} relative font-flzr`}
     >
       <div
         className={`z-1 grid gap-responsive col-span-12 ${paddingClass} col-start-1 container row-start-1 grid-cols-12`}

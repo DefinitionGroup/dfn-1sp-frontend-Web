@@ -27,11 +27,9 @@
 @theme extend {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-aspekta: var(--font-aspekta);
-
-
-  --font-sans: var(--font-aspekta), system-ui, sans-serif;
-  --font-aspekta: var(--font-aspekta), system-ui, sans-serif;
+  --font-sans: var(--font-pt-sans), sans-serif;
+  --font-flzr: var(--font-pt-sans), sans-serif;
+  --font-aspekta: var(--font-aspekta-source), system-ui, sans-serif;
 
   /* Default fallback */
   --headline-line-height: 1.1;
@@ -291,10 +289,10 @@
   body {
     @apply bg-background text-foreground;
     font-family:
-      var(--font-aspekta),
-      system-ui,
-      -apple-system,
+      var(--font-pt-sans),
       sans-serif;
+    font-style: normal;
+    font-weight: 400;
   }
 
   ::selection {
@@ -302,15 +300,12 @@
     color: #fff;
   }
 
-  /* flzr headline voice — bold violet by default across the channel.
-     Explicit text-* / font-* utilities on a heading still win (utilities
-     layer beats base), so context overrides like white card names hold. */
-  h1,
-  h2,
-  h3,
-  .text-display,
-  .text-title {
-    font-weight: 700;
+  /* FLZR headline family and default violet. Explicit text-color utilities
+     still win, so contextual treatments such as white card names remain. */
+  :where(h1, h2, h3, .text-display, .text-title):not(
+    [data-onesp-component-group] *
+  ) {
+    font-family: var(--font-pt-sans), sans-serif;
     color: var(--color-flzr-violet);
   }
 
@@ -488,6 +483,16 @@
     opacity: 1;
     transform: translate3d(0, -80%, 0) scale(0.7);
   }
+}
+
+/* FLZR headline contract. Keep this outside Tailwind's cascade layers so
+   component-level font-medium/font-semibold utilities cannot dilute the
+   channel's bold italic voice. Canonical 1SP groups retain their own type. */
+:where(h1, h2, h3, .text-display, .text-title):not(
+  [data-onesp-component-group] *
+) {
+  font-style: italic;
+  font-weight: 700;
 }
 
 @keyframes vt-slide-in {

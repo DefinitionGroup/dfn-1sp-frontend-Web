@@ -163,7 +163,7 @@ function TabbedContentSection({ data }: { data: TabbedContentSectionData }) {
     <>
       {/* Introduction Section (if provided) */}
       {(hasVisibleText(introHeading) || hasVisibleText(introSubheading)) && (
-        <div className="grid grid-cols-12 z-1 mx-auto container relative font-aspekta">
+        <div className="grid grid-cols-12 z-1 mx-auto container relative font-flzr">
           <div className="z-1 grid gap-8 col-span-12 pt-12 mt-24 col-start-1 container mx-auto row-start-1 grid-cols-12">
             <div className="z-1 col-span-12 col-start-1">
               <div className="flex flex-col items-start gap-2 justify-center w-full">
@@ -174,7 +174,7 @@ function TabbedContentSection({ data }: { data: TabbedContentSectionData }) {
                     distance={100}
                     className="max-w-full md:max-w-2/4"
                   >
-                    <h2 className="text-5xl leading-none text-neutral-700 font-aspekta">
+                    <h2 className="text-5xl leading-none text-neutral-700 font-flzr">
                       {introHeading}
                     </h2>
                   </StaggeredSlideUp>
@@ -186,7 +186,7 @@ function TabbedContentSection({ data }: { data: TabbedContentSectionData }) {
                     distance={100}
                     className="max-w-full md:max-w-2/4"
                   >
-                    <h2 className="text-5xl leading-none text-neutral-400 font-aspekta">
+                    <h2 className="text-5xl leading-none text-neutral-400 font-flzr">
                       {introSubheading}
                     </h2>
                   </StaggeredSlideUp>
@@ -201,7 +201,7 @@ function TabbedContentSection({ data }: { data: TabbedContentSectionData }) {
       <section
         id={sectionId}
         {...navPointDataAttr}
-        className="grid grid-cols-12 z-1 mx-auto container relative font-aspekta"
+        className="grid grid-cols-12 z-1 mx-auto container relative font-flzr"
       >
         <div
           className={`z-1 grid gap-8 col-span-12 py-${paddingY} col-start-1 container mx-auto row-start-1 grid-cols-12`}

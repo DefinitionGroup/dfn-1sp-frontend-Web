@@ -3,7 +3,7 @@ import { cn } from "@1sp/utils/cn";
 
 interface MixedTypeProps {
   text: string;
-  className?: string; // Base class for the Sans text (e.g., font-aspekta)
+  className?: string; // Base class for the Sans text (e.g., font-flzr)
   serifClassName?: string; // Class for the *emphasized* Serif text
 }
 

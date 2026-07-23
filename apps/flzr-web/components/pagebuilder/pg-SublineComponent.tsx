@@ -51,7 +51,7 @@ function SublineComponent({
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="grid grid-cols-12 z-1 mx-auto container relative font-aspekta"
+      className="grid grid-cols-12 z-1 mx-auto container relative font-flzr"
     >
 
       <div className="z-1 grid gap-8 col-span-12 py-4 col-start-1 container mx-auto row-start-1 grid-cols-12">
@@ -59,7 +59,7 @@ function SublineComponent({
           {/* Description + CTAs */}
           <div className="flex flex-col items-start gap-8 justify-center w-full">
             {description && (
-              <p className="text-xs leading-normal text-neutral-800 font-aspekta font-normal">
+              <p className="text-xs leading-normal text-neutral-800 font-flzr font-normal">
                 {description}
               </p>
             )}

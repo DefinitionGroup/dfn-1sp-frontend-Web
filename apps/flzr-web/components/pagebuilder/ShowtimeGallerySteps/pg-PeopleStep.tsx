@@ -69,7 +69,7 @@ export default function PeopleStep({
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="relative grid grid-cols-12 z-0  font-aspekta"
+      className="relative grid grid-cols-12 z-0  font-flzr"
     >
 
       <div className="relative z-2 col-span-12 col-start-1 row-start-1 w-full">

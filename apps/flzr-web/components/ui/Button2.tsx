@@ -525,7 +525,7 @@ function Button2({
 
       <span
         className={cn(
-          "font-aspekta font-semibold relative z-10 transition-colors duration-200 whitespace-nowrap",
+          "font-flzr font-semibold relative z-10 transition-colors duration-200 whitespace-nowrap",
           variantStyles[v].label,
           hovered && v === "ghost" && "text-white",
           hovered && (v === "strands" || v === "violet" || v === "glass") &&

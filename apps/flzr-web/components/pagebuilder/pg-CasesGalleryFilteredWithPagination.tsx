@@ -125,7 +125,7 @@ function CasesGalleryFilteredWithPagination({
     <div
       id={sectionId}
       data-navpoint-name={navPointName}
-      className={`grid grid-cols-12 z-1 mx-auto container ${marginClass} relative font-aspekta`}
+      className={`grid grid-cols-12 z-1 mx-auto container ${marginClass} relative font-flzr`}
     >
       <div
         className={`z-1 grid gap-8 col-span-12 ${paddingClass} col-start-1 container mx-auto row-start-1 grid-cols-12`}

@@ -47,7 +47,7 @@ function ServicesGalleryFiltered({
     <section
       id={sectionId}
       data-navpoint-name={navPointName}
-      className={`relative z-10 overflow-hidden ${bgColorClass} ${paddingClass} font-aspekta`}
+      className={`relative z-10 overflow-hidden ${bgColorClass} ${paddingClass} font-flzr`}
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_82%_12%,rgba(124,92,255,0.09),transparent_28%)]" />
       <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">

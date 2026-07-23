@@ -22,7 +22,7 @@ export default function IntroBlockTypoSophisticated({
       id={sectionId}
       {...(navPointName ? { "data-navpoint-name": navPointName } : {})}
       {...(hideFromNav ? { "data-nav-hidden": "true" } : {})}
-      className="relative z-0 grid grid-cols-12 font-aspekta"
+      className="relative z-0 grid grid-cols-12 font-flzr"
       data-component="intro-block-typo-sophisticated"
     >
       <div className="relative z-2 col-span-12 col-start-1 row-start-1 w-full">

@@ -84,7 +84,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
       className={`relative overflow-hidden ${containerClassName}`}
     >
       <div
-        className={`relative mx-auto w-full max-w-[1480px] px-4 font-aspekta sm:px-6 lg:px-8 ${paddingTopClass}`}
+        className={`relative mx-auto w-full max-w-[1480px] px-4 font-flzr sm:px-6 lg:px-8 ${paddingTopClass}`}
       >
         <div className="relative border-t border-neutral-900/15 py-16 sm:py-20 lg:py-28">
           <span

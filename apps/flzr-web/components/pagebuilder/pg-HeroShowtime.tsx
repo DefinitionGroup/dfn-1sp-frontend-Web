@@ -62,7 +62,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
       {...navPointDataAttr}
       className={`${
         fullWidth ? "w-full max-w-none" : "container mx-auto"
-      } grid grid-cols-12 z-1 min-h-[85vh] relative font-aspekta text-white`}
+      } grid grid-cols-12 z-1 min-h-[85vh] relative font-flzr text-white`}
     >
       {/* Background media wrapper */}
       <HeaderImageVideoComp2
@@ -87,7 +87,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
             <Eyebrow className="pb-4 text-white/80">{subheading}</Eyebrow>
           ) : null}
           {heading ? (
-            <HeadingTag className="text-display iphone-landscape:!text-4xl font-aspekta pb-2 text-white">
+            <HeadingTag className="text-display iphone-landscape:!text-4xl font-flzr font-bold italic pb-2 text-white">
               <MixedType text={heading} />
             </HeadingTag>
           ) : null}

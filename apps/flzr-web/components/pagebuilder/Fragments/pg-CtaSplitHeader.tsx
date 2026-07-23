@@ -12,7 +12,7 @@ function CtaSplitHeader({ data }: { data: CtaSplitHeaderType }) {
   const href = cta?.link ? resolveLink(cta.link) : undefined;
 
   return (
-    <section className="grid grid-cols-12 container mx-auto gap-8 font-aspekta">
+    <section className="grid grid-cols-12 container mx-auto gap-8 font-flzr">
       {/* Left: CTA Mini */}
       {cta && (
         <div className="col-span-3 col-start-1">
@@ -34,12 +34,12 @@ function CtaSplitHeader({ data }: { data: CtaSplitHeaderType }) {
           <div className="flex flex-col lg:gap-8 items-start justify-start w-full">
             <div className="flex-1 flex flex-col min-w-0">
               {hasVisibleText(data.heading) && (
-                <h2 className="text-3xl text-neutral-900 font-aspekta">
+                <h2 className="text-3xl text-neutral-900 font-flzr">
                   {data.heading}
                 </h2>
               )}
               {data.subheading && (
-                <h4 className="text-3xl text-neutral-900 font-aspekta">
+                <h4 className="text-3xl text-neutral-900 font-flzr">
                   <span className="text-neutral-200">{data.subheading}</span>
                 </h4>
               )}
@@ -51,7 +51,7 @@ function CtaSplitHeader({ data }: { data: CtaSplitHeaderType }) {
       {/* Right: paragraph */}
       {hasVisibleText(data?.paragraph) && (
         <header className="col-span-6 md:col-start-8">
-          <h2 className="text-base text-neutral-900 font-aspekta">
+          <h2 className="text-base text-neutral-900 font-flzr">
             {data.paragraph}
           </h2>
         </header>

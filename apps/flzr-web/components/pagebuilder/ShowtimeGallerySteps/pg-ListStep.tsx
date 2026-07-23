@@ -357,17 +357,17 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
               <div className="flex flex-col items-start justify-start w-full">
                 <div className="flex-1 flex flex-col min-w-0">
                   {header?.superText && (
-                    <h4 className=" text-neutral-900 font-bold font-aspekta">
+                    <h4 className=" text-neutral-900 font-bold font-flzr">
                       {header.superText}
                     </h4>
                   )}
                   {hasVisibleText(header?.mainHeadline) && (
-                    <h2 className="text-3xl md:text-7xl iphone-landscape:text-5xl  text-gray-900  tracking-tight font-aspekta">
+                    <h2 className="text-3xl md:text-7xl iphone-landscape:text-5xl  text-gray-900  tracking-tight font-flzr">
                       {header.mainHeadline}
                     </h2>
                   )}
                   {header?.subHeadline && (
-                    <h4 className=" text-gray-700 font-medium mt-4  font-aspekta">
+                    <h4 className=" text-gray-700 font-medium mt-4  font-flzr">
                       {header.subHeadline}
                     </h4>
                   )}

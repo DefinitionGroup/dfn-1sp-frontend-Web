@@ -37,7 +37,7 @@ export default function HeadlineChallenge({
       <div
         id={sectionId}
         data-navpoint-name={navPointName}
-        className="grid grid-cols-12 z-1 mx-auto container relative font-aspekta"
+        className="grid grid-cols-12 z-1 mx-auto container relative font-flzr"
       >
         <div
           className={`z-1 grid gap-4 sm:gap-6 lg:gap-8 col-span-12 py-12 sm:py-16 lg:py-${paddingY} col-start-1 container mx-auto row-start-1 grid-cols-12 px-4 sm:px-6 lg:px-0`}
@@ -51,17 +51,17 @@ export default function HeadlineChallenge({
                 className="max-w-full md:max-w-2/3  lg:max-w-3/4 py-16 "
               >
                 {hasVisibleText(headline) ? (
-                  <h2 className="text-sm sm:text-base lg:text-lg tracking-tight leading-tighter text-neutral-400  font-medium font-aspekta">
+                  <h2 className="text-sm sm:text-base lg:text-lg tracking-tight leading-tighter text-neutral-400  font-medium font-flzr">
                     {headline}
                   </h2>
                 ) : null}
                 {hasVisibleText(title) ? (
-                  <h3 className="text-4xl md:text-4xl tracking-tight leading-tight lg:text-5xl text-flzr-violet font-aspekta">
+                  <h3 className="text-4xl md:text-4xl tracking-tight leading-tight lg:text-5xl text-flzr-violet font-flzr">
                     {title}
                   </h3>
                 ) : null}
                 {hasVisibleText(description) && (
-                  <h2 className="text-4xl md:text-4xl lg:text-5xl tracking-tight leading-tighter text-neutral-800 pb-2 sm:pb-3 leading-none font-aspekta">
+                  <h2 className="text-4xl md:text-4xl lg:text-5xl tracking-tight leading-tighter text-neutral-800 pb-2 sm:pb-3 leading-none font-flzr">
                     {description}
                   </h2>
                 )}

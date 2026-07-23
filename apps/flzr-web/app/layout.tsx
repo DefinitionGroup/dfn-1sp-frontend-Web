@@ -1,5 +1,5 @@
 import localFont from "next/font/local";
-import { Geist_Mono } from "next/font/google";
+import { Geist_Mono, PT_Sans } from "next/font/google";
 import type { Metadata } from "next";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -24,12 +24,20 @@ const geistMono = Geist_Mono({
   weight: ["400", "500", "600"],
 });
 
+const ptSans = PT_Sans({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-pt-sans",
+  display: "swap",
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+});
+
 const aspekta = localFont({
   src: [
     { path: "./fonts/AspektaVF.woff2", style: "normal" },
     { path: "./fonts/AspektaVF.ttf", style: "normal" },
   ],
-  variable: "--font-aspekta",
+  variable: "--font-aspekta-source",
   display: "swap",
   weight: "50 1000",
 });
@@ -60,7 +68,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${aspekta.variable} ${geistMono.variable}`}
+      className={`${ptSans.variable} ${aspekta.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
       <head>{LOAD_PRODUCTION_TRACKING ? <CookiebotBanner /> : null}</head>

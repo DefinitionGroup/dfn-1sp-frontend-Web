@@ -315,7 +315,7 @@ function OverlayRoot({
           >
             <div className="mb-8 flex items-start justify-between gap-6">
               <div className="flex flex-col text-left text-neutral-100">
-                <h2 className="text-2xl md:text-2xl font-aspekta leading-none tracking-tight">
+                <h2 className="text-2xl md:text-2xl font-flzr leading-none tracking-tight">
                   Jump into our world
                 </h2>
               </div>

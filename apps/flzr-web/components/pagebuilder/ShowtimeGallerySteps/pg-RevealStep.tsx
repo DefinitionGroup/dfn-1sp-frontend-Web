@@ -43,7 +43,7 @@ export default function RevealStep({ step }: { step: GalleryRevealStep }) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="grid grid-cols-12 z-1 mx-auto relative container font-aspekta"
+      className="grid grid-cols-12 z-1 mx-auto relative container font-flzr"
     >
       {mediaUrl && (
         <HeaderImageVideoComp2

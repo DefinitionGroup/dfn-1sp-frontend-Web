@@ -62,7 +62,7 @@ export default function ApproachSection({
       <div
         id={sectionId}
         data-navpoint-name={navPointName}
-        className="grid grid-cols-12 z-1 mx-auto min-h-[90vh] relative font-aspekta"
+        className="grid grid-cols-12 z-1 mx-auto min-h-[90vh] relative font-flzr"
       >
         {mediaType === "video" && videoUrl ? (
           <HeaderImageVideoComp2

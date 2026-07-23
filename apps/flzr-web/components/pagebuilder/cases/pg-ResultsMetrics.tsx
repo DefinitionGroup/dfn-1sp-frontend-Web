@@ -114,7 +114,7 @@ export default function ResultsMetrics({
       <div
         id={sectionId}
         data-navpoint-name={navPointName}
-        className="min-h-[80vh] md:min-h-[90vh] relative font-aspekta"
+        className="min-h-[80vh] md:min-h-[90vh] relative font-flzr"
       >
         <HeaderImageVideoComp2
           useVideo={false}

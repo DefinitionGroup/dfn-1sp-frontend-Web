@@ -140,7 +140,7 @@ export default function ChallengeAndSolution({
       <div
         id={sectionId}
         {...navPointDataAttr}
-        className={`${backgroundColor} mt-8 relative font-aspekta`}
+        className={`${backgroundColor} mt-8 relative font-flzr`}
       >
 
         <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">

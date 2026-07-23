@@ -107,7 +107,7 @@ export const TextHeadlineCombo: React.FC<TextHeadlineComboProps> = ({
     <div
       className={`relative ${
         bleed ? "w-full" : "max-w-6xl"
-      }${wrapperAlign} font-aspekta ${className}`}>
+      }${wrapperAlign} font-flzr ${className}`}>
       <div className={`flex flex-col ${sizes.gap} ${spacingMap[spacing]}`}>
         {eyebrow && (
           <motion.span

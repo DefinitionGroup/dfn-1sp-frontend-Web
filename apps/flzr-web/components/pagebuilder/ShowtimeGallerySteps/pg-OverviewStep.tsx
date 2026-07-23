@@ -39,7 +39,7 @@ export default function OverviewStep({ step }: { step: GalleryOverview }) {
       {...navPointDataAttr}
       className="bg-neutral-50 relative"
     >
-      <div className="grid grid-cols-12 z-1 gap-8 mx-auto relative container font-aspekta">
+      <div className="grid grid-cols-12 z-1 gap-8 mx-auto relative container font-flzr">
         <div className="z-1 grid col-span-12 relative top-0 py-64 gap-8 col-start-1 container mx-auto row-start-1 grid-cols-12 ">
           <div className="col-span-9 col-start-3 row-start-1 ">
             <TextHeadlineCombo

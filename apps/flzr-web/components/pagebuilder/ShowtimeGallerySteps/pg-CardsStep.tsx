@@ -72,7 +72,7 @@ export default function CardsStep({ step }: CardsStepProps) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="grid grid-cols-12 z-2 mx-auto bg-neutral-100 mt-8 min-h-[50vh] relative font-aspekta"
+      className="grid grid-cols-12 z-2 mx-auto bg-neutral-100 mt-8 min-h-[50vh] relative font-flzr"
     >
       {/* Background video */}
       {videoSrc && (

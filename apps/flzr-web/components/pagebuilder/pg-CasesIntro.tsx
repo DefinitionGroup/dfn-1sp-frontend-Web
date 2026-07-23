@@ -44,7 +44,7 @@ function CasesIntro({
       <div
         id={sectionId}
         data-navpoint-name={navPointName}
-        className="grid grid-cols-12 z-1 mx-auto container relative font-aspekta"
+        className="grid grid-cols-12 z-1 mx-auto container relative font-flzr"
       >
         <div
           className={`z-1 grid col-span-12 py-${paddingY} col-start-1 container mx-auto row-start-1 grid-cols-12`}
@@ -58,12 +58,12 @@ function CasesIntro({
                 className="md:max-w-3/4 lg:max-w-2/4"
               >
                 {hasVisibleText(title) ? (
-                  <TitleTag className="text-3xl md:text-4xl leading-none text-neutral-700 pb-3 font-aspekta font-medium">
+                  <TitleTag className="text-3xl md:text-4xl leading-none text-neutral-700 pb-3 font-flzr font-medium">
                     {title}
                   </TitleTag>
                 ) : null}
                 {hasVisibleText(subtitle) && (
-                  <h2 className="text-3xl  md:text-4xl leading-none text-neutral-400 pb-3 font-aspekta">
+                  <h2 className="text-3xl  md:text-4xl leading-none text-neutral-400 pb-3 font-flzr">
                     {subtitle}
                   </h2>
                 )}
