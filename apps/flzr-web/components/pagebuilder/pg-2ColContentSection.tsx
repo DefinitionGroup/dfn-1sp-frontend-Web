@@ -257,7 +257,7 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
     <div className="col-span-12 md:col-span-6 flex flex-col   justify-start">
       <StaggeredSlideUp className="flex-col justify-start ">
         {showTitle && hasVisibleText(title) && (
-          <h2 className={`text-2xl md:text-4xl  tracking-tight ${titleColorClass} mb-6 md:mb-8`}>
+          <h2 className={`text-2xl md:text-4xl ${titleColorClass} mb-6 md:mb-8`}>
             {title}
           </h2>
         )}

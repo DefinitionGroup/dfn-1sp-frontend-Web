@@ -105,7 +105,7 @@ export default function CaseGalleryCard({
       <Link href={`/cases/${item.slug?.current}`} className="contents">
             <motion.h3
               layoutId={`title-${item.title}-${id}`}
-              className={`font-medium md:ext-lg leading-snug max-w-[350px] tracking-tight ${variant !== "light" ? "" : "invert"
+              className={`font-medium md:ext-lg leading-snug max-w-[350px] ${variant !== "light" ? "" : "invert"
                 } text-neutral-600 hover:text-neutral-400 transition-colors dark:text-neutral-200 md:text-left`}
             >
               {item.title}

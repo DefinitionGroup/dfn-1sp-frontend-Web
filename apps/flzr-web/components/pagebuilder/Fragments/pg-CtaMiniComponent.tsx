@@ -78,7 +78,7 @@ function CtaMiniComponent({
     >
       {hasVisibleText(heading) ? (
         <h3
-          className={`text-xl leading-normal mb-0 md:mb-4 tracking-tight font- ${textAlignClass}`}
+          className={`text-xl leading-normal mb-0 md:mb-4 font- ${textAlignClass}`}
         >
           {heading}
         </h3>
@@ -90,7 +90,7 @@ function CtaMiniComponent({
             <Link
               href={finalUrl}
               className={cn(
-                "inline-flex w-full md:w-fit items-center justify-between gap-3  border font-medium tracking-wider transition-colors duration-200",
+                "inline-flex w-full md:w-fit items-center justify-between gap-3 border font-medium transition-colors duration-200",
                 "text-[10px] sm:text-xxs md:text-xxs",
                 buttonVariant === "violetsmall"
                   ? "px-3 py-2 md:px-4 md:py-2"

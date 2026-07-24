@@ -96,7 +96,7 @@ export default function ContactForm({
       <div className="container relative mx-auto px-4">
         <div className="grid items-start gap-12 lg:grid-cols-[1.1fr_1fr]">
           <div className="space-y-3 max-w-2xl">
-            <span className="inline-flex items-center gap-2   px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-700 ring-1 ring-neutral-200">
+            <span className="inline-flex items-center gap-2 px-3 py-1 text-[11px] font-semibold uppercase text-neutral-700 ring-1 ring-neutral-200">
               <span className="h-1.5 w-1.5  bg-violet-500 shadow-[0_0_0_4px_rgba(132,204,22,0.14)]" aria-hidden />
               Contact
             </span>

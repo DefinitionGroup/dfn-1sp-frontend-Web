@@ -307,7 +307,7 @@ export default function ServiceGalleryComponent({
     <>
       <div className="relative" data-component="flzr-services-carousel">
         <div className="mb-5 flex items-end justify-between gap-6 md:mb-7">
-          <p className="text-xs uppercase tracking-normal text-neutral-500">
+          <p className="text-xs uppercase text-neutral-500">
             {String(filteredItems.length).padStart(2, "0")} services
           </p>
 
@@ -421,7 +421,8 @@ export default function ServiceGalleryComponent({
                       ) : (
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgba(124,92,255,0.65),transparent_38%),linear-gradient(145deg,#2b2335,#131019_65%)]" />
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#131019]/65 via-transparent to-[#131019]/10 opacity-80 transition-opacity duration-500 group-hover:opacity-55" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#131019]/65 via-transparent to-[#131019]/10 opacity-80" />
+                      <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/15" />
                     </div>
 
                     <div className="pointer-events-none absolute left-4 top-4 flex items-center gap-3">
@@ -433,7 +434,7 @@ export default function ServiceGalleryComponent({
                         draggable={false}
                         className="pointer-events-none h-auto w-[4.75rem] object-contain object-left"
                       />
-                      <span className="text-xxs tracking-normal text-white/75">
+                      <span className="text-xxs text-white/75">
                         {String(index + 1).padStart(2, "0")}
                       </span>
                     </div>
@@ -447,20 +448,20 @@ export default function ServiceGalleryComponent({
                     >
                       <div className="flex items-end justify-between gap-4">
                         <div className="min-w-0">
-                          <h3 className="text-lg font-semibold leading-[1.05] tracking-[-0.02em] text-white sm:text-xl">
+                          <h3 className="flzr-card-title text-lg font-semibold leading-[1.05] text-white sm:text-xl">
                             {item.name}
                           </h3>
                           {item.taglabel ? (
-                            <p className="mt-1.5 line-clamp-2 text-xs leading-snug tracking-normal text-white/70">
+                            <p className="mt-1.5 line-clamp-2 text-xs leading-snug text-white/70">
                               {item.taglabel}
                             </p>
                           ) : groups.length > 0 ? (
-                            <p className="mt-1.5 truncate text-xs tracking-normal text-white/65">
+                            <p className="mt-1.5 truncate text-xs text-white/65">
                               {groups.join(" · ")}
                             </p>
                           ) : null}
                         </div>
-                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white text-neutral-900 transition-transform duration-500 group-hover:rotate-[-35deg] group-hover:scale-105">
+                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white text-neutral-900 transition-[background-color,color,transform] duration-500 group-hover:rotate-[-35deg] group-hover:scale-105 group-hover:bg-flzr-violet group-hover:text-white">
                           <ArrowUpRightIcon />
                         </span>
                       </div>
@@ -565,22 +566,20 @@ export default function ServiceGalleryComponent({
                 </button>
 
                 <div className="pt-12">
-                  {activeMedia.icon ? (
-                    <Image
-                      src={activeMedia.icon}
-                      alt=""
-                      width={48}
-                      height={48}
-                      draggable={false}
-                      className="pointer-events-none mb-8 h-12 w-12 object-contain brightness-0 invert"
-                    />
-                  ) : null}
-                  <p className="mb-4 text-xs uppercase tracking-normal text-violet-400">
+                  <Image
+                    src="/units/FLZR/flzr_logo.svg"
+                    alt="FLZR"
+                    width={112}
+                    height={28}
+                    draggable={false}
+                    className="pointer-events-none mb-8 h-auto w-28 object-contain object-left"
+                  />
+                  <p className="mb-4 text-xs uppercase text-violet-400">
                     Service
                   </p>
                   <h3
                     id={titleId}
-                    className="text-4xl font-semibold leading-[0.95] tracking-[-0.04em] sm:text-5xl"
+                    className="text-4xl font-semibold leading-[0.95] sm:text-5xl"
                   >
                     {active.name}
                   </h3>
@@ -598,7 +597,7 @@ export default function ServiceGalleryComponent({
 
                 {active.servicegrouprel?.length ? (
                   <div className="mt-10 border-t border-white/15 pt-5">
-                    <p className="text-xxs uppercase tracking-normal text-white/45">
+                    <p className="text-xxs uppercase text-white/45">
                       {active.servicegrouprel.map((group) => group.name).join(" / ")}
                     </p>
                   </div>

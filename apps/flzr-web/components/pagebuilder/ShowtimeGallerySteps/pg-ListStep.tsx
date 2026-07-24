@@ -330,7 +330,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                 distance={80}
               >
                 {hasVisibleText((staggeredHeader as any)?.title) && (
-                  <h2 className="text-9xl text-gray-100 max-w-xl tracking-tight border border-red-500 leading-compress mb-4 pb-8">
+                  <h2 className="text-9xl text-gray-100 max-w-xl border border-red-500 leading-compress mb-4 pb-8">
                     {(staggeredHeader as any).title}
                   </h2>
                 )}
@@ -362,7 +362,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
                     </h4>
                   )}
                   {hasVisibleText(header?.mainHeadline) && (
-                    <h2 className="text-3xl md:text-7xl iphone-landscape:text-5xl  text-gray-900  tracking-tight font-flzr">
+                    <h2 className="text-3xl md:text-7xl iphone-landscape:text-5xl text-gray-900 font-flzr">
                       {header.mainHeadline}
                     </h2>
                   )}

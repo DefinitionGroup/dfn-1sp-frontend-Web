@@ -139,7 +139,7 @@ export default function CaseGalleryMenu({
                 <div className="flex flex-col items-start">
                   <motion.h3
                     layoutId={`title-${item.title}-${id}`}
-                    className="font-medium text-base leading-none mb-2 tracking-tight text-neutral-600 dark:text-neutral-200 text-left"
+                    className="font-medium text-base leading-none mb-2 text-neutral-600 dark:text-neutral-200 text-left"
                   >
                     {item.title}
                   </motion.h3>

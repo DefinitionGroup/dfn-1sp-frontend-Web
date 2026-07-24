@@ -90,12 +90,12 @@ export default function ApproachSection({
               distance={80}
             >
               {hasVisibleText(mainHeadline) ? (
-                <h2 className="text-5xl md:text-7xl mb-2 pb-2  text-gray-100 max-w-2xl   tracking-tight leading-none">
+                <h2 className="text-5xl md:text-7xl mb-2 pb-2 text-gray-100 max-w-2xl leading-none">
                   {mainHeadline}
                 </h2>
               ) : null}
               {hasVisibleText(subHeadline) && (
-                <h2 className="text-3xl md:text-5xl text-gray-100 max-w-2xl tracking-tight leading-none mb-2 pb-2">
+                <h2 className="text-3xl md:text-5xl text-gray-100 max-w-2xl leading-none mb-2 pb-2">
                   {subHeadline}
                 </h2>
               )}

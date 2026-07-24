@@ -301,7 +301,7 @@ function OverlayRoot({
             height={190}
             className="object-contain "
           />
-          <span className="text-xs uppercase -tracking-[0.25em] text-neutral-200">
+          <span className="text-xs uppercase text-neutral-200">
             1SP
           </span>
         </motion.div>
@@ -315,7 +315,7 @@ function OverlayRoot({
           >
             <div className="mb-8 flex items-start justify-between gap-6">
               <div className="flex flex-col text-left text-neutral-100">
-                <h2 className="text-2xl md:text-2xl font-flzr leading-none tracking-tight">
+                <h2 className="text-2xl md:text-2xl font-flzr leading-none">
                   Jump into our world
                 </h2>
               </div>
@@ -365,12 +365,12 @@ function OverlayRoot({
                     <Link
                       href={item.href}
                       ref={idx === 0 ? firstLinkRef : undefined}
-                      className="text-xl md:text-2xl tracking-tight text-neutral-50 hover:text-violet-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400  transition-colors"
+                      className="text-xl md:text-2xl text-neutral-50 hover:text-violet-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 transition-colors"
                       onClick={(event) => onNavigate(event, item.href)}
                     >
                       {item.label}
                     </Link>
-                    <span className="text-xxs uppercase -tracking-[0.05em] font-bold  text-white">
+                    <span className="text-xxs uppercase font-bold text-white">
                       {String(idx + 1).padStart(2, "0")}
                     </span>
                   </div>
@@ -422,7 +422,7 @@ function OverlayRoot({
               transition={{ delay: 0.15, duration: 0.4 }}
             >
               <div className="flex items-center justify-between text-neutral-100">
-                <span className="text-xs uppercase -tracking-[0.03em]">
+                <span className="text-xs uppercase">
                   Follow us
                 </span>
                 <span className="text-xs text-neutral-300">
@@ -488,7 +488,7 @@ function OverlayRoot({
         </div>
         <motion.button
           onClick={onClose}
-          className="mt-6 text-7xl fixed top-0 font-extralight uppercase tracking-wide text-neutral-100 hover:text-white focus:outline-none hover:rotate-45 transition focus-visible:ring-2 focus-visible:ring-violet-400 "
+          className="mt-6 text-7xl fixed top-0 font-extralight uppercase text-neutral-100 hover:text-white focus:outline-none hover:rotate-45 transition focus-visible:ring-2 focus-visible:ring-violet-400"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 0.8, y: 0 }}
           whileHover={{ opacity: 1 }}

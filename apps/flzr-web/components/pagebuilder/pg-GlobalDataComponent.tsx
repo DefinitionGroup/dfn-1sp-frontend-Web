@@ -25,6 +25,8 @@ interface Arc {
   arcAlt: number;
   color: string;
   label: string;
+  labelOffsetX?: number;
+  labelOffsetY?: number;
 }
 
 interface GlobeConfig {
@@ -41,6 +43,7 @@ interface GlobeConfig {
   directionalLeftLight: string;
   directionalTopLight: string;
   pointLight: string;
+  arcStroke?: number;
   arcTime: number;
   arcLength: number;
   rings: number;
@@ -110,7 +113,7 @@ export default function GlobalDataComponent({
           className="relative z-20"
         >
           {hasVisibleText(title) ? (
-            <h2 className="text-center text-xl md:text-5xl leading-[1.15] tracking-tight dark:text-white">
+            <h2 className="text-center text-xl md:text-5xl leading-[1.15] dark:text-white">
               {title}
             </h2>
           ) : null}

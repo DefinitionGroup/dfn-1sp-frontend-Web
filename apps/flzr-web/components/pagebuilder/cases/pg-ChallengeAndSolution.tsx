@@ -154,7 +154,7 @@ export default function ChallengeAndSolution({
                 distance={80}
               >
                 {hasVisibleText(title) ? (
-                  <h2 className="text-3xl sm:text-4xl md:text-5xl text-gray-900 max-w-xl tracking-tight leading-[1.1] mb-4 md:mb-8">
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl text-gray-900 max-w-xl leading-[1.1] mb-4 md:mb-8">
                     {title}
                   </h2>
                 ) : null}
@@ -232,7 +232,7 @@ export default function ChallengeAndSolution({
                       distance={80}
                     >
                       {hasVisibleText(solutionHeadline || t.caseStudy.solution) ? (
-                        <h3 className="text-xl sm:text-2xl leading-tight text-gray-900 max-w-lg font-semibold tracking-tight mb-4 md:mb-6">
+                        <h3 className="text-xl sm:text-2xl leading-tight text-gray-900 max-w-lg font-semibold mb-4 md:mb-6">
                           {solutionHeadline || t.caseStudy.solution}
                         </h3>
                       ) : null}
@@ -254,7 +254,7 @@ export default function ChallengeAndSolution({
                   distance={80}
                 >
                   {hasVisibleText(solutionHeadline || t.caseStudy.solution) ? (
-                    <h3 className="text-xl sm:text-2xl leading-tight text-gray-900 max-w-lg font-semibold tracking-tight mb-4 md:mb-6">
+                    <h3 className="text-xl sm:text-2xl leading-tight text-gray-900 max-w-lg font-semibold mb-4 md:mb-6">
                       {solutionHeadline || t.caseStudy.solution}
                     </h3>
                   ) : null}

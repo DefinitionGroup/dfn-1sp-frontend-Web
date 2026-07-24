@@ -670,7 +670,7 @@ export interface GlobeComponent {
     navPointName?: string;
     sectionTitle?: string;
     sectionSubtitle?: string;
-    locations: GlobeLocation[];
+    locations?: GlobeLocation[];
 }
 
 export interface Service {

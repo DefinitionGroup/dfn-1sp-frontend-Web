@@ -46,8 +46,14 @@ export default defineType({
             name: 'locations',
             title: 'Locations',
             type: 'array',
-            description: 'Add locations to display on the globe',
-            validation: (Rule) => Rule.required().min(1),
+            description: 'Add locations to display on the globe. FLZR uses its shared European market locations instead.',
+            hidden: ({ document }) => document?.channel === 'flizrWeb',
+            validation: (Rule) => Rule.custom((locations, context) => {
+                if (context.document?.channel === 'flizrWeb') return true
+                return Array.isArray(locations) && locations.length > 0
+                    ? true
+                    : 'Add at least one location'
+            }),
             group: 'content',
             of: [
                 defineArrayMember({

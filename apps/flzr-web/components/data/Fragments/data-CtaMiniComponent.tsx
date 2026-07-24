@@ -54,7 +54,7 @@ function CtaMiniComponent({
     >
       {hasVisibleText(heading) ? (
         <h3
-          className={`text-2xl leading-none mb-4 tracking-tight md:font-semibold ${textAlignClass}`}
+          className={`text-2xl leading-none mb-4 md:font-semibold ${textAlignClass}`}
         >
           {heading}
         </h3>

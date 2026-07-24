@@ -431,7 +431,7 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
         <button
           type="button"
           onClick={handleManualPlay}
-          className="absolute bottom-4 right-4 z-[3]  border border-white/60 bg-black/45 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-white"
+          className="absolute bottom-4 right-4 z-[3] border border-white/60 bg-black/45 px-3 py-2 text-[10px] font-semibold uppercase text-white"
         >
           Tap to play
         </button>

@@ -81,15 +81,12 @@ const cursorStyle: React.CSSProperties = {
   borderRadius: "var(--tw-cursor-radius)" as string,
   marginLeft: "var(--tw-cursor-ml)" as string,
   height: "var(--tw-cursor-h)",
-
 };
 
 const textStyle: React.CSSProperties = {
   fontSize: "var(--tw-text-size)",
   fontWeight: 700,
-   lineHeight: "var(--tw-text-lh)",
-  letterSpacing: "var(--tw-text-ls)",
-  textTransform: "",
+  lineHeight: "var(--tw-text-lh)",
   color: "var(--color-flzr-violet)",
   whiteSpace: "normal",
 };

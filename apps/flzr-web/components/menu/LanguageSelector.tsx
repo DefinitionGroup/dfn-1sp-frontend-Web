@@ -13,18 +13,24 @@ type LanguageSelectorProps = {
   currentLocale: string;
   options: LanguageOption[];
   compact?: boolean;
+  frosted?: boolean;
 };
 
 export default function LanguageSelector({
   currentLocale,
   options,
   compact = false,
+  frosted = true,
 }: LanguageSelectorProps) {
   const router = useOptimizedTransitionRouter();
 
   return (
     <div
-      className="flex items-center rounded-full border border-current/20 bg-white/10 p-0.5 backdrop-blur-md"
+      className={`flex items-center rounded-full p-0.5 transition-[background-color,border-color,backdrop-filter] duration-300 ${
+        frosted
+          ? "border border-current/10 bg-white/[0.06] backdrop-blur-md"
+          : "border border-transparent bg-transparent backdrop-blur-none"
+      }`}
       aria-label="Language selection"
       role="group"
     >
@@ -40,7 +46,7 @@ export default function LanguageSelector({
               key={option.id}
               aria-disabled="true"
               title={`${option.label} translation is not available yet`}
-              className={`select-none rounded-full px-2 py-1 text-[0.6rem] font-semibold tracking-[0.08em] opacity-30 ${
+              className={`select-none rounded-full px-2 py-1 text-[0.6rem] font-semibold opacity-30 ${
                 compact ? "min-w-8 text-center" : ""
               }`}
             >
@@ -62,7 +68,7 @@ export default function LanguageSelector({
                 : `Switch to ${option.label}`
             }
             title={isActive ? option.label : `Switch to ${option.label}`}
-            className={`rounded-full px-2 py-1 text-[0.6rem] font-semibold tracking-[0.08em] transition-[background-color,color,transform] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-flzr-violet ${
+            className={`rounded-full px-2 py-1 text-[0.6rem] font-semibold transition-[background-color,color,transform] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-flzr-violet ${
               compact ? "min-w-8 text-center" : ""
             } ${
               isActive

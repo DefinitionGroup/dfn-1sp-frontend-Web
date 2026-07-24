@@ -111,7 +111,7 @@ export default function CaseStudyPageClient({
                 {caseStudy.subtitle}
               </h2>
             )}
-            <h1 className="text-neutral-50 w-full md:w-2/3 pb-2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-6xl font-bold italic tracking-tight leading-none">
+            <h1 className="text-neutral-50 w-full md:w-2/3 pb-2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-6xl font-bold italic leading-none">
               {caseStudy.title}
             </h1>
 
@@ -127,7 +127,7 @@ export default function CaseStudyPageClient({
                   hasVisibleText(unit.name) ? (
 
 
-                    <h2 key={unit._id} className="text-neutral-200 tracking-wider text-[10px] sm:text-xxs font-regular bg-gray-700  inline-block w-fit py-1 px-3 sm:px-4">
+                    <h2 key={unit._id} className="text-neutral-200 text-[10px] sm:text-xxs font-regular bg-gray-700 inline-block w-fit py-1 px-3 sm:px-4">
                       {unit.name}
                     </h2>
                   ) : null

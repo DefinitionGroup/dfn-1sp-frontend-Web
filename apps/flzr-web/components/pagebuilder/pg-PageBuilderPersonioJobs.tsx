@@ -161,7 +161,7 @@ const resolveJobContractCategory = (
 function Tag({ tone, children }: { tone: TagTone; children: React.ReactNode }) {
   return (
     <span
-      className={`inline-flex items-center   px-3 py-1 text-[10px] font-medium uppercase tracking-wide  ${tagToneClasses[tone]} `}
+      className={`inline-flex items-center px-3 py-1 text-[10px] font-medium uppercase ${tagToneClasses[tone]}`}
     >
       {children}
     </span>
@@ -181,7 +181,7 @@ function SegmentedSwitch<T extends string>({
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <p className="text-[8px] font-medium uppercase tracking-wide text-neutral-500">
+      <p className="text-[8px] font-medium uppercase text-neutral-500">
         {label}
       </p>
       <div className="inline-flex w-full overflow-hidden  border border-neutral-200 bg-white">
@@ -194,7 +194,7 @@ function SegmentedSwitch<T extends string>({
               type="button"
               onClick={() => onChange(option.value)}
               aria-pressed={isActive}
-              className={`flex-1 px-3 py-2 text-[8px] font-medium cursor-pointer uppercase tracking-wide transition-colors ${isActive
+              className={`flex-1 px-3 py-2 text-[8px] font-medium cursor-pointer uppercase transition-colors ${isActive
                 ? "bg-neutral-900 text-white"
                 : "text-neutral-600 hover:bg-neutral-100"
                 }`}
@@ -551,7 +551,7 @@ function PageBuilderPersonioJobs({
               <div className=" bg-white/80  p-1 md:w-2/3">
                 {availableUnitFilters.length > 0 ? (
                   <div className="mb-4">
-                    <p className="mb-2 text-[8px] font-medium uppercase tracking-wide text-neutral-500">
+                    <p className="mb-2 text-[8px] font-medium uppercase text-neutral-500">
                       Units
                     </p>
                     <div className="flex flex-wrap gap-1.5">
@@ -559,7 +559,7 @@ function PageBuilderPersonioJobs({
                         type="button"
                         onClick={() => setSelectedUnitId("all")}
                         aria-pressed={selectedUnitId === "all"}
-                        className={`px-3 py-1.5  text-[8px] font-medium uppercase tracking-wide transition-colors ${selectedUnitId === "all"
+                        className={`px-3 py-1.5 text-[8px] font-medium uppercase transition-colors ${selectedUnitId === "all"
                           ? "bg-violet-500 text-black"
                           : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
                           }`}
@@ -575,7 +575,7 @@ function PageBuilderPersonioJobs({
                             type="button"
                             onClick={() => setSelectedUnitId(unit._id)}
                             aria-pressed={isActive}
-                            className={`px-3 py-1.5  text-[8px] font-medium uppercase tracking-wide transition-colors ${isActive
+                            className={`px-3 py-1.5 text-[8px] font-medium uppercase transition-colors ${isActive
                               ? "bg-violet-400 text-black"
                               : "bg-neutral-100 text-neutral-600 hover:bg-neutral-900 hover:text-neutral-100"
                               }`}
@@ -607,7 +607,7 @@ function PageBuilderPersonioJobs({
                   <button
                     type="button"
                     onClick={resetFilters}
-                    className="mt-3 text-[8px] border  px-6 font-medium uppercase tracking-wide text-neutral-200 hover:text-neutral-200 hover:bg-neutral-900 transition-colors"
+                    className="mt-3 text-[8px] border px-6 font-medium uppercase text-neutral-200 hover:text-neutral-200 hover:bg-neutral-900 transition-colors"
                   >
                     Clear filters
                   </button>
@@ -691,7 +691,7 @@ function PageBuilderPersonioJobs({
                             />
 
                             {showUpdatedAt && updatedAtLabel ? (
-                              <p className=" text-[10px]  tracking-wide text-neutral-400">
+                              <p className="text-[10px] text-neutral-400">
                                 Updated: <span className="font-bold">{updatedAtLabel} </span>
                               </p>
                             ) : null}

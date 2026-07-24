@@ -44,14 +44,15 @@ export default function CardInsideComponent({
             aria-hidden="true"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#131019]/65 via-transparent to-[#131019]/10 opacity-80 transition-opacity duration-500 group-hover:opacity-55" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#131019]/65 via-transparent to-[#131019]/10 opacity-80" />
+        <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/15" />
       </div>
 
       <div className="absolute bottom-3 left-3 z-10 w-fit max-w-[calc(100%-1.5rem)] rounded-[1.5rem] border border-white/10 bg-[rgba(111,111,111,0.4)] px-4 py-3 text-white shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-md sm:px-5 sm:py-4">
-        <h3 className="text-lg font-semibold leading-[1.05] tracking-[-0.02em] text-white sm:text-xl">
+        <h3 className="flzr-card-title text-lg font-semibold leading-[1.05] text-white sm:text-xl">
           {card.headline}
         </h3>
-        <p className="mt-1.5 line-clamp-4 max-w-[42ch] text-balance text-sm leading-snug tracking-normal text-white/70 sm:text-base">
+        <p className="mt-1.5 line-clamp-4 max-w-[42ch] text-balance text-sm leading-snug text-white/70 sm:text-base">
           {card.text}
         </p>
       </div>

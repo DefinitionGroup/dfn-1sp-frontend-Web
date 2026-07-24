@@ -481,7 +481,11 @@ export function PageBuilder({
           case "globeComponent":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <GlobeComponent key={key} data={block as any} />
+                <GlobeComponent
+                  key={key}
+                  data={block as any}
+                  language={language}
+                />
               </ErrorBoundary>
             );
           case "casesIntro":

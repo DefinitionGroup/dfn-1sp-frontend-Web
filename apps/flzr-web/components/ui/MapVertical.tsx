@@ -141,7 +141,7 @@ export default function LineMinimap({
                   }}
                   onClick={() => handleNavClick(navPoint.id)}
                 >
-                  <span className="text-[8px] font-semibold tracking-wider ml-2">
+                  <span className="text-[8px] font-semibold ml-2">
                     {navPoint.name || navPoint.id}
                   </span>
                 </motion.div>

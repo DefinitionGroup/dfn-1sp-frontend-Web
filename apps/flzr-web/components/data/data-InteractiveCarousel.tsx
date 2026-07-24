@@ -294,7 +294,7 @@ export default function SmartCarousel({
                           </motion.div>
                         )}
                         {active.title && (
-                          <motion.h3 className="text-xl sm:text-2xl md:text-5xl tracking-tighter leading-tight md:leading-none   pb-0 md:pb-4 md:pt-4 ">
+                          <motion.h3 className="text-xl sm:text-2xl md:text-5xl leading-tight md:leading-none pb-0 md:pb-4 md:pt-4">
                             {active.title}
                           </motion.h3>
                         )}

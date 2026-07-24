@@ -69,7 +69,7 @@ function ServicesGalleryFiltered({
                       setActiveFilter(filter);
                     });
                   }}
-                  className={`relative pb-3 text-xs uppercase tracking-normal transition-colors duration-300 ${
+                  className={`relative pb-3 text-xs uppercase transition-colors duration-300 ${
                     activeFilter === filter
                       ? "text-neutral-900 after:absolute after:inset-x-0 after:bottom-[-1px] after:h-[2px] after:bg-violet-500"
                       : "text-neutral-500 hover:text-neutral-900"

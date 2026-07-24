@@ -74,11 +74,9 @@
   /* Fluid type scale (16px root, 375px → 1440px interpolation) */
   --text-display: clamp(2.75rem, 2.05rem + 3vw, 4.75rem);
   --text-display--line-height: 0.9;
-  --text-display--letter-spacing: -0.03em;
   --text-display--font-weight: 700;
   --text-title: clamp(2rem, 1.65rem + 1.5vw, 3rem);
   --text-title--line-height: 1;
-  --text-title--letter-spacing: -0.02em;
   --text-title--font-weight: 700;
   --text-body-fluid: clamp(1rem, 0.97rem + 0.25vw, 1.125rem);
   --text-body-fluid--line-height: 1.33;
@@ -174,14 +172,6 @@
   --line-height-extra: 1.45;
   /* 145% for tiny text */
 
-  /* Letter Spacing - From Figma Design */
-  --letter-spacing-tightest: -0.05em;
-  /* -5% */
-  --letter-spacing-tighter: -0.03em;
-  /* -3% */
-  --letter-spacing-tight: -0.02em;
-  /* -2% */
-  --letter-spacing-normal: 0;
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -295,6 +285,35 @@
     font-weight: 400;
   }
 
+  /* FLZR uses the font's native spacing across every rendered component,
+     including reusable blocks whose source lives outside this app. */
+  :where(body, body *) {
+    letter-spacing: normal !important;
+  }
+
+  /* Deliberate exception for compact media-card headlines. */
+  .flzr-card-title {
+    letter-spacing: 0.05em !important;
+  }
+
+  /* Headline casing is a site-level contract, including reusable blocks and
+     headline-like shell copy that cannot use a heading element. */
+  :where(
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    .text-display,
+    .text-title,
+    .heading-responsive,
+    .subheading-responsive,
+    .flzr-headline
+  ) {
+    text-transform: uppercase;
+  }
+
   ::selection {
     background: var(--color-flzr-violet);
     color: #fff;
@@ -302,9 +321,7 @@
 
   /* FLZR headline family and default violet. Explicit text-color utilities
      still win, so contextual treatments such as white card names remain. */
-  :where(h1, h2, h3, .text-display, .text-title):not(
-    [data-onesp-component-group] *
-  ) {
+  :where(h1, h2, h3, h4, h5, h6, .text-display, .text-title) {
     font-family: var(--font-pt-sans), sans-serif;
     color: var(--color-flzr-violet);
   }
@@ -315,7 +332,6 @@
     font-family: var(--font-mono);
     font-size: 0.75rem;
     font-weight: 500;
-    letter-spacing: 0.08em;
     line-height: 1;
     text-transform: uppercase;
   }
@@ -486,13 +502,25 @@
 }
 
 /* FLZR headline contract. Keep this outside Tailwind's cascade layers so
-   component-level font-medium/font-semibold utilities cannot dilute the
-   channel's bold italic voice. Canonical 1SP groups retain their own type. */
-:where(h1, h2, h3, .text-display, .text-title):not(
-  [data-onesp-component-group] *
+   component-level font-light/font-medium/font-semibold utilities cannot
+   dilute the channel's bold italic voice, including reusable blocks. */
+:where(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .text-display,
+  .text-title,
+  .heading-responsive,
+  .subheading-responsive,
+  .flzr-headline
 ) {
+  font-family: var(--font-pt-sans), sans-serif;
   font-style: italic;
   font-weight: 700;
+  text-transform: uppercase;
 }
 
 @keyframes vt-slide-in {
@@ -629,12 +657,12 @@
   /* Responsive typography scaling */
   .heading-responsive {
     @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl;
-    @apply tracking-tighter leading-[0.95];
+    @apply leading-[0.95];
   }
 
   .subheading-responsive {
     @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
-    @apply tracking-tight leading-tight;
+    @apply leading-tight;
   }
 
   .body-responsive {

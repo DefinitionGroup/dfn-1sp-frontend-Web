@@ -81,6 +81,7 @@ const NAV_COPY: Record<
 const NAV_COMPACT_SCROLL_Y = 64;
 const NAV_HIDE_SCROLL_Y = 228;
 const NAV_DIRECTION_THRESHOLD = 4;
+const NAV_IDLE_HIDE_MS = 3000;
 
 type NavState = "expanded" | "compact" | "hidden";
 
@@ -109,14 +110,31 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   );
   const navRef = React.useRef<HTMLElement>(null);
   const copy = NAV_COPY[locale] ?? NAV_COPY.en;
+  const isFlzrChannel = channel === "flizrWeb";
 
   // The nav starts in page flow, compacts into the floating treatment after
-  // 64px, hides while scrolling down past 228px, and returns on scroll up.
+  // 64px, stays visible while scrolling, then hides after three idle seconds.
   const { scrollY } = useScroll();
   const [navState, setNavState] = React.useState<NavState>("expanded");
   const lastScrollY = React.useRef(0);
+  const navIdleTimer = React.useRef<number | null>(null);
   const isExpanded = navState === "expanded";
   const isNavVisible = navState !== "hidden";
+
+  function clearNavIdleTimer() {
+    if (navIdleTimer.current !== null) {
+      window.clearTimeout(navIdleTimer.current);
+      navIdleTimer.current = null;
+    }
+  }
+
+  function scheduleNavIdleHide() {
+    clearNavIdleTimer();
+    navIdleTimer.current = window.setTimeout(() => {
+      setNavState("hidden");
+      navIdleTimer.current = null;
+    }, NAV_IDLE_HIDE_MS);
+  }
 
   React.useEffect(() => {
     const currentScrollY = window.scrollY;
@@ -124,15 +142,33 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
     if (currentScrollY <= NAV_COMPACT_SCROLL_Y) {
       setNavState("expanded");
+    } else if (isFlzrChannel) {
+      setNavState("compact");
+      scheduleNavIdleHide();
     } else if (currentScrollY <= NAV_HIDE_SCROLL_Y) {
       setNavState("compact");
     } else {
       setNavState("hidden");
     }
-  }, []);
+
+    return clearNavIdleTimer;
+  }, [isFlzrChannel]);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const delta = latest - lastScrollY.current;
+
+    if (isFlzrChannel) {
+      lastScrollY.current = latest;
+
+      if (latest <= NAV_COMPACT_SCROLL_Y) {
+        clearNavIdleTimer();
+        setNavState("expanded");
+      } else {
+        setNavState("compact");
+        scheduleNavIdleHide();
+      }
+      return;
+    }
 
     if (Math.abs(delta) < NAV_DIRECTION_THRESHOLD) {
       return;
@@ -141,6 +177,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
     lastScrollY.current = latest;
 
     if (latest <= NAV_COMPACT_SCROLL_Y) {
+      clearNavIdleTimer();
       setNavState("expanded");
     } else if (delta < 0) {
       setNavState("compact");
@@ -208,7 +245,22 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
   const textColor =
     detectedTheme === "dark" ? "text-neutral-800 " : "text-neutral-50 ";
-  const isFlzrChannel = channel === "flizrWeb";
+  const isFlzrScrolled = isFlzrChannel && !isExpanded;
+  const navTextColor = isFlzrChannel
+    ? isFlzrScrolled
+      ? "text-white"
+      : "text-flzr-violet"
+    : textColor;
+  const desktopSurfaceClass = isFlzrChannel
+    ? isFlzrScrolled
+      ? "border border-white/10 bg-neutral-900/60 shadow-lg shadow-black/15 backdrop-blur-xl"
+      : "border border-transparent bg-transparent shadow-none backdrop-blur-none"
+    : "border border-transparent bg-neutral-600/40 backdrop-blur-md";
+  const mobileSurfaceClass = isFlzrChannel
+    ? isFlzrScrolled
+      ? "border border-white/10 bg-neutral-900/60 shadow-lg shadow-black/15 backdrop-blur-xl"
+      : "border border-transparent bg-transparent shadow-none backdrop-blur-none"
+    : "border border-white/15 bg-neutral-600/40 shadow-lg backdrop-blur-xl";
   const imageLogo = isFlzrChannel
     ? "/units/FLZR/flzr_logo.svg"
     : detectedTheme === "dark"
@@ -217,8 +269,12 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   const logoUrl = imageLogo;
   const logoAlt = isFlzrChannel ? "FLZR Logo" : "1SP Logo";
   const logoClassName = [
-    "object-contain transition-all duration-300",
-    isFlzrChannel && detectedTheme === "dark" ? "brightness-0" : "",
+    "object-contain transition-[filter] duration-300",
+    isFlzrChannel
+      ? isFlzrScrolled
+        ? "brightness-0 invert"
+        : "brightness-0"
+      : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -288,7 +344,9 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
     showOverlay,
   ]);
 
-  const itemClass = `text-xs leading-compress tracking-wide font-medium mr-8 inline-block `;
+  const itemClass = `text-xs leading-compress font-medium inline-block ${
+    isExpanded ? "mr-8" : "mr-6"
+  }`;
   const syncedMenuItems =
     menuData?.menuItems && menuData.menuItems.length > 0
       ? menuData.menuItems
@@ -337,11 +395,13 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           }}
           aria-hidden={!isNavVisible}
           inert={!isNavVisible}
-          className={`floating-nav z-99999 hidden h-16 items-center grid-cols-12 bg-neutral-600/40 py-2 backdrop-blur-md md:grid ${
+          data-nav-state={navState}
+          data-nav-surface={isFlzrScrolled ? "frosted" : "transparent"}
+          className={`floating-nav z-99999 hidden items-center grid-cols-12 py-2 transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 md:grid ${
             isExpanded
-              ? "relative mx-auto w-full rounded-[2rem] px-6"
-              : "fixed left-0 right-0 top-6 mx-auto w-fit rounded-full px-6 iphone-landscape:top-2 iphone-landscape:scale-70"
-          } ${isNavVisible ? "" : "pointer-events-none"} ${textColor} ${className}`}
+              ? "relative mx-auto h-16 w-full rounded-[2rem] px-6"
+              : "fixed left-0 right-0 top-6 mx-auto h-14 w-fit rounded-full px-5 iphone-landscape:top-2 iphone-landscape:scale-70"
+          } ${isNavVisible ? "" : "pointer-events-none"} ${desktopSurfaceClass} ${navTextColor} ${className}`}
         >
           <div className="col-span-2 flex items-center pr-16  justify-start">
             <motion.div
@@ -493,6 +553,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               <LanguageSelector
                 currentLocale={locale}
                 options={languageOptions}
+                frosted={isFlzrScrolled}
               />
             ) : null}
             <Button2
@@ -520,11 +581,13 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           }}
           aria-hidden={!isNavVisible}
           inert={!isNavVisible}
-          className={`z-99999 flex h-14 items-center justify-between rounded-full border border-white/15 bg-neutral-600/40 px-4 shadow-lg backdrop-blur-xl md:hidden ${
+          data-nav-state={navState}
+          data-nav-surface={isFlzrScrolled ? "frosted" : "transparent"}
+          className={`z-99999 flex items-center justify-between rounded-full transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 md:hidden ${
             isExpanded
-              ? "relative mx-auto w-full"
-              : "fixed left-3 right-3 top-3"
-          } ${isNavVisible ? "" : "pointer-events-none"} ${textColor}`}
+              ? "relative mx-auto h-14 w-full px-4"
+              : "fixed left-3 right-3 top-3 h-12 px-3"
+          } ${isNavVisible ? "" : "pointer-events-none"} ${mobileSurfaceClass} ${navTextColor}`}
         >
           <motion.div
             initial={{ opacity: 0, y: 7 }}
@@ -568,6 +631,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 currentLocale={locale}
                 options={languageOptions}
                 compact
+                frosted={isFlzrScrolled}
               />
             ) : null}
           </motion.div>

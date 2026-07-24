@@ -62,7 +62,6 @@ const StyleSheet = () => {
 
         .number {
           font-size: 48px;
-          letter-spacing: -0.014rem;
           font-weight: 300;
           font-variation-settings: "opsz" 30, "wght" 530;
         }
@@ -75,7 +74,6 @@ const StyleSheet = () => {
           bottom: 0px;
           align-self: flex-end;
           margin-left: 3px;
-          letter-spacing: -0.02em;
         }
 
         @media (min-width: 768px) {

@@ -61,6 +61,8 @@ type Position = {
   arcAlt: number;
   color: string;
   label: string;
+  labelOffsetX?: number;
+  labelOffsetY?: number;
 };
 
 export type GlobeConfig = {
@@ -77,6 +79,7 @@ export type GlobeConfig = {
   directionalLeftLight?: string;
   directionalTopLight?: string;
   pointLight?: string;
+  arcStroke?: number;
   arcTime?: number;
   arcLength?: number;
   rings?: number;
@@ -205,6 +208,7 @@ export function Globe({ globeConfig, data }: WorldProps) {
     emissive: "#ffffff",
     emissiveIntensity: 1.0,
     shininess: 1,
+    arcStroke: 0.3,
     arcTime: 2000,
     arcLength: 0.9,
     rings: 1,
@@ -291,7 +295,7 @@ export function Globe({ globeConfig, data }: WorldProps) {
       .arcEndLng((d) => (d as { endLng: number }).endLng * 1)
       .arcColor((e: any) => (e as { color: string }).color)
       .arcAltitude((e) => (e as { arcAlt: number }).arcAlt * 1)
-      .arcStroke(() => [0.32, 0.28, 0.3][Math.round(Math.random() * 2)])
+      .arcStroke(defaultProps.arcStroke)
       .arcDashLength(defaultProps.arcLength)
       .arcDashInitialGap((e) => (e as { order: number }).order * 1)
       .arcDashGap(15)
@@ -320,6 +324,7 @@ export function Globe({ globeConfig, data }: WorldProps) {
     defaultProps.atmosphereColor,
     defaultProps.atmosphereAltitude,
     defaultProps.polygonColor,
+    defaultProps.arcStroke,
     defaultProps.arcLength,
     defaultProps.arcTime,
     defaultProps.rings,
@@ -412,6 +417,8 @@ function ArcLabels({ data }: Pick<WorldProps, "data">) {
           connectorStart: connectorStart.toArray() as [number, number, number],
           color: arc.color,
           text: arc.label,
+          labelOffsetX: arc.labelOffsetX ?? 0,
+          labelOffsetY: arc.labelOffsetY ?? 0,
         };
       }),
     [data]
@@ -461,18 +468,25 @@ function ArcLabels({ data }: Pick<WorldProps, "data">) {
             position={point.position}
             center
             distanceFactor={45}
-            style={{
-              color: "#ffffff",
-              fontWeight: 600,
-              fontSize: "1.125rem",
-              backgroundColor: "#7c5cff",
-              padding: "0.195rem 0.45rem",
-              borderRadius: "100px",
-              textTransform: "uppercase",
-              whiteSpace: "nowrap",
-            }}
+            style={{ pointerEvents: "none" }}
           >
-            {point.text}
+            <span
+              data-globe-label={point.text}
+              style={{
+                display: "block",
+                color: "#ffffff",
+                fontWeight: 600,
+                fontSize: "1.125rem",
+                backgroundColor: "#7c5cff",
+                padding: "0.195rem 0.45rem",
+                borderRadius: "100px",
+                textTransform: "uppercase",
+                transform: `translate3d(${point.labelOffsetX}px, ${point.labelOffsetY}px, 0)`,
+                whiteSpace: "nowrap",
+              }}
+            >
+              {point.text}
+            </span>
           </Html>
         </group>
       ))}

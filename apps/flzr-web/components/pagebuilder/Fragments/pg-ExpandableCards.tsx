@@ -313,7 +313,7 @@ function ExpandableCards({
                 {/* Old tile only showed title; keep that for parity */}
                 <motion.h3
                   layoutId={`title-${card.title}-${id}`}
-                  className="font-medium mt-4 md:mt-12 text-xs md:text-xs leading-snug tracking-tight text-neutral-100 dark:text-neutral-200 text-center "
+                  className="font-medium mt-4 md:mt-12 text-xs md:text-xs leading-snug text-neutral-100 dark:text-neutral-200 text-center"
                 >
                   {card.description}
                 </motion.h3>

@@ -112,13 +112,13 @@ export const TextHeadlineCombo: React.FC<TextHeadlineComboProps> = ({
         {eyebrow && (
           <motion.span
             {...baseMotion(0)}
-            className={`tracking-widest uppercase ${sizes.eyebrow} font-semibold text-violet-500/90`}>
+            className={`uppercase ${sizes.eyebrow} font-semibold text-violet-500/90`}>
             {eyebrow}
           </motion.span>
         )}
         <motion.h1
           {...baseMotion(0.05)}
-          className={`font-semibold leading-compress tracking-tight text-foreground ${sizes.headline}`}>
+          className={`font-semibold leading-compress text-foreground ${sizes.headline}`}>
           {typeof headline === "string" && highlight ? (
             <>
               {headline}{" "}
@@ -145,7 +145,7 @@ export const TextHeadlineCombo: React.FC<TextHeadlineComboProps> = ({
         {kicker && (
           <motion.div
             {...baseMotion(0.18)}
-            className={`text-foreground/60 ${sizes.kicker} font-medium tracking-wide`}>
+            className={`text-foreground/60 ${sizes.kicker} font-medium`}>
             {kicker}
           </motion.div>
         )}

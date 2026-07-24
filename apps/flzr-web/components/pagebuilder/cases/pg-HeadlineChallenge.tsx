@@ -51,17 +51,17 @@ export default function HeadlineChallenge({
                 className="max-w-full md:max-w-2/3  lg:max-w-3/4 py-16 "
               >
                 {hasVisibleText(headline) ? (
-                  <h2 className="text-sm sm:text-base lg:text-lg tracking-tight leading-tighter text-neutral-400  font-medium font-flzr">
+                  <h2 className="text-sm sm:text-base lg:text-lg leading-tighter text-neutral-400 font-medium font-flzr">
                     {headline}
                   </h2>
                 ) : null}
                 {hasVisibleText(title) ? (
-                  <h3 className="text-4xl md:text-4xl tracking-tight leading-tight lg:text-5xl text-flzr-violet font-flzr">
+                  <h3 className="text-4xl md:text-4xl leading-tight lg:text-5xl text-flzr-violet font-flzr">
                     {title}
                   </h3>
                 ) : null}
                 {hasVisibleText(description) && (
-                  <h2 className="text-4xl md:text-4xl lg:text-5xl tracking-tight leading-tighter text-neutral-800 pb-2 sm:pb-3 leading-none font-flzr">
+                  <h2 className="text-4xl md:text-4xl lg:text-5xl leading-tighter text-neutral-800 pb-2 sm:pb-3 leading-none font-flzr">
                     {description}
                   </h2>
                 )}

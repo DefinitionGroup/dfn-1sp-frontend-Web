@@ -95,7 +95,7 @@ export default function CardsStep({ step }: CardsStepProps) {
               distance={80}
             >
               {hasVisibleText(title) && (
-                <h2 className="text-7xl leading-compress text-neutral-900 max-w-lg font-semibold tracking-loose leading-tighter mb-8">
+                <h2 className="text-7xl leading-compress text-neutral-900 max-w-lg font-semibold leading-tighter mb-8">
                   {title}
                 </h2>
               )}

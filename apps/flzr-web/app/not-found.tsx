@@ -26,10 +26,10 @@ export default function NotFound() {
       <div className="text-center px-4">
         <div className="max-w-md mx-auto">
           <div className="mb-8">
-            <div className="text-8xl font-bold text-neutral-800 mb-4 tracking-tighter">
+            <div className="text-8xl font-bold text-neutral-800 mb-4">
               404
             </div>
-            <h1 className="text-2xl font-bold text-white mb-3 tracking-tight">
+            <h1 className="text-2xl font-bold text-white mb-3">
               Page not found
             </h1>
             <p className="text-neutral-400 mb-8 text-sm leading-relaxed">

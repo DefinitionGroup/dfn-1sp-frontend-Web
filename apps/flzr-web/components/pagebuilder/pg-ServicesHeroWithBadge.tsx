@@ -108,7 +108,7 @@ function ServicesHeroWithBadge({
               distance={80}
             >
               {hasVisibleText(title) ? (
-                <TitleTag className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-gray-100 max-w-2xl tracking-tighter leading-[0.9] mb-2 md:mb-4">
+                <TitleTag className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-gray-100 max-w-2xl leading-[0.9] mb-2 md:mb-4">
                   {title}
                 </TitleTag>
               ) : null}

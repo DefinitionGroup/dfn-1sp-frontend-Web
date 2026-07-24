@@ -197,7 +197,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
             {/* Optional section title */}
             {hasVisibleText(title) && (
               <StaggeredFadeIn viewThreshold={0.01}>
-                <h2 className="text-4xl  md:text-7xl  tracking-tighter font-light mb-12 text-neutral-600">{title}</h2>
+                <h2 className="text-4xl md:text-7xl font-light mb-12 text-neutral-600">{title}</h2>
               </StaggeredFadeIn>
             )}
 

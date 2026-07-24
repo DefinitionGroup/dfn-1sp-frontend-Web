@@ -12,6 +12,10 @@ import {
   getSiteConfig,
   type LocaleCode,
 } from "@1sp/site-config";
+import {
+  getFlzrEuropeanLocations,
+  getFlzrGlobeSectionId,
+} from "@flzr/data/europeanLocations";
 import type { PageBuilderBlock } from "@1sp/sanity-types";
 import type { FooterMenu, NavbarMenu } from "@1sp/sanity-types/menu";
 import {
@@ -101,33 +105,11 @@ type FooterLocation = {
   detail?: string;
 };
 
-function getHomepageLocations(
-  content: PageBuilderBlock[],
-  footer: FooterMenu | null | undefined,
-): FooterLocation[] {
-  const homepageLocations = content.flatMap((block) => {
-    if (block._type !== "globeComponent" || !Array.isArray(block.locations)) {
-      return [];
-    }
-
-    return block.locations
-      .filter((location: { name?: string }) => Boolean(location?.name))
-      .map((location: { _key?: string; name: string; subtitle?: string }) => ({
-        _key: location._key,
-        name: location.name,
-        detail: location.subtitle,
-      }));
-  });
-
-  if (homepageLocations.length) return homepageLocations;
-
-  return (footer?.locations ?? [])
-    .filter((location) => Boolean(location.name))
-    .map((location) => ({
-      _key: location._key,
-      name: location.name ?? "",
-      detail: location.address,
-    }));
+function getFooterLocations(language: string): FooterLocation[] {
+  return getFlzrEuropeanLocations(language).map((location) => ({
+    _key: location.code,
+    name: location.name,
+  }));
 }
 
 function getSelectedServices(content: PageBuilderBlock[]): FooterService[] {
@@ -176,7 +158,7 @@ function FooterColumnHeading({
   );
 
   const className =
-    "group mb-5 flex items-center gap-2 border-b border-white/15 pb-3 text-xs font-semibold uppercase tracking-[0.12em] text-white";
+    "flzr-headline group mb-5 flex items-center gap-2 border-b border-white/15 pb-3 text-xs text-white";
 
   return href ? (
     <Link href={href} className={className}>
@@ -226,7 +208,11 @@ async function FlzrFooter({
         .map((service) => [service._id ?? service.name, service]),
     ).values(),
   ).slice(0, 8);
-  const locations = getHomepageLocations(content, footer);
+  const locations = getFooterLocations(language);
+  const globeBlock = content.find(
+    (block) => block._type === "globeComponent",
+  ) as { sectionTitle?: string } | undefined;
+  const globeSectionId = getFlzrGlobeSectionId(globeBlock?.sectionTitle);
   const homepageStatement = content.find(
     (block) => typeof block.headline === "string" && block.headline.trim(),
   )?.headline as string | undefined;
@@ -251,7 +237,7 @@ async function FlzrFooter({
               className="h-10 w-auto brightness-0 invert md:h-11"
               style={{ width: "auto" }}
             />
-            <p className="mt-7 max-w-xl text-[clamp(1.35rem,1.05rem+1.2vw,2.25rem)] font-semibold leading-[1.08] tracking-[-0.025em] text-white">
+            <p className="flzr-headline mt-7 max-w-xl text-[clamp(1.35rem,1.05rem+1.2vw,2.25rem)] leading-[1.08] text-white">
               {homepageStatement || site.seo.defaultDescription}
             </p>
           </div>
@@ -327,7 +313,7 @@ async function FlzrFooter({
                   key={location._key ?? `${location.name}-${location.detail}`}
                 >
                   <Link
-                    href={`/${language}#globe-component`}
+                    href={`/${language}#${globeSectionId}`}
                     className={footerLinkClassName}
                   >
                     <span aria-hidden="true" className="mt-px text-white/30">

@@ -2,44 +2,28 @@
 import React from "react";
 import type { GlobeComponent as GlobeComponentType } from "@1sp/sanity-types";
 import GlobalDataComponent from "@flzr/components/pagebuilder/pg-GlobalDataComponent";
-
+import {
+  getFlzrEuropeanLocations,
+  getFlzrGlobeSectionId,
+} from "@flzr/data/europeanLocations";
 
 interface GlobeComponentProps {
   data: GlobeComponentType;
+  language?: string;
 }
 
-function GlobeComponent({ data }: GlobeComponentProps) {
-  const {
-    locations = [],
-    sectionTitle,
-    sectionSubtitle,
-    navPointName,
-  } = data || {};
+function GlobeComponent({ data, language }: GlobeComponentProps) {
+  const { sectionTitle, sectionSubtitle, navPointName } = data || {};
+  const locations = getFlzrEuropeanLocations(language);
 
-  if (!locations || locations.length === 0) {
-    return (
-      <div className="w-full py-16 flex items-center justify-center">
-        <div className="text-gray-400">
-          No locations available. Please add locations in Sanity Studio.
-        </div>
-      </div>
-    );
-  }
-
-  // Generate section ID
-  const sectionId = sectionTitle
-    ? sectionTitle
-      .replace(/[^a-zA-Z0-9\s]/g, "")
-      .replace(/\s+/g, "-")
-      .toLowerCase()
-    : "globe-component";
+  const sectionId = getFlzrGlobeSectionId(sectionTitle);
 
   // Store the navPointName in a data attribute if provided
   const navPointDataAttr = navPointName
     ? { "data-navpoint-name": navPointName }
     : {};
 
-  // Transform locations data into globe arcs format — flzr violet family
+  // Transform the shared FLZR market locations into globe arcs.
   const colors = ["#7c5cff", "#9d85ff", "#d6ccff"];
 
   // Create arcs connecting consecutive locations
@@ -54,9 +38,11 @@ function GlobeComponent({ data }: GlobeComponentProps) {
       startLng: prevLocation.coordinateLon,
       endLat: location.coordinateLat,
       endLng: location.coordinateLon,
-      arcAlt: 0.2 + (index % 3) * 0.1,
+      arcAlt: 0.08 + (index % 3) * 0.015,
       color: colors[index % colors.length],
-      label: location.subtitle || location.name,
+      label: location.name,
+      labelOffsetX: location.labelOffsetX,
+      labelOffsetY: location.labelOffsetY,
     };
   });
 
@@ -75,6 +61,7 @@ function GlobeComponent({ data }: GlobeComponentProps) {
     directionalLeftLight: "#ffffff",
     directionalTopLight: "#ffffff",
     pointLight: "#ffffff",
+    arcStroke: 0.1,
     arcTime: 1555,
     arcLength: 0.95,
     rings: 1,

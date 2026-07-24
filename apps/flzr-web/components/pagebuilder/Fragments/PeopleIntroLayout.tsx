@@ -22,12 +22,12 @@ export default function PeopleIntroLayout({
         <div className="col-span-4 sm:col-span-3 md:col-span-4 iphone-landscape:col-span-4">
           <div className="flex flex-col gap-2 sm:gap-4">
             {hasVisibleText(header.superText) && (
-              <h2 className="text-xs font-semibold tracking-tight text-neutral-700 sm:text-sm">
+              <h2 className="text-xs font-semibold text-neutral-700 sm:text-sm">
                 {header.superText}
               </h2>
             )}
             {hasVisibleText(header.mainHeadline) && (
-              <h3 className="text-4xl leading-[1.1] tracking-tighter sm:text-4xl md:text-4xl lg:text-5xl">
+              <h3 className="text-4xl leading-[1.1] sm:text-4xl md:text-4xl lg:text-5xl">
                 {header.mainHeadline}
               </h3>
             )}

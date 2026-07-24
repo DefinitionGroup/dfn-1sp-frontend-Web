@@ -87,7 +87,7 @@ export default function CasePoweredByContact({
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {unitLogos.length > 0 && (
           <div className="mx-auto w-full max-w-3xl">
-            <h2 className="text-center text-2xl sm:text-3xl tracking-tight text-neutral-900">
+            <h2 className="text-center text-2xl sm:text-3xl text-neutral-900">
               {t.caseStudy.poweredBy}
             </h2>
 
@@ -121,7 +121,7 @@ export default function CasePoweredByContact({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
-                className=" text-sm tracking-tight leading-tight  text-neutral-500 "
+                className="text-sm leading-tight text-neutral-500"
               >
                 {`${t.caseStudy.contactPrefix}`}
               </motion.p>
@@ -130,7 +130,7 @@ export default function CasePoweredByContact({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.3, ease: "easeOut" }}
-                className="text-xl sm:text-xl lg:text-2xl tracking-tight leading-tight text-neutral-700"
+                className="text-xl sm:text-xl lg:text-2xl leading-tight text-neutral-700"
               >
                 {t.caseStudy.wantToKnowMore}
               </motion.h3>
@@ -141,7 +141,7 @@ export default function CasePoweredByContact({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
-                className="mt-2 text-2xl sm:text-3xl lg:text-3xl tracking-tight leading-tight  text-violet-500"
+                className="mt-2 text-2xl sm:text-3xl lg:text-3xl leading-tight text-violet-500"
               >
                 {`${personName}${personUnit ? ` @ ${personUnit}` : ""}`}
               </motion.p>
@@ -154,7 +154,7 @@ export default function CasePoweredByContact({
                 className=" flex flex-col gap-2 text-sm  text-neutral-300"
               >
                 {relatedPerson.position && (
-                  <p className=" text-sm tracking-tight leading-tight  text-neutral-500 mb-5 sm:mb-6 ">{relatedPerson.position}</p>
+                  <p className="text-sm leading-tight text-neutral-500 mb-5 sm:mb-6">{relatedPerson.position}</p>
                 )}
                 {relatedPerson.email && (
                   <Button2

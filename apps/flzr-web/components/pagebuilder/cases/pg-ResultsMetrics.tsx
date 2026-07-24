@@ -134,7 +134,7 @@ export default function ResultsMetrics({
                 distance={80}
               >
                 {hasVisibleText(title) ? (
-                  <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-2 text-gray-100 max-w-xl tracking-tight leading-[1.1]">
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-2 text-gray-100 max-w-xl leading-[1.1]">
                     {title}
                   </h2>
                 ) : null}
@@ -189,7 +189,7 @@ export default function ResultsMetrics({
                                 number={Math.abs(metric.value)}
                                 format={{ minimumIntegerDigits: 2 }}
                                 suffix="%"
-                                className="text-2xl font-light tracking-tighter sm:text-3xl md:text-[80px]"
+                                className="text-2xl font-light sm:text-3xl md:text-[80px]"
                                 delay={300}
                               />
                             </motion.div>
@@ -203,7 +203,7 @@ export default function ResultsMetrics({
                           distance={80}
                         >
                           {hasVisibleText(metric.label) ? (
-                            <h3 className="text-sm sm:text-base md:text-lg text-gray-200 tracking-tight leading-snug">
+                            <h3 className="text-sm sm:text-base md:text-lg text-gray-200 leading-snug">
                               {metric.label}
                             </h3>
                           ) : null}
