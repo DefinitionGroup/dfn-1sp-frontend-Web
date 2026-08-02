@@ -27,6 +27,9 @@ import {
 import { structure } from './sanity/structure'
 import { locations, mainDocuments } from './sanity/presentation/resolve';
 
+const RELATIONSHIP_SYNC_ENABLED =
+  process.env.NEXT_PUBLIC_ENABLE_RELATIONSHIP_SYNC === 'true';
+
 // Studio templates derive from the same channel/locale policy as the frontends.
 const CHANNELS = WEBSITE_CHANNELS.map((id) => ({
   id,
@@ -212,7 +215,9 @@ export default defineConfig({
 
       // Add our custom sync action for documents with bidirectional relationships
       if (schemaType === 'services' || schemaType === 'serviceGroup' || schemaType === 'unit' || schemaType === 'caseStudy' || schemaType === 'client' || schemaType === 'person') {
-        return [...prev, syncServiceGroupRelationships, revalidateAction]
+        return RELATIONSHIP_SYNC_ENABLED
+          ? [...prev, syncServiceGroupRelationships, revalidateAction]
+          : [...prev, revalidateAction]
       }
 
       if (schemaType === 'page' || schemaType === 'menu' || schemaType === 'oneSpComponentGroup') {

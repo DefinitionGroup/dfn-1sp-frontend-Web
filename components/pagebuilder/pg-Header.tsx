@@ -10,6 +10,7 @@ import type { PortableTextBlock } from "@portabletext/types";
 import type {
   OneSPHeader,
   CloudinaryAsset,
+  ParagraphLine,
 } from "@1sp/sanity-types";
 import { useMediaQuery } from "@1sp/utils/hooks/use-media-query";
 import { SMALL_TOUCH_LANDSCAPE_MEDIA_QUERY } from "@1sp/utils/responsive";
@@ -48,6 +49,21 @@ function highlightInline(text: string, highlight?: string): React.ReactNode {
       {after}
     </>
   );
+}
+
+function paragraphLineSizeClass(fontSize?: ParagraphLine["fontSize"]): string {
+  const value =
+    typeof fontSize === "string" ? fontSize : fontSize?.size ?? "base";
+
+  return {
+    xs: "text-xs",
+    sm: "text-sm",
+    base: "text-base",
+    lg: "text-lg",
+    xl: "text-xl",
+    "2xl": "text-2xl",
+    "3xl": "text-3xl",
+  }[value] ?? "text-base";
 }
 
 /** --- component --- */
@@ -100,6 +116,16 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
       em: ({ children }: { children?: React.ReactNode }) => (
         <em className="italic">{children}</em>
       ),
+    },
+    types: {
+      paragraphLine: ({ value }: { value: ParagraphLine }) =>
+        hasVisibleText(value?.text) ? (
+          <p
+            className={`text-neutral-50 ${paragraphLineSizeClass(value.fontSize)} iphone-landscape:max-w-[66.6667%] lg:max-w-[50%]`}
+          >
+            {highlightInline(value.text ?? "", highlight)}
+          </p>
+        ) : null,
     },
   };
 

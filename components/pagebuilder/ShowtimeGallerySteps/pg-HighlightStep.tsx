@@ -107,7 +107,7 @@ export default function HighlightStep({
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="z-12 mx-auto mt-8 min-h-[60vh] relative font-aspekta"
+      className="z-12 mx-auto mt-8 min-h-[60vh] overflow-x-clip relative font-aspekta"
     >
       {mediaUrl && (
         <HeaderImageVideoComp2

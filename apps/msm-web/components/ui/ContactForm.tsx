@@ -15,6 +15,7 @@ type FormState = {
   email: string;
   company: string;
   message: string;
+  website: string;
 };
 
 const defaultFormState: FormState = {
@@ -22,6 +23,7 @@ const defaultFormState: FormState = {
   email: "",
   company: "",
   message: "",
+  website: "",
 };
 
 export default function ContactForm({
@@ -115,6 +117,15 @@ export default function ContactForm({
               </div>
             ) : (
               <form className="space-y-12" onSubmit={onSubmit}>
+                <label className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
+                  <span>Website</span>
+                  <input
+                    value={formState.website}
+                    onChange={handleChange("website")}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </label>
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                   <label className="space-y-2 text-sm text-neutral-700">
                     <span>Name</span>

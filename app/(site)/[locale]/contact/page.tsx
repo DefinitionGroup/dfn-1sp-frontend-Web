@@ -121,6 +121,7 @@ export default async function ContactPage({
 
   const navbarVariant = page?.navbarVariant || "light";
   const contentBlocks = page.content as any[] | undefined;
+  const contentHasH1 = contentBlocks?.some((block) => block?.headingTag === "h1") ?? false;
   const needsAllCases = hasAutoCaseListingBlocks(contentBlocks);
   const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
 
@@ -205,6 +206,7 @@ export default async function ContactPage({
             language={language}
             channel={channel}
             settings={page.contactForm}
+            headingTag={contentHasH1 ? "h2" : "h1"}
           />
         </div>
       </div>

@@ -13,6 +13,7 @@
     "./text-content": "./src/text-content.tsx",
     "./site-url": "./src/site-url.ts",
     "./deployment-tier": "./src/deployment-tier.ts",
+    "./server/request-security": "./src/server/request-security.ts",
     "./carousel-media": "./src/carousel-media.ts",
     "./hero-media": "./src/hero-media.ts",
     "./hooks/use-media-query": "./src/hooks/use-media-query.ts",

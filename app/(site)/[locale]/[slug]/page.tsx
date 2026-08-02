@@ -104,6 +104,7 @@ export async function generateMetadata({
       },
     ]
     : [];
+  const isReservedNonPublicPage = slug === "test";
 
   return {
     title,
@@ -125,6 +126,14 @@ export async function generateMetadata({
       description: description || undefined,
       images: ogImages.map((img) => img.url),
     },
+    ...(isReservedNonPublicPage
+      ? {
+          robots: {
+            index: false,
+            follow: false,
+          },
+        }
+      : {}),
   };
 }
 

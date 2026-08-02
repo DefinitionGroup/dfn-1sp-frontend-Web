@@ -8,6 +8,7 @@ type ContactFormProps = {
   language?: string;
   channel?: string;
   settings?: ContactFormSettings | null;
+  headingTag?: "h1" | "h2";
 };
 
 type FormState = {
@@ -15,6 +16,7 @@ type FormState = {
   email: string;
   company: string;
   message: string;
+  website: string;
 };
 
 const defaultFormState: FormState = {
@@ -22,12 +24,14 @@ const defaultFormState: FormState = {
   email: "",
   company: "",
   message: "",
+  website: "",
 };
 
 export default function ContactForm({
   language = "en",
   channel = "1spWeb",
   settings,
+  headingTag = "h2",
 }: ContactFormProps) {
   const [formState, setFormState] = useState<FormState>(defaultFormState);
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
@@ -83,6 +87,7 @@ export default function ContactForm({
     settings?.successMessage || "Thanks! We’ve received your message and will get back to you soon.";
   const errorMessage =
     settings?.errorMessage || "Sorry, something went wrong. Please try again in a moment.";
+  const HeadingTag = headingTag;
 
   return (
     <section className="relative overflow-hidden bg-neutral-50 py-20 text-neutral-900">
@@ -101,7 +106,9 @@ export default function ContactForm({
               Contact
             </span>
             {hasVisibleText(headline) ? (
-              <h2 className="text-3xl font-semibold leading-tight text-neutral-900 md:text-4xl">{headline}</h2>
+              <HeadingTag className="text-3xl font-semibold leading-tight text-neutral-900 md:text-4xl">
+                {headline}
+              </HeadingTag>
             ) : null}
             <p className="text-lg text-neutral-600">{subheadline}</p>
             {description ? <p className="text-neutral-500">{description}</p> : null}
@@ -115,6 +122,15 @@ export default function ContactForm({
               </div>
             ) : (
               <form className="space-y-12" onSubmit={onSubmit}>
+                <label className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
+                  <span>Website</span>
+                  <input
+                    value={formState.website}
+                    onChange={handleChange("website")}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </label>
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                   <label className="space-y-2 text-sm text-neutral-700">
                     <span>Name</span>

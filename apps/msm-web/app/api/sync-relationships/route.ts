@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from 'next-sanity'
 import { apiVersion, dataset, projectId } from '@1sp/sanity-queries/env'
+import { getChannelFromEnv } from '@1sp/site-config'
+import { hasValidBearerToken } from '@1sp/utils/server/request-security'
+
+export const runtime = 'nodejs'
 
 // Create a client with write permissions for API routes
 const writeClient = createClient({
@@ -17,6 +21,23 @@ function generateKey(): string {
 
 export async function POST(request: NextRequest) {
     try {
+        if (process.env.RELATIONSHIP_SYNC_ENABLED !== 'true') {
+            return NextResponse.json({ error: 'Not found' }, { status: 404 })
+        }
+
+        const syncSecret = process.env.SANITY_SYNC_SECRET
+        if (!syncSecret) {
+            console.error('SANITY_SYNC_SECRET is not configured')
+            return NextResponse.json(
+                { error: 'Server configuration error' },
+                { status: 503 }
+            )
+        }
+
+        if (!hasValidBearerToken(request.headers.get('authorization'), syncSecret)) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        }
+
         // Check if write token is configured
         if (!process.env.SANITY_API_WRITE_TOKEN) {
             console.error('SANITY_API_WRITE_TOKEN is not configured')
@@ -45,6 +66,27 @@ export async function POST(request: NextRequest) {
             return NextResponse.json(
                 { error: 'Document not found' },
                 { status: 404 }
+            )
+        }
+
+        if (document._type !== documentType) {
+            return NextResponse.json(
+                { error: 'Document type does not match the stored document' },
+                { status: 409 }
+            )
+        }
+
+        const activeChannel = getChannelFromEnv()
+        const documentChannels = Array.isArray(document.channel)
+            ? document.channel
+            : document.channel
+                ? [document.channel]
+                : []
+
+        if (documentChannels.length > 0 && !documentChannels.includes(activeChannel)) {
+            return NextResponse.json(
+                { error: 'Document is outside this deployment channel' },
+                { status: 403 }
             )
         }
 

@@ -200,7 +200,7 @@ export default function SmartCarousel({
   const activePosterUrl = getCarouselPosterUrl(active.video);
 
   return (
-    <section className="px-2 sm:px-4 md:px-0">
+    <section className="overflow-x-clip px-2 sm:px-4 md:px-0">
       <div
         ref={containerRef}
         className=" relative top-0 mx-auto w-full"

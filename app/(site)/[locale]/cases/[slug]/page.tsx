@@ -53,10 +53,16 @@ export const dynamicParams = true;
 export async function generateStaticParams() {
   const caseSlugs = await getAllCaseSlugs();
 
-  return caseSlugs.map((caseStudy) => ({
-    locale: caseStudy.language || "en",
-    slug: caseStudy.slug,
-  }));
+  return caseSlugs
+    .filter(
+      (caseStudy) =>
+        caseStudy.channel?.includes("1spWeb") &&
+        (caseStudy.language || "en") === "en",
+    )
+    .map((caseStudy) => ({
+      locale: "en",
+      slug: caseStudy.slug,
+    }));
 }
 
 /**
