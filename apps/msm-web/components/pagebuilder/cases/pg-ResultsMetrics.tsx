@@ -10,7 +10,7 @@ import PercentageDiagramHorizontal from "@msm/components/ui/percentageDiagramHor
 import PercentagePosNegDiagram from "@msm/components/ui/percentagePosNegDiagram";
 import { getTranslations } from "@1sp/utils/translations";
 import { useParams } from "next/navigation";
-import { assetUrl } from "@1sp/utils/cloudinary";
+import { assetUrl, isVideoAsset } from "@1sp/utils/cloudinary";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
 interface CloudinaryAsset {
@@ -59,8 +59,8 @@ export default function ResultsMetrics({
 
   const sectionId = t.ids.results;
 
-  // Get the image URL
-  const imageUrl = backgroundImage ? assetUrl(backgroundImage) : "";
+  const backgroundMediaUrl = backgroundImage ? assetUrl(backgroundImage) : "";
+  const useVideo = isVideoAsset(backgroundImage, backgroundMediaUrl);
 
   // Get the diagram component based on the metric type
   const getDiagramComponent = (
@@ -107,9 +107,10 @@ export default function ResultsMetrics({
         className="min-h-[80vh] md:min-h-[90vh] relative font-aspekta"
       >
         <HeaderImageVideoComp2
-          useVideo={false}
+          useVideo={useVideo}
           opacity={backgroundOpacity}
-          imageSrc={imageUrl}
+          imageSrc={!useVideo ? backgroundMediaUrl : undefined}
+          videoSrc={useVideo ? backgroundMediaUrl : undefined}
           enableParallax={enableParallax}
         />
 

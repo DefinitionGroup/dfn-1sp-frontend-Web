@@ -280,12 +280,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
     .join(" ");
 
   React.useEffect(() => {
-    if (
-      !showOverlay ||
-      !isCaseDetailRoute ||
-      hasLoadedCases ||
-      isCasesLoading
-    ) {
+    if (!showOverlay || !isCaseDetailRoute || hasLoadedCases) {
       return;
     }
 
@@ -339,7 +334,6 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
     copy.error,
     hasLoadedCases,
     isCaseDetailRoute,
-    isCasesLoading,
     locale,
     showOverlay,
   ]);

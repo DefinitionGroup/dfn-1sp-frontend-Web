@@ -194,9 +194,10 @@ export default defineType({
         }),
         defineField({
             name: "backgroundImage",
-            title: "Background Image",
+            title: "Background Media",
             type: "cloudinary.asset",
-            description: "Background image for the results section",
+            description:
+                "Select an image or video. The frontend detects the asset format automatically and generates a poster frame for videos.",
             group: "media",
         }),
         defineField({
@@ -213,7 +214,7 @@ export default defineType({
             title: "Enable Parallax Effect",
             type: "boolean",
             initialValue: false,
-            description: "Enable parallax scrolling effect for background image",
+            description: "Enable parallax scrolling effect for background media",
             group: "media",
         }),
         defineField({

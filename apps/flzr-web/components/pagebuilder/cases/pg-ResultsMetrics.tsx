@@ -10,7 +10,7 @@ import PercentageDiagramHorizontal from "@flzr/components/ui/percentageDiagramHo
 import PercentagePosNegDiagram from "@flzr/components/ui/percentagePosNegDiagram";
 import { getTranslations } from "@1sp/utils/translations";
 import { useParams } from "next/navigation";
-import { assetUrl } from "@1sp/utils/cloudinary";
+import { assetUrl, isVideoAsset } from "@1sp/utils/cloudinary";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
 interface CloudinaryAsset {
@@ -18,6 +18,11 @@ interface CloudinaryAsset {
   resource_type?: string;
   format?: string;
   secure_url?: string;
+  url?: string;
+  metadata?: {
+    resource_type?: string;
+    format?: string;
+  };
 }
 
 interface Metric {
@@ -61,8 +66,10 @@ export default function ResultsMetrics({
 
   const sectionId = t.ids.results;
 
-  // Get the image URL
-  const imageUrl = backgroundImage ? assetUrl(backgroundImage) : "";
+  // Keep the existing field name for published content, but treat it as a
+  // single media asset and infer image/video from its Cloudinary metadata.
+  const backgroundMediaUrl = backgroundImage ? assetUrl(backgroundImage) : "";
+  const useVideo = isVideoAsset(backgroundImage, backgroundMediaUrl);
   const effectiveBackgroundOpacity = Math.max(
     0,
     Math.min(1, backgroundOpacity * 0.5),
@@ -117,9 +124,10 @@ export default function ResultsMetrics({
         className="min-h-[80vh] md:min-h-[90vh] relative font-flzr"
       >
         <HeaderImageVideoComp2
-          useVideo={false}
+          useVideo={useVideo}
           opacity={effectiveBackgroundOpacity}
-          imageSrc={imageUrl}
+          imageSrc={!useVideo ? backgroundMediaUrl : undefined}
+          videoSrc={useVideo ? backgroundMediaUrl : undefined}
           enableParallax={enableParallax}
         />
 

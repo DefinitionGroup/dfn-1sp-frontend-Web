@@ -15,7 +15,9 @@ interface CaseStudy {
   slug: { current: string };
   description?: string;
   services?: { _id: string; name: string }[];
+  mainImage?: { secure_url?: string; url?: string };
   mainImageUrl?: string;
+  mainVideo?: { secure_url?: string; url?: string };
   mainVideoUrl?: string;
   client?: {
     _id: string;
@@ -31,6 +33,11 @@ interface CaseGalleryProps {
   activeFilter?: string;
   locale?: string;
 }
+
+const caseMediaUrl = (
+  explicitUrl?: string,
+  asset?: { secure_url?: string; url?: string },
+) => explicitUrl || asset?.secure_url || asset?.url;
 
 export default function CaseGalleryMenu({
   caseStudies = [],
@@ -70,7 +77,7 @@ export default function CaseGalleryMenu({
   useOutsideClick(ref, () => setActive(null));
 
   const handleViewCase = (slug: string) => {
-    router.push(`/cases/${slug}`);
+    router.push(`/${locale}/cases/${slug}`);
   };
 
   return (
@@ -117,9 +124,9 @@ export default function CaseGalleryMenu({
                 layoutId={`image-${item.title}-${id}`}
                 className="col-start-1 h-1/2 col-span-1 row-start-1 bg-black overflow-hidden"
               >
-                {item.mainVideoUrl ? (
+                {caseMediaUrl(item.mainVideoUrl, item.mainVideo) ? (
                   <DeferredVideo
-                    src={item.mainVideoUrl}
+                    src={caseMediaUrl(item.mainVideoUrl, item.mainVideo)!}
                     maxWidth={480}
                     className="w-full object-cover object-top opacity-80 transition-all h-full group-hover/card:opacity-100"
                     mountDelay={300}
@@ -129,7 +136,10 @@ export default function CaseGalleryMenu({
                   <Image
                     width={1000}
                     height={1000}
-                    src={item.mainImageUrl || "/placeholder.jpg"}
+                    src={
+                      caseMediaUrl(item.mainImageUrl, item.mainImage) ||
+                      "/placeholder.jpg"
+                    }
                     alt={item.title}
                     className="w-full object-cover group-hover/card:opacity-100 object-top opacity-80 transition-all"
                   />

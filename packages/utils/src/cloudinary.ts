@@ -1,6 +1,47 @@
 export const assetUrl = (a?: { secure_url?: string; url?: string } | null) =>
     a?.secure_url || a?.url || undefined;
 
+const VIDEO_FORMATS = new Set([
+    "avi",
+    "m4v",
+    "mkv",
+    "mov",
+    "mp4",
+    "mpeg",
+    "mpg",
+    "ogv",
+    "webm",
+]);
+
+type CloudinaryMediaAsset = {
+    resource_type?: string;
+    format?: string;
+    secure_url?: string;
+    url?: string;
+    metadata?: {
+        resource_type?: string;
+        format?: string;
+    };
+};
+
+export const isVideoAsset = (
+    asset?: CloudinaryMediaAsset | null,
+    url = assetUrl(asset)
+): boolean => {
+    const format = (asset?.format || asset?.metadata?.format || "").toLowerCase();
+    const resourceType = (
+        asset?.resource_type ||
+        asset?.metadata?.resource_type ||
+        ""
+    ).toLowerCase();
+
+    return (
+        resourceType === "video" ||
+        VIDEO_FORMATS.has(format) ||
+        /\.(avi|m4v|mkv|mov|mp4|mpeg|mpg|ogv|webm)(?:$|[?#])/i.test(url ?? "")
+    );
+};
+
 export const withCacheKey = (url?: string, cacheKey?: string) => {
     if (!url || !cacheKey) return url;
 
@@ -118,7 +159,10 @@ export const cloudinaryPosterUrl = (
     // Insert transforms and change extension to .jpg
     const withTransforms = url.replace(/\/upload\//, `/upload/${transformStr}/`);
     // Replace video extension with .jpg
-    return withTransforms.replace(/\.(mp4|mov|webm|avi|mkv)(\?.*)?$/i, ".jpg$2");
+    return withTransforms.replace(
+        /\.(avi|m4v|mkv|mov|mp4|mpeg|mpg|ogv|webm)(\?.*)?$/i,
+        ".jpg$2"
+    );
 };
 
 /**
