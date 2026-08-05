@@ -46,7 +46,7 @@ export default function AiContentDisclosure() {
     <aside
       role="note"
       aria-hidden={!isVisible}
-      className="pointer-events-none fixed right-[max(1rem,env(safe-area-inset-right))] top-[calc(env(safe-area-inset-top)+6.5rem)] z-[80] flex max-w-[11rem] items-center gap-2 px-2 py-1.5 font-aspekta text-neutral-950 xl:top-[max(1.5rem,env(safe-area-inset-top))] xl:right-[max(1.5rem,env(safe-area-inset-right))]"
+      className="pointer-events-none fixed left-1/2 top-3 z-[80] flex max-w-[11rem] -translate-x-1/2 items-center gap-2 px-2 py-1.5 font-aspekta text-neutral-950 xl:left-auto xl:right-[max(1.5rem,env(safe-area-inset-right))] xl:top-[max(1.5rem,env(safe-area-inset-top))] xl:translate-x-0"
     >
       <motion.div
         aria-hidden="true"
