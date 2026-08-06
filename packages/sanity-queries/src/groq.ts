@@ -984,8 +984,8 @@ export const CASE_STUDIES_QUERY = defineQuery(`
   mainImage,
   isVerticalVideo,
   mainVideo,
-  "mainImageUrl": mainImage.secure_url,
-  "mainVideoUrl": mainVideo.asset->url,
+  "mainImageUrl": coalesce(mainImage.secure_url, mainImage.url, mainImage.asset->url),
+  "mainVideoUrl": coalesce(mainVideo.secure_url, mainVideo.url, mainVideo.asset->url),
   client->{
     _id,
     name,
@@ -1020,8 +1020,8 @@ export const CASE_STUDIES_BY_IDS_QUERY = defineQuery(`
   mainImage,
   isVerticalVideo,
   mainVideo,
-  "mainImageUrl": mainImage.secure_url,
-  "mainVideoUrl": mainVideo.asset->url,
+  "mainImageUrl": coalesce(mainImage.secure_url, mainImage.url, mainImage.asset->url),
+  "mainVideoUrl": coalesce(mainVideo.secure_url, mainVideo.url, mainVideo.asset->url),
   client->{
     _id,
     name,
@@ -1058,8 +1058,8 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
   mainImage,
   mainVideo,
   isVerticalVideo,
-  "mainImageUrl": mainImage.secure_url,
-  "mainVideoUrl": mainVideo.asset->url,
+  "mainImageUrl": coalesce(mainImage.secure_url, mainImage.url, mainImage.asset->url),
+  "mainVideoUrl": coalesce(mainVideo.secure_url, mainVideo.url, mainVideo.asset->url),
   websiteUrl,
   websiteUrlText,
   units[]->{
@@ -1162,6 +1162,13 @@ export const SERVICES_QUERY = defineQuery(`
   _updatedAt,
   name,
   taglabel,
+  introText,
+  deliverables[]{
+    _key,
+    title,
+    description
+  },
+  sortOrder,
   "iconUrl": serviceicon.asset.secure_url,
   serviceicon,
   serviceBackground,
@@ -1184,12 +1191,19 @@ export const SERVICES_QUERY = defineQuery(`
 `);
 
 export const SERVICES_BY_CHANNEL_QUERY = defineQuery(`
-*[_type == "services" && $channel in channel && language == $language] | order(name asc){
+*[_type == "services" && $channel in channel && language == $language] | order(coalesce(sortOrder, 2147483647) asc, name asc){
   _id,
   _updatedAt,
   name,
   taglabel,
   channel,
+  introText,
+  deliverables[]{
+    _key,
+    title,
+    description
+  },
+  sortOrder,
   "iconUrl": serviceicon.asset.secure_url,
   serviceicon,
   serviceBackground,
@@ -1213,12 +1227,18 @@ export const SERVICES_BY_CHANNEL_QUERY = defineQuery(`
 
 // Auto mode for the smart services carousel: all channel services, capped
 export const INTERACTIVE_SERVICES_CAROUSEL_QUERY = defineQuery(`
-*[_type == "services" && $channel in channel && language == $language] | order(name asc) [0...$maxItems] {
+*[_type == "services" && $channel in channel && language == $language] | order(coalesce(sortOrder, 2147483647) asc, name asc) [0...$maxItems] {
   _id,
   name,
   taglabel,
   introText,
   serviceDescription,
+  deliverables[]{
+    _key,
+    title,
+    description
+  },
+  sortOrder,
   "backgroundAsset": serviceBackground.asset
 }
 `);
@@ -1248,13 +1268,19 @@ export const CASE_STUDIES_BY_CHANNEL_LIMIT_QUERY = defineQuery(`
 `);
 
 export const SERVICES_BY_CHANNEL_LIMIT_QUERY = defineQuery(`
-*[_type == "services" && $channel in channel && language == $language] | order(name asc) [0...$maxItems] {
+*[_type == "services" && $channel in channel && language == $language] | order(coalesce(sortOrder, 2147483647) asc, name asc) [0...$maxItems] {
   _id,
   _updatedAt,
   name,
   taglabel,
   introText,
   serviceDescription,
+  deliverables[]{
+    _key,
+    title,
+    description
+  },
+  sortOrder,
   serviceicon,
   serviceBackground
 }

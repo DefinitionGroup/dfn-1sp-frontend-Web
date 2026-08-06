@@ -18,6 +18,20 @@ type ContentSectionData = {
   hideFromNav?: boolean;
 };
 
+const contentSpanClasses: Record<string, string> = {
+  "6": "col-span-6",
+  "8": "col-span-8",
+  "10": "col-span-10",
+  "12": "col-span-12",
+};
+
+const paddingClasses: Record<string, string> = {
+  "8": "py-8",
+  "16": "py-16",
+  "24": "py-24",
+  "32": "py-32",
+};
+
 function ContentSection({ data }: { data: ContentSectionData }) {
   const {
     title,
@@ -30,6 +44,9 @@ function ContentSection({ data }: { data: ContentSectionData }) {
     navPointName,
     hideFromNav = false,
   } = data || {};
+
+  const contentSpanClass = contentSpanClasses[columnSpan] ?? contentSpanClasses["8"];
+  const paddingClass = paddingClasses[paddingY] ?? paddingClasses["16"];
 
   if (!content || content.length === 0) return null;
 
@@ -191,9 +208,9 @@ function ContentSection({ data }: { data: ContentSectionData }) {
         className="grid grid-cols-12 z-1 mx-auto container relative font-flzr"
       >
         <div
-          className={`z-1 grid gap-8 col-span-12 py-${paddingY} col-start-1 container mx-auto row-start-1 grid-cols-12`}
+          className={`z-1 grid gap-8 col-span-12 ${paddingClass} col-start-1 container mx-auto row-start-1 grid-cols-12`}
         >
-          <div className={`z-1 col-span-${columnSpan} col-start-1 pt-8  border-t`}>
+          <div className={`z-1 ${contentSpanClass} col-start-1 pt-8 border-t`}>
             {/* Optional section title */}
             {hasVisibleText(title) && (
               <StaggeredFadeIn viewThreshold={0.01}>

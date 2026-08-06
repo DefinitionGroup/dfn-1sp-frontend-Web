@@ -102,7 +102,7 @@ export default function CaseGalleryCard({
         className={`col-start-1  col-span-1 flex flex-col opacity-100 row-start-2 p-2  mt-4 mb-8 md:mb-16 z-1 h-[250px]`}
       >
         <div className={`flex-col flex justify-start mb-2`}>
-      <Link href={`/cases/${item.slug?.current}`} className="contents">
+      <Link href={`/${locale}/cases/${item.slug?.current}`} className="contents">
             <motion.h3
               layoutId={`title-${item.title}-${id}`}
               className={`font-medium md:ext-lg leading-snug max-w-[350px] ${variant !== "light" ? "" : "invert"

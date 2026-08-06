@@ -35,9 +35,19 @@ export default async function CasesGalleryFilteredBlock({
   // instead of falling back to the full auto list. (BUG-4)
   const isManual = selectionMode === "manual";
 
-  const rawCaseStudies = isManual
+  const fetchedCaseStudies = isManual
     ? await getCaseStudiesByIds(selectedIds, channel, language)
     : await getAllCases(channel, language);
+
+  // GROQ does not preserve the order of an `_id in $ids` filter. Restore the
+  // editor's drag-and-drop order for manual galleries after resolving refs.
+  const rawCaseStudies = isManual
+    ? selectedIds
+        .map((id) =>
+          fetchedCaseStudies.find((item: { _id: string }) => item._id === id),
+        )
+        .filter((item): item is (typeof fetchedCaseStudies)[number] => Boolean(item))
+    : fetchedCaseStudies;
 
   return (
     <CasesGalleryFilteredClient

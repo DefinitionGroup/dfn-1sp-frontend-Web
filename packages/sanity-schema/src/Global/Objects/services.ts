@@ -1,4 +1,4 @@
-import { defineType, defineField } from 'sanity'
+import { defineArrayMember, defineType, defineField } from 'sanity'
 import { ServiceBackgroundFocusInput } from '../../serviceBackgroundFocusInput'
 import { websiteChannelOptions } from '../../shared/channelOptions'
 
@@ -60,7 +60,42 @@ export default defineType({
             name: 'serviceDescription',
             title: 'Service Description',
             type: 'text',
-            description: 'Description for the service',
+            description: 'Description for the service. Use blank lines to separate paragraphs.',
+            group: 'content',
+        }),
+        defineField({
+            name: 'deliverables',
+            title: 'What We Deliver',
+            type: 'array',
+            description: 'Structured outcomes or capabilities included with this service.',
+            of: [
+                defineArrayMember({
+                    name: 'serviceDeliverable',
+                    title: 'Deliverable',
+                    type: 'object',
+                    fields: [
+                        defineField({
+                            name: 'title',
+                            title: 'Title',
+                            type: 'string',
+                            validation: (Rule) => Rule.required().min(1).max(100),
+                        }),
+                        defineField({
+                            name: 'description',
+                            title: 'Description',
+                            type: 'text',
+                            rows: 3,
+                            validation: (Rule) => Rule.required().min(1),
+                        }),
+                    ],
+                    preview: {
+                        select: {
+                            title: 'title',
+                            subtitle: 'description',
+                        },
+                    },
+                }),
+            ],
             group: 'content',
         }),
         defineField({
@@ -78,6 +113,14 @@ export default defineType({
                 input: ServiceBackgroundFocusInput,
             },
             group: 'media',
+        }),
+        defineField({
+            name: 'sortOrder',
+            title: 'Display Order',
+            type: 'number',
+            description: 'Optional editorial order for channel-specific service lists. Lower numbers appear first.',
+            validation: (Rule) => Rule.integer().min(0),
+            group: 'settings',
         }),
         defineField({
             name: 'channel',

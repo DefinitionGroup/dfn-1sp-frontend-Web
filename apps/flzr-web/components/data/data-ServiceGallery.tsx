@@ -29,6 +29,39 @@ import type { CloudinaryImage, Service } from "@1sp/sanity-types";
 
 const EASE_FLZR = [0.62, 0.05, 0.01, 0.99] as const;
 
+const SERVICE_MODAL_COPY = {
+  de: {
+    label: "Service",
+    deliverables: "Was wir liefern",
+    close: "Servicedetails schließen",
+  },
+  en: {
+    label: "Service",
+    deliverables: "What we deliver",
+    close: "Close service details",
+  },
+  pl: {
+    label: "Usługa",
+    deliverables: "Co dostarczamy",
+    close: "Zamknij szczegóły usługi",
+  },
+} as const;
+
+function getServiceModalCopy(locale: string) {
+  const normalizedLocale = locale.toLowerCase();
+  if (normalizedLocale.startsWith("de")) return SERVICE_MODAL_COPY.de;
+  if (normalizedLocale.startsWith("pl")) return SERVICE_MODAL_COPY.pl;
+  return SERVICE_MODAL_COPY.en;
+}
+
+function getTextParagraphs(value: string): string[] {
+  return value
+    .replace(/\r\n?/g, "\n")
+    .split(/\n\s*\n/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+}
+
 function isVideoUrl(url: string | undefined): boolean {
   if (!url) return false;
   return /\.(mp4|webm|mov|ogg)$/i.test(url) || url.includes("/video/");
@@ -90,6 +123,7 @@ interface ServiceGalleryProps {
 export default function ServiceGalleryComponent({
   services = [],
   activeFilter = "All",
+  locale = "en",
   filterAllText = "All",
 }: ServiceGalleryProps) {
   const reducedMotion = useReducedMotion();
@@ -100,6 +134,7 @@ export default function ServiceGalleryComponent({
   const maxOffsetRef = useRef(0);
   const wheelEndTimerRef = useRef<number | null>(null);
   const titleId = useId();
+  const deliverablesTitleId = useId();
   const dragControls = useDragControls();
   const trackX = useMotionValue(0);
 
@@ -302,6 +337,7 @@ export default function ServiceGalleryComponent({
   if (filteredItems.length === 0) return null;
 
   const activeMedia = active ? getServiceMedia(active) : null;
+  const modalCopy = getServiceModalCopy(locale);
 
   return (
     <>
@@ -560,7 +596,7 @@ export default function ServiceGalleryComponent({
                   type="button"
                   onClick={() => setActive(null)}
                   className="absolute right-5 top-5 grid h-10 w-10 place-items-center rounded-full border border-white/20 text-white transition-colors hover:bg-white hover:text-neutral-900"
-                  aria-label="Close service details"
+                  aria-label={modalCopy.close}
                 >
                   <CloseIcon />
                 </button>
@@ -575,7 +611,7 @@ export default function ServiceGalleryComponent({
                     className="pointer-events-none mb-8 h-auto w-28 object-contain object-left"
                   />
                   <p className="mb-4 text-xs uppercase text-violet-400">
-                    Service
+                    {modalCopy.label}
                   </p>
                   <h3
                     id={titleId}
@@ -588,10 +624,56 @@ export default function ServiceGalleryComponent({
                       {active.taglabel}
                     </p>
                   ) : null}
-                  {active.serviceDescription ? (
-                    <p className="mt-7 text-sm leading-relaxed text-white/65 sm:text-base">
-                      {active.serviceDescription}
+                  {active.introText ? (
+                    <p className="mt-7 text-xl font-medium leading-snug text-white sm:text-2xl">
+                      {active.introText}
                     </p>
+                  ) : null}
+                  {active.serviceDescription ? (
+                    <div className="mt-7 space-y-4 text-sm leading-relaxed text-white/65 sm:text-base">
+                      {getTextParagraphs(active.serviceDescription).map(
+                        (paragraph, index) => (
+                          <p
+                            key={`${active._id}-description-${index}`}
+                            className="whitespace-pre-line"
+                          >
+                            {paragraph}
+                          </p>
+                        ),
+                      )}
+                    </div>
+                  ) : null}
+
+                  {active.deliverables?.length ? (
+                    <section
+                      className="mt-10 border-t border-white/15 pt-7"
+                      aria-labelledby={deliverablesTitleId}
+                    >
+                      <h4
+                        id={deliverablesTitleId}
+                        className="text-xs uppercase text-violet-400"
+                      >
+                        {modalCopy.deliverables}
+                      </h4>
+                      <ul className="mt-5 space-y-5">
+                        {active.deliverables.map((deliverable, index) => (
+                          <li
+                            key={
+                              deliverable._key ||
+                              `${active._id}-deliverable-${index}`
+                            }
+                            className="border-l border-white/20 pl-4"
+                          >
+                            <h5 className="text-base font-semibold leading-snug text-white">
+                              {deliverable.title}
+                            </h5>
+                            <p className="mt-1.5 whitespace-pre-line text-sm leading-relaxed text-white/60">
+                              {deliverable.description}
+                            </p>
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
                   ) : null}
                 </div>
 

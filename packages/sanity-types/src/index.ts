@@ -505,12 +505,24 @@ export interface ClientLogoCarousel {
 }
 
 /* Service Management Types */
+export interface ServiceDeliverable {
+    _key?: string;
+    _type?: "serviceDeliverable";
+    title: string;
+    description: string;
+}
+
 export interface Services {
     _id?: SanityID;
     _type?: "services";
     language?: string;
     name?: string;
     taglabel?: string;
+    introText?: string;
+    serviceDescription?: string;
+    deliverables?: ServiceDeliverable[];
+    sortOrder?: number;
+    channel?: string[];
     serviceicon?: CloudinaryImage;
     serviceBackground?: CloudinaryImage;
     unitsrel?: Reference<Unit>[];
@@ -678,6 +690,10 @@ export interface Service {
     _updatedAt?: string;
     name: string;
     taglabel?: string;
+    introText?: string;
+    deliverables?: ServiceDeliverable[];
+    sortOrder?: number;
+    channel?: string[];
     iconUrl?: string;
     serviceicon?: CloudinaryImage;
     serviceBackground?: CloudinaryImage;
