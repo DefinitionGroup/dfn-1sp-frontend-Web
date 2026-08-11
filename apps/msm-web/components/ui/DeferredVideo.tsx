@@ -105,15 +105,20 @@ export default function DeferredVideo({
     <div ref={containerRef} className="relative w-full h-full" style={style}>
       {/* Poster image — lightweight, loads immediately, becomes LCP element */}
       {posterUrl && (
-        <img
-          src={posterUrl}
-          alt=""
-          aria-hidden="true"
-          loading="lazy"
-          decoding="async"
-          className={`${posterClassName || className} absolute inset-0 w-full h-full transition-opacity duration-500 ${videoReady ? "opacity-0" : "opacity-100"}`}
-          style={{ ...mediaStyle, zIndex: 1 }}
-        />
+        <div
+          className="pointer-events-none absolute inset-0 h-full w-full transition-opacity duration-500"
+          style={{ zIndex: 1, opacity: videoReady ? 0 : 1 }}
+        >
+          <img
+            src={posterUrl}
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            decoding="async"
+            className={posterClassName || className}
+            style={mediaStyle}
+          />
+        </div>
       )}
 
       {/* Placeholder background for non-Cloudinary URLs */}
@@ -126,18 +131,23 @@ export default function DeferredVideo({
 
       {/* Video — mounted after delay, fades in once ready */}
       {shouldMount && videoUrl && (
-        <video
-          ref={videoRef}
-          src={videoUrl}
-          autoPlay={autoPlay}
-          loop={loop}
-          muted={muted}
-          playsInline={playsInline}
-          preload={preload}
-          onCanPlay={handleCanPlay}
-          className={`${className} ${videoReady ? "opacity-100" : "opacity-0"} transition-opacity duration-500`}
-          style={{ ...mediaStyle, zIndex: 0 }}
-        />
+        <div
+          className="relative h-full w-full transition-opacity duration-500"
+          style={{ zIndex: 0, opacity: videoReady ? 1 : 0 }}
+        >
+          <video
+            ref={videoRef}
+            src={videoUrl}
+            autoPlay={autoPlay}
+            loop={loop}
+            muted={muted}
+            playsInline={playsInline}
+            preload={preload}
+            onCanPlay={handleCanPlay}
+            className={className}
+            style={mediaStyle}
+          />
+        </div>
       )}
     </div>
   );
