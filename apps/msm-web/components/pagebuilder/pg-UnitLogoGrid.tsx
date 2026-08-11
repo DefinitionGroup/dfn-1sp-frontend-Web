@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { resolveLink, assetUrl } from "@1sp/utils/cloudinary";
+import { assetUrl } from "@1sp/utils/cloudinary";
+import { getRenderableCta } from "@1sp/utils/cta";
 import Link from "next/link";
 import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
 import type { CloudinaryAsset, CTA } from "@1sp/sanity-types";
@@ -83,18 +84,18 @@ function UnitLogoGrid({
     }
   };
 
-  const getLinkHref = (unit: Unit): string => {
-    if (!unit.cta?.link) return "#";
+  const getLinkHref = (unit: Unit): string | null => {
+    const cta = getRenderableCta(unit.cta);
+    if (!cta) return null;
 
-    const link = unit.cta.link;
-    let href = resolveLink(link);
+    let href = cta.href;
 
     // Fix URL to include locale if it's an internal link
     if (href && href.startsWith("/") && !href.startsWith(`/${language}`)) {
       href = `/${language}${href}`;
     }
 
-    return href || "#";
+    return href;
   };
 
   // Filter units that have the selected logo variant
@@ -158,15 +159,8 @@ function UnitLogoGrid({
                   ? "bg-neutral-900 dark:bg-gray-950"
                   : "bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm";
 
-                return (
-                  <Link
-                    key={unit._id}
-                    href={href}
-                    target={unit.cta?.link?.linkType === "external" ? "_blank" : undefined}
-                    rel={unit.cta?.link?.linkType === "external" ? "noopener noreferrer" : undefined}
-                    className={`group flex items-center justify-center hover:bg-white/5 cursor-pointer p-2 md:p-4  ${bgClass} transition-all duration-300`}
-                  >
-                    <div className="relative w-full aspect-[3/2] flex-col cursor-pointer border border-white/15 items-center justify-center overflow-hidden">
+                const logoContent = (
+                    <div className="relative w-full aspect-[3/2] flex-col border border-white/15 items-center justify-center overflow-hidden">
                       <Image
                         src={logoUrl}
                         alt={unit.name || "Unit logo"}
@@ -179,7 +173,23 @@ function UnitLogoGrid({
                         unoptimized
                       />
                     </div>
+                );
+                const className = `group flex items-center justify-center hover:bg-white/5 p-2 md:p-4 ${bgClass} transition-all duration-300${href ? " cursor-pointer" : ""}`;
+
+                return href ? (
+                  <Link
+                    key={unit._id}
+                    href={href}
+                    target={unit.cta?.link?.linkType === "external" ? "_blank" : undefined}
+                    rel={unit.cta?.link?.linkType === "external" ? "noopener noreferrer" : undefined}
+                    className={className}
+                  >
+                    {logoContent}
                   </Link>
+                ) : (
+                  <div key={unit._id} className={className}>
+                    {logoContent}
+                  </div>
                 );
               })}
             </StaggeredSlideUp>

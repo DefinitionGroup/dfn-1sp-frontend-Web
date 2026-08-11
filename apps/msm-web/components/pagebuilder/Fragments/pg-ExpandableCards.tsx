@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
 import type { CardItem, CloudinaryAsset } from "@1sp/sanity-types";
 import { assetUrl } from "@1sp/utils/cloudinary";
+import { getRenderableCta } from "@1sp/utils/cta";
 import { useOutsideClick } from "@1sp/utils/hooks/use-outside-click";
 import { useRobustInView } from "@1sp/utils/hooks/use-robust-in-view";
 import Image from "next/image";
@@ -41,11 +42,7 @@ function mapCard(item: CardItem): UIShape | null {
   const logo = assetUrl(item.logo as CloudinaryAsset) || undefined;
   const logoModal =
     assetUrl(item.logoModal as CloudinaryAsset) || logo;
-  const ctaText = item?.ctaButton?.text || "";
-  const ctaLink =
-    (item?.ctaButton?.link?.linkType === "internal"
-      ? `/${(item?.ctaButton?.link?.page as any)?.slug?.current || (item?.ctaButton?.link?.page as any)?._ref || ""}`
-      : item?.ctaButton?.link?.externalUrl) || "#";
+  const cta = getRenderableCta(item?.ctaButton);
 
   const contentNode =
     typeof item.content === "string" ? (
@@ -60,8 +57,8 @@ function mapCard(item: CardItem): UIShape | null {
     src,
     logo,
     logoModal,
-    ctaText,
-    ctaLink,
+    ctaText: cta?.text,
+    ctaLink: cta?.href,
     content: contentNode,
   };
 }
@@ -255,7 +252,7 @@ function ExpandableCards({
                       : active.content}
                   </motion.div>
 
-                  {(active.ctaText || active.ctaLink) && (
+                  {active.ctaText && active.ctaLink && (
                     <motion.a
                       transition={{ duration: 0.3, delay: 0.7 }}
                       initial={{ opacity: 0 }}

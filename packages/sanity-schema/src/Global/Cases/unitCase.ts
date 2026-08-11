@@ -1,5 +1,6 @@
 import { defineType, defineField } from 'sanity'
 import { websiteChannelOptions } from '../../shared/channelOptions'
+import { validateOptionalCta } from '../../shared/ctaValidation'
 
 export default defineType({
     name: 'unit',
@@ -121,6 +122,8 @@ export default defineType({
             title: 'Call to Action (CTA)',
             type: 'cta',
             group: 'general',
+            validation: (Rule: any) =>
+                Rule.custom((value: unknown) => validateOptionalCta(value)),
         },
 
 

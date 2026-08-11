@@ -3,4 +3,5 @@ export const websiteChannelOptions = [
     { title: 'FLZR Website', value: 'flizrWeb' },
     { title: 'MSM Website', value: 'msmWeb' },
     { title: 'Studio CO2 Website', value: 'studioco2Web' },
+    { title: 'Renaissance Website', value: 'renaissanceWeb' },
 ]

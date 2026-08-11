@@ -2,14 +2,13 @@
 
 import React from "react";
 import type { CtaSplitHeader as CtaSplitHeaderType } from "@1sp/sanity-types";
-import { resolveLink } from "@1sp/utils/cloudinary";
+import { getRenderableCtaMini } from "@1sp/utils/cta";
 import CtaMiniComponent from "./pg-CtaMiniComponent";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
 
 function CtaSplitHeader({ data }: { data: CtaSplitHeaderType }) {
-  const cta = data?.cta;
-  const href = cta?.link ? resolveLink(cta.link) : undefined;
+  const cta = getRenderableCtaMini(data?.cta);
 
   return (
     <section className="grid grid-cols-12 container mx-auto gap-8 font-aspekta">
@@ -18,12 +17,12 @@ function CtaSplitHeader({ data }: { data: CtaSplitHeaderType }) {
         <div className="col-span-3 col-start-1">
           <CtaMiniComponent
             className="pt-32 max-w-1/2"
-            heading={cta.heading || ""}
-            paragraph={cta.paragraph || ""}
-            buttonText={cta.buttonText || ""}
+            heading={cta.heading}
+            paragraph={cta.paragraph}
+            buttonText={cta.buttonText}
             buttonVariant={(cta.variant as any) || "violetsmall"}
             align={(cta.alignment as any) || "left"}
-            url={href}
+            url={cta.href}
           />
         </div>
       )}

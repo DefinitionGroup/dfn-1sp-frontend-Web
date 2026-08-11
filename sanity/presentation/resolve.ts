@@ -1,60 +1,179 @@
 import { defineDocuments, defineLocations } from 'sanity/presentation'
+import { SITE_CONFIGS, type WebsiteChannel } from '@1sp/site-config'
 
-// Map docs → front-end locations (used by “Open preview” / “Used on x pages”)
-export const locations = {
+type PageLocationDocument = {
+  title?: string
+  slug?: string
+  language?: string
+  channel?: WebsiteChannel
+  isHomepage?: boolean
+}
+
+type CaseLocationDocument = {
+  title?: string
+  slug?: string
+  language?: string
+  channel?: WebsiteChannel[]
+}
+
+const HOME_SLUGS = new Set(['', 'home', 'index'])
+
+function getPublicPath(
+  channel: WebsiteChannel,
+  language: string | undefined,
+  path: string,
+) {
+  const site = SITE_CONFIGS[channel]
+  const locale = language || site.defaultLocale
+  const localePrefix = locale === site.defaultLocale ? '' : `/${locale}`
+  const normalizedPath = path === '/' ? '' : `/${path.replace(/^\/+/, '')}`
+
+  return `${localePrefix}${normalizedPath}` || '/'
+}
+
+function isHomepage(document: PageLocationDocument) {
+  return document.isHomepage || HOME_SLUGS.has(document.slug || '')
+}
+
+export function createPresentationResolvers(channel: WebsiteChannel) {
+  const site = SITE_CONFIGS[channel]
+  const pageFilter = `
+    _type == "page" &&
+    channel == $channel &&
+    language == $language
+  `
+  const homepageFilter = `
+    ${pageFilter} &&
+    (isHomepage == true || !defined(slug.current) || slug.current in ["", "home", "index"])
+  `
+
+  const locations = {
     page: defineLocations({
-        select: { title: 'title', slug: 'slug.current', language: 'language' },
-        resolve: (doc) => {
-            if (!doc) {
-                return { locations: [] };
-            }
+      select: {
+        title: 'title',
+        slug: 'slug.current',
+        language: 'language',
+        channel: 'channel',
+        isHomepage: 'isHomepage',
+      },
+      resolve: (document) => {
+        const page = document as PageLocationDocument | null
 
-            const title = (doc as any).title as string | undefined;
-            const slug = (doc as any).slug as string | undefined;
-            const language = (doc as any).language as string | undefined;
+        if (!page || page.channel !== channel) {
+          return { locations: [] }
+        }
 
-            const locations: { title: string; href: string }[] = [];
+        const href = isHomepage(page)
+          ? getPublicPath(channel, page.language, '/')
+          : getPublicPath(channel, page.language, page.slug || '/')
 
-            if (!slug) {
-                // Home page (no slug)
-                locations.push({ title: `${title ?? 'Home'}`, href: `/${language}` });
-            } else {
-                // Normal page with slug
-                locations.push({ title: title ?? slug, href: `/${language}/${slug}` });
-            }
-
-            return { locations };
-        },
+        return {
+          locations: [{ title: page.title || page.slug || 'Home', href }],
+        }
+      },
     }),
-    // Optional, if menus have a route:
-    // menu: defineLocations({ ... })
-};
+    caseStudy: defineLocations({
+      select: {
+        title: 'title',
+        slug: 'slug.current',
+        language: 'language',
+        channel: 'channel',
+      },
+      resolve: (document) => {
+        const caseStudy = document as CaseLocationDocument | null
 
-// Map URLs in the preview → docs that should show up in “Documents on this page”
-export const mainDocuments = defineDocuments([
-    // /:locale (home)
+        if (!caseStudy?.slug || !caseStudy.channel?.includes(channel)) {
+          return { locations: [] }
+        }
+
+        return {
+          locations: [
+            {
+              title: caseStudy.title || caseStudy.slug,
+              href: getPublicPath(
+                channel,
+                caseStudy.language,
+                `/cases/${caseStudy.slug}`,
+              ),
+            },
+          ],
+        }
+      },
+    }),
+  }
+
+  const mainDocuments = defineDocuments([
     {
-        route: '/:locale',
-        filter: `
-      _type == "page" &&
-      language == $locale &&
-      (!defined(slug.current) || slug.current in ["", "home", "index"])
-    `,
-        params: ({ params }) => ({
-            locale: params?.locale,
-        }),
+      route: '/',
+      filter: homepageFilter,
+      params: {
+        channel,
+        language: site.defaultLocale,
+      },
     },
-    // /:locale/:slug (regular pages)
     {
-        route: '/:locale/:slug',
-        filter: `
-      _type == "page" &&
-      language == $locale &&
-      slug.current == $slug
-    `,
-        params: ({ params }) => ({
-            locale: params?.locale,
-            slug: params?.slug,
-        }),
+      route: '/cases/:slug',
+      filter: `
+        _type == "caseStudy" &&
+        $channel in channel &&
+        language == $language &&
+        slug.current == $slug
+      `,
+      params: ({ params }) => ({
+        channel,
+        language: site.defaultLocale,
+        slug: params.slug,
+      }),
     },
-])
+    {
+      route: '/:locale/cases/:slug',
+      filter: `
+        _type == "caseStudy" &&
+        $channel in channel &&
+        language == $language &&
+        slug.current == $slug
+      `,
+      params: ({ params }) => ({
+        channel,
+        language: params.locale,
+        slug: params.slug,
+      }),
+    },
+    {
+      route: '/:segment',
+      resolve: ({ params }) => {
+        const segment = params.segment
+        const isLocaleHomepage = site.locales.some(
+          (locale) => locale === segment,
+        )
+
+        if (isLocaleHomepage) {
+          return {
+            filter: homepageFilter,
+            params: { channel, language: segment } as Record<string, string>,
+          }
+        }
+
+        return {
+          filter: `${pageFilter} && slug.current == $slug`,
+          params: {
+            channel,
+            language: site.defaultLocale,
+            slug: segment,
+          } as Record<string, string>,
+        }
+      },
+    },
+    {
+      route: '/:locale/:slug',
+      filter: `${pageFilter} && slug.current == $slug`,
+      params: ({ params }) => ({
+        channel,
+        language: params.locale,
+        slug: params.slug,
+      }),
+    },
+  ])
+
+  return { locations, mainDocuments }
+}

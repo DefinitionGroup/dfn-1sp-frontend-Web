@@ -1,6 +1,7 @@
 import React from "react";
 import { defineField, defineType } from "sanity";
 import Image from "next/image";
+import { validateOptionalCta } from "../../shared/ctaValidation";
 // Renders a Cloudinary thumbnail in Studio previews
 const PreviewMedia: React.FC<{ src?: string; alt?: string }> = ({
   src,
@@ -28,7 +29,13 @@ export default defineType({
     defineField({ name: "src", title: "Image", type: "cloudinary.asset" }),
     defineField({ name: "logo", title: "Logo", type: "cloudinary.asset" }),
     defineField({ name: "logoModal", title: "Logo Modal", type: "cloudinary.asset" }),
-    defineField({ name: "ctaButton", title: "Button", type: "cta" }),
+    defineField({
+      name: "ctaButton",
+      title: "Button",
+      type: "cta",
+      validation: (Rule) =>
+        Rule.custom((value) => validateOptionalCta(value)),
+    }),
     defineField({ name: "content", title: "Content", type: "text" }),
   ],
   preview: {

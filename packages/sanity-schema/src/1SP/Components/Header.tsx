@@ -1,13 +1,17 @@
 import React from "react";
 import { defineType, defineField, defineArrayMember } from "sanity";
 import { TextT } from "@phosphor-icons/react";
+import { isFlzrStyleChannel } from "../../shared/flzrVisibility";
+import { validateOptionalCta } from "../../shared/ctaValidation";
 
 type HeaderParent = {
   headlineMode?: "typewriter" | "headlineReveal";
 };
 
 const isFlzrPage = (document?: unknown) =>
-  (document as { channel?: string } | undefined)?.channel === "flizrWeb";
+  isFlzrStyleChannel(
+    (document as { channel?: string } | undefined)?.channel,
+  );
 
 export default defineType({
   name: "oneSPHeader",
@@ -193,6 +197,8 @@ export default defineType({
         "Optional call-to-action button shown below the hero paragraphs.",
       type: "cta",
       group: "content",
+      validation: (Rule) =>
+        Rule.custom((value) => validateOptionalCta(value)),
     }),
 
     // LAYOUT / DECORATION

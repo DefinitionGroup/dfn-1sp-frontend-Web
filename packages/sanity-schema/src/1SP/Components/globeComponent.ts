@@ -1,5 +1,6 @@
 import { defineType, defineField, defineArrayMember } from 'sanity'
 import { GlobeHemisphereWest } from '@phosphor-icons/react'
+import { isFlzrStyleChannel } from '../../shared/flzrVisibility'
 
 export default defineType({
     name: 'globeComponent',
@@ -46,10 +47,10 @@ export default defineType({
             name: 'locations',
             title: 'Locations',
             type: 'array',
-            description: 'Add locations to display on the globe. FLZR uses its shared European market locations instead.',
-            hidden: ({ document }) => document?.channel === 'flizrWeb',
+            description: 'Add locations to display on the globe. FLZR-style sites use their shared European market locations instead.',
+            hidden: ({ document }) => isFlzrStyleChannel(document?.channel),
             validation: (Rule) => Rule.custom((locations, context) => {
-                if (context.document?.channel === 'flizrWeb') return true
+                if (isFlzrStyleChannel(context.document?.channel)) return true
                 return Array.isArray(locations) && locations.length > 0
                     ? true
                     : 'Add at least one location'

@@ -31,6 +31,16 @@ function CtaMiniComponent({
   distance = 22,
   className,
 }: CtaMiniProps) {
+  const finalUrl = url.trim();
+  if (
+    !hasVisibleText(heading) ||
+    !hasVisibleText(buttonText) ||
+    !finalUrl ||
+    finalUrl === "#"
+  ) {
+    return null;
+  }
+
   const alignClass =
     align === "center"
       ? "items-center"
@@ -60,13 +70,13 @@ function CtaMiniComponent({
         </h3>
       ) : null}
       <p className={`md:text-xs mb-8 ${textAlignClass}`}>{paragraph}</p>
-      {url ? (
+      {finalUrl ? (
         <div className="md:text-xs mb-8 min-w-[120px] w-full">
           <Button2
             variant={buttonVariant}
             className="w-full"
             text={buttonText}
-            href={url}
+            href={finalUrl}
           />
         </div>
       ) : null

@@ -1,0 +1,95 @@
+"use client";
+import React from "react";
+import { cn } from "@1sp/utils/cn";
+
+interface ListItemProps {
+  children: React.ReactNode;
+  fontWeight?: "normal" | "medium" | "bold";
+  color?:
+  | "gray-50"
+  | "gray-100"
+  | "gray-200"
+  | "gray-300"
+  | "gray-400"
+  | "gray-500"
+  | "gray-600"
+  | "gray-700"
+  | "white"
+  | "black";
+  size?: "small" | "medium" | "large";
+  className?: string;
+}
+
+const sizeClasses: Record<NonNullable<ListItemProps["size"]>, string> = {
+  small: "text sm:text",
+  medium: "text-base sm:text-lg md:text-xl",
+  large: "text-xl sm:text-2xl md:text-3xl",
+};
+
+const weightClasses: Record<
+  NonNullable<ListItemProps["fontWeight"]>,
+  string
+> = {
+  normal: "font-normal",
+  medium: "font-medium",
+  bold: "font-bold",
+};
+
+const textColorClasses: Record<NonNullable<ListItemProps["color"]>, string> = {
+  "gray-50": "text-gray-50",
+  "gray-100": "text-gray-100",
+  "gray-200": "text-gray-200",
+  "gray-300": "text-gray-300",
+  "gray-400": "text-gray-400",
+  "gray-500": "text-gray-500",
+  "gray-600": "text-gray-600",
+  "gray-700": "text-gray-700",
+  white: "text-white",
+  black: "text-black",
+};
+
+const lineColorClasses: Record<NonNullable<ListItemProps["color"]>, string> = {
+  "gray-50": "bg-gray-50/30",
+  "gray-100": "bg-gray-100/30",
+  "gray-200": "bg-gray-200/40",
+  "gray-300": "bg-gray-300/40",
+  "gray-400": "bg-gray-400/40",
+  "gray-500": "bg-gray-500/40",
+  "gray-600": "bg-gray-600/40",
+  "gray-700": "bg-gray-700/40",
+  white: "bg-white/30",
+  black: "bg-gray-200",
+};
+
+function ListItemComponent({
+  children,
+  fontWeight = "normal",
+  color = "gray-100",
+  size = "small",
+  className,
+}: ListItemProps) {
+  return (
+    <div className="pb-3 sm:pb-4 group  ">
+      <p
+        className={cn(
+          "leading-relaxed transition-colors duration-200",
+          sizeClasses[size],
+          weightClasses[fontWeight],
+          textColorClasses[color],
+          className
+        )}
+      >
+        {children}
+      </p>
+      <div
+        className={cn(
+          "w-full h-px mt-3 sm:mt-4 transition-all duration-300",
+
+          lineColorClasses[color]
+        )}
+      />
+    </div>
+  );
+}
+
+export default ListItemComponent;

@@ -25,8 +25,11 @@ function SublineComponent({
   } = data || {};
 
   const ctas = Array.isArray(additionalContent) ? additionalContent : [];
+  const ctaButtons = ctas
+    .map((cta) => ctaToButtonProps(cta))
+    .filter(Boolean) as Array<NonNullable<ReturnType<typeof ctaToButtonProps>>>;
 
-  if (!description && ctas.length === 0) return null;
+  if (!description && ctaButtons.length === 0) return null;
 
   // Generate section ID from description or default
   const sectionId = sectionTitle
@@ -64,11 +67,9 @@ function SublineComponent({
               </p>
             )}
 
-            {ctas.length > 0 && (
+            {ctaButtons.length > 0 && (
               <div className="flex flex-col gap-4">
-                {ctas.map((cta, idx) => {
-                  const btn = ctaToButtonProps(cta);
-                  if (!btn?.text) return null;
+                {ctaButtons.map((btn, idx) => {
                   return (
                     <Button2
                       key={`subline-cta-${idx}`}

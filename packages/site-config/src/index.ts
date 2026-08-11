@@ -23,7 +23,12 @@
 // TYPES
 // =============================================================================
 
-export type WebsiteChannel = "1spWeb" | "flizrWeb" | "msmWeb" | "studioco2Web";
+export type WebsiteChannel =
+  | "1spWeb"
+  | "flizrWeb"
+  | "msmWeb"
+  | "studioco2Web"
+  | "renaissanceWeb";
 export type LocaleCode = "en" | "de" | "pl";
 
 export type LanguageDefinition = {
@@ -154,6 +159,29 @@ export const SITE_CONFIGS: Record<WebsiteChannel, SiteConfig> = {
       light: "/ci/1sp-fulllogotype.svg",
       dark: "/ci/1sp-fulllogotype-blk.svg",
       alt: "Studio CO2 Logo",
+    },
+  },
+  renaissanceWeb: {
+    channel: "renaissanceWeb",
+    name: "Renaissance",
+    shortName: "Renaissance",
+    defaultLocale: "en",
+    locales: ["en"],
+    domains: {
+      preview: "https://renaissance-monorepo-test.vercel.app",
+      local: "http://localhost:3003",
+    },
+    seo: {
+      defaultTitle: "Renaissance",
+      defaultDescription: "Renaissance website.",
+    },
+    tracking: {
+      vercelAnalytics: true,
+    },
+    logo: {
+      light: "/units/RENAISSANCE/renaissance-horz_logo.svg",
+      dark: "/logos/renaissance-horz_logo.svg",
+      alt: "Renaissance Logo",
     },
   },
 };

@@ -9,7 +9,7 @@ import Button2 from "@flzr/components/ui/Button2";
 import MixedType from "@flzr/components/ui/MixedType";
 import Eyebrow from "@flzr/components/ui/Eyebrow";
 
-import { assetUrl, resolveLink, ctaToButtonProps } from "@1sp/utils/cloudinary";
+import { assetUrl, ctaToButtonProps } from "@1sp/utils/cloudinary";
 
 function isVideoAsset(asset?: unknown, url?: string): boolean {
   const resourceType =
@@ -41,6 +41,9 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
   const videoUrl = assetUrl(backgroundVideo) || (backgroundImageIsVideo ? backgroundImageUrl : undefined);
   const shouldUseVideo = Boolean((useVideo || backgroundImageIsVideo) && videoUrl);
   const HeadingTag = headingTag === "h1" ? "h1" : "h2";
+  const ctaButtons = (Array.isArray(additionalContent) ? additionalContent : [])
+    .map((cta) => ctaToButtonProps(cta))
+    .filter(Boolean) as Array<NonNullable<ReturnType<typeof ctaToButtonProps>>>;
 
   // Generate section ID from heading or use a default
   const sectionId = heading
@@ -102,12 +105,10 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
             </div>
           )}
 
-          {Array.isArray(additionalContent) && additionalContent.length > 0 && (
+          {ctaButtons.length > 0 && (
             <div className="mt-6 flex flex-wrap items-start justify-start gap-4">
-              {additionalContent.map((cta: any, idx: number) => {
-                const btn = ctaToButtonProps(cta);
-                const href = resolveLink(cta?.link);
-                const isExternal = /^https?:\/\//.test(href);
+              {ctaButtons.map((btn, idx) => {
+                const isExternal = /^https?:\/\//.test(btn.href);
 
                 return (
                   <Button2
@@ -115,7 +116,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
                     variant={btn.variant as any}
                     text={btn.text}
                     className="w-fit min-w-[140px]"
-                    href={href}
+                    href={btn.href}
                     aria-label={btn.text || "CTA"}
                     {...(isExternal
                       ? { target: "_blank", rel: "noopener noreferrer" }

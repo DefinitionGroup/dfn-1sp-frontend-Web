@@ -40,6 +40,7 @@ const INTERACTIVE_CAROUSEL_FIELD_MAP = {
   flizrWeb: "connectedDataCarouselPromoFLZR",
   msmWeb: "connectedDataCarouselPromoMSM",
   studioco2Web: "connectedDataCarouselPromoStudioCO2",
+  renaissanceWeb: "connectedDataCarouselPromoRenaissance",
 } as const;
 
 // =============================================================================

@@ -21,6 +21,8 @@ import type {
 
 import {
   ctaToButtonProps,
+  getRenderableCta,
+  getRenderableCtaMini,
   assetUrl,
   resolveLink,
 } from "@1sp/utils/cloudinary";
@@ -108,18 +110,21 @@ function isUnitCardsBlock(x: any): x is UnitCardsBlock {
 }
 
 function isCta(x: AC): x is CTA & { _type?: "cta" } {
-  return (
-    !!x && ((x as any)._type === "cta" || typeof (x as any)?.text === "string")
+  return Boolean(
+    x &&
+      ((x as any)._type === "cta" || typeof (x as any)?.text === "string") &&
+      getRenderableCta(x as any),
   );
 }
 
 function isCtaMini(
   x: AC
 ): x is CtaMiniComponentType & { _type?: "ctaMiniComponent" } {
-  return (
-    !!x &&
-    ((x as any)._type === "ctaMiniComponent" ||
-      typeof (x as any)?.heading === "string")
+  return Boolean(
+    x &&
+      ((x as any)._type === "ctaMiniComponent" ||
+        typeof (x as any)?.heading === "string") &&
+      getRenderableCtaMini(x as any),
   );
 }
 
@@ -460,7 +465,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
             <div className="flex flex-col gap-4">
               {ctas.map((cta, idx) => {
                 const btn = ctaToButtonProps(cta);
-                if (!btn.text) return null;
+                if (!btn) return null;
                 return (
                   <Button2
                     key={`cta-${idx}`}

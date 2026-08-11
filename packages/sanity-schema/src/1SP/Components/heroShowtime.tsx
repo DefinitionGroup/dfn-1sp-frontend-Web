@@ -1,6 +1,8 @@
 import React from "react";
 import { defineType, defineField, defineArrayMember } from "sanity";
 import Image from "next/image";
+import { isFlzrStyleChannel } from "../../shared/flzrVisibility";
+import { validateOptionalCta } from "../../shared/ctaValidation";
 type MediaParent = { useVideo?: boolean };
 
 // Preview component to render Cloudinary image/video in Studio
@@ -110,7 +112,7 @@ export default defineType({
         "Expand the Showtime media to the full available width. Content remains aligned to the site container.",
       initialValue: false,
       group: "layout",
-      hidden: ({ document }: any) => document?.channel !== "flizrWeb",
+      hidden: ({ document }: any) => !isFlzrStyleChannel(document?.channel),
     }),
 
     // CONTENT
@@ -161,7 +163,13 @@ export default defineType({
       description: "Composable items that render after the paragraphs.",
       type: "array",
       group: "content",
-      of: [defineArrayMember({ type: "cta" })],
+      of: [
+        defineArrayMember({
+          type: "cta",
+          validation: (Rule) =>
+            Rule.custom((value) => validateOptionalCta(value)),
+        }),
+      ],
     }),
   ],
   preview: {

@@ -2,7 +2,7 @@
 /**
  * Vercel "Ignored Build Step" for the multisite monorepo.
  *
- * Usage: node scripts/vercel-ignore.mjs <1sp|msm|flzr>
+ * Usage: node scripts/vercel-ignore.mjs <1sp|msm|flzr|renaissance>
  *
  * Exit codes (Vercel convention):
  *   1 = changes are relevant, proceed with the build
@@ -25,6 +25,7 @@ const REPOSITORY_ROOT = fileURLToPath(new URL("..", import.meta.url));
 const APP_DIRS = {
   msm: "apps/msm-web",
   flzr: "apps/flzr-web",
+  renaissance: "apps/renaissance-web",
 };
 
 // Paths that affect every site. The nested apps currently import/compile
@@ -52,7 +53,7 @@ const SHARED_PATHS = [
   "scripts/vercel-ignore.mjs",
 ];
 
-// The root 1SP app uses this package, but MSM and FLZR do not.
+// The root 1SP app uses this package, but the nested apps do not.
 const ONE_SP_ONLY_PATHS = ["packages/sanity-schema/"];
 
 // Repo metadata that never affects a build, for any site.
@@ -136,14 +137,14 @@ function decide() {
     process.env.MONOREPO_TEST_PROJECT?.trim().toLowerCase() === "true";
 
   // The same Git repository is connected to both the existing projects and
-  // three dedicated monorepo test projects. Keep those deployment lanes
+  // four dedicated monorepo test projects. Keep those deployment lanes
   // isolated without changing the existing projects' normal preview rules:
   //
   // - test projects only build their Production Branch (`multisite/test`)
   // - existing projects never build the dedicated test branch
   //
   // MONOREPO_TEST_PROJECT must be set for both Production and Preview in the
-  // three new projects. VERCEL_GIT_COMMIT_REF is a Vercel system variable.
+  // four new projects. VERCEL_GIT_COMMIT_REF is a Vercel system variable.
   if (isMonorepoTestProject && gitRef !== TEST_BRANCH) {
     console.error(
       `vercel-ignore[${site}]: dedicated test project ignores branch ` +

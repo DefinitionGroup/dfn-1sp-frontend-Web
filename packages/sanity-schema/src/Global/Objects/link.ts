@@ -19,7 +19,6 @@ export default defineType({
         layout: "radio",
       },
       initialValue: "internal",
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "page",
@@ -36,24 +35,12 @@ export default defineType({
           };
         }) as unknown as string,
       },
-      validation: (Rule) =>
-        Rule.custom((val, ctx) => {
-          const t = (ctx.parent as LinkParent)?.linkType;
-          if (t === "internal" && !val) return "Select a page for an internal link.";
-          return true;
-        }),
     }),
     defineField({
       name: "externalUrl",
       title: "External URL",
       type: "url",
       hidden: (ctx) => (ctx.parent as LinkParent)?.linkType !== "external",
-      validation: (Rule) =>
-        Rule.custom((val, ctx) => {
-          const t = (ctx.parent as LinkParent)?.linkType;
-          if (t === "external" && !val) return "Provide a URL for an external link.";
-          return true;
-        }),
     }),
   ],
   preview: {

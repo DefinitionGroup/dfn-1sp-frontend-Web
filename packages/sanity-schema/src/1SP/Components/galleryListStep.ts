@@ -1,6 +1,7 @@
 import { defineType, defineField, defineArrayMember } from 'sanity'
 import { List } from '@phosphor-icons/react'
 import { hideForFlzrPage } from '../../shared/flzrVisibility'
+import { validateOptionalCta, validateOptionalCtaMini } from '../../shared/ctaValidation'
 
 export default defineType({
     name: 'galleryListStep',
@@ -46,6 +47,14 @@ export default defineType({
             description: 'Optional CTA mini component that renders under the badge.',
             group: 'badge',
             hidden: (context) => hideForFlzrPage(context) || !context.parent?.showBadgeMiniCta,
+            validation: (Rule) =>
+                Rule.custom((value, context) =>
+                    validateOptionalCtaMini(value, {
+                        enabled:
+                            !hideForFlzrPage(context) &&
+                            (context.parent as any)?.showBadgeMiniCta === true,
+                    })
+                ),
         }),
 
         // Staggered slide up toggle
@@ -107,10 +116,18 @@ export default defineType({
             type: "array",
             group: "content",
             of: [
-                defineArrayMember({ type: "cta" }),
+                defineArrayMember({
+                    type: "cta",
+                    validation: (Rule) =>
+                        Rule.custom((value) => validateOptionalCta(value)),
+                }),
                 defineArrayMember({ type: "cards" }),
                 defineArrayMember({ type: "unitCards" }),
-                defineArrayMember({ type: "ctaMiniComponent" }),
+                defineArrayMember({
+                    type: "ctaMiniComponent",
+                    validation: (Rule) =>
+                        Rule.custom((value) => validateOptionalCtaMini(value)),
+                }),
                 defineArrayMember({ type: "ctaSplitHeader" })
             ],
             validation: (Rule) => Rule.max(1).error('You can add up to 1 additional content item only.')

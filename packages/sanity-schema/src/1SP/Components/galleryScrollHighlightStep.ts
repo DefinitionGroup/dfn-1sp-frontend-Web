@@ -1,6 +1,7 @@
 import { defineType, defineField } from 'sanity'
 import { Lightning } from '@phosphor-icons/react'
 import { hideForFlzrPage } from '../../shared/flzrVisibility'
+import { validateOptionalCtaMini } from '../../shared/ctaValidation'
 
 export default defineType({
     name: 'galleryScrollHighlightStep',
@@ -57,7 +58,13 @@ export default defineType({
             type: 'ctaMiniComponent',
             description: 'Optional CTA mini component to display below the highlighted content',
             group: 'cta',
-            hidden: ({ parent }) => !parent?.useCTAMini
+            hidden: ({ parent }) => !parent?.useCTAMini,
+            validation: (Rule) =>
+                Rule.custom((value, context) =>
+                    validateOptionalCtaMini(value, {
+                        enabled: (context.parent as any)?.useCTAMini === true,
+                    })
+                ),
         })
     ],
     preview: {

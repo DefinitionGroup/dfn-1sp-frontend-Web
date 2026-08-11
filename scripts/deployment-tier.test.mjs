@@ -118,10 +118,11 @@ test("the test tier cannot bypass dedicated-project validation", () => {
   );
 });
 
-test("MSM and FLZR site identities accept only their matching channels", () => {
+test("nested site identities accept only their matching channels", () => {
   for (const [site, channel, hostname] of [
     ["msm", "msmWeb", "msm-monorepo-test.vercel.app"],
     ["flzr", "flizrWeb", "flzr-monorepo-test.vercel.app"],
+    ["renaissance", "renaissanceWeb", "renaissance-monorepo-test.vercel.app"],
   ]) {
     withEnvironment(
       {

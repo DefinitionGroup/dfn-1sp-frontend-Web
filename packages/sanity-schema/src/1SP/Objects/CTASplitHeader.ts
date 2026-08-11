@@ -1,5 +1,6 @@
 import { defineType, defineField } from "sanity";
 import { Columns } from "@phosphor-icons/react";
+import { validateOptionalCtaMini } from "../../shared/ctaValidation";
 
 export default defineType({
     name: "ctaSplitHeader",
@@ -16,6 +17,8 @@ export default defineType({
             title: "Mini CTA",
             type: "ctaMiniComponent",
             group: "content",
+            validation: (Rule) =>
+                Rule.custom((value) => validateOptionalCtaMini(value)),
         }),
 
         defineField({

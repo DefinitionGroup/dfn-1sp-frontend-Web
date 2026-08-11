@@ -1,6 +1,7 @@
 import { defineType, defineField } from "sanity";
 import { Layout } from "@phosphor-icons/react";
 import { hideForFlzrPage } from "../../shared/flzrVisibility";
+import { validateOptionalCtaMini } from "../../shared/ctaValidation";
 
 export default defineType({
     name: "servicesHeroWithBadge",
@@ -137,6 +138,12 @@ export default defineType({
             description: "Call-to-action section",
             group: "cta",
             hidden: ({ parent }) => parent?.showCta === false,
+            validation: (Rule) =>
+                Rule.custom((value, context) =>
+                    validateOptionalCtaMini(value, {
+                        enabled: (context.parent as any)?.showCta !== false,
+                    })
+                ),
         }),
 
         // List items

@@ -1,6 +1,7 @@
 import { defineType, defineField } from "sanity";
 import { TrendUp, ChartBar, ChartBarHorizontal, Equalizer } from "@phosphor-icons/react";
 import { hideForFlzrOnlyCase } from "../../shared/flzrVisibility";
+import { isFlzrStyleChannel } from "../../shared/flzrVisibility";
 
 export default defineType({
     name: "resultsMetrics",
@@ -243,8 +244,8 @@ export default defineType({
             hidden: ({ document }: any) => {
                 const channel = document?.channel;
                 return Array.isArray(channel)
-                    ? !channel.includes("flizrWeb")
-                    : channel !== "flizrWeb";
+                    ? !channel.some(isFlzrStyleChannel)
+                    : !isFlzrStyleChannel(channel);
             },
         }),
     ],

@@ -1,0 +1,247 @@
+/**
+ * Dynamic Page
+ * ============
+ *
+ * Handles all dynamic pages like /en/about, /en/contact, etc.
+ *
+ * ## Performance Optimization (January 2026)
+ *
+ * Previously: `generateMetadata()` and the page component each called
+ * `sanityFetch()` separately, resulting in 2 API calls for the same data.
+ *
+ * Now: Both use `getPageBySlug()` from the centralized data layer, which
+ * wraps the fetch in React's `cache()`. Only 1 API call is made.
+ *
+ * ## Static Generation
+ *
+ * `generateStaticParams()` pre-renders known pages at build time.
+ * `dynamicParams = true` allows new pages to be rendered on-demand.
+ *
+ * ## SEO (February 2026)
+ *
+ * - Canonical URLs prevent duplicate content across locales
+ * - Full OpenGraph + Twitter card metadata for social sharing
+ */
+import RenaissancePageBuilder from "@renaissance/components/RenaissancePageBuilder";
+// import CookieDeclaration from "@/components/CookieDeclaration";
+import { getAllCases, getAllPageSlugs, getAllServicesForChannel, getPageBySlug } from "@1sp/sanity-queries";
+import NotFound from "@renaissance/components/ui/not-found";
+import RenaissanceSiteWrapper from "@renaissance/components/RenaissanceSiteWrapper";
+import { resolveImageUrl } from "@1sp/sanity-queries/image";
+import type { Metadata } from "next";
+import { getSiteConfig } from "@1sp/site-config";
+import { getHeroPreloadData, HeroPreloadLinks } from "@renaissance/lib/hero-utils";
+import {
+  JsonLdScript,
+  generateWebPageJsonLd,
+  generateBreadcrumbJsonLd,
+  generateItemListJsonLd,
+  generateServiceCatalogJsonLd,
+  extractCaseItemsFromContent,
+  hasCaseListingBlocks,
+  hasServicesGalleryBlock,
+  mapCasesToItemList,
+  mapServicesToCatalogItems,
+  extractPeopleFromContent,
+  generatePeopleListJsonLd,
+  extractUnitsFromContent,
+  generateUnitsListJsonLd,
+  getBreadcrumbLabel,
+  CANONICAL_URL,
+} from "@renaissance/lib/structured-data";
+
+// Allow new pages to be rendered on-demand (ISR)
+export const dynamicParams = true;
+const SUPPORTED_LOCALES = new Set<string>(getSiteConfig("renaissanceWeb").locales);
+
+/**
+ * Generate static params for all pages at build time.
+ */
+export async function generateStaticParams() {
+  const pages = await getAllPageSlugs();
+
+  return pages
+    .filter(
+      (page) =>
+        page.channel === "renaissanceWeb" &&
+        SUPPORTED_LOCALES.has(page.language || "en"),
+    )
+    .map((page) => ({
+      locale: page.language || "en",
+      slug: page.slug,
+    }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}): Promise<Metadata> {
+  const { locale, slug } = await params;
+  const channel = "renaissanceWeb";
+  const language = locale || "en";
+
+  // Uses cached fetch - shared with page component
+  const page = await getPageBySlug(slug, channel, language);
+
+  if (!page) {
+    return {
+      title: "Page not found",
+    };
+  }
+
+  const title = page.metadata?.title || page.title;
+  const description = page.metadata?.description;
+  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
+
+  const ogImages = ogImageUrl
+    ? [
+      {
+        url: ogImageUrl,
+        width: 1200,
+        height: 630,
+        alt: title,
+      },
+    ]
+    : [];
+
+  return {
+    title,
+    description,
+    keywords: page.metadata?.keywords ?? undefined,
+    alternates: {
+      canonical: `/${slug}`,
+    },
+    openGraph: {
+      title,
+      description: description || undefined,
+      locale: language,
+      type: "website",
+      images: ogImages,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: description || undefined,
+      images: ogImages.map((img) => img.url),
+    },
+  };
+}
+
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}) {
+  const { locale, slug } = await params;
+
+  const channel = "renaissanceWeb";
+  const language = locale || "en";
+
+  // Uses cached fetch - deduped with generateMetadata call
+  const page = await getPageBySlug(slug, channel, language);
+
+  if (!page) {
+    return (
+      <RenaissanceSiteWrapper language={language} navColor="dark">
+        <NotFound />
+      </RenaissanceSiteWrapper>
+    );
+  }
+
+  const navbarVariant = page?.navbarVariant || "light";
+  const contentBlocks = page?.content as any[] | undefined;
+  const needsAllCases = hasCaseListingBlocks(contentBlocks);
+  const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
+
+  const [allCasesRaw, allServicesRaw] = await Promise.all([
+    needsAllCases ? getAllCases(channel, language) : Promise.resolve([]),
+    hasServicesGallery ? getAllServicesForChannel(channel, language) : Promise.resolve([]),
+  ]);
+
+  // LCP optimization: preload hero poster image
+  const heroPreload = getHeroPreloadData(contentBlocks);
+  const caseItems = extractCaseItemsFromContent(contentBlocks, mapCasesToItemList(allCasesRaw));
+  const services = mapServicesToCatalogItems(allServicesRaw);
+  const pageUrl = `${CANONICAL_URL}/${slug}`;
+  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
+
+  return (
+    <RenaissanceSiteWrapper language={language} navColor={navbarVariant}>
+      {/* Structured Data (JSON-LD) */}
+      {page && (
+        <>
+          <JsonLdScript
+            data={generateWebPageJsonLd({
+              title: page.metadata?.title || page.title || slug,
+              slug,
+              description: page.metadata?.description,
+              locale: language,
+              imageUrl: ogImageUrl,
+            })}
+          />
+          <JsonLdScript
+            data={generateBreadcrumbJsonLd([
+              {
+                name: getBreadcrumbLabel(language, "home"),
+                url: CANONICAL_URL,
+              },
+              {
+                name: page.title || slug,
+                url: pageUrl,
+              },
+            ])}
+          />
+          {/* ItemList for case carousels / galleries on this page */}
+          {caseItems.length > 0 && (
+            <JsonLdScript
+              data={generateItemListJsonLd({
+                items: caseItems,
+                locale: language,
+                id: `${pageUrl}#case-list`,
+              })}
+            />
+          )}
+          {services.length > 0 && (
+            <JsonLdScript
+              data={generateServiceCatalogJsonLd({
+                services,
+                locale: language,
+                id: `${pageUrl}#service-catalog`,
+                name: page.title || slug,
+                url: pageUrl,
+              })}
+            />
+          )}
+          {/* Person & Unit structured data from page builder content */}
+          {(() => {
+            const people = extractPeopleFromContent(contentBlocks);
+            return people.length > 0 ? <JsonLdScript data={generatePeopleListJsonLd({ people })} /> : null;
+          })()}
+          {(() => {
+            const units = extractUnitsFromContent(contentBlocks);
+            return units.length > 0 ? <JsonLdScript data={generateUnitsListJsonLd({ units })} /> : null;
+          })()}
+        </>
+      )}
+
+      {/* Preload the hero poster for fast LCP */}
+      <HeroPreloadLinks {...heroPreload} />
+      <div className="  min-h-screen px-1 md:px-2">
+        {contentBlocks?.length ? (
+          <>
+            <RenaissancePageBuilder
+              content={contentBlocks}
+              language={language}
+              channel={channel}
+              deferAfter={2}
+            />
+            {/* {slug === "data-protection" && <CookieDeclaration />} */}
+          </>
+        ) : (
+          <NotFound />
+        )}
+      </div>
+    </RenaissanceSiteWrapper>
+  );
+}

@@ -23,12 +23,82 @@ import {
   SUPPORTED_LANGUAGES,
   TRANSLATABLE_SCHEMA_TYPES,
   WEBSITE_CHANNELS,
+  type WebsiteChannel,
 } from '@1sp/site-config'
 import { structure } from './sanity/structure'
-import { locations, mainDocuments } from './sanity/presentation/resolve';
+import { createPresentationResolvers } from './sanity/presentation/resolve'
 
 const RELATIONSHIP_SYNC_ENABLED =
   process.env.NEXT_PUBLIC_ENABLE_RELATIONSHIP_SYNC === 'true';
+
+const BROWSER_ORIGIN =
+  typeof window === 'undefined' ? undefined : window.location.origin
+const IS_DEVELOPMENT = process.env.NODE_ENV === 'development'
+
+const PRESENTATION_SITES: Array<{
+  channel: WebsiteChannel
+  name: string
+  title: string
+  origin: string | undefined
+}> = [
+  {
+    channel: '1spWeb',
+    name: 'presentation-1sp',
+    title: '1SP Preview',
+    origin:
+      process.env.NEXT_PUBLIC_SANITY_STUDIO_1SP_PREVIEW_ORIGIN ||
+      process.env.NEXT_PUBLIC_SANITY_STUDIO_PREVIEW_ORIGIN ||
+      BROWSER_ORIGIN ||
+      'http://localhost:3000',
+  },
+  {
+    channel: 'flizrWeb',
+    name: 'presentation-flzr',
+    title: 'FLZR Preview',
+    origin:
+      process.env.NEXT_PUBLIC_SANITY_STUDIO_FLZR_PREVIEW_ORIGIN ||
+      (IS_DEVELOPMENT
+        ? 'http://localhost:3001'
+        : 'https://flzr-monorepo-test.vercel.app'),
+  },
+  {
+    channel: 'msmWeb',
+    name: 'presentation-msm',
+    title: 'MSM Preview',
+    origin:
+      process.env.NEXT_PUBLIC_SANITY_STUDIO_MSM_PREVIEW_ORIGIN ||
+      (IS_DEVELOPMENT
+        ? 'http://localhost:3002'
+        : 'https://msm-monorepo-test.vercel.app'),
+  },
+  {
+    channel: 'renaissanceWeb',
+    name: 'presentation-renaissance',
+    title: 'Renaissance Preview',
+    origin:
+      process.env.NEXT_PUBLIC_SANITY_STUDIO_RENAISSANCE_PREVIEW_ORIGIN ||
+      (IS_DEVELOPMENT
+        ? 'http://localhost:3003'
+        : 'https://renaissance-monorepo-test.vercel.app'),
+  },
+]
+
+const presentationTools = PRESENTATION_SITES.map((site) => {
+  const { locations, mainDocuments } = createPresentationResolvers(site.channel)
+
+  return presentationTool({
+    name: site.name,
+    title: site.title,
+    allowOrigins: site.origin ? [site.origin] : undefined,
+    resolve: { locations, mainDocuments },
+    previewUrl: {
+      initial: site.origin || '/',
+      previewMode: {
+        enable: '/api/draft-mode/enable',
+      },
+    },
+  })
+})
 
 // Studio templates derive from the same channel/locale policy as the frontends.
 const CHANNELS = WEBSITE_CHANNELS.map((id) => ({
@@ -236,16 +306,6 @@ export default defineConfig({
     structureTool({ structure }),
     cloudinarySchemaPlugin(),
     visionTool({ defaultApiVersion: apiVersion }),
-    presentationTool({
-      resolve: { locations, mainDocuments },
-      previewUrl: {
-        origin: process.env.SANITY_STUDIO_PREVIEW_ORIGIN ||
-          (typeof window === 'undefined' ? undefined : window.location.origin),
-        preview: '/',
-        previewMode: {
-          enable: '/api/draft-mode/enable',
-        },
-      },
-    }),
+    ...presentationTools,
   ],
 })

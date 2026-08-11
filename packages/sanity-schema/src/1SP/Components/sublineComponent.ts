@@ -1,5 +1,6 @@
 import { defineType, defineField, defineArrayMember } from "sanity";
 import { Sidebar } from "@phosphor-icons/react";
+import { validateOptionalCta } from "../../shared/ctaValidation";
 
 export default defineType({
     name: "sublineComponent",
@@ -57,7 +58,13 @@ export default defineType({
             description: "Composable items that render after the paragraphs.",
             type: "array",
             group: "content",
-            of: [defineArrayMember({ type: "cta" })],
+            of: [
+                defineArrayMember({
+                    type: "cta",
+                    validation: (Rule) =>
+                        Rule.custom((value) => validateOptionalCta(value)),
+                }),
+            ],
         }),
     ],
     preview: {

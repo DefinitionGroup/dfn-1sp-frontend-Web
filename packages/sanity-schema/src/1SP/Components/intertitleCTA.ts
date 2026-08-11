@@ -1,5 +1,6 @@
 import { defineType, defineField } from "sanity";
 import { TextT } from "@phosphor-icons/react";
+import { validateOptionalCta } from "../../shared/ctaValidation";
 
 export default defineType({
     name: "intertitleCTA",
@@ -62,6 +63,8 @@ export default defineType({
             type: "cta",
             group: "button",
             description: "Configure the button text, link, and variant",
+            validation: (Rule) =>
+                Rule.custom((value) => validateOptionalCta(value)),
         }),
         // LAYOUT
         defineField({

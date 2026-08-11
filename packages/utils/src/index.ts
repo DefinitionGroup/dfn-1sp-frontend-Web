@@ -7,3 +7,4 @@ export * from "./text-content";
 export * from "./site-url";
 export * from "./carousel-media";
 export * from "./hero-media";
+export * from "./cta";

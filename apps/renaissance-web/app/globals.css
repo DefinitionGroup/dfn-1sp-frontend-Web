@@ -1,0 +1,734 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Reusable 1SP groups render the canonical components from the repository
+   root. Include those files in Tailwind's source scan so host pages receive
+   every utility used by the embedded blocks, including arbitrary responsive
+   spacing values that may not otherwise occur in RENAISSANCE. */
+@source "../../../components";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Targets landscape viewports with height ≤ 640 px (all iPhone landscape sizes).
+   Defined after the built-in sm/md/lg/xl breakpoints so it always wins in cascade order. */
+@custom-variant landscape-small {
+  @media (orientation: landscape) and (max-height: 640px) {
+    @slot;
+  }
+}
+
+/* Legacy alias kept for backward compatibility */
+@custom-variant iphone-landscape {
+  @media (orientation: landscape) and (max-height: 640px) {
+    @slot;
+  }
+}
+
+@theme extend {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-ibm-plex-sans), sans-serif;
+  --font-renaissance: var(--font-ibm-plex-sans), sans-serif;
+  /* Legacy class contract: copied FLZR components now resolve to Renaissance's
+     authoritative face rather than loading a second sans family. */
+  --font-aspekta: var(--font-ibm-plex-sans), sans-serif;
+
+  /* Default fallback */
+  --headline-line-height: 1.1;
+  /* Default fallback */
+  --body-line-height: 1.5;
+  /* Default fallback */
+
+  --animate-fade-in-up: fadeInUp 0.65s var(--ease-renaissance);
+  /* Legacy semantic aliases retained for copied component contracts. */
+  --color-brand-lime: #008da7;
+  --color-brand-orange: #00778d;
+  --color-brand-pink: #cbeaf0;
+  --leading-compress: 0.75;
+  /* 85% for compressed leading */
+
+  /* ============================================================
+     RENAISSANCE design language — teal, charcoal ink, paper, mono telemetry,
+     pronounced radii. Single rationed accent: renaissance-accent.
+     ============================================================ */
+  --color-renaissance-accent: #008da7;
+  /* Accent — max 3 appearances per viewport */
+  --color-renaissance-mist: #cbeaf0;
+  /* Soft tint (secondary accent surface) */
+  --color-renaissance-ink: #11191b;
+  /* Dark passages — teal-tinted charcoal, never #000 */
+  --color-renaissance-paper: #ffffff;
+  /* Light page background — pure white (user call: no light-gray tints) */
+  --color-renaissance-hairline: #d9e6e8;
+  /* 1px dividers on light */
+  --color-renaissance-hairline-dark: rgb(255 255 255 / 0.15);
+  /* 1px dividers on dark */
+
+  /* Copied components retain their violet-* variant API, but every rendered
+     value is mapped onto the Renaissance teal family. */
+  --color-violet-200: #b8e2e9;
+  --color-violet-300: #79cbd9;
+  --color-violet-400: #008da7;
+  --color-violet-500: #00778d;
+  --color-violet-600: #00677a;
+  --color-violet-700: #005566;
+
+  /* Fluid type scale (16px root, 375px → 1440px interpolation) */
+  --text-display: clamp(2.75rem, 2.05rem + 3vw, 4.75rem);
+  --text-display--line-height: var(--type-display-leading);
+  --text-display--font-weight: 700;
+  --text-title: clamp(2rem, 1.65rem + 1.5vw, 3rem);
+  --text-title--line-height: 1;
+  --text-title--font-weight: 700;
+  --text-body-fluid: clamp(1rem, 0.97rem + 0.25vw, 1.125rem);
+  --text-body-fluid--line-height: 1.33;
+
+  /* Motion constants — one entrance system per page */
+  --ease-renaissance: cubic-bezier(0.62, 0.05, 0.01, 0.99);
+  --ease-renaissance-overshoot: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-renaissance: 0.65s;
+  --duration-renaissance-fast: 0.5s;
+
+  /* Pronounced radius scale — the renaissance statement */
+  --radius-card: 2rem;
+  --radius-media: 2.5rem;
+  --radius-2xl: 2.5rem;
+  --radius-3xl: 3rem;
+  --radius-4xl: 3.5rem;
+
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  /* Legacy lime-* aliases mapped to teal for schema-authored button variants. */
+  --color-brand-lime-50: #f2fafb;
+  --color-brand-lime-100: #e2f4f7;
+  --color-brand-lime-200: #b8e2e9;
+  --color-brand-lime-300: #79cbd9;
+  --color-brand-lime-400: #45b5c9;
+  --color-brand-lime-500: #008da7;
+  --color-brand-lime-600: #00778d;
+  --color-brand-lime-700: #00677a;
+  --color-brand-lime-800: #005566;
+  --color-brand-lime-900: #003f4c;
+
+  /* Neutral scale — cool teal-tinted inks (retints all existing
+     bg-neutral-* / text-neutral-* usage into the renaissance language) */
+  --color-neutral-50: #ffffff;
+  /* Paper — pure white */
+  --color-neutral-100: #ffffff;
+  /* Raised paper — white; separation comes from hairlines, not tint */
+  --color-neutral-200: oklch(0.9 0.015 215);
+  /* Secondary text */
+  --color-neutral-300: oklch(0.82 0.014 215);
+  --color-neutral-400: oklch(0.67 0.018 215);
+  --color-neutral-500: oklch(0.52 0.022 215);
+  --color-neutral-600: oklch(0.4 0.024 215);
+  --color-neutral-700: oklch(0.32 0.024 215);
+  --color-neutral-800: oklch(0.24 0.022 215);
+  --color-neutral-900: #11191b;
+  /* Ink — dark passages */
+  --color-neutral-950: #0b1315;
+  /* Deepest ink, replaces pure black */
+
+  /* Legacy purple/blue utility aliases also resolve to the teal family. */
+  --color-purple-400: #008da7;
+  --color-purple-500: #00778d;
+  --color-purple-600: #00677a;
+  --color-blue-400: #45b5c9;
+  --color-blue-500: #008da7;
+  --color-blue-600: #00778d;
+
+  /* Typography Scale - From Figma Design */
+  --font-size-xxs: 0.64rem;
+  --font-size-xs: 0.875rem;
+  --font-size-sm: 0.9375rem;
+  --font-size-base: 1rem;
+  --font-size-md: 1.125rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+  --font-size-3xl: 2.5rem;
+  --font-size-4xl: 3.5rem;
+  --font-size-5xl: 4.5rem;
+  --font-size-6xl: 6rem;
+  --font-size-7xl: 7.5rem;
+  --font-size-8xl: 9rem;
+  --font-size-9xl: 10rem;
+
+  --text-xxs: 0.64rem;
+  --text-xs: 0.875rem;
+
+  /* Line Heights - From Figma Design */
+  --line-height-tight: 0.87;
+  /* 87% for Mackay */
+  --line-height-tighter: 0.9;
+  /* 90% for headlines */
+  --line-height-snug: 0.98;
+  /* 98% for Aspekta bold */
+  --line-height-normal: 1.09;
+  /* 109% for body */
+  --line-height-relaxed: 1.12;
+  /* 112% for small text */
+  --line-height-loose: 1.24;
+  /* 124% for medium text */
+  --line-height-looser: 1.25;
+  /* 125% for body text */
+  --line-height-extra: 1.45;
+  /* 145% for tiny text */
+
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+:root {
+  color-scheme: light;
+  /* IBM Plex Sans Variable controls. The available axes are weight 100-700
+     and width 75-100; role tokens keep the typography tunable in one place. */
+  --type-body-weight: 400;
+  --type-body-width: 100%;
+  --type-body-leading: 1.55;
+  --type-body-measure: 68ch;
+  --type-label-weight: 600;
+  --type-label-width: 95%;
+  --type-label-leading: 1.15;
+  --type-display-weight: 700;
+  --type-display-width: 82.5%;
+  --type-display-leading: 0.92;
+  --radius: 1.5rem;
+  --background: #ffffff;
+  --foreground: #11191b;
+  --card: oklch(1 0 0);
+  --card-foreground: #11191b;
+  --popover: oklch(1 0 0);
+  --popover-foreground: #11191b;
+  --primary: #008da7;
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: #ffffff;
+  --secondary-foreground: #11191b;
+  --muted: #ffffff;
+  --muted-foreground: oklch(0.52 0.022 215);
+  --accent: #ffffff;
+  --accent-foreground: #11191b;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: #d9e6e8;
+  --input: #d9e6e8;
+  --ring: #008da7;
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+    font-family:
+      var(--font-ibm-plex-sans),
+      sans-serif;
+    font-synthesis: none;
+    font-style: normal;
+    font-weight: var(--type-body-weight);
+    font-stretch: var(--type-body-width);
+    line-height: var(--type-body-leading);
+  }
+
+  /* RENAISSANCE uses the font's native spacing across every rendered component,
+     including reusable blocks whose source lives outside this app. */
+  :where(body, body *) {
+    letter-spacing: normal !important;
+  }
+
+  /* Deliberate exception for compact media-card headlines. */
+  .renaissance-card-title {
+    letter-spacing: 0.05em !important;
+  }
+
+  /* Headline casing is a site-level contract, including reusable blocks and
+     headline-like shell copy that cannot use a heading element. */
+  :where(
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    .text-display,
+    .text-title,
+    .heading-responsive,
+    .subheading-responsive,
+    .renaissance-headline
+  ) {
+    text-transform: uppercase;
+  }
+
+  ::selection {
+    background: var(--color-renaissance-accent);
+    color: #fff;
+  }
+
+  /* RENAISSANCE headline family and default teal. Explicit text-color utilities
+     still win, so contextual treatments such as white card names remain. */
+  :where(h1, h2, h3, h4, h5, h6, .text-display, .text-title) {
+    font-family: var(--font-ibm-plex-sans), sans-serif;
+    color: var(--color-renaissance-accent);
+  }
+
+  /* Role utilities expose the variable axes without coupling components to
+     raw variation settings. */
+  .renaissance-body {
+    max-inline-size: var(--type-body-measure);
+    font-weight: var(--type-body-weight);
+    font-stretch: var(--type-body-width);
+    line-height: var(--type-body-leading);
+  }
+
+  .renaissance-label {
+    font-weight: var(--type-label-weight);
+    font-stretch: var(--type-label-width);
+    line-height: var(--type-label-leading);
+  }
+
+  /* Telemetry eyebrow — 12px uppercase mono; the renaissance signature label.
+     Pair with .status-dot for live-data readouts. */
+  .eyebrow-mono {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .status-dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background: var(--color-renaissance-accent);
+    animation: statusPulse 2.4s var(--ease-renaissance) infinite;
+  }
+
+  @keyframes statusPulse {
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .status-dot {
+      animation: none;
+    }
+  }
+
+  /* Hairline dividers */
+  .hairline-b {
+    border-bottom: 1px solid var(--color-renaissance-hairline);
+  }
+
+  .section-dark .hairline-b,
+  .hairline-b-dark {
+    border-bottom-color: var(--color-renaissance-hairline-dark);
+  }
+
+  /* Dark full-bleed passage */
+  .section-dark {
+    background: var(--color-renaissance-ink);
+    color: var(--color-renaissance-paper);
+  }
+
+  /* Animation Utilities */
+  .animate-fade-in-up {
+    animation: fadeInUp 0.65s var(--ease-renaissance);
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Focus styles */
+  .focus-lime {
+    @apply focus:outline-none focus:ring-2 focus:ring-brand-lime-500 focus:ring-offset-2;
+  }
+
+  /* Typewriter rotator — display-scale fluid sizing (≥4× body) */
+  .typewriter-rotator {
+    --tw-cursor-w: 8px;
+    --tw-cursor-radius: 4px;
+    --tw-cursor-ml: 4px;
+    --tw-text-size: clamp(3.4rem, 2.5rem + 3.75vw, 6rem);
+    --tw-text-lh: calc(var(--tw-text-size) * 0.95);
+    --tw-cursor-h: var(--tw-text-lh);
+    --tw-text-ls: -0.03em;
+  }
+
+  @media (max-width: 768px) {
+    .typewriter-rotator {
+      --tw-cursor-w: 4px;
+      --tw-cursor-radius: 2px;
+      --tw-cursor-ml: 2px;
+      --tw-text-size: clamp(1.875rem, 8vw, 3.75rem);
+      --tw-text-lh: calc(var(--tw-text-size) * 1.05);
+      --tw-cursor-h: var(--tw-text-lh);
+    }
+  }
+
+  @media (orientation: landscape) and (pointer: coarse) and (max-height: 500px) {
+    .typewriter-rotator {
+      --tw-cursor-w: 3px;
+      --tw-cursor-radius: 2px;
+      --tw-cursor-ml: 2px;
+      --tw-text-size: min(2vw, 1.25rem);
+      --tw-text-lh: calc(var(--tw-text-size) * 1.05);
+      --tw-cursor-h: var(--tw-text-lh);
+    }
+  }
+
+}
+
+.diagnose * {
+  outline: 1px dotted red;
+}
+
+/* Diagnostic layout box model helper (alias of .diagnose) */
+.dialog * {
+  outline: 1px dotted red;
+}
+
+/* View transition choreography — capped at the 0.8s motion ceiling */
+:root {
+  --vt-duration: 800ms;
+  --vt-ease: cubic-bezier(0.62, 0.05, 0.01, 0.99);
+}
+
+::view-transition-group(root) {
+  z-index: auto !important;
+  animation-duration: var(--vt-duration);
+  animation-timing-function: var(--vt-ease);
+}
+
+::view-transition-image-pair(root) {
+  isolation: isolate;
+  will-change: transform, opacity;
+  z-index: 1;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+  animation: vt-slide-out var(--vt-duration) var(--vt-ease) both;
+  backface-visibility: hidden;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+  animation: vt-slide-in var(--vt-duration) var(--vt-ease) both;
+  backface-visibility: hidden;
+}
+
+@keyframes vt-slide-out {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, -80%, 0) scale(0.7);
+  }
+}
+
+/* RENAISSANCE headline contract. Keep this outside Tailwind's cascade layers so
+   component-level font-light/font-medium/font-semibold utilities cannot
+   dilute the channel's bold italic voice, including reusable blocks. */
+:where(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .text-display,
+  .text-title,
+  .heading-responsive,
+  .subheading-responsive,
+  .renaissance-headline
+) {
+  font-family: var(--font-ibm-plex-sans), sans-serif;
+  font-stretch: var(--type-display-width);
+  font-style: italic;
+  font-weight: var(--type-display-weight);
+  text-transform: uppercase;
+}
+
+@keyframes vt-slide-in {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 80%, 0) scale(0.7);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root) {
+    animation-duration: 1ms !important;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes loadingBar {
+  0% {
+    width: 0%;
+  }
+
+  50% {
+    width: 70%;
+  }
+
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes logo-marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/**
+ * Hero reveal — clip-path animation driven by CSS so the poster can paint
+ * from SSR HTML without waiting for JS hydration / Framer Motion.
+ * cubic-bezier(0.16, 1, 0.3, 1) matches the previous Framer Motion easing.
+ * The 180ms delay mirrors the old heroIntroArmed setTimeout.
+ */
+@keyframes heroClipReveal {
+  0% {
+    clip-path: inset(6% 6% 6% 6% round var(--radius-media));
+    opacity: 0.92;
+  }
+
+  100% {
+    clip-path: inset(0.75rem 0.75rem 0.75rem 0.75rem round var(--radius-media));
+    opacity: 1;
+  }
+}
+
+/* Hero media lands as an inset frame with the renaissance statement radius */
+.hero-clip-reveal {
+  animation: heroClipReveal 0.65s var(--ease-renaissance) 0.18s both;
+  will-change: clip-path, opacity;
+  transform: translateZ(0);
+}
+
+@layer utilities {
+  .logo-marquee-track {
+    animation: logo-marquee var(--marquee-duration, 220s) linear infinite;
+    width: max-content;
+  }
+
+  .logo-marquee-pausable:hover .logo-marquee-track {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-marquee-track {
+      animation: none;
+    }
+  }
+
+  .logo-carousel-mask {
+    mask-image: linear-gradient(to right,
+        transparent,
+        black 8%,
+        black 92%,
+        transparent);
+    -webkit-mask-image: linear-gradient(to right,
+        transparent,
+        black 8%,
+        black 92%,
+        transparent);
+  }
+
+  /* Responsive container utilities */
+  .container-responsive {
+    @apply w-full px-4 sm:px-6 lg:px-8 mx-auto;
+    max-width: min(100%, 1400px);
+  }
+
+  /* Text clarity utilities */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Smooth scrolling for sticky elements */
+  .scroll-smooth-sticky {
+    scroll-margin-top: 6rem;
+  }
+
+  /* Responsive typography scaling */
+  .heading-responsive {
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl;
+    @apply leading-[0.95];
+  }
+
+  .subheading-responsive {
+    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
+    @apply leading-tight;
+  }
+
+  .body-responsive {
+    @apply text-sm sm:text-base md:text-lg;
+    @apply leading-relaxed;
+  }
+
+  /* Grid gap responsive utilities */
+  .gap-responsive {
+    @apply gap-4 sm:gap-6 lg:gap-8;
+  }
+
+  /* Padding responsive utilities */
+  .py-section {
+    @apply py-12 sm:py-16 md:py-24 lg:py-32;
+  }
+
+  .px-section {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Card hover effects */
+  .card-hover {
+    @apply transition-all duration-300 ease-out;
+    /* @apply hover:shadow-lg hover:-translate-y-0.5; */
+  }
+
+  /* Focus visible improvements */
+  .focus-ring {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-lime-500 focus-visible:ring-offset-2;
+  }
+
+  /* Hide scrollbar utility - cross-browser */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
+  }
+
+  /* Alternative: Style scrollbars to be transparent/dark instead of hiding */
+  .scrollbar-dark {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+  }
+
+  .scrollbar-dark::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-dark::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-dark::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+  }
+
+  .scrollbar-dark::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+video::-webkit-media-controls {
+  display: none !important;
+}
+
+video::-moz-media-controls {
+  display: none !important;
+}
+
+video {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}

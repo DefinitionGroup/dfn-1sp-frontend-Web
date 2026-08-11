@@ -54,6 +54,11 @@ function CtaMiniComponent({
   const isExternal = /^(https?:|mailto:|tel:)/.test(finalUrl);
   const safeButtonVariant: NonNullable<CtaMiniProps["buttonVariant"]> =
     buttonVariant in buttonVariantStyles ? buttonVariant : "default";
+  const hasTextContent = hasVisibleText(heading) || hasVisibleText(paragraph);
+
+  if (showButton ? (!hasVisibleText(heading) || !hasVisibleText(buttonText) || !hasValidUrl) : !hasTextContent) {
+    return null;
+  }
 
   const alignClass =
     align === "center"

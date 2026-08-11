@@ -317,40 +317,16 @@ export const optimizedPortraitVideoUrl = (
 
 
 import type { CTA, Link } from "@1sp/sanity-types";
+import {
+    getRenderableCta,
+    getRenderableCtaMini,
+    resolveCtaLink,
+} from "./cta";
+
+export { getRenderableCta, getRenderableCtaMini } from "./cta";
 
 export const resolveLink = (link?: Link | null) => {
-    if (!link) return "";
-
-    const linkType = (link as any).linkType || (link as any).type || "external";
-
-    if (linkType === "internal") {
-        const page = (link as any).page;
-        let slug = "";
-
-        if (typeof page === "string") {
-            slug = page;
-        } else if (page) {
-            slug =
-                (page as any)?.slug?.current ||
-                (page as any)?.current ||
-                (page as any)?.slug ||
-                (page as any)?.url ||
-                "";
-        }
-
-        slug = String(slug || "").trim();
-        if (!slug) return "";
-        return slug.startsWith("/") ? slug : `/${slug}`;
-    }
-
-    const external =
-        (link as any).externalUrl ||
-        (link as any).url ||
-        (link as any).href ||
-        (link as any).external ||
-        "";
-
-    return external || "";
+    return resolveCtaLink(link as any);
 };
 
 export const resolveLinkAsync = async (link?: Link | null) => {
@@ -358,8 +334,13 @@ export const resolveLinkAsync = async (link?: Link | null) => {
 };
 
 
-export const ctaToButtonProps = (cta?: CTA) => ({
-    text: cta?.text || "",
-    href: resolveLink(cta?.link) || "#",
-    variant: (cta?.variant as any) || "default",
-});
+export const ctaToButtonProps = (cta?: CTA) => {
+    const value = getRenderableCta(cta);
+    if (!value) return null;
+
+    return {
+        ...value,
+        // Each website narrows the shared Sanity variant list differently.
+        variant: value.variant as any,
+    };
+};

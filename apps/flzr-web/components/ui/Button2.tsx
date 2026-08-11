@@ -11,6 +11,7 @@ import {
 import { cn } from "@1sp/utils/cn";
 import { ArrowRightIcon } from "@phosphor-icons/react";
 import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 const Strands = dynamic(() => import("./Strands"), { ssr: false });
 
@@ -419,6 +420,8 @@ function Button2({
     strandsPointerX.set((mouseRef.current.x - 0.5) * 18);
     strandsPointerY.set((mouseRef.current.y - 0.5) * 10);
   }, [strandsPointerX, strandsPointerY]);
+
+  if (!hasVisibleText(text)) return null;
 
   const shaderActive = hovered && !reducedMotion;
 

@@ -1,6 +1,7 @@
 import { defineType, defineField } from "sanity";
 import { List } from "@phosphor-icons/react";
 import { hideForFlzrOnlyCase } from "../../shared/flzrVisibility";
+import { validateOptionalCta } from "../../shared/ctaValidation";
 
 export default defineType({
     name: "challengeAndSolution",
@@ -223,6 +224,14 @@ export default defineType({
             description: "CTA button",
             hidden: ({ parent }) => !parent?.showCta || !parent?.showButton,
             group: "cta",
+            validation: (Rule) =>
+                Rule.custom((value, context) =>
+                    validateOptionalCta(value, {
+                        enabled:
+                            (context.parent as any)?.showCta !== false &&
+                            (context.parent as any)?.showButton === true,
+                    })
+                ),
         }),
 
         defineField({

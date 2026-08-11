@@ -364,7 +364,7 @@ export interface Page {
         keywords?: string[];
         excludeFromSitemap?: boolean;
     };
-    channel?: "1spWeb" | "msmWeb" | "studioco2Web" | "flizrWeb" | string;
+    channel?: "1spWeb" | "msmWeb" | "studioco2Web" | "flizrWeb" | "renaissanceWeb" | string;
     navbarVariant?: "light" | "dark";
     contactForm?: ContactFormSettings;
 

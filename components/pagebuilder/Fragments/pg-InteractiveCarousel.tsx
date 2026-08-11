@@ -157,6 +157,7 @@ function InteractiveCarousel({
   };
 
   const active = carouselItems[currentIndex];
+  const activeButton = ctaToButtonProps(active.cta);
   const activeVideoSources = getCarouselVideoSources(active.video);
   const activePosterUrl = getCarouselPosterUrl(active.video);
 
@@ -304,8 +305,8 @@ function InteractiveCarousel({
                         </motion.p>
                       )}
                       <motion.div className="text-gray-100 text-sm max-w-2xl ">
-                        {active.cta ? (
-                          <Button2 {...ctaToButtonProps(active.cta)} />
+                        {activeButton ? (
+                          <Button2 {...activeButton} />
                         ) : active.linkHref ? (
                           <Button2
                             variant="limesmall"

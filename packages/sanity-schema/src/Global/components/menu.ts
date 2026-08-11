@@ -45,6 +45,7 @@ export default {
                     { title: 'MSM Website', value: 'msmWeb' },
                     { title: 'Studio CO2 Website', value: 'studioco2Web' },
                     { title: 'Flizr Website', value: 'flizrWeb' },
+                    { title: 'Renaissance Website', value: 'renaissanceWeb' },
                 ],
                 layout: "radio",
             },

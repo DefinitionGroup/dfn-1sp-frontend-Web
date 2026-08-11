@@ -10,7 +10,6 @@ export default defineType({
             name: 'heading',
             title: 'Heading',
             type: 'string',
-            validation: (Rule) => Rule.required().min(1).max(80),
         }),
         defineField({
             name: 'paragraph',
@@ -21,13 +20,11 @@ export default defineType({
             name: 'buttonText',
             title: 'Button Text',
             type: 'string',
-            validation: (Rule) => Rule.required().min(1).max(80),
         }),
         defineField({
             name: 'link',
             title: 'Link',
             type: 'link', // your existing link type (internal/external)
-            validation: (Rule) => Rule.required(),
         }),
         defineField({
             name: 'variant',

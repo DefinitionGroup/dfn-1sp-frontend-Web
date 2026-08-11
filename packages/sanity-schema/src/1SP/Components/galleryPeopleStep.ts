@@ -1,6 +1,7 @@
 import { defineType, defineField } from 'sanity'
 import { UsersThree } from '@phosphor-icons/react'
 import { hideForFlzrPage } from '../../shared/flzrVisibility'
+import { validateOptionalCtaMini } from '../../shared/ctaValidation'
 
 export default defineType({
     name: 'galleryPeopleStep',
@@ -45,7 +46,15 @@ export default defineType({
             type: 'ctaMiniComponent',
             description: 'Optional CTA mini component that renders under the badge.',
             group: 'badge',
-            hidden: (context) => hideForFlzrPage(context) || !context.parent?.showBadgeMiniCta
+            hidden: (context) => hideForFlzrPage(context) || !context.parent?.showBadgeMiniCta,
+            validation: (Rule) =>
+                Rule.custom((value, context) =>
+                    validateOptionalCtaMini(value, {
+                        enabled:
+                            !hideForFlzrPage(context) &&
+                            (context.parent as any)?.showBadgeMiniCta === true,
+                    })
+                ),
         }),
         defineField({
             name: 'header',

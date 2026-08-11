@@ -2,7 +2,7 @@
 
 import { createClient } from "@sanity/client";
 
-const KNOWN_CHANNELS = ["1spWeb", "flizrWeb", "msmWeb", "studioco2Web"];
+const KNOWN_CHANNELS = ["1spWeb", "flizrWeb", "msmWeb", "studioco2Web", "renaissanceWeb"];
 const DEFAULT_CHANNEL = "1spWeb";
 const DEFAULT_LANGUAGE = "en";
 
@@ -147,4 +147,3 @@ if (result.counts.publishedCasesForChannelLanguage === 0) {
 if (result.counts.pagesForChannelLanguage > 0 && result.counts.homepagesForChannelLanguage > 0) {
   console.log("  OK: Dataset has pages and a homepage for the checked scope.");
 }
-

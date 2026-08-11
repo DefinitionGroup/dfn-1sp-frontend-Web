@@ -1,0 +1,265 @@
+"use client";
+
+import React from "react";
+import { useParams } from "next/navigation";
+import HeroVideoComp from "@renaissance/components/pagebuilder/Fragments/HeroVideoComp";
+import StaggeredSlideUp from "@renaissance/components/ui/StaggeredSlideUp";
+import Button2 from "@renaissance/components/ui/Button2";
+import { assetUrl, resolveLink } from "@1sp/utils/cloudinary";
+import TypewriterRotator from "@renaissance/components/ui/TypewriterRotator";
+import AnimatedEditorialHeadline from "@renaissance/components/ui/AnimatedEditorialHeadline";
+import { localizedPath } from "@renaissance/lib/routes";
+import { PortableText } from "@portabletext/react";
+import type { PortableTextBlock } from "@portabletext/types";
+import type {
+  OneSPHeader,
+  CloudinaryAsset,
+} from "@1sp/sanity-types";
+import { useMediaQuery } from "@1sp/utils/hooks/use-media-query";
+import { SMALL_TOUCH_LANDSCAPE_MEDIA_QUERY } from "@1sp/utils/responsive";
+import { hasVisibleText } from "@1sp/utils/text-content";
+
+function useIphoneLandscape(): boolean {
+  return useMediaQuery(SMALL_TOUCH_LANDSCAPE_MEDIA_QUERY);
+}
+/** --- helpers --- */
+function isVideoUrl(url?: string) {
+  return !!url && (/\/video\//.test(url) || /\.(mp4|webm|ogg)$/i.test(url));
+}
+
+function highlightInline(text: string, highlight?: string): React.ReactNode {
+  if (!highlight || !text) return text;
+
+  const normalized = highlight.trim().replace(/^[^\w]+|[^\w]+$/g, "");
+  if (!normalized) return text;
+
+  const escapeRegex = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const re = new RegExp(escapeRegex(normalized), "i");
+  const match = text.match(re);
+  if (!match) return text;
+
+  const idx = match.index ?? 0;
+  const before = text.slice(0, idx);
+  const matched = text.slice(idx, idx + match[0].length);
+  const after = text.slice(idx + match[0].length);
+
+  return (
+    <>
+      {before}
+      <span className="bg-gradient-to-r from-violet-300 to-violet-500 bg-clip-text text-transparent font-bold">
+        {matched}
+      </span>
+      {after}
+    </>
+  );
+}
+
+/** --- component --- */
+function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
+  const isIphoneLandscape = useIphoneLandscape();
+  const params = useParams();
+  const locale = (params?.locale as string) || "en";
+
+  // Optional CTA below the hero copy (schema: oneSPHeader.cta)
+  const ctaHref = localizedPath(
+    step.cta?.link ? resolveLink(step.cta.link) : undefined,
+    locale,
+  );
+  const ctaText = step.cta?.text;
+  const mediaUrl = assetUrl(step.media as CloudinaryAsset | undefined);
+  const useVideo = isVideoUrl(mediaUrl);
+
+  const eyebrow = step.eyebrow ?? "Welcome to Renaissance";
+  const seoTitle = step.seoTitle?.trim();
+  const headline = step.headline?.trim() ?? "";
+  const headlineMode = step.headlineMode ?? "typewriter";
+  const useHeadlineReveal =
+    headlineMode === "headlineReveal" && hasVisibleText(headline);
+  const words = Array.isArray(step.rotatingText) ? step.rotatingText : [];
+  const paragraphs = (step.paragraphs ?? []) as PortableTextBlock[];
+  const mobileParagraphs = (step.mobileParagraphs ?? []) as PortableTextBlock[];
+  const mobileParagraphsToRender =
+    mobileParagraphs.length > 0 ? mobileParagraphs : paragraphs;
+  const highlight = step.highlight;
+  const navPointName = step.navPointName;
+  const hideFromNav = (step as any).hideFromNav ?? false;
+
+  const leftMark = step.cornerLeftText ?? "SUPER*";
+  const rightMark = step.cornerRightText ?? "/ Renaissance";
+
+  // Generate section ID from eyebrow or default
+  const sectionId = eyebrow
+    ? eyebrow
+      .replace(/[^a-zA-Z0-9\s]/g, "")
+      .replace(/\s+/g, "-")
+      .toLowerCase()
+    : "header-section";
+
+  // Store nav-related data attributes
+  const navPointDataAttr = {
+    ...(navPointName ? { "data-navpoint-name": navPointName } : {}),
+    ...(hideFromNav ? { "data-nav-hidden": "true" } : {}),
+  };
+  const paragraphSizeClass = isIphoneLandscape
+    ? "text-xs"
+    : useHeadlineReveal
+      ? "text-2xl"
+      : "text-base";
+
+  const portableTextComponents = {
+    block: {
+      normal: ({ children }: { children?: React.ReactNode }) => (
+        <p className={`text-balance text-neutral-50 ${paragraphSizeClass} max-w-[38em]`}>
+          {children}
+        </p>
+      ),
+    },
+    marks: {
+      strong: ({ children }: { children?: React.ReactNode }) => (
+        <strong className="font-bold">{children}</strong>
+      ),
+      em: ({ children }: { children?: React.ReactNode }) => (
+        <em className="italic">{children}</em>
+      ),
+    },
+  };
+
+  const portableTextComponentsWithHighlight = highlight
+    ? {
+      ...portableTextComponents,
+      block: {
+        normal: ({ children, value }: { children?: React.ReactNode; value?: PortableTextBlock }) => {
+          const plainText = value?.children
+            ?.map((c: any) => c.text)
+            .join("") ?? "";
+          const highlighted = highlightInline(plainText, highlight);
+          // If highlight matched, render the highlighted version
+          if (highlighted !== plainText) {
+            return (
+              <p className={`text-balance text-neutral-500 ${paragraphSizeClass} max-w-[38em]`}>
+                {highlighted}
+              </p>
+            );
+          }
+          return (
+            <p className={`text-balance text-neutral-500 ${paragraphSizeClass} max-w-[38em]`}>
+              {children}
+            </p>
+          );
+        },
+      },
+    }
+    : portableTextComponents;
+
+  const eyebrowContent = hasVisibleText(eyebrow) ? (
+    <h3 className="text-xs font-book flex items-center justify-center gap-2 text-neutral-50 pb-2">
+      <span className="status-dot self-start mt-1.5" aria-hidden="true" />
+      {eyebrow}
+    </h3>
+  ) : null;
+
+  const supportingContent = (
+    <>
+      {paragraphs.length > 0 && (
+        <div className="hidden md:flex iphone-landscape:!hidden flex-col items-center space-y-4 text-neutral-50 pt-8">
+          <PortableText
+            value={paragraphs}
+            components={portableTextComponentsWithHighlight}
+          />
+        </div>
+      )}
+
+      {mobileParagraphsToRender.length > 0 && (
+        <div className="flex md:hidden iphone-landscape:!flex flex-col items-center space-y-4 text-neutral-50 pt-8">
+          <PortableText
+            value={mobileParagraphsToRender}
+            components={portableTextComponentsWithHighlight}
+          />
+        </div>
+      )}
+
+      {ctaHref && ctaText && (
+        <div className="pt-6">
+          <Button2 text={ctaText} href={ctaHref} className="min-w-[140px]" />
+        </div>
+      )}
+    </>
+  );
+
+  return (
+    <section
+      id={sectionId}
+      {...navPointDataAttr}
+      className="relative min-h-[80vh] h-[95vh] iphone-landscape:!h-dvh  overflow-hidden z-1"
+    >
+      {!useHeadlineReveal && seoTitle && <h1 className="sr-only">{seoTitle}</h1>}
+
+      {/* Background media */}
+      {mediaUrl && (
+        <HeroVideoComp
+          useVideo={useVideo}
+          videoSrc={useVideo ? mediaUrl : undefined}
+          imageSrc={!useVideo ? mediaUrl : undefined}
+        />
+      )}
+
+      {/* Foreground content — matches the media frame width (site container)
+          so the type never escapes the rounded video, centered like the frame */}
+      <div className="absolute inset-x-0 bottom-24 iphone-landscape:bottom-8 md:relative z-10 container md:mt-[45vh] iphone-landscape:mt-[50vh] mx-auto">
+        {useHeadlineReveal ? (
+          <div className="px-8 md:px-16 flex flex-col items-center text-center">
+            {eyebrowContent && (
+              <StaggeredSlideUp
+                className="flex flex-col items-center"
+                delay={0.2}
+                duration={0.45}
+                distance={14}
+                easing="spring"
+                once={true}
+                animateImmediately={true}
+              >
+                {eyebrowContent}
+              </StaggeredSlideUp>
+            )}
+
+            <AnimatedEditorialHeadline text={headline} delay={0.35} />
+
+            <StaggeredSlideUp
+              className="flex flex-col items-center"
+              delay={0.65}
+              staggerDelay={0.08}
+              duration={0.5}
+              distance={16}
+              easing="spring"
+              once={true}
+              animateImmediately={true}
+            >
+              {supportingContent}
+            </StaggeredSlideUp>
+          </div>
+        ) : (
+          <StaggeredSlideUp
+            className="px-8 md:px-16 space-y-1 flex flex-col items-center text-center"
+            delay={1}
+            staggerDelay={0.08}
+            duration={0.5}
+            distance={20}
+            easing="spring"
+            rootMargin="0px 0px -20px 0px"
+            once={true}
+            animateImmediately={true}
+          >
+            {eyebrowContent}
+            {words.length > 0 && (
+              <TypewriterRotator text={words} align="center" />
+            )}
+            {supportingContent}
+          </StaggeredSlideUp>
+        )}
+      </div>
+
+    </section>
+  );
+}
+
+export default OneSPHeaderStep;

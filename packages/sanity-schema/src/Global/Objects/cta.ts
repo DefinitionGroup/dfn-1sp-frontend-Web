@@ -14,13 +14,11 @@ export default defineType({
       name: 'text',
       title: 'Text',
       type: 'string',
-      validation: (Rule) => Rule.required().min(1).max(80),
     }),
     defineField({
       name: 'link',
       title: 'Link',
       type: 'link', // your existing link type (internal/external)
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'variant',

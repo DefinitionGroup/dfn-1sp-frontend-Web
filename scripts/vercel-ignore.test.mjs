@@ -15,7 +15,7 @@ import {
   relevantFilesForSite,
 } from "./vercel-ignore.mjs";
 
-const sites = ["1sp", "msm", "flzr"];
+const sites = ["1sp", "msm", "flzr", "renaissance"];
 
 function decisions(files) {
   return Object.fromEntries(
@@ -28,11 +28,19 @@ test("app-only changes build only their owning project", () => {
     "1sp": false,
     msm: false,
     flzr: true,
+    renaissance: false,
   });
   assert.deepEqual(decisions(["apps/msm-web/app/page.tsx"]), {
     "1sp": false,
     msm: true,
     flzr: false,
+    renaissance: false,
+  });
+  assert.deepEqual(decisions(["apps/renaissance-web/app/page.tsx"]), {
+    "1sp": false,
+    msm: false,
+    flzr: false,
+    renaissance: true,
   });
 });
 
@@ -41,10 +49,11 @@ test("1SP-only root app changes do not build nested apps", () => {
     "1sp": true,
     msm: false,
     flzr: false,
+    renaissance: false,
   });
 });
 
-test("hidden root dependencies build all three projects", () => {
+test("hidden root dependencies build every project", () => {
   for (const file of [
     "components/CookiebotBanner.tsx",
     "data/globe.json",
@@ -60,6 +69,7 @@ test("hidden root dependencies build all three projects", () => {
       "1sp": true,
       msm: true,
       flzr: true,
+      renaissance: true,
     });
   }
 });
@@ -69,16 +79,19 @@ test("workspace packages follow the current dependency boundary", () => {
     "1sp": true,
     msm: false,
     flzr: false,
+    renaissance: false,
   });
   assert.deepEqual(decisions(["packages/utils/src/site-url.ts"]), {
     "1sp": true,
     msm: true,
     flzr: true,
+    renaissance: true,
   });
   assert.deepEqual(decisions(["packages/future-shared/src/index.ts"]), {
     "1sp": true,
     msm: true,
     flzr: true,
+    renaissance: true,
   });
 });
 
@@ -87,6 +100,7 @@ test("lockfile changes conservatively build all projects", () => {
     "1sp": true,
     msm: true,
     flzr: true,
+    renaissance: true,
   });
 });
 
@@ -104,6 +118,7 @@ test("documentation, env templates, and deployment tests build no project", () =
       "1sp": false,
       msm: false,
       flzr: false,
+      renaissance: false,
     }
   );
 });
@@ -118,6 +133,7 @@ test("a move between app directories builds both owning projects", () => {
       "1sp": false,
       msm: true,
       flzr: true,
+      renaissance: false,
     }
   );
 });
@@ -134,6 +150,7 @@ test("a move out of a shared root preserves builds for former consumers", () => 
       "1sp": true,
       msm: true,
       flzr: true,
+      renaissance: true,
     }
   );
 });

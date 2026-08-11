@@ -9,6 +9,7 @@ import ListItemComponent from "@/components/ui/ListItemComponent";
 import CtaMiniComponent from "@/components/data/Fragments/data-CtaMiniComponent";
 import { hasVisibleText } from "@1sp/utils/text-content";
 import { getTranslations } from "@1sp/utils/translations";
+import { getRenderableCtaMini } from "@1sp/utils/cta";
 
 
 interface ServicesHeroWithBadgeProps {
@@ -86,7 +87,11 @@ function ServicesHeroWithBadge({
 
   const sectionId = t.ids.top;
   const TitleTag = titleTag === "h1" ? "h1" : "h2";
-  const shouldShowCta = showCta && Boolean(cta);
+  const renderedCta = showCta ? getRenderableCtaMini(cta) : null;
+  const ctaUrl = renderedCta?.href.startsWith("/") && !renderedCta.href.startsWith(`/${locale}`)
+    ? `/${locale}${renderedCta.href}`
+    : renderedCta?.href;
+  const shouldShowCta = Boolean(renderedCta && ctaUrl);
 
   return (
     <section
@@ -142,19 +147,15 @@ function ServicesHeroWithBadge({
           </div>
 
           {/* CTA Section - Improved responsive layout */}
-          {shouldShowCta && cta && (
+          {shouldShowCta && renderedCta && ctaUrl && (
             <div className="col-span-4 sm:col-span-3 md:col-span-2 md:col-start-3 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 text-white mt-6 md:mt-8">
               <CtaMiniComponent
-                heading={cta.heading}
-                paragraph={cta.paragraph || ""}
-                buttonText={cta.buttonText}
-                buttonVariant={(cta.variant as any) || "limesmall"}
-                url={
-                  cta.link?.linkType === "internal"
-                    ? `/${locale}/${cta.link.page?.slug?.current || ""}`
-                    : cta.link?.externalUrl || "/contact"
-                }
-                align={(cta.alignment as any) || "left"}
+                heading={renderedCta.heading}
+                paragraph={renderedCta.paragraph}
+                buttonText={renderedCta.buttonText}
+                buttonVariant={(renderedCta.variant as any) || "limesmall"}
+                url={ctaUrl}
+                align={(renderedCta.alignment as any) || "left"}
               />
             </div>
           )}

@@ -260,6 +260,18 @@ export default defineType({
             },
             group: 'settings'
         },
+        {
+            name: 'connectedDataCarouselPromoRenaissance',
+            title: 'ConnectedDataCarousel Promo Renaissance',
+            type: 'boolean',
+            description: 'Include this case study in the Smart Carousel for Renaissance Website',
+            initialValue: false,
+            hidden: ({ document }: { document: any }) => {
+                const channels = document?.channel || [];
+                return !channels.includes('renaissanceWeb');
+            },
+            group: 'settings'
+        },
         defineField({
             name: 'services',
             title: 'Services',

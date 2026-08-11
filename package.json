@@ -11,17 +11,22 @@
     "dev:diag": "NEXT_PUBLIC_DIAG=1 next dev --turbopack",
     "dev:seo-diag": "NEXT_PUBLIC_SEO_DIAG=1 next dev --turbopack",
     "dev:flzr": "pnpm --filter @1sp/flzr-web dev",
+    "dev:renaissance": "pnpm --filter @1sp/renaissance-web exec next dev --turbopack -p 3003",
     "doctor:sanity": "node --env-file=.env --env-file=.env.local scripts/sanity-doctor.mjs",
     "doctor:translations": "node --experimental-strip-types --env-file=.env --env-file=.env.local scripts/sanity-translation-audit.mjs",
     "test:deployment-tier": "node --experimental-strip-types --test scripts/deployment-tier.test.mjs",
     "test:component-import": "node --experimental-strip-types --test scripts/onesp-component-group-import.test.mjs",
+    "test:cta-contract": "tsx --test scripts/cta-contract.test.ts",
+    "test:presentation": "tsx --test scripts/presentation-resolvers.test.ts",
     "test:deployment": "node --experimental-strip-types --test scripts/deployment-tier.test.mjs scripts/request-security.test.mjs scripts/vercel-ignore.test.mjs",
     "test:security": "node --experimental-strip-types --test scripts/request-security.test.mjs",
     "test:vercel-ignore": "node --test scripts/vercel-ignore.test.mjs",
     "build": "next build",
     "build:flzr": "pnpm --filter @1sp/flzr-web build",
+    "build:renaissance": "pnpm --filter @1sp/renaissance-web build",
     "start": "next start",
     "start:flzr": "pnpm --filter @1sp/flzr-web start",
+    "start:renaissance": "pnpm --filter @1sp/renaissance-web exec next start -p 3003",
     "lint": "eslint ."
   },
   "dependencies": {
@@ -36,6 +41,7 @@
     "@portabletext/types": "^2.0.15",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.0",
+    "@sanity/client": "^7.23.0",
     "@sanity/document-internationalization": "^6.2.14",
     "@sanity/image-url": "^2.1.1",
     "@sanity/vision": "^6.3.0",
@@ -70,6 +76,7 @@
     "eslint-config-next": "16.2.10",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.6",
+    "tsx": "^4.23.0",
     "typescript": "^5"
   }
 }

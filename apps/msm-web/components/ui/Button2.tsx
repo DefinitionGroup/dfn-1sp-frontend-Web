@@ -1,6 +1,7 @@
 "use client";
 // @sacred — thin wrapper over MosaicButton (protected). All CTAs stay mosaic buttons.
 import MosaicButton, { type MosaicButtonSize } from "./MosaicButton";
+import { hasVisibleText } from "@1sp/utils/text-content";
 
 interface Button2Props {
   text?: string;
@@ -24,6 +25,8 @@ const sizeMap: Record<NonNullable<Button2Props["variant"]>, MosaicButtonSize> = 
 };
 
 function Button2({ text, className, href, variant = "default", magnetic = false }: Button2Props) {
+  if (!hasVisibleText(text)) return null;
+
   return (
     <MosaicButton
       className={className}

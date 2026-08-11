@@ -217,6 +217,7 @@ export default defineType({
                     { title: 'MSM Website', value: 'msmWeb' },
                     { title: 'Studio CO2 Website', value: 'studioco2Web' },
                     { title: 'Flizr Website', value: 'flizrWeb' },
+                    { title: 'Renaissance Website', value: 'renaissanceWeb' },
                 ],
             },
             readOnly: true,
@@ -233,7 +234,8 @@ export default defineType({
                 : channel === 'msmWeb' ? 'MSM Website'
                     : channel === 'studioco2Web' ? 'Studio CO2 Website'
                         : channel === 'flizrWeb' ? 'Flizr Website'
-                            : channel || '';
+                            : channel === 'renaissanceWeb' ? 'Renaissance Website'
+                                : channel || '';
             const suffix = isHomepage ? ' • 🏠 Homepage' : '';
             return {
                 title: title || 'Untitled Page',

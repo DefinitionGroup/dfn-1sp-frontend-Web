@@ -4,6 +4,7 @@ import Link from "next/link";
 import { cn } from "@1sp/utils/cn";
 import { ArrowRightIcon } from "@phosphor-icons/react";
 import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
+import { hasVisibleText } from "@1sp/utils/text-content";
 import MagneticButton from "./MagneticButton";
 
 interface Button2Props {
@@ -54,6 +55,9 @@ const variantStyles: Record<
 function Button2({ text, className, href, variant = "default", magnetic = true }: Button2Props) {
   const isExternal = !!href && /^(https?:|mailto:|tel:)/.test(href);
   const router = useOptimizedTransitionRouter();
+
+  if (!hasVisibleText(text)) return null;
+
   const safeVariant: NonNullable<Button2Props["variant"]> =
     variant in variantStyles ? variant : "default";
 

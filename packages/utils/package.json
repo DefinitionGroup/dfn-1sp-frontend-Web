@@ -16,6 +16,7 @@
     "./server/request-security": "./src/server/request-security.ts",
     "./carousel-media": "./src/carousel-media.ts",
     "./hero-media": "./src/hero-media.ts",
+    "./cta": "./src/cta.ts",
     "./hooks/use-media-query": "./src/hooks/use-media-query.ts",
     "./hooks/use-robust-in-view": "./src/hooks/use-robust-in-view.ts",
     "./hooks/use-optimized-transition-router": "./src/hooks/use-optimized-transition-router.ts",

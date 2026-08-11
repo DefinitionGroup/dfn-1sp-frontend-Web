@@ -9,8 +9,9 @@ import type {
   GalleryScrollHighlightStep,
   CloudinaryAsset,
 } from "@1sp/sanity-types";
-import { assetUrl, resolveLink, withCacheKey } from "@1sp/utils/cloudinary";
+import { assetUrl, withCacheKey } from "@1sp/utils/cloudinary";
 import { useParams } from "next/navigation";
+import { getRenderableCtaMini } from "@1sp/utils/cta";
 
 type RawItem =
   | string
@@ -82,15 +83,17 @@ export default function HighlightStep({
     : {};
 
   const badge = (step as any).badge ?? null;
-  const cta = (step as any).ctaMini ?? null;
-  const showCta = !!(step as any).useCTAMini && !!cta;
-  const baseCtaUrl = showCta && cta?.link ? resolveLink(cta.link) : undefined;
+  const cta = (step as any).useCTAMini
+    ? getRenderableCtaMini((step as any).ctaMini)
+    : null;
+  const baseCtaUrl = cta?.href;
   const ctaUrl =
     baseCtaUrl &&
       baseCtaUrl.startsWith("/") &&
       !baseCtaUrl.startsWith(`/${locale}`)
       ? `/${locale}${baseCtaUrl}`
       : baseCtaUrl;
+  const showCta = Boolean(cta && ctaUrl);
 
   return (
     <section
@@ -127,7 +130,7 @@ export default function HighlightStep({
                       className: "font-regular text-neutral-200 line-height-normal",
                       heading: cta?.paragraph,
                       buttonText: cta?.buttonText,
-                      buttonVariant: cta?.variant ?? cta?.buttonVariant ?? "limesmall",
+                      buttonVariant: cta?.variant ?? "limesmall",
                       url: ctaUrl,
                       align: "left",
                     } as any)}
@@ -152,7 +155,7 @@ export default function HighlightStep({
                     heading: cta?.paragraph,
 
                     buttonText: cta?.buttonText,
-                    buttonVariant: cta?.variant ?? cta?.buttonVariant ?? "limesmall",
+                    buttonVariant: cta?.variant ?? "limesmall",
                     url: ctaUrl,
                     align: "center",
                   } as any)}

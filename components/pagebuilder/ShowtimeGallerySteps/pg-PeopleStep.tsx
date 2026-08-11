@@ -5,9 +5,9 @@ import type { GalleryPeopleStep, CloudinaryAsset } from "@1sp/sanity-types";
 import PeopleShowcaseHero from "../Fragments/pg-PeopleShowcaseHero";
 import GridBackground from "@/components/ui/GridBackground";
 import CtaMiniComponent from "../Fragments/pg-CtaMiniComponent";
-import { resolveLink } from "@1sp/utils/cloudinary";
 import { useParams } from "next/navigation";
 import { hasVisibleText } from "@1sp/utils/text-content";
+import { getRenderableCtaMini } from "@1sp/utils/cta";
 
 type Member = {
   _id?: string;
@@ -86,11 +86,11 @@ export default function PeopleStep({
     ? { "data-navpoint-name": step.navPointName }
     : {};
 
-  const shouldShowBadgeMiniCta = Boolean(
-    step.showBadgeMiniCta && step.badgeMiniCta
-  );
-  const badgeMiniCta = shouldShowBadgeMiniCta ? step.badgeMiniCta : undefined;
-  const badgeMiniUrl = applyLocaleToPath(resolveLink(badgeMiniCta?.link));
+  const badgeMiniCta = step.showBadgeMiniCta
+    ? getRenderableCtaMini(step.badgeMiniCta)
+    : null;
+  const badgeMiniUrl = applyLocaleToPath(badgeMiniCta?.href);
+  const shouldShowBadgeMiniCta = Boolean(badgeMiniCta && badgeMiniUrl);
 
   return (
     <section
@@ -121,9 +121,9 @@ export default function PeopleStep({
                   {shouldShowBadgeMiniCta && badgeMiniCta && (
                     <div className="hidden md:block">
                       <CtaMiniComponent
-                        heading={badgeMiniCta.heading || ""}
-                        paragraph={badgeMiniCta.paragraph || ""}
-                        buttonText={badgeMiniCta.buttonText || ""}
+                        heading={badgeMiniCta.heading}
+                        paragraph={badgeMiniCta.paragraph}
+                        buttonText={badgeMiniCta.buttonText}
                         buttonVariant={(badgeMiniCta.variant as any) || "limesmall"}
                         align={(badgeMiniCta.alignment as any) || "left"}
                         url={badgeMiniUrl || undefined}
@@ -196,9 +196,9 @@ export default function PeopleStep({
               {shouldShowBadgeMiniCta && badgeMiniCta && (
                 <div className="mt-10 md:hidden">
                   <CtaMiniComponent
-                    heading={badgeMiniCta.heading || ""}
-                    paragraph={badgeMiniCta.paragraph || ""}
-                    buttonText={badgeMiniCta.buttonText || ""}
+                    heading={badgeMiniCta.heading}
+                    paragraph={badgeMiniCta.paragraph}
+                    buttonText={badgeMiniCta.buttonText}
                     buttonVariant={(badgeMiniCta.variant as any) || "limesmall"}
                     align={(badgeMiniCta.alignment as any) || "left"}
                     url={badgeMiniUrl || undefined}

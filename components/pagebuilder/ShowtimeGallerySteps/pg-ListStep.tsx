@@ -23,6 +23,8 @@ import type {
 
 import {
   ctaToButtonProps,
+  getRenderableCta,
+  getRenderableCtaMini,
   assetUrl,
   resolveLink,
 } from "@1sp/utils/cloudinary";
@@ -110,18 +112,21 @@ function isUnitCardsBlock(x: any): x is UnitCardsBlock {
 }
 
 function isCta(x: AC): x is CTA & { _type?: "cta" } {
-  return (
-    !!x && ((x as any)._type === "cta" || typeof (x as any)?.text === "string")
+  return Boolean(
+    x &&
+      ((x as any)._type === "cta" || typeof (x as any)?.text === "string") &&
+      getRenderableCta(x as any),
   );
 }
 
 function isCtaMini(
   x: AC
 ): x is CtaMiniComponentType & { _type?: "ctaMiniComponent" } {
-  return (
-    !!x &&
-    ((x as any)._type === "ctaMiniComponent" ||
-      typeof (x as any)?.heading === "string")
+  return Boolean(
+    x &&
+      ((x as any)._type === "ctaMiniComponent" ||
+        typeof (x as any)?.heading === "string") &&
+      getRenderableCtaMini(x as any),
   );
 }
 
@@ -309,12 +314,11 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
     ? { "data-navpoint-name": step.navPointName }
     : {};
 
-  const shouldShowBadgeMiniCta = Boolean(
-    step.showBadgeMiniCta && step.badgeMiniCta
-  );
-  const badgeMiniCta = shouldShowBadgeMiniCta ? step.badgeMiniCta : undefined;
-  const showBadgeMiniCta = shouldShowBadgeMiniCta;
-  const badgeMiniUrl = applyLocaleToPath(resolveLink(badgeMiniCta?.link));
+  const badgeMiniCta = step.showBadgeMiniCta
+    ? getRenderableCtaMini(step.badgeMiniCta)
+    : null;
+  const badgeMiniUrl = applyLocaleToPath(badgeMiniCta?.href);
+  const showBadgeMiniCta = Boolean(badgeMiniCta && badgeMiniUrl);
   const ctaMiniUrls = ctaMini.map(
     (item) => applyLocaleToPath(resolveLink(item.link)) || ""
   );
@@ -353,9 +357,9 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
           {showBadgeMiniCta && badgeMiniCta && (
             <div className="col-span-12 col-start-1 md:col-span-2 px-1 md:mt-4 pr-8 ">
               <CtaMiniComponent
-                heading={badgeMiniCta.heading || ""}
-                paragraph={badgeMiniCta.paragraph || ""}
-                buttonText={badgeMiniCta.buttonText || ""}
+                heading={badgeMiniCta.heading}
+                paragraph={badgeMiniCta.paragraph}
+                buttonText={badgeMiniCta.buttonText}
                 buttonVariant={(badgeMiniCta.variant as any) || "limesmall"}
                 align={(badgeMiniCta.alignment as any) || "left"}
                 url={badgeMiniUrl || undefined}
@@ -508,7 +512,7 @@ export default function ListStep({ step }: { step: GalleryListStep }) {
             <div className="flex flex-col gap-4">
               {ctas.map((cta, idx) => {
                 const btn = ctaToButtonProps(cta);
-                if (!btn.text) return null;
+                if (!btn) return null;
                 return (
                   <Button2
                     key={`cta-${idx}`}
