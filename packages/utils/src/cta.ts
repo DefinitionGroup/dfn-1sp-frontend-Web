@@ -91,7 +91,7 @@ export function getRenderableCtaMini(
   const heading = normalizedText(value?.heading);
   const buttonText = normalizedText(value?.buttonText);
   const href = resolveCtaLink(value?.link);
-  if (!heading || !buttonText || !href || href === "#") return null;
+  if (!buttonText || !href || href === "#") return null;
 
   const variant = normalizedText(value?.variant || value?.buttonVariant);
   const alignment = normalizedText(value?.alignment);

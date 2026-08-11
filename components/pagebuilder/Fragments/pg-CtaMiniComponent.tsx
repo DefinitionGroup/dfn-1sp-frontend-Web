@@ -7,7 +7,7 @@ import { ArrowRightIcon } from "@phosphor-icons/react";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
 interface CtaMiniProps {
-  heading: string;
+  heading?: string;
   paragraph: string;
   buttonText: string;
   buttonVariant?: "default" | "black" | "lime" | "limesmall";
@@ -56,7 +56,7 @@ function CtaMiniComponent({
     buttonVariant in buttonVariantStyles ? buttonVariant : "default";
   const hasTextContent = hasVisibleText(heading) || hasVisibleText(paragraph);
 
-  if (showButton ? (!hasVisibleText(heading) || !hasVisibleText(buttonText) || !hasValidUrl) : !hasTextContent) {
+  if (showButton ? (!hasVisibleText(buttonText) || !hasValidUrl) : !hasTextContent) {
     return null;
   }
 

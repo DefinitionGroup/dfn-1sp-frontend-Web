@@ -23,7 +23,10 @@ const i18n = {
     options?.defaultValue || key,
 };
 
-function pageWithBlock(block: Record<string, unknown>) {
+function pageWithBlock(
+  block: Record<string, unknown>,
+  channel = "flizrWeb",
+) {
   return {
     _id: "cta-contract-page",
     _type: "page",
@@ -33,7 +36,7 @@ function pageWithBlock(block: Record<string, unknown>) {
     language: "en",
     title: "CTA contract fixture",
     slug: { _type: "slug", current: "cta-contract-fixture" },
-    channel: "flizrWeb",
+    channel,
     content: [{ _key: "fixture-block", ...block }],
   };
 }
@@ -104,7 +107,7 @@ test("disabled partial CTA content is preserved without blocking publishing", as
 test("empty actions normalize to null instead of a hash link", () => {
   assert.equal(ctaRuntime.ctaToButtonProps({}), null);
   assert.equal(ctaRuntime.ctaToButtonProps({ text: "Incomplete" }), null);
-  assert.equal((ctaRuntime as any).getRenderableCtaMini?.({}), null);
+  assert.equal(ctaRuntime.getRenderableCtaMini({}), null);
 });
 
 test("complete actions keep their label, destination, and variant", () => {
@@ -122,7 +125,7 @@ test("complete actions keep their label, destination, and variant", () => {
   );
 
   assert.deepEqual(
-    (ctaRuntime as any).getRenderableCtaMini?.({
+    ctaRuntime.getRenderableCtaMini({
       heading: "Start a project",
       paragraph: "Tell us what you are building.",
       buttonText: "Get in touch",
@@ -139,4 +142,84 @@ test("complete actions keep their label, destination, and variant", () => {
       alignment: "right",
     },
   );
+});
+
+test("published 1SP headingless mini CTAs remain valid and renderable", async () => {
+  const fixtures = [
+    {
+      block: {
+        _type: "galleryScrollHighlightStep",
+        useCTAMini: true,
+        ctaMini: {
+          _type: "ctaMiniComponent",
+          heading: " ",
+          buttonText: "All Services",
+          link: {
+            _type: "link",
+            linkType: "internal",
+            page: { _type: "reference", _ref: "services-page" },
+          },
+        },
+      },
+      buttonText: "All Services",
+      slug: "services",
+    },
+    {
+      block: {
+        _type: "galleryListStep",
+        showBadgeMiniCta: true,
+        badgeMiniCta: {
+          _type: "ctaMiniComponent",
+          heading: " ",
+          buttonText: "House of Agencies",
+          link: {
+            _type: "link",
+            linkType: "internal",
+            page: { _type: "reference", _ref: "agencies-page" },
+          },
+        },
+      },
+      buttonText: "House of Agencies",
+      slug: "house-of-agencies",
+    },
+    {
+      block: {
+        _type: "galleryPeopleStep",
+        showBadgeMiniCta: true,
+        badgeMiniCta: {
+          _type: "ctaMiniComponent",
+          heading: " ",
+          buttonText: "Our Specialists",
+          link: {
+            _type: "link",
+            linkType: "internal",
+            page: { _type: "reference", _ref: "agencies-page" },
+          },
+        },
+      },
+      buttonText: "Our Specialists",
+      slug: "house-of-agencies",
+    },
+  ];
+
+  for (const fixture of fixtures) {
+    const markers = await validateFixture(pageWithBlock(fixture.block, "1spWeb"));
+    assert.deepEqual(markers, []);
+
+    const miniCta =
+      (fixture.block as any).ctaMini || (fixture.block as any).badgeMiniCta;
+    const runtimeCta = {
+      ...miniCta,
+      link: {
+        ...miniCta.link,
+        page: { slug: { current: fixture.slug } },
+      },
+    };
+    assert.deepEqual(ctaRuntime.getRenderableCtaMini(runtimeCta), {
+      heading: "",
+      paragraph: "",
+      buttonText: fixture.buttonText,
+      href: `/${fixture.slug}`,
+    });
+  }
 });

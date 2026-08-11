@@ -5,7 +5,7 @@ import StaggeredSlideUp from "@/components/ui/StaggeredSlideUp";
 import Button2 from "@/components/ui/Button2";
 import { hasVisibleText } from "@1sp/utils/text-content";
 interface CtaMiniProps {
-  heading: string;
+  heading?: string;
   paragraph: string;
   buttonText: string;
   buttonVariant?: "default" | "black" | "lime" | "limesmall";
@@ -33,7 +33,6 @@ function CtaMiniComponent({
 }: CtaMiniProps) {
   const finalUrl = url.trim();
   if (
-    !hasVisibleText(heading) ||
     !hasVisibleText(buttonText) ||
     !finalUrl ||
     finalUrl === "#"

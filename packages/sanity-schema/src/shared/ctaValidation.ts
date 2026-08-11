@@ -100,7 +100,6 @@ export function validateOptionalCtaMini(
   );
   if (!hasContent) return true;
 
-  if (!heading) return "Add a CTA heading or clear the CTA.";
   if (heading.length > 80) return "CTA heading must be 80 characters or fewer.";
   if (!buttonText) return "Add button text or clear the CTA.";
   if (buttonText.length > 80) {
