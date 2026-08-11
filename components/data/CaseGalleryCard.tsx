@@ -99,7 +99,7 @@ export default function CaseGalleryCard({
               layoutId={`logo-${item.title}-${id}`}
               src={item.client?.logoUrl}
               alt={item.title}
-              className={` min-w-[144px] max-w-[144px] h-7 object-contain object-left ${variant !== "light" ? "" : "invert"
+              className={` min-w-[144px] max-w-[144px] h-12 object-contain object-left-top ${variant !== "light" ? "" : "invert"
                 }`}
             />
           ) : null}   <Link href={`/cases/${item.slug?.current}`} className="contents">
