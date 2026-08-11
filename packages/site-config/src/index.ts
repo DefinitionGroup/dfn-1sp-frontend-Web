@@ -168,7 +168,7 @@ export const SITE_CONFIGS: Record<WebsiteChannel, SiteConfig> = {
     defaultLocale: "en",
     locales: ["en"],
     domains: {
-      preview: "https://renaissance-monorepo-test.vercel.app",
+      preview: "https://renaissance-1sp-dfn.vercel.app",
       local: "http://localhost:3003",
     },
     seo: {

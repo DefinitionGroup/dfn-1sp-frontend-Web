@@ -12,6 +12,7 @@
     "./live": "./src/live.ts",
     "./image": "./src/image.ts",
     "./env": "./src/env.ts",
+    "./token": "./src/token.ts",
     "./safe-fetch": "./src/safe-fetch.ts",
     "./stega-utils": "./src/stega-utils.ts",
     "./service-queries": "./src/service-queries.ts"
@@ -26,7 +27,7 @@
     "@1sp/utils": "workspace:*",
     "@sanity/image-url": "^2.1.1",
     "@vercel/stega": "^0.1.2",
-    "next-sanity": "^13.1.1"
+    "next-sanity": "^13.3.1"
   },
   "peerDependencies": {
     "react": "^18 || ^19"

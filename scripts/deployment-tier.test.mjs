@@ -14,9 +14,11 @@ const MANAGED_ENVIRONMENT_KEYS = [
   "NEXT_PUBLIC_CHANNEL",
   "NEXT_PUBLIC_SANITY_DATASET",
   "NEXT_PUBLIC_SANITY_PROJECT_ID",
+  "NEXT_PUBLIC_SANITY_STUDIO_URL",
   "NEXT_PUBLIC_SITE_URL",
   "NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL",
   "SITE_URL",
+  "SANITY_VIEWER_TOKEN",
   "VERCEL_PROJECT_PRODUCTION_URL",
 ];
 
@@ -45,7 +47,9 @@ const validTestEnvironment = {
   NEXT_PUBLIC_CHANNEL: "1spWeb",
   NEXT_PUBLIC_SANITY_DATASET: "dev-dataset",
   NEXT_PUBLIC_SANITY_PROJECT_ID: "wu6i3y0h",
+  NEXT_PUBLIC_SANITY_STUDIO_URL: "https://1sp-monorepo-test.vercel.app/studio",
   NEXT_PUBLIC_SITE_URL: "https://1sp-monorepo-test.vercel.app",
+  SANITY_VIEWER_TOKEN: "test-viewer-token",
   VERCEL_PROJECT_PRODUCTION_URL: "1sp-monorepo-test.vercel.app",
 };
 
@@ -105,6 +109,20 @@ test("dedicated test projects require the test tier, site identity, and a URL", 
   }
 });
 
+test("dedicated test projects require Visual Editing credentials and the central Studio URL", () => {
+  for (const [key, message] of [
+    ["SANITY_VIEWER_TOKEN", /SANITY_VIEWER_TOKEN/],
+    ["NEXT_PUBLIC_SANITY_STUDIO_URL", /NEXT_PUBLIC_SANITY_STUDIO_URL/],
+  ]) {
+    const environment = { ...validTestEnvironment };
+    delete environment[key];
+
+    withEnvironment(environment, () => {
+      assert.throws(() => isTestDeployment(), message);
+    });
+  }
+});
+
 test("the test tier cannot bypass dedicated-project validation", () => {
   withEnvironment(
     {
@@ -122,7 +140,7 @@ test("nested site identities accept only their matching channels", () => {
   for (const [site, channel, hostname] of [
     ["msm", "msmWeb", "msm-monorepo-test.vercel.app"],
     ["flzr", "flizrWeb", "flzr-monorepo-test.vercel.app"],
-    ["renaissance", "renaissanceWeb", "renaissance-monorepo-test.vercel.app"],
+    ["renaissance", "renaissanceWeb", "renaissance-1sp-dfn.vercel.app"],
   ]) {
     withEnvironment(
       {

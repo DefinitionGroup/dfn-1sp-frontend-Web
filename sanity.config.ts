@@ -79,7 +79,7 @@ const PRESENTATION_SITES: Array<{
       process.env.NEXT_PUBLIC_SANITY_STUDIO_RENAISSANCE_PREVIEW_ORIGIN ||
       (IS_DEVELOPMENT
         ? 'http://localhost:3003'
-        : 'https://renaissance-monorepo-test.vercel.app'),
+        : 'https://renaissance-1sp-dfn.vercel.app'),
   },
 ]
 

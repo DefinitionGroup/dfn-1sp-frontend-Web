@@ -27,6 +27,7 @@
  */
 
 import { client } from "./client";
+import { studioUrl } from "./env";
 import type { QueryParams } from "next-sanity";
 
 /**
@@ -132,7 +133,7 @@ export async function customFetch<T>(
   const configuredClient = client.withConfig({
     useCdn,
     perspective,
-    stega: stega ? { studioUrl: "/studio" } : false,
+    stega: stega ? { studioUrl } : false,
   });
 
   return configuredClient.fetch<T>(query, params, {
