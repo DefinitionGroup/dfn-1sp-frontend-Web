@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FooterMenu } from "@1sp/sanity-types/menu";
 import Image from "next/image";
 import { hasVisibleText } from "@1sp/utils/text-content";
+import AiContentDisclosure from "@/components/AiContentDisclosure";
 
 interface FooterProps {
   className?: string;
@@ -168,7 +169,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
               <div className=" flex w-full lg:w-auto">
 
 
-                <div className="flex gap-4 w-1/2 items-center   justify-start  ">
+                <div className="flex w-full flex-wrap items-center justify-start gap-4">
                   {menuData?.socialLinks && menuData.socialLinks.length > 0 ? (
                     menuData.socialLinks
                       .filter((s) => !!s?.url)
@@ -178,20 +179,22 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                           href={social.url || "#"}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-lime-400 transition-colors duration-200"
+                          className="inline-flex h-5 items-center gap-2 text-gray-400 transition-colors duration-200 hover:text-lime-400 sm:h-6"
                           aria-label={social.name || "social"}
                         >
                           {social.icon?.secure_url && (
-                            <div className="flex items-center gap-2">
+                            <>
                               <Image
                                 src={social.icon.secure_url}
                                 alt={social.name || "social"}
                                 width={64}
                                 height={64}
-                                className="w-full h-full object-contain"
+                                className="size-5 shrink-0 object-contain sm:size-6"
                               />
-                              <p className="text-xs text-white">{social.name || "social"}</p>
-                            </div>
+                              <span className="whitespace-nowrap text-xs text-white">
+                                {social.name || "social"}
+                              </span>
+                            </>
                           )}
                         </Link>
                       ))
@@ -252,6 +255,7 @@ const Footer: React.FC<FooterProps> = ({ className = "", menuData }) => {
                       </Link>
                     </>
                   )}
+                  <AiContentDisclosure />
                 </div>
               </div>
 

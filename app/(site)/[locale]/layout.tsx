@@ -1,6 +1,5 @@
 import { draftMode } from "next/headers";
 import HtmlLangSetter from "@/components/HtmlLangSetter";
-import AiContentDisclosure from "@/components/AiContentDisclosure";
 
 /**
  * Locale-aware layout
@@ -59,7 +58,6 @@ export default async function SiteLayout({
     <>
       {/* Dynamically set lang attribute based on current locale */}
       <HtmlLangSetter locale={locale || "en"} />
-      <AiContentDisclosure />
       {diagnostics}
       {children}
       {previewTools}
