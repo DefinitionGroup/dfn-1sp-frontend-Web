@@ -17,7 +17,7 @@
     "test:deployment-tier": "node --experimental-strip-types --test scripts/deployment-tier.test.mjs",
     "test:component-import": "node --experimental-strip-types --test scripts/onesp-component-group-import.test.mjs",
     "test:cta-contract": "tsx --test scripts/cta-contract.test.ts",
-    "test:presentation": "tsx --test scripts/presentation-resolvers.test.ts",
+    "test:presentation": "tsx --test scripts/presentation-resolvers.test.ts scripts/visual-editing-config.test.ts",
     "test:deployment": "node --experimental-strip-types --test scripts/deployment-tier.test.mjs scripts/request-security.test.mjs scripts/vercel-ignore.test.mjs",
     "test:security": "node --experimental-strip-types --test scripts/request-security.test.mjs",
     "test:vercel-ignore": "node --test scripts/vercel-ignore.test.mjs",

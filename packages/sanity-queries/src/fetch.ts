@@ -4,6 +4,7 @@ import { draftMode } from "next/headers";
 import type { QueryParams } from "next-sanity";
 import { client } from "./client";
 import { studioUrl } from "./env";
+import { resolveSanityFetchClientConfig } from "./fetch-config";
 import { viewerToken } from "./token";
 
 type SanityFetchOptions = {
@@ -11,7 +12,7 @@ type SanityFetchOptions = {
   params?: QueryParams;
   tags?: string[];
   revalidate?: number | false;
-  perspective?: "published" | "previewDrafts" | "raw";
+  perspective?: "published" | "drafts" | "raw";
   stega?: boolean;
 };
 
@@ -33,21 +34,16 @@ export async function sanityFetch<TData = any>({
   stega,
 }: SanityFetchOptions): Promise<{ data: TData }> {
   const draftEnabled = await isDraftModeEnabled();
-  const resolvedPerspective =
-    perspective ?? (draftEnabled ? "previewDrafts" : "published");
-  const resolvedStega = stega ?? draftEnabled;
 
-  const configuredClient = client.withConfig({
-    perspective: resolvedPerspective,
-    stega: resolvedStega ? { studioUrl } : false,
-    // Keep the CDN off for server reads. We rely on Next's Data Cache with
-    // tag-based invalidation (`revalidateTag`) + a 60s TTL. Stacking Sanity's
-    // apicdn cache underneath makes tag purges unreliable — a published change
-    // can stay stale even after the revalidate webhook fires. Reads hit the
-    // live API so revalidation is predictable; the 60s TTL bounds latency cost.
-    useCdn: false,
-    token: draftEnabled ? viewerToken : undefined,
-  });
+  const configuredClient = client.withConfig(
+    resolveSanityFetchClientConfig({
+      draftEnabled,
+      perspective,
+      stega,
+      studioUrl,
+      viewerToken,
+    }),
+  );
 
   const data = await configuredClient.fetch<TData>(query, params, {
     next: {
