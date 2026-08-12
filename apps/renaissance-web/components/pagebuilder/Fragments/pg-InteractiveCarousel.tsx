@@ -186,7 +186,6 @@ function InteractiveCarousel({ items }: { items?: SanityCarouselItem[] }) {
                 />
               )}
 
-              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(22,63,69,0.08)_12%,rgba(22,63,69,0.18)_48%,rgba(12,37,42,0.94)_100%)]" />
               <div className="pointer-events-none absolute -left-[8%] top-[16%] h-8 w-[62%] -rotate-[14deg] bg-renaissance-teal/75 blur-[1px] sm:h-12" />
 
               <div className="absolute inset-x-0 bottom-0 grid gap-5 p-6 sm:p-9 lg:grid-cols-[minmax(0,1.25fr)_minmax(18rem,0.75fr)] lg:items-end lg:p-12">
@@ -195,7 +194,7 @@ function InteractiveCarousel({ items }: { items?: SanityCarouselItem[] }) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: reduceMotion ? 0 : 0.24, duration: 0.5 }}
                 >
-                  <p className="mb-3 font-mono text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-renaissance-teal sm:text-xs">
+                  <p className="eyebrow-mono mb-3 tracking-[0.04em] text-white">
                     Story {String(currentIndex + 1).padStart(2, "0")} · {active.subtitle || "Campaign"}
                   </p>
                   <h3 className="max-w-5xl text-[clamp(2.75rem,8vw,7.5rem)] font-semibold leading-[0.84] tracking-[-0.055em] text-white">

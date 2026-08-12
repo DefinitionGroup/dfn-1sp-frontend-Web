@@ -61,7 +61,7 @@ export default function HeadlineChallenge({
                   </h3>
                 ) : null}
                 {hasVisibleText(description) && (
-                  <h2 className="text-4xl md:text-4xl lg:text-5xl leading-tighter text-neutral-800 pb-2 sm:pb-3 leading-none font-flzr">
+                  <h2 className="text-2xl leading-[1.05] text-neutral-400 pb-2 font-flzr sm:text-3xl sm:pb-3 lg:text-4xl">
                     {description}
                   </h2>
                 )}

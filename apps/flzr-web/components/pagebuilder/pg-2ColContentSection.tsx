@@ -10,6 +10,13 @@ import { hasVisibleNode, hasVisibleText } from "@1sp/utils/text-content";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 
 const EASE_FLZR = [0.62, 0.05, 0.01, 0.99] as const;
+const MEDIA_REVEAL_DURATION = 1.15;
+const TYPE_START_DELAY = 0.4;
+const TYPE_REVEAL_DURATION = 0.85;
+const WORD_STAGGER = 0.09;
+const DIVIDER_START_DELAY = 0.82;
+const BODY_START_DELAY = 0.96;
+const BODY_STAGGER = 0.13;
 
 type TwoColContentSectionData = {
   title?: string;
@@ -40,8 +47,8 @@ function AnimatedSectionTitle({ title }: { title: string }) {
     hidden: {},
     visible: {
       transition: {
-        delayChildren: 0.08,
-        staggerChildren: prefersReducedMotion ? 0 : 0.055,
+        delayChildren: prefersReducedMotion ? 0 : TYPE_START_DELAY,
+        staggerChildren: prefersReducedMotion ? 0 : WORD_STAGGER,
       },
     },
   };
@@ -53,7 +60,7 @@ function AnimatedSectionTitle({ title }: { title: string }) {
       opacity: 1,
       transform: "translateY(0%)",
       transition: {
-        duration: prefersReducedMotion ? 0 : 0.7,
+        duration: prefersReducedMotion ? 0 : TYPE_REVEAL_DURATION,
         ease: EASE_FLZR,
       },
     },
@@ -65,15 +72,12 @@ function AnimatedSectionTitle({ title }: { title: string }) {
         aria-label={title}
         className="max-w-[11ch] text-balance font-flzr text-display font-bold italic leading-[0.92] text-flzr-violet"
         variants={containerVariants}
-        initial={prefersReducedMotion ? "visible" : "hidden"}
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.65 }}
       >
         {words.map((word, index) => (
           <React.Fragment key={`${word}-${index}`}>
             <span
               aria-hidden="true"
-              className="inline-block overflow-hidden pb-[0.08em] align-bottom"
+              className="-mr-[0.18em] inline-block overflow-hidden pb-[0.12em] pr-[0.18em] align-bottom"
             >
               <motion.span
                 className="inline-block"
@@ -93,18 +97,20 @@ function AnimatedSectionTitle({ title }: { title: string }) {
       </motion.h2>
       <motion.span
         aria-hidden="true"
-        className="mt-6 block h-px w-16 origin-left bg-flzr-violet md:mt-8"
-        initial={
-          prefersReducedMotion
-            ? false
-            : { transform: "scaleX(0)", opacity: 0 }
-        }
-        whileInView={{ transform: "scaleX(1)", opacity: 1 }}
-        viewport={{ once: true, amount: 0.8 }}
-        transition={{
-          duration: prefersReducedMotion ? 0 : 0.8,
-          delay: prefersReducedMotion ? 0 : 0.3,
-          ease: EASE_FLZR,
+        className="mt-6 block h-[5px] w-16 origin-left rounded-full bg-flzr-violet md:mt-8"
+        variants={{
+          hidden: prefersReducedMotion
+            ? { opacity: 1, scaleX: 1 }
+            : { opacity: 0, scaleX: 0 },
+          visible: {
+            opacity: 1,
+            scaleX: 1,
+            transition: {
+              duration: prefersReducedMotion ? 0 : 1,
+              delay: prefersReducedMotion ? 0 : DIVIDER_START_DELAY,
+              ease: EASE_FLZR,
+            },
+          },
         }}
       />
     </div>
@@ -206,62 +212,115 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
     }
   };
 
+  const contentContainerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        delayChildren: prefersReducedMotion ? 0 : BODY_START_DELAY,
+        staggerChildren: prefersReducedMotion ? 0 : BODY_STAGGER,
+      },
+    },
+  };
+  const contentItemVariants = {
+    hidden: prefersReducedMotion
+      ? { opacity: 1 }
+      : { opacity: 0, transform: "translateY(22px)" },
+    visible: {
+      opacity: 1,
+      transform: "translateY(0px)",
+      transition: {
+        duration: prefersReducedMotion ? 0 : 0.82,
+        ease: EASE_FLZR,
+      },
+    },
+  };
+
+  const mediaRevealVariants = {
+    hidden: prefersReducedMotion
+      ? { opacity: 1, clipPath: "inset(0 0 0% 0 round 2.5rem)" }
+      : { opacity: 0, clipPath: "inset(0 0 16% 0 round 2.5rem)" },
+    visible: {
+      opacity: 1,
+      clipPath: "inset(0 0 0% 0 round 2.5rem)",
+      transition: {
+        duration: prefersReducedMotion ? 0 : MEDIA_REVEAL_DURATION,
+        ease: EASE_FLZR,
+      },
+    },
+  };
+
   // Custom components for PortableText rendering
   const portableTextComponents = {
     block: {
       normal: ({ children }: any) => (
-        <p
+        <motion.p
           className={`${getContentClass(contentSize)} ${textColors.secondary} mb-5 leading-[1.55] last:mb-0`}
+          variants={contentItemVariants}
         >
           {children}
-        </p>
+        </motion.p>
       ),
       h2: ({ children }: any) => (
         hasVisibleNode(children) ? (
-          <h2 className="mb-4 mt-10 text-4xl font-semibold leading-[0.98] text-flzr-violet md:text-5xl">
+          <motion.h2
+            className="mb-4 mt-10 text-4xl font-semibold leading-[0.98] text-flzr-violet md:text-5xl"
+            variants={contentItemVariants}
+          >
             {children}
-          </h2>
+          </motion.h2>
         ) : null
       ),
       h3: ({ children }: any) => (
         hasVisibleNode(children) ? (
-          <h3 className="mb-4 mt-10 text-3xl font-semibold leading-none text-flzr-violet md:text-4xl">
+          <motion.h3
+            className="mb-4 mt-10 text-3xl font-semibold leading-none text-flzr-violet md:text-4xl"
+            variants={contentItemVariants}
+          >
             {children}
-          </h3>
+          </motion.h3>
         ) : null
       ),
       h4: ({ children }: any) => (
-        <h4 className="mb-3 mt-8 text-2xl font-semibold leading-none text-flzr-violet md:text-3xl">
-          {children}
-        </h4>
-      ),
-      h5: ({ children }: any) => (
-        <h5 className="mb-2 mt-6 text-xl font-semibold text-flzr-violet">
-          {children}
-        </h5>
-      ),
-      blockquote: ({ children }: any) => (
-        <blockquote
-          className={`my-6 border-l border-flzr-violet pl-5 text-xl italic leading-snug ${textColors.secondary}`}
+        <motion.h4
+          className="mb-3 mt-8 text-2xl font-semibold leading-none text-flzr-violet md:text-3xl"
+          variants={contentItemVariants}
         >
           {children}
-        </blockquote>
+        </motion.h4>
+      ),
+      h5: ({ children }: any) => (
+        <motion.h5
+          className="mb-2 mt-6 text-xl font-semibold text-flzr-violet"
+          variants={contentItemVariants}
+        >
+          {children}
+        </motion.h5>
+      ),
+      blockquote: ({ children }: any) => (
+        <motion.blockquote
+          className={`my-6 border-l border-flzr-violet pl-5 text-xl italic leading-snug ${textColors.secondary}`}
+          variants={contentItemVariants}
+        >
+          {children}
+        </motion.blockquote>
       ),
     },
     list: {
       bullet: ({ children }: any) => (
-        <ul
+        <motion.ul
           className={`${getContentClass(contentSize)} ${textColors.secondary} list-disc list-inside mb-4 space-y-2`}
+          variants={contentItemVariants}
         >
           {children}
-        </ul>
+        </motion.ul>
       ),
       number: ({ children }: any) => (
-        <ol
+        <motion.ol
           className={`${getContentClass(contentSize)} ${textColors.secondary} list-decimal list-inside mb-4 space-y-2`}
+          variants={contentItemVariants}
         >
           {children}
-        </ol>
+        </motion.ol>
       ),
     },
     listItem: {
@@ -311,7 +370,12 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
       <div
         className={`relative mx-auto w-full max-w-[1480px] px-4 sm:px-6 lg:px-8 ${paddingClass}`}
       >
-        <div className="grid grid-cols-1 items-center gap-10 border-t border-flzr-hairline pt-10 md:gap-14 md:pt-14 lg:grid-cols-12 lg:gap-8 xl:gap-10">
+        <motion.div
+          className="grid grid-cols-1 items-center gap-10 border-t border-flzr-hairline pt-10 md:gap-14 md:pt-14 lg:grid-cols-12 lg:gap-8 xl:gap-10"
+          initial={prefersReducedMotion ? "visible" : "hidden"}
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.12 }}
+        >
           <div
             className={`flex min-w-0 flex-col justify-center lg:col-span-5 ${contentOrderClass}`}
           >
@@ -320,18 +384,7 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
             ) : null}
             <motion.div
               className={`${showTitle && hasVisibleText(title) ? "mt-8 md:mt-10" : ""} max-w-[68ch] text-pretty`}
-              initial={
-                prefersReducedMotion
-                  ? false
-                  : { opacity: 0, transform: "translateY(18px)" }
-              }
-              whileInView={{ opacity: 1, transform: "translateY(0px)" }}
-              viewport={{ once: true, amount: 0.35 }}
-              transition={{
-                duration: prefersReducedMotion ? 0 : 0.75,
-                delay: prefersReducedMotion ? 0 : 0.18,
-                ease: EASE_FLZR,
-              }}
+              variants={contentContainerVariants}
             >
               <PortableText value={content} components={portableTextComponents} />
             </motion.div>
@@ -340,17 +393,7 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
           <motion.div
             ref={mediaRef}
             className={`relative min-w-0 lg:col-span-7 ${mediaOrderClass}`}
-            initial={
-              prefersReducedMotion
-                ? false
-                : { opacity: 0, clipPath: "inset(0 0 14% 0 round 2.5rem)" }
-            }
-            whileInView={{ opacity: 1, clipPath: "inset(0 0 0% 0 round 2.5rem)" }}
-            viewport={{ once: true, amount: 0.22 }}
-            transition={{
-              duration: prefersReducedMotion ? 0 : 0.9,
-              ease: EASE_FLZR,
-            }}
+            variants={mediaRevealVariants}
           >
             <div className="relative aspect-[4/3] overflow-hidden rounded-[2.5rem] bg-neutral-200 lg:aspect-[6/7] xl:aspect-[4/3]">
               {isVideo && mediaUrl ? (
@@ -388,7 +431,7 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
               />
             </div>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

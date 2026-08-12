@@ -202,9 +202,9 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
         />
       )}
 
-      {/* Foreground content — matches the media frame width (site container)
+      {/* Foreground content — matches the wider media frame
           so the type never escapes the rounded video, centered like the frame */}
-      <div className="absolute inset-x-0 bottom-24 iphone-landscape:bottom-8 md:relative z-10 container md:mt-[45vh] iphone-landscape:mt-[50vh] mx-auto">
+      <div className="absolute inset-x-0 bottom-24 z-10 mx-auto w-[calc(100%-2rem)] max-w-[1680px] iphone-landscape:bottom-8 iphone-landscape:mt-[50vh] sm:w-[calc(100%-3rem)] md:relative md:mt-[45vh] lg:w-[calc(100%-4rem)]">
         {useHeadlineReveal ? (
           <div className="px-8 md:px-16 flex flex-col items-center text-center">
             {eyebrowContent && (

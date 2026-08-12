@@ -26,7 +26,7 @@ export default function IntroBlockTypoSophisticated({
       data-component="intro-block-typo-sophisticated"
     >
       <div className="relative z-2 col-span-12 col-start-1 row-start-1 w-full">
-        <div className="container mx-auto">
+        <div className="relative mx-auto w-full max-w-[1480px] px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-4 py-16 sm:grid-cols-6 sm:py-24 md:grid-cols-12 lg:gap-8 lg:py-32 iphone-landscape:grid-cols-12">
             <div className="col-span-4 sm:col-span-6 md:col-span-12 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1">
               <PeopleIntroLayout
