@@ -224,7 +224,6 @@ export default async function Home({
           content={contentBlocks}
           language={language}
           channel={DEFAULT_CHANNEL}
-          deferAfter={2}
         />
       </div>
     </RenaissanceSiteWrapper>
