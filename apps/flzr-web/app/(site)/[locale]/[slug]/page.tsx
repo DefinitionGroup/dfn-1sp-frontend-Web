@@ -103,6 +103,10 @@ export async function generateMetadata({
     title,
     description,
     keywords: page.metadata?.keywords ?? undefined,
+    robots:
+      page.metadata?.excludeFromSitemap === true
+        ? { index: false, follow: false }
+        : undefined,
     alternates: {
       canonical: `/${slug}`,
     },
