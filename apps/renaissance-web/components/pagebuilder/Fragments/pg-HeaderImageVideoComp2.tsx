@@ -328,16 +328,16 @@ const HeaderImageVideoComp2: React.FC<HeaderImageVideoCompProps> = ({
     }
   };
 
-  /* Non-hero media lands with the renaissance statement radius (2.5rem media
-     radius from the design system) — literal value because Motion cannot
+  /* Non-hero media lands with the compact media radius (0.375rem / 6px from
+     the design system) — literal value because Motion cannot
      interpolate var() inside clip-path strings. */
   const clipPathClosed = isHero
     ? "inset(6% 6% 6% 6% round 0rem)"
-    : "inset(55% 44% 55% 44% round 2.5rem)";
+    : "inset(55% 44% 55% 44% round 0.375rem)";
   const clipPathPreInView = isHero
     ? "inset(3% 3% 3% 3% round 0rem)"
-    : "inset(55% 0% 0% 0% round 2.5rem)";
-  const clipPathOpen = "inset(0% 0% 0% 0% round 2.5rem)";
+    : "inset(55% 0% 0% 0% round 0.375rem)";
+  const clipPathOpen = "inset(0% 0% 0% 0% round 0.375rem)";
   const preInViewOpacity = isHero ? 0.92 : 0.86;
 
   // Shared inner content rendered identically for both hero (CSS) and non-hero (Framer Motion) paths

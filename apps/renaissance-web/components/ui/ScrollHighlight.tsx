@@ -408,7 +408,7 @@ function Stylesheet() {
 
         width: 100%;
         aspect-ratio: 16 / 12;
-        border-radius: 0.5rem;
+        border-radius: var(--radius-card);
         overflow: hidden;
       }
 
@@ -458,7 +458,7 @@ function Stylesheet() {
         padding: 0.5rem 1.25rem;
         background: rgba(255, 255, 255, 0.1);
         border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 9999px;
+        border-radius: var(--radius-action);
         color: white;
         font-size: 0.875rem;
         font-weight: 500;

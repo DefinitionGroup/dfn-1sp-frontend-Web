@@ -33,11 +33,12 @@ typography:
     fontWeight: 500
     lineHeight: 1
 rounded:
-  card: "1rem"
-  base: "1.5rem"
-  media: "2.5rem"
-  statement: "3.5rem"
-  pill: "9999px"
+  indicator: "0.125rem"
+  action: "0.25rem"
+  card: "0.25rem"
+  base: "0.25rem"
+  media: "0.375rem"
+  statement: "0.375rem"
 spacing:
   section-sm: "3rem"
   section-md: "4rem"
@@ -48,7 +49,7 @@ components:
     backgroundColor: "{colors.petrol}"
     textColor: "{colors.white}"
     typography: "{typography.label}"
-    rounded: "{rounded.pill}"
+    rounded: "{rounded.action}"
     padding: "0 1rem 0 1.25rem"
     height: "2.75rem"
 ---
@@ -102,7 +103,7 @@ The system is flat by default. Depth comes from tonal contrast, image overlays, 
 
 ## Shapes
 
-The hero resolves to a square full-bleed plane after its reveal. Rounded geometry is selective: service tiles use the smaller card radius, media and globe passages use the larger media radius, the footer can carry the statement radius, and compact navigation and actions use pills. Do not round every container.
+The hero resolves to a square full-bleed plane after its reveal. All rectangular UI uses crisp, very small corners: 2px for indicators, 4px for controls and cards, and 6px for large media or statement shells. True circles are reserved for geometry whose meaning depends on being circular, such as a status dot or the globe itself. Do not use pills or large-radius containers.
 
 Hard diagonal streaks and skewed translucent planes are the signature motif. They should guide the eye through imagery or the page atmosphere, never become badges, chips, or detached decoration over the hero.
 
@@ -110,11 +111,11 @@ Hard diagonal streaks and skewed translucent planes are the signature motif. The
 
 ### Buttons
 
-Buttons are compact, confident pills with a right arrow. Primary buttons use petrol and white; dark buttons use ink and white; glass buttons are reserved for image-backed contexts. Hover may reveal the teal/mist strand field, shift the arrow, and apply restrained spring scale. Focus uses a visible petrol ring with offset; reduced motion removes pointer-reactive shader movement and scaling and keeps a static palette treatment.
+Buttons are compact, confident rectangles with subtly softened 4px corners and a right arrow. Primary buttons use petrol and white; dark buttons use ink and white; glass buttons are reserved for image-backed contexts. Hover may reveal the teal/mist strand field, shift the arrow, and apply restrained spring scale. Focus uses a visible petrol ring with offset; reduced motion removes pointer-reactive shader movement and scaling and keeps a static palette treatment.
 
 ### Navigation
 
-The expanded navigation sits in page flow with the dark Renaissance logo and ink links on sand. After 64px of scroll it compacts into a white translucent pill; it may hide after three idle seconds and returns with renewed scroll activity. Mobile uses a compact pill header and a full-screen ink menu with numbered Geist Mono indices, large compressed links, hairline separators, and explicit open/close labels.
+The expanded navigation sits in page flow with the dark Renaissance logo and ink links on sand. After 64px of scroll it compacts into a white translucent 4px-corner shell; it may hide after three idle seconds and returns with renewed scroll activity. Mobile uses the same compact corner treatment and a full-screen ink menu with numbered Geist Mono indices, large compressed links, hairline separators, and explicit open/close labels.
 
 ### Media, Tiles, and Footer
 
@@ -216,11 +217,14 @@ Do not use vertical space as a substitute for hierarchy. On 390px mobile, a non-
 
 | Role | Radius | Use |
 | --- | ---: | --- |
-| `radius.action` | 9999px | buttons and compact navigation |
-| `radius.card` | 1rem | repeated service/content tile |
-| `radius.base` | 1.5rem | small contained surface |
-| `radius.media` | 2.5rem | immersive media/globe passage |
-| `radius.statement` | 3.5rem | footer or singular closing statement |
+| `radius.indicator` | 2px | progress markers and segmented-control states |
+| `radius.action` | 4px | buttons and compact navigation |
+| `radius.card` | 4px | repeated service/content tile |
+| `radius.base` | 4px | small contained surface |
+| `radius.media` | 6px | immersive media/globe passage and overlays |
+| `radius.statement` | 6px | footer or singular closing statement |
+
+**Compact-radius decision — 2026-08-12.** The previous 16–56px surface radii and pill actions were replaced by the 2–6px scale above across Renaissance-owned navigation, actions, forms, cards, media, overlays, carousels, filters, diagnostics and footer UI. `rounded-full` is not a rectangular component style; it remains valid only for intrinsically circular status or decorative geometry.
 
 The page background may use the approved low-opacity diagonal pattern. Diagonal streaks are not independent stickers or badges; they either guide an image crop or connect the page atmosphere.
 

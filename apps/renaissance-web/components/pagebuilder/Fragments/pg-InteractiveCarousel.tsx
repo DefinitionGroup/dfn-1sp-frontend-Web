@@ -137,7 +137,7 @@ function InteractiveCarousel({ items }: { items?: SanityCarouselItem[] }) {
       onBlurCapture={() => setIsAutoPlaying(true)}
     >
       <div className="container relative mx-auto">
-        <div className="relative min-h-[34rem] overflow-hidden rounded-[0.75rem] sm:min-h-[42rem] lg:min-h-[48rem]">
+        <div className="relative min-h-[34rem] overflow-hidden rounded-media sm:min-h-[42rem] lg:min-h-[48rem]">
           <AnimatePresence initial={false} custom={direction} mode="popLayout">
             <motion.article
               key={active.id}
@@ -262,7 +262,7 @@ function InteractiveCarousel({ items }: { items?: SanityCarouselItem[] }) {
                 <button
                   type="button"
                   aria-label="Previous story"
-                  className="grid h-11 w-11 place-items-center rounded-full border border-white/55 bg-renaissance-ink/40 text-white transition-colors hover:bg-white hover:text-renaissance-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  className="grid h-11 w-11 place-items-center rounded-control border border-white/55 bg-renaissance-ink/40 text-white transition-colors hover:bg-white hover:text-renaissance-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                   onClick={() => paginate(-1)}
                 >
                   <span aria-hidden="true">←</span>
@@ -270,7 +270,7 @@ function InteractiveCarousel({ items }: { items?: SanityCarouselItem[] }) {
                 <button
                   type="button"
                   aria-label="Next story"
-                  className="grid h-11 w-11 place-items-center rounded-full border border-white/55 bg-renaissance-ink/40 text-white transition-colors hover:bg-white hover:text-renaissance-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  className="grid h-11 w-11 place-items-center rounded-control border border-white/55 bg-renaissance-ink/40 text-white transition-colors hover:bg-white hover:text-renaissance-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                   onClick={() => paginate(1)}
                 >
                   <span aria-hidden="true">→</span>

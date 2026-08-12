@@ -479,7 +479,7 @@ function ArcLabels({ data }: Pick<WorldProps, "data">) {
                 fontSize: "1.125rem",
                 backgroundColor: "#245e66",
                 padding: "0.195rem 0.45rem",
-                borderRadius: "100px",
+                borderRadius: "var(--radius-control)",
                 textTransform: "uppercase",
                 transform: `translate3d(${point.labelOffsetX}px, ${point.labelOffsetY}px, 0)`,
                 whiteSpace: "nowrap",

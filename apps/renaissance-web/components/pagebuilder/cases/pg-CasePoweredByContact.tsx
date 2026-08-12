@@ -113,7 +113,7 @@ export default function CasePoweredByContact({
 
         {relatedPerson && (
           <div
-            className="max-w-5xl mx-auto bg-white rounded-4xl overflow-hidden mt-14 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 items-end gap-8 lg:gap-10"
+            className="mx-auto mt-14 grid max-w-5xl grid-cols-1 items-end gap-8 overflow-hidden rounded-statement bg-white sm:mt-16 lg:grid-cols-12 lg:gap-10"
           >
             <div className="lg:col-span-7 p-8">
               <motion.p

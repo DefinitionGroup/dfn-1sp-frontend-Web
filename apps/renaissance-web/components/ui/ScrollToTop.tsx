@@ -53,7 +53,7 @@ export default function ScrollToTop({
           className={`fixed bottom-6 right-6 z-50 p-3
             bg-neutral-900 dark:bg-neutral-100
             text-white dark:text-neutral-900
-            rounded-full
+            rounded-control
             hover:scale-110 active:scale-95
             transition-all duration-200 ease-out
             cursor-pointer

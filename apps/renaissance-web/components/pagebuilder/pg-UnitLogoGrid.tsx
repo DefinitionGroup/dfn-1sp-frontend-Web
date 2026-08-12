@@ -136,7 +136,7 @@ function UnitLogoGrid({
             </div>
           ) : (
             <StaggeredSlideUp
-              className={`grid ${columnClasses[columns]} gap-0.5 w-full rounded-[2rem] overflow-hidden`}
+              className={`grid ${columnClasses[columns]} w-full gap-0.5 overflow-hidden rounded-card`}
               delay={0.1}
               staggerDelay={0.05}
             >

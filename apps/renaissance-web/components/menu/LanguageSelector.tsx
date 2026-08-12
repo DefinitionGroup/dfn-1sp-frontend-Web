@@ -26,7 +26,7 @@ export default function LanguageSelector({
 
   return (
     <div
-      className={`flex items-center rounded-full p-0.5 transition-[background-color,border-color,backdrop-filter] duration-300 ${
+      className={`flex items-center rounded-control p-0.5 transition-[background-color,border-color,backdrop-filter] duration-300 ${
         frosted
           ? "border border-current/10 bg-white/[0.06] backdrop-blur-md"
           : "border border-transparent bg-transparent backdrop-blur-none"
@@ -46,7 +46,7 @@ export default function LanguageSelector({
               key={option.id}
               aria-disabled="true"
               title={`${option.label} translation is not available yet`}
-              className={`select-none rounded-full px-2 py-1 text-[0.6rem] font-semibold opacity-30 ${
+              className={`select-none rounded-indicator px-2 py-1 text-[0.6rem] font-semibold opacity-30 ${
                 compact ? "min-w-8 text-center" : ""
               }`}
             >
@@ -68,7 +68,7 @@ export default function LanguageSelector({
                 : `Switch to ${option.label}`
             }
             title={isActive ? option.label : `Switch to ${option.label}`}
-            className={`rounded-full px-2 py-1 text-[0.6rem] font-semibold transition-[background-color,color,transform] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-renaissance-accent ${
+            className={`rounded-indicator px-2 py-1 text-[0.6rem] font-semibold transition-[background-color,color,transform] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-renaissance-accent ${
               compact ? "min-w-8 text-center" : ""
             } ${
               isActive

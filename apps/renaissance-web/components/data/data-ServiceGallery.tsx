@@ -353,7 +353,7 @@ export default function ServiceGalleryComponent({
               onClick={() => scrollPage(-1)}
               disabled={filteredItems.length <= 1}
               aria-label="Previous services"
-              className="grid h-11 w-11 place-items-center rounded-full border border-neutral-900/15 text-neutral-900 transition-[background-color,color,opacity,transform] duration-300 hover:bg-neutral-900 hover:text-white active:scale-95 disabled:pointer-events-none disabled:opacity-25"
+              className="grid h-11 w-11 place-items-center rounded-control border border-neutral-900/15 text-neutral-900 transition-[background-color,color,opacity,transform] duration-300 hover:bg-neutral-900 hover:text-white active:scale-95 disabled:pointer-events-none disabled:opacity-25"
             >
               <ArrowIcon direction="back" />
             </button>
@@ -362,7 +362,7 @@ export default function ServiceGalleryComponent({
               onClick={() => scrollPage(1)}
               disabled={filteredItems.length <= 1}
               aria-label="Next services"
-              className="grid h-11 w-11 place-items-center rounded-full bg-neutral-900 text-white transition-[background-color,color,opacity,transform] duration-300 hover:bg-violet-500 active:scale-95 disabled:pointer-events-none disabled:opacity-25"
+              className="grid h-11 w-11 place-items-center rounded-control bg-neutral-900 text-white transition-[background-color,color,opacity,transform] duration-300 hover:bg-violet-500 active:scale-95 disabled:pointer-events-none disabled:opacity-25"
             >
               <ArrowIcon direction="forward" />
             </button>
@@ -427,7 +427,7 @@ export default function ServiceGalleryComponent({
                     type="button"
                     onClick={() => openService(item)}
                     aria-label={`Open details for ${item.name}`}
-                    className="group relative block aspect-[6/7] w-full overflow-hidden rounded-[2rem] bg-neutral-900 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-500"
+                    className="group relative block aspect-[6/7] w-full overflow-hidden rounded-card bg-neutral-900 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-500"
                   >
                     <div className="absolute inset-0 overflow-hidden">
                       {background && isVideoUrl(background) ? (
@@ -480,7 +480,7 @@ export default function ServiceGalleryComponent({
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.55, delay: 0.18, ease: EASE_RENAISSANCE }}
-                      className="absolute bottom-3 left-3 z-10 w-fit max-w-[calc(100%-1.5rem)] rounded-[1.5rem] bg-[rgba(111,111,111,0.4)] px-4 py-3 text-white backdrop-blur-md sm:px-5 sm:py-4"
+                      className="absolute bottom-3 left-3 z-10 w-fit max-w-[calc(100%-1.5rem)] rounded-card bg-[rgba(111,111,111,0.4)] px-4 py-3 text-white backdrop-blur-md sm:px-5 sm:py-4"
                     >
                       <div className="flex items-end justify-between gap-4">
                         <div className="min-w-0">
@@ -497,7 +497,7 @@ export default function ServiceGalleryComponent({
                             </p>
                           ) : null}
                         </div>
-                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white text-neutral-900 transition-[background-color,color,transform] duration-500 group-hover:rotate-[-35deg] group-hover:scale-105 group-hover:bg-renaissance-accent group-hover:text-white">
+                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-control bg-white text-neutral-900 transition-[background-color,color,transform] duration-500 group-hover:rotate-[-35deg] group-hover:scale-105 group-hover:bg-renaissance-accent group-hover:text-white">
                           <ArrowUpRightIcon />
                         </span>
                       </div>
@@ -510,14 +510,14 @@ export default function ServiceGalleryComponent({
         </div>
 
         <div className="mt-6 flex w-full justify-center">
-          <div className="flex h-8 w-fit items-center justify-center space-x-1.5 rounded-4xl bg-gray-900/50 px-4 backdrop-blur-md sm:h-10 sm:space-x-2 sm:px-8">
+          <div className="flex h-8 w-fit items-center justify-center space-x-1.5 rounded-control bg-gray-900/50 px-4 backdrop-blur-md sm:h-10 sm:space-x-2 sm:px-8">
             {pageTargets.map((target, index) => (
               <motion.button
                 key={`${target}-${index}`}
                 type="button"
                 aria-label={`Go to services page ${index + 1}`}
                 aria-current={index === currentPage ? "true" : undefined}
-                className={`h-1.5 cursor-pointer rounded-full transition-all duration-300 hover:bg-violet-400 sm:h-2 ${
+                className={`h-1.5 cursor-pointer rounded-indicator transition-all duration-300 hover:bg-violet-400 sm:h-2 ${
                   index === currentPage
                     ? "min-w-8 bg-violet-400 sm:min-w-16"
                     : "min-w-1.5 bg-gray-100 sm:min-w-2"
@@ -551,7 +551,7 @@ export default function ServiceGalleryComponent({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 12, scale: 0.985 }}
               transition={{ duration: 0.55, ease: EASE_RENAISSANCE }}
-              className="relative grid h-[min(90dvh,54rem)] w-full max-w-6xl overflow-hidden rounded-[2rem] bg-neutral-900 text-white md:grid-cols-[1.25fr_0.75fr]"
+              className="relative grid h-[min(90dvh,54rem)] w-full max-w-6xl overflow-hidden rounded-media bg-neutral-900 text-white md:grid-cols-[1.25fr_0.75fr]"
             >
               <div className="relative min-h-[42dvh] overflow-hidden md:min-h-0">
                 {activeMedia.background && isVideoUrl(activeMedia.background) ? (
@@ -595,7 +595,7 @@ export default function ServiceGalleryComponent({
                 <button
                   type="button"
                   onClick={() => setActive(null)}
-                  className="absolute right-5 top-5 grid h-10 w-10 place-items-center rounded-full border border-white/20 text-white transition-colors hover:bg-white hover:text-neutral-900"
+                  className="absolute right-5 top-5 grid h-10 w-10 place-items-center rounded-control border border-white/20 text-white transition-colors hover:bg-white hover:text-neutral-900"
                   aria-label={modalCopy.close}
                 >
                   <CloseIcon />

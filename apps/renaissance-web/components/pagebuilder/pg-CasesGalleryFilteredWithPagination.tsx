@@ -142,7 +142,7 @@ function CasesGalleryFilteredWithPagination({
                       setActiveFilter(filter);
                     });
                   }}
-                  className={`px-4 py-1 text-xxs font-medium uppercase rounded-md transition-all duration-100 ${
+                  className={`rounded-control px-4 py-1 text-xxs font-medium uppercase transition-all duration-100 ${
                     activeFilter === filter
                       ? "bg-violet-500 text-white"
                       : "bg-neutral-100 text-neutral-400 hover:bg-neutral-900 cursor-pointer hover:text-neutral-100"

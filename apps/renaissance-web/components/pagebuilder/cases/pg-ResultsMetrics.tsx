@@ -157,7 +157,7 @@ export default function ResultsMetrics({
             {/* Metrics grid - Responsive layout */}
             {metrics && metrics.length > 0 && (
               <div className="col-span-4 mt-8 self-end sm:col-span-6 md:col-span-12 md:mt-12">
-                <div className="rounded-[2.5rem] bg-[rgba(111,111,111,0.4)] p-6 backdrop-blur-md sm:p-8 md:p-10 lg:p-12">
+                <div className="rounded-card bg-[rgba(111,111,111,0.4)] p-6 backdrop-blur-md sm:p-8 md:p-10 lg:p-12">
                   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8">
                     {metrics.map((metric, index) => (
                       <div

@@ -90,7 +90,7 @@ function GlobeComponent({ data, language }: GlobeComponentProps) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="container relative mx-auto overflow-hidden rounded-4xl"
+      className="container relative mx-auto overflow-hidden rounded-media"
     >
       <GlobalDataComponent
         arcs={arcs}

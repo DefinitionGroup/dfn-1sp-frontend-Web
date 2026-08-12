@@ -16,8 +16,8 @@ import { hasVisibleText } from "@1sp/utils/text-content";
 const Strands = dynamic(() => import("./Strands"), { ssr: false });
 
 /**
- * RENAISSANCE pill button — palette-bound WebGL field that follows the pointer,
- * spring hover/press physics, mono telemetry label, pronounced radius.
+ * RENAISSANCE action button — palette-bound WebGL field that follows the pointer,
+ * spring hover/press physics, mono telemetry label and compact 4px corners.
  *
  * The legacy two-element roll variants (violetsmall, limesmall, …) are
  * accepted and normalised onto the new { variant, size } system so existing
@@ -336,38 +336,38 @@ function AuroraCanvas({
 /* Button                                                              */
 /* ------------------------------------------------------------------ */
 
-const sizeStyles: Record<Size, { pill: string; icon: number }> = {
-  sm: { pill: "h-9 pl-4 pr-3 text-[13px] gap-2", icon: 14 },
-  md: { pill: "h-11 pl-5 pr-4 text-sm gap-2.5", icon: 16 },
-  lg: { pill: "h-14 pl-7 pr-5 text-base gap-3", icon: 18 },
+const sizeStyles: Record<Size, { root: string; icon: number }> = {
+  sm: { root: "h-9 pl-4 pr-3 text-[13px] gap-2", icon: 14 },
+  md: { root: "h-11 pl-5 pr-4 text-sm gap-2.5", icon: 16 },
+  lg: { root: "h-14 pl-7 pr-5 text-base gap-3", icon: 18 },
 };
 
 const variantStyles: Record<
   Variant,
-  { pill: string; label: string; restBg: string }
+  { root: string; label: string; restBg: string }
 > = {
   violet: {
-    pill: "",
+    root: "",
     label: "text-white",
     restBg: "bg-violet-500",
   },
   dark: {
-    pill: "",
+    root: "",
     label: "text-neutral-50",
     restBg: "bg-neutral-900",
   },
   glass: {
-    pill: "backdrop-blur-md transition-colors duration-300",
+    root: "backdrop-blur-md transition-colors duration-300",
     label: "text-white",
     restBg: "bg-white/10",
   },
   ghost: {
-    pill: "",
+    root: "",
     label: "text-neutral-900",
     restBg: "bg-transparent",
   },
   strands: {
-    pill: "isolate",
+    root: "isolate",
     label: "text-white",
     restBg: "bg-neutral-900",
   },
@@ -393,7 +393,7 @@ function Button2({
   const router = useOptimizedTransitionRouter();
   const reducedMotion = useReducedMotion();
 
-  const pillRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLDivElement>(null);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const [hovered, setHovered] = useState(false);
   const [pressed, setPressed] = useState(false);
@@ -412,7 +412,7 @@ function Button2({
   });
 
   const onPointerMove = useCallback((e: React.PointerEvent) => {
-    const el = pillRef.current;
+    const el = buttonRef.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
     mouseRef.current.x = (e.clientX - r.left) / r.width;
@@ -427,7 +427,7 @@ function Button2({
 
   const content = (
     <motion.div
-      ref={pillRef}
+      ref={buttonRef}
       onHoverStart={() => {
         setHovered(true);
         if (v === "strands" || v === "violet" || v === "glass") {
@@ -447,9 +447,9 @@ function Button2({
       whileTap={reducedMotion ? undefined : { scale: 0.94 }}
       transition={{ type: "spring", stiffness: 550, damping: 26, mass: 0.7 }}
       className={cn(
-        "group/renaissancebtn relative inline-flex w-full items-center justify-between overflow-hidden rounded-full cursor-pointer select-none",
-        sizeStyles[s].pill,
-        variantStyles[v].pill,
+        "group/renaissancebtn relative inline-flex w-full cursor-pointer select-none items-center justify-between overflow-hidden rounded-action",
+        sizeStyles[s].root,
+        variantStyles[v].root,
         variantStyles[v].restBg,
         hovered && v === "glass" && "bg-violet-500",
       )}
@@ -480,11 +480,11 @@ function Button2({
               : hovered
                 ? {
                     opacity: 1,
-                    clipPath: "inset(0% 0% 0% 0% round 999px)",
+                    clipPath: "inset(0% 0% 0% 0% round 4px)",
                   }
                 : {
                     opacity: 0,
-                    clipPath: "inset(0% 100% 0% 0% round 999px)",
+                    clipPath: "inset(0% 100% 0% 0% round 4px)",
                   }
           }
           transition={{
@@ -561,7 +561,7 @@ function Button2({
     <div className={cn("inline-block w-fit", className)}>
       <Link
         href={href || "#"}
-        className="block rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-renaissance-accent)] focus-visible:ring-offset-2"
+        className="block rounded-action focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-renaissance-accent)] focus-visible:ring-offset-2"
         {...linkProps}
         onClick={
           isExternal

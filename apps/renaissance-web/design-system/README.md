@@ -12,6 +12,10 @@ This folder turns the visual direction in [../DESIGN.md](../DESIGN.md) into a re
 
 When code and documentation disagree, do not silently choose one. Verify the current browser result, update the implementation or record a design decision, then update the affected document in the same change.
 
+## Current radius contract
+
+As of 2026-08-12, Renaissance uses a compact 2–6px radius system: 2px indicators, 4px controls/cards and 6px large media/statement shells. Rectangular controls never use pill geometry. True circles are limited to intrinsically circular status or decorative geometry. The semantic values live in `app/globals.css`; the role definitions and decision record live in `DESIGN.md`.
+
 ## How to build a Renaissance page
 
 1. Start with the page's single user job and one primary conversion.

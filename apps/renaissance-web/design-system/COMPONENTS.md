@@ -57,6 +57,7 @@ Compatibility blocks require explicit design review and a channel/data-scope che
 
 ### Buttons and links
 
+- Rectangular actions and navigation controls use `radius.action` (4px); pill geometry is not part of Renaissance UI.
 - Public variants: `brand`, `dark`, `glass`, `ghost`.
 - `brand`: primary action on paper/mist.
 - `dark`: strong action on light neutral surfaces.

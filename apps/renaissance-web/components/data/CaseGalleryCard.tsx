@@ -62,7 +62,7 @@ export default function CaseGalleryCard({
     >
       <motion.div
         layoutId={`image-${item.title}-${id}`}
-        className="col-start-1 col-span-1 row-start-1 bg-neutral-900 min-h-[260px] md:h-[300px] md:min-h-full rounded-[2rem] overflow-hidden relative"
+        className="col-start-1 col-span-1 row-start-1 bg-neutral-900 min-h-[260px] md:h-[300px] md:min-h-full rounded-card overflow-hidden relative"
       >
         <motion.div style={{ y: springY }} className="w-full h-[120%]   relative -top-[10%]">
           {item.mainVideoUrl ? (

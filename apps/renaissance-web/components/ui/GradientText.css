@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-radius: 1.25rem;
+  border-radius: var(--radius-control);
   font-style: inherit;
   font-weight: inherit;
   cursor: default;

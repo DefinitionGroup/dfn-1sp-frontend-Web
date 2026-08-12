@@ -203,7 +203,7 @@ export default function SmartCarousel({
     <section className="px-2 sm:px-4 md:px-0">
       <div
         ref={containerRef}
-        className="container relative top-0 rounded-4xl overflow-hidden mx-auto w-full"
+        className="container relative top-0 mx-auto w-full overflow-hidden rounded-media"
       >
         <div className="relative h-[60vh] sm:h-[70vh] iphone-landscape:!h-dvh md:h-[800px] flex items-start">
           {/* Main Carousel */}
@@ -347,7 +347,7 @@ export default function SmartCarousel({
 
           {/* Navigation Arrows (match Plaintext classes) */}
           <motion.button
-            className="hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 w-12 h-12 hover:bg-gray-300 backdrop-blur-sm rounded-full  items-center justify-center text-black bg-white/20 transition-colors z-10"
+            className="absolute left-2 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-control bg-white/20 text-black backdrop-blur-sm transition-colors hover:bg-gray-300 md:flex"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => paginate(-1)}
@@ -368,7 +368,7 @@ export default function SmartCarousel({
           </motion.button>
 
           <motion.button
-            className="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 hover:bg-gray-300 backdrop-blur-sm  items-center justify-center rounded-full  text-black bg-white/20 transition-colors z-10"
+            className="absolute right-2 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-control bg-white/20 text-black backdrop-blur-sm transition-colors hover:bg-gray-300 md:flex"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => paginate(1)}
@@ -391,11 +391,11 @@ export default function SmartCarousel({
 
         {/* Dots Indicator (match Plaintext positioning & style) */}
         <div className="absolute w-full bottom-2 sm:bottom-4 z-30">
-          <div className="flex justify-center mt-4 sm:mt-8 rounded-4xl mx-auto space-x-1.5 sm:space-x-2 bg-gray-900/50 backdrop-blur-md h-8 sm:h-10 items-center px-4 sm:px-8  w-fit">
+          <div className="mx-auto mt-4 flex h-8 w-fit items-center justify-center space-x-1.5 rounded-control bg-gray-900/50 px-4 backdrop-blur-md sm:mt-8 sm:h-10 sm:space-x-2 sm:px-8">
             {carouselItems.map((_, index) => (
               <motion.button
                 key={index}
-                className={`h-1.5 sm:h-2  transition-all rounded-full  hover:bg-violet-400 duration-300 cursor-pointer ${index === currentIndex ? "bg-violet-400 min-w-8 sm:min-w-16" : "bg-gray-100 min-w-1.5 sm:min-w-2"}`}
+                className={`h-1.5 cursor-pointer rounded-indicator transition-all duration-300 hover:bg-violet-400 sm:h-2 ${index === currentIndex ? "min-w-8 bg-violet-400 sm:min-w-16" : "min-w-1.5 bg-gray-100 sm:min-w-2"}`}
                 whileHover={{ scale: 1.15 }}
                 whileTap={{ scale: 0.8 }}
                 onClick={() => {
@@ -409,7 +409,7 @@ export default function SmartCarousel({
         </div>
 
         {/* Thumbnail Strip (match Plaintext absolute positioning) */}
-        <div className="absolute flex justify-center w-full hidden rounded-4xl iphone:hidden md:block bottom-16 max-w-[100%] overflow-x-auto scrollbar-hide md:bottom-[64px] z-30 px-2">
+        <div className="scrollbar-hide absolute bottom-16 z-30 hidden w-full max-w-[100%] justify-center overflow-x-auto rounded-control px-2 iphone:hidden md:bottom-[64px] md:block">
           <div
             ref={stripRef}
             className={`flex justify-center mt-4 sm:mt-8 space-x-1.5 sm:space-x-2 md:space-x-4 pt-2 sm:pt-4 md:pb-4 ${isScrollable ? "overflow-x-auto scrollbar-hide" : ""}`}
@@ -418,7 +418,7 @@ export default function SmartCarousel({
               <Link
                 key={item.id}
                 href={item.linkHref || "#"}
-                className={`relative flex-shrink-0 w-10 rounded-[20px]  sm:w-12 md:w-22 h-8 sm:h-12 md:h-18  overflow-hidden outline-1 sm:outline-2 md:outline-3 transition-all hover:scale-105 active:scale-95 ${index === currentIndex ? "outline-violet-500" : "outline-transparent"}`}
+                className={`relative h-8 w-10 flex-shrink-0 overflow-hidden rounded-control outline-1 transition-all hover:scale-105 active:scale-95 sm:h-12 sm:w-12 sm:outline-2 md:h-18 md:w-22 md:outline-3 ${index === currentIndex ? "outline-violet-500" : "outline-transparent"}`}
               >
                 {item.image && (
                   <Image

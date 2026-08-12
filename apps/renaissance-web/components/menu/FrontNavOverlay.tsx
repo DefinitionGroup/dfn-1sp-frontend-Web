@@ -425,8 +425,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           data-nav-surface={isRenaissanceScrolled ? "frosted" : "transparent"}
           className={`floating-nav z-99999 hidden items-center grid-cols-12 py-2 transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 md:grid ${
             isExpanded
-              ? "relative mx-auto h-16 w-full rounded-[2rem] px-6"
-              : "fixed left-0 right-0 top-6 mx-auto h-14 w-fit rounded-full px-5 iphone-landscape:top-2 iphone-landscape:scale-70"
+              ? "relative mx-auto h-16 w-full rounded-control px-6"
+              : "fixed left-0 right-0 top-6 mx-auto h-14 w-fit rounded-control px-5 iphone-landscape:top-2 iphone-landscape:scale-70"
           } ${isNavVisible ? "" : "pointer-events-none"} ${desktopSurfaceClass} ${navTextColor} ${className}`}
         >
           <div className="col-span-2 flex items-center pr-16  justify-start">
@@ -578,7 +578,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           inert={!isNavVisible}
           data-nav-state={navState}
           data-nav-surface={isRenaissanceScrolled ? "frosted" : "transparent"}
-          className={`z-99999 flex items-center justify-between rounded-full transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 md:hidden ${
+          className={`z-99999 flex items-center justify-between rounded-control transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 md:hidden ${
             isExpanded
               ? "relative mx-auto h-14 w-full px-4"
               : "fixed left-3 right-3 top-3 h-12 px-3"
@@ -635,7 +635,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               aria-label="Open menu"
               aria-expanded={showMobileMenu}
               onClick={() => setShowMobileMenu(true)}
-              className="flex h-10 items-center gap-2 rounded-full border border-current/30 px-3 text-[0.68rem] font-semibold uppercase tracking-[0.12em] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
+              className="flex h-10 items-center gap-2 rounded-action border border-current/30 px-3 text-[0.68rem] font-semibold uppercase tracking-[0.12em] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
             >
               <span>Menu</span>
               <span aria-hidden="true" className="grid gap-1">
@@ -667,7 +667,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 type="button"
                 aria-label="Close menu"
                 onClick={() => setShowMobileMenu(false)}
-                className="grid h-11 w-11 place-items-center rounded-full border border-white/40 text-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                className="grid h-11 w-11 place-items-center rounded-control border border-white/40 text-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
                 <span aria-hidden="true">×</span>
               </button>
@@ -720,7 +720,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               transition: { duration: 0.4, type: "spring", bounce: 0.06 },
             }}
             transition={{ type: "spring", visualDuration: 0.25, bounce: 0.56 }}
-            className="relative w-full max-w-[900px] max-h-[calc(100vh-4rem)] flex flex-col overflow-y-auto rounded-2xl bg-neutral-100"
+            className="relative flex max-h-[calc(100vh-4rem)] w-full max-w-[900px] flex-col overflow-y-auto rounded-media bg-neutral-100"
           >
             <button
               aria-label="Close overlay"

@@ -20,7 +20,7 @@ export default function CardInsideComponent({
   const video = isVideo(resourceType, mediaUrl);
 
   return (
-    <article className="group relative min-h-[22rem] w-full overflow-hidden rounded-[1rem] bg-renaissance-ink text-white">
+    <article className="group relative min-h-[22rem] w-full overflow-hidden rounded-card bg-renaissance-ink text-white">
       <div className="absolute inset-0 overflow-hidden">
         {mediaUrl && video ? (
           <video
