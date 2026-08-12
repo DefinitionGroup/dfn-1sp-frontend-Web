@@ -420,8 +420,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 <Image
                   src={logoUrl}
                   alt={logoAlt}
-                  width={64}
-                  height={64}
+                  width={isFlzrChannel ? 96 : 64}
+                  height={isFlzrChannel ? 96 : 64}
                   className={logoClassName}
                   style={{ height: "auto" }}
                 />
@@ -605,8 +605,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               <Image
                 src={logoUrl}
                 alt={logoAlt}
-                width={54}
-                height={24}
+                width={isFlzrChannel ? 81 : 54}
+                height={isFlzrChannel ? 36 : 24}
                 className={logoClassName}
                 style={{ height: "auto" }}
               />
