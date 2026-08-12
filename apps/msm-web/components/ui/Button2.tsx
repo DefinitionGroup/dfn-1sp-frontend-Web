@@ -5,6 +5,7 @@ import { hasVisibleText } from "@1sp/utils/text-content";
 
 interface Button2Props {
   text?: string;
+  eyebrow?: string;
   className?: string;
   href?: string;
   variant?: "default" | "black" | "violet" | "violetsmall" | "violetsmallrounded" | "limesmall" | "ghost";
@@ -24,8 +25,10 @@ const sizeMap: Record<NonNullable<Button2Props["variant"]>, MosaicButtonSize> = 
   limesmall: "sm",
 };
 
-function Button2({ text, className, href, variant = "default", magnetic = false }: Button2Props) {
+function Button2({ text, eyebrow, className, href, variant = "default", magnetic = false }: Button2Props) {
   if (!hasVisibleText(text)) return null;
+
+  const eyebrowText = eyebrow?.trim();
 
   return (
     <MosaicButton
@@ -34,7 +37,16 @@ function Button2({ text, className, href, variant = "default", magnetic = false 
       magnetic={magnetic}
       size={sizeMap[variant] ?? "md"}
       text={text}
-    />
+    >
+      {eyebrowText ? (
+        <span className="flex flex-col items-start gap-0.5 leading-none">
+          <span className="text-xxs font-medium normal-case tracking-normal opacity-70">
+            {eyebrowText}
+          </span>
+          <span>{text}</span>
+        </span>
+      ) : undefined}
+    </MosaicButton>
   );
 }
 

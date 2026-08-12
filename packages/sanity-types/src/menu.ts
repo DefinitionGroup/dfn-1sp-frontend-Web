@@ -14,6 +14,7 @@ export interface NavbarMenu {
         secure_url?: string;
     };
     logoUrl?: string;
+    oneSpMembershipLabel?: string;
     menuItems?: MenuItem[];
 }
 

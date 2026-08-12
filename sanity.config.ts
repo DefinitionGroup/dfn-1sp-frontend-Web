@@ -173,6 +173,18 @@ const generateTemplates = (excludeBase = false) => {
         value: (params: any) => ({ channel: params.channel || channel.id, language: params.language || lang }),
       });
 
+      templates.push({
+        id: `siteSettings-${channel.id}-${lang}`,
+        title: `Site Settings (${channel.title} - ${lang.toUpperCase()})`,
+        schemaType: 'siteSettings',
+        parameters: [{ name: 'channel', type: 'string' }, { name: 'language', type: 'string' }],
+        value: (params: any) => ({
+          channel: params.channel || channel.id,
+          language: params.language || lang,
+          oneSpMembershipLabel: 'proud member of',
+        }),
+      });
+
       [
         { schemaType: 'caseStudy', title: 'Case Study' },
         { schemaType: 'services', title: 'Service' },
@@ -290,7 +302,7 @@ export default defineConfig({
           : [...prev, revalidateAction]
       }
 
-      if (schemaType === 'page' || schemaType === 'menu' || schemaType === 'oneSpComponentGroup') {
+      if (schemaType === 'page' || schemaType === 'menu' || schemaType === 'siteSettings' || schemaType === 'oneSpComponentGroup') {
         return [...prev, revalidateAction]
       }
 

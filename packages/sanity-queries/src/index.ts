@@ -117,6 +117,10 @@ const GLOBAL_DATA_QUERY = defineQuery(/* groq */ `{
     menuType,
     imageCloud,
     "logoUrl": imageCloud.secure_url,
+    "oneSpMembershipLabel": coalesce(
+      *[_type == "siteSettings" && channel == $channel && language == $language][0].oneSpMembershipLabel,
+      "proud member of"
+    ),
     menuItems[]{
       _key,
       "slug": page->slug.current,
@@ -171,6 +175,10 @@ const LOCALIZED_NAVIGATION_QUERY = defineQuery(/* groq */ `{
     menuType,
     imageCloud,
     "logoUrl": imageCloud.secure_url,
+    "oneSpMembershipLabel": coalesce(
+      *[_type == "siteSettings" && channel == $channel && language == $language][0].oneSpMembershipLabel,
+      "proud member of"
+    ),
     menuItems[]{
       _key,
       displayName,
@@ -194,6 +202,11 @@ const LOCALIZED_NAVIGATION_QUERY = defineQuery(/* groq */ `{
     menuType,
     imageCloud,
     "logoUrl": imageCloud.secure_url,
+    "oneSpMembershipLabel": coalesce(
+      *[_type == "siteSettings" && channel == $channel && language == $language][0].oneSpMembershipLabel,
+      *[_type == "siteSettings" && channel == $channel && language == $sourceLanguage][0].oneSpMembershipLabel,
+      "proud member of"
+    ),
     menuItems[]{
       _key,
       displayName,
@@ -243,6 +256,7 @@ export interface GlobalData {
     menuType: string;
     imageCloud: unknown;
     logoUrl: string | null;
+    oneSpMembershipLabel: string;
     menuItems: Array<{
       _key: string;
       slug: string | null;
@@ -407,6 +421,7 @@ export const getLocalizedNavigation = cache(
           menuType: "Navbar" as const,
           imageCloud: baseMenu.imageCloud,
           logoUrl: baseMenu.logoUrl,
+          oneSpMembershipLabel: baseMenu.oneSpMembershipLabel,
           menuItems: (baseMenu.menuItems ?? []).flatMap((item) => {
             const page = resolvePage(item.page);
             const slug = page?.slug?.current;

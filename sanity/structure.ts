@@ -12,6 +12,7 @@ import {
   Users,
   SquaresFour,
   UserCircle,
+  Gear,
 } from "@phosphor-icons/react";
 import {
   getChannelLanguageDefinitions,
@@ -101,6 +102,22 @@ const createChannelStructure = (
                 S.list()
                   .title(`${channelTitle} - ${lang.title}`)
                   .items([
+                    S.listItem()
+                      .title("Site Settings")
+                      .icon(Gear)
+                      .child(
+                        S.document()
+                          .schemaType("siteSettings")
+                          .documentId(`site-settings-${channelValue}-${lang.id}`)
+                          .title(`Site Settings (${lang.title})`)
+                          .initialValueTemplate(
+                            `siteSettings-${channelValue}-${lang.id}`,
+                            {
+                              channel: channelValue,
+                              language: lang.id,
+                            },
+                          )
+                      ),
                     S.listItem()
                       .title("Pages")
                       .icon(Globe)
@@ -462,6 +479,7 @@ export const structure: StructureResolver = (S) =>
           ![
             "page",
             "menu",
+            "siteSettings",
             "caseStudy",
             "unit",
             "client",

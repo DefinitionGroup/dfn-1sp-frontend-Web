@@ -211,7 +211,11 @@ export const ALL_PLATFORM_LOCALES: readonly LocaleCode[] =
   );
 
 /** Website-owned documents use the locale matrix of their assigned channel. */
-export const SITE_SPECIFIC_TRANSLATION_TYPES = ["page", "menu"] as const;
+export const SITE_SPECIFIC_TRANSLATION_TYPES = [
+  "page",
+  "menu",
+  "siteSettings",
+] as const;
 
 /** Reusable documents currently share the global English/German policy. */
 export const GLOBAL_TRANSLATION_TYPES = [

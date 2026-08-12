@@ -43,6 +43,7 @@ type Size = "sm" | "md" | "lg";
 
 interface Button2Props {
   text?: string;
+  eyebrow?: string;
   className?: string;
   href?: string;
   variant?: LegacyVariant;
@@ -375,6 +376,7 @@ const variantStyles: Record<
 
 function Button2({
   text,
+  eyebrow,
   className,
   href,
   variant = "default",
@@ -423,6 +425,7 @@ function Button2({
 
   if (!hasVisibleText(text)) return null;
 
+  const eyebrowText = eyebrow?.trim();
   const shaderActive = hovered && !reducedMotion;
 
   const content = (
@@ -528,14 +531,19 @@ function Button2({
 
       <span
         className={cn(
-          "font-flzr font-semibold relative z-10 transition-colors duration-200 whitespace-nowrap",
+          "font-flzr relative z-10 flex flex-col items-start justify-center whitespace-nowrap leading-none transition-colors duration-200",
           variantStyles[v].label,
           hovered && v === "ghost" && "text-white",
           hovered && (v === "strands" || v === "violet" || v === "glass") &&
             "text-violet-500",
         )}
       >
-        {text}
+        {eyebrowText ? (
+          <span className="mb-0.5 text-xxs font-medium tracking-[0.04em] opacity-70">
+            {eyebrowText}
+          </span>
+        ) : null}
+        <span className="font-semibold">{text}</span>
       </span>
       <ArrowRightIcon
         size={sizeStyles[s].icon}
