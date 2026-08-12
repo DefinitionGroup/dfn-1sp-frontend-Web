@@ -93,8 +93,8 @@ export default function GlobalDataComponent({
       ref={containerRef}
       className={`flex flex-row items-center justify-center py-20 h-screen md:h-auto relative w-full ${
         backgroundTone === "muted"
-          ? "bg-[#f4f3f6] dark:bg-neutral-900"
-          : "bg-white dark:bg-black"
+          ? "bg-renaissance-mist"
+          : "bg-renaissance-paper"
       }`}
     >
       <div className="pointer-events-none max-w-7xl mx-auto z-10 flex w-full h-full md:h-[44rem] flex-col relative px-4">
@@ -127,8 +127,8 @@ export default function GlobalDataComponent({
       <div
         className={`absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b pointer-events-none select-none from-transparent z-40 ${
           backgroundTone === "muted"
-            ? "to-[#f4f3f6] dark:to-neutral-900"
-            : "to-white dark:to-black"
+            ? "to-renaissance-mist"
+            : "to-renaissance-paper"
         }`}
       />
       <div className="absolute inset-0 z-0">

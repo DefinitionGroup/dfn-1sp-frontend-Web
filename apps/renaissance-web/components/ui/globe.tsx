@@ -477,7 +477,7 @@ function ArcLabels({ data }: Pick<WorldProps, "data">) {
                 color: "#ffffff",
                 fontWeight: 600,
                 fontSize: "1.125rem",
-                backgroundColor: "#008da7",
+                backgroundColor: "#245e66",
                 padding: "0.195rem 0.45rem",
                 borderRadius: "100px",
                 textTransform: "uppercase",
@@ -567,7 +567,7 @@ export function World(props: WorldProps) {
       <ambientLight color={globeConfig.ambientLight} intensity={1.8} />
 
       <Globe {...props} />
-      <LandDotPattern color={globeConfig.polygonColor ?? "#008da7"} />
+      <LandDotPattern color={globeConfig.polygonColor ?? "#245e66"} />
       <ArcLabels data={data} />
       {/* enableZoom=false: distance is pinned anyway (min === max), and a
           wheel listener here would swallow page scrolling over the globe */}

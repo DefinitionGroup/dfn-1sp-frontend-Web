@@ -9,8 +9,9 @@ export default function IntroBlockTypoSophisticated({
   data: IntroBlockTypoSophisticated;
 }) {
   const { header, description, navPointName, hideFromNav = false } = data || {};
-  const sectionId = header?.mainHeadline
-    ? header.mainHeadline
+  const sectionIdSource = navPointName || header?.mainHeadline;
+  const sectionId = sectionIdSource
+    ? sectionIdSource
         .substring(0, 40)
         .replace(/[^a-zA-Z0-9\s]/g, "")
         .replace(/\s+/g, "-")

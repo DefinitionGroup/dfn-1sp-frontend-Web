@@ -21,9 +21,16 @@ export default function CardContainerComponent({
   const columns = [2, 3, 5, 6].includes(data.columns || 0)
     ? (data.columns as 2 | 3 | 5 | 6)
     : 3;
+  const sectionId = data.navPointName
+    ? data.navPointName
+        .replace(/[^a-zA-Z0-9\s]/g, "")
+        .replace(/\s+/g, "-")
+        .toLowerCase()
+    : undefined;
 
   return (
     <section
+      id={sectionId}
       className="w-full py-section"
       {...(data.navPointName ? { "data-navpoint-name": data.navPointName } : {})}
       {...(data.hideFromNav ? { "data-nav-hidden": "true" } : {})}
@@ -40,6 +47,7 @@ export default function CardContainerComponent({
           <CardInsideComponent
             key={card._key || `${card.headline || "card"}-${index}`}
             card={card}
+            index={index}
           />
         ))}
       </StaggeredFadeIn>

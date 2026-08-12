@@ -3,7 +3,12 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
-import { motion, useMotionValueEvent, useScroll } from "motion/react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from "motion/react";
 import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
 import { usePathname } from "next/navigation";
 import CaseGalleryMenu from "../data/data-CaseGalleryMenu";
@@ -100,6 +105,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   const router = useOptimizedTransitionRouter();
   const pathname = usePathname() || "";
   const [showOverlay, setShowOverlay] = React.useState(false);
+  const [showMobileMenu, setShowMobileMenu] = React.useState(false);
   const [caseStudies, setCaseStudies] =
     React.useState<CaseStudy[]>(initialCaseStudies);
   const [isCasesLoading, setIsCasesLoading] = React.useState(false);
@@ -221,7 +227,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
   // Disable body scroll when overlay is open
   React.useEffect(() => {
-    if (showOverlay) {
+    if (showOverlay || showMobileMenu) {
       // Get current scroll position
       const scrollY = window.scrollY;
 
@@ -242,15 +248,13 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         window.scrollTo(0, scrollY);
       };
     }
-  }, [showOverlay]);
+  }, [showMobileMenu, showOverlay]);
 
   const textColor =
     detectedTheme === "dark" ? "text-neutral-800 " : "text-neutral-50 ";
   const isRenaissanceScrolled = isRenaissanceChannel && !isExpanded;
   const navTextColor = isRenaissanceChannel
-    ? isRenaissanceScrolled || detectedTheme === "dark"
-      ? "text-renaissance-ink"
-      : "text-white"
+    ? "text-renaissance-ink"
     : textColor;
   const desktopSurfaceClass = isRenaissanceChannel
     ? isRenaissanceScrolled
@@ -263,9 +267,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       : "border border-transparent bg-transparent shadow-none backdrop-blur-none"
     : "border border-white/15 bg-neutral-600/40 shadow-lg backdrop-blur-xl";
   const imageLogo = isRenaissanceChannel
-    ? isRenaissanceScrolled || detectedTheme === "dark"
-      ? "/logos/renaissance-horz_logo.svg"
-      : "/units/RENAISSANCE/renaissance-horz_logo.svg"
+    ? "/logos/renaissance-horz_logo.svg"
     : detectedTheme === "dark"
       ? "/ci/1sp-fulllogotype-blk.svg"
       : "/ci/1sp-fulllogotype.svg";
@@ -364,6 +366,38 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               : []),
           ]
         : [];
+  const fallbackMenuItems = isRenaissanceChannel
+    ? [
+        { label: "Stories", href: "/#stories" },
+        { label: "Services", href: "/#services" },
+        { label: "People", href: "/#people" },
+        { label: "Origins", href: "/#origins" },
+        { label: "Global reach", href: "/#global-reach" },
+      ]
+    : [
+        { label: "Home", href: "/" },
+        { label: "Services", href: "/whatwedo" },
+        { label: "Our Family", href: "/our-family" },
+        { label: "Work with us", href: "/whatwedo" },
+      ];
+  const mobileMenuItems = menuData
+    ? syncedMenuItems
+        .filter((item) => {
+          const isCasesPage = item.slug?.includes("cases");
+          const isServicesPage = item.slug?.includes("services");
+          return !(
+            (isCasesPage && !hasCaseStudies) ||
+            (isServicesPage && !hasServices)
+          );
+        })
+        .map((item) => ({
+          label: item.displayName || item.title,
+          href: localizedPath(`/${item.slug}`, locale),
+        }))
+    : fallbackMenuItems.map((item) => ({
+        label: item.label,
+        href: localizedPath(item.href, locale) || item.href,
+      }));
 
   return (
     <>
@@ -469,54 +503,23 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               </StaggeredSlideUp>
             ) : (
               <>
-                <span className={itemClass}>
-                  <Link
-                    className="hover:text-violet-400 transition-colors"
-                    href={localizedPath("/", locale)}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      router.push(localizedPath("/", locale));
-                    }}
-                  >
-                    Home
-                  </Link>
-                </span>
-                <span className={itemClass}>
-                  <Link
-                    className="hover:text-violet-400 transition-colors"
-                    href={localizedPath("/whatwedo", locale)}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      router.push(localizedPath("/whatwedo", locale));
-                    }}
-                  >
-                    Services
-                  </Link>
-                </span>
-                <span className={itemClass}>
-                  <Link
-                    className="hover:text-violet-400 transition-colors"
-                    href={localizedPath("/our-family", locale)}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      router.push(localizedPath("/our-family", locale));
-                    }}
-                  >
-                    Our Family
-                  </Link>
-                </span>
-                <span className={itemClass}>
-                  <Link
-                    className="hover:text-violet-400 transition-colors"
-                    href={localizedPath("/whatwedo", locale)}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      router.push(localizedPath("/whatwedo", locale));
-                    }}
-                  >
-                    Work with us
-                  </Link>
-                </span>
+                {fallbackMenuItems.map((item) => {
+                  const href = localizedPath(item.href, locale) || item.href;
+                  return (
+                    <span key={item.href} className={itemClass}>
+                      <Link
+                        className="hover:text-violet-400 transition-colors"
+                        href={href}
+                        onClick={(event) => {
+                          event.preventDefault();
+                          router.push(href);
+                        }}
+                      >
+                        {item.label}
+                      </Link>
+                    </span>
+                  );
+                })}
               </>
             )}
           </motion.div>
@@ -617,6 +620,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               delay: 0.38,
               ease: [0.22, 1, 0.36, 1],
             }}
+            className="flex items-center gap-2"
           >
             {languageOptions.length ? (
               <LanguageSelector
@@ -626,9 +630,84 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 frosted={isRenaissanceScrolled}
               />
             ) : null}
+            <button
+              type="button"
+              aria-label="Open menu"
+              aria-expanded={showMobileMenu}
+              onClick={() => setShowMobileMenu(true)}
+              className="flex h-10 items-center gap-2 rounded-full border border-current/30 px-3 text-[0.68rem] font-semibold uppercase tracking-[0.12em] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
+            >
+              <span>Menu</span>
+              <span aria-hidden="true" className="grid gap-1">
+                <span className="block h-px w-4 bg-current" />
+                <span className="block h-px w-4 bg-current" />
+              </span>
+            </button>
           </motion.div>
         </motion.nav>
       </div>
+      <AnimatePresence>
+        {showMobileMenu ? (
+          <motion.div
+            initial={{ clipPath: "inset(0 0 100% 0)" }}
+            animate={{ clipPath: "inset(0 0 0 0)" }}
+            exit={{ clipPath: "inset(0 0 100% 0)" }}
+            transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[100000] flex flex-col bg-renaissance-ink px-6 pb-8 pt-5 text-white md:hidden"
+          >
+            <div className="flex items-center justify-between border-b border-white/20 pb-5">
+              <Image
+                src="/units/RENAISSANCE/renaissance-horz_logo.svg"
+                alt="Renaissance"
+                width={140}
+                height={30}
+                className="h-auto w-[8.75rem]"
+              />
+              <button
+                type="button"
+                aria-label="Close menu"
+                onClick={() => setShowMobileMenu(false)}
+                className="grid h-11 w-11 place-items-center rounded-full border border-white/40 text-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+
+            <nav aria-label="Mobile navigation" className="my-auto">
+              <ol className="divide-y divide-white/16">
+                {mobileMenuItems.map((item, index) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="group flex items-baseline gap-4 py-4 text-[clamp(2.25rem,11vw,3.5rem)] font-semibold leading-[0.94] tracking-[-0.045em]"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        setShowMobileMenu(false);
+                        router.push(item.href);
+                      }}
+                    >
+                      <span className="font-mono text-[0.65rem] tracking-[0.14em] text-renaissance-teal">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="transition-transform duration-300 group-hover:translate-x-2">
+                        {item.label}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+
+            <a
+              href="https://1sp.agency"
+              className="flex items-center justify-between border-t border-white/20 pt-5 text-sm text-white/70"
+            >
+              <span>Part of the 1SP Agency family</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
       {/* Cases overlay */}
       {showOverlay && (
         <div className="fixed inset-0 flex items-center justify-center p-8 backdrop-blur-lg z-[100] bg-black/20 overflow-hidden">

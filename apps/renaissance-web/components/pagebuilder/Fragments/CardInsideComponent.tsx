@@ -7,8 +7,10 @@ function isVideo(resourceType?: string, url?: string) {
 
 export default function CardInsideComponent({
   card,
+  index,
 }: {
   card: CardInsideComponentType;
+  index?: number;
 }) {
   const mediaUrl = assetUrl(card.media);
   const resourceType =
@@ -18,7 +20,7 @@ export default function CardInsideComponent({
   const video = isVideo(resourceType, mediaUrl);
 
   return (
-    <article className="group relative aspect-[6/7] min-h-[150px] w-full overflow-hidden rounded-[2rem] bg-neutral-900 text-white">
+    <article className="group relative min-h-[22rem] w-full overflow-hidden rounded-[1rem] bg-renaissance-ink text-white">
       <div className="absolute inset-0 overflow-hidden">
         {mediaUrl && video ? (
           <video
@@ -40,21 +42,26 @@ export default function CardInsideComponent({
           />
         ) : (
           <div
-            className="h-full w-full bg-[radial-gradient(circle_at_80%_10%,rgba(124,92,255,0.65),transparent_38%),linear-gradient(145deg,#2b2335,#11191b_65%)]"
+            className="h-full w-full bg-[linear-gradient(145deg,#245e66_0%,#1c4c54_56%,#163f45_100%)]"
             aria-hidden="true"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#11191b]/65 via-transparent to-[#11191b]/10 opacity-80" />
+        <div className="absolute inset-0 bg-gradient-to-t from-renaissance-ink/65 via-transparent to-renaissance-ink/10 opacity-80" />
         <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/15" />
       </div>
 
-      <div className="absolute bottom-3 left-3 z-10 w-fit max-w-[calc(100%-1.5rem)] rounded-[1.5rem] border border-white/10 bg-[rgba(111,111,111,0.4)] px-4 py-3 text-white shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-md sm:px-5 sm:py-4">
-        <h3 className="renaissance-card-title text-lg font-semibold leading-[1.05] text-white sm:text-xl">
+      <div className="absolute inset-0 z-10 flex flex-col justify-between p-6 text-white sm:p-8">
+        <span className="text-sm font-semibold tabular-nums text-white/55">
+          {String((index ?? 0) + 1).padStart(2, "0")}
+        </span>
+        <div>
+        <h3 className="renaissance-card-title text-[clamp(1.65rem,2.4vw,2.5rem)] font-semibold leading-[0.98] text-white">
           {card.headline}
         </h3>
-        <p className="mt-1.5 line-clamp-4 max-w-[42ch] text-balance text-sm leading-snug text-white/70 sm:text-base">
+        <p className="mt-5 max-w-[42ch] text-pretty text-base leading-[1.45] text-white/75">
           {card.text}
         </p>
+        </div>
       </div>
     </article>
   );

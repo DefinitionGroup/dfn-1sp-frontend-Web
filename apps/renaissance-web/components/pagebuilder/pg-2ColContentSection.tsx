@@ -59,8 +59,9 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
   const isVideo = useVideo || isVideoUrl(mediaUrl);
 
   // Generate section ID from title
-  const sectionId = title
-    ? title
+  const sectionIdSource = navPointName || title;
+  const sectionId = sectionIdSource
+    ? sectionIdSource
       .replace(/[^a-zA-Z0-9\s]/g, "")
       .replace(/\s+/g, "-")
       .toLowerCase()
@@ -158,7 +159,7 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
         </h5>
       ),
       blockquote: ({ children }: any) => (
-        <blockquote className={`border-l-4 border-neutral-300 pl-4 italic ${textColors.secondary} my-4`}>
+        <blockquote className={`border-s border-neutral-300/70 ps-4 italic ${textColors.secondary} my-4`}>
           {children}
         </blockquote>
       ),

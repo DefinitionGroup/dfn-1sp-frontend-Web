@@ -35,7 +35,14 @@ export default defineType({
       name: "media",
       title: "Image or video",
       type: "cloudinary.asset",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) =>
+        Rule.custom((value, context) =>
+          context.document?.channel === "renaissanceWeb" || value
+            ? true
+            : "Media is required",
+        ),
+      description:
+        "Required on existing sites. Renaissance service tiles may intentionally use the brand surface without media.",
     }),
     defineField({
       name: "altText",

@@ -25,8 +25,12 @@ import RenaissanceSiteWrapper from "@renaissance/components/RenaissanceSiteWrapp
 import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@renaissance/lib/hero-utils";
-import RenaissanceSetupState from "@renaissance/components/ui/RenaissanceSetupState";
 import { getSiteConfig } from "@1sp/site-config";
+import {
+  RENAISSANCE_HOMEPAGE_FALLBACK,
+  RENAISSANCE_HOME_DESCRIPTION,
+  RENAISSANCE_HOME_TITLE,
+} from "@renaissance/data/homepageFallback";
 import {
   JsonLdScript,
   generateHomepageJsonLd,
@@ -68,10 +72,20 @@ export async function generateMetadata({
 
   if (!page) {
     return {
-      title: "Renaissance",
-      description: "Renaissance website.",
+      title: RENAISSANCE_HOME_TITLE,
+      description: RENAISSANCE_HOME_DESCRIPTION,
       alternates: { canonical: "/" },
-      robots: { index: false, follow: false },
+      openGraph: {
+        title: RENAISSANCE_HOME_TITLE,
+        description: RENAISSANCE_HOME_DESCRIPTION,
+        locale: language,
+        type: "website",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: RENAISSANCE_HOME_TITLE,
+        description: RENAISSANCE_HOME_DESCRIPTION,
+      },
     };
   }
 
@@ -128,11 +142,10 @@ export default async function Home({
 
   const navbarVariant = page?.navbarVariant || "light";
 
-  const contentBlocks = page?.content as any[] | undefined;
-
-  if (!contentBlocks?.length) {
-    return <RenaissanceSetupState />;
-  }
+  const sanityContent = page?.content as any[] | undefined;
+  const contentBlocks = sanityContent?.length
+    ? sanityContent
+    : RENAISSANCE_HOMEPAGE_FALLBACK;
 
   // Structured data: get social links & logo (cached — deduped with SiteWrapper)
   const globalData = await getGlobalData(DEFAULT_CHANNEL, language);
@@ -151,7 +164,11 @@ export default async function Home({
   const services = mapServicesToCatalogItems(allServicesRaw);
 
   return (
-    <RenaissanceSiteWrapper language={language} navColor={navbarVariant}>
+    <RenaissanceSiteWrapper
+      language={language}
+      navColor={navbarVariant}
+      homePageContent={contentBlocks}
+    >
       {/* Structured Data (JSON-LD) */}
       <JsonLdScript
         data={generateHomepageJsonLd({

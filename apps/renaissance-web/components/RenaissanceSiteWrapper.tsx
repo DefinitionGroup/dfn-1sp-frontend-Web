@@ -53,6 +53,7 @@ type RenaissanceSiteWrapperProps = {
   language?: string;
   navColor?: "light" | "dark";
   overlayCaseStudies?: OverlayCaseStudy[];
+  homePageContent?: PageBuilderBlock[];
 };
 
 const CHANNEL = "renaissanceWeb";
@@ -70,7 +71,7 @@ const FOOTER_COPY: Record<
 > = {
   en: {
     startProject: "Start a project",
-    cases: "Cases",
+    cases: "Stories",
     services: "Services",
     locations: "Locations",
     company: "Company",
@@ -114,6 +115,18 @@ function getFooterLocations(language: string): FooterLocation[] {
 
 function getSelectedServices(content: PageBuilderBlock[]): FooterService[] {
   const services = content.flatMap((block) => {
+    if (
+      block._type === "cardContainerComponent" &&
+      Array.isArray(block.cards)
+    ) {
+      return block.cards
+        .filter((card: { headline?: string }) => Boolean(card?.headline))
+        .map((card: { _key?: string; headline: string }) => ({
+          _id: card._key,
+          name: card.headline,
+        }));
+    }
+
     if (
       block._type !== "smartServicesCarousel" ||
       !Array.isArray(block.selectedServices)
@@ -197,10 +210,26 @@ async function RenaissanceFooter({
       : Promise.resolve([]),
   ]);
 
-  const cases = extractCaseItemsFromContent(
+  const extractedCases = extractCaseItemsFromContent(
     content,
     mapCasesToItemList(allCasesRaw),
   ).slice(0, 6);
+  const carouselStories = content
+    .filter((block) => block._type === "carousel" && Array.isArray(block.items))
+    .flatMap((block) => block.items as Array<{ _key?: string; title?: string }>)
+    .filter((item) => Boolean(item?.title))
+    .slice(0, 6);
+  const cases = extractedCases.length
+    ? extractedCases.map((caseItem) => ({
+        key: caseItem.slug,
+        title: caseItem.title,
+        href: localizedPath(`/cases/${caseItem.slug}`, language),
+      }))
+    : carouselStories.map((story) => ({
+        key: story._key ?? story.title ?? "story",
+        title: story.title ?? "Story",
+        href: localizedPath("/#stories", language),
+      }));
   const services = Array.from(
     new Map(
       [...getSelectedServices(content), ...(allServicesRaw as FooterService[])]
@@ -208,11 +237,30 @@ async function RenaissanceFooter({
         .map((service) => [service._id ?? service.name, service]),
     ).values(),
   ).slice(0, 8);
-  const locations = getFooterLocations(language);
   const globeBlock = content.find(
     (block) => block._type === "globeComponent",
-  ) as { sectionTitle?: string } | undefined;
-  const globeSectionId = getRenaissanceGlobeSectionId(globeBlock?.sectionTitle);
+  ) as
+    | {
+        sectionTitle?: string;
+        navPointName?: string;
+        locations?: Array<{ _key?: string; name?: string; subtitle?: string }>;
+      }
+    | undefined;
+  const configuredLocations = Array.isArray(globeBlock?.locations)
+    ? globeBlock.locations
+        .filter((location) => Boolean(location?.name))
+        .map((location) => ({
+          _key: location._key,
+          name: location.name as string,
+          detail: location.subtitle,
+        }))
+    : [];
+  const locations = configuredLocations.length
+    ? configuredLocations
+    : getFooterLocations(language);
+  const globeSectionId = getRenaissanceGlobeSectionId(
+    globeBlock?.navPointName || globeBlock?.sectionTitle,
+  );
   const homepageStatement = content.find(
     (block) => typeof block.headline === "string" && block.headline.trim(),
   )?.headline as string | undefined;
@@ -263,13 +311,13 @@ async function RenaissanceFooter({
             <FooterColumnHeading
               index="01"
               title={copy.cases}
-              href={localizedPath("/cases", language)}
+              href={cases[0]?.href || localizedPath("/#stories", language)}
             />
             <ul className="space-y-3">
               {cases.map((caseItem) => (
-                <li key={caseItem.slug}>
+                <li key={caseItem.key}>
                   <Link
-                    href={localizedPath(`/cases/${caseItem.slug}`, language)}
+                    href={caseItem.href}
                     className={footerLinkClassName}
                   >
                     <span aria-hidden="true" className="mt-px text-white/30">
@@ -382,6 +430,7 @@ export default async function RenaissanceSiteWrapper({
   language = "en",
   navColor = "light",
   overlayCaseStudies,
+  homePageContent,
 }: RenaissanceSiteWrapperProps) {
   const [{ footer, hasCaseStudies, hasServices }, homePage, navigation] =
     await Promise.all([
@@ -399,6 +448,11 @@ export default async function RenaissanceSiteWrapper({
         available: availableLocales.has(locale),
       }))
     : [];
+  const effectiveHomePage = homePage?.content?.length
+    ? homePage
+    : homePageContent?.length
+      ? { content: homePageContent }
+      : homePage;
 
   return (
     <FooterMenuProvider menu={footer as FooterMenu}>
@@ -409,7 +463,7 @@ export default async function RenaissanceSiteWrapper({
       >
         <NavColorProvider color={navColor}>
           {/* <PageWithMapVertical> */}
-          <div className="min-h-screen bg-renaissance-paper text-renaissance-ink">
+          <div className="renaissance-page min-h-screen bg-renaissance-paper text-renaissance-ink">
             <FrontNavOverlay
               menuData={nav as NavbarMenu}
               color={navColor}
@@ -424,7 +478,7 @@ export default async function RenaissanceSiteWrapper({
             <RenaissanceFooter
               footer={footer as FooterMenu}
               language={language}
-              homePage={homePage}
+              homePage={effectiveHomePage}
             />
             <ScrollToTop />
           </div>

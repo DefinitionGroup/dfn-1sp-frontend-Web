@@ -1,8 +1,13 @@
 "use client";
 
-import { motion, AnimatePresence, PanInfo, useInView } from "motion/react";
-import { useState, useEffect, useMemo, useRef, useCallback } from "react";
-import Image from "next/image";
+import {
+  AnimatePresence,
+  motion,
+  type PanInfo,
+  useInView,
+  useReducedMotion,
+} from "motion/react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Button2 from "@renaissance/components/ui/Button2";
 import {
   getCarouselImageUrl,
@@ -10,12 +15,8 @@ import {
   getCarouselPosterUrl,
   getCarouselVideoSources,
 } from "@1sp/utils/carousel-media";
-import type {
-  CarouselItem as SanityCarouselItem,
-  CTA,
-} from "@1sp/sanity-types";
+import type { CarouselItem as SanityCarouselItem, CTA } from "@1sp/sanity-types";
 import { assetUrl, ctaToButtonProps } from "@1sp/utils/cloudinary";
-
 
 interface UIItem {
   id: string;
@@ -30,51 +31,39 @@ interface UIItem {
   linkHref?: string;
 }
 
-function InteractiveCarousel({
-  items,
-}: {
-  items?: SanityCarouselItem[];
-}) {
+function InteractiveCarousel({ items }: { items?: SanityCarouselItem[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
+  const [direction, setDirection] = useState(1);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [isScrollable, setIsScrollable] = useState(false);
-  const stripRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [preloadedVideos, setPreloadedVideos] = useState<Set<number>>(new Set());
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "200px" });
-  const [preloadedVideos, setPreloadedVideos] = useState<Set<number>>(new Set());
+  const reduceMotion = useReducedMotion();
 
   const carouselItems: UIItem[] = useMemo(() => {
-    const list = (items ?? []).map((it, i) => {
-      const image = getCarouselImageUrl(assetUrl((it as any)?.image)) || "";
-      const logosrc = getCarouselLogoUrl(
-        assetUrl((it as any)?.logoSrc || (it as any)?.logo)
-      );
-      const video = assetUrl((it as any)?.video) || undefined;
-      const linkHref = (it as any)?.linkHref || undefined;
-      return {
-        id: String((it as any)?.id ?? i),
-        title: it.title || "",
-        subtitle: it.subtitle || (it as any)?.category || "",
-        image,
-        video,
-        description: (it as any)?.description || "",
-        category: (it as any)?.category || undefined,
-        logosrc,
-        cta: (it as any)?.cta,
-        linkHref,
-      } as UIItem;
-    });
-    return list.filter((x) => !!x.image || !!x.video);
+    const list = (items ?? []).map((item, index) => ({
+      id: String((item as any)?.id ?? index),
+      title: item.title || "",
+      subtitle: item.subtitle || (item as any)?.category || "",
+      image: getCarouselImageUrl(assetUrl((item as any)?.image)) || "",
+      video: assetUrl((item as any)?.video) || undefined,
+      description: (item as any)?.description || "",
+      category: (item as any)?.category || undefined,
+      logosrc: getCarouselLogoUrl(
+        assetUrl((item as any)?.logoSrc || (item as any)?.logo),
+      ),
+      cta: (item as any)?.cta,
+      linkHref: (item as any)?.linkHref || undefined,
+    }));
+
+    return list.filter((item) => Boolean(item.image || item.video));
   }, [items]);
 
-  // Preload active + next video when carousel is in view
   useEffect(() => {
     if (!isInView || !carouselItems.length) return;
     const nextIndex = (currentIndex + 1) % carouselItems.length;
-    setPreloadedVideos((prev) => {
-      const next = new Set(prev);
+    setPreloadedVideos((previous) => {
+      const next = new Set(previous);
       next.add(currentIndex);
       next.add(nextIndex);
       return next;
@@ -83,310 +72,213 @@ function InteractiveCarousel({
 
   const shouldLoadVideo = useCallback(
     (index: number) => isInView && preloadedVideos.has(index),
-    [isInView, preloadedVideos]
+    [isInView, preloadedVideos],
   );
 
   useEffect(() => {
-    if (!isAutoPlaying || !carouselItems.length) return;
-    const interval = setInterval(() => {
+    if (!isAutoPlaying || carouselItems.length < 2 || reduceMotion) return;
+    const interval = window.setInterval(() => {
       setDirection(1);
-      setCurrentIndex((prev) => (prev + 1) % carouselItems.length);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, [isAutoPlaying, carouselItems.length]);
-
-  useEffect(() => {
-    const checkScrollable = () => {
-      if (typeof window === "undefined") return;
-      if (stripRef.current && containerRef.current) {
-        const isMobile = window.innerWidth < 768;
-        if (isMobile) {
-          const stripWidth = stripRef.current.scrollWidth;
-          const containerWidth = containerRef.current.clientWidth;
-          setIsScrollable(stripWidth > containerWidth);
-        } else {
-          setIsScrollable(false);
-        }
-      }
-    };
-    checkScrollable();
-    if (typeof window !== "undefined") {
-      window.addEventListener("resize", checkScrollable);
-      return () => window.removeEventListener("resize", checkScrollable);
-    }
-  }, []);
+      setCurrentIndex((previous) => (previous + 1) % carouselItems.length);
+    }, 7000);
+    return () => window.clearInterval(interval);
+  }, [isAutoPlaying, carouselItems.length, reduceMotion]);
 
   if (!carouselItems.length) return null;
 
-  const slideVariants = {
-    enter: (d: number) => ({
-      x: d > 0 ? 1000 : -1000,
-      opacity: 0,
-      scale: 1,
-      rotateY: d > 0 ? 45 : -45,
-    }),
-    center: { zIndex: 1, x: 0, opacity: 1, scale: 1, rotateY: 0 },
-    exit: (d: number) => ({
-      zIndex: 0,
-      x: d < 0 ? 1000 : -1000,
-      opacity: 0,
-      scale: 0.1,
-      rotateY: d < 0 ? 45 : -45,
-    }),
-  } as const;
-
-  const swipeConfidenceThreshold = 10000;
   const swipePower = (offset: number, velocity: number) =>
     Math.abs(offset) * velocity;
 
   const paginate = (newDirection: number) => {
     setDirection(newDirection);
-    setCurrentIndex((prev) =>
+    setCurrentIndex((previous) =>
       newDirection === 1
-        ? (prev + 1) % carouselItems.length
-        : prev === 0
+        ? (previous + 1) % carouselItems.length
+        : previous === 0
           ? carouselItems.length - 1
-          : prev - 1
+          : previous - 1,
     );
   };
 
-  const handleDragEnd = (e: any, { offset, velocity }: PanInfo) => {
-    const swipe = swipePower(offset.x, velocity.x);
-    if (swipe < -swipeConfidenceThreshold) paginate(1);
-    else if (swipe > swipeConfidenceThreshold) paginate(-1);
+  const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const swipe = swipePower(info.offset.x, info.velocity.x);
+    if (swipe < -10000) paginate(1);
+    else if (swipe > 10000) paginate(-1);
   };
 
   const active = carouselItems[currentIndex];
   const activeButton = ctaToButtonProps(active.cta);
   const activeVideoSources = getCarouselVideoSources(active.video);
   const activePosterUrl = getCarouselPosterUrl(active.video);
+  const duration = reduceMotion ? 0.01 : 0.72;
+  const slideVariants = {
+    enter: (slideDirection: number) => ({
+      clipPath:
+        slideDirection > 0 ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)",
+      opacity: reduceMotion ? 1 : 0.75,
+    }),
+    center: { clipPath: "inset(0 0 0 0)", opacity: 1 },
+    exit: (slideDirection: number) => ({
+      clipPath:
+        slideDirection < 0 ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)",
+      opacity: reduceMotion ? 1 : 0.75,
+    }),
+  };
 
   return (
-    <section ref={sectionRef}>
-      <div
-        ref={containerRef}
-        className="container  relative top-0 left-0  mx-auto w-full"
-      >
-        <div className="relative h-[800px] flex items-start">
-          {/* Main Carousel */}
-          <div className="relative w-full  overflow-hidden h-full perspective-1000">
-            <AnimatePresence initial={false} custom={direction}>
-              <motion.div
-                key={currentIndex}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{
-                  opacity: { duration: 0.1 },
-                  scale: { duration: 1 },
-                  rotateY: { duration: 1 },
-                }}
-                drag="x"
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={1}
-                onDragEnd={handleDragEnd}
-                className="absolute inset-0 cursor-grab active:cursor-grabbing"
-                onMouseEnter={() => setIsAutoPlaying(false)}
-                onMouseLeave={() => setIsAutoPlaying(true)}
+    <section
+      ref={sectionRef}
+      aria-roledescription="carousel"
+      aria-label="Renaissance stories"
+      className="relative bg-renaissance-ink py-3 text-white sm:py-5"
+      onMouseEnter={() => setIsAutoPlaying(false)}
+      onMouseLeave={() => setIsAutoPlaying(true)}
+      onFocusCapture={() => setIsAutoPlaying(false)}
+      onBlurCapture={() => setIsAutoPlaying(true)}
+    >
+      <div className="container relative mx-auto">
+        <div className="relative min-h-[34rem] overflow-hidden rounded-[0.75rem] sm:min-h-[42rem] lg:min-h-[48rem]">
+          <AnimatePresence initial={false} custom={direction} mode="popLayout">
+            <motion.article
+              key={active.id}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration, ease: [0.22, 1, 0.36, 1] }}
+              drag={carouselItems.length > 1 ? "x" : false}
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.35}
+              onDragEnd={handleDragEnd}
+              className="absolute inset-0 cursor-grab bg-renaissance-mist active:cursor-grabbing"
+            >
+              {active.video && shouldLoadVideo(currentIndex) ? (
+                <motion.video
+                  poster={activePosterUrl}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  initial={{ scale: reduceMotion ? 1 : 1.045 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: reduceMotion ? 0.01 : 7.5, ease: "linear" }}
+                  loop
+                  autoPlay
+                  muted
+                  playsInline
+                  preload="auto"
+                >
+                  {activeVideoSources.map((source) => (
+                    <source
+                      key={`${source.media ?? "all"}-${source.src}`}
+                      src={source.src}
+                      media={source.media}
+                    />
+                  ))}
+                </motion.video>
+              ) : (
+                <motion.img
+                  src={active.video ? activePosterUrl || "" : active.image}
+                  alt=""
+                  className="absolute inset-0 h-full w-full object-cover"
+                  initial={{ scale: reduceMotion ? 1 : 1.045 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: reduceMotion ? 0.01 : 7.5, ease: "linear" }}
+                  loading="lazy"
+                />
+              )}
+
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(22,63,69,0.08)_12%,rgba(22,63,69,0.18)_48%,rgba(12,37,42,0.94)_100%)]" />
+              <div className="pointer-events-none absolute -left-[8%] top-[16%] h-8 w-[62%] -rotate-[14deg] bg-renaissance-teal/75 blur-[1px] sm:h-12" />
+
+              <div className="absolute inset-x-0 bottom-0 grid gap-5 p-6 sm:p-9 lg:grid-cols-[minmax(0,1.25fr)_minmax(18rem,0.75fr)] lg:items-end lg:p-12">
+                <motion.div
+                  initial={{ opacity: 0, y: reduceMotion ? 0 : 22 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: reduceMotion ? 0 : 0.24, duration: 0.5 }}
+                >
+                  <p className="mb-3 font-mono text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-renaissance-teal sm:text-xs">
+                    Story {String(currentIndex + 1).padStart(2, "0")} · {active.subtitle || "Campaign"}
+                  </p>
+                  <h3 className="max-w-5xl text-[clamp(2.75rem,8vw,7.5rem)] font-semibold leading-[0.84] tracking-[-0.055em] text-white">
+                    {active.title}
+                  </h3>
+                </motion.div>
+
+                <motion.div
+                  className="border-t border-white/35 pt-5"
+                  initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: reduceMotion ? 0 : 0.38, duration: 0.45 }}
+                >
+                  {active.description ? (
+                    <p className="max-w-xl text-sm leading-relaxed text-white/84 sm:text-base">
+                      {active.description}
+                    </p>
+                  ) : null}
+                  {activeButton ? (
+                    <div className="mt-5">
+                      <Button2 {...activeButton} />
+                    </div>
+                  ) : active.linkHref ? (
+                    <div className="mt-5">
+                      <Button2
+                        variant="violetsmall"
+                        href={active.linkHref}
+                        text="View case study"
+                      />
+                    </div>
+                  ) : null}
+                </motion.div>
+              </div>
+            </motion.article>
+          </AnimatePresence>
+
+          {carouselItems.map((item, index) =>
+            item.video && preloadedVideos.has(index) && index !== currentIndex ? (
+              <video
+                key={`preload-${index}`}
+                preload="metadata"
+                muted
+                playsInline
+                className="hidden"
+                aria-hidden="true"
               >
-                <div className="relative w-full h-full   overflow-hidden rounded-4xl">
-                  {/* Background media */}
-                  {active.video && shouldLoadVideo(currentIndex) ? (
-                    <motion.video
-                      poster={activePosterUrl}
-                      className="absolute inset-0 w-full h-full overflow-hidden object-cover"
-                      initial={{ scale: 1.3, opacity: 1 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ duration: 1.6 }}
-                      loop
-                      autoPlay
-                      muted
-                      playsInline
-                      preload="auto"
-                    >
-                      {activeVideoSources.map((source) => (
-                        <source
-                          key={`${source.media ?? "all"}-${source.src}`}
-                          src={source.src}
-                          media={source.media}
-                        />
-                      ))}
-                    </motion.video>
-                  ) : active.video ? (
-                    /* Cloudinary poster fallback while video hasn't been preloaded yet */
-                    <motion.img
-                      src={activePosterUrl || ""}
-                      alt={active.title}
-                      className="absolute inset-0 w-full h-full object-cover"
-                      initial={{ scale: 1.3, opacity: 1 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ duration: 1.6 }}
-                    />
-                  ) : (
-                    <motion.img
-                      src={active.image}
-                      alt={active.title}
-                      className="absolute inset-0 w-full h-full object-cover"
-                      initial={{ scale: 1.3, opacity: 1 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ duration: 1.6 }}
-                      loading="lazy"
-                    />
-                  )}
+                {getCarouselVideoSources(item.video).map((source) => (
+                  <source
+                    key={`${index}-${source.media ?? "all"}-${source.src}`}
+                    src={source.src}
+                    media={source.media}
+                  />
+                ))}
+              </video>
+            ) : null,
+          )}
 
-                  {/* Hidden preload for next video */}
-                  {carouselItems.map((item, idx) =>
-                    item.video && preloadedVideos.has(idx) && idx !== currentIndex ? (
-                      <video
-                        key={`preload-${idx}`}
-                        preload="metadata"
-                        muted
-                        playsInline
-                        className="hidden"
-                        aria-hidden="true"
-                      >
-                        {getCarouselVideoSources(item.video).map((source) => (
-                          <source
-                            key={`${idx}-${source.media ?? "all"}-${source.src}`}
-                            src={source.src}
-                            media={source.media}
-                          />
-                        ))}
-                      </video>
-                    ) : null
-                  )}
-
-                  {/* Overlay (match Plaintext: gradient from top) */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/0 to-transparent" />
-
-                  {/* Content (match Plaintext: top placement) */}
-                  <div className="absolute top-0 flex left-0 right-0 p-8 text-white">
-                    <motion.div
-                      initial="hidden"
-                      animate="visible"
-                      className="flex-col items-start justify-start p-8 max-w-3xl space-y-2"
-                      variants={{
-                        hidden: { opacity: 0 },
-                        visible: {
-                          opacity: 1,
-                          transition: { delay: 0.6, staggerChildren: 0.4252 },
-                        },
-                      }}
-                    >
-                      <div>
-                        {(active.logosrc || "/logos/Amazon_logo.svg") && (
-                          <motion.div className="w-fit px-3 text-black flex text-xs ">
-                            <Image
-                              className="mb-8 invert  "
-                              src={active.logosrc || "/logos/Amazon_logo.svg"}
-                              alt="Logo"
-                              width={96}
-                              height={44}
-                              style={{ height: "auto" }}
-                            />
-                          </motion.div>
-                        )}
-                        {active.title && (
-                          <motion.h3 className="text-3xl md:text-7xl font-semibold leading-compressed pb-0">
-                            {active.title}
-                          </motion.h3>
-                        )}
-                      </div>
-                      {active.subtitle && (
-                        <motion.p className="md:text-xl text-gray-100">
-                          {active.subtitle}
-                        </motion.p>
-                      )}
-                      {active.description && (
-                        <motion.p className="text-gray-100 text-sm max-w-lg ">
-                          {active.description}
-                        </motion.p>
-                      )}
-                      <motion.div className="text-gray-100 text-sm max-w-2xl ">
-                        {activeButton ? (
-                          <Button2 {...activeButton} />
-                        ) : active.linkHref ? (
-                          <Button2
-                            variant="violetsmall"
-                            href={active.linkHref}
-                            text="View Case Study"
-                          />
-                        ) : null}
-                      </motion.div>
-                    </motion.div>
-                  </div>
-
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Navigation Arrows (match Plaintext classes) */}
-          <motion.button
-            className="hidden md:flex absolute -left-12 top-1/2 -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm  items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => paginate(-1)}
-          >
-            <svg
-              className="w-12 h-12"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </motion.button>
-
-          <motion.button
-            className="hidden md:flex absolute -right-12 top-1/2 -translate-y-1/2 w-12 h-12 bg-gray-300 backdrop-blur-sm  items-center justify-center text-black hover:bg-white/20 transition-colors z-10"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => paginate(1)}
-          >
-            <svg
-              className="w-12 h-12"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </motion.button>
-        </div>
-
-        {/* Dots Indicator (match Plaintext positioning & style) */}
-        <div className="absolute w-full bottom-[16px] z-30">
-          <div className="flex justify-center mt-8 mx-auto space-x-2 bg-gray-900/50 backdrop-blur-xl h-10 items-center px-8  w-fit">
-            {carouselItems.map((_, index) => (
-              <motion.button
-                key={index}
-                className={`h-2  transition-all hover:bg-violet-400 duration-300 cursor-pointer ${index === currentIndex ? "bg-violet-400 min-w-16" : "bg-gray-100 min-w-2"}`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.8 }}
-                onClick={() => {
-                  setDirection(index > currentIndex ? 1 : -1);
-                  setCurrentIndex(index);
-                }}
-              />
-            ))}
+          <div className="absolute right-5 top-5 z-20 flex items-center gap-2 sm:right-8 sm:top-8">
+            <span className="mr-2 font-mono text-xs font-semibold tracking-[0.14em] text-white">
+              {String(currentIndex + 1).padStart(2, "0")} / {String(carouselItems.length).padStart(2, "0")}
+            </span>
+            {carouselItems.length > 1 ? (
+              <>
+                <button
+                  type="button"
+                  aria-label="Previous story"
+                  className="grid h-11 w-11 place-items-center rounded-full border border-white/55 bg-renaissance-ink/40 text-white transition-colors hover:bg-white hover:text-renaissance-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  onClick={() => paginate(-1)}
+                >
+                  <span aria-hidden="true">←</span>
+                </button>
+                <button
+                  type="button"
+                  aria-label="Next story"
+                  className="grid h-11 w-11 place-items-center rounded-full border border-white/55 bg-renaissance-ink/40 text-white transition-colors hover:bg-white hover:text-renaissance-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  onClick={() => paginate(1)}
+                >
+                  <span aria-hidden="true">→</span>
+                </button>
+              </>
+            ) : null}
           </div>
         </div>
-
-        {/* Thumbnail Strip (match Plaintext absolute positioning) */}
-
       </div>
     </section>
   );

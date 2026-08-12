@@ -26,7 +26,7 @@ interface ButtonProps
 const buttonVariants = {
   default:
     "bg-[#121212] text-[#f4f4f4] border-[#f4f4f4] border-b hover:bg-neutral-800 active:bg-neutral-900",
-  violet: "bg-[#008da7] text-[#121212] hover:bg-violet-300 active:bg-violet-500",
+  violet: "bg-[#99bbba] text-[#163f45] hover:bg-[#dbe5e5] active:bg-[#245e66] active:text-white",
   outline:
     "border-2 border-[#f4f4f4] text-[#f4f4f4] bg-transparent hover:bg-[#f4f4f4] hover:text-[#121212]",
   ghost: "text-[#f4f4f4] hover:bg-[#f4f4f4]/10 active:bg-[#f4f4f4]/20",

@@ -14,9 +14,18 @@ interface GlobeComponentProps {
 
 function GlobeComponent({ data, language }: GlobeComponentProps) {
   const { sectionTitle, sectionSubtitle, navPointName } = data || {};
-  const locations = getRenaissanceEuropeanLocations(language);
+  const configuredLocations = Array.isArray(data?.locations)
+    ? data.locations.filter(
+        (location) =>
+          Number.isFinite(location?.coordinateLat) &&
+          Number.isFinite(location?.coordinateLon),
+      )
+    : [];
+  const locations = configuredLocations.length
+    ? configuredLocations
+    : getRenaissanceEuropeanLocations(language);
 
-  const sectionId = getRenaissanceGlobeSectionId(sectionTitle);
+  const sectionId = getRenaissanceGlobeSectionId(navPointName || sectionTitle);
 
   // Store the navPointName in a data attribute if provided
   const navPointDataAttr = navPointName
@@ -24,7 +33,7 @@ function GlobeComponent({ data, language }: GlobeComponentProps) {
     : {};
 
   // Transform the shared RENAISSANCE market locations into globe arcs.
-  const colors = ["#008da7", "#45b5c9", "#cbeaf0"];
+  const colors = ["#245e66", "#99bbba", "#dbe5e5"];
 
   // Create arcs connecting consecutive locations
   const arcs = locations.map((location, index) => {
@@ -41,22 +50,24 @@ function GlobeComponent({ data, language }: GlobeComponentProps) {
       arcAlt: 0.08 + (index % 3) * 0.015,
       color: colors[index % colors.length],
       label: location.name,
-      labelOffsetX: location.labelOffsetX,
-      labelOffsetY: location.labelOffsetY,
+      labelOffsetX:
+        "labelOffsetX" in location ? location.labelOffsetX : undefined,
+      labelOffsetY:
+        "labelOffsetY" in location ? location.labelOffsetY : undefined,
     };
   });
 
   // Globe configuration
   const globeConfig = {
     pointSize: 0.5,
-    globeColor: "#f6f6f6",
+    globeColor: "#dbe5e5",
     showAtmosphere: false,
     atmosphereColor: "#ffffff",
     atmosphereAltitude: 0.1,
     emissive: "#ffffff",
     emissiveIntensity: 22,
     shininess: 1,
-    polygonColor: "rgba(124,92,255,1)",
+    polygonColor: "rgba(36,94,102,1)",
     ambientLight: "#ffffff",
     directionalLeftLight: "#ffffff",
     directionalTopLight: "#ffffff",

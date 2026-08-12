@@ -38,9 +38,16 @@ export default defineType({
     }),
     defineField({
       name: "externalUrl",
-      title: "External URL",
+      title: "External URL, email or section",
       type: "url",
+      description:
+        "Accepts https:// URLs, mailto: and tel: links, or a relative section anchor such as #stories.",
       hidden: (ctx) => (ctx.parent as LinkParent)?.linkType !== "external",
+      validation: (Rule) =>
+        Rule.uri({
+          allowRelative: true,
+          scheme: ["http", "https", "mailto", "tel"],
+        }),
     }),
   ],
   preview: {

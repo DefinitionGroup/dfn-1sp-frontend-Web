@@ -67,6 +67,14 @@ export default function RootLayout({
     >
       <head>{LOAD_PRODUCTION_TRACKING ? <CookiebotBanner /> : null}</head>
       <body className="antialiased" suppressHydrationWarning>
+        <span
+          hidden
+          aria-hidden="true"
+          dangerouslySetInnerHTML={{
+            __html:
+              "<!-- RENAISSANCE-DESIGN-CONTRACT seed=wireframe-v2-taster-v4 | THESIS: A bold editorial games-communications world where Renaissance is the unmistakable lead signal. | OWN-WORLD: Petrol, teal, sand and white; compressed display type; diagonal light streaks; full-bleed game imagery. | STORY: Positioning, campaign proof, trusted company, integrated services, people, origin, global reach, direct contact. | FIRST VIEWPORT: Wordmark, one headline, one support statement, two actions and one dominant game world only. | FORM: Broad image planes, hard diagonals, restrained radii, no decorative card grid and no detached hero badges. | FINISH: Deliberate motion hierarchy, responsive composition, accessible contrast and reduced-motion support. -->",
+          }}
+        />
         {children}
         {LOAD_PRODUCTION_TRACKING && GOOGLE_MEASUREMENT_ID ? (
           <GoogleAnalyticsConsent measurementId={GOOGLE_MEASUREMENT_ID} />

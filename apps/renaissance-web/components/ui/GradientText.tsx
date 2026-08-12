@@ -104,7 +104,7 @@ export default function GradientText({
       : direction === "vertical"
         ? "to bottom"
         : "to bottom right";
-  const safeColors = colors.length > 0 ? colors : ["#008da7"];
+  const safeColors = colors.length > 0 ? colors : ["#245e66"];
   const gradientColors = [...safeColors, safeColors[0]].join(", ");
   const gradientStyle: MotionStyle = {
     backgroundImage: `linear-gradient(${gradientAngle}, ${gradientColors})`,

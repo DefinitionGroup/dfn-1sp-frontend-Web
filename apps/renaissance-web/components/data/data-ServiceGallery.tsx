@@ -455,9 +455,9 @@ export default function ServiceGalleryComponent({
                           style={objectPosition ? { objectPosition } : undefined}
                         />
                       ) : (
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgba(124,92,255,0.65),transparent_38%),linear-gradient(145deg,#2b2335,#11191b_65%)]" />
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgba(153,187,186,0.62),transparent_38%),linear-gradient(145deg,#245e66,#163f45_65%)]" />
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#11191b]/65 via-transparent to-[#11191b]/10 opacity-80" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#163f45]/65 via-transparent to-[#163f45]/10 opacity-80" />
                       <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/15" />
                     </div>
 
@@ -536,7 +536,7 @@ export default function ServiceGalleryComponent({
             <AnimatePresence>
               {active && activeMedia ? (
                 <motion.div
-            className="fixed inset-0 z-[2147483647] isolate grid place-items-center bg-[#11191b]/65 p-3 backdrop-blur-xl sm:p-6"
+            className="fixed inset-0 z-[2147483647] isolate grid place-items-center bg-[#163f45]/65 p-3 backdrop-blur-xl sm:p-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -586,7 +586,7 @@ export default function ServiceGalleryComponent({
                     }
                   />
                 ) : (
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_15%,rgba(124,92,255,0.7),transparent_35%),linear-gradient(145deg,#2b2335,#11191b_65%)]" />
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_15%,rgba(153,187,186,0.68),transparent_35%),linear-gradient(145deg,#245e66,#163f45_65%)]" />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-neutral-900/55 via-transparent to-neutral-900/10 md:bg-gradient-to-r md:from-transparent md:to-neutral-900/30" />
               </div>

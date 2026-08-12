@@ -295,7 +295,7 @@ function PeopleShowcaseHero({
                         <a
                           href={`mailto:${member.email}`}
                           aria-label={`Email ${member.fullname || member.name || ""}`}
-                          className="flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[#008da7] backdrop-blur-sm transition-colors hover:bg-[#008da7] hover:text-white"
+                          className="flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[#245e66] backdrop-blur-sm transition-colors hover:bg-[#245e66] hover:text-white"
                         >
                           <svg
                             className="h-4 w-4"
@@ -314,7 +314,7 @@ function PeopleShowcaseHero({
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label={`LinkedIn profile of ${member.fullname || member.name || ""}`}
-                          className="flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[#008da7] backdrop-blur-sm transition-colors hover:bg-[#008da7] hover:text-white"
+                          className="flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[#245e66] backdrop-blur-sm transition-colors hover:bg-[#245e66] hover:text-white"
                         >
                           {/* Inline so the glyph follows currentColor (the
                               public SVG has lime hardcoded) */}

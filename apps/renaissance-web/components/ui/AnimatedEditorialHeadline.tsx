@@ -32,7 +32,7 @@ export default function AnimatedEditorialHeadline({
       }}
     >
       <GradientText
-        colors={["#008da7", "#cbeaf0", "#ffffff", "#45b5c9", "#008da7"]}
+        colors={["#245e66", "#99bbba", "#ffffff", "#dbe5e5", "#245e66"]}
         animationSpeed={4}
         direction="horizontal"
         pauseOnHover={false}

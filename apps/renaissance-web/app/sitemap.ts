@@ -2,7 +2,6 @@ import type { MetadataRoute } from "next";
 import {
     getAllPageSitemapSlugs,
     getAllCaseSlugs,
-    getHomePage,
 } from "@1sp/sanity-queries";
 import { CANONICAL_URL } from "@renaissance/lib/structured-data";
 
@@ -15,17 +14,16 @@ import { CANONICAL_URL } from "@renaissance/lib/structured-data";
  * @see https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const homepage = await getHomePage("renaissanceWeb", "en");
-
-    // Homepage
-    const homePages: MetadataRoute.Sitemap = homepage ? [
+    // The homepage has a production-quality local composition while Sanity is
+    // empty, so it remains a valid public URL before the first CMS publish.
+    const homePages: MetadataRoute.Sitemap = [
         {
             url: CANONICAL_URL,
             lastModified: new Date(),
             changeFrequency: "weekly",
             priority: 1.0,
         },
-    ] : [];
+    ];
 
     // Dynamic pages from Sanity (includes real _updatedAt dates)
     const pages = await getAllPageSitemapSlugs();

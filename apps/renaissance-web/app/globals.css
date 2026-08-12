@@ -41,37 +41,32 @@
 
   --animate-fade-in-up: fadeInUp 0.65s var(--ease-renaissance);
   /* Legacy semantic aliases retained for copied component contracts. */
-  --color-brand-lime: #008da7;
-  --color-brand-orange: #00778d;
-  --color-brand-pink: #cbeaf0;
+  --color-brand-lime: #99bbba;
+  --color-brand-orange: #245e66;
+  --color-brand-pink: #dbe5e5;
   --leading-compress: 0.75;
   /* 85% for compressed leading */
 
-  /* ============================================================
-     RENAISSANCE design language — teal, charcoal ink, paper, mono telemetry,
-     pronounced radii. Single rationed accent: renaissance-accent.
-     ============================================================ */
-  --color-renaissance-accent: #008da7;
-  /* Accent — max 3 appearances per viewport */
-  --color-renaissance-mist: #cbeaf0;
-  /* Soft tint (secondary accent surface) */
-  --color-renaissance-ink: #11191b;
-  /* Dark passages — teal-tinted charcoal, never #000 */
-  --color-renaissance-paper: #ffffff;
-  /* Light page background — pure white (user call: no light-gray tints) */
-  --color-renaissance-hairline: #d9e6e8;
+  /* Renaissance presentation palette: petrol, teal, off-white, white and sand. */
+  --color-renaissance-accent: #245e66;
+  --color-renaissance-teal: #99bbba;
+  --color-renaissance-mist: #dbe5e5;
+  --color-renaissance-ink: #163f45;
+  --color-renaissance-paper: #edeae1;
+  --color-renaissance-white: #ffffff;
+  --color-renaissance-hairline: #c8d2d0;
   /* 1px dividers on light */
   --color-renaissance-hairline-dark: rgb(255 255 255 / 0.15);
   /* 1px dividers on dark */
 
   /* Copied components retain their violet-* variant API, but every rendered
      value is mapped onto the Renaissance teal family. */
-  --color-violet-200: #b8e2e9;
-  --color-violet-300: #79cbd9;
-  --color-violet-400: #008da7;
-  --color-violet-500: #00778d;
-  --color-violet-600: #00677a;
-  --color-violet-700: #005566;
+  --color-violet-200: #dbe5e5;
+  --color-violet-300: #b9cecd;
+  --color-violet-400: #99bbba;
+  --color-violet-500: #245e66;
+  --color-violet-600: #1c4c54;
+  --color-violet-700: #163f45;
 
   /* Fluid type scale (16px root, 375px → 1440px interpolation) */
   --text-display: clamp(2.75rem, 2.05rem + 3vw, 4.75rem);
@@ -98,43 +93,38 @@
 
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   /* Legacy lime-* aliases mapped to teal for schema-authored button variants. */
-  --color-brand-lime-50: #f2fafb;
-  --color-brand-lime-100: #e2f4f7;
-  --color-brand-lime-200: #b8e2e9;
-  --color-brand-lime-300: #79cbd9;
-  --color-brand-lime-400: #45b5c9;
-  --color-brand-lime-500: #008da7;
-  --color-brand-lime-600: #00778d;
-  --color-brand-lime-700: #00677a;
-  --color-brand-lime-800: #005566;
-  --color-brand-lime-900: #003f4c;
+  --color-brand-lime-50: #f6f8f4;
+  --color-brand-lime-100: #e9efec;
+  --color-brand-lime-200: #dbe5e5;
+  --color-brand-lime-300: #b9cecd;
+  --color-brand-lime-400: #99bbba;
+  --color-brand-lime-500: #5e9192;
+  --color-brand-lime-600: #245e66;
+  --color-brand-lime-700: #1c4c54;
+  --color-brand-lime-800: #163f45;
+  --color-brand-lime-900: #102f33;
 
   /* Neutral scale — cool teal-tinted inks (retints all existing
      bg-neutral-* / text-neutral-* usage into the renaissance language) */
   --color-neutral-50: #ffffff;
-  /* Paper — pure white */
-  --color-neutral-100: #ffffff;
-  /* Raised paper — white; separation comes from hairlines, not tint */
-  --color-neutral-200: oklch(0.9 0.015 215);
-  /* Secondary text */
-  --color-neutral-300: oklch(0.82 0.014 215);
-  --color-neutral-400: oklch(0.67 0.018 215);
-  --color-neutral-500: oklch(0.52 0.022 215);
-  --color-neutral-600: oklch(0.4 0.024 215);
-  --color-neutral-700: oklch(0.32 0.024 215);
-  --color-neutral-800: oklch(0.24 0.022 215);
-  --color-neutral-900: #11191b;
-  /* Ink — dark passages */
-  --color-neutral-950: #0b1315;
-  /* Deepest ink, replaces pure black */
+  --color-neutral-100: #dbe5e5;
+  --color-neutral-200: #c8d6d5;
+  --color-neutral-300: #afc1c0;
+  --color-neutral-400: #7d9899;
+  --color-neutral-500: #536f73;
+  --color-neutral-600: #365f65;
+  --color-neutral-700: #245e66;
+  --color-neutral-800: #1c4c54;
+  --color-neutral-900: #163f45;
+  --color-neutral-950: #102f33;
 
   /* Legacy purple/blue utility aliases also resolve to the teal family. */
-  --color-purple-400: #008da7;
-  --color-purple-500: #00778d;
-  --color-purple-600: #00677a;
-  --color-blue-400: #45b5c9;
-  --color-blue-500: #008da7;
-  --color-blue-600: #00778d;
+  --color-purple-400: #99bbba;
+  --color-purple-500: #245e66;
+  --color-purple-600: #1c4c54;
+  --color-blue-400: #99bbba;
+  --color-blue-500: #245e66;
+  --color-blue-600: #1c4c54;
 
   /* Typography Scale - From Figma Design */
   --font-size-xxs: 0.64rem;
@@ -223,24 +213,24 @@
   --type-display-width: 82.5%;
   --type-display-leading: 0.92;
   --radius: 1.5rem;
-  --background: #ffffff;
-  --foreground: #11191b;
+  --background: #edeae1;
+  --foreground: #163f45;
   --card: oklch(1 0 0);
-  --card-foreground: #11191b;
+  --card-foreground: #163f45;
   --popover: oklch(1 0 0);
-  --popover-foreground: #11191b;
-  --primary: #008da7;
+  --popover-foreground: #163f45;
+  --primary: #245e66;
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: #ffffff;
-  --secondary-foreground: #11191b;
-  --muted: #ffffff;
-  --muted-foreground: oklch(0.52 0.022 215);
-  --accent: #ffffff;
-  --accent-foreground: #11191b;
+  --secondary: #dbe5e5;
+  --secondary-foreground: #163f45;
+  --muted: #dbe5e5;
+  --muted-foreground: #536f73;
+  --accent: #99bbba;
+  --accent-foreground: #163f45;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: #d9e6e8;
-  --input: #d9e6e8;
-  --ring: #008da7;
+  --border: #c8d2d0;
+  --input: #c8d2d0;
+  --ring: #245e66;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -269,33 +259,23 @@
     line-height: var(--type-body-leading);
   }
 
+  .renaissance-page {
+    background-color: var(--color-renaissance-paper);
+    background-image:
+      linear-gradient(132deg, transparent 0 72%, rgb(153 187 186 / 0.09) 72.1% 78%, transparent 78.1%),
+      linear-gradient(42deg, transparent 0 86%, rgb(36 94 102 / 0.045) 86.1% 90%, transparent 90.1%);
+    background-size: 100% 52rem, 100% 68rem;
+  }
+
   /* RENAISSANCE uses the font's native spacing across every rendered component,
      including reusable blocks whose source lives outside this app. */
   :where(body, body *) {
-    letter-spacing: normal !important;
+    letter-spacing: normal;
   }
 
   /* Deliberate exception for compact media-card headlines. */
   .renaissance-card-title {
-    letter-spacing: 0.05em !important;
-  }
-
-  /* Headline casing is a site-level contract, including reusable blocks and
-     headline-like shell copy that cannot use a heading element. */
-  :where(
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6,
-    .text-display,
-    .text-title,
-    .heading-responsive,
-    .subheading-responsive,
-    .renaissance-headline
-  ) {
-    text-transform: uppercase;
+    letter-spacing: -0.025em !important;
   }
 
   ::selection {
@@ -325,8 +305,7 @@
     line-height: var(--type-label-leading);
   }
 
-  /* Telemetry eyebrow — 12px uppercase mono; the renaissance signature label.
-     Pair with .status-dot for live-data readouts. */
+  /* Compact system labels only; display copy remains natural case. */
   .eyebrow-mono {
     font-family: var(--font-mono);
     font-size: 0.75rem;
@@ -486,9 +465,7 @@
   }
 }
 
-/* RENAISSANCE headline contract. Keep this outside Tailwind's cascade layers so
-   component-level font-light/font-medium/font-semibold utilities cannot
-   dilute the channel's bold italic voice, including reusable blocks. */
+/* Renaissance display contract: compressed, decisive and natural-case. */
 :where(
   h1,
   h2,
@@ -504,9 +481,15 @@
 ) {
   font-family: var(--font-ibm-plex-sans), sans-serif;
   font-stretch: var(--type-display-width);
-  font-style: italic;
+  font-style: normal;
   font-weight: var(--type-display-weight);
-  text-transform: uppercase;
+  letter-spacing: -0.035em;
+  text-transform: none;
+}
+
+.renaissance-display {
+  font-style: normal;
+  letter-spacing: -0.035em !important;
 }
 
 @keyframes vt-slide-in {
@@ -579,7 +562,7 @@
   }
 
   100% {
-    clip-path: inset(0.75rem 0.75rem 0.75rem 0.75rem round var(--radius-media));
+    clip-path: inset(0 0 0 0 round 0);
     opacity: 1;
   }
 }

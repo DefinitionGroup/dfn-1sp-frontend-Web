@@ -16,7 +16,7 @@ import { hasVisibleText } from "@1sp/utils/text-content";
 const Strands = dynamic(() => import("./Strands"), { ssr: false });
 
 /**
- * RENAISSANCE pill button — violet aurora WebGL shader that follows the pointer,
+ * RENAISSANCE pill button — palette-bound WebGL field that follows the pointer,
  * spring hover/press physics, mono telemetry label, pronounced radius.
  *
  * The legacy two-element roll variants (violetsmall, limesmall, …) are
@@ -96,10 +96,10 @@ uniform float u_hover;  /* 0..1 */
 uniform float u_press;  /* 0..1 */
 uniform float u_dark;   /* 0 = teal base, 1 = ink base */
 
-const vec3 TEAL  = vec3(0.0, 0.553, 0.655);      /* #008da7 */
-const vec3 MIST  = vec3(0.796, 0.918, 0.941);    /* #cbeaf0 */
+const vec3 TEAL  = vec3(0.600, 0.733, 0.729);    /* #99bbba */
+const vec3 MIST  = vec3(0.859, 0.898, 0.898);    /* #dbe5e5 */
 const vec3 WHITE    = vec3(1.0, 1.0, 1.0);
-const vec3 INK      = vec3(0.067, 0.098, 0.106); /* #11191b */
+const vec3 INK      = vec3(0.086, 0.247, 0.271); /* #163f45 */
 
 float hash(vec2 p) {
   return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
@@ -455,7 +455,7 @@ function Button2({
       )}
       style={{ willChange: reducedMotion ? undefined : "transform" }}
     >
-      {/* pointer-reactive violet aurora */}
+      {/* pointer-reactive Renaissance palette field */}
       {!reducedMotion &&
         v !== "strands" &&
         v !== "violet" &&
@@ -502,11 +502,11 @@ function Button2({
         >
           {hasActivatedStrands ? (
             reducedMotion ? (
-              <div className="h-full w-full bg-[linear-gradient(110deg,#11191b,#008da7_55%,#11191b)]" />
+              <div className="h-full w-full bg-[linear-gradient(110deg,#163f45,#99bbba_55%,#163f45)]" />
             ) : (
               <Strands
                 active={hovered}
-                colors={["#008da7", "#cbeaf0", "#FFFFFF"]}
+                colors={["#245e66", "#99bbba", "#dbe5e5"]}
                 count={2}
                 speed={0.95}
                 amplitude={0.8}

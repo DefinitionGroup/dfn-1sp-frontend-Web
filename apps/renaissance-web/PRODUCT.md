@@ -8,18 +8,18 @@ web
 
 ## Users
 
-The public audience and its primary conversion task are deliberately undecided until Renaissance content and positioning are supplied. Editors will manage the site through the existing central Sanity Studio.
+Games-industry developers, publishers and senior communications teams looking for an experienced PR partner. The primary conversion task is to start a direct conversation with Renaissance; editors manage the site through the existing central Sanity Studio.
 
 ## Product Purpose
 
-Renaissance Web is an independent frontend for the `renaissanceWeb` channel in the shared 1SP multisite platform. Its first milestone is a production-grade English site foundation with the same functional coverage as FLZR, ready for Renaissance-owned content later.
+Renaissance Web is the independent `renaissanceWeb` frontend in the shared 1SP multisite platform. The homepage presents Renaissance as a senior, human-first communications partner for the games industry and turns the supplied wireframe and Taster material into a resilient, editorial web experience.
 
 ## Capabilities and Constraints
 
 - Full functional parity with the current FLZR app: pages, cases, services, contact, navigation, footer, SEO routes, preview, revalidation, analytics placeholders, and guarded relationship-sync plumbing.
 - English is the only initial locale. English public URLs are locale-free while the internal locale route preserves future multilingual expansion.
 - The site uses the existing shared Sanity project, schema, query packages, and central Studio, with strict `renaissanceWeb` and language filtering.
-- No Renaissance Sanity documents or global-content assignments exist in this milestone. Missing homepage content renders a branded, no-index setup state.
+- The active development dataset currently contains no Renaissance homepage documents. A production-quality local composition built from registered Pagebuilder blocks is used until an editor publishes Sanity homepage content; Sanity remains authoritative.
 - Deployment configuration is prepared but no Vercel project, domain, branch, commit, push, or content publication belongs to this milestone.
 - Existing 1SP, FLZR, and MSM behavior must remain intact.
 
@@ -27,16 +27,17 @@ Renaissance Web is an independent frontend for the `renaissanceWeb` channel in t
 
 - Public name: Renaissance.
 - Existing Renaissance wordmark assets are the approved logo source.
-- Renaissance is visually connected to FLZR through its component proportions, generous radii, bold-italic display voice, and motion character.
+- Renaissance has its own editorial visual language: large compressed headlines, full-bleed game imagery, diagonal light streaks, flat colour planes and controlled motion.
 - IBM Plex Sans Variable is Renaissance's standard typeface. Its `wght` (100-700) and `wdth` (75-100) axes are exposed through site-level role tokens for precise display, body, and UI typography control.
 - The interface is light-mode only. Deliberate dark media treatments are allowed where content contrast requires them.
-- The primary accent is `#008da7`; FLZR violet must not leak into Renaissance-owned UI.
+- The approved palette is Petrol Blue `#245e66`, Renaissance Teal `#99bbba`, Off White `#dbe5e5`, Sand `#edeae1` and White `#ffffff`; FLZR violet must not leak into Renaissance-owned UI.
 
 ## Evidence on Hand
 
-- Black horizontal wordmark: `public/logos/renaissance-horz_logo.svg` in the FLZR source app.
-- White horizontal and stacked variants plus a Renaissance cover image: `public/units/RENAISSANCE/` in the FLZR source app.
-- No approved Renaissance marketing copy, claims, case selection, services, people, menus, or page content is available yet. Future work must not fabricate them.
+- Supplied homepage wireframe: `1SP_WORLD SERIES_2026_RENAISSANCE_Wireframe_v2.pdf`.
+- Supplied brand and content Taster: `taster RENAISSANCE_PP_V4 1 (2).pptx`.
+- Existing wordmarks and cover art in `public/logos/` and `public/units/RENAISSANCE/`.
+- Approved Taster copy for positioning, services, founder profile and the Romeo Is A Dead Man and Yooka-Re-Playlee campaign stories. Unsupported performance metrics must not be invented.
 
 ## Product Principles
 
@@ -44,7 +45,7 @@ Renaissance Web is an independent frontend for the `renaissanceWeb` channel in t
 - Reuse shared data contracts and utilities without sharing brand-specific UI.
 - Filter reusable content explicitly by channel and language rather than duplicating documents.
 - Preserve existing sites while evolving the platform additively.
-- Prefer an honest empty state over invented public content.
+- Use the supplied messaging as the factual boundary and prefer omission over invented claims or metrics.
 
 ## Accessibility & Inclusion
 

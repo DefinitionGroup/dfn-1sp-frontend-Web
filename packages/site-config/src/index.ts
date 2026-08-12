@@ -172,8 +172,9 @@ export const SITE_CONFIGS: Record<WebsiteChannel, SiteConfig> = {
       local: "http://localhost:3003",
     },
     seo: {
-      defaultTitle: "Renaissance",
-      defaultDescription: "Renaissance website.",
+      defaultTitle: "Renaissance | Great communications for the games industry",
+      defaultDescription:
+        "Award-winning PR and communications for indie titles, AAA blockbusters and everything in between.",
     },
     tracking: {
       vercelAnalytics: true,

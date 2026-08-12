@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import type { HeroShowtime as HeroShowtimeType } from "@1sp/sanity-types";
 
 import HeaderImageVideoComp2 from "@renaissance/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
 import StaggeredSlideUp from "@renaissance/components/ui/StaggeredSlideUp";
 import Button2 from "@renaissance/components/ui/Button2";
 import MixedType from "@renaissance/components/ui/MixedType";
-import Eyebrow from "@renaissance/components/ui/Eyebrow";
 
 import { assetUrl, ctaToButtonProps } from "@1sp/utils/cloudinary";
 
@@ -65,67 +65,96 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
       {...navPointDataAttr}
       className={`${
         fullWidth ? "w-full max-w-none" : "container mx-auto"
-      } grid grid-cols-12 z-1 min-h-[85vh] relative font-renaissance text-white`}
+      } relative z-1 min-h-[calc(100svh-5rem)] overflow-hidden bg-renaissance-ink font-renaissance text-white md:min-h-[calc(100svh-7rem)]`}
     >
-      {/* Background media wrapper */}
       <HeaderImageVideoComp2
         useVideo={shouldUseVideo}
         imageSrc={imageUrl}
-        enableParallax={true}
+        imageAlt="A vivid game world with an airborne space explorer"
+        enableParallax
         videoSrc={videoUrl}
+        opacity={0.46}
+        isHero
+        className="!mt-0"
       />
 
-      {/* Single stacked column — eyebrow, headline, paragraphs, CTA.
-          Content sits on a frosted glass panel matching the navbar
-          (backdrop-blur + rgba(111,111,111,0.4)). */}
-      <div className="z-1 col-span-12 col-start-1 row-start-1 flex w-full container mx-auto flex-col justify-end items-start px-4 py-section sm:px-6 lg:px-8">
+      <div
+        aria-hidden="true"
+        className="absolute inset-y-0 right-[7%] z-[3] hidden w-[26%] -skew-x-[18deg] border-x border-white/18 bg-[linear-gradient(135deg,rgba(153,187,186,0.12),rgba(255,255,255,0.02))] lg:block"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute -right-[11%] top-[16%] z-[3] h-[42%] w-[44%] rotate-[8deg] bg-[linear-gradient(125deg,transparent,rgba(219,229,229,0.18),transparent)] blur-2xl"
+      />
+
+      <div className="relative z-10 mx-auto flex min-h-[calc(100svh-5rem)] w-full max-w-[1480px] flex-col justify-end px-5 pb-8 pt-28 sm:px-8 sm:pb-10 md:min-h-[calc(100svh-7rem)] lg:px-12 lg:pb-12">
         <StaggeredSlideUp
-          className="flex w-fit max-w-full flex-col items-start rounded-[2.5rem] bg-[rgba(111,111,111,0.4)] backdrop-blur-md px-6 py-8 md:px-12 md:py-12"
-          delay={0.5}
-          staggerDelay={0.15}
-          duration={0.75}
-          distance={40}
+          className="flex w-full flex-col"
+          delay={0.18}
+          staggerDelay={0.14}
+          duration={0.68}
+          distance={28}
+          animateImmediately
         >
-          {subheading ? (
-            <Eyebrow className="pb-4 text-white/80">{subheading}</Eyebrow>
-          ) : null}
-          {heading ? (
-            <HeadingTag className="text-display iphone-landscape:!text-4xl font-renaissance font-bold italic pb-2 text-white">
-              <MixedType text={heading} />
-            </HeadingTag>
-          ) : null}
+          <Image
+            src="/units/RENAISSANCE/renaissance-horz_logo.svg"
+            alt="Renaissance"
+            width={2862}
+            height={594}
+            priority
+            className="mb-8 h-auto w-[clamp(14rem,25vw,24rem)] brightness-0 invert"
+          />
 
-          {Array.isArray(paragraphs) && paragraphs.length > 0 && (
-            <div className="mt-8 flex flex-col max-w-[38em]">
-              {paragraphs.map((p, idx) => (
-                <p className="mb-4 text-lg" key={`para-${idx}`}>
-                  {p}
+          <div className="grid items-end gap-7 border-t border-white/35 pt-7 md:grid-cols-12 md:gap-10 md:pt-9">
+            {heading ? (
+              <HeadingTag className="renaissance-display whitespace-pre-line text-balance text-[clamp(2.55rem,6.2vw,6rem)] font-bold leading-[0.88] text-white md:col-span-8">
+                <MixedType
+                  text={heading}
+                  serifClassName="font-renaissance italic text-renaissance-teal"
+                />
+              </HeadingTag>
+            ) : null}
+
+            <div className="flex flex-col items-start md:col-span-4 md:pb-1">
+              {subheading ? (
+                <p className="text-balance text-xl font-semibold leading-[1.12] text-white sm:text-2xl">
+                  {subheading}
                 </p>
-              ))}
-            </div>
-          )}
+              ) : null}
 
-          {ctaButtons.length > 0 && (
-            <div className="mt-6 flex flex-wrap items-start justify-start gap-4">
-              {ctaButtons.map((btn, idx) => {
-                const isExternal = /^https?:\/\//.test(btn.href);
+              {Array.isArray(paragraphs) && paragraphs.length > 0 ? (
+                <div className="mt-4 flex max-w-[38em] flex-col text-white/74">
+                  {paragraphs.map((paragraph, index) => (
+                    <p className="mb-3 text-base leading-[1.45]" key={`para-${index}`}>
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              ) : null}
 
-                return (
-                  <Button2
-                    key={`cta-${idx}`}
-                    variant={btn.variant as any}
-                    text={btn.text}
-                    className="w-fit min-w-[140px]"
-                    href={btn.href}
-                    aria-label={btn.text || "CTA"}
-                    {...(isExternal
-                      ? { target: "_blank", rel: "noopener noreferrer" }
-                      : {})}
-                  />
-                );
-              })}
+              {ctaButtons.length > 0 ? (
+                <div className="mt-5 flex flex-wrap items-start gap-3">
+                  {ctaButtons.map((button, index) => {
+                    const isExternal = /^(?:https?:|mailto:|tel:)/.test(button.href);
+
+                    return (
+                      <Button2
+                        key={`cta-${index}`}
+                        variant={button.variant as any}
+                        text={button.text}
+                        className="w-fit min-w-[140px]"
+                        href={button.href}
+                        aria-label={button.text || "CTA"}
+                        {...(isExternal && /^https?:/.test(button.href)
+                          ? { target: "_blank", rel: "noopener noreferrer" }
+                          : {})}
+                      />
+                    );
+                  })}
+                </div>
+              ) : null}
             </div>
-          )}
+          </div>
         </StaggeredSlideUp>
       </div>
     </section>

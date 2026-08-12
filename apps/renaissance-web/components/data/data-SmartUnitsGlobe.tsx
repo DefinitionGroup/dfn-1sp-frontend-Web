@@ -80,7 +80,7 @@ export default async function SmartUnitsGlobe({
   }
 
   // Transform units data into globe arcs format — Renaissance teal family.
-  const colors = ["#008da7", "#45b5c9", "#cbeaf0"];
+  const colors = ["#245e66", "#99bbba", "#dbe5e5"];
 
   // Create arcs: each unit connects from the PREVIOUS unit to the CURRENT unit
   // Unit 2 -> Unit 0
@@ -113,7 +113,7 @@ export default async function SmartUnitsGlobe({
     emissive: "#ffffff",
     emissiveIntensity: 1,
     shininess: 1,
-    polygonColor: "rgba(124,92,255,1)",
+    polygonColor: "rgba(36,94,102,1)",
     ambientLight: "#ffffff",
     directionalLeftLight: "#ffffff",
     directionalTopLight: "#ffffff",

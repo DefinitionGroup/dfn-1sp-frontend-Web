@@ -49,7 +49,7 @@ function ServicesGalleryFiltered({
       data-navpoint-name={navPointName}
       className={`relative z-10 overflow-hidden ${bgColorClass} ${paddingClass} font-renaissance`}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_82%_12%,rgba(124,92,255,0.09),transparent_28%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_82%_12%,rgba(153,187,186,0.24),transparent_28%)]" />
       <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
         {showFilters && filters.length > 1 && (
           <div className="mb-8 overflow-x-auto border-b border-neutral-900/15 [scrollbar-width:none] md:mb-10 [&::-webkit-scrollbar]:hidden">

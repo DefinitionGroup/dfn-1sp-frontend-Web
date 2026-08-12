@@ -60,8 +60,9 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
     "violet";
 
   // Generate section ID from title
-  const sectionId = title
-    ? title
+  const sectionIdSource = navPointName || title;
+  const sectionId = sectionIdSource
+    ? sectionIdSource
       .replace(/[^a-zA-Z0-9\s]/g, "")
       .replace(/\s+/g, "-")
       .toLowerCase()
