@@ -214,13 +214,13 @@ function ContentSection({ data }: { data: ContentSectionData }) {
             {/* Optional section title */}
             {hasVisibleText(title) && (
               <StaggeredFadeIn viewThreshold={0.01}>
-                <h2 className="text-4xl md:text-7xl font-light mb-12 text-flzr-violet">{title}</h2>
+                <h2 className="text-4xl md:text-5xl font-light mb-12 text-flzr-violet">{title}</h2>
               </StaggeredFadeIn>
             )}
 
             {/* Content */}
             <StaggeredFadeIn viewThreshold={0.01}>
-              <div className="w-full  md:w-2/4">
+              <div className="w-full md:w-3/4">
                 <PortableText
                   value={content}
                   components={portableTextComponents}

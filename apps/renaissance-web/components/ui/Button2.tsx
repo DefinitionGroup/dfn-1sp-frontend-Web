@@ -2,21 +2,16 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import {
-  motion,
-  useMotionValue,
-  useReducedMotion,
-  useSpring,
-} from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@1sp/utils/cn";
 import { ArrowRightIcon } from "@phosphor-icons/react";
 import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
-const Strands = dynamic(() => import("./Strands"), { ssr: false });
+const MosaicReveal = dynamic(() => import("./MosaicReveal"), { ssr: false });
 
 /**
- * RENAISSANCE action button — palette-bound WebGL field that follows the pointer,
+ * RENAISSANCE action button — palette-bound WebGL mosaic reveal,
  * spring hover/press physics, mono telemetry label and compact 4px corners.
  *
  * The legacy two-element roll variants (violetsmall, limesmall, …) are
@@ -399,19 +394,7 @@ function Button2({
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const [hovered, setHovered] = useState(false);
   const [pressed, setPressed] = useState(false);
-  const [hasActivatedStrands, setHasActivatedStrands] = useState(false);
-  const strandsPointerX = useMotionValue(0);
-  const strandsPointerY = useMotionValue(0);
-  const strandsX = useSpring(strandsPointerX, {
-    stiffness: 115,
-    damping: 18,
-    mass: 0.85,
-  });
-  const strandsY = useSpring(strandsPointerY, {
-    stiffness: 115,
-    damping: 18,
-    mass: 0.85,
-  });
+  const [hasActivatedMosaic, setHasActivatedMosaic] = useState(false);
 
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     const el = buttonRef.current;
@@ -419,9 +402,7 @@ function Button2({
     const r = el.getBoundingClientRect();
     mouseRef.current.x = (e.clientX - r.left) / r.width;
     mouseRef.current.y = (e.clientY - r.top) / r.height;
-    strandsPointerX.set((mouseRef.current.x - 0.5) * 18);
-    strandsPointerY.set((mouseRef.current.y - 0.5) * 10);
-  }, [strandsPointerX, strandsPointerY]);
+  }, []);
 
   if (!hasVisibleText(text)) return null;
 
@@ -434,14 +415,12 @@ function Button2({
       onHoverStart={() => {
         setHovered(true);
         if (v === "strands" || v === "violet" || v === "glass") {
-          setHasActivatedStrands(true);
+          setHasActivatedMosaic(true);
         }
       }}
       onHoverEnd={() => {
         setHovered(false);
         setPressed(false);
-        strandsPointerX.set(0);
-        strandsPointerY.set(0);
       }}
       onPointerMove={onPointerMove}
       onPointerDown={() => setPressed(true)}
@@ -454,7 +433,6 @@ function Button2({
         sizeStyles[s].root,
         variantStyles[v].root,
         variantStyles[v].restBg,
-        hovered && v === "glass" && "bg-violet-500",
       )}
       style={{ willChange: reducedMotion ? undefined : "transform" }}
     >
@@ -481,49 +459,22 @@ function Button2({
             reducedMotion
               ? { opacity: hovered ? 1 : 0 }
               : hovered
-                ? {
-                    opacity: 1,
-                    clipPath: "inset(0% 0% 0% 0% round 4px)",
-                  }
-                : {
-                    opacity: 0,
-                    clipPath: "inset(0% 100% 0% 0% round 4px)",
-                  }
+                ? { opacity: 1 }
+                : { opacity: 0 }
           }
           transition={{
-            opacity: { duration: hovered ? 0.42 : 0.24, ease: "easeOut" },
-            clipPath: {
-              duration: hovered ? 0.72 : 0.28,
-              ease: [0.25, 0.8, 0.25, 1],
+            opacity: {
+              duration: reducedMotion ? 0 : hovered ? 0 : 0.14,
+              ease: "easeOut",
             },
           }}
-          style={
-            reducedMotion
-              ? undefined
-              : { x: strandsX, y: strandsY, willChange: "transform, opacity, clip-path" }
-          }
+          style={{ willChange: "opacity" }}
         >
-          {hasActivatedStrands ? (
+          {hasActivatedMosaic ? (
             reducedMotion ? (
-              <div className="h-full w-full bg-[linear-gradient(110deg,#163f45,#99bbba_55%,#163f45)]" />
+              <div className="h-full w-full bg-renaissance-mist" />
             ) : (
-              <Strands
-                active={hovered}
-                colors={["#245e66", "#99bbba", "#dbe5e5"]}
-                count={2}
-                speed={0.95}
-                amplitude={0.8}
-                waviness={1.55}
-                thickness={0.72}
-                glow={3.4}
-                taper={2.4}
-                spread={1.05}
-                intensity={0.95}
-                saturation={1.35}
-                opacity={1}
-                scale={5}
-                glass={false}
-              />
+              <MosaicReveal active={hovered} />
             )
           ) : null}
         </motion.div>
@@ -535,7 +486,7 @@ function Button2({
           variantStyles[v].label,
           hovered && v === "ghost" && "text-white",
           hovered && (v === "strands" || v === "violet" || v === "glass") &&
-            "text-violet-500",
+            "text-violet-500 delay-150",
         )}
       >
         {eyebrowText ? (
@@ -549,12 +500,12 @@ function Button2({
         size={sizeStyles[s].icon}
         weight="bold"
         className={cn(
-          "relative z-10 transition-[rotate,translate] duration-300",
+          "relative z-10 transition-[color,rotate,translate] duration-300",
           hovered ? "rotate-0 translate-x-0.5" : "-rotate-45",
           variantStyles[v].label,
           hovered && v === "ghost" && "text-white",
           hovered && (v === "strands" || v === "violet" || v === "glass") &&
-            "text-violet-500",
+            "text-violet-500 delay-150",
         )}
         style={{ transitionTimingFunction: "var(--ease-renaissance-overshoot)" }}
       />

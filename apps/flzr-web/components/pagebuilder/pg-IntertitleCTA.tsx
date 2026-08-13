@@ -23,7 +23,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   subline,
   subtitle,
   cta,
-  containerClassName = "w-full",
+  containerClassName = "container mx-auto w-[calc(100%-0.5rem)] md:px-7",
   alignment = "center",
   paddingTop = "0",
   navPointName,
@@ -43,7 +43,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   const paddingTopClass = paddingTopMap[paddingTop] || "";
   const hasSubline = hasVisibleText(subline);
 
-  const titleClass = `max-w-5xl text-balance text-[clamp(2.25rem,3.2vw,4.25rem)] font-semibold leading-[0.98] text-flzr-violet ${isLeftAligned ? "text-left" : "text-center"}`;
+  const titleClass = `max-w-4xl text-balance text-[clamp(2.25rem,3.2vw,4.25rem)] font-semibold leading-[0.98] text-flzr-violet ${isLeftAligned ? "text-left" : "text-center"}`;
   const sublineClass = `mt-6 max-w-3xl text-balance text-[clamp(1.35rem,2.25vw,2.25rem)] font-regular leading-[1.15] text-neutral-500 sm:mt-8 ${isLeftAligned ? "text-left" : "text-center"}`;
   const subtitleClass = `${hasSubline ? "mt-6 sm:mt-8" : "mt-8 sm:mt-10"} max-w-3xl text-pretty text-base leading-[1.55] text-neutral-800 sm:text-lg lg:text-xl ${isLeftAligned ? "text-left" : "text-center"}`;
   const buttonContainerClass = `mt-10 block w-fit min-w-40 sm:mt-12 ${isLeftAligned ? "self-start" : "mx-auto"}`;

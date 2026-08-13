@@ -57,7 +57,7 @@ export default function CaseGalleryCard({
       key={`card-${item.title}-${id}`}
       onClick={onClick}
       ref={ref}
-      className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1  md:min-h-[500px] group/card overflow-hidden md:h-[500px] cursor-pointer card-hover"
+      className="group/card col-span-1 grid h-full cursor-pointer grid-cols-1 grid-rows-[auto_1fr] overflow-hidden card-hover"
     >
       <motion.div
         layoutId={`image-${item.title}-${id}`}
@@ -99,24 +99,27 @@ export default function CaseGalleryCard({
         distance={10}
         delay={0.4}
         duration={1}
-        className={`col-start-1  col-span-1 flex flex-col opacity-100 row-start-2 p-2  mt-4 mb-8 md:mb-16 z-1 h-[250px]`}
+        className="z-1 col-span-1 col-start-1 row-start-2 grid min-h-36 grid-rows-[1fr_auto] px-2 pb-8 pt-4 opacity-100 md:min-h-40 md:pb-12"
       >
-        <div className={`flex-col flex justify-start mb-2`}>
-      <Link href={`/${locale}/cases/${item.slug?.current}`} className="contents">
+        <div className="flex flex-col justify-start">
+          <Link
+            href={`/${locale}/cases/${item.slug?.current}`}
+            className="block w-full"
+          >
             <motion.h3
               layoutId={`title-${item.title}-${id}`}
-              className={`font-medium md:ext-lg leading-snug max-w-[350px] ${variant !== "light" ? "" : "invert"
-                } text-neutral-600 hover:text-neutral-400 transition-colors dark:text-neutral-200 md:text-left`}
+              className={`flzr-card-title w-full text-left text-base leading-[1.15] text-neutral-700 transition-colors hover:text-flzr-violet md:text-lg dark:text-neutral-200 ${variant === "light" ? "invert" : ""}`}
             >
               {item.title}
-            </motion.h3>  </Link>
+            </motion.h3>
+          </Link>
         </div>
 
         {item.services && item.services.length > 0 && (
-          <div className="flex justify-end   ">
+          <div className="flex justify-end pt-4">
             <motion.p
               layoutId={`description-${item.description}-${id}`}
-              className="text-neutral-400   md:text-left text-xxs font-regular md:text-xs dark:text-neutral-400"
+              className="max-w-[80%] text-right text-xxs font-regular leading-snug text-neutral-500 md:text-xs dark:text-neutral-400"
             >
               {item.services.map((s) => s.name).join(", ")}
             </motion.p>

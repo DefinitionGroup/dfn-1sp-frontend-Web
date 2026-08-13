@@ -19,7 +19,6 @@ function ServicesGalleryFiltered({
   services = [],
   showFilters = true,
   backgroundColor = "neutral-100",
-  paddingY = "32",
   navPointName,
 }: ServicesGalleryFilteredProps) {
   const t = getTranslations(locale);
@@ -41,13 +40,12 @@ function ServicesGalleryFiltered({
   const sectionId = t.ids.services;
 
   const bgColorClass = `bg-${backgroundColor}`;
-  const paddingClass = `py-${paddingY}`;
 
   return (
     <section
       id={sectionId}
       data-navpoint-name={navPointName}
-      className={`relative z-10 overflow-hidden ${bgColorClass} ${paddingClass} font-flzr`}
+      className={`relative z-10 overflow-hidden ${bgColorClass} font-flzr`}
     >
       <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
         {showFilters && filters.length > 1 && (

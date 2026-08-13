@@ -111,7 +111,7 @@ Hard diagonal streaks and skewed translucent planes are the signature motif. The
 
 ### Buttons
 
-Buttons are compact, confident rectangles with subtly softened 4px corners and a right arrow. Primary buttons use petrol and white; dark buttons use ink and white; glass buttons are reserved for image-backed contexts. Hover may reveal the teal/mist strand field, shift the arrow, and apply restrained spring scale. Focus uses a visible petrol ring with offset; reduced motion removes pointer-reactive shader movement and scaling and keeps a static palette treatment.
+Buttons are compact, confident rectangles with subtly softened 4px corners and a right arrow. Primary buttons use petrol and white; dark buttons use ink and white; glass buttons are reserved for image-backed contexts. Hover assembles a bright teal/mist surface from a clearly readable, rapidly shuffled mosaic of small rectangles; the shader owns that surface change without a competing CSS background swap. The arrow and label change after the mosaic begins, with restrained spring scale providing immediate feedback. Focus uses a visible petrol ring with offset; reduced motion replaces the mosaic with an immediate static mist surface and removes spring scaling.
 
 ### Navigation
 
