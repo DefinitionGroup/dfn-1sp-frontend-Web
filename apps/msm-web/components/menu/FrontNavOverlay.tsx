@@ -431,7 +431,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 className="overflow-hidden block absolute   "
                 href="https://1sp.agency"
                 eyebrow={menuData?.oneSpMembershipLabel || "proud member of"}
-                text="1sp.agency"
+                text="1SP.agency"
               />
             </div>
           </div>
