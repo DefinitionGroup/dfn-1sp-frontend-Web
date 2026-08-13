@@ -503,15 +503,13 @@ export function PageBuilder({
               return null;
             }
 
-            const dataChannel = block.dataScope === "1spWeb" ? "1spWeb" : channel;
-
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <OneSpScope groupId={group._id}>
                   <CanonicalOneSpPageBuilder
                     content={group.content}
                     language={language}
-                    channel={dataChannel}
+                    channel="1spWeb"
                     groupDepth={1}
                   />
                 </OneSpScope>

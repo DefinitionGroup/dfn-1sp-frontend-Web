@@ -4,6 +4,10 @@ import {
   collectImportCandidates,
   copyBlocksForImport,
 } from "../packages/sanity-schema/src/Global/oneSpComponentGroupImport.ts";
+import {
+  HOME_PAGE_QUERY,
+  ONE_SP_COMPONENT_GROUP_PROJECTION,
+} from "../packages/sanity-queries/src/groq.ts";
 
 test("component import keeps supported 1SP blocks and preserves their order", () => {
   const sourceBlocks = [
@@ -64,5 +68,24 @@ test("components without Sanity keys receive stable selection identities", () =>
   assert.deepEqual(
     result.candidates.map((candidate) => candidate.selectionKey),
     ["contentSection-0", "contentSection-1"],
+  );
+});
+
+test("reusable 1SP groups dereference explicit content without host-channel filters", () => {
+  assert.equal(
+    ONE_SP_COMPONENT_GROUP_PROJECTION.includes("$channel"),
+    false,
+    "the reusable group projection must not inherit the host page channel",
+  );
+  assert.match(ONE_SP_COMPONENT_GROUP_PROJECTION, /teamMembers\[\]->\{/);
+  assert.match(ONE_SP_COMPONENT_GROUP_PROJECTION, /serviceItems\[\]->\{/);
+  assert.equal(
+    ONE_SP_COMPONENT_GROUP_PROJECTION.match(/selectedCases\[\]->\{/g)?.length,
+    3,
+  );
+  assert.match(
+    HOME_PAGE_QUERY,
+    /isHomepage == true && channel == \$channel && language == \$language/,
+    "the host homepage lookup must remain channel-scoped",
   );
 });

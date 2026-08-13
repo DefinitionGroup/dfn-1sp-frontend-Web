@@ -65,12 +65,12 @@ const ADDITIONAL_CONTENT_PROJECTION = `additionalContent[]{
  * the group payload in the page query avoids client-side waterfalls and lets
  * the host app render the canonical 1SP blocks during SSR.
  *
- * The group schema intentionally allows only presentation-oriented blocks, so
- * this nested projection only needs the shared CTA/reference expansion used by
- * those blocks. If the portable allowlist grows, extend this projection with
- * the matching block-specific projection at the same time.
+ * Explicit references inside a reusable 1SP group are authoritative. They are
+ * dereferenced without the host page's channel filter so the same canonical
+ * group payload renders on 1SP, FLZR, MSM, and future host websites. Ordinary
+ * page content outside this projection remains channel-scoped.
  */
-const ONE_SP_COMPONENT_GROUP_PROJECTION = `_type == 'oneSpComponentGroupReference' => {
+export const ONE_SP_COMPONENT_GROUP_PROJECTION = `_type == 'oneSpComponentGroupReference' => {
   ...,
   group->{
     _id,
@@ -111,7 +111,7 @@ const ONE_SP_COMPONENT_GROUP_PROJECTION = `_type == 'oneSpComponentGroupReferenc
             }
           }
         },
-        teamMembers[$channel in @->channel]->{
+        teamMembers[]->{
           _id,
           name,
           image{
@@ -164,7 +164,7 @@ const ONE_SP_COMPONENT_GROUP_PROJECTION = `_type == 'oneSpComponentGroupReferenc
           ...,
           contentType,
           textItems,
-          serviceItems[$channel in @->channel]->{
+          serviceItems[]->{
             _id,
             _updatedAt,
             _type,
@@ -199,7 +199,7 @@ const ONE_SP_COMPONENT_GROUP_PROJECTION = `_type == 'oneSpComponentGroupReferenc
       },
       _type == 'smartCarousel' => {
         ...,
-        selectedCases[$channel in @->channel]->{
+        selectedCases[]->{
           _id,
           title,
           subtitle,
@@ -217,7 +217,7 @@ const ONE_SP_COMPONENT_GROUP_PROJECTION = `_type == 'oneSpComponentGroupReferenc
       },
       _type == 'casesGalleryFiltered' => {
         ...,
-        selectedCases[$channel in @->channel]->{
+        selectedCases[]->{
           _id,
           title,
           slug,
@@ -227,7 +227,7 @@ const ONE_SP_COMPONENT_GROUP_PROJECTION = `_type == 'oneSpComponentGroupReferenc
       },
       _type == 'casesGalleryFilteredWithPagination' => {
         ...,
-        selectedCases[$channel in @->channel]->{
+        selectedCases[]->{
           _id,
           title,
           slug,

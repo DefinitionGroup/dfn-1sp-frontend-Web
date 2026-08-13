@@ -340,6 +340,7 @@ export interface OneSpComponentGroupReference {
     _type: "oneSpComponentGroupReference";
     _key?: string;
     group?: OneSpComponentGroup | null;
+    /** @deprecated Reusable 1SP groups always use canonical 1SP data. */
     dataScope?: "hostChannel" | "1spWeb";
 }
 
