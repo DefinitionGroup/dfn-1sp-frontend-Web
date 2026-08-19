@@ -165,6 +165,7 @@ export default defineType({
                 { type: 'oneSPHeader' },
                 { type: 'contentSection' },
                 { type: 'twoColContentSection' },
+                { type: 'flzrTwoThirdsContentSection', title: 'FLZR 2/3 Content Section' },
                 { type: 'tabbedContentSection' },
                 { type: 'casesIntro' },
                 { type: 'casesGalleryFiltered' },

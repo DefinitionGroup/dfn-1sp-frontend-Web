@@ -14,6 +14,7 @@ import type {
   IntroBlockTypoSophisticated as IntroBlockTypoSophisticatedType,
   CardContainerComponent as CardContainerComponentType,
   ResultsMetricsComponent as ResultsMetricsComponentType,
+  FlzrTwoThirdsContentSection as FlzrTwoThirdsContentSectionType,
 } from "@1sp/sanity-types";
 import type { Page } from "@1sp/sanity-types";
 import { HeroShowtime as HeroShowtimeType } from "@1sp/sanity-types";
@@ -81,6 +82,14 @@ const TwoColContentSection = dynamic(
     loading: () => <ComponentLoader />,
     ssr: true,
   }
+);
+
+const FlzrTwoThirdsContentSection = dynamic(
+  () => import("./pagebuilder/pg-FlzrTwoThirdsContentSection"),
+  {
+    loading: () => <ComponentLoader />,
+    ssr: true,
+  },
 );
 
 const TabbedContentSection = dynamic(
@@ -369,6 +378,16 @@ export function PageBuilder({
                 <TwoColContentSection
                   key={key}
                   data={block}
+                  inheritSectionSurface={withinSectionBand}
+                />
+              </ErrorBoundary>
+            );
+          case "flzrTwoThirdsContentSection":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <FlzrTwoThirdsContentSection
+                  key={key}
+                  data={block as FlzrTwoThirdsContentSectionType}
                   inheritSectionSurface={withinSectionBand}
                 />
               </ErrorBoundary>

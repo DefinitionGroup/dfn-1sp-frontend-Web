@@ -357,6 +357,19 @@ export interface FlzrSectionBand {
     badgeLabel?: string;
 }
 
+export interface FlzrTwoThirdsContentSection {
+    _type: "flzrTwoThirdsContentSection";
+    _key?: string;
+    headline?: string;
+    subheadline?: string;
+    body?: any[];
+    image?: CloudinaryAsset;
+    imageAlt?: string;
+    cta?: CTA;
+    navPointName?: string;
+    hideFromNav?: boolean;
+}
+
 export interface PageBuilderBlock {
     _type?: string;
     _key?: string;
