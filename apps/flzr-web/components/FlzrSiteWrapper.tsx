@@ -187,7 +187,9 @@ async function FlzrFooter({
   const content = Array.isArray(homePage?.content) ? homePage.content : [];
   const needsAllCases = hasCaseListingBlocks(content);
   const showsAllServices = content.some(
-    (block) => block._type === "servicesGalleryFiltered",
+    (block) =>
+      block._type === "servicesGalleryFiltered" ||
+      block._type === "flzrServicesGrid",
   );
 
   const [allCasesRaw, allServicesRaw] = await Promise.all([

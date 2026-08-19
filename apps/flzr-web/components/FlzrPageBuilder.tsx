@@ -231,6 +231,14 @@ const ServicesGalleryFiltered = dynamic(
   }
 );
 
+const FlzrServicesGrid = dynamic(
+  () => import("./pagebuilder/server/FlzrServicesGridBlock"),
+  {
+    loading: () => <ComponentLoader />,
+    ssr: true,
+  },
+);
+
 const ServicesHeroWithBadge = dynamic(
   () => import("./pagebuilder/pg-ServicesHeroWithBadge"),
   {
@@ -520,6 +528,12 @@ export function PageBuilder({
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <ServicesGalleryFiltered key={key} {...block} language={language} channel={channel} />
+              </ErrorBoundary>
+            );
+          case "flzrServicesGrid":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <FlzrServicesGrid key={key} {...block} language={language} channel={channel} />
               </ErrorBoundary>
             );
           case "servicesHeroWithBadge":

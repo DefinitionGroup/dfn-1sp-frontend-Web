@@ -34,16 +34,19 @@ const SERVICE_MODAL_COPY = {
     label: "Service",
     deliverables: "Was wir liefern",
     close: "Servicedetails schließen",
+    gridHint: "Service für Details auswählen",
   },
   en: {
     label: "Service",
     deliverables: "What we deliver",
     close: "Close service details",
+    gridHint: "Select a service for details",
   },
   pl: {
     label: "Usługa",
     deliverables: "Co dostarczamy",
     close: "Zamknij szczegóły usługi",
+    gridHint: "Wybierz usługę, aby zobaczyć szczegóły",
   },
 } as const;
 
@@ -113,11 +116,134 @@ function getPageTargets(viewportWidth: number, limit: number): number[] {
   return targets;
 }
 
+interface ServiceCardProps {
+  item: Service;
+  index: number;
+  layout: "carousel" | "grid";
+  reducedMotion: boolean | null;
+  onOpen: (service: Service) => void;
+}
+
+function ServiceCard({
+  item,
+  index,
+  layout,
+  reducedMotion,
+  onOpen,
+}: ServiceCardProps) {
+  const { background, objectPosition } = getServiceMedia(item);
+  const groups = item.servicegrouprel?.map((group) => group.name) ?? [];
+  const gridSizes =
+    "(max-width: 639px) calc(100vw - 2rem), (max-width: 1023px) 50vw, 25vw";
+  const carouselSizes =
+    "(max-width: 640px) 78vw, (max-width: 1024px) 45vw, 25vw";
+
+  return (
+    <motion.li
+      variants={{
+        hidden: { opacity: 0, y: 34 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.65, ease: EASE_FLZR },
+        },
+      }}
+      className={
+        layout === "grid"
+          ? "min-w-0"
+          : "w-[78vw] max-w-[25rem] shrink-0 [scroll-snap-align:start] sm:w-[45vw] lg:w-[calc((100vw-8rem)/3.15)] lg:max-w-[26rem] 2xl:w-[calc((100vw-10rem)/4.15)] 2xl:max-w-[22rem]"
+      }
+    >
+      <button
+        type="button"
+        onClick={() => onOpen(item)}
+        aria-label={`Open details for ${item.name}`}
+        className="group relative block aspect-[6/7] w-full overflow-hidden rounded-[2rem] bg-neutral-900 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-500"
+      >
+        <div className="absolute inset-0 overflow-hidden">
+          {background && isVideoUrl(background) ? (
+            <DeferredVideo
+              src={background}
+              maxWidth={640}
+              className="pointer-events-none h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.045]"
+              mediaStyle={objectPosition ? { objectPosition } : undefined}
+              style={{ pointerEvents: "none" }}
+              posterUrl={cloudinaryPosterUrl(background, {
+                maxWidth: 640,
+                frame: "0",
+              })}
+              mountDelay={index < 4 ? 80 : 240}
+            />
+          ) : background ? (
+            <Image
+              src={background}
+              alt={item.serviceBackground?.alt || item.name}
+              fill
+              priority={index < 4}
+              sizes={layout === "grid" ? gridSizes : carouselSizes}
+              draggable={false}
+              className="pointer-events-none object-cover transition-transform duration-700 ease-out group-hover:scale-[1.045]"
+              style={objectPosition ? { objectPosition } : undefined}
+            />
+          ) : (
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgba(124,92,255,0.65),transparent_38%),linear-gradient(145deg,#2b2335,#131019_65%)]" />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#131019]/65 via-transparent to-[#131019]/10 opacity-80" />
+          <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/15" />
+        </div>
+
+        <div className="pointer-events-none absolute left-4 top-4 flex items-center gap-3">
+          <Image
+            src="/units/FLZR/flzr_logo.svg"
+            alt="FLZR"
+            width={84}
+            height={20}
+            draggable={false}
+            className="pointer-events-none h-auto w-[4.75rem] object-contain object-left"
+          />
+          <span className="text-xxs text-white/75">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+        </div>
+
+        <motion.div
+          initial={reducedMotion ? false : { opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.55, delay: 0.18, ease: EASE_FLZR }}
+          className="absolute bottom-3 left-3 z-10 w-fit max-w-[calc(100%-1.5rem)] rounded-[1.5rem] bg-[rgba(111,111,111,0.4)] px-4 py-3 text-white backdrop-blur-md sm:px-5 sm:py-4"
+        >
+          <div className="flex items-end justify-between gap-4">
+            <div className="min-w-0">
+              <h3 className="flzr-card-title text-lg font-semibold leading-[1.05] text-white sm:text-xl">
+                {item.name}
+              </h3>
+              {item.taglabel ? (
+                <p className="mt-1.5 line-clamp-2 text-xs leading-snug text-white/70">
+                  {item.taglabel}
+                </p>
+              ) : groups.length > 0 ? (
+                <p className="mt-1.5 truncate text-xs text-white/65">
+                  {groups.join(" · ")}
+                </p>
+              ) : null}
+            </div>
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white text-neutral-900 transition-[background-color,color,transform] duration-500 group-hover:rotate-[-35deg] group-hover:scale-105 group-hover:bg-flzr-violet group-hover:text-white">
+              <ArrowUpRightIcon />
+            </span>
+          </div>
+        </motion.div>
+      </button>
+    </motion.li>
+  );
+}
+
 interface ServiceGalleryProps {
   services: Service[];
   activeFilter?: string;
   locale?: string;
   filterAllText?: string;
+  presentation?: "carousel" | "grid";
 }
 
 export default function ServiceGalleryComponent({
@@ -125,6 +251,7 @@ export default function ServiceGalleryComponent({
   activeFilter = "All",
   locale = "en",
   filterAllText = "All",
+  presentation = "carousel",
 }: ServiceGalleryProps) {
   const reducedMotion = useReducedMotion();
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -150,30 +277,26 @@ export default function ServiceGalleryComponent({
           item.servicegrouprel?.some((group) => group.name === activeFilter),
         );
 
-  const measureTrack = () => {
-    const viewport = viewportRef.current;
-    const track = trackRef.current;
-    if (!viewport || !track) return;
-
-    const styles = window.getComputedStyle(viewport);
-    const horizontalPadding =
-      Number.parseFloat(styles.paddingLeft) +
-      Number.parseFloat(styles.paddingRight);
-    const visibleWidth = viewport.clientWidth - horizontalPadding;
-    const nextMaxOffset = Math.max(0, track.scrollWidth - visibleWidth);
-
-    maxOffsetRef.current = nextMaxOffset;
-    setMaxOffset(nextMaxOffset);
-    setPageTargets(getPageTargets(viewport.clientWidth, nextMaxOffset));
-
-    const clampedX = Math.max(-nextMaxOffset, Math.min(0, trackX.get()));
-    if (clampedX !== trackX.get()) trackX.set(clampedX);
-  };
-
   useEffect(() => {
     const viewport = viewportRef.current;
     const track = trackRef.current;
     if (!viewport || !track) return;
+
+    const measureTrack = () => {
+      const styles = window.getComputedStyle(viewport);
+      const horizontalPadding =
+        Number.parseFloat(styles.paddingLeft) +
+        Number.parseFloat(styles.paddingRight);
+      const visibleWidth = viewport.clientWidth - horizontalPadding;
+      const nextMaxOffset = Math.max(0, track.scrollWidth - visibleWidth);
+
+      maxOffsetRef.current = nextMaxOffset;
+      setMaxOffset(nextMaxOffset);
+      setPageTargets(getPageTargets(viewport.clientWidth, nextMaxOffset));
+
+      const clampedX = Math.max(-nextMaxOffset, Math.min(0, trackX.get()));
+      if (clampedX !== trackX.get()) trackX.set(clampedX);
+    };
 
     trackX.stop();
     trackX.set(0);
@@ -199,7 +322,7 @@ export default function ServiceGalleryComponent({
       }
       observer.disconnect();
     };
-  }, [activeFilter, filteredItems.length]);
+  }, [activeFilter, filteredItems.length, trackX]);
 
   useEffect(() => {
     if (!active) return;
@@ -341,6 +464,41 @@ export default function ServiceGalleryComponent({
 
   return (
     <>
+      {presentation === "grid" ? (
+        <div className="relative" data-component="flzr-services-grid">
+          <div className="mb-6 flex items-center justify-between border-b border-neutral-900/15 pb-4 md:mb-8">
+            <p className="text-xs uppercase text-neutral-500">
+              {String(filteredItems.length).padStart(2, "0")} services
+            </p>
+            <p className="hidden text-xxs uppercase text-neutral-400 sm:block">
+              {modalCopy.gridHint}
+            </p>
+          </div>
+
+          <motion.ul
+            key={activeFilter}
+            initial={reducedMotion ? false : "hidden"}
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.04 }}
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.07 } },
+            }}
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:gap-5"
+          >
+            {filteredItems.map((item, index) => (
+              <ServiceCard
+                key={item._id || `${item.name}-${index}`}
+                item={item}
+                index={index}
+                layout="grid"
+                reducedMotion={reducedMotion}
+                onOpen={openService}
+              />
+            ))}
+          </motion.ul>
+        </div>
+      ) : (
       <div className="relative" data-component="flzr-services-carousel">
         <div className="mb-5 flex items-end justify-between gap-6 md:mb-7">
           <p className="text-xs uppercase text-neutral-500">
@@ -406,106 +564,16 @@ export default function ServiceGalleryComponent({
             }}
             className="flex w-max cursor-grab gap-3 will-change-transform md:gap-4"
           >
-            {filteredItems.map((item, index) => {
-              const { background, objectPosition } = getServiceMedia(item);
-              const groups = item.servicegrouprel?.map((group) => group.name) ?? [];
-
-              return (
-                <motion.li
-                  key={item._id || `${item.name}-${index}`}
-                  variants={{
-                    hidden: { opacity: 0, y: 34 },
-                    visible: {
-                      opacity: 1,
-                      y: 0,
-                      transition: { duration: 0.65, ease: EASE_FLZR },
-                    },
-                  }}
-                  className="w-[78vw] max-w-[25rem] shrink-0 [scroll-snap-align:start] sm:w-[45vw] lg:w-[calc((100vw-8rem)/3.15)] lg:max-w-[26rem] 2xl:w-[calc((100vw-10rem)/4.15)] 2xl:max-w-[22rem]"
-                >
-                  <button
-                    type="button"
-                    onClick={() => openService(item)}
-                    aria-label={`Open details for ${item.name}`}
-                    className="group relative block aspect-[6/7] w-full overflow-hidden rounded-[2rem] bg-neutral-900 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-500"
-                  >
-                    <div className="absolute inset-0 overflow-hidden">
-                      {background && isVideoUrl(background) ? (
-                        <DeferredVideo
-                          src={background}
-                          maxWidth={640}
-                          className="pointer-events-none h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.045]"
-                          mediaStyle={objectPosition ? { objectPosition } : undefined}
-                          style={{ pointerEvents: "none" }}
-                          posterUrl={cloudinaryPosterUrl(background, {
-                            maxWidth: 640,
-                            frame: "0",
-                          })}
-                          mountDelay={index < 4 ? 80 : 240}
-                        />
-                      ) : background ? (
-                        <Image
-                          src={background}
-                          alt={item.serviceBackground?.alt || item.name}
-                          fill
-                          priority={index < 4}
-                          sizes="(max-width: 640px) 78vw, (max-width: 1024px) 45vw, 25vw"
-                          draggable={false}
-                          className="pointer-events-none object-cover transition-transform duration-700 ease-out group-hover:scale-[1.045]"
-                          style={objectPosition ? { objectPosition } : undefined}
-                        />
-                      ) : (
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgba(124,92,255,0.65),transparent_38%),linear-gradient(145deg,#2b2335,#131019_65%)]" />
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#131019]/65 via-transparent to-[#131019]/10 opacity-80" />
-                      <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/15" />
-                    </div>
-
-                    <div className="pointer-events-none absolute left-4 top-4 flex items-center gap-3">
-                      <Image
-                        src="/units/FLZR/flzr_logo.svg"
-                        alt="FLZR"
-                        width={84}
-                        height={20}
-                        draggable={false}
-                        className="pointer-events-none h-auto w-[4.75rem] object-contain object-left"
-                      />
-                      <span className="text-xxs text-white/75">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                    </div>
-
-                    <motion.div
-                      initial={reducedMotion ? false : { opacity: 0, y: 12 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.55, delay: 0.18, ease: EASE_FLZR }}
-                      className="absolute bottom-3 left-3 z-10 w-fit max-w-[calc(100%-1.5rem)] rounded-[1.5rem] bg-[rgba(111,111,111,0.4)] px-4 py-3 text-white backdrop-blur-md sm:px-5 sm:py-4"
-                    >
-                      <div className="flex items-end justify-between gap-4">
-                        <div className="min-w-0">
-                          <h3 className="flzr-card-title text-lg font-semibold leading-[1.05] text-white sm:text-xl">
-                            {item.name}
-                          </h3>
-                          {item.taglabel ? (
-                            <p className="mt-1.5 line-clamp-2 text-xs leading-snug text-white/70">
-                              {item.taglabel}
-                            </p>
-                          ) : groups.length > 0 ? (
-                            <p className="mt-1.5 truncate text-xs text-white/65">
-                              {groups.join(" · ")}
-                            </p>
-                          ) : null}
-                        </div>
-                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white text-neutral-900 transition-[background-color,color,transform] duration-500 group-hover:rotate-[-35deg] group-hover:scale-105 group-hover:bg-flzr-violet group-hover:text-white">
-                          <ArrowUpRightIcon />
-                        </span>
-                      </div>
-                    </motion.div>
-                  </button>
-                </motion.li>
-              );
-            })}
+            {filteredItems.map((item, index) => (
+              <ServiceCard
+                key={item._id || `${item.name}-${index}`}
+                item={item}
+                index={index}
+                layout="carousel"
+                reducedMotion={reducedMotion}
+                onOpen={openService}
+              />
+            ))}
           </motion.ul>
         </div>
 
@@ -530,6 +598,7 @@ export default function ServiceGalleryComponent({
           </div>
         </div>
       </div>
+      )}
 
       {typeof document !== "undefined"
         ? createPortal(

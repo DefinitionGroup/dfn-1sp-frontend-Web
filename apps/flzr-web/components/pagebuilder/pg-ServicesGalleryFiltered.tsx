@@ -12,7 +12,15 @@ interface ServicesGalleryFilteredProps {
   backgroundColor?: string;
   paddingY?: string;
   navPointName?: string;
+  presentation?: "carousel" | "grid";
 }
+
+const GRID_PADDING_CLASSES: Record<string, string> = {
+  "8": "py-8",
+  "16": "py-16",
+  "24": "py-24",
+  "32": "py-32",
+};
 
 function ServicesGalleryFiltered({
   locale = "en",
@@ -20,6 +28,8 @@ function ServicesGalleryFiltered({
   showFilters = true,
   backgroundColor = "neutral-100",
   navPointName,
+  paddingY = "16",
+  presentation = "carousel",
 }: ServicesGalleryFilteredProps) {
   const t = getTranslations(locale);
 
@@ -40,12 +50,16 @@ function ServicesGalleryFiltered({
   const sectionId = t.ids.services;
 
   const bgColorClass = `bg-${backgroundColor}`;
+  const paddingClass =
+    presentation === "grid"
+      ? GRID_PADDING_CLASSES[paddingY] ?? GRID_PADDING_CLASSES["16"]
+      : "";
 
   return (
     <section
       id={sectionId}
       data-navpoint-name={navPointName}
-      className={`relative z-10 overflow-hidden ${bgColorClass} font-flzr`}
+      className={`relative z-10 overflow-hidden ${bgColorClass} ${paddingClass} font-flzr`}
     >
       <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
         {showFilters && filters.length > 1 && (
@@ -83,6 +97,7 @@ function ServicesGalleryFiltered({
           activeFilter={activeFilter}
           locale={locale}
           filterAllText={t.services.filterAll}
+          presentation={presentation}
         />
       </div>
     </section>

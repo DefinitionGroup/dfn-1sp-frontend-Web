@@ -6,6 +6,7 @@ import unitCase from './Global/Cases/unitCase'
 import client from './Global/Cases/client'
 import person from './Global/Cases/person'
 import { OneSPschemaTypes } from './1spContent'
+import { FLZRschemaTypes } from './flzrContent'
 import { CaseStudySchemaTypes } from './caseStudyContent'
 import link from './Global/Objects/link'
 import cta from './Global/Objects/cta'
@@ -27,5 +28,5 @@ import translationGuidelines from './Global/translationGuidelines'
 import siteSettings from './Global/siteSettings'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [page, menu, siteSettings, oneSpComponentGroup, translationGuidelines, caseStudy, unitCase, client, person, contactSubmission, ...OneSPschemaTypes, ...CaseStudySchemaTypes, link, cta, paragraph, size, services, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata, contactForm, oneSpComponentGroupReference],
+  types: [page, menu, siteSettings, oneSpComponentGroup, translationGuidelines, caseStudy, unitCase, client, person, contactSubmission, ...OneSPschemaTypes, ...FLZRschemaTypes, ...CaseStudySchemaTypes, link, cta, paragraph, size, services, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata, contactForm, oneSpComponentGroupReference],
 }

@@ -776,7 +776,9 @@ export function hasServicesGalleryBlock(
   if (!contentBlocks || !Array.isArray(contentBlocks)) return false;
 
   return contentBlocks.some(
-    (block) => block?._type === "servicesGalleryFiltered",
+    (block) =>
+      block?._type === "servicesGalleryFiltered" ||
+      block?._type === "flzrServicesGrid",
   );
 }
 
