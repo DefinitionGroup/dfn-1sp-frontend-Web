@@ -65,6 +65,9 @@ function ServicesGalleryFiltered({
     presentation === "grid"
       ? GRID_PADDING_CLASSES[paddingY] ?? GRID_PADDING_CLASSES["16"]
       : "";
+  const horizontalPaddingClass = inheritSectionSurface
+    ? ""
+    : "px-4 sm:px-6 lg:px-8";
 
   return (
     <section
@@ -72,7 +75,7 @@ function ServicesGalleryFiltered({
       data-navpoint-name={navPointName}
       className={`relative z-10 overflow-hidden ${bgColorClass} ${paddingClass} font-flzr`}
     >
-      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+      <div className={`container relative mx-auto ${horizontalPaddingClass}`}>
         {showFilters && filters.length > 1 && (
           <div className="mb-8 overflow-x-auto border-b border-neutral-900/15 [scrollbar-width:none] md:mb-10 [&::-webkit-scrollbar]:hidden">
             <div

@@ -34,19 +34,16 @@ const SERVICE_MODAL_COPY = {
     label: "Service",
     deliverables: "Was wir liefern",
     close: "Servicedetails schließen",
-    gridHint: "Service für Details auswählen",
   },
   en: {
     label: "Service",
     deliverables: "What we deliver",
     close: "Close service details",
-    gridHint: "Select a service for details",
   },
   pl: {
     label: "Usługa",
     deliverables: "Co dostarczamy",
     close: "Zamknij szczegóły usługi",
-    gridHint: "Wybierz usługę, aby zobaczyć szczegóły",
   },
 } as const;
 
@@ -466,15 +463,6 @@ export default function ServiceGalleryComponent({
     <>
       {presentation === "grid" ? (
         <div className="relative" data-component="flzr-services-grid">
-          <div className="mb-6 flex items-center justify-between border-b border-neutral-900/15 pb-4 md:mb-8">
-            <p className="text-xs uppercase text-neutral-500">
-              {String(filteredItems.length).padStart(2, "0")} services
-            </p>
-            <p className="hidden text-xxs uppercase text-neutral-400 sm:block">
-              {modalCopy.gridHint}
-            </p>
-          </div>
-
           <motion.ul
             key={activeFilter}
             initial={reducedMotion ? false : "hidden"}

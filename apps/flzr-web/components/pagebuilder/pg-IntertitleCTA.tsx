@@ -86,30 +86,24 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
       <div
         className={`relative mx-auto w-full max-w-[1480px] px-4 font-flzr sm:px-6 lg:px-8 ${paddingTopClass}`}
       >
-        <div className="relative py-16 sm:py-20 lg:py-28">
-          <span
-            aria-hidden="true"
-            className={`mb-8 block h-[3px] w-12 bg-flzr-violet sm:mb-10 ${isLeftAligned ? "" : "mx-auto"}`}
-          />
-          <div
-            className={`flex w-full flex-col ${isLeftAligned ? "items-start" : "items-center"}`}
-          >
-            {hasVisibleText(title) ? <h3 className={titleClass}>{title}</h3> : null}
-            {hasSubline ? <p className={sublineClass}>{subline}</p> : null}
-            {hasVisibleText(subtitle) ? (
-              <p className={subtitleClass}>{subtitle}</p>
-            ) : null}
-          </div>
-          {buttonHref && buttonText && (
-            <div className={buttonContainerClass}>
-              <Button2
-                text={buttonText}
-                variant={buttonVariant}
-                href={buttonHref}
-              />
-            </div>
-          )}
+        <div
+          className={`flex w-full flex-col ${isLeftAligned ? "items-start" : "items-center"}`}
+        >
+          {hasVisibleText(title) ? <h3 className={titleClass}>{title}</h3> : null}
+          {hasSubline ? <p className={sublineClass}>{subline}</p> : null}
+          {hasVisibleText(subtitle) ? (
+            <p className={subtitleClass}>{subtitle}</p>
+          ) : null}
         </div>
+        {buttonHref && buttonText && (
+          <div className={buttonContainerClass}>
+            <Button2
+              text={buttonText}
+              variant={buttonVariant}
+              href={buttonHref}
+            />
+          </div>
+        )}
       </div>
     </section>
   );
