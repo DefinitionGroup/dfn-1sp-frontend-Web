@@ -37,7 +37,7 @@ export default function FlzrSectionFrame({
         </div>
       ) : null}
       <div
-        className={`flzr-section-surface ${SURFACE_CLASSES[surfaceTone]}`}
+        className={`flzr-section-surface relative mx-auto w-full max-w-[1480px] px-4 sm:px-6 lg:px-8 py-16 ${SURFACE_CLASSES[surfaceTone]}`}
       >
         {children}
       </div>
