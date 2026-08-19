@@ -18,6 +18,11 @@ import type {
 import type { Page } from "@1sp/sanity-types";
 import { HeroShowtime as HeroShowtimeType } from "@1sp/sanity-types";
 import ErrorBoundary from "@flzr/components/ErrorBoundary";
+import FlzrSectionFrame from "@flzr/components/ui/FlzrSectionFrame";
+import {
+  partitionFlzrSectionBands,
+  type FlzrRenderUnit,
+} from "@flzr/lib/flzrSectionBands";
 import HeadlineChallenge from "./pagebuilder/cases/pg-HeadlineChallenge";
 import ComponentLoader from "@flzr/components/ui/ComponentLoader";
 import DeferredSection from "@flzr/components/ui/DeferredSection";
@@ -307,7 +312,12 @@ export function PageBuilder({
 }: PageBuilderProps) {
   if (!Array.isArray(content) || content.length === 0) return null;
 
-  const renderBlock = (block: any, i: number, isDeferred = false) => {
+  const renderBlock = (
+    block: any,
+    i: number,
+    isDeferred = false,
+    withinSectionBand = false,
+  ) => {
     if (!block?._type) return null;
 
     const key = block._key ?? `${block._type}-${i}`;
@@ -356,7 +366,11 @@ export function PageBuilder({
           case "twoColContentSection":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <TwoColContentSection key={key} data={block} />
+                <TwoColContentSection
+                  key={key}
+                  data={block}
+                  inheritSectionSurface={withinSectionBand}
+                />
               </ErrorBoundary>
             );
           case "tabbedContentSection":
@@ -493,6 +507,7 @@ export function PageBuilder({
                   key={key}
                   data={block as any}
                   language={language}
+                  inheritSectionSurface={withinSectionBand}
                 />
               </ErrorBoundary>
             );
@@ -527,13 +542,25 @@ export function PageBuilder({
           case "servicesGalleryFiltered":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <ServicesGalleryFiltered key={key} {...block} language={language} channel={channel} />
+                <ServicesGalleryFiltered
+                  key={key}
+                  {...block}
+                  language={language}
+                  channel={channel}
+                  inheritSectionSurface={withinSectionBand}
+                />
               </ErrorBoundary>
             );
           case "flzrServicesGrid":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <FlzrServicesGrid key={key} {...block} language={language} channel={channel} />
+                <FlzrServicesGrid
+                  key={key}
+                  {...block}
+                  language={language}
+                  channel={channel}
+                  inheritSectionSurface={withinSectionBand}
+                />
               </ErrorBoundary>
             );
           case "servicesHeroWithBadge":
@@ -622,31 +649,49 @@ export function PageBuilder({
     }
   };
 
+  const renderUnit = (
+    unit: FlzrRenderUnit,
+    isDeferred = false,
+  ) => {
+    if (unit.kind === "block") {
+      return renderBlock(unit.block, unit.sourceIndex, isDeferred);
+    }
+
+    return (
+      <FlzrSectionFrame key={unit.key} marker={unit.marker}>
+        {unit.blocks.map(({ block, sourceIndex }) =>
+          renderBlock(block, sourceIndex, isDeferred, true),
+        )}
+      </FlzrSectionFrame>
+    );
+  };
+
+  const renderUnits = partitionFlzrSectionBands(content);
+
   const eagerCount = renderMode === "deferred"
-    ? content.length
+    ? renderUnits.length
     : Number.isFinite(deferAfter)
-    ? Math.max(0, Math.min(content.length, deferAfter))
-    : content.length;
-  const eagerBlocks = content.slice(0, eagerCount);
-  const deferredBlocks = content.slice(eagerCount);
-  const deferredMinHeight = `${Math.max(deferredBlocks.length * 32, 140)}vh`;
+    ? Math.max(0, Math.min(renderUnits.length, deferAfter))
+    : renderUnits.length;
+  const eagerUnits = renderUnits.slice(0, eagerCount);
+  const deferredUnits = renderUnits.slice(eagerCount);
+  const deferredBlockCount = deferredUnits.reduce(
+    (count, unit) => count + (unit.kind === "section" ? unit.blocks.length : 1),
+    0,
+  );
+  const deferredMinHeight = `${Math.max(deferredBlockCount * 32, 140)}vh`;
 
   return (
     <>
-      {eagerBlocks.map((block, index) =>
-        renderBlock(block, index, renderMode === "deferred")
+      {eagerUnits.map((unit) =>
+        renderUnit(unit, renderMode === "deferred")
       )}
-      {deferredBlocks.length > 0 && (
+      {deferredUnits.length > 0 && (
         <DeferredSection
           rootMargin="0px 0px 0px 0px"
           minHeight={deferredMinHeight}
         >
-          <PageBuilder
-            content={deferredBlocks}
-            language={language}
-            channel={channel}
-            renderMode="deferred"
-          />
+          {deferredUnits.map((unit) => renderUnit(unit, true))}
         </DeferredSection>
       )}
     </>

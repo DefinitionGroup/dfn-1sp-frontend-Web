@@ -70,11 +70,11 @@ function TabbedContentSection({ data }: { data: TabbedContentSectionData }) {
       case "base":
         return "text-base";
       case "lg":
-        return "text-lg";
+        return "text-section-body";
       case "xl":
-        return "text-xl";
+        return "text-section-lead";
       default:
-        return "text-lg";
+        return "text-section-body";
     }
   };
 
@@ -88,7 +88,7 @@ function TabbedContentSection({ data }: { data: TabbedContentSectionData }) {
       ),
       h3: ({ children }: any) => (
         hasVisibleNode(children) ? (
-          <h3 className="text-5xl font-semibold text-neutral-800 mt-8 mb-4">
+          <h3 className="text-title font-semibold text-neutral-800 mt-8 mb-4">
             {children}
           </h3>
         ) : null
@@ -174,7 +174,7 @@ function TabbedContentSection({ data }: { data: TabbedContentSectionData }) {
                     distance={100}
                     className="max-w-full md:max-w-2/4"
                   >
-                    <h2 className="text-5xl leading-none text-neutral-700 font-flzr">
+                    <h2 className="text-section-lead text-neutral-700 font-flzr">
                       {introHeading}
                     </h2>
                   </StaggeredSlideUp>
@@ -186,7 +186,7 @@ function TabbedContentSection({ data }: { data: TabbedContentSectionData }) {
                     distance={100}
                     className="max-w-full md:max-w-2/4"
                   >
-                    <h2 className="text-5xl leading-none text-neutral-400 font-flzr">
+                    <h2 className="text-section-lead text-neutral-400 font-flzr">
                       {introSubheading}
                     </h2>
                   </StaggeredSlideUp>
@@ -210,7 +210,7 @@ function TabbedContentSection({ data }: { data: TabbedContentSectionData }) {
             {/* Optional section title */}
             {hasVisibleText(title) && (
               <StaggeredFadeIn>
-                <h2 className="text-6xl mb-12 text-neutral-800">{title}</h2>
+                <h2 className="text-section-title mb-12 text-neutral-800">{title}</h2>
               </StaggeredFadeIn>
             )}
 

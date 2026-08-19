@@ -117,7 +117,13 @@ function AnimatedSectionTitle({ title }: { title: string }) {
   );
 }
 
-function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
+function TwoColContentSection({
+  data,
+  inheritSectionSurface = false,
+}: {
+  data: TwoColContentSectionData;
+  inheritSectionSurface?: boolean;
+}) {
   const {
     title,
     showTitle = false,
@@ -193,7 +199,9 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
     "32": "py-32",
   };
 
-  const bgClass = bgColorMap[backgroundColor] || "bg-white";
+  const bgClass = inheritSectionSurface
+    ? "bg-transparent"
+    : bgColorMap[backgroundColor] || "bg-white";
   const textColors = textColorMap[backgroundColor] || textColorMap.white;
   const paddingClass = paddingYMap[paddingY] || "py-16";
 
@@ -204,11 +212,11 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
       case "base":
         return "text-base";
       case "lg":
-        return "text-lg";
+        return "text-section-body";
       case "xl":
-        return "text-xl";
+        return "text-section-lead";
       default:
-        return "text-lg";
+        return "text-section-body";
     }
   };
 
@@ -263,7 +271,7 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
       h2: ({ children }: any) => (
         hasVisibleNode(children) ? (
           <motion.h2
-            className="mb-4 mt-10 text-4xl font-semibold leading-[0.98] text-flzr-violet md:text-5xl"
+            className="mb-4 mt-10 text-section-title text-flzr-violet"
             variants={contentItemVariants}
           >
             {children}
@@ -273,7 +281,7 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
       h3: ({ children }: any) => (
         hasVisibleNode(children) ? (
           <motion.h3
-            className="mb-4 mt-10 text-3xl font-semibold leading-none text-flzr-violet md:text-4xl"
+            className="mb-4 mt-10 text-title text-flzr-violet"
             variants={contentItemVariants}
           >
             {children}
@@ -282,7 +290,7 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
       ),
       h4: ({ children }: any) => (
         <motion.h4
-          className="mb-3 mt-8 text-2xl font-semibold leading-none text-flzr-violet md:text-3xl"
+          className="mb-3 mt-8 text-section-lead text-flzr-violet"
           variants={contentItemVariants}
         >
           {children}

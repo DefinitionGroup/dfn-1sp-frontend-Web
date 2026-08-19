@@ -10,9 +10,14 @@ import {
 interface GlobeComponentProps {
   data: GlobeComponentType;
   language?: string;
+  inheritSectionSurface?: boolean;
 }
 
-function GlobeComponent({ data, language }: GlobeComponentProps) {
+function GlobeComponent({
+  data,
+  language,
+  inheritSectionSurface = false,
+}: GlobeComponentProps) {
   const { sectionTitle, sectionSubtitle, navPointName } = data || {};
   const locations = getFlzrEuropeanLocations(language);
 
@@ -79,14 +84,16 @@ function GlobeComponent({ data, language }: GlobeComponentProps) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="container relative mx-auto overflow-hidden rounded-4xl"
+      className={`container relative mx-auto overflow-hidden ${
+        inheritSectionSurface ? "rounded-none" : "rounded-4xl"
+      }`}
     >
       <GlobalDataComponent
         arcs={arcs}
         globeConfig={globeConfig}
         title={sectionTitle || "Our Locations"}
         description={sectionSubtitle}
-        backgroundTone="muted"
+        backgroundTone={inheritSectionSurface ? "inherit" : "muted"}
       />
     </section>
   );

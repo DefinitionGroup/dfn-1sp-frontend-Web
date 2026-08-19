@@ -142,12 +142,12 @@ export default function ResultsMetrics({
                 distance={80}
               >
                 {hasVisibleText(title) ? (
-                  <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-2 text-gray-100 max-w-xl leading-[1.1]">
+                  <h2 className="text-section-title mb-2 text-gray-100 max-w-xl">
                     {title}
                   </h2>
                 ) : null}
                 {description && (
-                  <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-xl leading-relaxed">
+                  <p className="text-section-body text-gray-200 max-w-[72ch]">
                     {description}
                   </p>
                 )}
@@ -183,7 +183,7 @@ export default function ResultsMetrics({
                               index
                             )}
                             <motion.div
-                              className="text-[8px] sm:text-[9px] font-bold mt-6 sm:mt-8 md:mt-12 text-gray-100"
+                              className="mt-6 text-xs font-bold text-gray-100 sm:mt-8 md:mt-12"
                               variants={{
                                 hidden: { opacity: 0, y: 20 },
                                 visible: {

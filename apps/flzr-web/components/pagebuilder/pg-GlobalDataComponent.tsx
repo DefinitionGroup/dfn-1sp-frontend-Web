@@ -59,7 +59,7 @@ interface GlobalDataComponentProps {
   globeConfig: GlobeConfig;
   title?: string;
   description?: string;
-  backgroundTone?: "default" | "muted";
+  backgroundTone?: "default" | "muted" | "inherit";
 }
 
 export default function GlobalDataComponent({
@@ -92,9 +92,11 @@ export default function GlobalDataComponent({
     <div
       ref={containerRef}
       className={`flex flex-row items-center justify-center py-20 h-screen md:h-auto relative w-full ${
-        backgroundTone === "muted"
-          ? "bg-[#f4f3f6] dark:bg-neutral-900"
-          : "bg-white dark:bg-black"
+        backgroundTone === "inherit"
+          ? "bg-transparent"
+          : backgroundTone === "muted"
+            ? "bg-flzr-surface-soft dark:bg-neutral-900"
+            : "bg-white dark:bg-black"
       }`}
     >
       <div className="pointer-events-none max-w-7xl mx-auto z-10 flex w-full h-full md:h-[44rem] flex-col relative px-4">
@@ -113,12 +115,12 @@ export default function GlobalDataComponent({
           className="relative z-20"
         >
           {hasVisibleText(title) ? (
-            <h2 className="text-center text-xl md:text-5xl leading-[1.15] dark:text-white">
+            <h2 className="text-center text-section-title dark:text-white">
               {title}
             </h2>
           ) : null}
           {hasVisibleText(description) ? (
-            <p className="mx-auto mt-3 max-w-2xl text-balance text-center text-base font-normal leading-relaxed text-neutral-600 dark:text-neutral-200 md:text-lg">
+            <p className="mx-auto mt-3 max-w-[72ch] text-balance text-center text-section-body font-normal text-neutral-600 dark:text-neutral-200">
               {description}
             </p>
           ) : null}
@@ -126,9 +128,11 @@ export default function GlobalDataComponent({
       </div>
       <div
         className={`absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b pointer-events-none select-none from-transparent z-40 ${
-          backgroundTone === "muted"
-            ? "to-[#f4f3f6] dark:to-neutral-900"
-            : "to-white dark:to-black"
+          backgroundTone === "inherit"
+            ? "to-transparent"
+            : backgroundTone === "muted"
+              ? "to-flzr-surface-soft dark:to-neutral-900"
+              : "to-white dark:to-black"
         }`}
       />
       <div className="absolute inset-0 z-0">

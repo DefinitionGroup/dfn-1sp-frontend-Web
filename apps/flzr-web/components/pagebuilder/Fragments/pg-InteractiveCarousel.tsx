@@ -289,7 +289,7 @@ function InteractiveCarousel({
                           </motion.div>
                         )}
                         {active.title && (
-                          <motion.h3 className="text-3xl md:text-7xl font-semibold leading-compressed pb-0">
+                          <motion.h3 className="text-section-title pb-0">
                             {active.title}
                           </motion.h3>
                         )}

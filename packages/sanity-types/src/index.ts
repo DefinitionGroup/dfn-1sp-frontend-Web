@@ -344,6 +344,18 @@ export interface OneSpComponentGroupReference {
     dataScope?: "hostChannel" | "1spWeb";
 }
 
+export type FlzrSectionSurfaceTone = "paper" | "soft" | "fade";
+
+export interface FlzrSectionBand {
+    _type: "flzrSectionBand";
+    _key?: string;
+    mode?: "section" | "reset";
+    surfaceTone?: FlzrSectionSurfaceTone;
+    showBadge?: boolean;
+    badgeNumber?: string;
+    badgeLabel?: string;
+}
+
 export interface PageBuilderBlock {
     _type?: string;
     _key?: string;

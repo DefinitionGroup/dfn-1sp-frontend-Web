@@ -60,6 +60,8 @@
   /* Dark passages — violet-tinted, never #000 */
   --color-flzr-paper: #ffffff;
   /* Light page background — pure white (user call: no light-gray tints) */
+  --color-flzr-surface-soft: #f3f4f6;
+  /* Section-band gray — distinct from the intentionally white neutral-100 */
   --color-flzr-hairline: #e6e1f0;
   /* 1px dividers on light */
   --color-flzr-hairline-dark: rgb(255 255 255 / 0.15);
@@ -72,7 +74,7 @@
   --color-violet-600: #6a48f0;
 
   /* Fluid type scale (16px root, 375px → 1440px interpolation) */
-  --text-display: clamp(2.75rem, 2.05rem + 3vw, 4.75rem);
+  --text-display: clamp(2.75rem, 2rem + 3.2vw, 5rem);
   --text-display--line-height: 0.9;
   --text-display--font-weight: 700;
   --text-title: clamp(2rem, 1.65rem + 1.5vw, 3rem);
@@ -80,6 +82,15 @@
   --text-title--font-weight: 700;
   --text-body-fluid: clamp(1rem, 0.97rem + 0.25vw, 1.125rem);
   --text-body-fluid--line-height: 1.33;
+  --text-section-title: clamp(2.75rem, 2rem + 3.2vw, 5rem);
+  --text-section-title--line-height: 0.98;
+  --text-section-title--font-weight: 700;
+  --text-section-lead: clamp(1.5rem, 1.25rem + 1.1vw, 2.25rem);
+  --text-section-lead--line-height: 1.15;
+  --text-section-body: clamp(1.125rem, 1.03rem + 0.4vw, 1.375rem);
+  --text-section-body--line-height: 1.4;
+  --text-section-label: 1.25rem;
+  --text-section-label--line-height: 1;
 
   /* Motion constants — one entrance system per page */
   --ease-flzr: cubic-bezier(0.62, 0.05, 0.01, 0.99);
@@ -521,6 +532,65 @@
   font-style: italic;
   font-weight: 700;
   text-transform: uppercase;
+}
+
+/* FLZR section bands translate the Figma section treatment into one reusable
+   presentation boundary. The badge always consumes the existing FLZR violet
+   token; the Figma hex is not duplicated here. */
+.flzr-section-band {
+  position: relative;
+  isolation: isolate;
+}
+
+.flzr-section-badge {
+  display: flex;
+  width: 13.3125rem;
+  max-width: calc(100vw - 2rem);
+  height: 3.125rem;
+  align-items: center;
+  gap: 0.5rem;
+  padding-inline: 1.75rem;
+  color: var(--color-flzr-paper);
+  background: var(--color-flzr-violet);
+  border-radius: 1.4375rem 1.4375rem 0 0;
+  font-family: var(--font-pt-sans), sans-serif;
+  font-size: var(--text-section-label);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.flzr-section-badge__number {
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.flzr-section-badge__label {
+  overflow: hidden;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.flzr-section-surface {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-4xl);
+}
+
+.flzr-section-surface--paper {
+  background: var(--color-flzr-paper);
+}
+
+.flzr-section-surface--soft {
+  background: var(--color-flzr-surface-soft);
+}
+
+.flzr-section-surface--fade {
+  background: linear-gradient(
+    180deg,
+    rgb(243 244 246 / 0.5) 0%,
+    rgb(217 217 217 / 0) 20.344%
+  );
 }
 
 @keyframes vt-slide-in {

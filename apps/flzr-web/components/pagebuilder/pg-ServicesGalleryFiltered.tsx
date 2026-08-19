@@ -13,6 +13,7 @@ interface ServicesGalleryFilteredProps {
   paddingY?: string;
   navPointName?: string;
   presentation?: "carousel" | "grid";
+  inheritSectionSurface?: boolean;
 }
 
 const GRID_PADDING_CLASSES: Record<string, string> = {
@@ -20,6 +21,13 @@ const GRID_PADDING_CLASSES: Record<string, string> = {
   "16": "py-16",
   "24": "py-24",
   "32": "py-32",
+};
+
+const BACKGROUND_CLASSES: Record<string, string> = {
+  "neutral-100": "bg-neutral-100",
+  white: "bg-white",
+  transparent: "bg-transparent",
+  black: "bg-black",
 };
 
 function ServicesGalleryFiltered({
@@ -30,6 +38,7 @@ function ServicesGalleryFiltered({
   navPointName,
   paddingY = "16",
   presentation = "carousel",
+  inheritSectionSurface = false,
 }: ServicesGalleryFilteredProps) {
   const t = getTranslations(locale);
 
@@ -49,7 +58,9 @@ function ServicesGalleryFiltered({
   const filters = [t.services.filterAll, ...uniqueServiceGroups];
   const sectionId = t.ids.services;
 
-  const bgColorClass = `bg-${backgroundColor}`;
+  const bgColorClass = inheritSectionSurface
+    ? "bg-transparent"
+    : BACKGROUND_CLASSES[backgroundColor] ?? BACKGROUND_CLASSES["neutral-100"];
   const paddingClass =
     presentation === "grid"
       ? GRID_PADDING_CLASSES[paddingY] ?? GRID_PADDING_CLASSES["16"]

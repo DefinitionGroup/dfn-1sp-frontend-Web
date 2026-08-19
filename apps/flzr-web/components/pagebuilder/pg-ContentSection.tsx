@@ -77,11 +77,11 @@ function ContentSection({ data }: { data: ContentSectionData }) {
       case "base":
         return "text-base";
       case "lg":
-        return "text-lg";
+        return "text-section-body";
       case "xl":
-        return "text-xl";
+        return "text-section-lead";
       default:
-        return "text-lg";
+        return "text-section-body";
     }
   };
 
@@ -95,7 +95,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
       ),
       h3: ({ children }: any) => (
         hasVisibleNode(children) ? (
-          <h3 className="text-5xl font-semibold text-neutral-800 mt-8 mb-4">
+          <h3 className="text-title font-semibold text-neutral-800 mt-8 mb-4">
             {children}
           </h3>
         ) : null
@@ -178,7 +178,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
                     distance={100}
                     className="max-w-full md:max-w-2/4"
                   >
-                    <h2 className="text-3xl leading-normal text-neutral-700 font-flzr">
+                    <h2 className="text-section-lead text-neutral-700 font-flzr">
                       {introHeading}
                     </h2>
                   </StaggeredSlideUp>
@@ -190,7 +190,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
                     distance={100}
                     className="max-w-full md:max-w-2/4 "
                   >
-                    <h2 className="text-3xl leading-normal text-neutral-400 font-flzr">
+                    <h2 className="text-section-lead text-neutral-400 font-flzr">
                       {introSubheading}
                     </h2>
                   </StaggeredSlideUp>
@@ -214,13 +214,13 @@ function ContentSection({ data }: { data: ContentSectionData }) {
             {/* Optional section title */}
             {hasVisibleText(title) && (
               <StaggeredFadeIn viewThreshold={0.01}>
-                <h2 className="text-4xl md:text-5xl font-light mb-12 text-flzr-violet">{title}</h2>
+                <h2 className="text-section-title mb-12 text-flzr-violet">{title}</h2>
               </StaggeredFadeIn>
             )}
 
             {/* Content */}
             <StaggeredFadeIn viewThreshold={0.01}>
-              <div className="w-full md:w-3/4">
+              <div className="w-full max-w-[72ch]">
                 <PortableText
                   value={content}
                   components={portableTextComponents}

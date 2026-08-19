@@ -171,6 +171,7 @@ export default defineType({
                 { type: 'casesGalleryFilteredWithPagination' },
                 { type: 'servicesGalleryFiltered' },
                 { type: 'flzrServicesGrid', title: 'FLZR Services Grid' },
+                { type: 'flzrSectionBand', title: 'FLZR Section Band' },
                 { type: 'servicesHeroWithBadge' },
                 { type: 'intertitleCTA' },
                 { type: 'introBlockTypoSophisticated' },

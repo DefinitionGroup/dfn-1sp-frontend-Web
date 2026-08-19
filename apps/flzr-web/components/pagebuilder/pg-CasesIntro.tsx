@@ -58,14 +58,14 @@ function CasesIntro({
                 className="md:max-w-3/4 lg:max-w-2/4"
               >
                 {hasVisibleText(title) ? (
-                  <TitleTag className="text-3xl md:text-4xl leading-none text-neutral-700 pb-3 font-flzr font-medium">
+                  <TitleTag className="text-section-title text-neutral-700 pb-3 font-flzr">
                     {title}
                   </TitleTag>
                 ) : null}
                 {hasVisibleText(subtitle) && (
-                  <h2 className="text-3xl  md:text-4xl leading-none text-neutral-400 pb-3 font-flzr">
+                  <p className="max-w-[72ch] text-section-body text-neutral-500 pb-3 font-flzr">
                     {subtitle}
-                  </h2>
+                  </p>
                 )}
               </StaggeredSlideUp>
             </div>

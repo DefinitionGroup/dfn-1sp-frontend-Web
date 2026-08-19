@@ -76,7 +76,7 @@ function GalleryHeroStepComponent(props: Props) {
         <div className="grid grid-cols-4 iphone-landscape:grid-cols-12 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 pt-16 sm:pt-24 lg:pt-32 pb-6 sm:pb-8 lg:pb-12">
           <div className="col-span-4 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 sm:col-span-6 md:col-span-12">
             {hasVisibleText(step.typewriterText) && (
-              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-4 md:mb-2">
+              <h2 className="text-section-title mb-4 md:mb-2">
                 <Typewriter
                   ref={typewriterref}
                   play={isInView}
@@ -101,7 +101,7 @@ function GalleryHeroStepComponent(props: Props) {
                 distance={40}
               >
                 {step.description?.map((p, i) => (
-                  <p key={i} className="text-base overflow-visible sm:text-lg text-gray-600 max-w-2xl leading-normal">
+                  <p key={i} className="text-section-body overflow-visible text-gray-600 max-w-[72ch]">
                     {p}
                   </p>
                 ))}
