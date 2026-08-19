@@ -74,13 +74,14 @@ export default function PeopleStep({
 
       <div className="relative z-2 col-span-12 col-start-1 row-start-1 w-full">
         <div className="container mx-auto ">
-          <div className="grid grid-cols-4 iphone-landscape:grid-cols-12 sm:grid-cols-6 md:grid-cols-12 lg:gap-8 py-16 sm:py-24 lg:py-32">
+          <div className="grid grid-cols-4 iphone-landscape:grid-cols-12 sm:grid-cols-6 md:grid-cols-12 lg:gap-8">
 
             <div className="col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-12">
 
               <PeopleIntroLayout
                 header={header}
                 description={step.description}
+                presentation="gallery"
               />
 
               {/* People Grid */}

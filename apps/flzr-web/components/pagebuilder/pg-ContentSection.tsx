@@ -229,7 +229,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
 
             {/* Content */}
             <StaggeredFadeIn viewThreshold={0.01}>
-              <div className="w-full max-w-[72ch]">
+              <div className="w-full max-w-[120ch]">
                 <PortableText
                   value={content}
                   components={portableTextComponents}
