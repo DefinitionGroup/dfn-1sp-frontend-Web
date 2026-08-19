@@ -599,6 +599,15 @@
   );
 }
 
+.flzr-content-section--globe-overlay {
+  background: linear-gradient(
+    180deg,
+    var(--color-flzr-surface-soft) 0%,
+    color-mix(in srgb, var(--color-flzr-surface-soft) 82%, transparent) 58%,
+    transparent 100%
+  );
+}
+
 @keyframes vt-slide-in {
   0% {
     opacity: 1;

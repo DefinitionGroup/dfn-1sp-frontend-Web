@@ -19,6 +19,7 @@ function GlobeComponent({
   inheritSectionSurface = false,
 }: GlobeComponentProps) {
   const { sectionTitle, sectionSubtitle, navPointName } = data || {};
+  const isCentralEuropeStatic = data?.viewMode === "centralEuropeStatic";
   const locations = getFlzrEuropeanLocations(language);
 
   const sectionId = getFlzrGlobeSectionId(sectionTitle);
@@ -77,13 +78,16 @@ function GlobeComponent({
     },
     autoRotate: false,
     autoRotateSpeed: 0.15,
-    verticalOffset: 1 / 3,
+    cameraRadius: isCentralEuropeStatic ? 145 : 165,
+    enableRotate: !isCentralEuropeStatic,
+    verticalOffset: isCentralEuropeStatic ? 0.18 : 1 / 3,
   };
 
   return (
     <section
       id={sectionId}
       {...navPointDataAttr}
+      data-globe-view-mode={data?.viewMode || "default"}
       className={`container relative mx-auto overflow-hidden ${
         inheritSectionSurface ? "rounded-none" : "rounded-4xl"
       }`}
@@ -91,8 +95,8 @@ function GlobeComponent({
       <GlobalDataComponent
         arcs={arcs}
         globeConfig={globeConfig}
-        title={sectionTitle || "Our Locations"}
-        description={sectionSubtitle}
+        title={isCentralEuropeStatic ? "" : sectionTitle || "Our Locations"}
+        description={isCentralEuropeStatic ? undefined : sectionSubtitle}
         backgroundTone={inheritSectionSurface ? "inherit" : "muted"}
       />
     </section>

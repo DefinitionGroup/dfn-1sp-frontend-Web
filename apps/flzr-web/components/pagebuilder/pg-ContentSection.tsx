@@ -16,6 +16,7 @@ type ContentSectionData = {
   paddingY?: string;
   navPointName?: string;
   hideFromNav?: boolean;
+  presentation?: "default" | "globeOverlay";
 };
 
 const contentSpanClasses: Record<string, string> = {
@@ -43,10 +44,12 @@ function ContentSection({ data }: { data: ContentSectionData }) {
     paddingY = "16",
     navPointName,
     hideFromNav = false,
+    presentation = "default",
   } = data || {};
 
   const contentSpanClass = contentSpanClasses[columnSpan] ?? contentSpanClasses["8"];
   const paddingClass = paddingClasses[paddingY] ?? paddingClasses["16"];
+  const isGlobeOverlay = presentation === "globeOverlay";
 
   if (!content || content.length === 0) return null;
 
@@ -205,10 +208,16 @@ function ContentSection({ data }: { data: ContentSectionData }) {
       <section
         id={sectionId}
         {...navPointDataAttr}
-        className="grid grid-cols-12 z-1 mx-auto container relative font-flzr"
+        className={`grid grid-cols-12 mx-auto container font-flzr ${
+          isGlobeOverlay
+            ? "flzr-content-section--globe-overlay absolute inset-x-0 top-0 z-20"
+            : "relative z-1"
+        }`}
       >
         <div
-          className={`z-1 grid gap-8 col-span-12 ${paddingClass} col-start-1 container mx-auto row-start-1 grid-cols-12`}
+          className={`z-1 grid gap-8 col-span-12 ${paddingClass} col-start-1 container mx-auto row-start-1 grid-cols-12 ${
+            isGlobeOverlay ? "px-4 sm:px-6 lg:px-8" : ""
+          }`}
         >
           <div className={`z-1 ${contentSpanClass} col-start-1 pt-8`}>
             {/* Optional section title */}

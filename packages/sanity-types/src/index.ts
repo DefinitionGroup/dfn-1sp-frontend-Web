@@ -325,6 +325,7 @@ export interface ContentSection {
     showGridBackground?: boolean;
     paddingY?: string;
     navPointName?: string;
+    presentation?: "default" | "globeOverlay";
 }
 
 export interface OneSpComponentGroup {
@@ -696,6 +697,7 @@ export interface GlobeComponent {
     sectionTitle?: string;
     sectionSubtitle?: string;
     locations?: GlobeLocation[];
+    viewMode?: "default" | "centralEuropeStatic";
 }
 
 export interface Service {

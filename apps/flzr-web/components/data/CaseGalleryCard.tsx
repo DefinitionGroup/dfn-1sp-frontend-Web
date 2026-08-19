@@ -116,7 +116,7 @@ export default function CaseGalleryCard({
         </div>
 
         {item.services && item.services.length > 0 && (
-          <div className="flex justify-end pt-4">
+          <div className="flex justify-start">
             <motion.p
               layoutId={`description-${item.description}-${id}`}
               className="max-w-[80%] text-right text-xxs font-regular leading-snug text-neutral-500 md:text-xs dark:text-neutral-400"

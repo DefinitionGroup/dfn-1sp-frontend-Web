@@ -90,6 +90,8 @@ export type GlobeConfig = {
   };
   autoRotate?: boolean;
   autoRotateSpeed?: number;
+  cameraRadius?: number;
+  enableRotate?: boolean;
   verticalOffset?: number;
 };
 
@@ -537,18 +539,20 @@ function CameraAspectController({
 
 function CameraInitialView({
   initialPosition,
+  radius,
 }: {
   initialPosition?: { lat: number; lng: number };
+  radius: number;
 }) {
   const { camera } = useThree();
   const lat = initialPosition?.lat ?? DEFAULT_VIEW.lat;
   const lng = initialPosition?.lng ?? DEFAULT_VIEW.lng;
 
   useEffect(() => {
-    const [x, y, z] = latLngToCameraPosition(lat, lng, CAMERA_RADIUS);
+    const [x, y, z] = latLngToCameraPosition(lat, lng, radius);
     camera.position.set(x, y, z);
     camera.lookAt(CAMERA_TARGET);
-  }, [camera, lat, lng]);
+  }, [camera, lat, lng, radius]);
 
   return null;
 }
@@ -556,6 +560,7 @@ function CameraInitialView({
 export function World(props: WorldProps) {
   const { globeConfig, data } = props;
   const scene = new Scene();
+  const cameraRadius = globeConfig.cameraRadius ?? CAMERA_RADIUS;
 
   return (
     <Canvas scene={scene} camera={new PerspectiveCamera(50, aspect, 0.1, 2000)}>
@@ -563,7 +568,10 @@ export function World(props: WorldProps) {
       <CameraAspectController
         verticalOffset={globeConfig.verticalOffset ?? 0}
       />
-      <CameraInitialView initialPosition={globeConfig.initialPosition} />
+      <CameraInitialView
+        initialPosition={globeConfig.initialPosition}
+        radius={cameraRadius}
+      />
       <ambientLight color={globeConfig.ambientLight} intensity={1.8} />
 
       <Globe {...props} />
@@ -573,9 +581,10 @@ export function World(props: WorldProps) {
           wheel listener here would swallow page scrolling over the globe */}
       <OrbitControls
         enablePan={false}
+        enableRotate={globeConfig.enableRotate ?? true}
         enableZoom={false}
-        minDistance={CAMERA_RADIUS}
-        maxDistance={CAMERA_RADIUS}
+        minDistance={cameraRadius}
+        maxDistance={cameraRadius}
         target={[CAMERA_TARGET.x, CAMERA_TARGET.y, CAMERA_TARGET.z]}
         autoRotateSpeed={globeConfig.autoRotateSpeed ?? 0.15}
         autoRotate={globeConfig.autoRotate ?? true}

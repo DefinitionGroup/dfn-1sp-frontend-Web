@@ -11,6 +11,7 @@ export default defineType({
     description: 'Display custom locations on an interactive globe',
     groups: [
         { name: 'content', title: 'Content' },
+        { name: 'layout', title: 'Layout & Interaction' },
         { name: 'navigation', title: 'Navigation' }
     ],
     fields: [
@@ -43,6 +44,22 @@ export default defineType({
             rows: 2,
             description: 'Optional supporting line displayed below the section title.',
             group: 'content',
+        }),
+        defineField({
+            name: 'viewMode',
+            title: 'FLZR Globe View',
+            type: 'string',
+            description: 'The static Central Europe view hides the globe copy, zooms in and disables drag rotation.',
+            initialValue: 'default',
+            hidden: ({ document }) => !isFlzrChannel(document?.channel),
+            group: 'layout',
+            options: {
+                list: [
+                    { title: 'Default interactive view', value: 'default' },
+                    { title: 'Static Central Europe', value: 'centralEuropeStatic' },
+                ],
+                layout: 'radio',
+            },
         }),
         defineField({
             name: 'locations',

@@ -51,6 +51,8 @@ interface GlobeConfig {
   initialPosition: { lat: number; lng: number };
   autoRotate: boolean;
   autoRotateSpeed: number;
+  cameraRadius?: number;
+  enableRotate?: boolean;
   verticalOffset?: number;
 }
 

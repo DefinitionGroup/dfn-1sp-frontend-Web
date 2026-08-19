@@ -158,6 +158,22 @@ export default defineType({
                 layout: "radio",
             },
         }),
+        defineField({
+            name: "presentation",
+            title: "FLZR Presentation",
+            type: "string",
+            description: "Use the globe overlay only when this content block immediately precedes a Globe Component inside the same FLZR Section Band.",
+            initialValue: "default",
+            group: "layout",
+            hidden: ({ document }) => document?.channel !== "flizrWeb",
+            options: {
+                list: [
+                    { title: "Default", value: "default" },
+                    { title: "Overlay on following globe", value: "globeOverlay" },
+                ],
+                layout: "radio",
+            },
+        }),
     ],
     preview: {
         select: {
