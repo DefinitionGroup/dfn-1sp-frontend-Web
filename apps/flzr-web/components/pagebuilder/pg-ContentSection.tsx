@@ -210,7 +210,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
         <div
           className={`z-1 grid gap-8 col-span-12 ${paddingClass} col-start-1 container mx-auto row-start-1 grid-cols-12`}
         >
-          <div className={`z-1 ${contentSpanClass} col-start-1 pt-8 border-t`}>
+          <div className={`z-1 ${contentSpanClass} col-start-1 pt-8`}>
             {/* Optional section title */}
             {hasVisibleText(title) && (
               <StaggeredFadeIn viewThreshold={0.01}>

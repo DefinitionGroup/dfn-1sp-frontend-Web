@@ -17,7 +17,7 @@ export default function PeopleIntroLayout({
   description,
 }: PeopleIntroLayoutProps) {
   return (
-    <header className="mb-8 border-t border-gray-200 pt-4 sm:pt-6 md:mb-12">
+    <header className="mb-8 pt-4 sm:pt-6 md:mb-12">
       <div className="grid grid-cols-4 gap-4 sm:grid-cols-6 sm:gap-6 md:grid-cols-10 iphone-landscape:grid-cols-4">
         <div className="col-span-4 sm:col-span-3 md:col-span-4 iphone-landscape:col-span-4">
           <div className="flex flex-col gap-2 sm:gap-4">
@@ -52,7 +52,7 @@ export default function PeopleIntroLayout({
 
         {hasVisibleText(description) && (
           <div className="col-span-4 mt-4 sm:col-span-3 sm:mt-0 md:col-span-5 md:col-start-6 iphone-landscape:col-span-4 iphone-landscape:col-start-1 iphone-landscape:mt-4">
-            <div className="border-t border-gray-200 pt-4 sm:pt-6 md:border-t-0 md:pt-0">
+            <div className="pt-4 sm:pt-6 md:pt-0">
               <p className="max-w-[72ch] text-section-body text-neutral-500">
                 {description}
               </p>

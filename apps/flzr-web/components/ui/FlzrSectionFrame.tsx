@@ -27,7 +27,7 @@ export default function FlzrSectionFrame({
   const hasBadge = showBadge && Boolean(badgeNumber && badgeLabel);
 
   return (
-    <div className="flzr-section-band container mx-auto" data-surface={surfaceTone}>
+    <div className="flzr-section-band container mx-auto my-12" data-surface={surfaceTone}>
       {hasBadge ? (
         <div className="flzr-section-badge">
           <span className="flzr-section-badge__number" aria-hidden="true">

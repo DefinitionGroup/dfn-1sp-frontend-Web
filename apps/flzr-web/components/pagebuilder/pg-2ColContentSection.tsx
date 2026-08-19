@@ -379,7 +379,7 @@ function TwoColContentSection({
         className={`relative mx-auto w-full max-w-[1480px] px-4 sm:px-6 lg:px-8 ${paddingClass}`}
       >
         <motion.div
-          className="grid grid-cols-1 items-center gap-10 border-t border-flzr-hairline pt-10 md:gap-14 md:pt-14 lg:grid-cols-12 lg:gap-8 xl:gap-10"
+          className="grid grid-cols-1 items-center gap-10 pt-10 md:gap-14 md:pt-14 lg:grid-cols-12 lg:gap-8 xl:gap-10"
           initial={prefersReducedMotion ? "visible" : "hidden"}
           whileInView="visible"
           viewport={{ once: true, amount: 0.12 }}

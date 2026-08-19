@@ -559,6 +559,12 @@
   text-transform: uppercase;
 }
 
+@media (min-width: 64rem) {
+  .flzr-section-badge {
+    margin-left: 4rem;
+  }
+}
+
 .flzr-section-badge__number {
   font-weight: 400;
   font-variant-numeric: tabular-nums;

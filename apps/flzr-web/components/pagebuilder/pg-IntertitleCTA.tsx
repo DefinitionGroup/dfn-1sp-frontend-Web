@@ -86,7 +86,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
       <div
         className={`relative mx-auto w-full max-w-[1480px] px-4 font-flzr sm:px-6 lg:px-8 ${paddingTopClass}`}
       >
-        <div className="relative border-t border-neutral-900/15 py-16 sm:py-20 lg:py-28">
+        <div className="relative py-16 sm:py-20 lg:py-28">
           <span
             aria-hidden="true"
             className={`mb-8 block h-[3px] w-12 bg-flzr-violet sm:mb-10 ${isLeftAligned ? "" : "mx-auto"}`}
