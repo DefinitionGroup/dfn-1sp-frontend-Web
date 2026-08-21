@@ -14,6 +14,8 @@
     "dev:renaissance": "pnpm --filter @1sp/renaissance-web exec next dev --turbopack -p 3003",
     "doctor:sanity": "node --env-file=.env --env-file=.env.local scripts/sanity-doctor.mjs",
     "doctor:translations": "node --experimental-strip-types --env-file=.env --env-file=.env.local scripts/sanity-translation-audit.mjs",
+    "seed:msm-units": "node --env-file=.env --env-file=.env.local scripts/seed-msm-units.mjs",
+    "seed:msm-units:cli": "sanity exec scripts/seed-msm-units-cli.mjs --with-user-token",
     "test:deployment-tier": "node --experimental-strip-types --test scripts/deployment-tier.test.mjs",
     "test:component-import": "node --experimental-strip-types --test scripts/onesp-component-group-import.test.mjs",
     "test:cta-contract": "tsx --test scripts/cta-contract.test.ts",

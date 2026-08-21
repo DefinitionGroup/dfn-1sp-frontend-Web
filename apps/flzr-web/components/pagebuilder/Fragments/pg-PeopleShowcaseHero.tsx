@@ -14,21 +14,26 @@ const EASE_FLZR = [0.62, 0.05, 0.01, 0.99] as const;
 
 const gridVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.07 } },
+  visible: {},
 };
 
 const cardVariants = {
   hidden: { opacity: 0, y: 32 },
-  visible: {
+  visible: (index = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.65, ease: EASE_FLZR },
-  },
+    transition: {
+      duration: 0.65,
+      ease: EASE_FLZR,
+      delay: index * 0.07,
+      when: "beforeChildren" as const,
+    },
+  }),
 };
 
-/* Frosted panel: slow fade after its card lands, then the contents
-   cascade — name, position, then the contact icons. `beforeChildren`
-   holds the children until the glass itself has fully faded in. */
+/* Frosted panel: fade after its card lands while the contents cascade —
+   name, position, then the contact icons. The children run with the glass
+   fade so every card continues its own sequence immediately. */
 const panelVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -37,7 +42,6 @@ const panelVariants = {
       duration: 0.8,
       delay: 0.25,
       ease: EASE_FLZR,
-      when: "beforeChildren",
       staggerChildren: 0.14,
     },
   },
@@ -229,6 +233,7 @@ function PeopleShowcaseHero({
             return (
               <motion.div
                 key={key}
+                custom={index}
                 variants={cardVariants}
                 className="group relative overflow-hidden rounded-[2rem] flex-shrink-0 aspect-square bg-neutral-100"
                 data-member={(

@@ -46,8 +46,8 @@ import {
   extractUnitsFromContent,
   generateUnitsListJsonLd,
   getBreadcrumbLabel,
-  CANONICAL_URL,
 } from "@/lib/structured-data";
+import { MSM_CANONICAL_URL as CANONICAL_URL } from "@msm/lib/site-url";
 
 // Allow new pages to be rendered on-demand (ISR)
 export const dynamicParams = true;
@@ -172,6 +172,7 @@ export default async function Page({
               description: page.metadata?.description,
               locale: language,
               imageUrl: ogImageUrl,
+              canonicalUrl: CANONICAL_URL,
             })}
           />
           <JsonLdScript

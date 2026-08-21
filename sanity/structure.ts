@@ -195,14 +195,28 @@ const createChannelStructure = (
                       lang.id,
                       Users
                     ),
-                    createAssignedGlobalListItem(
-                      S,
-                      "Assigned Units",
-                      "unit",
-                      channelValue,
-                      lang.id,
-                      SquaresFour
-                    ),
+                    channelValue === "msmWeb"
+                      ? S.listItem()
+                          .title("MSM Units")
+                          .icon(SquaresFour)
+                          .child(
+                            S.documentTypeList("msmUnit")
+                              .title(`MSM Units (${lang.title})`)
+                              .filter('_type == "msmUnit" && language == $language')
+                              .params({ language: lang.id })
+                              .defaultOrdering([{ field: "sortOrder", direction: "asc" }])
+                              .initialValueTemplates([
+                                S.initialValueTemplateItem(`msmUnit-${lang.id}`, { language: lang.id }),
+                              ])
+                          )
+                      : createAssignedGlobalListItem(
+                          S,
+                          "Assigned Units",
+                          "unit",
+                          channelValue,
+                          lang.id,
+                          SquaresFour
+                        ),
                   ])
               )
           )
@@ -482,6 +496,7 @@ export const structure: StructureResolver = (S) =>
             "siteSettings",
             "caseStudy",
             "unit",
+            "msmUnit",
             "client",
             "person",
             "services",

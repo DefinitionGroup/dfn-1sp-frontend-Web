@@ -203,6 +203,16 @@ const generateTemplates = (excludeBase = false) => {
           }),
         });
       });
+
+      if (channel.id === 'msmWeb') {
+        templates.push({
+          id: `msmUnit-${lang}`,
+          title: `MSM Unit (${lang.toUpperCase()})`,
+          schemaType: 'msmUnit',
+          parameters: [{ name: 'language', type: 'string' }],
+          value: (params: any) => ({ language: params.language || lang, isActive: true, sortOrder: 10 }),
+        });
+      }
     });
 
     templates.push({
@@ -302,7 +312,7 @@ export default defineConfig({
           : [...prev, revalidateAction]
       }
 
-      if (schemaType === 'page' || schemaType === 'menu' || schemaType === 'siteSettings' || schemaType === 'oneSpComponentGroup') {
+      if (schemaType === 'page' || schemaType === 'menu' || schemaType === 'siteSettings' || schemaType === 'oneSpComponentGroup' || schemaType === 'msmUnit') {
         return [...prev, revalidateAction]
       }
 

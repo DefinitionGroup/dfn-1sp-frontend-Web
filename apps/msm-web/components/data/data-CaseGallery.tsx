@@ -27,6 +27,11 @@ interface CaseStudy {
   };
   websiteUrl?: string;
   websiteUrlText?: string;
+  msmUnits?: Array<{
+    _id: string;
+    name: string;
+    slug?: { current?: string };
+  }>;
 }
 
 interface CaseGalleryComponentProps {

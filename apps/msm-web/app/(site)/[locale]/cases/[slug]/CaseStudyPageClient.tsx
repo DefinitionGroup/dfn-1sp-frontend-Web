@@ -9,8 +9,14 @@ import { getTranslations } from "@1sp/utils/translations";
 import type { CaseStudyData } from "@1sp/sanity-types";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
+type MsmAttributedUnit = {
+  _id: string;
+  name: string;
+  slug?: { current?: string };
+};
+
 interface CaseStudyPageClientProps {
-  caseStudy: CaseStudyData;
+  caseStudy: CaseStudyData & { msmUnits?: MsmAttributedUnit[] };
   locale: string;
 }
 
@@ -120,14 +126,13 @@ export default function CaseStudyPageClient({
                 {caseStudy.description}
               </h3>
             )}
-            {/* Display Unit Logos if available */}
-            {caseStudy.units && caseStudy.units.length > 0 && (
-              <div className="flex flex-wrap gap-1 sm:gap-4 mb-4 w-fit  border-white/50">
-                {caseStudy.units.map((unit) =>
+            {/* MSM Unit attribution is derived from Unit documents; Cases stay unchanged. */}
+            {(caseStudy.msmUnits || []).length > 0 && (
+              <div className="mb-4 flex w-fit flex-wrap gap-x-5 gap-y-2 border-t border-white/35 pt-3">
+                {(caseStudy.msmUnits || []).map((unit) =>
                   hasVisibleText(unit.name) ? (
 
-
-                    <h2 key={unit._id} className="text-neutral-200 tracking-wider text-[10px] sm:text-xxs font-regular bg-gray-700  inline-block w-fit py-1 px-3 sm:px-4">
+                    <h2 key={unit._id} className="inline-block w-fit text-[10px] font-bold uppercase tracking-[0.13em] text-msm-cyan sm:text-xxs">
                       {unit.name}
                     </h2>
                   ) : null

@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getRobotsRoute } from "@1sp/utils/deployment-tier";
-import { CANONICAL_URL } from "@/lib/structured-data";
+import { MSM_CANONICAL_URL as CANONICAL_URL } from "@msm/lib/site-url";
 
 /**
  * Robots.txt configuration

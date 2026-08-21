@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-19T00:00:00.000Z",
+  "title": "Design System: MSM.digital",
+  "extensions": {
+    "colorMeta": {
+    "paper-black": {
+      "role": "neutral",
+      "displayName": "Paper Black",
+      "canonical": "#0a0c0d",
+      "tonalRamp": ["#050606", "#0a0c0d", "#14181a", "#252b2e", "#464e52", "#727c81", "#aeb5b8", "#e9ebec"]
+    },
+    "surface-black": {
+      "role": "neutral",
+      "displayName": "Surface Black",
+      "canonical": "#14181a",
+      "tonalRamp": ["#070809", "#0d1011", "#14181a", "#272d30", "#485155", "#747e83", "#afb6b9", "#e9ebec"]
+    },
+    "ink-white": {
+      "role": "neutral",
+      "displayName": "Ink White",
+      "canonical": "#f4f4f4",
+      "tonalRamp": ["#181818", "#353535", "#565656", "#7d7d7d", "#a5a5a5", "#cbcbcb", "#e5e5e5", "#f4f4f4"]
+    },
+    "signal-cyan": {
+      "role": "primary",
+      "displayName": "Signal Cyan",
+      "canonical": "#03b8d4",
+      "tonalRamp": ["#02272d", "#03414b", "#025f6e", "#027f93", "#02a0b9", "#03b8d4", "#61d4e4", "#c6f2f8"]
+    },
+    "signal-teal": {
+      "role": "secondary",
+      "displayName": "Signal Teal",
+      "canonical": "#02a8b2",
+      "tonalRamp": ["#022527", "#023f43", "#025c62", "#017a82", "#0199a2", "#02a8b2", "#5dccd2", "#c5f0f2"]
+    },
+    "signal-magenta": {
+      "role": "secondary",
+      "displayName": "Signal Magenta",
+      "canonical": "#d10dab",
+      "tonalRamp": ["#310329", "#520443", "#760661", "#9a087f", "#bb0a9a", "#d10dab", "#e568cb", "#f7caed"]
+    },
+    "signal-red": {
+      "role": "secondary",
+      "displayName": "Signal Red",
+      "canonical": "#d61e45",
+      "tonalRamp": ["#330711", "#560b1b", "#7b1128", "#a01735", "#c01b3e", "#d61e45", "#e8758e", "#f8ced7"]
+    },
+    "signal-orange": {
+      "role": "secondary",
+      "displayName": "Signal Orange",
+      "canonical": "#ed4033",
+      "tonalRamp": ["#380e0b", "#5e1813", "#86231d", "#ae2e25", "#d1382d", "#ed4033", "#f2857d", "#fbd2cf"]
+    },
+    "signal-amber": {
+      "role": "secondary",
+      "displayName": "Signal Amber",
+      "canonical": "#f5991c",
+      "tonalRamp": ["#382204", "#5e3907", "#86520b", "#ae6d10", "#d48717", "#f5991c", "#f8bc68", "#fce5be"]
+    }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Heroes and principal editorial displays." },
+      "body": { "displayName": "Body", "purpose": "Narrative copy with a controlled reading measure." },
+      "label": { "displayName": "Signal Label", "purpose": "Navigation microcopy, descriptors, and technical wayfinding." }
+    },
+    "shadows": [
+      { "name": "flat-plane", "value": "none", "purpose": "Default content planes remain flat." },
+      { "name": "mosaic-button-rest", "value": "0 10px 28px rgba(0, 0, 0, 0.45)", "purpose": "Signature lift reserved for Button2 and MosaicButton." }
+    ],
+    "motion": [
+      { "name": "reveal", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Fast entry with an exact landing and no elastic overshoot." },
+      { "name": "media-crop", "value": "700ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Controlled scale and crop movement." },
+      { "name": "mosaic-facet", "value": "350ms cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Localized facet flips that return home." },
+      { "name": "reduced-motion", "value": "0ms", "purpose": "Complete static composition with no hidden content." }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "0px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Signal Label",
+      "kind": "custom",
+      "description": "Compact uppercase technical wayfinding with no chip container.",
+      "html": "<span class=\"ds-signal-label\">Capabilities</span>",
+      "css": ".ds-signal-label{color:#03b8d4;font:700 .64rem/1.2 AspektaVF,sans-serif;letter-spacing:.14em;text-transform:uppercase}"
+    },
+    {
+      "name": "MSM Unit Sector",
+      "kind": "custom",
+      "description": "Hard-edged full-bleed editorial sector using the legacy MSM hero media, a dark crop, and the living mark as its identity.",
+      "html": "<a class=\"ds-unit-sector\" href=\"/units/xr-labs\"><img src=\"https://www.msm.digital/de/wp-content/uploads/2020/03/whale.jpg\" alt=\"\"><span class=\"ds-unit-shade\"></span><span class=\"ds-unit-copy\"><span class=\"ds-mini-mark\"><i></i><i></i><i></i></span><small>AR, VR, MR &amp; AI glasses</small><strong>XR Labs</strong><em>Extended Reality. Real results.</em></span></a>",
+      "css": ".ds-unit-sector{position:relative;display:grid;min-height:28rem;overflow:hidden;border:1px solid rgba(244,244,244,.18);border-radius:0;color:#f4f4f4;text-decoration:none;background:#14181a}.ds-unit-sector>img,.ds-unit-shade{position:absolute;inset:0;width:100%;height:100%}.ds-unit-sector>img{object-fit:cover;transition:transform .7s cubic-bezier(.22,1,.36,1)}.ds-unit-shade{background:linear-gradient(180deg,rgba(10,12,13,.28),rgba(10,12,13,.9))}.ds-unit-copy{position:relative;z-index:1;align-self:end;display:grid;gap:.65rem;padding:1.5rem}.ds-unit-copy small{font:700 .64rem/1.2 AspektaVF,sans-serif;letter-spacing:.14em;text-transform:uppercase}.ds-unit-copy strong{font:600 clamp(1.875rem,1.5rem + 1.5vw,3rem)/1.15 AspektaVF,sans-serif}.ds-unit-copy em{font:400 1rem/1.5 AspektaVF,sans-serif;font-style:normal}.ds-mini-mark{display:flex;gap:3px}.ds-mini-mark i{display:block;width:12px;height:12px;clip-path:polygon(0 0,100% 50%,0 100%)}.ds-mini-mark i:nth-child(1){background:#03b8d4}.ds-mini-mark i:nth-child(2){background:#d10dab}.ds-mini-mark i:nth-child(3){background:#f5991c}.ds-unit-sector:hover>img{transform:scale(1.035)}.ds-unit-sector:focus-visible{outline:2px solid #03b8d4;outline-offset:4px}@media(prefers-reduced-motion:reduce){.ds-unit-sector>img{transition:none}.ds-unit-sector:hover>img{transform:none}}"
+    },
+    {
+      "name": "Mosaic Button",
+      "kind": "button",
+      "description": "Static sidecar approximation of the sacred Button2/MosaicButton signature CTA.",
+      "html": "<button class=\"ds-mosaic-button\"><span>Start a conversation</span></button>",
+      "css": ".ds-mosaic-button{position:relative;isolation:isolate;overflow:hidden;border:1px solid rgba(244,244,244,.45);border-radius:0;padding:1rem 1.35rem;color:#f4f4f4;background:linear-gradient(120deg,#03b8d4 0 24%,#02a8b2 24% 38%,#d10dab 38% 60%,#ed4033 60% 78%,#f5991c 78%);box-shadow:0 10px 28px rgba(0,0,0,.45);font:700 .72rem/1.2 AspektaVF,sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}.ds-mosaic-button:hover{filter:saturate(1.15)}.ds-mosaic-button:active{transform:translateY(1px)}.ds-mosaic-button:focus-visible{outline:2px solid #03b8d4;outline-offset:4px}.ds-mosaic-button span{position:relative;z-index:1}"
+    },
+    {
+      "name": "Refractive Navigation",
+      "kind": "nav",
+      "description": "Thin fixed glass layer with compact labels and the colorful MSM mark as the brand anchor.",
+      "html": "<nav class=\"ds-glass-nav\" aria-label=\"Primary\"><a class=\"ds-brand\" href=\"/\" aria-label=\"MSM.digital home\"><span><i></i><i></i><i></i></span><b>MSM.digital</b></a><a href=\"/units\">Units</a><a href=\"/cases\">Cases</a></nav>",
+      "css": ".ds-glass-nav{display:flex;align-items:center;gap:1.5rem;padding:.8rem 1.5rem;border-bottom:1px solid rgba(244,244,244,.18);background:rgba(10,12,13,.48);backdrop-filter:blur(18px) saturate(1.25);color:#f4f4f4;font:700 .64rem/1.2 AspektaVF,sans-serif;letter-spacing:.12em;text-transform:uppercase}.ds-glass-nav a{color:inherit;text-decoration:none}.ds-glass-nav a:hover{color:#03b8d4}.ds-glass-nav a:focus-visible{outline:2px solid #03b8d4;outline-offset:4px}.ds-brand{display:flex;align-items:center;gap:.65rem;margin-right:auto}.ds-brand>span{display:flex;gap:2px}.ds-brand i{display:block;width:10px;height:10px;clip-path:polygon(0 0,100% 50%,0 100%)}.ds-brand i:nth-child(1){background:#03b8d4}.ds-brand i:nth-child(2){background:#d10dab}.ds-brand i:nth-child(3){background:#f5991c}"
+    },
+    {
+      "name": "Animated MSM Mark",
+      "kind": "custom",
+      "description": "Static sidecar representation of the ambient triangular mark; production uses MsmLogo and its reduced-motion state.",
+      "html": "<span class=\"ds-mark\" role=\"img\" aria-label=\"MSM.digital\"><i></i><i></i><i></i><i></i></span>",
+      "css": ".ds-mark{display:grid;grid-template-columns:repeat(2,2rem);gap:3px;width:max-content}.ds-mark i{width:2rem;height:2rem;clip-path:polygon(0 0,100% 50%,0 100%);transform-origin:center;transition:transform .35s cubic-bezier(.22,1,.36,1)}.ds-mark i:nth-child(1){background:#03b8d4}.ds-mark i:nth-child(2){background:#d10dab}.ds-mark i:nth-child(3){background:#ed4033}.ds-mark i:nth-child(4){background:#f5991c}.ds-mark:hover i:nth-child(even){transform:rotateY(180deg)}@media(prefers-reduced-motion:reduce){.ds-mark i{transition:none}.ds-mark:hover i{transform:none}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Vast Space",
+    "overview": "MSM.digital feels precise, expansive, and technically alive. Full-bleed media creates atmosphere; typography and hairline divisions establish order; the living mosaic mark provides the unmistakable brand signal. The composition is dark-first without becoming generic dark mode because the cube palette, angular geometry, and exact motion grammar carry the identity.\n\nThe interface is one continuous field rather than a collection of floating cards. Content is divided by hard edges, scale, and space. Motion arrives quickly and lands exactly, giving the surface presence without turning it into spectacle.",
+    "keyCharacteristics": [
+      "Full-bleed photographic planes with controlled darkening for legibility.",
+      "Sharp, zero-radius geometry and one-pixel structural divisions.",
+      "One unified hero display token plus a disciplined section-title scale.",
+      "MSM cube colors used as signals, not broad decorative washes.",
+      "Ambient mosaic motion and precise reveal transitions."
+    ],
+    "rules": [
+      {
+        "name": "The Signal Rule",
+        "body": "Cube colors are scarce signals. Do not turn them into full-section gradients or generic decorative backgrounds.",
+        "section": "colors"
+      },
+      {
+        "name": "The Display Discipline Rule",
+        "body": "Use `headline-display` for heroes and principal displays; use the established title scale for section headings instead of inventing local sizes.",
+        "section": "typography"
+      },
+      {
+        "name": "The Structural Depth Rule",
+        "body": "Prefer a one-pixel divider, tonal shift, or media crop. The MosaicButton shadow is the deliberate signature exception.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use full-bleed contextual imagery as the dominant visual anchor.",
+      "Do structure lists and grids with hard edges, hairline borders, and spacing.",
+      "Do use the animated MSM mark and mosaic CTA as signature brand moments.",
+      "Do preserve readable copy measures and strong light-on-dark contrast.",
+      "Do make reduced-motion states complete rather than empty."
+    ],
+    "donts": [
+      "Don't introduce rounded cards, pills, floating media panels, or soft dashboard tiles.",
+      "Don't add generic purple-on-white gradients or ornamental glow effects.",
+      "Don't create a new display font, serif voice, or italic headline style.",
+      "Don't use cube colors as broad decoration; keep them as signals.",
+      "Don't replace the existing button or mark motion with a generic animation."
+    ]
+  }
+}

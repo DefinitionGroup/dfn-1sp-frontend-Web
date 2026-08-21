@@ -540,6 +540,52 @@ export const getAllCases = cache(async (channel: string, language: string) => {
   return data || [];
 });
 
+/** Fetch all active MSM Units in editorial order. */
+export const getMsmUnits = cache(async (language: string) => {
+  const { MSM_UNITS_QUERY } = await import("./groq");
+  const { data } = await sanityFetch({
+    query: MSM_UNITS_QUERY,
+    params: { language },
+    tags: ["msmUnits"],
+  });
+  return data || [];
+});
+
+/** Fetch an ordered manual subset of MSM Units. */
+export const getMsmUnitsByIds = cache(async (ids: string[], language: string) => {
+  if (ids.length === 0) return [];
+  const { MSM_UNITS_BY_IDS_QUERY } = await import("./groq");
+  const { data } = await sanityFetch({
+    query: MSM_UNITS_BY_IDS_QUERY,
+    params: { ids, language },
+    tags: ["msmUnits"],
+  });
+  const units = data || [];
+  return ids.map((id) => units.find((unit: { _id: string }) => unit._id === id)).filter(Boolean);
+});
+
+/** Fetch one active MSM Unit with its Unit-owned relationships. */
+export const getMsmUnitBySlug = cache(async (slug: string, language: string) => {
+  const { MSM_UNIT_BY_SLUG_QUERY } = await import("./groq");
+  const { data } = await sanityFetch({
+    query: MSM_UNIT_BY_SLUG_QUERY,
+    params: { slug, language },
+    tags: ["msmUnits", `msmUnit:${slug}`],
+  });
+  return data;
+});
+
+/** Fetch Unit route params and sitemap dates across locales. */
+export const getAllMsmUnitSlugs = cache(async () => {
+  const { MSM_UNIT_SLUGS_QUERY } = await import("./groq");
+  const { data } = await sanityFetch({
+    query: MSM_UNIT_SLUGS_QUERY,
+    params: {},
+    tags: ["msmUnits"],
+  });
+  return data || [];
+});
+
 /**
  * Fetch all services.
  *

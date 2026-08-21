@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
-import { getAllPageSitemapSlugs, getAllCaseSlugs } from "@1sp/sanity-queries";
-import { CANONICAL_URL } from "@/lib/structured-data";
+import { getAllPageSitemapSlugs, getAllCaseSlugs, getAllMsmUnitSlugs } from "@1sp/sanity-queries";
+import { MSM_CANONICAL_URL as CANONICAL_URL } from "@msm/lib/site-url";
 
 /**
  * Dynamic Sitemap
@@ -33,7 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }));
 
     // Case studies from Sanity (includes real _updatedAt dates)
-    const cases = await getAllCaseSlugs();
+    const [cases, units] = await Promise.all([getAllCaseSlugs(), getAllMsmUnitSlugs()]);
     const caseEntries: MetadataRoute.Sitemap = cases
       .filter((cs) => cs.channel?.includes("msmWeb"))
       .map((cs) => ({
@@ -43,5 +43,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.7,
       }));
 
-    return [...homePages, ...pageEntries, ...caseEntries];
+    const unitEntries: MetadataRoute.Sitemap = units.map((unit: { slug: string; _updatedAt?: string }) => ({
+      url: `${CANONICAL_URL}/units/${unit.slug}`,
+      lastModified: unit._updatedAt ? new Date(unit._updatedAt) : new Date(),
+      changeFrequency: "monthly",
+      priority: 0.75,
+    }));
+
+    return [...homePages, ...pageEntries, ...caseEntries, ...unitEntries];
 }

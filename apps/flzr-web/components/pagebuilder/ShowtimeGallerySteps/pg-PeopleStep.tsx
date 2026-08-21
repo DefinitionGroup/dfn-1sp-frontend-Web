@@ -86,10 +86,7 @@ export default function PeopleStep({
 
               {/* People Grid */}
               <div className="mt-8 sm:mt-10 md:mt-12">
-                <PeopleShowcaseHero
-                  members={mappedMembers}
-                  initialVisibleCount={Math.min(8, mappedMembers.length)}
-                />
+                <PeopleShowcaseHero members={mappedMembers} />
               </div>
             </div>
           </div>

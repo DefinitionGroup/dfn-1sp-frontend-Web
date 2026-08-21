@@ -9,8 +9,8 @@ import {
   getRobotsMetadata,
   shouldLoadProductionTracking,
 } from "@1sp/utils/deployment-tier";
-import { getMetadataBaseUrl } from "@1sp/utils/site-url";
 import { getSiteConfig } from "@1sp/site-config";
+import { MSM_CANONICAL_URL } from "@msm/lib/site-url";
 
 const MSM_SITE = getSiteConfig("msmWeb");
 const GOOGLE_MEASUREMENT_ID = process.env.NEXT_PUBLIC_MSM_GOOGLE_MEASUREMENT_ID;
@@ -29,7 +29,7 @@ const aspekta = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: getMetadataBaseUrl(),
+  metadataBase: new URL(MSM_CANONICAL_URL),
   title: {
     default: MSM_SITE.seo.defaultTitle,
     template: "%s",

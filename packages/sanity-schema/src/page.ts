@@ -195,6 +195,7 @@ export default defineType({
                 { type: 'pageBuilderLogoFloat' },
                 { type: 'clientLogoCarousel' },
                 { type: 'pageBuilderPersonioJobs' },
+                { type: 'msmUnitsGrid', title: 'MSM Units Grid' },
                 // Portable text — covers what contentMSM / contentStudioCO2 used to hold
                 { type: 'block' },
             ],

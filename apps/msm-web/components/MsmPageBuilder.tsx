@@ -255,6 +255,14 @@ const PageBuilderPersonioJobs = dynamic(
   }
 );
 
+const MsmUnitsGridBlock = dynamic(
+  () => import("./units/MsmUnitsGridBlock"),
+  {
+    loading: () => <ComponentLoader />,
+    ssr: true,
+  }
+);
+
 type PageBuilderProps = {
   content: NonNullable<Page["content"]>;
   language?: string;
@@ -542,6 +550,12 @@ export function PageBuilder({
                 />
               </ErrorBoundary>
             );
+          case "msmUnitsGrid":
+            return channel === "msmWeb" ? (
+              <ErrorBoundary key={`error-${key}`}>
+                <MsmUnitsGridBlock key={key} {...block} language={language} channel={channel} />
+              </ErrorBoundary>
+            ) : null;
 
           default:
             return null;

@@ -226,6 +226,7 @@ export const GLOBAL_TRANSLATION_TYPES = [
   "services",
   "serviceGroup",
   "oneSpComponentGroup",
+  "msmUnit",
 ] as const;
 
 export const TRANSLATABLE_SCHEMA_TYPES = [

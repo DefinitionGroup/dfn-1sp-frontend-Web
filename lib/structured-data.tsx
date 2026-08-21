@@ -301,9 +301,10 @@ export function generateWebPageJsonLd(options: {
   description?: string | null;
   locale: string;
   imageUrl?: string | null;
+  canonicalUrl?: string;
 }): JsonLdEntity {
-  const { title, slug, description, locale, imageUrl } = options;
-  const pageUrl = `${CANONICAL_URL}/${slug}`;
+  const { title, slug, description, locale, imageUrl, canonicalUrl = CANONICAL_URL } = options;
+  const pageUrl = `${canonicalUrl}/${slug}`;
 
   return {
     "@context": "https://schema.org",
@@ -313,7 +314,7 @@ export function generateWebPageJsonLd(options: {
     ...(description && { description }),
     url: pageUrl,
     inLanguage: locale,
-    isPartOf: { "@id": `${CANONICAL_URL}/#website` },
+    isPartOf: { "@id": `${canonicalUrl}/#website` },
     ...(imageUrl && {
       primaryImageOfPage: { "@type": "ImageObject", url: imageUrl },
     }),

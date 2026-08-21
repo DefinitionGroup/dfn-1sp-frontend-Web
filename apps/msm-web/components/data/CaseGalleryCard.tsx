@@ -18,6 +18,11 @@ interface CaseStudy {
   client?: {
     logoUrl?: string;
   };
+  msmUnits?: Array<{
+    _id: string;
+    name: string;
+    slug?: { current?: string };
+  }>;
 }
 
 interface CaseGalleryCardProps {
@@ -122,6 +127,11 @@ export default function CaseGalleryCard({
             </motion.p>
           </div>
         )}
+        {item.msmUnits && item.msmUnits.length > 0 ? (
+          <p className="mt-3 border-t border-white/15 pt-3 text-[10px] font-bold uppercase tracking-[0.13em] text-msm-cyan">
+            {item.msmUnits.map((unit) => unit.name).join(" / ")}
+          </p>
+        ) : null}
       </StaggeredSlideUp>
     </motion.div>
 

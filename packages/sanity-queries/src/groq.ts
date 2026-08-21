@@ -994,7 +994,22 @@ export const CASE_STUDIES_QUERY = defineQuery(`
   },
   websiteUrl,
   websiteUrlText,
-  publishedAt
+  publishedAt,
+  "msmUnits": select(
+    $channel == "msmWeb" => *[
+      _type == "msmUnit" &&
+      language == $language &&
+      isActive != false &&
+      references(^._id)
+    ] | order(sortOrder asc){
+      _id,
+      name,
+      slug,
+      descriptor,
+      claim
+    },
+    []
+  )
 }
 `);
 
@@ -1030,7 +1045,22 @@ export const CASE_STUDIES_BY_IDS_QUERY = defineQuery(`
   },
   websiteUrl,
   websiteUrlText,
-  publishedAt
+  publishedAt,
+  "msmUnits": select(
+    $channel == "msmWeb" => *[
+      _type == "msmUnit" &&
+      language == $language &&
+      isActive != false &&
+      references(^._id)
+    ] | order(sortOrder asc){
+      _id,
+      name,
+      slug,
+      descriptor,
+      claim
+    },
+    []
+  )
 }
 `);
 
@@ -1074,6 +1104,21 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
     backgroundImage,
     cta
   },
+  "msmUnits": select(
+    $channel == "msmWeb" => *[
+      _type == "msmUnit" &&
+      language == $language &&
+      isActive != false &&
+      references(^._id)
+    ] | order(sortOrder asc){
+      _id,
+      name,
+      slug,
+      descriptor,
+      claim
+    },
+    []
+  ),
   people[]{
     isPrimary,
     person->{
@@ -1149,6 +1194,116 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
     }
   },
   publishedAt
+}
+`);
+
+export const MSM_UNITS_QUERY = defineQuery(`
+*[_type == "msmUnit" && language == $language && isActive != false] | order(sortOrder asc){
+  _id,
+  _updatedAt,
+  name,
+  slug,
+  descriptor,
+  claim,
+  body,
+  capabilities,
+  sortOrder,
+  metadata,
+  heroMedia,
+  heroImageSource,
+  "heroImageUrl": coalesce(heroMedia.secure_url, heroMedia.url, heroImageSource),
+  heroAlt,
+  unitMark,
+  "unitMarkUrl": coalesce(unitMark.secure_url, unitMark.url),
+  "caseCount": count(caseStudies),
+  "leadershipCount": count(leadership)
+}
+`);
+
+export const MSM_UNITS_BY_IDS_QUERY = defineQuery(`
+*[_type == "msmUnit" && _id in $ids && language == $language && isActive != false]{
+  _id,
+  _updatedAt,
+  name,
+  slug,
+  descriptor,
+  claim,
+  body,
+  capabilities,
+  sortOrder,
+  metadata,
+  heroMedia,
+  heroImageSource,
+  "heroImageUrl": coalesce(heroMedia.secure_url, heroMedia.url, heroImageSource),
+  heroAlt,
+  unitMark,
+  "unitMarkUrl": coalesce(unitMark.secure_url, unitMark.url),
+  "caseCount": count(caseStudies),
+  "leadershipCount": count(leadership)
+}
+`);
+
+export const MSM_UNIT_BY_SLUG_QUERY = defineQuery(`
+*[_type == "msmUnit" && slug.current == $slug && language == $language && isActive != false][0]{
+  _id,
+  _updatedAt,
+  name,
+  slug,
+  descriptor,
+  claim,
+  body,
+  capabilities,
+  sortOrder,
+  metadata,
+  heroMedia,
+  heroImageSource,
+  "heroImageUrl": coalesce(heroMedia.secure_url, heroMedia.url, heroImageSource),
+  heroAlt,
+  unitMark,
+  "unitMarkUrl": coalesce(unitMark.secure_url, unitMark.url),
+  leadership[]{
+    isPrimary,
+    person->{
+      _id,
+      name,
+      fullname,
+      altText,
+      position,
+      email,
+      profileUrl,
+      image,
+      video,
+      "imageUrl": coalesce(image.secure_url, image.url),
+      "videoUrl": coalesce(video.secure_url, video.url)
+    }
+  },
+  "cases": caseStudies[]->{
+    _id,
+    title,
+    subtitle,
+    slug,
+    description,
+    services[]->{_id, name, taglabel},
+    mainImage,
+    mainVideo,
+    isVerticalVideo,
+    "mainImageUrl": coalesce(mainImage.secure_url, mainImage.url, mainImage.asset->url),
+    "mainVideoUrl": coalesce(mainVideo.secure_url, mainVideo.url, mainVideo.asset->url),
+    client->{
+      _id,
+      name,
+      "logoUrl": logo.secure_url
+    },
+    publishedAt
+  }
+}
+`);
+
+export const MSM_UNIT_SLUGS_QUERY = defineQuery(`
+*[_type == "msmUnit" && defined(slug.current) && isActive != false]{
+  "slug": slug.current,
+  language,
+  _updatedAt
 }
 `);
 
