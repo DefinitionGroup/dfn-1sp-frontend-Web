@@ -16,6 +16,7 @@ import {
 import { hasVisibleText } from "@1sp/utils/text-content";
 import { motion, useReducedMotion } from "motion/react";
 import Button2 from "@flzr/components/ui/Button2";
+import DeferredVideo from "@flzr/components/ui/DeferredVideo";
 
 const EASE_FLZR = [0.62, 0.05, 0.01, 0.99] as const;
 
@@ -51,7 +52,8 @@ export default function FlzrTwoThirdsContentSection({
 
   const media = image as MediaAsset | undefined;
   const sourceUrl = assetUrl(media);
-  const imageUrl = isVideoAsset(media, sourceUrl)
+  const isVideo = isVideoAsset(media, sourceUrl);
+  const imageUrl = isVideo
     ? cloudinaryPosterUrl(sourceUrl, {
         aspectRatio: "4:5",
         frame: "auto",
@@ -111,23 +113,33 @@ export default function FlzrTwoThirdsContentSection({
       {...(hideFromNav ? { "data-nav-hidden": "true" } : {})}
       className={`relative font-flzr ${shellClass}`}
     >
-      <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-3 lg:gap-12 xl:gap-16">
+      <div
+        className={`grid grid-cols-1 lg:grid-cols-3 ${
+          inheritSectionSurface
+            ? "min-h-[34rem] items-stretch gap-0"
+            : "items-start gap-10 lg:gap-12 xl:gap-16"
+        }`}
+      >
         <motion.div
-          className="flex flex-col items-start lg:col-span-2"
+          className={`flex flex-col items-start lg:col-span-2 ${
+            inheritSectionSurface
+              ? "justify-center px-[var(--flzr-section-gutter)] pb-14 pt-32 lg:py-24"
+              : ""
+          }`}
           initial={prefersReducedMotion ? false : "hidden"}
           whileInView="visible"
           viewport={{ amount: 0.2, once: true }}
           transition={{ staggerChildren: prefersReducedMotion ? 0 : 0.11 }}
         >
           <motion.h2
-            className="text-balance text-section-title text-flzr-violet"
+            className={`text-balance text-section-title ${inheritSectionSurface ? "text-white" : "text-flzr-violet"}`}
             variants={textVariants}
           >
             {headline}
           </motion.h2>
 
           <motion.p
-            className="mt-8 whitespace-pre-line text-[30px] leading-[1.15] text-neutral-600 sm:text-[36px]"
+            className={`mt-6 whitespace-pre-line text-[clamp(1.35rem,1.05rem+1vw,2.25rem)] leading-[1.15] ${inheritSectionSurface ? "max-w-[28ch] text-white" : "text-neutral-600"}`}
             variants={textVariants}
           >
             {subheadline}
@@ -142,14 +154,14 @@ export default function FlzrTwoThirdsContentSection({
               components={{
                 block: {
                   normal: ({ children }) => (
-                    <p className="mb-5 text-[22px] leading-[1.4] text-neutral-600 last:mb-0">
+                    <p className={`mb-4 text-[clamp(1rem,0.95rem+0.2vw,1.125rem)] leading-[1.45] last:mb-0 ${inheritSectionSurface ? "max-w-[64ch] text-white/85" : "text-neutral-600"}`}>
                       {children}
                     </p>
                   ),
                 },
                 marks: {
                   strong: ({ children }) => (
-                    <strong className="font-semibold text-neutral-900">{children}</strong>
+                    <strong className={`font-semibold ${inheritSectionSurface ? "text-white" : "text-neutral-900"}`}>{children}</strong>
                   ),
                   em: ({ children }) => <em>{children}</em>,
                 },
@@ -162,7 +174,7 @@ export default function FlzrTwoThirdsContentSection({
               <Button2
                 href={button.href}
                 text={button.text}
-                variant={(button.variant as any) || "violet"}
+                variant={inheritSectionSurface ? "dark" : (button.variant as any) || "violet"}
               />
             </motion.div>
           ) : null}
@@ -170,20 +182,30 @@ export default function FlzrTwoThirdsContentSection({
 
         {imageUrl ? (
           <motion.figure
-            className="w-full lg:col-span-1"
+            className={`w-full lg:col-span-1 ${inheritSectionSurface ? "min-h-[22rem]" : ""}`}
             initial={prefersReducedMotion ? false : "hidden"}
             whileInView="visible"
             viewport={{ amount: 0.2, once: true }}
             variants={mediaVariants}
           >
-            <div className="aspect-[4/5] overflow-hidden rounded-2xl bg-neutral-200">
-              <img
-                src={imageUrl}
-                alt={imageAlt}
-                className="h-full w-full object-cover"
-                decoding="async"
-                loading="lazy"
-              />
+            <div className={`${inheritSectionSurface ? "h-full min-h-[22rem]" : "aspect-[4/5] rounded-2xl"} overflow-hidden bg-neutral-200`}>
+              {isVideo && sourceUrl ? (
+                <DeferredVideo
+                  src={sourceUrl}
+                  posterUrl={imageUrl}
+                  maxWidth={960}
+                  mountDelay={150}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <img
+                  src={imageUrl}
+                  alt={imageAlt}
+                  className="h-full w-full object-cover"
+                  decoding="async"
+                  loading="lazy"
+                />
+              )}
             </div>
           </motion.figure>
         ) : null}

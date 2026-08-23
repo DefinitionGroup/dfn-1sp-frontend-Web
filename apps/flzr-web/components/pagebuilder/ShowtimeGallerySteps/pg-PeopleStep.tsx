@@ -33,6 +33,7 @@ type PeopleHeader = {
 
 export default function PeopleStep({
   step,
+  inheritSectionSurface = false,
 }: {
   // Extend your base type with the exact fields from the schema to avoid TS errors
   step: GalleryPeopleStep & {
@@ -41,6 +42,7 @@ export default function PeopleStep({
     teamMembers?: Member[];
     media?: CloudinaryAsset;
   };
+  inheritSectionSurface?: boolean;
 }) {
   const members = step.teamMembers ?? [];
   const header = step.header ?? {};
@@ -73,7 +75,7 @@ export default function PeopleStep({
     >
 
       <div className="relative z-2 col-span-12 col-start-1 row-start-1 w-full">
-        <div className="container mx-auto ">
+        <div className={inheritSectionSurface ? "w-full" : "container mx-auto"}>
           <div className="grid grid-cols-4 iphone-landscape:grid-cols-12 sm:grid-cols-6 md:grid-cols-12 lg:gap-8">
 
             <div className="col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-12">
@@ -86,7 +88,10 @@ export default function PeopleStep({
 
               {/* People Grid */}
               <div className="mt-8 sm:mt-10 md:mt-12">
-                <PeopleShowcaseHero members={mappedMembers} />
+                <PeopleShowcaseHero
+                  members={mappedMembers}
+                  presentation={inheritSectionSurface ? "dense" : "default"}
+                />
               </div>
             </div>
           </div>

@@ -33,7 +33,13 @@ const paddingClasses: Record<string, string> = {
   "32": "py-32",
 };
 
-function ContentSection({ data }: { data: ContentSectionData }) {
+function ContentSection({
+  data,
+  inheritSectionSurface = false,
+}: {
+  data: ContentSectionData;
+  inheritSectionSurface?: boolean;
+}) {
   const {
     title,
     introHeading,
@@ -114,7 +120,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
         </h5>
       ),
       blockquote: ({ children }: any) => (
-        <blockquote className="border-l-4 border-neutral-300 pl-4 italic text-neutral-600 my-4">
+        <blockquote className="border-l border-flzr-hairline pl-4 italic text-neutral-600 my-4">
           {children}
         </blockquote>
       ),
@@ -170,8 +176,8 @@ function ContentSection({ data }: { data: ContentSectionData }) {
     <>
       {/* Introduction Section (if provided) */}
       {(hasVisibleText(introHeading) || hasVisibleText(introSubheading)) && (
-        <div className="grid grid-cols-12 z-1 mx-auto container relative font-flzr">
-          <div className="z-1 grid gap-8 col-span-12 pt-12 mt-24 col-start-1 container mx-auto row-start-1 grid-cols-12">
+        <div className={`grid grid-cols-12 z-1 mx-auto relative font-flzr ${inheritSectionSurface ? "" : "container"}`}>
+          <div className={`z-1 grid gap-8 col-span-12 pt-12 col-start-1 mx-auto row-start-1 grid-cols-12 ${inheritSectionSurface ? "" : "container mt-24"}`}>
             <div className="z-1 col-span-12 col-start-1">
               <div className="flex flex-col items-start gap-2  justify-center w-full">
                 {hasVisibleText(introHeading) && (
@@ -208,22 +214,26 @@ function ContentSection({ data }: { data: ContentSectionData }) {
       <section
         id={sectionId}
         {...navPointDataAttr}
-        className={`grid grid-cols-12 mx-auto container font-flzr ${
+        className={`grid grid-cols-12 mx-auto font-flzr ${
           isGlobeOverlay
-            ? "flzr-content-section--globe-overlay absolute inset-x-0 top-0 z-20"
+            ? inheritSectionSurface
+              ? "flzr-content-section--globe-overlay relative z-20"
+              : "flzr-content-section--globe-overlay absolute inset-x-0 top-0 z-20"
             : "relative z-1"
-        }`}
+        } ${inheritSectionSurface ? "" : "container"}`}
       >
         <div
-          className={`z-1 grid gap-8 col-span-12 ${paddingClass} col-start-1 container mx-auto row-start-1 grid-cols-12 ${
-            isGlobeOverlay ? "px-4 sm:px-6 lg:px-8" : ""
+          className={`z-1 grid gap-8 col-span-12 col-start-1 mx-auto row-start-1 grid-cols-12 ${
+            inheritSectionSurface ? "" : `${paddingClass} container`
+          } ${
+            isGlobeOverlay && !inheritSectionSurface ? "px-4 sm:px-6 lg:px-8" : ""
           }`}
         >
-          <div className={`z-1 ${contentSpanClass} col-start-1 pt-8`}>
+          <div className={`z-1 ${contentSpanClass} col-start-1 ${inheritSectionSurface ? "" : "pt-8"}`}>
             {/* Optional section title */}
             {hasVisibleText(title) && (
               <StaggeredFadeIn viewThreshold={0.01}>
-                <h2 className="text-section-title mb-12 text-flzr-violet">{title}</h2>
+                <h2 className="text-section-title mb-6 text-flzr-violet md:mb-8">{title}</h2>
               </StaggeredFadeIn>
             )}
 

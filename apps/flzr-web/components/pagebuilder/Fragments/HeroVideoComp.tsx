@@ -231,11 +231,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                     )
                 )}
 
-                {/* Dark overlay */}
-                <div
-                    className="absolute inset-0 bg-black"
-                    style={{ opacity: 0.6, zIndex: 2 }}
-                />
+                <div className="flzr-hero-tint absolute inset-0 z-[2]" />
             </div>
         </div>
     );

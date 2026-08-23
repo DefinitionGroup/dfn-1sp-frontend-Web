@@ -123,8 +123,8 @@ const GLOBAL_DATA_QUERY = defineQuery(/* groq */ `{
     ),
     menuItems[]{
       _key,
-      "slug": page->slug.current,
-      "title": page->title,
+      "slug": coalesce(route, page->slug.current),
+      "title": coalesce(page->title, displayName),
       displayName
     }
   },
@@ -181,6 +181,7 @@ const LOCALIZED_NAVIGATION_QUERY = defineQuery(/* groq */ `{
     ),
     menuItems[]{
       _key,
+      route,
       displayName,
       "page": page->{
         _id,
@@ -209,6 +210,7 @@ const LOCALIZED_NAVIGATION_QUERY = defineQuery(/* groq */ `{
     ),
     menuItems[]{
       _key,
+      route,
       displayName,
       "page": page->{
         _id,
@@ -311,6 +313,7 @@ type NavigationMenu = Omit<NavbarMenu, "menuItems"> & {
   menuItems?: Array<{
     _key: string;
     displayName?: string | null;
+    route?: string | null;
     page?: NavigationPage | null;
   }>;
 };
@@ -423,6 +426,18 @@ export const getLocalizedNavigation = cache(
           logoUrl: baseMenu.logoUrl,
           oneSpMembershipLabel: baseMenu.oneSpMembershipLabel,
           menuItems: (baseMenu.menuItems ?? []).flatMap((item) => {
+            const route = item.route?.replace(/^\/+|\/+$/g, "");
+            if (route) {
+              return [
+                {
+                  _key: item._key,
+                  slug: route,
+                  title: item.displayName ?? route,
+                  displayName: item.displayName ?? undefined,
+                },
+              ];
+            }
+
             const page = resolvePage(item.page);
             const slug = page?.slug?.current;
             if (!page || !slug) return [];

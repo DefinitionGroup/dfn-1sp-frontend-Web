@@ -45,7 +45,7 @@ function highlightInline(text: string, highlight?: string): React.ReactNode {
   return (
     <>
       {before}
-      <span className="bg-gradient-to-r from-violet-300 to-violet-500 bg-clip-text text-transparent font-bold">
+      <span className="font-bold text-white">
         {matched}
       </span>
       {after}
@@ -189,7 +189,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="relative min-h-[80vh] h-[95vh] iphone-landscape:!h-dvh  overflow-hidden z-1"
+      className="flzr-home-hero relative z-1 overflow-hidden iphone-landscape:!h-dvh"
     >
       {!useHeadlineReveal && seoTitle && <h1 className="sr-only">{seoTitle}</h1>}
 
@@ -204,7 +204,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
       {/* Foreground content — matches the wider media frame
           so the type never escapes the rounded video, centered like the frame */}
-      <div className="absolute inset-x-0 bottom-24 z-10 mx-auto w-[calc(100%-2rem)] max-w-[1680px] iphone-landscape:bottom-8 iphone-landscape:mt-[50vh] sm:w-[calc(100%-3rem)] md:relative md:mt-[45vh] lg:w-[calc(100%-4rem)]">
+      <div className="absolute inset-0 z-10 mx-auto flex w-[calc(100%-2rem)] max-w-[1680px] items-center justify-center pt-12 sm:w-[calc(100%-3rem)] lg:w-[calc(100%-4rem)]">
         {useHeadlineReveal ? (
           <div className="px-8 md:px-16 flex flex-col items-center text-center">
             {eyebrowContent && (
@@ -221,7 +221,11 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
               </StaggeredSlideUp>
             )}
 
-            <AnimatedEditorialHeadline text={headline} delay={0.35} />
+            <AnimatedEditorialHeadline
+              text={headline}
+              delay={0.35}
+              tone="white"
+            />
 
             <StaggeredSlideUp
               className="flex flex-col items-center"

@@ -929,8 +929,8 @@ export const NAVBAR_QUERY = defineQuery(`
   "logoUrl": imageCloud.secure_url,
   menuItems[]{
     _key,
-    "slug": page->slug.current,
-    "title": page->title,
+    "slug": coalesce(route, page->slug.current),
+    "title": coalesce(page->title, displayName),
     displayName
   }
 }

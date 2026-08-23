@@ -2,6 +2,7 @@ import type {
   FlzrSectionBand,
   FlzrSectionSurfaceTone,
 } from "@1sp/sanity-types";
+import FlzrSectionLabel from "./FlzrSectionLabel";
 
 type FlzrSectionFrameProps = {
   marker: FlzrSectionBand;
@@ -25,21 +26,28 @@ export default function FlzrSectionFrame({
   const badgeNumber = marker.badgeNumber?.trim();
   const badgeLabel = marker.badgeLabel?.trim();
   const hasBadge = showBadge && Boolean(badgeNumber && badgeLabel);
+  const sectionName = badgeLabel
+    ? badgeLabel.toLowerCase().replace(/[^a-z0-9]+/g, "-")
+    : "section";
+  const labelTone = sectionName === "careers" ? "accent" : "neutral";
 
   return (
-    <div className="flzr-section-band container mx-auto my-12" data-surface={surfaceTone}>
-      {hasBadge ? (
-        <div className="flzr-section-badge">
-          <span className="flzr-section-badge__number" aria-hidden="true">
-            {badgeNumber}
-          </span>
-          <strong className="flzr-section-badge__label">{badgeLabel}</strong>
-        </div>
-      ) : null}
+    <div
+      className="flzr-section-band"
+      data-surface={surfaceTone}
+      data-section={sectionName}
+    >
       <div
-        className={`flzr-section-surface relative mx-auto w-full max-w-[1480px] px-4 sm:px-6 lg:px-8 py-16 ${SURFACE_CLASSES[surfaceTone]}`}
+        className={`flzr-section-surface ${SURFACE_CLASSES[surfaceTone]}`}
       >
-        {children}
+        {hasBadge ? (
+          <FlzrSectionLabel
+            number={badgeNumber!}
+            label={badgeLabel!}
+            tone={labelTone}
+          />
+        ) : null}
+        <div className="flzr-section-content">{children}</div>
       </div>
     </div>
   );

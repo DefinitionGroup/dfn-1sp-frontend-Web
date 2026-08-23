@@ -17,6 +17,7 @@ interface CasesGalleryFilteredBlockProps {
   navPointName?: string;
   selectionMode?: "auto" | "manual";
   selectedCases?: SelectedCaseReference[];
+  inheritSectionSurface?: boolean;
 }
 
 export default async function CasesGalleryFilteredBlock({

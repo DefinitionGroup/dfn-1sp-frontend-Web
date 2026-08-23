@@ -99,6 +99,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   const router = useOptimizedTransitionRouter();
   const pathname = usePathname() || "";
   const [showOverlay, setShowOverlay] = React.useState(false);
+  const [showMobileMenu, setShowMobileMenu] = React.useState(false);
+  const firstMobileLinkRef = React.useRef<HTMLAnchorElement>(null);
   const [caseStudies, setCaseStudies] =
     React.useState<CaseStudy[]>(initialCaseStudies);
   const [isCasesLoading, setIsCasesLoading] = React.useState(false);
@@ -144,7 +146,6 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       setNavState("expanded");
     } else if (isFlzrChannel) {
       setNavState("compact");
-      scheduleNavIdleHide();
     } else if (currentScrollY <= NAV_HIDE_SCROLL_Y) {
       setNavState("compact");
     } else {
@@ -165,7 +166,6 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         setNavState("expanded");
       } else {
         setNavState("compact");
-        scheduleNavIdleHide();
       }
       return;
     }
@@ -218,9 +218,9 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
     setDetectedTheme(effectiveColor);
   }, [effectiveColor]);
 
-  // Disable body scroll when overlay is open
+  // Disable body scroll while either navigation overlay is open.
   React.useEffect(() => {
-    if (showOverlay) {
+    if (showOverlay || showMobileMenu) {
       // Get current scroll position
       const scrollY = window.scrollY;
 
@@ -241,25 +241,31 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         window.scrollTo(0, scrollY);
       };
     }
-  }, [showOverlay]);
+  }, [showMobileMenu, showOverlay]);
+
+  React.useEffect(() => {
+    if (!showMobileMenu) return;
+
+    firstMobileLinkRef.current?.focus();
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setShowMobileMenu(false);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showMobileMenu]);
 
   const textColor =
     detectedTheme === "dark" ? "text-neutral-800 " : "text-neutral-50 ";
   const isFlzrScrolled = isFlzrChannel && !isExpanded;
   const navTextColor = isFlzrChannel
-    ? isFlzrScrolled
-      ? "text-white"
-      : "text-flzr-violet"
+    ? "text-flzr-violet"
     : textColor;
   const desktopSurfaceClass = isFlzrChannel
-    ? isFlzrScrolled
-      ? "border border-white/10 bg-neutral-900/60 shadow-lg shadow-black/15 backdrop-blur-xl"
-      : "border border-transparent bg-transparent shadow-none backdrop-blur-none"
+    ? "border border-black/[0.035] bg-white shadow-[0_8px_26px_rgba(33,25,49,0.12)]"
     : "border border-transparent bg-neutral-600/40 backdrop-blur-md";
   const mobileSurfaceClass = isFlzrChannel
-    ? isFlzrScrolled
-      ? "border border-white/10 bg-neutral-900/60 shadow-lg shadow-black/15 backdrop-blur-xl"
-      : "border border-transparent bg-transparent shadow-none backdrop-blur-none"
+    ? "border border-black/[0.035] bg-white shadow-[0_8px_26px_rgba(33,25,49,0.12)]"
     : "border border-white/15 bg-neutral-600/40 shadow-lg backdrop-blur-xl";
   const imageLogo = isFlzrChannel
     ? "/units/FLZR/flzr_logo.svg"
@@ -270,11 +276,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   const logoAlt = isFlzrChannel ? "FLZR Logo" : "1SP Logo";
   const logoClassName = [
     "object-contain transition-[filter] duration-300",
-    isFlzrChannel
-      ? isFlzrScrolled
-        ? "brightness-0 invert"
-        : "brightness-0"
-      : "",
+    isFlzrChannel ? "brightness-0" : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -366,10 +368,23 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               : []),
           ]
         : [];
+  const visibleMenuItems = syncedMenuItems.filter((item) => {
+    const isCasesPage = item.slug?.includes("cases");
+    const isServicesPage = item.slug?.includes("services");
+    if (isCasesPage && !hasCaseStudies) return false;
+    if (isServicesPage && !hasServices) return false;
+    return true;
+  });
+  const getMenuItemHref = (slug?: string) => {
+    const normalizedSlug = slug?.replace(/^\/+|\/+$/g, "") ?? "";
+    return !normalizedSlug || normalizedSlug === "home"
+      ? `/${locale}`
+      : `/${locale}/${normalizedSlug}`;
+  };
 
   return (
     <>
-      <div className="container relative z-[99998] mx-auto h-20 px-3 pt-3 md:h-28 md:px-4 md:pt-6">
+      <div className="relative z-[99998] mx-auto h-20 w-[calc(100%-1rem)] max-w-[1278px] pt-3 md:h-28 md:pt-6">
         <motion.nav
           ref={navRef}
           layout
@@ -390,11 +405,11 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           aria-hidden={!isNavVisible}
           inert={!isNavVisible}
           data-nav-state={navState}
-          data-nav-surface={isFlzrScrolled ? "frosted" : "transparent"}
+          data-nav-surface={isFlzrChannel ? "paper" : isFlzrScrolled ? "frosted" : "transparent"}
           className={`floating-nav z-99999 hidden items-center grid-cols-12 py-2 transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 md:grid ${
             isExpanded
-              ? "relative mx-auto h-16 w-full rounded-[2rem] px-6"
-              : "fixed left-0 right-0 top-6 mx-auto h-14 w-fit rounded-full px-5 iphone-landscape:top-2 iphone-landscape:scale-70"
+              ? "relative mx-auto h-[3.6rem] w-full rounded-[2rem] px-6"
+              : "fixed left-0 right-0 top-6 mx-auto h-14 w-[calc(100%-2rem)] max-w-[1278px] rounded-full px-6 iphone-landscape:top-2 iphone-landscape:scale-70"
           } ${isNavVisible ? "" : "pointer-events-none"} ${desktopSurfaceClass} ${navTextColor} ${className}`}
         >
           <div className="col-span-2 flex items-center pr-16  justify-start">
@@ -409,10 +424,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               className=" flex items-start  justify-center"
             >
               <Link
-                href={`/`}
+                href={`/${locale}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  router.push(`/`);
+                  router.push(`/${locale}`);
                 }}
                 aria-label="Home"
                 className="flex items-center justify-center"
@@ -442,26 +457,14 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 once={true}
                 animateImmediately={true}
               >
-                {syncedMenuItems
-                  .filter((item) => {
-                    const isCasesPage = item.slug?.includes("cases");
-                    const isServicesPage = item.slug?.includes("services");
-                    if (isCasesPage && !hasCaseStudies) {
-                      return false;
-                    }
-                    if (isServicesPage && !hasServices) {
-                      return false;
-                    }
-                    return true;
-                  })
-                  .map((item) => (
+                {visibleMenuItems.map((item) => (
                     <span key={item._key} className={itemClass}>
                       <Link
                         className="hover:text-violet-400  transition-colors "
-                        href={`/${locale}/${item.slug}`}
+                        href={getMenuItemHref(item.slug)}
                         onClick={(e) => {
                           e.preventDefault();
-                          router.push(`/${locale}/${item.slug}`);
+                          router.push(getMenuItemHref(item.slug));
                         }}
                       >
                         {item.displayName || item.title}
@@ -577,7 +580,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           aria-hidden={!isNavVisible}
           inert={!isNavVisible}
           data-nav-state={navState}
-          data-nav-surface={isFlzrScrolled ? "frosted" : "transparent"}
+          data-nav-surface={isFlzrChannel ? "paper" : isFlzrScrolled ? "frosted" : "transparent"}
           className={`z-99999 flex items-center justify-between rounded-full transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 md:hidden ${
             isExpanded
               ? "relative mx-auto h-14 w-full px-4"
@@ -621,17 +624,70 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               ease: [0.22, 1, 0.36, 1],
             }}
           >
-            {languageOptions.length ? (
-              <LanguageSelector
-                currentLocale={locale}
-                options={languageOptions}
-                compact
-                frosted={isFlzrScrolled}
-              />
-            ) : null}
+            <div className="flex items-center gap-2">
+              {languageOptions.length ? (
+                <LanguageSelector
+                  currentLocale={locale}
+                  options={languageOptions}
+                  compact
+                  frosted={false}
+                />
+              ) : null}
+              <button
+                type="button"
+                aria-controls="flzr-mobile-menu"
+                aria-expanded={showMobileMenu}
+                onClick={() => setShowMobileMenu((open) => !open)}
+                className="rounded-full border border-flzr-violet/25 px-3 py-2 text-[0.7rem] font-bold uppercase leading-none text-flzr-violet transition-colors hover:bg-flzr-violet hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flzr-violet"
+              >
+                {showMobileMenu ? "Close" : "Menu"}
+              </button>
+            </div>
           </motion.div>
         </motion.nav>
       </div>
+      {showMobileMenu ? (
+        <motion.div
+          id="flzr-mobile-menu"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Main navigation"
+          initial={{ opacity: 0, y: -16 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="fixed inset-0 z-[99997] overflow-y-auto bg-flzr-canvas px-5 pb-10 pt-28 md:hidden"
+        >
+          <nav className="mx-auto flex min-h-full max-w-xl flex-col justify-between gap-12">
+            <ul className="border-t border-flzr-violet/20">
+              {visibleMenuItems.map((item, index) => {
+                const href = getMenuItemHref(item.slug);
+                return (
+                  <li key={item._key} className="border-b border-flzr-violet/20">
+                    <Link
+                      ref={index === 0 ? firstMobileLinkRef : undefined}
+                      href={href}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        setShowMobileMenu(false);
+                        router.push(href);
+                      }}
+                      className="flzr-headline block py-5 text-[clamp(2rem,10vw,3.5rem)] leading-[0.95] text-flzr-violet focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flzr-violet"
+                    >
+                      {item.displayName || item.title}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+            <a
+              href="https://1sp.agency"
+              className="flex items-center justify-between rounded-full bg-flzr-violet px-5 py-4 text-sm font-bold text-white"
+            >
+              <span>{menuData?.oneSpMembershipLabel || "Proud member of 1SP"}</span>
+              <span>1SP.agency ↗</span>
+            </a>
+          </nav>
+        </motion.div>
+      ) : null}
       {/* Cases overlay */}
       {showOverlay && (
         <div className="fixed inset-0 flex items-center justify-center p-8 backdrop-blur-lg z-[100] bg-black/20 overflow-hidden">

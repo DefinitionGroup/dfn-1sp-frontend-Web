@@ -8,6 +8,7 @@ interface ServicesGalleryFilteredBlockProps {
   backgroundColor?: string;
   paddingY?: string;
   navPointName?: string;
+  inheritSectionSurface?: boolean;
 }
 
 export default async function ServicesGalleryFilteredBlock({

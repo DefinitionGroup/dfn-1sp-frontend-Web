@@ -8,11 +8,13 @@ const EASE_FLZR = [0.62, 0.05, 0.01, 0.99] as const;
 type AnimatedEditorialHeadlineProps = {
   text: string;
   delay?: number;
+  tone?: "gradient" | "white";
 };
 
 export default function AnimatedEditorialHeadline({
   text,
   delay = 0.35,
+  tone = "gradient",
 }: AnimatedEditorialHeadlineProps) {
   const prefersReducedMotion = useReducedMotion();
   const headline = text.trim();
@@ -21,7 +23,7 @@ export default function AnimatedEditorialHeadline({
 
   return (
     <motion.h1
-      className="mx-auto max-w-[28ch] text-balance whitespace-pre-line font-flzr text-[clamp(1.9rem,1.4rem+2.6vw,4.25rem)] font-bold italic leading-[1.15]"
+      className={`mx-auto max-w-[28ch] text-balance whitespace-pre-line font-flzr text-[clamp(1.9rem,1.4rem+2.6vw,4.25rem)] font-bold italic leading-[1.15] ${tone === "white" ? "text-white" : ""}`}
       initial={prefersReducedMotion ? false : { opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, amount: 0.45 }}
@@ -31,16 +33,20 @@ export default function AnimatedEditorialHeadline({
         ease: EASE_FLZR,
       }}
     >
-      <GradientText
-        colors={["#7c5cff", "#d6ccff", "#ffffff", "#9d85ff", "#7c5cff"]}
-        animationSpeed={4}
-        direction="horizontal"
-        pauseOnHover={false}
-        yoyo={true}
-        showBorder={false}
-      >
-        {headline}
-      </GradientText>
+      {tone === "white" ? (
+        headline
+      ) : (
+        <GradientText
+          colors={["#7c5cff", "#d6ccff", "#ffffff", "#9d85ff", "#7c5cff"]}
+          animationSpeed={4}
+          direction="horizontal"
+          pauseOnHover={false}
+          yoyo={true}
+          showBorder={false}
+        >
+          {headline}
+        </GradientText>
+      )}
     </motion.h1>
   );
 }

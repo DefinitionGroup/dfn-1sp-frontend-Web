@@ -369,7 +369,11 @@ export function PageBuilder({
           case "contentSection":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <ContentSection key={key} data={block} />
+                <ContentSection
+                  key={key}
+                  data={block}
+                  inheritSectionSurface={withinSectionBand}
+                />
               </ErrorBoundary>
             );
           case "twoColContentSection":
@@ -451,6 +455,7 @@ export function PageBuilder({
                 <GalleryPeopleStep
                   key={key}
                   data={block as GalleryPeopleStepType}
+                  inheritSectionSurface={withinSectionBand}
                 />
               </ErrorBoundary>
             );
@@ -544,6 +549,7 @@ export function PageBuilder({
                   {...block}
                   language={language}
                   channel={channel}
+                  inheritSectionSurface={withinSectionBand}
                 />
               </ErrorBoundary>
             );
@@ -639,7 +645,11 @@ export function PageBuilder({
           case "clientLogoCarousel":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <ClientLogoCarousel key={key} data={block as any} />
+                <ClientLogoCarousel
+                  key={key}
+                  data={block as any}
+                  inheritSectionSurface={withinSectionBand}
+                />
               </ErrorBoundary>
             );
           case "pageBuilderLogoFloat":

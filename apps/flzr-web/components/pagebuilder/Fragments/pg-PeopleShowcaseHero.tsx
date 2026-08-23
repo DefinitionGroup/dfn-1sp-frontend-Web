@@ -150,9 +150,11 @@ function LazyVideo({
 function PeopleShowcaseHero({
   members,
   initialVisibleCount = Number.POSITIVE_INFINITY,
+  presentation = "default",
 }: {
   members?: MemberItem[];
   initialVisibleCount?: number;
+  presentation?: "default" | "dense";
 }) {
   const sectionRef = useRef<HTMLElement>(null);
   const reducedMotion = useReducedMotion();
@@ -209,7 +211,11 @@ function PeopleShowcaseHero({
     >
       <div className="flex items-center justify-start w-full">
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 w-full"
+          className={
+            presentation === "dense"
+              ? "grid w-full grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+              : "grid w-full grid-cols-2 gap-3 md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4"
+          }
           variants={gridVariants}
           initial={reducedMotion ? false : "hidden"}
           whileInView="visible"
@@ -235,7 +241,7 @@ function PeopleShowcaseHero({
                 key={key}
                 custom={index}
                 variants={cardVariants}
-                className="group relative overflow-hidden rounded-[2rem] flex-shrink-0 aspect-square bg-neutral-100"
+                className={`group relative aspect-square flex-shrink-0 overflow-hidden bg-neutral-100 ${presentation === "dense" ? "rounded-[1.6rem]" : "rounded-[2rem]"}`}
                 data-member={(
                   member.name ||
                   member.fullname ||
@@ -273,7 +279,7 @@ function PeopleShowcaseHero({
                     its card via panelVariants. */}
                 <motion.div
                   variants={panelVariants}
-                  className="absolute bottom-3 left-3 z-10 flex w-fit max-w-[calc(100%-1.5rem)] flex-col gap-0.5 rounded-[1.5rem] bg-[rgba(111,111,111,0.4)] backdrop-blur-md px-4 py-3 sm:px-5 sm:py-4"
+                  className={`absolute z-10 flex flex-col gap-0.5 bg-[rgba(111,111,111,0.4)] backdrop-blur-md ${presentation === "dense" ? "inset-x-2 bottom-2 rounded-[1.1rem] px-3 py-2.5" : "bottom-3 left-3 w-fit max-w-[calc(100%-1.5rem)] rounded-[1.5rem] px-4 py-3 sm:px-5 sm:py-4"}`}
                 >
                   {hasVisibleText(member.fullname || member.name) && (
                     <motion.h3

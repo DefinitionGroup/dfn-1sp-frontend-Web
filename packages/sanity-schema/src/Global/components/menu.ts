@@ -19,6 +19,7 @@ export default {
         languages: [
             { id: "en", title: "English" },
             { id: "de", title: "German" },
+            { id: "pl", title: "Polish" },
         ],
         referenceBehavior: "weak",
     },
@@ -88,13 +89,17 @@ export default {
                 {
                     type: "object",
                     icon: SquaresFour,
+                    validation: (Rule: any) => Rule.custom((value: any) =>
+                        value?.page || value?.route
+                            ? true
+                            : "Choose a page or enter a route slug",
+                    ),
                     fields: [
                         {
                             name: "page",
                             title: "Page",
                             type: "reference",
                             to: [{ type: "page" }],
-                            validation: (Rule: any) => Rule.required(),
                             options: {
                                 // dynamically filter referenced pages by menu's language
                                 filter: ({ document }: { document?: { language?: string } }) => {
@@ -109,6 +114,20 @@ export default {
                             },
                         },
                         {
+                            name: "route",
+                            title: "Route Slug (Optional)",
+                            type: "string",
+                            description:
+                                "Use for frontend-owned routes without a localized page document, for example cases or jobs. Do not include the locale or leading slash.",
+                            validation: (Rule: any) => Rule.custom((value: unknown) => {
+                                if (value == null || value === "") return true;
+                                if (typeof value !== "string") return "Enter a route slug";
+                                return /^[-a-z0-9/]+$/.test(value)
+                                    ? true
+                                    : "Use lowercase URL segments without a leading slash";
+                            }),
+                        },
+                        {
                             name: "displayName",
                             title: "Display Name (Optional)",
                             type: "string",
@@ -120,11 +139,12 @@ export default {
                             pageTitle: "page.title",
                             displayName: "displayName",
                             slug: "page.slug.current",
+                            route: "route",
                         },
-                        prepare({ pageTitle, displayName, slug }: { pageTitle?: string; displayName?: string; slug?: string }) {
+                        prepare({ pageTitle, displayName, slug, route }: { pageTitle?: string; displayName?: string; slug?: string; route?: string }) {
                             return {
-                                title: displayName || pageTitle || "Untitled",
-                                subtitle: slug ? `/${slug}` : "No page selected",
+                                title: displayName || pageTitle || route || "Untitled",
+                                subtitle: route ? `/${route}` : slug ? `/${slug}` : "No destination selected",
                             };
                         },
                     },

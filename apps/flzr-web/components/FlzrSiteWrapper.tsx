@@ -227,18 +227,28 @@ async function FlzrFooter({
   ];
 
   return (
-    <footer className="container mx-auto mb-12 w-[calc(100%-0.5rem)] overflow-hidden rounded-4xl bg-flzr-ink px-4 text-flzr-paper md:px-7">
+    <footer className="mx-auto mb-12 w-[calc(100%-1rem)] max-w-[var(--flzr-shell-max)] overflow-hidden rounded-4xl bg-flzr-ink px-4 text-flzr-paper md:px-7">
       <div className="mx-auto max-w-[1480px] border-t border-white/15">
         <div className="grid gap-10 py-10 md:grid-cols-12 md:py-14">
           <div className="md:col-span-6 lg:col-span-5">
-            <Image
-              src="/units/FLZR/flzr_logo.svg"
-              alt="FLZR"
-              width={154}
-              height={44}
-              className="h-10 w-auto brightness-0 invert md:h-11"
-              style={{ width: "auto" }}
-            />
+            <div className="flex items-start gap-6">
+              <Image
+                src="/units/FLZR/flzr_logo.svg"
+                alt="FLZR"
+                width={154}
+                height={44}
+                className="h-10 w-auto brightness-0 invert md:h-11"
+                style={{ width: "auto" }}
+              />
+              <Image
+                src="/units/FLZR/dekra-iso-27001.png"
+                alt="DEKRA certified ISO/IEC 27001 information security management"
+                width={300}
+                height={448}
+                className="h-20 w-auto object-contain md:h-24"
+                sizes="72px"
+              />
+            </div>
             <p className="flzr-headline mt-7 max-w-xl text-[clamp(1.35rem,1.05rem+1.2vw,2.25rem)] leading-[1.08] text-white">
               {homepageStatement || site.seo.defaultDescription}
             </p>
@@ -409,7 +419,7 @@ export default async function FlzrSiteWrapper({
       >
         <NavColorProvider color={navColor}>
           {/* <PageWithMapVertical> */}
-          <div className="min-h-screen bg-flzr-paper text-flzr-ink">
+          <div className="min-h-screen bg-flzr-canvas text-flzr-ink">
             <FrontNavOverlay
               menuData={nav as NavbarMenu}
               color={navColor}

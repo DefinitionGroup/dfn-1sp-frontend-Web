@@ -2,6 +2,7 @@
 export interface MenuItem {
     _key: string;
     slug?: string;
+    route?: string;
     title?: string;
     displayName?: string;
 }
