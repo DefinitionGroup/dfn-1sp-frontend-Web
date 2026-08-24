@@ -6,6 +6,7 @@ import { validateOptionalCta } from "../../shared/ctaValidation";
 
 type HeaderParent = {
   headlineMode?: "typewriter" | "headlineReveal";
+  showEyebrow?: boolean;
 };
 
 const isFlzrPage = (document?: unknown) =>
@@ -62,11 +63,24 @@ export default defineType({
 
     // CONTENT
     defineField({
+      name: "showEyebrow",
+      title: "Show Eyebrow",
+      type: "boolean",
+      description:
+        "Show the small label above the hero headline. Hidden by default.",
+      initialValue: false,
+      hidden: ({ document }) => !isFlzrPage(document),
+      group: "content",
+    }),
+    defineField({
       name: "eyebrow",
       title: "Eyebrow",
       type: "string",
       group: "content",
       initialValue: "Welcome at 1SP",
+      hidden: ({ document, parent }) =>
+        isFlzrPage(document) &&
+        (parent as HeaderParent | undefined)?.showEyebrow !== true,
     }),
     defineField({
       name: "seoTitle",

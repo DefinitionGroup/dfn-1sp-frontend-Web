@@ -490,6 +490,7 @@ export interface OneSPHeader {
     enableParallax?: boolean;
 
     // content
+    showEyebrow?: boolean;
     eyebrow?: string;
     seoTitle?: string;
     headlineMode?: "typewriter" | "headlineReveal";

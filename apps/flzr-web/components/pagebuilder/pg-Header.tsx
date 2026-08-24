@@ -69,7 +69,8 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   const mediaUrl = assetUrl(step.media as CloudinaryAsset | undefined);
   const useVideo = isVideoUrl(mediaUrl);
 
-  const eyebrow = step.eyebrow ?? "Welcome at 1SP";
+  const showEyebrow = step.showEyebrow === true;
+  const eyebrow = step.eyebrow?.trim() ?? "";
   const seoTitle = step.seoTitle?.trim();
   const headline = step.headline?.trim() ?? "";
   const headlineMode = step.headlineMode ?? "typewriter";
@@ -151,7 +152,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     }
     : portableTextComponents;
 
-  const eyebrowContent = hasVisibleText(eyebrow) ? (
+  const eyebrowContent = showEyebrow && hasVisibleText(eyebrow) ? (
     <h3 className="text-xs font-book flex items-center justify-center gap-2 text-neutral-50 pb-2">
       <span className="status-dot self-start mt-1.5" aria-hidden="true" />
       {eyebrow}
