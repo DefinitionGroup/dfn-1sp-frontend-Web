@@ -16,6 +16,7 @@ interface IntertitleCTAProps {
   paddingTop?: "0" | "12" | "24" | "48";
   navPointName?: string;
   hideFromNav?: boolean;
+  inheritSectionSurface?: boolean;
 }
 
 const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
@@ -23,11 +24,12 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   subline,
   subtitle,
   cta,
-  containerClassName = "container mx-auto w-[calc(100%-0.5rem)] md:px-7",
+  containerClassName,
   alignment = "center",
   paddingTop = "0",
   navPointName,
   hideFromNav = false,
+  inheritSectionSurface = false,
 }) => {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
@@ -40,13 +42,20 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
     "24": "pt-24",
     "48": "pt-48",
   };
-  const paddingTopClass = paddingTopMap[paddingTop] || "";
+  const paddingTopClass = inheritSectionSurface && paddingTop === "0"
+    ? "pt-5 sm:pt-7"
+    : paddingTopMap[paddingTop] || "";
   const hasSubline = hasVisibleText(subline);
+  const resolvedContainerClassName = containerClassName ?? (
+    inheritSectionSurface
+      ? "w-full"
+      : "container mx-auto w-[calc(100%-0.5rem)] md:px-7"
+  );
 
-  const titleClass = `max-w-4xl text-balance text-[clamp(2.25rem,3.2vw,4.25rem)] font-semibold leading-[0.98] text-flzr-violet ${isLeftAligned ? "text-left" : "text-center"}`;
+  const titleClass = `max-w-4xl text-balance ${inheritSectionSurface ? "text-title" : "text-[clamp(2.25rem,3.2vw,4.25rem)]"} font-semibold leading-[0.98] text-flzr-violet ${isLeftAligned ? "text-left" : "text-center"}`;
   const sublineClass = `mt-6 max-w-3xl text-balance text-[clamp(1.35rem,2.25vw,2.25rem)] font-regular leading-[1.15] text-neutral-500 sm:mt-8 ${isLeftAligned ? "text-left" : "text-center"}`;
   const subtitleClass = `${hasSubline ? "mt-6 sm:mt-8" : "mt-8 sm:mt-10"} max-w-3xl text-pretty text-base leading-[1.55] text-neutral-800 sm:text-lg lg:text-xl ${isLeftAligned ? "text-left" : "text-center"}`;
-  const buttonContainerClass = `mt-10 block w-fit min-w-40 sm:mt-12 ${isLeftAligned ? "self-start" : "mx-auto"}`;
+  const buttonContainerClass = `${inheritSectionSurface ? "mt-6" : "mt-10 sm:mt-12"} block w-fit ${isLeftAligned ? "self-start" : "mx-auto"}`;
 
   // Resolve CTA link and props
   let buttonHref = cta?.link ? resolveLink(cta.link) : undefined;
@@ -59,9 +68,9 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
     buttonHref = `/${locale}${buttonHref}`;
   }
   const buttonText = cta?.text;
-  const buttonVariant =
-    (cta?.variant as "default" | "black" | "violet" | "violetsmall") ||
-    "violet";
+  const buttonVariant = inheritSectionSurface
+    ? "ghostLight"
+    : cta?.variant || "violet";
 
   // Generate section ID from title
   const sectionId = title
@@ -81,10 +90,11 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className={`relative overflow-hidden ${containerClassName}`}
+      className={`relative overflow-hidden ${resolvedContainerClassName}`}
+      data-section-footer={inheritSectionSurface ? "true" : undefined}
     >
       <div
-        className={`relative mx-auto w-full max-w-[1480px] px-4 font-flzr sm:px-6 lg:px-8 ${paddingTopClass}`}
+        className={`relative mx-auto w-full max-w-[1480px] font-flzr ${inheritSectionSurface ? "px-0" : "px-4 sm:px-6 lg:px-8"} ${paddingTopClass}`}
       >
         <div
           className={`flex w-full flex-col ${isLeftAligned ? "items-start" : "items-center"}`}
@@ -99,7 +109,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
           <div className={buttonContainerClass}>
             <Button2
               text={buttonText}
-              variant={buttonVariant}
+              variant={buttonVariant as any}
               href={buttonHref}
             />
           </div>

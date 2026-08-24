@@ -78,7 +78,7 @@ function ServicesGalleryFiltered({
       className={`relative z-10 overflow-hidden ${bgColorClass} ${paddingClass} font-flzr`}
     >
       <div
-        className={`${inheritSectionSurface ? "w-full" : "container mx-auto"} relative ${horizontalPaddingClass}`}
+        className={`${inheritSectionSurface ? "w-full" : "container"} relative ${horizontalPaddingClass}`}
       >
         {showFilters && filters.length > 1 && (
           <div className="mb-8 overflow-x-auto border-b border-neutral-900/15 [scrollbar-width:none] md:mb-10 [&::-webkit-scrollbar]:hidden">

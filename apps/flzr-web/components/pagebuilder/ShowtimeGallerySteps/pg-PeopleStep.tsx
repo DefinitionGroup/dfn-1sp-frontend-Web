@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import type { GalleryPeopleStep, CloudinaryAsset } from "@1sp/sanity-types";
+import { assetUrl } from "@1sp/utils/cloudinary";
 import PeopleShowcaseHero from "../Fragments/pg-PeopleShowcaseHero";
 import PeopleIntroLayout from "../Fragments/PeopleIntroLayout";
 
@@ -31,6 +32,14 @@ type PeopleHeader = {
   uniquePeopleText?: string;
 };
 
+function isVideoAsset(asset?: CloudinaryAsset | null) {
+  if (!asset) return false;
+  const url = assetUrl(asset);
+  const resourceType = (asset as CloudinaryAsset & { resource_type?: string })
+    .resource_type;
+  return resourceType === "video" || url?.toLowerCase().includes("/video/");
+}
+
 export default function PeopleStep({
   step,
   inheritSectionSurface = false,
@@ -50,8 +59,9 @@ export default function PeopleStep({
   // Map person schema fields to MemberItem format expected by PeopleShowcaseHero
   const mappedMembers = members.map((member) => ({
     ...member,
-    // Use video if available, otherwise use image, or fallback to media
-    media: member.video || member.image || member.media,
+    // The Team gallery is intentionally image-only. Keep a legacy media
+    // fallback only when it is an image asset.
+    media: member.image || (!isVideoAsset(member.media) ? member.media : null),
   }));
 
   const sectionId = header.mainHeadline
@@ -91,6 +101,7 @@ export default function PeopleStep({
                 <PeopleShowcaseHero
                   members={mappedMembers}
                   presentation={inheritSectionSurface ? "dense" : "default"}
+                  showUnitLogo={false}
                 />
               </div>
             </div>

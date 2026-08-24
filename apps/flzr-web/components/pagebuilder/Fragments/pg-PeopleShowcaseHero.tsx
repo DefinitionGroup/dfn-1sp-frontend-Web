@@ -151,10 +151,12 @@ function PeopleShowcaseHero({
   members,
   initialVisibleCount = Number.POSITIVE_INFINITY,
   presentation = "default",
+  showUnitLogo = true,
 }: {
   members?: MemberItem[];
   initialVisibleCount?: number;
   presentation?: "default" | "dense";
+  showUnitLogo?: boolean;
 }) {
   const sectionRef = useRef<HTMLElement>(null);
   const reducedMotion = useReducedMotion();
@@ -236,6 +238,8 @@ function PeopleShowcaseHero({
             const key = (member.name || member.fullname || "member") + index;
             const label =
               member.altText || member.fullname || member.name || "";
+            const email = member.email?.trim();
+            const profileUrl = member.profileUrl?.trim();
             return (
               <motion.div
                 key={key}
@@ -261,7 +265,7 @@ function PeopleShowcaseHero({
                   />
                 )}
                 {/* Unit Logo Signet */}
-                {member.unit?.logoSignet && (
+                {showUnitLogo && member.unit?.logoSignet && (
                   <div className="absolute top-4 left-4 w-10 h-10 z-10">
                     <Image
                       src={assetUrl(member.unit.logoSignet as any) || ""}
@@ -297,14 +301,14 @@ function PeopleShowcaseHero({
                       {member.position}
                     </motion.p>
                   )}
-                  {(member.email || member.profileUrl) && (
+                  {(email || profileUrl) && (
                     <motion.div
                       variants={panelItemVariants}
                       className="mt-2 flex items-center gap-2"
                     >
-                      {member.email && (
+                      {email && (
                         <a
-                          href={`mailto:${member.email}`}
+                          href={`mailto:${email}`}
                           aria-label={`Email ${member.fullname || member.name || ""}`}
                           className="flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[#7c5cff] backdrop-blur-sm transition-colors hover:bg-[#7c5cff] hover:text-white"
                         >
@@ -319,9 +323,9 @@ function PeopleShowcaseHero({
                           </svg>
                         </a>
                       )}
-                      {member.profileUrl && (
+                      {profileUrl && (
                         <Link
-                          href={member.profileUrl}
+                          href={profileUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label={`LinkedIn profile of ${member.fullname || member.name || ""}`}

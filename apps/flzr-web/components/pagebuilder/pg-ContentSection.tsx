@@ -2,6 +2,7 @@
 import React from "react";
 import StaggeredFadeIn from "@flzr/components/ui/StaggeredFadeIn";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
+import Button2 from "@flzr/components/ui/Button2";
 import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import Link from "next/link";
@@ -35,9 +36,11 @@ const paddingClasses: Record<string, string> = {
 
 function ContentSection({
   data,
+  language = "en",
   inheritSectionSurface = false,
 }: {
   data: ContentSectionData;
+  language?: string;
   inheritSectionSurface?: boolean;
 }) {
   const {
@@ -214,22 +217,26 @@ function ContentSection({
       <section
         id={sectionId}
         {...navPointDataAttr}
-        className={`grid grid-cols-12 mx-auto font-flzr ${
+        className={`grid grid-cols-12 font-flzr ${
           isGlobeOverlay
             ? inheritSectionSurface
-              ? "flzr-content-section--globe-overlay relative z-20"
+              ? "flzr-content-section--reach-copy relative z-20"
               : "flzr-content-section--globe-overlay absolute inset-x-0 top-0 z-20"
             : "relative z-1"
-        } ${inheritSectionSurface ? "" : "container"}`}
+        } ${inheritSectionSurface ? "" : "container mx-auto"}`}
       >
         <div
-          className={`z-1 grid gap-8 col-span-12 col-start-1 mx-auto row-start-1 grid-cols-12 ${
-            inheritSectionSurface ? "" : `${paddingClass} container`
+          className={`z-1 grid gap-8 col-span-12 col-start-1 row-start-1 grid-cols-12 ${
+            inheritSectionSurface ? "" : `${paddingClass} container mx-auto`
           } ${
             isGlobeOverlay && !inheritSectionSurface ? "px-4 sm:px-6 lg:px-8" : ""
-          }`}
+          } ${isGlobeOverlay ? "h-full" : ""}`}
         >
-          <div className={`z-1 ${contentSpanClass} col-start-1 ${inheritSectionSurface ? "" : "pt-8"}`}>
+          <div
+            className={`z-1 ${contentSpanClass} col-start-1 ${
+              inheritSectionSurface ? "" : "pt-8"
+            } ${isGlobeOverlay ? "flex h-full flex-col" : ""}`}
+          >
             {/* Optional section title */}
             {hasVisibleText(title) && (
               <StaggeredFadeIn viewThreshold={0.01}>
@@ -246,6 +253,17 @@ function ContentSection({
                 />
               </div>
             </StaggeredFadeIn>
+
+            {isGlobeOverlay && (
+              <div className="mt-auto pt-8">
+                <Button2
+                  text="About Us"
+                  href={`/${language}/about-us`}
+                  variant="ghostLight"
+                  className="mb-16"
+                />
+              </div>
+            )}
           </div>
         </div>
       </section>

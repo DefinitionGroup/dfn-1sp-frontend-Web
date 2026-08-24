@@ -75,6 +75,7 @@ export default function FlzrTwoThirdsContentSection({
   const shellClass = inheritSectionSurface
     ? "w-full"
     : "mx-auto w-full max-w-[1480px] px-4 py-16 sm:px-6 lg:px-8";
+  const mediaClipRadius = inheritSectionSurface ? "0 1rem 1rem 0" : "1rem";
 
   const textVariants = {
     hidden: prefersReducedMotion
@@ -92,11 +93,11 @@ export default function FlzrTwoThirdsContentSection({
 
   const mediaVariants = {
     hidden: prefersReducedMotion
-      ? { opacity: 1, clipPath: "inset(0 0 0% 0 round 1rem)" }
-      : { opacity: 0, clipPath: "inset(0 0 14% 0 round 1rem)" },
+      ? { opacity: 1, clipPath: `inset(0 0 0% 0 round ${mediaClipRadius})` }
+      : { opacity: 0, clipPath: `inset(0 0 14% 0 round ${mediaClipRadius})` },
     visible: {
       opacity: 1,
-      clipPath: "inset(0 0 0% 0 round 1rem)",
+      clipPath: `inset(0 0 0% 0 round ${mediaClipRadius})`,
       transition: {
         duration: prefersReducedMotion ? 0 : 1,
         delay: prefersReducedMotion ? 0 : 0.12,
@@ -174,7 +175,7 @@ export default function FlzrTwoThirdsContentSection({
               <Button2
                 href={button.href}
                 text={button.text}
-                variant={inheritSectionSurface ? "dark" : (button.variant as any) || "violet"}
+                variant={inheritSectionSurface ? "ghostBright" : (button.variant as any) || "violet"}
               />
             </motion.div>
           ) : null}

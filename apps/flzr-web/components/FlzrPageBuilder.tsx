@@ -372,6 +372,7 @@ export function PageBuilder({
                 <ContentSection
                   key={key}
                   data={block}
+                  language={language}
                   inheritSectionSurface={withinSectionBand}
                 />
               </ErrorBoundary>
@@ -597,7 +598,11 @@ export function PageBuilder({
           case "intertitleCTA":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <IntertitleCTA key={key} {...block} />
+                <IntertitleCTA
+                  key={key}
+                  {...block}
+                  inheritSectionSurface={withinSectionBand}
+                />
               </ErrorBoundary>
             );
           case "headlineChallenge":

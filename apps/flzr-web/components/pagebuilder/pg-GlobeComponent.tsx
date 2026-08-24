@@ -2,7 +2,6 @@
 import React from "react";
 import type { GlobeComponent as GlobeComponentType } from "@1sp/sanity-types";
 import GlobalDataComponent from "@flzr/components/pagebuilder/pg-GlobalDataComponent";
-import FlzrReachMap from "@flzr/components/ui/FlzrReachMap";
 import {
   getFlzrEuropeanLocations,
   getFlzrGlobeSectionId,
@@ -13,6 +12,8 @@ interface GlobeComponentProps {
   language?: string;
   inheritSectionSurface?: boolean;
 }
+
+const REACH_CAMERA_RADIUS = 145 * 1.1;
 
 function GlobeComponent({
   data,
@@ -29,19 +30,6 @@ function GlobeComponent({
   const navPointDataAttr = navPointName
     ? { "data-navpoint-name": navPointName }
     : {};
-
-  if (isCentralEuropeStatic) {
-    return (
-      <section
-        id={sectionId}
-        {...navPointDataAttr}
-        data-globe-view-mode="centralEuropeStatic"
-        className={inheritSectionSurface ? "flzr-reach-map-shell" : "container mx-auto"}
-      >
-        <FlzrReachMap locations={locations} />
-      </section>
-    );
-  }
 
   // Transform the shared FLZR market locations into globe arcs.
   const colors = ["#7c5cff", "#9d85ff", "#d6ccff"];
@@ -92,9 +80,9 @@ function GlobeComponent({
     },
     autoRotate: false,
     autoRotateSpeed: 0.15,
-    cameraRadius: 165,
-    enableRotate: true,
-    verticalOffset: 1 / 3,
+    cameraRadius: isCentralEuropeStatic ? REACH_CAMERA_RADIUS : 165,
+    enableRotate: !isCentralEuropeStatic,
+    verticalOffset: isCentralEuropeStatic ? 0.18 : 1 / 3,
   };
 
   return (
@@ -102,15 +90,19 @@ function GlobeComponent({
       id={sectionId}
       {...navPointDataAttr}
       data-globe-view-mode={data?.viewMode || "default"}
-      className={`container relative mx-auto overflow-hidden ${
+      className={`relative overflow-hidden ${
+        isCentralEuropeStatic
+          ? "flzr-reach-map-shell"
+          : "container mx-auto"
+      } ${
         inheritSectionSurface ? "rounded-none" : "rounded-4xl"
       }`}
     >
       <GlobalDataComponent
         arcs={arcs}
         globeConfig={globeConfig}
-        title={sectionTitle || "Our Locations"}
-        description={sectionSubtitle}
+        title={isCentralEuropeStatic ? "" : sectionTitle || "Our Locations"}
+        description={isCentralEuropeStatic ? undefined : sectionSubtitle}
         backgroundTone={inheritSectionSurface ? "inherit" : "muted"}
       />
     </section>

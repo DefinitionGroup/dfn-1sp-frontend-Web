@@ -65,6 +65,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     ctaHref = `/${locale}${ctaHref}`;
   }
   const ctaText = step.cta?.text;
+  const ctaVariant = step.cta?.variant || "ghostDark";
   const mediaUrl = assetUrl(step.media as CloudinaryAsset | undefined);
   const useVideo = isVideoUrl(mediaUrl);
 
@@ -179,7 +180,11 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
       {ctaHref && ctaText && (
         <div className="pt-6">
-          <Button2 text={ctaText} href={ctaHref} className="min-w-[140px]" />
+          <Button2
+            text={ctaText}
+            href={ctaHref}
+            variant={ctaVariant as any}
+          />
         </div>
       )}
     </>

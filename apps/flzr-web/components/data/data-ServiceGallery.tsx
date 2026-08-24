@@ -189,17 +189,6 @@ function ServiceCard({
           <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/15" />
         </div>
 
-        <div className="pointer-events-none absolute left-4 top-4 flex items-center gap-3">
-          <Image
-            src="/units/FLZR/flzr_logo.svg"
-            alt="FLZR"
-            width={84}
-            height={20}
-            draggable={false}
-            className="pointer-events-none h-auto w-[4.75rem] object-contain object-left"
-          />
-        </div>
-
         <motion.div
           initial={reducedMotion ? false : { opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -222,7 +211,7 @@ function ServiceCard({
                 </p>
               ) : null}
             </div>
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white text-neutral-900 transition-[background-color,color,transform] duration-500 group-hover:rotate-[-35deg] group-hover:scale-105 group-hover:bg-flzr-violet group-hover:text-white">
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white text-neutral-900 transition-[background-color,color,transform] duration-500 group-hover:rotate-45 group-hover:scale-105 group-hover:bg-flzr-violet group-hover:text-white motion-reduce:transition-colors motion-reduce:group-hover:rotate-0">
               <ArrowUpRightIcon />
             </span>
           </div>
