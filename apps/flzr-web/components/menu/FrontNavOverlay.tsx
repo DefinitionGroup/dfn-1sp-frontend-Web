@@ -41,6 +41,49 @@ interface FrontNavOverlayProps {
   languageOptions?: LanguageOption[];
 }
 
+function FlzrMenuLogo({ className }: { className?: string }) {
+  return (
+    <svg
+      width="144"
+      height="34"
+      viewBox="0 0 144 34"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-hidden="true"
+      focusable="false"
+    >
+      <g clipPath="url(#clip0_flzr_menu_logo)">
+        <path
+          d="M136.432 22.0147L139.663 34H132.265L129.289 22.9926H126.44L124.526 34H117.467L123.421 0H133.327C139.961 0 144 4.63237 144 10.2847C144 15.9371 141.109 20.23 136.432 22.0147ZM130.904 16.1502C134.603 16.1502 136.644 14.1953 136.644 10.8372C136.644 8.28777 134.944 6.6723 131.797 6.6723H129.331L127.672 16.1502H130.904Z"
+          fill="black"
+        />
+        <path
+          d="M75.1605 27.4128L79.9652 0H72.9073L66.9541 34H82.1019L87.067 27.4128H75.1605Z"
+          fill="black"
+        />
+        <path
+          d="M50.0314 0L44.0791 34H51.137L53.4753 20.5703H65.0834L66.274 13.9822H54.6238L55.9417 6.58723H61.7515L66.7175 0H50.0314Z"
+          fill="black"
+        />
+        <path
+          d="M120.33 0H98.0002L93.0343 6.58723H106.795L86.1699 34H87.1509H113.471L114.619 27.4128H99.7365L119.083 1.69964L120.33 0Z"
+          fill="black"
+        />
+        <path
+          d="M5.74 0L0 34H31.5373L37.2773 0H5.74ZM21.6027 2.31216C24.3397 2.31216 26.566 4.53745 26.566 7.27318C26.566 10.0089 24.3397 12.2342 21.6027 12.2342C18.8658 12.2342 16.6395 10.0089 16.6395 7.27318C16.6395 4.53745 18.8658 2.31216 21.6027 2.31216ZM19.9158 29.793L16.4728 27.6411L19.2555 24.0968H15.37L9.6479 31.6878L6.09657 29.1939L13.2673 19.7993L13.4922 19.4751L14.26 18.3674L9.39705 18.3414L9.40243 18.2859L12.7262 13.8765L23.02 13.8461L18.7959 19.4733H27.6043L19.9167 29.793H19.9158Z"
+          fill="#7B34EA"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_flzr_menu_logo">
+          <rect width="144" height="34" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}
+
 const NAV_COPY: Record<
   string,
   {
@@ -267,19 +310,12 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   const mobileSurfaceClass = isFlzrChannel
     ? "border border-black/[0.035] bg-white shadow-[0_8px_26px_rgba(33,25,49,0.12)]"
     : "border border-white/15 bg-neutral-600/40 shadow-lg backdrop-blur-xl";
-  const imageLogo = isFlzrChannel
-    ? "/units/FLZR/flzr_logo.svg"
-    : detectedTheme === "dark"
+  const logoUrl =
+    detectedTheme === "dark"
       ? "/ci/1sp-fulllogotype-blk.svg"
       : "/ci/1sp-fulllogotype.svg";
-  const logoUrl = imageLogo;
   const logoAlt = isFlzrChannel ? "FLZR Logo" : "1SP Logo";
-  const logoClassName = [
-    "object-contain transition-[filter] duration-300",
-    isFlzrChannel ? "brightness-0" : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
+  const logoClassName = "object-contain transition-[filter] duration-300";
 
   React.useEffect(() => {
     if (!showOverlay || !isCaseDetailRoute || hasLoadedCases) {
@@ -432,14 +468,18 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 aria-label="Home"
                 className="flex items-center justify-center"
               >
-                <Image
-                  src={logoUrl}
-                  alt={logoAlt}
-                  width={isFlzrChannel ? 96 : 64}
-                  height={isFlzrChannel ? 96 : 64}
-                  className={logoClassName}
-                  style={{ height: "auto" }}
-                />
+                {isFlzrChannel ? (
+                  <FlzrMenuLogo className="h-auto w-24" />
+                ) : (
+                  <Image
+                    src={logoUrl}
+                    alt={logoAlt}
+                    width={64}
+                    height={64}
+                    className={logoClassName}
+                    style={{ height: "auto" }}
+                  />
+                )}
               </Link>
             </motion.div>
           </div>
@@ -605,14 +645,18 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 router.push(`/${locale}`);
               }}
             >
-              <Image
-                src={logoUrl}
-                alt={logoAlt}
-                width={isFlzrChannel ? 81 : 54}
-                height={isFlzrChannel ? 36 : 24}
-                className={logoClassName}
-                style={{ height: "auto" }}
-              />
+              {isFlzrChannel ? (
+                <FlzrMenuLogo className="h-auto w-[81px]" />
+              ) : (
+                <Image
+                  src={logoUrl}
+                  alt={logoAlt}
+                  width={54}
+                  height={24}
+                  className={logoClassName}
+                  style={{ height: "auto" }}
+                />
+              )}
             </Link>
           </motion.div>
           <motion.div
