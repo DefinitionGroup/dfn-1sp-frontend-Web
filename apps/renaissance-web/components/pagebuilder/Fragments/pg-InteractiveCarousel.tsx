@@ -31,6 +31,29 @@ interface UIItem {
   linkHref?: string;
 }
 
+function CarouselTextOverlay() {
+  return (
+    <svg
+      width="875"
+      height="845"
+      viewBox="0 0 875 845"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      preserveAspectRatio="xMinYMid meet"
+      aria-hidden="true"
+      focusable="false"
+      className="pointer-events-none absolute inset-y-0 left-0 z-[1] h-full w-auto max-w-none"
+      data-carousel-text-overlay
+    >
+      <path
+        d="M638.8 910L874.3 287.5H240.3L357.3 -44.5L-62.7 -44.5V910H638.8Z"
+        fill="#245E66"
+        fillOpacity="0.9"
+      />
+    </svg>
+  );
+}
+
 function InteractiveCarousel({ items }: { items?: SanityCarouselItem[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
@@ -186,47 +209,51 @@ function InteractiveCarousel({ items }: { items?: SanityCarouselItem[] }) {
                 />
               )}
 
-              <div className="pointer-events-none absolute -left-[8%] top-[16%] h-8 w-[62%] -rotate-[14deg] bg-renaissance-teal/75 blur-[1px] sm:h-12" />
+              <CarouselTextOverlay />
 
-              <div className="absolute inset-x-0 bottom-0 grid gap-5 p-6 sm:p-9 lg:grid-cols-[minmax(0,1.25fr)_minmax(18rem,0.75fr)] lg:items-end lg:p-12">
-                <motion.div
-                  initial={{ opacity: 0, y: reduceMotion ? 0 : 22 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: reduceMotion ? 0 : 0.24, duration: 0.5 }}
-                >
-                  <p className="eyebrow-mono mb-3 tracking-[0.04em] text-white">
-                    Story {String(currentIndex + 1).padStart(2, "0")} · {active.subtitle || "Campaign"}
-                  </p>
-                  <h3 className="max-w-5xl text-[clamp(2.75rem,8vw,7.5rem)] font-semibold leading-[0.84] tracking-[-0.055em] text-white">
-                    {active.title}
-                  </h3>
-                </motion.div>
 
-                <motion.div
-                  className="border-t border-white/35 pt-5"
-                  initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: reduceMotion ? 0 : 0.38, duration: 0.45 }}
-                >
-                  {active.description ? (
-                    <p className="max-w-xl text-sm leading-relaxed text-white/84 sm:text-base">
-                      {active.description}
+              <div className="absolute inset-x-0 bottom-0 z-10 p-6 sm:p-9 lg:p-12">
+                <div className="max-w-[42rem]">
+                  <motion.div
+                    initial={{ opacity: 0, y: reduceMotion ? 0 : 22 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: reduceMotion ? 0 : 0.24, duration: 0.5 }}
+                  >
+                    <p className="eyebrow-mono mb-3 tracking-[0.04em] text-white">
+                      Story {String(currentIndex + 1).padStart(2, "0")} ·{" "}
+                      {active.subtitle || "Campaign"}
                     </p>
-                  ) : null}
-                  {activeButton ? (
-                    <div className="mt-5">
-                      <Button2 {...activeButton} />
-                    </div>
-                  ) : active.linkHref ? (
-                    <div className="mt-5">
-                      <Button2
-                        variant="violetsmall"
-                        href={active.linkHref}
-                        text="View case study"
-                      />
-                    </div>
-                  ) : null}
-                </motion.div>
+                    <h3 className="max-w-5xl text-[clamp(2.75rem,8vw,7.5rem)] font-semibold leading-[0.84] tracking-[-0.055em] text-white">
+                      {active.title}
+                    </h3>
+                  </motion.div>
+
+                  <motion.div
+                    className="mt-5 max-w-lg border-t border-white/35 pt-5"
+                    initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: reduceMotion ? 0 : 0.38, duration: 0.45 }}
+                  >
+                    {active.description ? (
+                      <p className="max-w-xl text-sm leading-relaxed text-white/84 sm:text-base">
+                        {active.description}
+                      </p>
+                    ) : null}
+                    {activeButton ? (
+                      <div className="mt-5">
+                        <Button2 {...activeButton} />
+                      </div>
+                    ) : active.linkHref ? (
+                      <div className="mt-5">
+                        <Button2
+                          variant="violetsmall"
+                          href={active.linkHref}
+                          text="View case study"
+                        />
+                      </div>
+                    ) : null}
+                  </motion.div>
+                </div>
               </div>
             </motion.article>
           </AnimatePresence>
@@ -252,7 +279,7 @@ function InteractiveCarousel({ items }: { items?: SanityCarouselItem[] }) {
             ) : null,
           )}
 
-          <div className="absolute right-5 top-5 z-20 flex items-center gap-2 sm:right-8 sm:top-8">
+          <div className="absolute left-5 top-5 z-20 flex items-center gap-2 sm:left-8 sm:top-8">
             <span className="mr-2 font-mono text-xs font-semibold tracking-[0.14em] text-white">
               {String(currentIndex + 1).padStart(2, "0")} / {String(carouselItems.length).padStart(2, "0")}
             </span>
