@@ -64,6 +64,56 @@ export default defineType({
             : "Keep the badge label to 24 characters or fewer.";
         }),
     }),
+    defineField({
+      name: "desktopTopMargin",
+      title: "Desktop space before section",
+      type: "string",
+      description:
+        "Adds space above this section on desktop only. Mobile and tablet spacing remain unchanged.",
+      initialValue: "none",
+      options: {
+        list: [
+          { title: "None", value: "none" },
+          { title: "32px (mt-8)", value: "8" },
+          { title: "64px (mt-16)", value: "16" },
+          { title: "96px (mt-24)", value: "24" },
+        ],
+        layout: "radio",
+      },
+      hidden: ({ parent }) => !startsSection(parent),
+    }),
+    defineField({
+      name: "badgeAnimationMode",
+      title: "Badge animation",
+      type: "string",
+      description:
+        "Run the descramble once when the badge enters view, or repeat it with a pause while the badge remains visible.",
+      initialValue: "once",
+      options: {
+        list: [
+          { title: "Once on entry", value: "once" },
+          { title: "Loop with pause", value: "loop" },
+        ],
+        layout: "radio",
+      },
+      hidden: ({ parent }) => !startsSection(parent),
+    }),
+    defineField({
+      name: "carouselBackgroundTone",
+      title: "Carousel background",
+      type: "string",
+      description:
+        "Controls the background around carousel blocks grouped inside this section.",
+      initialValue: "darkGreen",
+      options: {
+        list: [
+          { title: "Dark green", value: "darkGreen" },
+          { title: "Light", value: "light" },
+        ],
+        layout: "radio",
+      },
+      hidden: ({ parent }) => !startsSection(parent),
+    }),
   ],
   validation: (Rule) =>
     Rule.custom((_value, context) =>
@@ -76,8 +126,18 @@ export default defineType({
       mode: "mode",
       sectionRole: "sectionRole",
       badgeLabel: "badgeLabel",
+      desktopTopMargin: "desktopTopMargin",
+      badgeAnimationMode: "badgeAnimationMode",
+      carouselBackgroundTone: "carouselBackgroundTone",
     },
-    prepare({ mode, sectionRole, badgeLabel }) {
+    prepare({
+      mode,
+      sectionRole,
+      badgeLabel,
+      desktopTopMargin,
+      badgeAnimationMode,
+      carouselBackgroundTone,
+    }) {
       if (mode === "reset") {
         return {
           title: "End Renaissance section",
@@ -87,7 +147,16 @@ export default defineType({
 
       return {
         title: `[ ${badgeLabel || "UNTITLED"} ]`,
-        subtitle: `Renaissance section · ${sectionRole || "role not set"}`,
+        subtitle: [
+          `Renaissance section · ${sectionRole || "role not set"}`,
+          desktopTopMargin && desktopTopMargin !== "none"
+            ? `desktop mt-${desktopTopMargin}`
+            : null,
+          badgeAnimationMode === "loop" ? "looped badge" : null,
+          carouselBackgroundTone === "light" ? "light carousel" : null,
+        ]
+          .filter(Boolean)
+          .join(" · "),
       };
     },
   },

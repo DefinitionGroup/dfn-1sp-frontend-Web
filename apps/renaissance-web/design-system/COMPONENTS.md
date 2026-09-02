@@ -71,6 +71,7 @@ Compatibility blocks require explicit design review and a channel/data-scope che
 
 - Maximum five curated stories on a landing page.
 - The first story is editorially selected, not random.
+- The containing `renaissanceSectionBand` may select a dark-green or light carousel surround without changing the carousel content contract.
 - Autoplay requires a visible pause control and stops for reduced motion, focus, hover and document invisibility.
 - Announce manual changes politely; do not announce every automatic change.
 - Media uses an optimized responsive source and a stable aspect/min-height to prevent layout shift.

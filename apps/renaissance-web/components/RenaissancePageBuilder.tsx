@@ -14,6 +14,7 @@ import type {
   IntroBlockTypoSophisticated as IntroBlockTypoSophisticatedType,
   CardContainerComponent as CardContainerComponentType,
   ResultsMetricsComponent as ResultsMetricsComponentType,
+  RenaissanceCarouselBackgroundTone,
   RenaissanceSectionRole,
 } from "@1sp/sanity-types";
 import type { Page } from "@1sp/sanity-types";
@@ -310,6 +311,7 @@ export function PageBuilder({
     i: number,
     isDeferred = false,
     presentationRole?: RenaissanceSectionRole,
+    carouselBackgroundTone?: RenaissanceCarouselBackgroundTone,
   ) => {
     if (!block?._type) return null;
 
@@ -469,7 +471,11 @@ export function PageBuilder({
           case "carousel":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <InteractiveCarousel key={key} data={block as CarouselType} />
+                <InteractiveCarousel
+                  key={key}
+                  data={block as CarouselType}
+                  backgroundTone={carouselBackgroundTone}
+                />
               </ErrorBoundary>
             );
           case "smartCarousel":
@@ -735,7 +741,13 @@ export function PageBuilder({
           />
         ) : (
           unit.blocks.map(({ block, sourceIndex }) =>
-            renderBlock(legacyBlock(block), sourceIndex, isDeferred, role),
+            renderBlock(
+              legacyBlock(block),
+              sourceIndex,
+              isDeferred,
+              role,
+              unit.marker.carouselBackgroundTone,
+            ),
           )
         )}
       </RenaissanceSectionFrame>

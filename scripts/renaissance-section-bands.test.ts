@@ -5,16 +5,24 @@ import { RENAISSANCE_HOMEPAGE_FALLBACK } from "../apps/renaissance-web/data/home
 import { partitionRenaissanceSections } from "../apps/renaissance-web/lib/renaissanceSections";
 
 const block = (_type: string, _key: string) => ({ _type, _key });
+type MarkerOptions = {
+  desktopTopMargin?: "none" | "8" | "16" | "24";
+  badgeAnimationMode?: "once" | "loop";
+  carouselBackgroundTone?: "darkGreen" | "light";
+};
+
 const marker = (
   _key: string,
   sectionRole: "stories" | "services" | "people" | "origins" | "reach" | "joinUs" = "stories",
   mode: "section" | "reset" = "section",
+  options: MarkerOptions = {},
 ) => ({
   _type: "renaissanceSectionBand",
   _key,
   mode,
   sectionRole,
   badgeLabel: sectionRole.toUpperCase(),
+  ...options,
 });
 
 test("keeps unframed blocks in their stored order", () => {
@@ -50,6 +58,23 @@ test("groups explicit markers and respects reset markers", () => {
       ["block", "network"],
     ],
   );
+});
+
+test("preserves optional section presentation settings", () => {
+  const units = partitionRenaissanceSections([
+    marker("stories", "stories", "section", {
+      desktopTopMargin: "16",
+      badgeAnimationMode: "loop",
+      carouselBackgroundTone: "light",
+    }),
+    block("carousel", "carousel"),
+  ]);
+
+  const section = units[0];
+  assert.ok(section && section.kind === "section");
+  assert.equal(section.marker.desktopTopMargin, "16");
+  assert.equal(section.marker.badgeAnimationMode, "loop");
+  assert.equal(section.marker.carouselBackgroundTone, "light");
 });
 
 test("keeps fallback service cards inside the services band", () => {

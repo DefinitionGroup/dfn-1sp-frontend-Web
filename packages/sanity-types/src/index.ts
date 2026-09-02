@@ -366,12 +366,19 @@ export type RenaissanceSectionRole =
     | "joinUs"
     | "contact";
 
+export type RenaissanceDesktopTopMargin = "none" | "8" | "16" | "24";
+export type RenaissanceBadgeAnimationMode = "once" | "loop";
+export type RenaissanceCarouselBackgroundTone = "darkGreen" | "light";
+
 export interface RenaissanceSectionBand {
     _type: "renaissanceSectionBand";
     _key?: string;
     mode?: "section" | "reset";
     sectionRole?: RenaissanceSectionRole;
     badgeLabel?: string;
+    desktopTopMargin?: RenaissanceDesktopTopMargin;
+    badgeAnimationMode?: RenaissanceBadgeAnimationMode;
+    carouselBackgroundTone?: RenaissanceCarouselBackgroundTone;
 }
 
 export interface FlzrTwoThirdsContentSection {

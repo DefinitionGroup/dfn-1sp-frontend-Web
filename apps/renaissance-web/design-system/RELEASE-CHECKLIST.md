@@ -20,6 +20,7 @@ Use this checklist for every new or changed Renaissance page. A page is not comp
 - [ ] Every block is Core or has passed its Conditional gate in `COMPONENTS.md`.
 - [ ] Existing PageBuilder blocks and data contracts remain intact; Renaissance app-local presentation adapters own Figma-specific framing.
 - [ ] `renaissanceSectionBand` remains optional and backward-compatible and is the redesign's only new schema object.
+- [ ] Optional desktop section spacing, badge looping and carousel background tone work without changing mobile defaults or grouped PageBuilder content.
 - [ ] Every visible section has one purpose and a semantic heading.
 - [ ] Heading order is logical independent of visual size.
 - [ ] Every `navPointName` is unique, slug-stable and present in the initial document shell.
@@ -33,7 +34,7 @@ Use this checklist for every new or changed Renaissance page. A page is not comp
 - [ ] Modal/overlay states trap focus, support Escape, inert the background and restore trigger focus.
 - [ ] Touch targets are at least 44 × 44px; desktop text targets are at least 24 × 24px.
 - [ ] Moving content can be paused/stopped and honors `prefers-reduced-motion`.
-- [ ] Section badge labels decrypt once on entry into view; reduced motion shows the final readable label without animation.
+- [ ] Section badge labels follow their configured once/loop mode; loops pause on the readable label, stop offscreen/hidden and reduced motion stays static.
 - [ ] User-triggered carousel/tab changes expose selected/current state.
 - [ ] Body text contrast is at least 4.5:1; large text and non-text controls meet their applicable minimums.
 - [ ] Page remains understandable at 200% zoom and reflows at 400% without horizontal page scrolling.

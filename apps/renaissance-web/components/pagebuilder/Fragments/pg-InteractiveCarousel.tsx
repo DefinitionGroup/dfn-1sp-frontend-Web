@@ -15,7 +15,11 @@ import {
   getCarouselPosterUrl,
   getCarouselVideoSources,
 } from "@1sp/utils/carousel-media";
-import type { CarouselItem as SanityCarouselItem, CTA } from "@1sp/sanity-types";
+import type {
+  CarouselItem as SanityCarouselItem,
+  CTA,
+  RenaissanceCarouselBackgroundTone,
+} from "@1sp/sanity-types";
 import { assetUrl, ctaToButtonProps } from "@1sp/utils/cloudinary";
 
 interface UIItem {
@@ -54,7 +58,13 @@ function CarouselTextOverlay() {
   );
 }
 
-function InteractiveCarousel({ items }: { items?: SanityCarouselItem[] }) {
+function InteractiveCarousel({
+  items,
+  backgroundTone = "darkGreen",
+}: {
+  items?: SanityCarouselItem[];
+  backgroundTone?: RenaissanceCarouselBackgroundTone;
+}) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
@@ -134,6 +144,8 @@ function InteractiveCarousel({ items }: { items?: SanityCarouselItem[] }) {
   const activeVideoSources = getCarouselVideoSources(active.video);
   const activePosterUrl = getCarouselPosterUrl(active.video);
   const duration = reduceMotion ? 0.01 : 0.72;
+  const backgroundClass =
+    backgroundTone === "light" ? "bg-renaissance-paper" : "bg-renaissance-ink";
   const slideVariants = {
     enter: (slideDirection: number) => ({
       clipPath:
@@ -153,7 +165,8 @@ function InteractiveCarousel({ items }: { items?: SanityCarouselItem[] }) {
       ref={sectionRef}
       aria-roledescription="carousel"
       aria-label="Renaissance stories"
-      className="relative bg-renaissance-ink py-3 text-white sm:py-5"
+      className={`relative py-3 text-white sm:py-5 ${backgroundClass}`}
+      data-carousel-background={backgroundTone}
       onMouseEnter={() => setIsAutoPlaying(false)}
       onMouseLeave={() => setIsAutoPlaying(true)}
       onFocusCapture={() => setIsAutoPlaying(false)}

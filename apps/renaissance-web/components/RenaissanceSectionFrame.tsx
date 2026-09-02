@@ -1,4 +1,5 @@
 import type {
+  RenaissanceDesktopTopMargin,
   RenaissanceSectionBand,
   RenaissanceSectionRole,
 } from "@1sp/sanity-types";
@@ -18,6 +19,13 @@ const roleConfig: Record<
   contact: { id: "contact", surface: "bg-renaissance-paper", tone: "light" },
 };
 
+const desktopTopMarginClass: Record<RenaissanceDesktopTopMargin, string> = {
+  none: "",
+  "8": "lg:mt-8",
+  "16": "lg:mt-16",
+  "24": "lg:mt-24",
+};
+
 export default function RenaissanceSectionFrame({
   marker,
   children,
@@ -30,13 +38,16 @@ export default function RenaissanceSectionFrame({
   const isCompactBand = ["services", "origins", "joinUs"].includes(
     marker.sectionRole,
   );
+  const desktopTopMargin = marker.desktopTopMargin ?? "none";
+  const desktopMargin = desktopTopMarginClass[desktopTopMargin] ?? "";
 
   return (
     <section
       id={config.id}
       data-navpoint-name={marker.badgeLabel || marker.sectionRole}
       data-renaissance-section={marker.sectionRole}
-      className={`relative scroll-mt-24 overflow-hidden font-renaissance md:scroll-mt-28 ${config.surface}`}
+      data-desktop-top-margin={desktopTopMargin}
+      className={`relative scroll-mt-24 overflow-hidden font-renaissance md:scroll-mt-28 ${desktopMargin} ${config.surface}`}
     >
       <div
         className={`relative z-10 mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 ${
@@ -47,6 +58,7 @@ export default function RenaissanceSectionFrame({
           <RenaissanceSectionBadge
             label={marker.badgeLabel}
             tone={config.tone}
+            animationMode={marker.badgeAnimationMode}
           />
         ) : null}
       </div>

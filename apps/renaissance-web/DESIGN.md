@@ -120,7 +120,7 @@ The expanded navigation sits in page flow with the dark Renaissance logo and ink
 
 ### Section Badges and Adapted Sections
 
-Section badge labels are controlled by Sanity. They use Signal Orange `#f49a24`, retain the exact Figma badge asset, and decrypt once when entering view. With `prefers-reduced-motion`, the final readable label appears without the decryption animation. Badges introduce sections only; they are not permitted in the hero.
+Section badge labels are controlled by Sanity. They use Signal Orange `#f49a24`, retain the exact Figma badge asset, and decrypt once when entering view by default. Editors may opt a section into a looped descramble with a 3.2-second readable pause between cycles; loops stop while offscreen or when the document is hidden. With `prefers-reduced-motion`, the final readable label appears without the decryption animation. Badges introduce sections only; they are not permitted in the hero.
 
 The approved services, network, people, and origin passages use the exact assets in `public/renaissance/figma/` and the compact compositions established by Figma file `nPhFDVszVftw0kl4D6afmr`. Renaissance app-local adapters may frame or augment existing PageBuilder blocks to achieve this presentation, but they must not fork or replace the shared block/data contracts.
 
@@ -220,7 +220,7 @@ Italic display text is an accent, limited to one short phrase per headline. It u
 - **Tablet grid:** 6 columns.
 - **Mobile grid:** 4 columns with 16–24px page insets.
 - **Readable text measure:** 48–68ch; campaign captions may be 32–48ch.
-- **Section spacing:** 48px compact, 64px standard mobile, 96px standard desktop, 128px immersive desktop.
+- **Section spacing:** 48px compact, 64px standard mobile, 96px standard desktop, 128px immersive desktop. A section marker may add 32px, 64px or 96px before its section at the desktop breakpoint without changing smaller layouts.
 - **Component spacing:** use a 4px base rhythm; prefer 8, 12, 16, 24, 32, 48 and 64px.
 
 Do not use vertical space as a substitute for hierarchy. On 390px mobile, a non-interactive repeated item should normally stay below 18rem unless the media itself is the content.
@@ -254,7 +254,7 @@ Shadows are state indicators, not decoration. Only floating compact navigation, 
 Rules:
 
 - Maximum one entrance system and one ambient system per page.
-- Section-badge decryption runs once on entry into view; reduced motion shows the final readable Sanity label immediately.
+- Section-badge decryption runs once on entry into view by default. Optional looping pauses for 3.2 seconds on the readable label and runs only while visible; reduced motion shows the final readable Sanity label immediately.
 - Pause auto-changing content through a visible control.
 - `prefers-reduced-motion` removes parallax, autoplay, pointer-following fields, marquee movement and view-transition travel.
 - Focus, selection and validation never rely on motion alone.
@@ -288,7 +288,8 @@ Every navigable section shell must exist on first render. Heavy children can be 
 - `navPointName` is unique per page, stable across content edits and mapped to an initial-render anchor.
 - CTA variants use semantic names (`brand`, `dark`, `glass`, `ghost`). Legacy `violet`, `lime`, `purple` and `blue` names are compatibility aliases, not authoring language.
 - Existing PageBuilder block types and data contracts are preserved; Renaissance app-local presentation adapters own the Figma-specific framing and composition.
-- `renaissanceSectionBand` is optional, backward-compatible, and the only new schema object introduced by this redesign. It groups following blocks and stores the Sanity-controlled badge label; it does not replace or mutate the grouped blocks.
+- `renaissanceSectionBand` is optional, backward-compatible, and the only new schema object introduced by this redesign. It groups following blocks and stores the Sanity-controlled badge label plus optional desktop top spacing, badge animation mode and carousel background tone; it does not replace or mutate the grouped blocks.
+- Carousel blocks inside a Renaissance section may use the default dark-green surround or the light paper surround selected by that section marker.
 - Join Us actions resolve to `/contact`.
 - Sanity may replace fallback content, but it must not replace this system contract.
 
