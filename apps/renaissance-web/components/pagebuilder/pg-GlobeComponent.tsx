@@ -92,7 +92,7 @@ function GlobeComponent({ data, language, presentationRole }: GlobeComponentProp
 
   return (
     <section
-      id={sectionId}
+      id={presentationRole === "reach" ? undefined : sectionId}
       {...navPointDataAttr}
       className={
         presentationRole === "reach"
