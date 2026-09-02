@@ -38,8 +38,9 @@ This repository is evolving from a single 1SP website into a multi-site frontend
 - `flizrWeb`
 - `msmWeb`
 - `studioco2Web`
+- `renaissanceWeb`
 
-The long-term platform should support more website channels without hardcoding channel lists in many schema and query files.
+`packages/site-config/src/index.ts` is the source of truth for the channel union and per-site runtime configuration. The long-term platform should support more website channels without hardcoding channel lists in many schema and query files.
 
 ## Frontend Architecture Direction
 
@@ -48,6 +49,14 @@ The long-term platform should support more website channels without hardcoding c
 - Case pages may share the same data contract and logic, but markup and styling can be site-specific.
 - Page builders should follow the same pattern across websites, but each website may have a different component set.
 - Do not force FLZR through `content1sp`; use a FLZR-specific page-builder field/registry when implementing FLZR pages.
+
+## Renaissance Status
+
+- `renaissanceWeb` is implemented as an independent frontend in `apps/renaissance-web`. It owns its routing and middleware, site shell, navigation, footer, page-builder registry, theme/fonts, SEO metadata, sitemap, robots, tracking, and deployment configuration while reusing shared Sanity contracts and query helpers.
+- Renaissance currently supports English only. Public URLs are locale-free; middleware rewrites them to the internal `/en` route. Local development runs on port `3003`.
+- The homepage is CMS-first. When its published Sanity page or content blocks are absent, it intentionally renders the production-quality fallback in `apps/renaissance-web/data/homepageFallback.ts`. Verify the active dataset before treating fallback rendering as a code defect.
+- The configured public deployment is the Vercel preview at `https://renaissance-1sp-dfn.vercel.app`. No Renaissance production domain is configured in `packages/site-config/src/index.ts`; preview deployments must remain non-indexable until that production boundary is explicitly introduced.
+- For Renaissance design or page-builder work, read `apps/renaissance-web/DESIGN.md` and `apps/renaissance-web/design-system/RELEASE-CHECKLIST.md` before editing. Preserve its petrol/teal/sand visual system and its isolated `RenaissancePageBuilder` contract.
 
 ## Sanity Rules
 
@@ -87,4 +96,5 @@ Never infer a code bug from `page === null`, empty Studio assigned lists, or mis
 
 - For platform changes, verify the existing 1SP build still passes before merging.
 - For each new website app, verify its own build, sitemap, robots, canonical URLs, language routing, and tracking configuration independently.
+- For Renaissance changes, run `pnpm build:renaissance` and verify locale-free routing, the CMS and fallback homepage paths, `/sitemap.xml`, `/robots.txt`, and desktop/mobile rendering. Shared platform changes must also preserve the existing 1SP build.
 - When changing global Sanity queries, verify at least one page/case/service/person flow for the affected website channel.

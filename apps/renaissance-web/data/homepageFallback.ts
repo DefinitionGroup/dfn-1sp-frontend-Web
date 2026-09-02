@@ -43,9 +43,11 @@ export const RENAISSANCE_HOMEPAGE_FALLBACK: PageBuilderBlock[] = [
     headingTag: "h1",
     subheading: "Where games find their audience.",
     paragraphs: [RENAISSANCE_HOME_DESCRIPTION],
-    backgroundImage: media(
-      "/units/RENAISSANCE/renaissance_cover-image.jpg",
+    useVideo: true,
+    backgroundVideo: media(
+      "https://res.cloudinary.com/dsu07dnes/video/upload/v1787312298/1SP_RENAISSANCE_EDIT_0826_02_da4squ.mp4",
     ),
+    backgroundImage: media("/units/RENAISSANCE/renaissance_cover-image.jpg"),
     fullWidth: true,
     navPointName: "Home",
     additionalContent: [
@@ -56,7 +58,7 @@ export const RENAISSANCE_HOMEPAGE_FALLBACK: PageBuilderBlock[] = [
         variant: "violet",
         link: {
           linkType: "external",
-          externalUrl: "mailto:stefano@renaissancepr.biz",
+          externalUrl: "/contact",
         },
       },
       {
@@ -72,13 +74,18 @@ export const RENAISSANCE_HOMEPAGE_FALLBACK: PageBuilderBlock[] = [
     ],
   },
   {
+    _key: "renaissance-stories-section",
+    _type: "renaissanceSectionBand",
+    mode: "section",
+    sectionRole: "stories",
+    badgeLabel: "STORIES",
+  },
+  {
     _key: "renaissance-stories-intro",
     _type: "introBlockTypoSophisticated",
     navPointName: "Stories",
     header: {
       mainHeadline: "Great games deserve more than noise.",
-      creativityTitle: "Human stories first.",
-      uniquePeopleText: "Activity second.",
     },
     description:
       "Renaissance builds smart, creative campaigns that connect a title with the media, creators and players who matter most.",
@@ -109,52 +116,44 @@ export const RENAISSANCE_HOMEPAGE_FALLBACK: PageBuilderBlock[] = [
     ],
   },
   {
-    _key: "renaissance-client-logos",
-    _type: "clientLogoCarousel",
-    headline: "In great company.",
-    selectionMode: "manual",
-    speed: "slow",
-    grayscale: true,
-    hideFromNav: true,
-    selectedClients: [
-      {
-        _id: "ubisoft",
-        name: "Ubisoft",
-        logo: media("/logos/Ubisoft_logo.svg"),
-      },
-      {
-        _id: "xbox",
-        name: "Xbox",
-        logo: media("/logos/Xbox_2020_horz_Black.svg"),
-      },
-      {
-        _id: "epic-games",
-        name: "Epic Games",
-        logo: media("/logos/Epic_Games_logo.svg"),
-      },
-      {
-        _id: "warner-bros",
-        name: "Warner Bros.",
-        logo: media("/logos/Logo_Warner_Bros.svg"),
-      },
-      {
-        _id: "riot-games",
-        name: "Riot Games",
-        logo: media("/logos/Riot_Games_logo.svg"),
-      },
-    ],
+    _key: "renaissance-services-section",
+    _type: "renaissanceSectionBand",
+    mode: "section",
+    sectionRole: "services",
+    badgeLabel: "SERVICES",
   },
   {
     _key: "renaissance-services-intro",
     _type: "introBlockTypoSophisticated",
     navPointName: "Services",
     header: {
-      mainHeadline: "Six services. One plan.",
-      creativityTitle: "Pick one. Pick all.",
-      uniquePeopleText: "Never a disconnected channel buffet.",
+      mainHeadline: "Six services. One mission.",
     },
     description:
       "Every brief is scoped from one integrated communication plan, shaped around the game, its audience and the moment it needs to own.",
+  },
+  {
+    _key: "renaissance-client-logos",
+    _type: "clientLogoCarousel",
+    headline: "You’re in great company.",
+    selectionMode: "manual",
+    speed: "slow",
+    grayscale: true,
+    hideFromNav: true,
+    selectedClients: [
+      { _id: "ubisoft", name: "Ubisoft", logo: media("/logos/Ubisoft_logo.svg") },
+      { _id: "xbox", name: "Xbox", logo: media("/logos/Xbox_2020_horz_Black.svg") },
+      { _id: "epic-games", name: "Epic Games", logo: media("/logos/Epic_Games_logo.svg") },
+      { _id: "warner-bros", name: "Warner Bros.", logo: media("/logos/Logo_Warner_Bros.svg") },
+      { _id: "riot-games", name: "Riot Games", logo: media("/logos/Riot_Games_logo.svg") },
+    ],
+  },
+  {
+    _key: "renaissance-people-section",
+    _type: "renaissanceSectionBand",
+    mode: "section",
+    sectionRole: "people",
+    badgeLabel: "PEOPLE POWERED",
   },
   {
     _key: "renaissance-services",
@@ -199,17 +198,22 @@ export const RENAISSANCE_HOMEPAGE_FALLBACK: PageBuilderBlock[] = [
     navPointName: "People",
     header: {
       mainHeadline: "We work with people, not brands.",
-      creativityTitle: "Senior thinking.",
-      uniquePeopleText: "Boundless positivity.",
     },
     description:
       "Every plan starts with the human story inside the game: the developer's ambition, the audience's expectation and the cultural moment we can plug into.",
   },
   {
+    _key: "renaissance-origins-section",
+    _type: "renaissanceSectionBand",
+    mode: "section",
+    sectionRole: "origins",
+    badgeLabel: "ORIGINS",
+  },
+  {
     _key: "renaissance-origin",
     _type: "twoColContentSection",
     navPointName: "Origins",
-    title: "Renaissance since 2015.",
+    title: "21 years in the making",
     showTitle: true,
     titleColor: "neutral-700",
     contentSize: "lg",
@@ -217,21 +221,17 @@ export const RENAISSANCE_HOMEPAGE_FALLBACK: PageBuilderBlock[] = [
     backgroundColor: "neutral-100",
     image: media("/renaissance/stefano-petrullo.jpg"),
     mediaAlt: "Stefano Petrullo, Founder and CEO of Renaissance",
-    content: [
-      portableText("origin-heading", "Stefano Petrullo.", "h2"),
-      portableText(
-        "origin-intro",
-        "A passionate, optimistic and extroverted observer of the media landscape.",
-      ),
-      portableText(
-        "origin-body",
-        "A multi-award-winning games-industry professional with more than 30 years across journalism, PR and marketing. After serving as Ubisoft's Senior UK PR Manager, Stefano founded Renaissance in 2015.",
-      ),
-      portableText(
-        "origin-recognition",
-        "BAFTA Member & Juror · UKIE Member · Videogame Ambassador · Limit Break 2023 Mentor",
-      ),
-    ],
+    content: [portableText(
+      "origin-body",
+      "Since our inception in 2015 we’ve been fortunate to work with a wide array of different clients, from Indie to AAA we can service your needs.",
+    )],
+  },
+  {
+    _key: "renaissance-reach-section",
+    _type: "renaissanceSectionBand",
+    mode: "section",
+    sectionRole: "reach",
+    badgeLabel: "REACH",
   },
   {
     _key: "renaissance-global-reach",
@@ -262,40 +262,43 @@ export const RENAISSANCE_HOMEPAGE_FALLBACK: PageBuilderBlock[] = [
     ],
   },
   {
-    _key: "renaissance-contact",
-    _type: "intertitleCTA",
-    navPointName: "Contact",
-    title: "Let's bring your game to the world.",
-    subline: "Plan. Execute. Report.",
-    subtitle:
-      "Tell us where your game is going. We'll build the communication plan that helps it arrive with purpose.",
-    alignment: "left",
-    paddingTop: "24",
-    cta: {
-      text: "Talk to Stefano",
-      variant: "violet",
-      link: {
-        linkType: "external",
-        externalUrl: "mailto:stefano@renaissancepr.biz",
-      },
-    },
+    _key: "renaissance-join-section",
+    _type: "renaissanceSectionBand",
+    mode: "section",
+    sectionRole: "joinUs",
+    badgeLabel: "JOIN US",
   },
   {
-    _key: "renaissance-family",
-    _type: "intertitleCTA",
+    _key: "renaissance-join-intro",
+    _type: "introBlockTypoSophisticated",
     hideFromNav: true,
-    title: "Welcome to the family.",
-    subtitle:
-      "Renaissance is part of the 1SP Agency family, sharing communications expertise across specialist agency partners and destinations.",
-    alignment: "left",
-    paddingTop: "0",
-    cta: {
-      text: "Explore 1SP Agency",
-      variant: "black",
-      link: {
-        linkType: "external",
-        externalUrl: "https://1sp.agency",
+    header: { mainHeadline: "Register with us" },
+  },
+  {
+    _key: "renaissance-join-subline",
+    _type: "sublineComponent",
+    description:
+      "If you are a content creator/journalist or influencer register with us now to get all the latest news from our clients!",
+    additionalContent: [
+      {
+        _key: "join-content-creators",
+        _type: "cta",
+        text: "Content creators",
+        variant: "black",
+        link: { linkType: "external", externalUrl: "/contact" },
       },
-    },
+      {
+        _key: "join-media",
+        _type: "cta",
+        text: "Media",
+        variant: "black",
+        link: { linkType: "external", externalUrl: "/contact" },
+      },
+    ],
+  },
+  {
+    _key: "renaissance-sections-end",
+    _type: "renaissanceSectionBand",
+    mode: "reset",
   },
 ];

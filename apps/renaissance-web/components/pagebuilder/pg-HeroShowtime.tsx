@@ -1,11 +1,9 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import type { HeroShowtime as HeroShowtimeType } from "@1sp/sanity-types";
 
 import HeaderImageVideoComp2 from "@renaissance/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
-import StaggeredSlideUp from "@renaissance/components/ui/StaggeredSlideUp";
 import Button2 from "@renaissance/components/ui/Button2";
 import MixedType from "@renaissance/components/ui/MixedType";
 
@@ -88,23 +86,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
       />
 
       <div className="relative z-10 mx-auto flex min-h-[calc(100svh-5rem)] w-full max-w-[1480px] flex-col justify-end px-5 pb-8 pt-28 sm:px-8 sm:pb-10 md:min-h-[calc(100svh-7rem)] lg:px-12 lg:pb-12">
-        <StaggeredSlideUp
-          className="flex w-full flex-col"
-          delay={0.18}
-          staggerDelay={0.14}
-          duration={0.68}
-          distance={28}
-          animateImmediately
-        >
-          <Image
-            src="/units/RENAISSANCE/renaissance-horz_logo.svg"
-            alt="Renaissance"
-            width={2862}
-            height={594}
-            priority
-            className="mb-8 h-auto w-[clamp(14rem,25vw,24rem)] brightness-0 invert"
-          />
-
+        <div className="flex w-full animate-fade-in-up flex-col motion-reduce:animate-none">
           <div className="grid items-end gap-7 border-t border-white/35 pt-7 md:grid-cols-12 md:gap-10 md:pt-9">
             {heading ? (
               <HeadingTag className="renaissance-display whitespace-pre-line text-balance text-[clamp(2.55rem,6.2vw,6rem)] font-bold leading-[0.88] text-white md:col-span-8">
@@ -155,7 +137,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
               ) : null}
             </div>
           </div>
-        </StaggeredSlideUp>
+        </div>
       </div>
     </section>
   );

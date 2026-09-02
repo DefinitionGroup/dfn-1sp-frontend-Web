@@ -405,7 +405,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         <motion.nav
           ref={navRef}
           layout
-          initial={{ opacity: 0, y: 16 }}
+          initial={false}
           animate={{
             opacity: isNavVisible ? 1 : 0,
             y: isNavVisible ? 0 : -96,
@@ -431,7 +431,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         >
           <div className="col-span-2 flex items-center pr-16  justify-start">
             <motion.div
-              initial={{ opacity: 0, y: 8 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 0.32,
@@ -525,7 +525,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 8 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.32,
@@ -561,7 +561,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
         </motion.nav>
         <motion.nav
           layout
-          initial={{ opacity: 0, y: 14 }}
+          initial={false}
           animate={{
             opacity: isNavVisible ? 1 : 0,
             y: isNavVisible ? 0 : -80,
@@ -586,7 +586,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           } ${isNavVisible ? "" : "pointer-events-none"} ${mobileSurfaceClass} ${navTextColor}`}
         >
           <motion.div
-            initial={{ opacity: 0, y: 7 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.3,
@@ -614,7 +614,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             </Link>
           </motion.div>
           <motion.div
-            initial={{ opacity: 0, y: 7 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.3,

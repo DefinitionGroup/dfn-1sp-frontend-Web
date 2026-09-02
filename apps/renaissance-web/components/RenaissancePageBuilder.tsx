@@ -14,6 +14,7 @@ import type {
   IntroBlockTypoSophisticated as IntroBlockTypoSophisticatedType,
   CardContainerComponent as CardContainerComponentType,
   ResultsMetricsComponent as ResultsMetricsComponentType,
+  RenaissanceSectionRole,
 } from "@1sp/sanity-types";
 import type { Page } from "@1sp/sanity-types";
 import { HeroShowtime as HeroShowtimeType } from "@1sp/sanity-types";
@@ -22,6 +23,11 @@ import HeadlineChallenge from "./pagebuilder/cases/pg-HeadlineChallenge";
 import ComponentLoader from "@renaissance/components/ui/ComponentLoader";
 import DeferredSection from "@renaissance/components/ui/DeferredSection";
 import OneSpScope from "@root/components/onesp-group/OneSpScope";
+import RenaissanceSectionFrame from "./RenaissanceSectionFrame";
+import RenaissanceOrigins from "./RenaissanceOrigins";
+import RenaissanceNetwork from "./RenaissanceNetwork";
+import RenaissanceJoinUs from "./RenaissanceJoinUs";
+import { partitionRenaissanceSections } from "@renaissance/lib/renaissanceSections";
 
 const CanonicalOneSpPageBuilder = dynamic(
   () => import("@root/components/PageBuilder").then((module) => module.PageBuilder),
@@ -299,8 +305,17 @@ export function PageBuilder({
 }: PageBuilderProps) {
   if (!Array.isArray(content) || content.length === 0) return null;
 
-  const renderBlock = (block: any, i: number, isDeferred = false) => {
+  const renderBlock = (
+    block: any,
+    i: number,
+    isDeferred = false,
+    presentationRole?: RenaissanceSectionRole,
+  ) => {
     if (!block?._type) return null;
+
+    // The Figma-approved network treatment replaces this legacy bridge copy.
+    // Keep the stored block untouched until the explicit marker draft is published.
+    if (block._key === "renaissance-family") return null;
 
     const key = block._key ?? `${block._type}-${i}`;
 
@@ -330,7 +345,7 @@ export function PageBuilder({
           case "sublineComponent":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <SublineComponent key={key} data={block} />
+                <SublineComponent key={key} data={block} presentationRole={presentationRole} />
               </ErrorBoundary>
             );
           case "oneSPHeader":
@@ -346,6 +361,13 @@ export function PageBuilder({
               </ErrorBoundary>
             );
           case "twoColContentSection":
+            if (presentationRole === "origins") {
+              return (
+                <ErrorBoundary key={`error-${key}`}>
+                  <RenaissanceOrigins key={key} data={block} />
+                </ErrorBoundary>
+              );
+            }
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <TwoColContentSection key={key} data={block} />
@@ -363,6 +385,7 @@ export function PageBuilder({
                 <IntroBlockTypoSophisticated
                   key={key}
                   data={block as IntroBlockTypoSophisticatedType}
+                  presentationRole={presentationRole}
                 />
               </ErrorBoundary>
             );
@@ -372,6 +395,7 @@ export function PageBuilder({
                 <CardContainerComponent
                   key={key}
                   data={block as CardContainerComponentType}
+                  presentationRole={presentationRole}
                 />
               </ErrorBoundary>
             );
@@ -485,6 +509,7 @@ export function PageBuilder({
                   key={key}
                   data={block as any}
                   language={language}
+                  presentationRole={presentationRole}
                 />
               </ErrorBoundary>
             );
@@ -555,6 +580,14 @@ export function PageBuilder({
               return null;
             }
 
+            if (block._key === "193b45cc9015") {
+              return (
+                <ErrorBoundary key={`error-${key}`}>
+                  <RenaissanceNetwork />
+                </ErrorBoundary>
+              );
+            }
+
             const dataChannel = block.dataScope === "1spWeb" ? "1spWeb" : channel;
 
             return (
@@ -581,7 +614,11 @@ export function PageBuilder({
           case "clientLogoCarousel":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <ClientLogoCarousel key={key} data={block as any} />
+                <ClientLogoCarousel
+                  key={key}
+                  data={block as any}
+                  presentationRole={presentationRole}
+                />
               </ErrorBoundary>
             );
           case "pageBuilderLogoFloat":
@@ -615,26 +652,107 @@ export function PageBuilder({
     : Number.isFinite(deferAfter)
     ? Math.max(0, Math.min(content.length, deferAfter))
     : content.length;
-  const eagerBlocks = content.slice(0, eagerCount);
-  const deferredBlocks = content.slice(eagerCount);
-  const deferredMinHeight = `${Math.max(deferredBlocks.length * 32, 140)}vh`;
+  const units = partitionRenaissanceSections(content);
+  const eagerUnits = units.filter((unit) => {
+    const sourceIndex =
+      unit.kind === "block" ? unit.sourceIndex : unit.blocks[0]?.sourceIndex ?? 0;
+    return sourceIndex < eagerCount;
+  });
+  const deferredUnits = units.filter((unit) => !eagerUnits.includes(unit));
+  const deferredBlockCount = deferredUnits.reduce(
+    (count, unit) => count + (unit.kind === "block" ? 1 : unit.blocks.length),
+    0,
+  );
+  const deferredMinHeight = `${Math.max(deferredBlockCount * 32, 140)}vh`;
+
+  const renderUnit = (
+    unit: (typeof units)[number],
+    isDeferred: boolean,
+  ) => {
+    if (unit.kind === "block") {
+      return renderBlock(unit.block, unit.sourceIndex, isDeferred);
+    }
+
+    const role = unit.marker.sectionRole;
+    const isLegacy = unit.marker._key?.startsWith("legacy-");
+    const intro = unit.blocks.find(
+      ({ block }) => block._type === "introBlockTypoSophisticated",
+    )?.block as any;
+    const subline = unit.blocks.find(
+      ({ block }) => block._type === "sublineComponent",
+    )?.block as any;
+
+    const legacyBlock = (block: any) => {
+      if (!isLegacy) return block;
+
+      if (
+        role === "services" &&
+        block._type === "introBlockTypoSophisticated"
+      ) {
+        return {
+          ...block,
+          header: {
+            ...block.header,
+            mainHeadline: "Six services. One mission.",
+            creativityTitle: undefined,
+            uniquePeopleText: undefined,
+          },
+        };
+      }
+
+      if (role === "origins" && block._type === "twoColContentSection") {
+        return {
+          ...block,
+          title: "21 years in the making",
+          content: [
+            {
+              _key: "renaissance-origins-copy",
+              _type: "block",
+              style: "normal",
+              markDefs: [],
+              children: [
+                {
+                  _key: "renaissance-origins-copy-span",
+                  _type: "span",
+                  marks: [],
+                  text: "Since our inception in 2015 we’ve been fortunate to work with a wide array of different clients, from Indie to AAA we can service your needs.",
+                },
+              ],
+            },
+          ],
+        };
+      }
+
+      return block;
+    };
+
+    return (
+      <RenaissanceSectionFrame key={unit.key} marker={unit.marker}>
+        {role === "joinUs" ? (
+          <RenaissanceJoinUs
+            title={isLegacy ? undefined : intro?.header?.mainHeadline}
+            description={isLegacy ? undefined : subline?.description || intro?.description}
+          />
+        ) : (
+          unit.blocks.map(({ block, sourceIndex }) =>
+            renderBlock(legacyBlock(block), sourceIndex, isDeferred, role),
+          )
+        )}
+      </RenaissanceSectionFrame>
+    );
+  };
 
   return (
     <>
-      {eagerBlocks.map((block, index) =>
-        renderBlock(block, index, renderMode === "deferred")
+      {eagerUnits.map((unit) =>
+        renderUnit(unit, renderMode === "deferred")
       )}
-      {deferredBlocks.length > 0 && (
+      {deferredUnits.length > 0 && (
         <DeferredSection
           rootMargin="0px 0px 0px 0px"
           minHeight={deferredMinHeight}
         >
-          <PageBuilder
-            content={deferredBlocks}
-            language={language}
-            channel={channel}
-            renderMode="deferred"
-          />
+          {deferredUnits.map((unit) => renderUnit(unit, true))}
         </DeferredSection>
       )}
     </>

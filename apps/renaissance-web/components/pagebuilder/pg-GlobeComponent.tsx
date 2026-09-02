@@ -1,6 +1,9 @@
 "use client";
 import React from "react";
-import type { GlobeComponent as GlobeComponentType } from "@1sp/sanity-types";
+import type {
+  GlobeComponent as GlobeComponentType,
+  RenaissanceSectionRole,
+} from "@1sp/sanity-types";
 import GlobalDataComponent from "@renaissance/components/pagebuilder/pg-GlobalDataComponent";
 import {
   getRenaissanceEuropeanLocations,
@@ -10,9 +13,10 @@ import {
 interface GlobeComponentProps {
   data: GlobeComponentType;
   language?: string;
+  presentationRole?: RenaissanceSectionRole;
 }
 
-function GlobeComponent({ data, language }: GlobeComponentProps) {
+function GlobeComponent({ data, language, presentationRole }: GlobeComponentProps) {
   const { sectionTitle, sectionSubtitle, navPointName } = data || {};
   const configuredLocations = Array.isArray(data?.locations)
     ? data.locations.filter(
@@ -90,7 +94,11 @@ function GlobeComponent({ data, language }: GlobeComponentProps) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="container relative mx-auto overflow-hidden rounded-media"
+      className={
+        presentationRole === "reach"
+          ? "relative mx-auto max-w-[1680px] overflow-hidden px-0 pb-16 pt-4 md:pb-24"
+          : "container relative mx-auto overflow-hidden rounded-media"
+      }
     >
       <GlobalDataComponent
         arcs={arcs}

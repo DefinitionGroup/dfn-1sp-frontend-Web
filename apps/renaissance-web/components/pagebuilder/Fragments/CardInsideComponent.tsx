@@ -8,19 +8,21 @@ function isVideo(resourceType?: string, url?: string) {
 export default function CardInsideComponent({
   card,
   index,
+  mediaOverride,
 }: {
   card: CardInsideComponentType;
   index?: number;
+  mediaOverride?: string;
 }) {
-  const mediaUrl = assetUrl(card.media);
+  const mediaUrl = mediaOverride || assetUrl(card.media);
   const resourceType =
     card.media && "resource_type" in card.media
       ? String((card.media as { resource_type?: string }).resource_type)
       : card.media?.metadata?.resource_type;
-  const video = isVideo(resourceType, mediaUrl);
+  const video = !mediaOverride && isVideo(resourceType, mediaUrl);
 
   return (
-    <article className="group relative min-h-[22rem] w-full overflow-hidden rounded-card bg-renaissance-ink text-white">
+    <article className="group relative min-h-[22rem] w-full overflow-hidden rounded-[4px] bg-renaissance-ink text-white md:min-h-[24.2rem]">
       <div className="absolute inset-0 overflow-hidden">
         {mediaUrl && video ? (
           <video

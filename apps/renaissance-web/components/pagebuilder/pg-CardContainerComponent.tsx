@@ -1,6 +1,9 @@
 "use client";
 
-import type { CardContainerComponent as CardContainerComponentType } from "@1sp/sanity-types";
+import type {
+  CardContainerComponent as CardContainerComponentType,
+  RenaissanceSectionRole,
+} from "@1sp/sanity-types";
 import StaggeredFadeIn from "@renaissance/components/ui/StaggeredFadeIn";
 import CardInsideComponent from "./Fragments/CardInsideComponent";
 
@@ -11,10 +14,21 @@ const columnClasses: Record<2 | 3 | 5 | 6, string> = {
   6: "lg:grid-cols-6",
 };
 
+const renaissanceServiceMedia = [
+  "/renaissance/figma/service-01.jpg",
+  "/renaissance/figma/service-02.jpg",
+  "/renaissance/figma/service-03.jpg",
+  "/renaissance/figma/service-04.jpg",
+  "/renaissance/figma/service-05.jpg",
+  "/renaissance/figma/service-06.jpg",
+] as const;
+
 export default function CardContainerComponent({
   data,
+  presentationRole,
 }: {
   data: CardContainerComponentType;
+  presentationRole?: RenaissanceSectionRole;
 }) {
   if (!data?.cards?.length) return null;
 
@@ -27,6 +41,23 @@ export default function CardContainerComponent({
         .replace(/\s+/g, "-")
         .toLowerCase()
     : undefined;
+
+  if (presentationRole === "services") {
+    return (
+      <div className="mx-auto max-w-[1680px] px-5 pb-16 sm:px-8 md:pb-24 lg:px-12">
+        <div className="grid grid-cols-1 gap-x-5 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
+          {data.cards.map((card, index) => (
+            <CardInsideComponent
+              key={card._key || `${card.headline || "card"}-${index}`}
+              card={card}
+              index={index}
+              mediaOverride={renaissanceServiceMedia[index]}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <section

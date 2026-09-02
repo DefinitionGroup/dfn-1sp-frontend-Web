@@ -1,6 +1,10 @@
 import React from "react";
 import Image from "next/image";
-import type { ClientLogoCarousel as ClientLogoCarouselType, ClientLogoItem } from "@1sp/sanity-types";
+import type {
+  ClientLogoCarousel as ClientLogoCarouselType,
+  ClientLogoItem,
+  RenaissanceSectionRole,
+} from "@1sp/sanity-types";
 import { assetUrl } from "@1sp/utils/cloudinary";
 import Eyebrow from "@renaissance/components/ui/Eyebrow";
 import { hasVisibleText } from "@1sp/utils/text-content";
@@ -19,7 +23,13 @@ const SPEED_SECONDS_PER_LOGO: Record<string, number> = {
  * `.logo-carousel-mask` utilities from globals.css; the track is
  * duplicated once so the -50% keyframe loops seamlessly.
  */
-function ClientLogoCarousel({ data }: { data: ClientLogoCarouselType }) {
+function ClientLogoCarousel({
+  data,
+  presentationRole,
+}: {
+  data: ClientLogoCarouselType;
+  presentationRole?: RenaissanceSectionRole;
+}) {
   const {
     eyebrow,
     headline,
@@ -100,19 +110,33 @@ function ClientLogoCarousel({ data }: { data: ClientLogoCarouselType }) {
     </div>
   );
 
+  const isServicesProof = presentationRole === "services";
+
   return (
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="w-full py-16 md:py-24"
+      className={
+        isServicesProof
+          ? "w-full bg-renaissance-paper py-12 md:py-16"
+          : "w-full py-16 md:py-24"
+      }
       data-component="client-logo-carousel"
     >
       <div className="container mx-auto w-full">
         {(hasVisibleText(eyebrow) || hasVisibleText(headline)) && (
           <div className="mb-8 flex flex-col items-center gap-3 text-center md:mb-12">
-            {hasVisibleText(eyebrow) && <Eyebrow>{eyebrow}</Eyebrow>}
+            {hasVisibleText(eyebrow) && !isServicesProof && <Eyebrow>{eyebrow}</Eyebrow>}
             {hasVisibleText(headline) && (
-              <h2 className="text-title">{headline}</h2>
+              <h2
+                className={
+                  isServicesProof
+                    ? "renaissance-display text-[clamp(2.7rem,3.5vw,3.75rem)] font-bold leading-[0.9] tracking-[-0.025em] text-renaissance-signal"
+                    : "text-title"
+                }
+              >
+                {isServicesProof ? "You’re in great company." : headline}
+              </h2>
             )}
           </div>
         )}

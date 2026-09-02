@@ -27,7 +27,8 @@ import oneSpComponentGroup from './Global/oneSpComponentGroup'
 import oneSpComponentGroupReference from './Global/Objects/oneSpComponentGroupReference'
 import translationGuidelines from './Global/translationGuidelines'
 import siteSettings from './Global/siteSettings'
+import renaissanceSectionBand from './RENAISSANCE/Components/renaissanceSectionBand'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [page, menu, siteSettings, oneSpComponentGroup, translationGuidelines, caseStudy, unitCase, client, person, contactSubmission, ...OneSPschemaTypes, ...FLZRschemaTypes, ...CaseStudySchemaTypes, ...MSMschemaTypes, link, cta, paragraph, size, services, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata, contactForm, oneSpComponentGroupReference],
+  types: [page, menu, siteSettings, oneSpComponentGroup, translationGuidelines, caseStudy, unitCase, client, person, contactSubmission, ...OneSPschemaTypes, ...FLZRschemaTypes, ...CaseStudySchemaTypes, ...MSMschemaTypes, renaissanceSectionBand, link, cta, paragraph, size, services, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata, contactForm, oneSpComponentGroupReference],
 }

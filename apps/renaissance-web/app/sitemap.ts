@@ -39,6 +39,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.8,
       }));
 
+    // `/contact` has a production fallback before its Sanity page is published.
+    // Keep it discoverable now, then let the CMS entry replace this fallback
+    // automatically once an editor publishes the prepared contact document.
+    const fallbackPageEntries: MetadataRoute.Sitemap = pageEntries.some(
+      (page) => page.url === `${CANONICAL_URL}/contact`,
+    )
+      ? []
+      : [
+          {
+            url: `${CANONICAL_URL}/contact`,
+            lastModified: new Date(),
+            changeFrequency: "monthly",
+            priority: 0.8,
+          },
+        ];
+
     // Case studies from Sanity (includes real _updatedAt dates)
     const cases = await getAllCaseSlugs();
     const caseEntries: MetadataRoute.Sitemap = cases
@@ -52,5 +68,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.7,
       }));
 
-    return [...homePages, ...pageEntries, ...caseEntries];
+    return [...homePages, ...fallbackPageEntries, ...pageEntries, ...caseEntries];
 }

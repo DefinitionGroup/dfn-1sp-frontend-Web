@@ -173,6 +173,7 @@ export default defineType({
                 { type: 'servicesGalleryFiltered' },
                 { type: 'flzrServicesGrid', title: 'FLZR Services Grid' },
                 { type: 'flzrSectionBand', title: 'FLZR Section Band' },
+                { type: 'renaissanceSectionBand', title: 'Renaissance Section' },
                 { type: 'servicesHeroWithBadge' },
                 { type: 'intertitleCTA' },
                 { type: 'introBlockTypoSophisticated' },

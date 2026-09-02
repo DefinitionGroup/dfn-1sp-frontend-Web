@@ -357,6 +357,23 @@ export interface FlzrSectionBand {
     badgeLabel?: string;
 }
 
+export type RenaissanceSectionRole =
+    | "stories"
+    | "services"
+    | "people"
+    | "origins"
+    | "reach"
+    | "joinUs"
+    | "contact";
+
+export interface RenaissanceSectionBand {
+    _type: "renaissanceSectionBand";
+    _key?: string;
+    mode?: "section" | "reset";
+    sectionRole?: RenaissanceSectionRole;
+    badgeLabel?: string;
+}
+
 export interface FlzrTwoThirdsContentSection {
     _type: "flzrTwoThirdsContentSection";
     _key?: string;

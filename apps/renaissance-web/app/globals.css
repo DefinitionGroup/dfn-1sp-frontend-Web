@@ -53,6 +53,7 @@
   --color-renaissance-mist: #dbe5e5;
   --color-renaissance-ink: #163f45;
   --color-renaissance-paper: #edeae1;
+  --color-renaissance-signal: #f49a24;
   --color-renaissance-white: #ffffff;
   --color-renaissance-hairline: #c8d2d0;
   /* 1px dividers on light */
@@ -200,6 +201,28 @@
       opacity: 1;
       transform: translateY(0);
     }
+  }
+
+  @keyframes renaissanceDecrypt {
+    from {
+      transform: translateY(0);
+    }
+
+    to {
+      transform: translateY(-75%);
+    }
+  }
+}
+
+.renaissance-decrypt-stack {
+  animation: renaissanceDecrypt 0.42s steps(3, end) both;
+  animation-delay: calc(var(--decrypt-index) * 34ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .renaissance-decrypt-stack {
+    animation-duration: 1ms;
+    animation-delay: 0ms;
   }
 }
 
