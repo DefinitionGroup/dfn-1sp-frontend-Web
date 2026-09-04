@@ -1,7 +1,10 @@
 import { defineType, defineField } from "sanity";
 import { Columns } from "@phosphor-icons/react";
 
-type MediaParent = { useVideo?: boolean };
+type MediaParent = { useVideo?: boolean; renaissanceMediaLayout?: string };
+const usesLogoGrid = (parent: unknown, document: unknown) =>
+  (document as { channel?: string })?.channel === "renaissanceWeb" &&
+  (parent as MediaParent)?.renaissanceMediaLayout === "logos";
 
 export default defineType({
   name: "twoColContentSection",
@@ -121,21 +124,74 @@ export default defineType({
 
     // MEDIA
     defineField({
+      name: "cta",
+      title: "Origins Button",
+      type: "cta",
+      group: "content",
+      description: "Optional button for Renaissance Origins. Remove it to hide the button.",
+      hidden: ({ document }) => document?.channel !== "renaissanceWeb",
+    }),
+    defineField({
+      name: "renaissanceMediaLayout",
+      title: "Origins Visual",
+      type: "string",
+      group: "media",
+      description: "Choose what appears beside the text in the Renaissance Origins section.",
+      hidden: ({ document }) => document?.channel !== "renaissanceWeb",
+      options: {
+        list: [
+          { title: "Logo grid", value: "logos" },
+          { title: "Image / video", value: "media" },
+        ],
+        layout: "radio",
+      },
+    }),
+    defineField({
+      name: "renaissanceLogos",
+      title: "Origins Logos",
+      type: "array",
+      group: "media",
+      description: "Drag to reorder. Upload a replacement logo or use its URL. An empty list displays no logos.",
+      hidden: ({ parent, document }) => !usesLogoGrid(parent, document),
+      of: [{
+        type: "object",
+        name: "renaissanceOriginLogo",
+        title: "Logo",
+        fields: [
+          defineField({ name: "name", title: "Client Name / Alt Text", type: "string", validation: (Rule) => Rule.required() }),
+          defineField({ name: "image", title: "Logo Image", type: "cloudinary.asset", description: "A selected image takes precedence over the logo URL." }),
+          defineField({
+            name: "imageUrl", title: "Logo URL", type: "url",
+            description: "Used when no image is selected. Accepts HTTPS URLs or a site-relative asset path.",
+            hidden: ({ parent }) => !!parent?.image,
+            validation: (Rule) => Rule.uri({ allowRelative: true, scheme: ["https"] }),
+          }),
+        ],
+        validation: (Rule) => Rule.custom((value) => {
+          const logo = value as { image?: unknown; imageUrl?: string } | undefined;
+          return !!(logo?.image || logo?.imageUrl) || "Choose a logo image or enter a logo URL";
+        }),
+        preview: { select: { title: "name", subtitle: "imageUrl" } },
+      }],
+    }),
+
+    defineField({
       name: "useVideo",
       title: "Use video instead of image",
       type: "boolean",
       initialValue: false,
       group: "media",
+      hidden: ({ parent, document }) => usesLogoGrid(parent, document),
     }),
     defineField({
       name: "image",
       title: "Image",
       type: "cloudinary.asset",
       group: "media",
-      hidden: ({ parent }) => (parent as MediaParent)?.useVideo === true,
+      hidden: ({ parent, document }) => usesLogoGrid(parent, document) || (parent as MediaParent)?.useVideo === true,
       validation: (r) =>
         r.custom((val, ctx) =>
-          (ctx?.parent as MediaParent)?.useVideo
+          usesLogoGrid(ctx.parent, ctx.document) || (ctx?.parent as MediaParent)?.useVideo
             ? true
             : !!val || "Image required when video is OFF"
         ),
@@ -145,10 +201,10 @@ export default defineType({
       title: "Video",
       type: "cloudinary.asset",
       group: "media",
-      hidden: ({ parent }) => (parent as MediaParent)?.useVideo !== true,
+      hidden: ({ parent, document }) => usesLogoGrid(parent, document) || (parent as MediaParent)?.useVideo !== true,
       validation: (r) =>
         r.custom((val, ctx) =>
-          (ctx?.parent as MediaParent)?.useVideo
+          !usesLogoGrid(ctx.parent, ctx.document) && (ctx?.parent as MediaParent)?.useVideo
             ? !!val || "Video required when video is ON"
             : true
         ),
@@ -159,6 +215,7 @@ export default defineType({
       type: "string",
       description: "Alternative text for the image/video (important for accessibility)",
       group: "media",
+      hidden: ({ parent, document }) => usesLogoGrid(parent, document),
     }),
 
     // LAYOUT & STYLE

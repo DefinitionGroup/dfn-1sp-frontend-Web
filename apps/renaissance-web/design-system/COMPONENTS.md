@@ -13,7 +13,7 @@ Registration in `RenaissancePageBuilder.tsx` means the renderer understands a bl
 | Block type | User job | Required content | Layout contract | Critical states |
 | --- | --- | --- | --- | --- |
 | `heroShowTime` | Orient and convert | wordmark/brand context, one headline, short support, 1 primary + optional secondary CTA, real media, alt text | full-bleed dominant media; no cards, chips, stats or promos; one hero per page | image/video fallback, reduced motion, short landscape, contrast-safe nav |
-| `introBlockTypoSophisticated` | Frame the next section | one main statement, up to two short supporting phrases, one paragraph | asymmetric editorial grid; no CTA or card cluster | semantic heading level, long-copy wrap, muted-token contrast |
+| `introBlockTypoSophisticated` | Frame the next section | one main statement, up to two short supporting phrases, one paragraph | Sanity-selectable editorial split or compact stack; no CTA or card cluster | semantic heading level, long-copy wrap, muted-token contrast |
 | `carousel` | Present selected campaign stories | 1–5 stories, title, image/video, short description, optional verified CTA | immersive single-stage media, never a tiled card row | pause/play, previous/next, active state, swipe, keyboard, reduced motion, optimized media |
 | `clientLogoCarousel` | Add client trust | verified logos and names | quiet monochrome rail between proof and offer; decorative duplicates hidden | static reduced-motion state, supported formats, missing-logo omission |
 | `cardContainerComponent` | Scan a concise service set | 2–6 items, short title, max 140-character description | desktop grid; compact ruled list on mobile; no shadow | long title, 2/3/5/6 counts, empty item omission, contrast |
@@ -69,6 +69,7 @@ Compatibility blocks require explicit design review and a channel/data-scope che
 
 ### Story carousel
 
+- The media frame is full-width up to 1680px, independent of the general site container.
 - Maximum five curated stories on a landing page.
 - The first story is editorially selected, not random.
 - The containing `renaissanceSectionBand` may select a dark-green or light carousel surround without changing the carousel content contract.
@@ -78,6 +79,7 @@ Compatibility blocks require explicit design review and a channel/data-scope che
 
 ### Service set
 
+- Client ticker logo bounds are 144 × 36px on mobile and 168 × 48px from 768px, with matching responsive image sizes.
 - Cards are permitted on desktop because the repeated planes materially group the six services.
 - On mobile, use a compact editorial list unless a service card is itself clickable.
 - Descriptions are one or two sentences and should stay below 140 characters where possible.
@@ -85,18 +87,21 @@ Compatibility blocks require explicit design review and a channel/data-scope che
 
 ### Two-column narrative
 
+- The Origins content honors the two-column block’s `paddingY` setting (32/64/96/128px), title visibility/color, body size and column order. Its badge supplies separate section separation: 48px on mobile/tablet and a default 96px on desktop, with explicit desktop CMS overrides respected. The legacy adapter must preserve saved title/body copy. Origins uses the saved `renaissanceMediaLayout`: `logos` renders the ordered `renaissanceLogos` array; `media` uses the existing image/video and alt text. The optional shared `cta` supplies the standard Button2. Empty logos or a removed/incomplete CTA stay empty; approved defaults live only in the fallback content. Studio exposes these fields only for Renaissance and hides image/video controls in logo-grid mode.
 - Image alt describes the person/place/context, not the visual styling.
 - Never show a “No media” production placeholder. If optional media is absent, render the text as a complete editorial section.
 - Parallax is progressive enhancement and must stop for reduced motion.
 
 ### Global reach
 
+- The globe block places its CMS title and description on the left and an enlarged upper-hemisphere crop on the right from 768px; mobile stacks text above the globe. The split view uses a square canvas and 260-unit camera distance to fit the full silhouette width with side clearance at every breakpoint. A 3:2 viewport reveals the upper portion and fades its lower edge into the section background instead of cutting a hard rectangle. Location labels retain a readable screen size independent of camera distance.
 - Locations are always available as text, independent of canvas/WebGL.
 - Mobile map height is capped at 55–65svh.
 - If WebGL or motion is unavailable, render a static map image/pattern with the same location list.
 
 ### Footer
 
+- The homepage 1SP group and footer share a 1680px maximum width and aligned edges. The group has 6px upper corners; the footer has square upper corners and 6px lower corners, with no gap at their join.
 - Footer content is derived from actual page/site data where possible.
 - Legal/company links remain readable and valid even when no Sanity page exists; use a deliberate empty/setup state rather than a false content page.
 - Footer is a destination, not a second homepage. Limit to four clear columns and one primary contact action.

@@ -225,7 +225,8 @@ export default function MosaicReveal({ active }: MosaicRevealProps) {
       cancelAnimationFrame(state.frame);
       gl.deleteBuffer(buffer);
       gl.deleteProgram(program);
-      gl.getExtension("WEBGL_lose_context")?.loseContext();
+      // React Strict Mode reuses this canvas for its setup/cleanup/setup check.
+      // Release our resources without permanently losing that shared context.
       stateRef.current = null;
       drawRef.current = null;
     };

@@ -16,7 +16,7 @@ const networkLogos = [
 export default function RenaissanceNetwork() {
   return (
     <section
-      className="relative isolate min-h-[42rem] overflow-hidden bg-black px-5 py-14 font-renaissance text-white sm:px-8 md:min-h-[40.5rem] md:px-12 md:py-16"
+      className="relative isolate mx-auto w-full max-w-[1680px] min-h-[42rem] overflow-hidden rounded-t-statement bg-black px-5 py-14 font-renaissance text-white sm:px-8 md:min-h-[40.5rem] md:px-12 md:py-16"
       aria-labelledby="renaissance-network-title"
     >
       <Image

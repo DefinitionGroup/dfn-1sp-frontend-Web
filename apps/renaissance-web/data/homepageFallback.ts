@@ -208,10 +208,78 @@ export const RENAISSANCE_HOMEPAGE_FALLBACK: PageBuilderBlock[] = [
     mode: "section",
     sectionRole: "origins",
     badgeLabel: "ORIGINS",
+    desktopTopMargin: "24",
   },
   {
     _key: "renaissance-origin",
     _type: "twoColContentSection",
+    renaissanceMediaLayout: "logos",
+    renaissanceLogos: [
+      {
+        "_key": "amazon-kids",
+        "_type": "renaissanceOriginLogo",
+        "name": "Amazon Kids",
+        "imageUrl": "/renaissance/figma/client-amazon-kids.png"
+      },
+      {
+        "_key": "pm-studios",
+        "_type": "renaissanceOriginLogo",
+        "name": "PM Studios",
+        "imageUrl": "/renaissance/figma/client-pm-studios.png"
+      },
+      {
+        "_key": "curveball-games",
+        "_type": "renaissanceOriginLogo",
+        "name": "Curveball Games",
+        "imageUrl": "/renaissance/figma/client-curveball-games.png"
+      },
+      {
+        "_key": "activision-blizzard",
+        "_type": "renaissanceOriginLogo",
+        "name": "Activision Blizzard",
+        "imageUrl": "/renaissance/figma/client-activision-blizzard.png"
+      },
+      {
+        "_key": "505-games",
+        "_type": "renaissanceOriginLogo",
+        "name": "505 Games",
+        "imageUrl": "/renaissance/figma/client-505-games.png"
+      },
+      {
+        "_key": "wild-river",
+        "_type": "renaissanceOriginLogo",
+        "name": "Wild River",
+        "imageUrl": "/renaissance/figma/client-wild-river.png"
+      },
+      {
+        "_key": "pathea",
+        "_type": "renaissanceOriginLogo",
+        "name": "Pathea Games",
+        "imageUrl": "/renaissance/figma/client-pathea.png"
+      },
+      {
+        "_key": "plaion",
+        "_type": "renaissanceOriginLogo",
+        "name": "Plaion",
+        "imageUrl": "/renaissance/figma/client-plaion.png"
+      },
+      {
+        "_key": "team17",
+        "_type": "renaissanceOriginLogo",
+        "name": "Team17",
+        "imageUrl": "/renaissance/figma/client-team17.png"
+      }
+    ],
+    cta: {
+      "_type": "cta",
+      "text": "Our story",
+      "variant": "violet",
+      "link": {
+        "_type": "link",
+        "linkType": "external",
+        "externalUrl": "/about-us"
+      }
+    },
     navPointName: "Origins",
     title: "21 years in the making",
     showTitle: true,
@@ -267,6 +335,7 @@ export const RENAISSANCE_HOMEPAGE_FALLBACK: PageBuilderBlock[] = [
     mode: "section",
     sectionRole: "joinUs",
     badgeLabel: "JOIN US",
+    desktopTopMargin: "24",
   },
   {
     _key: "renaissance-join-intro",

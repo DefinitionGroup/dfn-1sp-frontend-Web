@@ -219,7 +219,61 @@
   animation-delay: calc(var(--decrypt-index) * 34ms);
 }
 
+.renaissance-badge-signet {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+[data-badge-phase="waiting"] .renaissance-badge-signet {
+  opacity: 0;
+  transform: rotate(-90deg);
+}
+
+[data-badge-phase="signet"] .renaissance-badge-signet {
+  animation: renaissanceSignetIn 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.renaissance-badge-close {
+  transform: translateX(0);
+}
+
+[data-badge-phase="waiting"] .renaissance-badge-close,
+[data-badge-phase="signet"] .renaissance-badge-close {
+  transform: translateX(calc(-100% + 2ch));
+}
+
+[data-badge-phase="expanding"] .renaissance-badge-close {
+  animation: renaissanceBracketsOpen 360ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+[data-badge-phase="waiting"] .renaissance-badge-copy,
+[data-badge-phase="signet"] .renaissance-badge-copy,
+[data-badge-phase="expanding"] .renaissance-badge-copy {
+  visibility: hidden;
+}
+
+@keyframes renaissanceSignetIn {
+  from { opacity: 0; transform: rotate(-90deg); }
+  to { opacity: 1; transform: rotate(0deg); }
+}
+
+@keyframes renaissanceBracketsOpen {
+  from { transform: translateX(calc(-100% + 2ch)); }
+  to { transform: translateX(0); }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .renaissance-badge-signet,
+  .renaissance-badge-close {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .renaissance-badge-copy {
+    visibility: visible !important;
+  }
+
   .renaissance-decrypt-stack {
     animation-duration: 1ms;
     animation-delay: 0ms;

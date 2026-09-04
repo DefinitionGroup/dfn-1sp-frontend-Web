@@ -91,6 +91,8 @@ export type GlobeConfig = {
   autoRotate?: boolean;
   autoRotateSpeed?: number;
   verticalOffset?: number;
+  cameraRadius?: number;
+  fixedLabelSize?: boolean;
 };
 
 interface WorldProps {
@@ -376,7 +378,7 @@ function latLngToVector3(lat: number, lng: number, altitude = 0.05) {
   );
 }
 
-function ArcLabels({ data }: Pick<WorldProps, "data">) {
+function ArcLabels({ data, fixedLabelSize = false }: Pick<WorldProps, "data"> & { fixedLabelSize?: boolean }) {
   const { camera } = useThree();
   const labelRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const labelPoints = useMemo(
@@ -467,7 +469,7 @@ function ArcLabels({ data }: Pick<WorldProps, "data">) {
             }}
             position={point.position}
             center
-            distanceFactor={45}
+            distanceFactor={fixedLabelSize ? undefined : 45}
             style={{ pointerEvents: "none" }}
           >
             <span
@@ -476,7 +478,7 @@ function ArcLabels({ data }: Pick<WorldProps, "data">) {
                 display: "block",
                 color: "#ffffff",
                 fontWeight: 600,
-                fontSize: "1.125rem",
+                fontSize: fixedLabelSize ? "0.6875rem" : "1.125rem",
                 backgroundColor: "#245e66",
                 padding: "0.195rem 0.45rem",
                 borderRadius: "var(--radius-control)",
@@ -537,18 +539,20 @@ function CameraAspectController({
 
 function CameraInitialView({
   initialPosition,
+  cameraRadius = CAMERA_RADIUS,
 }: {
   initialPosition?: { lat: number; lng: number };
+  cameraRadius?: number;
 }) {
   const { camera } = useThree();
   const lat = initialPosition?.lat ?? DEFAULT_VIEW.lat;
   const lng = initialPosition?.lng ?? DEFAULT_VIEW.lng;
 
   useEffect(() => {
-    const [x, y, z] = latLngToCameraPosition(lat, lng, CAMERA_RADIUS);
+    const [x, y, z] = latLngToCameraPosition(lat, lng, cameraRadius);
     camera.position.set(x, y, z);
     camera.lookAt(CAMERA_TARGET);
-  }, [camera, lat, lng]);
+  }, [camera, cameraRadius, lat, lng]);
 
   return null;
 }
@@ -563,19 +567,19 @@ export function World(props: WorldProps) {
       <CameraAspectController
         verticalOffset={globeConfig.verticalOffset ?? 0}
       />
-      <CameraInitialView initialPosition={globeConfig.initialPosition} />
+      <CameraInitialView initialPosition={globeConfig.initialPosition} cameraRadius={globeConfig.cameraRadius} />
       <ambientLight color={globeConfig.ambientLight} intensity={1.8} />
 
       <Globe {...props} />
       <LandDotPattern color={globeConfig.polygonColor ?? "#245e66"} />
-      <ArcLabels data={data} />
+      <ArcLabels data={data} fixedLabelSize={globeConfig.fixedLabelSize} />
       {/* enableZoom=false: distance is pinned anyway (min === max), and a
           wheel listener here would swallow page scrolling over the globe */}
       <OrbitControls
         enablePan={false}
         enableZoom={false}
-        minDistance={CAMERA_RADIUS}
-        maxDistance={CAMERA_RADIUS}
+        minDistance={globeConfig.cameraRadius ?? CAMERA_RADIUS}
+        maxDistance={globeConfig.cameraRadius ?? CAMERA_RADIUS}
         target={[CAMERA_TARGET.x, CAMERA_TARGET.y, CAMERA_TARGET.z]}
         autoRotateSpeed={globeConfig.autoRotateSpeed ?? 0.15}
         autoRotate={globeConfig.autoRotate ?? true}

@@ -52,6 +52,8 @@ interface GlobeConfig {
   autoRotate: boolean;
   autoRotateSpeed: number;
   verticalOffset?: number;
+  cameraRadius?: number;
+  fixedLabelSize?: boolean;
 }
 
 interface GlobalDataComponentProps {
@@ -60,6 +62,7 @@ interface GlobalDataComponentProps {
   title?: string;
   description?: string;
   backgroundTone?: "default" | "muted";
+  layout?: "centered" | "split";
 }
 
 export default function GlobalDataComponent({
@@ -68,6 +71,7 @@ export default function GlobalDataComponent({
   title = "We are global.",
   description,
   backgroundTone = "default",
+  layout = "centered",
 }: GlobalDataComponentProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [shouldLoadGlobe, setShouldLoadGlobe] = useState(false);
@@ -87,6 +91,46 @@ export default function GlobalDataComponent({
       return () => clearTimeout(timer);
     }
   }, [isInView]);
+
+  if (layout === "split") {
+    return (
+      <div
+        ref={containerRef}
+        data-globe-layout="split"
+        className={`relative grid w-full items-center gap-8 px-5 py-12 sm:px-8 md:grid-cols-12 md:gap-10 md:py-16 lg:px-12 ${
+          backgroundTone === "muted" ? "bg-renaissance-mist" : "bg-renaissance-paper"
+        }`}
+      >
+        <div className="relative z-10 min-w-0 md:col-span-5">
+          {hasVisibleText(title) ? (
+            <h2 className="renaissance-display max-w-[16ch] text-[clamp(2.7rem,3.5vw,3.75rem)] font-bold leading-[0.95] tracking-[-0.025em] text-renaissance-ink">
+              {title}
+            </h2>
+          ) : null}
+          {hasVisibleText(description) ? (
+            <p className="mt-6 max-w-[38ch] text-[clamp(1.05rem,1.3vw,1.375rem)] leading-[1.4] text-renaissance-ink/75">
+              {description}
+            </p>
+          ) : null}
+        </div>
+        <div
+          data-globe-viewport
+          className="relative aspect-[3/2] min-w-0 overflow-hidden md:col-span-7"
+          style={{ maskImage: "linear-gradient(to bottom, black 68%, transparent 100%)" }}
+        >
+          <div className="absolute inset-x-0 top-0 aspect-square">
+            {shouldLoadGlobe ? (
+              <World data={arcs} globeConfig={globeConfig} />
+            ) : (
+              <div className="absolute inset-0 grid place-items-center" aria-hidden="true">
+                <div className="h-64 w-64 rounded-full bg-renaissance-accent/10" />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div

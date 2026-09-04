@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { RENAISSANCE_HOMEPAGE_FALLBACK } from "../apps/renaissance-web/data/homepageFallback";
+import { resolveRenaissanceIntroLayout } from "../apps/renaissance-web/lib/renaissanceIntroLayout";
 import { partitionRenaissanceSections } from "../apps/renaissance-web/lib/renaissanceSections";
 
 const block = (_type: string, _key: string) => ({ _type, _key });
@@ -23,6 +24,27 @@ const marker = (
   sectionRole,
   badgeLabel: sectionRole.toUpperCase(),
   ...options,
+});
+
+test("defaults Stories, Services and People intros to compact without a Sanity override", () => {
+  assert.equal(
+    resolveRenaissanceIntroLayout(undefined, "stories"),
+    "compact",
+  );
+  assert.equal(
+    resolveRenaissanceIntroLayout(undefined, "services"),
+    "compact",
+  );
+  assert.equal(resolveRenaissanceIntroLayout(undefined, "people"), "compact");
+});
+
+test("lets Sanity override a Renaissance intro layout", () => {
+  assert.equal(resolveRenaissanceIntroLayout("compact", "stories"), "compact");
+  assert.equal(resolveRenaissanceIntroLayout("editorial", "stories"), "editorial");
+  assert.equal(
+    resolveRenaissanceIntroLayout("editorial", "services"),
+    "editorial",
+  );
 });
 
 test("keeps unframed blocks in their stored order", () => {

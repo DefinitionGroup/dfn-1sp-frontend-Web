@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Button2 from "./ui/Button2";
 
 export default function RenaissanceJoinUs({
   title = "Register with us",
@@ -22,13 +22,13 @@ export default function RenaissanceJoinUs({
             ["Content creators", "/contact"],
             ["Media", "/contact"],
           ].map(([label, href]) => (
-            <Link
+            <Button2
               key={label}
               href={href}
-              className="inline-flex min-w-[12.5rem] items-center justify-between gap-8 rounded-[4px] bg-renaissance-accent px-5 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-renaissance-ink"
-            >
-              {label} <span aria-hidden="true">↗</span>
-            </Link>
+              text={label}
+              variant="violet"
+              className="min-w-[12.5rem]"
+            />
           ))}
         </div>
       </div>

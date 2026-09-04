@@ -87,7 +87,10 @@ function GlobeComponent({ data, language, presentationRole }: GlobeComponentProp
     },
     autoRotate: false,
     autoRotateSpeed: 0.15,
-    verticalOffset: 1 / 3,
+    // A square canvas keeps the silhouette inside the column at every breakpoint.
+    cameraRadius: 260,
+    fixedLabelSize: true,
+    verticalOffset: 0,
   };
 
   return (
@@ -96,8 +99,8 @@ function GlobeComponent({ data, language, presentationRole }: GlobeComponentProp
       {...navPointDataAttr}
       className={
         presentationRole === "reach"
-          ? "relative mx-auto max-w-[1680px] overflow-hidden px-0 pb-16 pt-4 md:pb-24"
-          : "container relative mx-auto overflow-hidden rounded-media"
+          ? "relative mx-auto max-w-[1680px] overflow-hidden"
+          : "relative mx-auto max-w-[1680px] overflow-hidden rounded-media"
       }
     >
       <GlobalDataComponent
@@ -106,6 +109,7 @@ function GlobeComponent({ data, language, presentationRole }: GlobeComponentProp
         title={sectionTitle || "Our Locations"}
         description={sectionSubtitle}
         backgroundTone="muted"
+        layout="split"
       />
     </section>
   );

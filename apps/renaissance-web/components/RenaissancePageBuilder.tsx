@@ -598,7 +598,7 @@ export function PageBuilder({
 
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <div className="container mx-auto">
+                <div className="mx-auto w-full max-w-[1680px] overflow-hidden rounded-t-statement">
                   <OneSpScope groupId={group._id} fullWidth>
                     <CanonicalOneSpPageBuilder
                       content={group.content}
@@ -706,28 +706,6 @@ export function PageBuilder({
         };
       }
 
-      if (role === "origins" && block._type === "twoColContentSection") {
-        return {
-          ...block,
-          title: "21 years in the making",
-          content: [
-            {
-              _key: "renaissance-origins-copy",
-              _type: "block",
-              style: "normal",
-              markDefs: [],
-              children: [
-                {
-                  _key: "renaissance-origins-copy-span",
-                  _type: "span",
-                  marks: [],
-                  text: "Since our inception in 2015 we’ve been fortunate to work with a wide array of different clients, from Indie to AAA we can service your needs.",
-                },
-              ],
-            },
-          ],
-        };
-      }
 
       return block;
     };

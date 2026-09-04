@@ -114,13 +114,15 @@ Hard diagonal streaks and skewed translucent planes are the signature motif. The
 
 Buttons are compact, confident rectangles with subtly softened 4px corners and a right arrow. Primary buttons use petrol and white; dark buttons use ink and white; glass buttons are reserved for image-backed contexts. Hover assembles a bright teal/mist surface from a clearly readable, rapidly shuffled mosaic of small rectangles; the shader owns that surface change without a competing CSS background swap. The arrow and label change after the mosaic begins, with restrained spring scale providing immediate feedback. Focus uses a visible petrol ring with offset; reduced motion replaces the mosaic with an immediate static mist surface and removes spring scaling.
 
+Origins and Join Us actions use the same `Button2` mosaic component as the hero. Origins reads its button label, destination and variant from the shared Sanity `cta` field; its logo list and visual mode are also explicit CMS values. The mosaic releases its shader resources on cleanup without explicitly losing the canvas context, so React's development remount can initialize it again.
+
 ### Navigation
 
 The expanded navigation sits in page flow with the dark Renaissance logo and ink links on sand. It is the explicit brand carrier for the approved wordmark-free homepage hero. After 64px of scroll it compacts into a white translucent 4px-corner shell; it may hide after three idle seconds and returns with renewed scroll activity. Mobile uses the same compact corner treatment and a full-screen ink menu with numbered Geist Mono indices, large compressed links, hairline separators, and explicit open/close labels.
 
 ### Section Badges and Adapted Sections
 
-Section badge labels are controlled by Sanity. They use Signal Orange `#f49a24`, retain the exact Figma badge asset, and decrypt once when entering view by default. Editors may opt a section into a looped descramble with a 3.2-second readable pause between cycles; loops stop while offscreen or when the document is hidden. With `prefers-reduced-motion`, the final readable label appears without the decryption animation. Badges introduce sections only; they are not permitted in the hero.
+Section badge labels are controlled by Sanity. They use Signal Orange `#f49a24` and retain the exact Figma badge asset. On entry, the signet fades in while rotating clockwise from -90 degrees to 0 over 420ms; only the collapsed brackets are visible beside it. The brackets expand over 360ms, then the text decrypts. The final label width is reserved throughout to prevent layout shifts. Editors may opt a section into a looped descramble with a 3.2-second readable pause after the entrance and between cycles; loops stop while offscreen or when the document is hidden. With `prefers-reduced-motion`, the final readable badge appears immediately. Badges introduce sections only; they are not permitted in the hero.
 
 The approved services, network, people, and origin passages use the exact assets in `public/renaissance/figma/` and the compact compositions established by Figma file `nPhFDVszVftw0kl4D6afmr`. Renaissance app-local adapters may frame or augment existing PageBuilder blocks to achieve this presentation, but they must not fork or replace the shared block/data contracts.
 
@@ -215,12 +217,13 @@ Italic display text is an accent, limited to one short phrase per headline. It u
 
 ## Grid, Container and Spacing
 
-- **Maximum content width:** 1480px.
+- **Maximum content width:** 1480px for the general container; adapted section frames and the story carousel use an explicit 1680px cap.
 - **Desktop grid:** 12 columns with 32px preferred gutters at large widths.
 - **Tablet grid:** 6 columns.
 - **Mobile grid:** 4 columns with 16–24px page insets.
 - **Readable text measure:** 48–68ch; campaign captions may be 32–48ch.
 - **Section spacing:** 48px compact, 64px standard mobile, 96px standard desktop, 128px immersive desktop. A section marker may add 32px, 64px or 96px before its section at the desktop breakpoint without changing smaller layouts.
+- **Origins and Join Us separation:** these sections start 48px below the previous block on mobile/tablet. An unset desktop badge margin defaults to 96px; an explicit Sanity desktop setting still takes precedence. This applies to CMS content as well as the fallback.
 - **Component spacing:** use a 4px base rhythm; prefer 8, 12, 16, 24, 32, 48 and 64px.
 
 Do not use vertical space as a substitute for hierarchy. On 390px mobile, a non-interactive repeated item should normally stay below 18rem unless the media itself is the content.
@@ -282,6 +285,7 @@ Every navigable section shell must exist on first render. Heavy children can be 
 
 ## Authoring and Governance
 
+- `introBlockTypoSophisticated.renaissanceLayout` may explicitly select `editorial` or `compact` in Sanity. When unset, Stories, Services and People use the compact typography and stacked layout.
 - Only Core blocks from `design-system/COMPONENTS.md` are normal Renaissance authoring choices.
 - Conditional blocks require a documented page-specific review.
 - Compatibility blocks stay hidden from editors unless a cross-site contract explicitly requires them.

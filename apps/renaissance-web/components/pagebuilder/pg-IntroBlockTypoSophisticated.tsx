@@ -5,6 +5,7 @@ import type {
   RenaissanceSectionRole,
 } from "@1sp/sanity-types";
 import { hasVisibleText } from "@1sp/utils/text-content";
+import { resolveRenaissanceIntroLayout } from "@renaissance/lib/renaissanceIntroLayout";
 import PeopleIntroLayout from "./Fragments/PeopleIntroLayout";
 
 export default function IntroBlockTypoSophisticated({
@@ -14,7 +15,13 @@ export default function IntroBlockTypoSophisticated({
   data: IntroBlockTypoSophisticated;
   presentationRole?: RenaissanceSectionRole;
 }) {
-  const { header, description, navPointName, hideFromNav = false } = data || {};
+  const {
+    header,
+    description,
+    renaissanceLayout,
+    navPointName,
+    hideFromNav = false,
+  } = data || {};
   const sectionIdSource = navPointName || header?.mainHeadline;
   const sectionId = sectionIdSource
     ? sectionIdSource
@@ -26,10 +33,12 @@ export default function IntroBlockTypoSophisticated({
 
   if (presentationRole) {
     const isDark = presentationRole === "people";
-    const isCompact =
-      presentationRole === "services" || presentationRole === "people";
+    const layout = resolveRenaissanceIntroLayout(
+      renaissanceLayout,
+      presentationRole,
+    );
 
-    if (isCompact) {
+    if (layout === "compact") {
       return (
         <div
           className="mx-auto max-w-[1680px] px-5 pb-8 pt-8 sm:px-8 md:pb-8 md:pt-10 lg:px-12"

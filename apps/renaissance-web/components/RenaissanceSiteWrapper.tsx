@@ -273,8 +273,8 @@ async function RenaissanceFooter({
   ];
 
   return (
-    <footer className="container mx-auto mb-12 w-[calc(100%-0.5rem)] overflow-hidden rounded-statement bg-renaissance-ink px-4 text-renaissance-paper md:px-7">
-      <div className="mx-auto max-w-[1480px] border-t border-white/15">
+    <footer className="mx-auto mb-12 w-[calc(100%-0.5rem)] max-w-[1680px] overflow-hidden rounded-b-statement bg-renaissance-ink px-5 text-renaissance-paper sm:px-8 md:w-[calc(100%-2rem)] md:px-12">
+      <div className="mx-auto border-t border-white/15">
         <div className="grid gap-10 py-10 md:grid-cols-12 md:py-14">
           <div className="md:col-span-6 lg:col-span-5">
             <Image

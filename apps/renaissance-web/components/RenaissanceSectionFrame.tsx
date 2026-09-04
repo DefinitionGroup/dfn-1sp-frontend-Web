@@ -38,7 +38,10 @@ export default function RenaissanceSectionFrame({
   const isCompactBand = ["services", "origins", "joinUs"].includes(
     marker.sectionRole,
   );
-  const desktopTopMargin = marker.desktopTopMargin ?? "none";
+  const hasDefaultSeparation =
+    marker.sectionRole === "joinUs" || marker.sectionRole === "origins";
+  const desktopTopMargin =
+    marker.desktopTopMargin ?? (hasDefaultSeparation ? "24" : "none");
   const desktopMargin = desktopTopMarginClass[desktopTopMargin] ?? "";
 
   return (
@@ -47,7 +50,7 @@ export default function RenaissanceSectionFrame({
       data-navpoint-name={marker.badgeLabel || marker.sectionRole}
       data-renaissance-section={marker.sectionRole}
       data-desktop-top-margin={desktopTopMargin}
-      className={`relative scroll-mt-24 overflow-hidden font-renaissance md:scroll-mt-28 ${desktopMargin} ${config.surface}`}
+      className={`relative scroll-mt-24 overflow-hidden font-renaissance md:scroll-mt-28 ${hasDefaultSeparation ? "max-lg:mt-12" : ""} ${desktopMargin} ${config.surface}`}
     >
       <div
         className={`relative z-10 mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 ${

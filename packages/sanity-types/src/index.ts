@@ -234,6 +234,7 @@ export interface IntroBlockTypoSophisticated {
         uniquePeopleText?: string;
     };
     description?: string;
+    renaissanceLayout?: "editorial" | "compact";
     navPointName?: string;
     hideFromNav?: boolean;
 }

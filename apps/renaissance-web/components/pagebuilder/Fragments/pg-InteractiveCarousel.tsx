@@ -172,7 +172,7 @@ function InteractiveCarousel({
       onFocusCapture={() => setIsAutoPlaying(false)}
       onBlurCapture={() => setIsAutoPlaying(true)}
     >
-      <div className="container relative mx-auto">
+      <div className="relative mx-auto w-full max-w-[1680px]">
         <div className="relative min-h-[34rem] overflow-hidden rounded-media sm:min-h-[42rem] lg:min-h-[48rem]">
           <AnimatePresence initial={false} custom={direction} mode="popLayout">
             <motion.article

@@ -91,7 +91,7 @@ function ClientLogoCarousel({
         withLogos.map((client, idx) => (
           <div
             key={`${client._id || client.name || "client"}-${rep}-${idx}${ariaHidden ? "-dup" : ""}`}
-            className={`relative h-6 w-24 shrink-0 md:h-8 md:w-28 ${
+            className={`relative h-9 w-36 shrink-0 md:h-12 md:w-42 ${
               grayscale
                 ? "grayscale opacity-60 transition-all duration-300 hover:grayscale-0 hover:opacity-100"
                 : ""
@@ -101,7 +101,7 @@ function ClientLogoCarousel({
               src={assetUrl(client.logo as any) || ""}
               alt={ariaHidden || rep > 0 ? "" : client.name || "Client logo"}
               fill
-              sizes="112px"
+              sizes="(min-width: 768px) 168px, 144px"
               className="object-contain"
             />
           </div>
