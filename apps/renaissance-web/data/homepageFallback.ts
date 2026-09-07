@@ -32,8 +32,8 @@ const portableText = (
  *
  * Sanity remains authoritative: the route uses this composition only while
  * the renaissanceWeb/en homepage has no published content. Every `_type`
- * below already exists in RenaissancePageBuilder; this file introduces no
- * new page-builder component or content contract.
+ * below is registered in RenaissancePageBuilder and mirrors an editor-visible
+ * content contract.
  */
 export const RENAISSANCE_HOMEPAGE_FALLBACK: PageBuilderBlock[] = [
   {
@@ -121,6 +121,7 @@ export const RENAISSANCE_HOMEPAGE_FALLBACK: PageBuilderBlock[] = [
     mode: "section",
     sectionRole: "services",
     badgeLabel: "SERVICES",
+    topBorder: true,
   },
   {
     _key: "renaissance-services-intro",
@@ -201,6 +202,32 @@ export const RENAISSANCE_HOMEPAGE_FALLBACK: PageBuilderBlock[] = [
     },
     description:
       "Every plan starts with the human story inside the game: the developer's ambition, the audience's expectation and the cultural moment we can plug into.",
+  },
+  {
+    _key: "renaissance-people-portraits",
+    _type: "renaissancePortraitGrid",
+    portraits: [
+      { _key: "team-01", name: "Stefano Petrullo", imageUrl: "/renaissance/figma/team-01.jpg" },
+      { _key: "team-02", name: "Renaissance team member", imageUrl: "/renaissance/figma/team-02.jpg" },
+      { _key: "team-03", name: "Renaissance team member", imageUrl: "/renaissance/figma/team-03.jpg" },
+      { _key: "team-04", name: "Renaissance team member", imageUrl: "/renaissance/figma/team-04.jpg" },
+      { _key: "team-05", name: "Renaissance team member", imageUrl: "/renaissance/figma/team-01.jpg" },
+    ],
+  },
+  {
+    _key: "renaissance-award-wall",
+    _type: "renaissanceAwardLogoWall",
+    headline: "Award-winning people. Leading by example.",
+    logos: [
+      { _key: "award-01", name: "Industry award", imageUrl: "/renaissance/figma/award-01.png" },
+      { _key: "award-02", name: "Industry award", imageUrl: "/renaissance/figma/award-02.png" },
+      { _key: "award-03", name: "Industry award", imageUrl: "/renaissance/figma/award-03.png" },
+      { _key: "award-04", name: "Industry award", imageUrl: "/renaissance/figma/award-04.png" },
+      { _key: "award-05", name: "Industry award", imageUrl: "/renaissance/figma/award-05.png" },
+      { _key: "award-06", name: "Industry award", imageUrl: "/renaissance/figma/award-01.png" },
+      { _key: "award-07", name: "Industry award", imageUrl: "/renaissance/figma/award-02.png" },
+      { _key: "award-08", name: "Industry award", imageUrl: "/renaissance/figma/award-03.png" },
+    ],
   },
   {
     _key: "renaissance-origins-section",

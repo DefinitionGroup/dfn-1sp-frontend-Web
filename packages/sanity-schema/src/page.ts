@@ -174,6 +174,8 @@ export default defineType({
                 { type: 'flzrServicesGrid', title: 'FLZR Services Grid' },
                 { type: 'flzrSectionBand', title: 'FLZR Section Band' },
                 { type: 'renaissanceSectionBand', title: 'Renaissance Section' },
+                { type: 'renaissancePortraitGrid', title: 'Renaissance Portrait Grid' },
+                { type: 'renaissanceAwardLogoWall', title: 'Renaissance Award Logo Wall' },
                 { type: 'servicesHeroWithBadge' },
                 { type: 'intertitleCTA' },
                 { type: 'introBlockTypoSophisticated' },

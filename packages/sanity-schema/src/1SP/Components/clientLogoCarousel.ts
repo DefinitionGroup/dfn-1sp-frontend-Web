@@ -7,7 +7,7 @@ export default defineType({
     type: "object",
     icon: Slideshow,
     description:
-        "Infinite marquee of client logos. Auto mode shows all channel clients with a logo; manual mode uses a drag-and-drop selection.",
+        "Animated client-logo display. Auto mode shows all channel clients with a logo; manual mode uses a drag-and-drop selection.",
     groups: [
         { name: "content", title: "Content", default: true },
         { name: "selection", title: "Selection" },
@@ -74,7 +74,7 @@ export default defineType({
         }),
         defineField({
             name: "speed",
-            title: "Scroll Speed",
+            title: "Motion Speed",
             type: "string",
             group: "layout",
             initialValue: "normal",

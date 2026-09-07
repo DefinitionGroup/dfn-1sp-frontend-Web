@@ -12,10 +12,12 @@ Registration in `RenaissancePageBuilder.tsx` means the renderer understands a bl
 
 | Block type | User job | Required content | Layout contract | Critical states |
 | --- | --- | --- | --- | --- |
-| `heroShowTime` | Orient and convert | wordmark/brand context, one headline, short support, 1 primary + optional secondary CTA, real media, alt text | full-bleed dominant media; no cards, chips, stats or promos; one hero per page | image/video fallback, reduced motion, short landscape, contrast-safe nav |
+| `heroShowTime` | Orient and convert | CMS-selectable logo with Renaissance wordmark fallback, one headline, short support, 1 primary + optional secondary CTA, real media, alt text | logo sits above the headline hairline at no less than one-third width; full-bleed dominant media; no cards, chips, stats or promos; one hero per page | logo/image/video fallback, reduced motion, short landscape, contrast-safe nav |
 | `introBlockTypoSophisticated` | Frame the next section | one main statement, up to two short supporting phrases, one paragraph | Sanity-selectable editorial split or compact stack; no CTA or card cluster | semantic heading level, long-copy wrap, muted-token contrast |
 | `carousel` | Present selected campaign stories | 1–5 stories, title, image/video, short description, optional verified CTA | immersive single-stage media, never a tiled card row | pause/play, previous/next, active state, swipe, keyboard, reduced motion, optimized media |
-| `clientLogoCarousel` | Add client trust | verified logos and names | quiet monochrome rail between proof and offer; decorative duplicates hidden | static reduced-motion state, supported formats, missing-logo omission |
+| `clientLogoCarousel` | Add client trust | verified logos and names | borderless fixed 6-column × 2-row signal grid; slots blur/fade in with a stagger on first view, then one random slot overlaps and softly crossfades into its next logo without shifting layout; decorative duplicates hidden | pauses offscreen/hidden/hover/focus, static reduced-motion state, small logo pools, supported formats, missing-logo omission |
+| `renaissancePortraitGrid` | Show the people behind the work | 2–8 named portraits with usable images | two columns on mobile, four on desktop; only the first four remain in the compact mobile composition; fixed Figma people-bolt stays decorative | missing images omitted, meaningful alt text, one-time reduced-motion-safe reveal |
+| `renaissanceAwardLogoWall` | Prove recognition | one short statement and 1–12 named award marks | centered compressed statement, 1px Signal Orange divider, 3/4/8-column white logo wall | empty marks omitted, repeated logos announced once, reduced-motion-safe line/logo reveal |
 | `cardContainerComponent` | Scan a concise service set | 2–6 items, short title, max 140-character description | desktop grid; compact ruled list on mobile; no shadow | long title, 2/3/5/6 counts, empty item omission, contrast |
 | `twoColContentSection` | Pair a human/place/media anchor with narrative | meaningful media and alt text, 1–4 text blocks | 6/6 desktop split, stacked mobile; media not smaller than supporting copy | missing media, reverse layout, reduced parallax, optimized image/video |
 | `globeComponent` | Explain location coverage | one title, one short description, 1–6 verified locations | immersive desktop map; capped mobile map followed by scannable text list | canvas failure, reduced data/motion, keyboard-independent labels, small viewport |
@@ -66,10 +68,12 @@ Compatibility blocks require explicit design review and a channel/data-scope che
 - Internal links stay in the current tab. HTTP(S) links may open externally only when user expectation is clear. `mailto:` and `tel:` never use `target="_blank"`.
 - Incomplete CMS actions render nothing; never fall back to `href="#"`.
 - Minimum action height: 44px for primary controls and all touch controls.
+- Brand/dark/glass hover fills with flush squares that scale up from top-left to bottom-right. Reduced motion uses an immediate static mist surface.
 
 ### Story carousel
 
 - The media frame is full-width up to 1680px, independent of the general site container.
+- The frame closes with a 3px `accent.signal` bottom border; the slide index and previous/next controls sit together at the lower-left.
 - Maximum five curated stories on a landing page.
 - The first story is editorially selected, not random.
 - The containing `renaissanceSectionBand` may select a dark-green or light carousel surround without changing the carousel content contract.
@@ -79,7 +83,7 @@ Compatibility blocks require explicit design review and a channel/data-scope che
 
 ### Service set
 
-- Client ticker logo bounds are 144 × 36px on mobile and 168 × 48px from 768px, with matching responsive image sizes.
+- Client-grid logos remain contained within their fixed cells, using 32px image height on mobile and 48px from 768px with matching responsive image sizes.
 - Cards are permitted on desktop because the repeated planes materially group the six services.
 - On mobile, use a compact editorial list unless a service card is itself clickable.
 - Descriptions are one or two sentences and should stay below 140 characters where possible.

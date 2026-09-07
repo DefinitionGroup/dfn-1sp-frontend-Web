@@ -4,7 +4,6 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@1sp/utils/cn";
-import { ArrowRightIcon } from "@phosphor-icons/react";
 import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
@@ -70,7 +69,7 @@ function normalize(variant: LegacyVariant): { variant: Variant; size: Size } {
       return { variant: "ghost", size: "sm" };
     case "default":
     default:
-      return { variant: "glass", size: "md" };
+      return { variant: "violet", size: "md" };
   }
 }
 
@@ -332,10 +331,10 @@ function AuroraCanvas({
 /* Button                                                              */
 /* ------------------------------------------------------------------ */
 
-const sizeStyles: Record<Size, { root: string; icon: number }> = {
-  sm: { root: "h-9 pl-4 pr-3 text-[13px] gap-2", icon: 14 },
-  md: { root: "h-11 pl-5 pr-4 text-sm gap-2.5", icon: 16 },
-  lg: { root: "h-14 pl-7 pr-5 text-base gap-3", icon: 18 },
+const sizeStyles: Record<Size, { root: string }> = {
+  sm: { root: "h-9 pl-4 pr-3 text-[13px] gap-2" },
+  md: { root: "h-11 pl-5 pr-4 text-sm gap-2.5" },
+  lg: { root: "h-14 pl-7 pr-5 text-base gap-3" },
 };
 
 const variantStyles: Record<
@@ -345,7 +344,7 @@ const variantStyles: Record<
   violet: {
     root: "",
     label: "text-white",
-    restBg: "bg-violet-500",
+    restBg: "bg-renaissance-button",
   },
   dark: {
     root: "",
@@ -452,7 +451,7 @@ function Button2({
       {(v === "strands" || v === "violet" || v === "glass") && (
         <motion.div
           className={cn(
-            "pointer-events-none absolute -inset-x-3 -inset-y-2 z-0 overflow-hidden rounded-[inherit]",
+            "pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit]",
           )}
           initial={false}
           animate={
@@ -490,25 +489,32 @@ function Button2({
         )}
       >
         {eyebrowText ? (
-          <span className="mb-0.5 text-xxs font-medium tracking-[0.04em] opacity-70">
+          <span className="mb-0.5 text-xxs font-medium uppercase tracking-[0.04em]">
             {eyebrowText}
           </span>
         ) : null}
         <span className="font-semibold">{text}</span>
       </span>
-      <ArrowRightIcon
-        size={sizeStyles[s].icon}
-        weight="bold"
+      <svg
+        width="22"
+        height="14"
+        viewBox="0 0 22 14"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
         className={cn(
-          "relative z-10 transition-[color,rotate,translate] duration-300",
-          hovered ? "rotate-0 translate-x-0.5" : "-rotate-45",
+          "relative z-10 shrink-0 transition-[color,transform] duration-300",
           variantStyles[v].label,
           hovered && v === "ghost" && "text-white",
           hovered && (v === "strands" || v === "violet" || v === "glass") &&
             "text-violet-500 delay-150",
+          hovered && "translate-x-0.5 -translate-y-0.5",
         )}
         style={{ transitionTimingFunction: "var(--ease-renaissance-overshoot)" }}
-      />
+      >
+        <path d="M0 13.5H8L20.5 1" stroke="currentColor" />
+        <path d="M10 0.5H21V12" stroke="currentColor" />
+      </svg>
     </motion.div>
   );
 

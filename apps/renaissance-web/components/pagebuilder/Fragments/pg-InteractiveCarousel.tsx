@@ -173,7 +173,7 @@ function InteractiveCarousel({
       onBlurCapture={() => setIsAutoPlaying(true)}
     >
       <div className="relative mx-auto w-full max-w-[1680px]">
-        <div className="relative min-h-[34rem] overflow-hidden rounded-media sm:min-h-[42rem] lg:min-h-[48rem]">
+        <div className="relative min-h-[34rem] overflow-hidden rounded-media border-b-[3px] border-renaissance-signal sm:min-h-[42rem] lg:min-h-[48rem]">
           <AnimatePresence initial={false} custom={direction} mode="popLayout">
             <motion.article
               key={active.id}
@@ -266,6 +266,32 @@ function InteractiveCarousel({
                       </div>
                     ) : null}
                   </motion.div>
+
+                  <div className="mt-4 inline-flex absolute bottom-0 left-12 items-center gap-2 px-4 py-2 rounded-t-[12px] overflow-hidden bg-renaissance-signal">
+                    <span className="mr-2 font-mono text-xxs font-semibold -tracking-[0.04em] text-renaissance-ink">
+                      {String(currentIndex + 1).padStart(2, "0")} / {String(carouselItems.length).padStart(2, "0")}
+                    </span>
+                    {carouselItems.length > 1 ? (
+                      <>
+                        <button
+                          type="button"
+                          aria-label="Previous story"
+                          className="grid h-6 w-6 place-items-center hover:cursor-pointer  justify-center rounded-control border border-renaissance-ink text-renaissance-ink transition-colors hover:text-white hover:bg-renaissance-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                          onClick={() => paginate(-1)}
+                        >
+                          <span className="-mt-0.5" aria-hidden="true">←</span>
+                        </button>
+                        <button
+                          type="button"
+                          aria-label="Next story"
+                          className="grid h-6 w-6 place-items-center hover:cursor-pointer rounded-control border border-renaissance-ink text-renaissance-ink transition-colors hover:text-white hover:bg-renaissance-ink  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                          onClick={() => paginate(1)}
+                        >
+                          <span className="-mt-0.5"  aria-hidden="true">→</span>
+                        </button>
+                      </>
+                    ) : null}
+                  </div>
                 </div>
               </div>
             </motion.article>
@@ -292,31 +318,6 @@ function InteractiveCarousel({
             ) : null,
           )}
 
-          <div className="absolute left-5 top-5 z-20 flex items-center gap-2 sm:left-8 sm:top-8">
-            <span className="mr-2 font-mono text-xs font-semibold tracking-[0.14em] text-white">
-              {String(currentIndex + 1).padStart(2, "0")} / {String(carouselItems.length).padStart(2, "0")}
-            </span>
-            {carouselItems.length > 1 ? (
-              <>
-                <button
-                  type="button"
-                  aria-label="Previous story"
-                  className="grid h-11 w-11 place-items-center rounded-control border border-white/55 bg-renaissance-ink/40 text-white transition-colors hover:bg-white hover:text-renaissance-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                  onClick={() => paginate(-1)}
-                >
-                  <span aria-hidden="true">←</span>
-                </button>
-                <button
-                  type="button"
-                  aria-label="Next story"
-                  className="grid h-11 w-11 place-items-center rounded-control border border-white/55 bg-renaissance-ink/40 text-white transition-colors hover:bg-white hover:text-renaissance-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                  onClick={() => paginate(1)}
-                >
-                  <span aria-hidden="true">→</span>
-                </button>
-              </>
-            ) : null}
-          </div>
         </div>
       </div>
     </section>

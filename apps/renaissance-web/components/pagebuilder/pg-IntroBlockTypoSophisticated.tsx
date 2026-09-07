@@ -41,7 +41,7 @@ export default function IntroBlockTypoSophisticated({
     if (layout === "compact") {
       return (
         <div
-          className="mx-auto max-w-[1680px] px-5 pb-8 pt-8 sm:px-8 md:pb-8 md:pt-10 lg:px-12"
+          className="mx-auto max-w-[1680px] px-5 pb-4 pt-4 sm:px-4 md:pb-4 md:pt-4 lg:px-12"
           data-component="intro-block-typo-sophisticated"
         >
           {hasVisibleText(header?.mainHeadline) ? (

@@ -89,6 +89,17 @@ const NAV_HIDE_SCROLL_Y = 228;
 const NAV_DIRECTION_THRESHOLD = 4;
 const NAV_IDLE_HIDE_MS = 3000;
 
+const RENAISSANCE_LOGO_MASK_STYLE: React.CSSProperties = {
+  WebkitMaskImage: "url('/logos/renaissance-horz_logo.svg')",
+  maskImage: "url('/logos/renaissance-horz_logo.svg')",
+  WebkitMaskPosition: "center",
+  maskPosition: "center",
+  WebkitMaskRepeat: "no-repeat",
+  maskRepeat: "no-repeat",
+  WebkitMaskSize: "contain",
+  maskSize: "contain",
+};
+
 type NavState = "expanded" | "compact" | "hidden";
 
 const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
@@ -449,14 +460,23 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 aria-label="Home"
                 className="flex items-center justify-center"
               >
-                <Image
-                  src={logoUrl}
-                  alt={logoAlt}
-                  width={isRenaissanceChannel ? 198 : 64}
-                  height={isRenaissanceChannel ? 42 : 64}
-                  className={logoClassName}
-                  style={{ height: "auto" }}
-                />
+                {isRenaissanceChannel ? (
+                  <span
+                    role="img"
+                    aria-label={logoAlt}
+                    className={`${logoClassName} block h-[2.625rem] w-[12.375rem] bg-renaissance-button`}
+                    style={RENAISSANCE_LOGO_MASK_STYLE}
+                  />
+                ) : (
+                  <Image
+                    src={logoUrl}
+                    alt={logoAlt}
+                    width={64}
+                    height={64}
+                    className={logoClassName}
+                    style={{ height: "auto" }}
+                  />
+                )}
               </Link>
             </motion.div>
           </div>
@@ -603,14 +623,23 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 router.push(localizedPath("/", locale));
               }}
             >
-              <Image
-                src={logoUrl}
-                alt={logoAlt}
-                width={isRenaissanceChannel ? 174 : 54}
-                height={isRenaissanceChannel ? 36 : 24}
-                className={logoClassName}
-                style={{ height: "auto" }}
-              />
+              {isRenaissanceChannel ? (
+                <span
+                  role="img"
+                  aria-label={logoAlt}
+                  className={`${logoClassName} block h-9 w-[10.875rem] bg-renaissance-button`}
+                  style={RENAISSANCE_LOGO_MASK_STYLE}
+                />
+              ) : (
+                <Image
+                  src={logoUrl}
+                  alt={logoAlt}
+                  width={54}
+                  height={24}
+                  className={logoClassName}
+                  style={{ height: "auto" }}
+                />
+              )}
             </Link>
           </motion.div>
           <motion.div
@@ -657,12 +686,22 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             className="fixed inset-0 z-[100000] flex flex-col bg-renaissance-ink px-6 pb-8 pt-5 text-white md:hidden"
           >
             <div className="flex items-center justify-between border-b border-white/20 pb-5">
-              <Image
-                src="/units/RENAISSANCE/renaissance-horz_logo.svg"
-                alt="Renaissance"
-                width={140}
-                height={30}
-                className="h-auto w-[8.75rem]"
+              <span
+                role="img"
+                aria-label="Renaissance"
+                className="block h-[1.875rem] w-[8.75rem] bg-renaissance-button"
+                style={{
+                  WebkitMaskImage:
+                    "url('/units/RENAISSANCE/renaissance-horz_logo.svg')",
+                  maskImage:
+                    "url('/units/RENAISSANCE/renaissance-horz_logo.svg')",
+                  WebkitMaskPosition: "center",
+                  maskPosition: "center",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskRepeat: "no-repeat",
+                  WebkitMaskSize: "contain",
+                  maskSize: "contain",
+                }}
               />
               <button
                 type="button"

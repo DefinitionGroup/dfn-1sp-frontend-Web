@@ -29,9 +29,11 @@ const desktopTopMarginClass: Record<RenaissanceDesktopTopMargin, string> = {
 export default function RenaissanceSectionFrame({
   marker,
   children,
+  showLegacyPeopleProof = false,
 }: {
   marker: RenaissanceSectionBand;
   children: React.ReactNode;
+  showLegacyPeopleProof?: boolean;
 }) {
   if (!marker.sectionRole) return <>{children}</>;
   const config = roleConfig[marker.sectionRole];
@@ -50,8 +52,21 @@ export default function RenaissanceSectionFrame({
       data-navpoint-name={marker.badgeLabel || marker.sectionRole}
       data-renaissance-section={marker.sectionRole}
       data-desktop-top-margin={desktopTopMargin}
+      data-top-border={marker.topBorder ? "true" : undefined}
       className={`relative scroll-mt-24 overflow-hidden font-renaissance md:scroll-mt-28 ${hasDefaultSeparation ? "max-lg:mt-12" : ""} ${desktopMargin} ${config.surface}`}
     >
+      {marker.topBorder ? (
+        <div
+          aria-hidden="true"
+          data-section-top-border-container
+          className="relative z-10 mx-auto mb-8 w-full max-w-[1680px]"
+        >
+          <div
+            data-section-top-border
+            className="mx-5 h-[3px] bg-renaissance-button sm:mx-8 lg:mx-12"
+          />
+        </div>
+      ) : null}
       <div
         className={`relative z-10 mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 ${
           isCompactBand ? "pt-2" : "pt-14 md:pt-20"
@@ -66,7 +81,9 @@ export default function RenaissanceSectionFrame({
         ) : null}
       </div>
       <div className="relative z-[1]">{children}</div>
-      {marker.sectionRole === "people" ? <RenaissancePeopleProof /> : null}
+      {marker.sectionRole === "people" && showLegacyPeopleProof ? (
+        <RenaissancePeopleProof />
+      ) : null}
     </section>
   );
 }

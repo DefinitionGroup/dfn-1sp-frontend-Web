@@ -3,6 +3,7 @@ name: Renaissance Web
 description: A bold editorial games-communications system led by game worlds, compressed type, and confident teal surfaces.
 colors:
   petrol: "#245e66"
+  action-teal: "#3b9ca7"
   teal: "#99bbba"
   mist: "#dbe5e5"
   sand: "#edeae1"
@@ -47,7 +48,7 @@ spacing:
   section-xl: "8rem"
 components:
   button-primary:
-    backgroundColor: "{colors.petrol}"
+    backgroundColor: "{colors.action-teal}"
     textColor: "{colors.white}"
     typography: "{typography.label}"
     rounded: "{rounded.action}"
@@ -61,13 +62,13 @@ components:
 
 **Creative North Star: "The Editorial Game World"**
 
-Renaissance should feel like senior games-industry communications expressed as an editorial campaign: game imagery owns the canvas, compressed headlines deliver the point with confidence, and the persistent navigation carries the Renaissance brand. The approved homepage hero intentionally has no Renaissance wordmark. Petrol, teal, mist, sand, white, and ink form a light-first world with deliberate dark media passages.
+Renaissance should feel like senior games-industry communications expressed as an editorial campaign: game imagery owns the canvas, compressed headlines deliver the point with confidence, and the hero and persistent navigation carry the Renaissance brand. The homepage hero places an editor-selectable logo above its headline hairline and falls back to the action-teal Renaissance wordmark. Petrol, teal, mist, sand, white, and ink form a light-first world with deliberate dark media passages.
 
 The system is implemented through registered `RenaissancePageBuilder` blocks. The existing PageBuilder blocks and shared data contracts remain authoritative; Renaissance app-local presentation adapters compose them into the approved layout without changing their stored meaning. Sanity may replace the local homepage composition, but it must use the same block contracts and visual rules; do not create a separate homepage-only renderer or leak Renaissance styling into 1SP, FLZR, or MSM.
 
 **Key Characteristics:**
 
-- A Figma-faithful, wordmark-free homepage hero with Renaissance retained in navigation and full-bleed game media.
+- A Figma-derived homepage hero with a CMS-selectable wordmark, Renaissance retained in navigation, and full-bleed game media.
 - Compressed editorial typography with natural-case body copy.
 - Diagonal light streaks, flat colour planes, hairlines, and selective rounding.
 - Controlled entrance, navigation, media, and button motion with reduced-motion fallbacks.
@@ -90,7 +91,7 @@ Display copy is bold, tightly tracked, and close-set; body copy is calm and read
 
 ## Layout
 
-Use one dominant composition per section. The homepage hero follows the approved Figma composition: one game world, one headline, one support statement, and the CTA group beneath the branded navigation, with no Renaissance wordmark inside the hero. Content aligns to a centered container capped near 1480px; desktop layouts use a 12-column grid, while mobile sections stack into a four-column rhythm.
+Use one dominant composition per section. The homepage hero follows the approved Figma composition: one game world, one logo above the headline hairline, one headline, one support statement, and the CTA group beneath the branded navigation. The logo is at least one-third of the content width and falls back to the action-teal Renaissance wordmark. Content aligns to a centered container capped near 1480px; desktop layouts use a 12-column grid, while mobile sections stack into a four-column rhythm.
 
 Section spacing scales from 3rem on compact screens to 8rem on large screens. Intro passages use generous vertical breathing room, hairline starts, and asymmetric text columns. Story and game media remain broad and immersive rather than becoming small cards.
 
@@ -112,13 +113,13 @@ Hard diagonal streaks and skewed translucent planes are the signature motif. The
 
 ### Buttons
 
-Buttons are compact, confident rectangles with subtly softened 4px corners and a right arrow. Primary buttons use petrol and white; dark buttons use ink and white; glass buttons are reserved for image-backed contexts. Hover assembles a bright teal/mist surface from a clearly readable, rapidly shuffled mosaic of small rectangles; the shader owns that surface change without a competing CSS background swap. The arrow and label change after the mosaic begins, with restrained spring scale providing immediate feedback. Focus uses a visible petrol ring with offset; reduced motion replaces the mosaic with an immediate static mist surface and removes spring scaling.
+Buttons are compact, confident rectangles with subtly softened 4px corners and a 22×14 diagonal arrow. Primary buttons use action teal with a white label, uppercase white eyebrow and white arrow at rest; as the hover mosaic appears, all three switch together to petrol. Dark buttons use ink and white; glass buttons are reserved for image-backed contexts. Hover assembles a bright teal/mist surface as flush squares scale up in a top-left to bottom-right cascade; the shader owns that surface change without a competing CSS background swap. The arrow shifts subtly after the mosaic begins, with restrained spring scale providing immediate feedback. Focus uses a visible petrol ring with offset; reduced motion replaces the mosaic with an immediate static mist surface and removes spring scaling.
 
 Origins and Join Us actions use the same `Button2` mosaic component as the hero. Origins reads its button label, destination and variant from the shared Sanity `cta` field; its logo list and visual mode are also explicit CMS values. The mosaic releases its shader resources on cleanup without explicitly losing the canvas context, so React's development remount can initialize it again.
 
 ### Navigation
 
-The expanded navigation sits in page flow with the dark Renaissance logo and ink links on sand. It is the explicit brand carrier for the approved wordmark-free homepage hero. After 64px of scroll it compacts into a white translucent 4px-corner shell; it may hide after three idle seconds and returns with renewed scroll activity. Mobile uses the same compact corner treatment and a full-screen ink menu with numbered Geist Mono indices, large compressed links, hairline separators, and explicit open/close labels.
+The expanded navigation sits in page flow with the action-teal Renaissance logo and ink links on sand. It reinforces the hero's brand signal without competing with its typography. After 64px of scroll it compacts into a white translucent 4px-corner shell; it may hide after three idle seconds and returns with renewed scroll activity. Mobile uses the same compact corner treatment and a full-screen ink menu with the Renaissance logo in action teal, numbered Geist Mono indices, large compressed links, hairline separators, and explicit open/close labels.
 
 ### Section Badges and Adapted Sections
 
@@ -132,13 +133,13 @@ Game stories are image-first and full-bleed, with controlled dark overlays for w
 
 All Join Us actions use the canonical `/contact` route. Do not split content-creator or media intent into separate destinations unless that product decision is approved later.
 
-Logo marquees use supported web image formats, pause on hover, and stop moving when reduced motion is requested. The unsupported Tencent AVIF logo is intentionally absent; do not restore it without a verified browser-safe asset.
+Client logos use a borderless fixed six-column, two-row signal grid. The grid resolves into view with a one-time staggered blur/fade; after that, individual slots randomly swap through a soft overlapping Motion crossfade while the geometry remains stable. Swapping pauses offscreen, while the document is hidden, on hover/focus, and for reduced motion. The unsupported Tencent AVIF logo is intentionally absent; do not restore it without a verified browser-safe asset.
 
 ## Do's and Don'ts
 
 ### Do:
 
-- **Do** preserve the approved wordmark-free homepage hero, keep Renaissance visible in navigation, and let game imagery remain the dominant visual anchor.
+- **Do** keep the homepage logo above the headline hairline at no less than one-third width, preserve Renaissance in navigation, and let game imagery remain the dominant visual anchor.
 - **Do** use the approved palette and ink text for accessible contrast on sand and mist.
 - **Do** preserve the Pagebuilder-only content boundary and registered Renaissance block/data contracts; use app-local presentation adapters for the Figma layout.
 - **Do** preserve the exact Figma services, network, people, and origin assets and their compact desktop-to-mobile compositions.
@@ -158,7 +159,7 @@ Logo marquees use supported web image formats, pause on hover, and stop moving w
 
 This document is the canonical visual foundation for Renaissance. For the shipped redesign, Figma file `nPhFDVszVftw0kl4D6afmr` is the layout and content authority; runtime values live in `app/globals.css`; approved component behavior and Pagebuilder support tiers live in `design-system/COMPONENTS.md`; release criteria live in `design-system/RELEASE-CHECKLIST.md`. New work must update the relevant source in the same change when it alters a system contract. The independent finish verdict for this baseline is **Ship**.
 
-The current homepage demonstrates the target language, but it is not permission to duplicate raw Tailwind values. Repeated decisions become semantic roles; one-off values remain exceptions until they prove a reusable need. The optional, backward-compatible `renaissanceSectionBand` marker is the redesign's only new schema object; it groups existing blocks and stores the editor-controlled badge label without changing those blocks.
+The current homepage demonstrates the target language, but it is not permission to duplicate raw Tailwind values. Repeated decisions become semantic roles; one-off values remain exceptions until they prove a reusable need. The optional, backward-compatible `renaissanceSectionBand` marker groups blocks and stores editor-controlled section presentation. The People Powered proof is composed from the existing intro plus the Renaissance-only `renaissancePortraitGrid` and `renaissanceAwardLogoWall` blocks; the wrapper-level hardcoded proof remains compatibility-only until the published Sanity page adopts those blocks.
 
 ## Design Principles
 
@@ -177,7 +178,8 @@ Primitive names describe a stable brand color. Semantic names describe why it is
 | --- | --- | --- | --- |
 | `surface.page` | Sand `#edeae1` | default page field | text or dark media overlay |
 | `surface.quiet` | Mist `#dbe5e5` | founder, supporting narrative, quiet data | primary CTA without contrast check |
-| `surface.brand` | Petrol `#245e66` | primary action, active line, brand field | long body-copy background unless text is white |
+| `surface.action` | Action Teal `#3b9ca7` | default primary button background with its approved white control label | white body copy or extended text |
+| `surface.brand` | Petrol `#245e66` | active line and brand field | long body-copy background unless text is white |
 | `surface.ink` | Ink `#163f45` | dark passages, footer, story frame | every section; dark is contrast, not the default mode |
 | `text.primary` | Ink `#163f45` | headings and body on paper/mist | text on ink/media |
 | `text.brand` | Petrol `#245e66` | light-surface headings and emphasis | low-priority metadata |
@@ -259,7 +261,7 @@ Rules:
 - Maximum one entrance system and one ambient system per page.
 - Section-badge decryption runs once on entry into view by default. Optional looping pauses for 3.2 seconds on the readable label and runs only while visible; reduced motion shows the final readable Sanity label immediately.
 - Pause auto-changing content through a visible control.
-- `prefers-reduced-motion` removes parallax, autoplay, pointer-following fields, marquee movement and view-transition travel.
+- `prefers-reduced-motion` removes parallax, autoplay, pointer-following fields, client-logo swapping and view-transition travel.
 - Focus, selection and validation never rely on motion alone.
 - WebGL is progressive enhancement. Static color, text and actions remain complete when it fails.
 
@@ -280,7 +282,7 @@ Every navigable section shell must exist on first render. Heavy children can be 
 - Modal menus/overlays use a real dialog pattern, Escape, focus containment, background inertness and trigger restoration.
 - Carousels expose previous/next, pause/play, active state and reduced-motion behavior.
 - Content order in the DOM matches reading order; visual grids do not reorder meaning.
-- Meaningful media has specific alt text. Decorative streaks, repeated marquee logos and purely atmospheric media are hidden from assistive technology.
+- Meaningful media has specific alt text. Decorative streaks, repeated client-grid logos and purely atmospheric media are hidden from assistive technology.
 - Page remains usable at 200% zoom and reflows at 400% without horizontal page scrolling.
 
 ## Authoring and Governance
@@ -292,7 +294,8 @@ Every navigable section shell must exist on first render. Heavy children can be 
 - `navPointName` is unique per page, stable across content edits and mapped to an initial-render anchor.
 - CTA variants use semantic names (`brand`, `dark`, `glass`, `ghost`). Legacy `violet`, `lime`, `purple` and `blue` names are compatibility aliases, not authoring language.
 - Existing PageBuilder block types and data contracts are preserved; Renaissance app-local presentation adapters own the Figma-specific framing and composition.
-- `renaissanceSectionBand` is optional, backward-compatible, and the only new schema object introduced by this redesign. It groups following blocks and stores the Sanity-controlled badge label plus optional desktop top spacing, badge animation mode and carousel background tone; it does not replace or mutate the grouped blocks.
+- `renaissanceSectionBand` is optional and backward-compatible. It groups following blocks and stores the Sanity-controlled badge label plus optional desktop top spacing, a centered 3px Action Teal top separator capped at the 1680px content width, badge animation mode and carousel background tone; it does not replace or mutate the grouped blocks.
+- `renaissancePortraitGrid` and `renaissanceAwardLogoWall` are Renaissance-only content blocks for the People Powered band. The first owns the ordered portraits and fixed people-bolt treatment; the second owns the editable award statement, 1px Signal Orange divider and ordered award marks.
 - Carousel blocks inside a Renaissance section may use the default dark-green surround or the light paper surround selected by that section marker.
 - Join Us actions resolve to `/contact`.
 - Sanity may replace fallback content, but it must not replace this system contract.

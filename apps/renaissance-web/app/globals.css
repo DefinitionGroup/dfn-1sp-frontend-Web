@@ -49,6 +49,7 @@
 
   /* Renaissance presentation palette: petrol, teal, off-white, white and sand. */
   --color-renaissance-accent: #245e66;
+  --color-renaissance-button: #3b9ca7;
   --color-renaissance-teal: #99bbba;
   --color-renaissance-mist: #dbe5e5;
   --color-renaissance-ink: #163f45;
@@ -621,16 +622,6 @@
   }
 }
 
-@keyframes logo-marquee {
-  0% {
-    transform: translateX(0);
-  }
-
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
 /**
  * Hero reveal — clip-path animation driven by CSS so the poster can paint
  * from SSR HTML without waiting for JS hydration / Framer Motion.
@@ -657,34 +648,6 @@
 }
 
 @layer utilities {
-  .logo-marquee-track {
-    animation: logo-marquee var(--marquee-duration, 220s) linear infinite;
-    width: max-content;
-  }
-
-  .logo-marquee-pausable:hover .logo-marquee-track {
-    animation-play-state: paused;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .logo-marquee-track {
-      animation: none;
-    }
-  }
-
-  .logo-carousel-mask {
-    mask-image: linear-gradient(to right,
-        transparent,
-        black 8%,
-        black 92%,
-        transparent);
-    -webkit-mask-image: linear-gradient(to right,
-        transparent,
-        black 8%,
-        black 92%,
-        transparent);
-  }
-
   /* Responsive container utilities */
   .container-responsive {
     @apply w-full px-4 sm:px-6 lg:px-8 mx-auto;

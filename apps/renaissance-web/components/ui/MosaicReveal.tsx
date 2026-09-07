@@ -16,12 +16,11 @@ precision highp float;
 uniform vec2 uResolution;
 uniform float uProgress;
 uniform float uSeed;
-uniform float uPixelRatio;
+uniform float uCellPx;
 
 const vec3 PETROL = vec3(0.141, 0.369, 0.400);
 const vec3 TEAL = vec3(0.600, 0.733, 0.729);
 const vec3 MIST = vec3(0.859, 0.898, 0.898);
-const vec3 BRIGHT = vec3(0.965, 0.980, 0.976);
 
 float hash21(vec2 value) {
   value = fract(value * vec2(123.34, 456.21));
@@ -30,37 +29,33 @@ float hash21(vec2 value) {
 }
 
 void main() {
-  vec2 cellSize = vec2(15.0, 9.0) * uPixelRatio;
-  vec2 cell = floor(gl_FragCoord.xy / cellSize);
-  vec2 cellUv = fract(gl_FragCoord.xy / cellSize);
-  float order = hash21(cell);
+  float cellPx = max(uCellPx, 1.0);
+  vec2 cell = floor(gl_FragCoord.xy / cellPx);
+  vec2 cellUv = fract(gl_FragCoord.xy / cellPx);
 
-  // Each cell starts at a shuffled point in the reveal, then snaps on quickly.
-  float localProgress = smoothstep(
-    order * 0.80,
-    order * 0.80 + 0.12,
-    uProgress
-  );
+  // WebGL y is up, so flip the row to travel top-left → bottom-right.
+  float cols = ceil(uResolution.x / cellPx);
+  float rows = ceil(uResolution.y / cellPx);
+  float rowFromTop = rows - 1.0 - cell.y;
+  float wave = (cell.x + rowFromTop) / max(cols + rows - 2.0, 1.0);
 
-  // A narrow gutter keeps the rectangles legible while the field is assembling.
-  vec2 inset = vec2(0.08, 0.12);
-  float rectangle =
-    step(inset.x, cellUv.x) *
-    step(inset.y, cellUv.y) *
-    step(cellUv.x, 1.0 - inset.x) *
-    step(cellUv.y, 1.0 - inset.y);
+  float window = 0.30;
+  float start = wave * (1.0 - window);
+  float local = smoothstep(start, start + window, uProgress);
+  float eased = 1.0 - pow(1.0 - local, 3.0);
+  float scale = eased * (1.0 + 0.02 * smoothstep(0.8, 1.0, eased));
 
-  // Once every tile has arrived, the gutters close and the button reads as bright.
-  float finish = smoothstep(0.86, 0.98, uProgress);
-  float coverage = localProgress * mix(rectangle, 1.0, finish);
-  float flash = smoothstep(0.0, 0.22, localProgress) *
-    (1.0 - smoothstep(0.22, 0.72, localProgress));
+  vec2 centered = cellUv - 0.5;
+  float halfSpan = 0.5 * scale;
+  float aa = 1.0 / cellPx;
+  float coverage =
+    smoothstep(halfSpan + aa, halfSpan - aa, abs(centered.x)) *
+    smoothstep(halfSpan + aa, halfSpan - aa, abs(centered.y));
+
   float variation = hash21(cell + vec2(17.0, 31.0));
-
-  vec3 tileColor = mix(PETROL, TEAL, 0.35 + variation * 0.65);
-  float brighten = smoothstep(0.72, 0.98, uProgress);
-  tileColor = mix(tileColor, MIST, brighten * 0.82);
-  tileColor = mix(tileColor, BRIGHT, flash * 0.24 + finish * 0.32);
+  vec3 tileColor = mix(PETROL, TEAL, 0.50 + variation * 0.28);
+  float brighten = smoothstep(0.45, 1.0, uProgress);
+  tileColor = mix(tileColor, MIST, brighten * 0.90);
 
   gl_FragColor = vec4(tileColor, coverage);
 }
@@ -70,13 +65,15 @@ type MosaicRevealProps = {
   active: boolean;
 };
 
+const TILE_ROWS = 5;
+
 type MosaicState = {
   gl: WebGLRenderingContext;
   program: WebGLProgram;
   progressUniform: WebGLUniformLocation | null;
   seedUniform: WebGLUniformLocation | null;
   resolutionUniform: WebGLUniformLocation | null;
-  pixelRatioUniform: WebGLUniformLocation | null;
+  cellPxUniform: WebGLUniformLocation | null;
   progress: number;
   target: number;
   frame: number;
@@ -169,7 +166,7 @@ export default function MosaicReveal({ active }: MosaicRevealProps) {
       progressUniform: gl.getUniformLocation(program, "uProgress"),
       seedUniform: gl.getUniformLocation(program, "uSeed"),
       resolutionUniform: gl.getUniformLocation(program, "uResolution"),
-      pixelRatioUniform: gl.getUniformLocation(program, "uPixelRatio"),
+      cellPxUniform: gl.getUniformLocation(program, "uCellPx"),
       progress: 0,
       target: 0,
       frame: 0,
@@ -185,7 +182,8 @@ export default function MosaicReveal({ active }: MosaicRevealProps) {
       canvas.height = Math.max(1, Math.round(rect.height * ratio));
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.uniform2f(state.resolutionUniform, canvas.width, canvas.height);
-      gl.uniform1f(state.pixelRatioUniform, ratio);
+      gl.uniform1f(state.cellPxUniform, canvas.height / TILE_ROWS);
+      gl.uniform1f(state.seedUniform, 0);
     };
 
     const resizeObserver = new ResizeObserver(resize);
@@ -198,7 +196,7 @@ export default function MosaicReveal({ active }: MosaicRevealProps) {
 
       const delta = Math.min((time - current.lastTime) / 1000, 0.05);
       current.lastTime = time;
-      const speed = current.target > current.progress ? 7 : 20;
+      const speed = current.target > current.progress ? 5.2 : 20;
       current.progress +=
         (current.target - current.progress) * (1 - Math.exp(-speed * delta));
 
@@ -238,9 +236,6 @@ export default function MosaicReveal({ active }: MosaicRevealProps) {
     if (!state || !draw) return;
 
     state.target = active ? 1 : 0;
-    if (active) {
-      state.gl.uniform1f(state.seedUniform, Math.random() * 1000);
-    }
 
     if (!state.running && state.progress !== state.target) {
       state.running = true;

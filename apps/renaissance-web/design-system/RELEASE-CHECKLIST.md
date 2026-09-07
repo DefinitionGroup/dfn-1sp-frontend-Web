@@ -6,7 +6,7 @@ Use this checklist for every new or changed Renaissance page. A page is not comp
 
 ## Content and brand
 
-- [ ] The approved homepage hero remains wordmark-free; the navigation retains the Renaissance brand signal.
+- [ ] The homepage hero logo sits above the headline hairline at no less than one-third width; an empty CMS asset falls back to the action-teal Renaissance wordmark.
 - [ ] The page has one primary user job and one primary conversion.
 - [ ] All claims, dates, client names and metrics are approved and sourced.
 - [ ] No FLZR violet, 1SP-specific styling or generic default font leaks into Renaissance UI.
@@ -19,8 +19,8 @@ Use this checklist for every new or changed Renaissance page. A page is not comp
 
 - [ ] Every block is Core or has passed its Conditional gate in `COMPONENTS.md`.
 - [ ] Existing PageBuilder blocks and data contracts remain intact; Renaissance app-local presentation adapters own Figma-specific framing.
-- [ ] `renaissanceSectionBand` remains optional and backward-compatible and is the redesign's only new schema object.
-- [ ] Optional desktop section spacing, badge looping and carousel background tone work without changing mobile defaults or grouped PageBuilder content.
+- [ ] `renaissanceSectionBand` remains optional and backward-compatible; `renaissancePortraitGrid` and `renaissanceAwardLogoWall` remain Renaissance-only authoring choices.
+- [ ] Optional desktop section spacing, centered 3px Action Teal top separator capped at 1680px, badge looping and carousel background tone work without changing mobile defaults or grouped PageBuilder content.
 - [ ] Every visible section has one purpose and a semantic heading.
 - [ ] Heading order is logical independent of visual size.
 - [ ] Every `navPointName` is unique, slug-stable and present in the initial document shell.
@@ -74,7 +74,7 @@ Use this checklist for every new or changed Renaissance page. A page is not comp
 
 - [ ] Fresh desktop screenshot: hero and one below-fold proof section.
 - [ ] Fresh mobile screenshot: hero, open menu and one dense content section.
-- [ ] Desktop and mobile evidence has been compared with Figma file `nPhFDVszVftw0kl4D6afmr`, including the wordmark-free hero and compact services/network/people/origin passages.
+- [ ] Desktop and mobile evidence has been compared with Figma file `nPhFDVszVftw0kl4D6afmr`, including the requested hero-logo amendment and compact services/network/people/origin passages.
 - [ ] Keyboard walkthrough: navigation, overlay, carousel/tabs and primary CTA.
 - [ ] Reduced-motion walkthrough.
 - [ ] Fresh-load deep-link test for every navigation anchor.

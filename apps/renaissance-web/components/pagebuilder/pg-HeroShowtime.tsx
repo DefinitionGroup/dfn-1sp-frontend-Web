@@ -1,13 +1,26 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import type { HeroShowtime as HeroShowtimeType } from "@1sp/sanity-types";
+import { resolveImageUrl } from "@1sp/sanity-queries/image";
 
 import HeaderImageVideoComp2 from "@renaissance/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
 import Button2 from "@renaissance/components/ui/Button2";
 import MixedType from "@renaissance/components/ui/MixedType";
 
 import { assetUrl, ctaToButtonProps } from "@1sp/utils/cloudinary";
+
+const FALLBACK_LOGO_MASK_STYLE: React.CSSProperties = {
+  WebkitMaskImage: "url('/logos/renaissance-horz_logo.svg')",
+  maskImage: "url('/logos/renaissance-horz_logo.svg')",
+  WebkitMaskPosition: "left center",
+  maskPosition: "left center",
+  WebkitMaskRepeat: "no-repeat",
+  maskRepeat: "no-repeat",
+  WebkitMaskSize: "contain",
+  maskSize: "contain",
+};
 
 function isVideoAsset(asset?: unknown, url?: string): boolean {
   const resourceType =
@@ -23,6 +36,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
     useVideo = false,
     backgroundImage,
     backgroundVideo,
+    logoImage,
     heading = "Show Time",
     headingTag = "h2",
     subheading = "Your subheading here",
@@ -38,6 +52,8 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
   const imageUrl = backgroundImageIsVideo ? "/hr.png" : backgroundImageUrl || "/hr.png";
   const videoUrl = assetUrl(backgroundVideo) || (backgroundImageIsVideo ? backgroundImageUrl : undefined);
   const shouldUseVideo = Boolean((useVideo || backgroundImageIsVideo) && videoUrl);
+  const logoImageUrl = resolveImageUrl(logoImage, { width: 1200 });
+  const logoAlt = logoImage?.alt?.trim() || "Renaissance";
   const HeadingTag = headingTag === "h1" ? "h1" : "h2";
   const ctaButtons = (Array.isArray(additionalContent) ? additionalContent : [])
     .map((cta) => ctaToButtonProps(cta))
@@ -87,6 +103,23 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
 
       <div className="relative z-10 mx-auto flex min-h-[calc(100svh-5rem)] w-full max-w-[1480px] flex-col justify-end px-5 pb-8 pt-28 sm:px-8 sm:pb-10 md:min-h-[calc(100svh-7rem)] lg:px-12 lg:pb-12">
         <div className="flex w-full animate-fade-in-up flex-col motion-reduce:animate-none">
+          {logoImageUrl ? (
+            <Image
+              src={logoImageUrl}
+              alt={logoAlt}
+              width={1200}
+              height={300}
+              sizes="(max-width: 640px) 174px, 33vw"
+              className="mb-6 h-auto w-1/3 min-w-[10.875rem] object-contain object-left md:mb-8"
+            />
+          ) : (
+            <span
+              role="img"
+              aria-label="Renaissance"
+              className="mb-6 block h-9 w-1/3 min-w-[10.875rem] bg-renaissance-button md:mb-8 md:h-auto md:aspect-[2862.29/593.96]"
+              style={FALLBACK_LOGO_MASK_STYLE}
+            />
+          )}
           <div className="grid items-end gap-7 border-t border-white/35 pt-7 md:grid-cols-12 md:gap-10 md:pt-9">
             {heading ? (
               <HeadingTag className="renaissance-display whitespace-pre-line text-balance text-[clamp(2.55rem,6.2vw,6rem)] font-bold leading-[0.88] text-white md:col-span-8">

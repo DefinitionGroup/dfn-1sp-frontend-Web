@@ -273,40 +273,9 @@ async function RenaissanceFooter({
   ];
 
   return (
-    <footer className="mx-auto mb-12 w-[calc(100%-0.5rem)] max-w-[1680px] overflow-hidden rounded-b-statement bg-renaissance-ink px-5 text-renaissance-paper sm:px-8 md:w-[calc(100%-2rem)] md:px-12">
-      <div className="mx-auto border-t border-white/15">
-        <div className="grid gap-10 py-10 md:grid-cols-12 md:py-14">
-          <div className="md:col-span-6 lg:col-span-5">
-            <Image
-              src="/units/RENAISSANCE/renaissance-horz_logo.svg"
-              alt="Renaissance"
-              width={286}
-              height={59}
-              className="h-10 w-auto brightness-0 invert md:h-11"
-              style={{ width: "auto" }}
-            />
-            <p className="renaissance-headline mt-7 max-w-xl text-[clamp(1.35rem,1.05rem+1.2vw,2.25rem)] leading-[1.08] text-white">
-              {homepageStatement || site.seo.defaultDescription}
-            </p>
-          </div>
+    <footer className="mx-auto mb-12 w-[calc(100%-0.5rem)] max-w-[1680px]  overflow-hidden rounded-b-statement bg-renaissance-ink px-5 text-renaissance-paper sm:px-8 md:w-[calc(100%-2rem)] md:px-12">
 
-          <div className="flex items-end md:col-span-6 md:justify-end lg:col-span-7">
-            <Link
-              href={localizedPath("/contact", language)}
-              className="group flex w-full items-center justify-between border-b border-white/30 py-4 text-base font-semibold text-white transition-colors duration-300 hover:border-renaissance-accent md:max-w-sm"
-            >
-              <span>{copy.startProject}</span>
-              <span
-                aria-hidden="true"
-                className="text-xl transition-transform duration-300 group-hover:translate-x-1"
-              >
-                ↗
-              </span>
-            </Link>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-x-6 gap-y-12 border-t border-white/15 py-10 md:grid-cols-4 md:gap-x-10 md:py-12">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-12 py-10 md:grid-cols-4 md:gap-x-10 md:py-12">
           <div>
             <FooterColumnHeading
               index="01"
@@ -420,7 +389,7 @@ async function RenaissanceFooter({
             </div>
           ) : null}
         </div>
-      </div>
+
     </footer>
   );
 }

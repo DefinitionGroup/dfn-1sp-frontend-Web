@@ -19,6 +19,12 @@ export interface CloudinaryImage {
     focusY?: number;
 }
 
+export interface SanityImage {
+    _type?: "image";
+    asset?: Reference;
+    alt?: string;
+}
+
 /* Global / Shared objects */
 export interface Link {
     linkType?: "internal" | "external";
@@ -295,6 +301,7 @@ export interface ShowtimeGallery {
 export interface HeroShowtime {
     heading?: string;
     headingTag?: "h1" | "h2";
+    logoImage?: SanityImage;
     subheading?: string;
     initialValue?: string;
     paragraphs?: string[];
@@ -378,8 +385,29 @@ export interface RenaissanceSectionBand {
     sectionRole?: RenaissanceSectionRole;
     badgeLabel?: string;
     desktopTopMargin?: RenaissanceDesktopTopMargin;
+    topBorder?: boolean;
     badgeAnimationMode?: RenaissanceBadgeAnimationMode;
     carouselBackgroundTone?: RenaissanceCarouselBackgroundTone;
+}
+
+export interface RenaissanceMediaItem {
+    _key?: string;
+    name?: string;
+    image?: CloudinaryAsset;
+    imageUrl?: string;
+}
+
+export interface RenaissancePortraitGrid {
+    _type: "renaissancePortraitGrid";
+    _key?: string;
+    portraits?: RenaissanceMediaItem[];
+}
+
+export interface RenaissanceAwardLogoWall {
+    _type: "renaissanceAwardLogoWall";
+    _key?: string;
+    headline?: string;
+    logos?: RenaissanceMediaItem[];
 }
 
 export interface FlzrTwoThirdsContentSection {
@@ -542,7 +570,7 @@ export interface ClientLogoItem {
     logo?: CloudinaryAsset;
 }
 
-/** Infinite client-logo marquee (schema: clientLogoCarousel) */
+/** Animated client-logo display (schema: clientLogoCarousel) */
 export interface ClientLogoCarousel {
     _type?: "clientLogoCarousel";
     eyebrow?: string;

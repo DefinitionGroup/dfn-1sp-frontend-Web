@@ -8,6 +8,7 @@ import { partitionRenaissanceSections } from "../apps/renaissance-web/lib/renais
 const block = (_type: string, _key: string) => ({ _type, _key });
 type MarkerOptions = {
   desktopTopMargin?: "none" | "8" | "16" | "24";
+  topBorder?: boolean;
   badgeAnimationMode?: "once" | "loop";
   carouselBackgroundTone?: "darkGreen" | "light";
 };
@@ -86,6 +87,7 @@ test("preserves optional section presentation settings", () => {
   const units = partitionRenaissanceSections([
     marker("stories", "stories", "section", {
       desktopTopMargin: "16",
+      topBorder: true,
       badgeAnimationMode: "loop",
       carouselBackgroundTone: "light",
     }),
@@ -95,6 +97,7 @@ test("preserves optional section presentation settings", () => {
   const section = units[0];
   assert.ok(section && section.kind === "section");
   assert.equal(section.marker.desktopTopMargin, "16");
+  assert.equal(section.marker.topBorder, true);
   assert.equal(section.marker.badgeAnimationMode, "loop");
   assert.equal(section.marker.carouselBackgroundTone, "light");
 });
@@ -120,8 +123,58 @@ test("keeps fallback service cards inside the services band", () => {
   );
   assert.deepEqual(
     people.blocks.map(({ block: peopleBlock }) => peopleBlock._key),
-    ["renaissance-people-intro"],
+    [
+      "renaissance-people-intro",
+      "renaissance-people-portraits",
+      "renaissance-award-wall",
+    ],
   );
+});
+
+test("keeps the published people proof compatible until composable blocks are added", () => {
+  const publishedUnits = partitionRenaissanceSections([
+    marker("people", "people"),
+    block("introBlockTypoSophisticated", "renaissance-people-intro"),
+    marker("origins", "origins"),
+    block("twoColContentSection", "renaissance-origin"),
+  ]);
+  const publishedPeople = publishedUnits.find(
+    (unit) => unit.kind === "section" && unit.marker.sectionRole === "people",
+  );
+  assert.ok(publishedPeople && publishedPeople.kind === "section");
+  assert.equal(
+    publishedPeople.blocks.some(({ block: peopleBlock }) =>
+      ["renaissancePortraitGrid", "renaissanceAwardLogoWall"].includes(
+        peopleBlock._type || "",
+      ),
+    ),
+    false,
+  );
+
+  const fallbackUnits = partitionRenaissanceSections(RENAISSANCE_HOMEPAGE_FALLBACK);
+  const fallbackPeople = fallbackUnits.find(
+    (unit) => unit.kind === "section" && unit.marker.sectionRole === "people",
+  );
+  assert.ok(fallbackPeople && fallbackPeople.kind === "section");
+  assert.equal(
+    fallbackPeople.blocks.some(
+      ({ block: peopleBlock }) =>
+        peopleBlock._type === "renaissancePortraitGrid",
+    ),
+    true,
+  );
+  assert.equal(
+    fallbackPeople.blocks.some(
+      ({ block: peopleBlock }) =>
+        peopleBlock._type === "renaissanceAwardLogoWall",
+    ),
+    true,
+  );
+  const portraitGrid = fallbackPeople.blocks.find(
+    ({ block: peopleBlock }) =>
+      peopleBlock._type === "renaissancePortraitGrid",
+  )?.block as { portraits?: unknown[] } | undefined;
+  assert.equal(portraitGrid?.portraits?.length, 5);
 });
 
 test("infers the current published homepage bands until markers are published", () => {

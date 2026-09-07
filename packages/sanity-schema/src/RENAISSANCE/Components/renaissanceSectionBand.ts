@@ -83,6 +83,15 @@ export default defineType({
       hidden: ({ parent }) => !startsSection(parent),
     }),
     defineField({
+      name: "topBorder",
+      title: "Button-green top separator",
+      type: "boolean",
+      description:
+        "Adds a centered 3px Renaissance button-green separator, capped at the 1680px content width.",
+      initialValue: false,
+      hidden: ({ parent }) => !startsSection(parent),
+    }),
+    defineField({
       name: "badgeAnimationMode",
       title: "Badge animation",
       type: "string",
@@ -127,6 +136,7 @@ export default defineType({
       sectionRole: "sectionRole",
       badgeLabel: "badgeLabel",
       desktopTopMargin: "desktopTopMargin",
+      topBorder: "topBorder",
       badgeAnimationMode: "badgeAnimationMode",
       carouselBackgroundTone: "carouselBackgroundTone",
     },
@@ -135,6 +145,7 @@ export default defineType({
       sectionRole,
       badgeLabel,
       desktopTopMargin,
+      topBorder,
       badgeAnimationMode,
       carouselBackgroundTone,
     }) {
@@ -152,6 +163,7 @@ export default defineType({
           desktopTopMargin && desktopTopMargin !== "none"
             ? `desktop mt-${desktopTopMargin}`
             : null,
+          topBorder ? "button-green top separator" : null,
           badgeAnimationMode === "loop" ? "looped badge" : null,
           carouselBackgroundTone === "light" ? "light carousel" : null,
         ]

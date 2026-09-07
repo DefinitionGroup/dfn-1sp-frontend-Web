@@ -14,7 +14,9 @@ import type {
   IntroBlockTypoSophisticated as IntroBlockTypoSophisticatedType,
   CardContainerComponent as CardContainerComponentType,
   ResultsMetricsComponent as ResultsMetricsComponentType,
+  RenaissanceAwardLogoWall as RenaissanceAwardLogoWallType,
   RenaissanceCarouselBackgroundTone,
+  RenaissancePortraitGrid as RenaissancePortraitGridType,
   RenaissanceSectionRole,
 } from "@1sp/sanity-types";
 import type { Page } from "@1sp/sanity-types";
@@ -273,6 +275,20 @@ const ClientLogoCarousel = dynamic(
     loading: () => <ComponentLoader />,
     ssr: true,
   }
+);
+const RenaissancePortraitGrid = dynamic(
+  () => import("./pagebuilder/pg-RenaissancePortraitGrid"),
+  {
+    loading: () => <ComponentLoader />,
+    ssr: true,
+  },
+);
+const RenaissanceAwardLogoWall = dynamic(
+  () => import("./pagebuilder/pg-RenaissanceAwardLogoWall"),
+  {
+    loading: () => <ComponentLoader />,
+    ssr: true,
+  },
 );
 const UnitLogoGrid = dynamic(
   () => import("./pagebuilder/server/UnitLogoGridBlock"),
@@ -627,6 +643,24 @@ export function PageBuilder({
                 />
               </ErrorBoundary>
             );
+          case "renaissancePortraitGrid":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <RenaissancePortraitGrid
+                  key={key}
+                  data={block as RenaissancePortraitGridType}
+                />
+              </ErrorBoundary>
+            );
+          case "renaissanceAwardLogoWall":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <RenaissanceAwardLogoWall
+                  key={key}
+                  data={block as RenaissanceAwardLogoWallType}
+                />
+              </ErrorBoundary>
+            );
           case "pageBuilderLogoFloat":
             return (
               <ErrorBoundary key={`error-${key}`}>
@@ -711,7 +745,18 @@ export function PageBuilder({
     };
 
     return (
-      <RenaissanceSectionFrame key={unit.key} marker={unit.marker}>
+      <RenaissanceSectionFrame
+        key={unit.key}
+        marker={unit.marker}
+        showLegacyPeopleProof={
+          role === "people" &&
+          !unit.blocks.some(({ block }) =>
+            ["renaissancePortraitGrid", "renaissanceAwardLogoWall"].includes(
+              block._type || "",
+            ),
+          )
+        }
+      >
         {role === "joinUs" ? (
           <RenaissanceJoinUs
             title={isLegacy ? undefined : intro?.header?.mainHeadline}

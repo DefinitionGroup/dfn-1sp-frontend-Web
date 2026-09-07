@@ -28,7 +28,7 @@ export default function CardInsideComponent({
           <video
             src={optimizedVideoUrl(mediaUrl, { maxWidth: 960 })}
             aria-label={card.altText || undefined}
-            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.045]"
+            className="h-full w-full object-cover brightness-50 transition-transform duration-700 ease-out group-hover:scale-[1.045] group-hover:brightness-90 "
             autoPlay
             muted
             loop
@@ -39,7 +39,7 @@ export default function CardInsideComponent({
           <img
             src={mediaUrl}
             alt={card.altText || ""}
-            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.045]"
+            className="h-full w-full object-cover brightness-50 transition-transform duration-700 ease-out group-hover:scale-[1.045] group-hover:brightness-90"
             loading="lazy"
           />
         ) : (
@@ -48,7 +48,7 @@ export default function CardInsideComponent({
             aria-hidden="true"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-renaissance-ink/65 via-transparent to-renaissance-ink/10 opacity-80" />
+        <div className="absolute inset-0 bg-gradient-to-t from-renaissance-ink/95 via-transparent to-renaissance-ink/90 opacity-95" />
         <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/15" />
       </div>
 

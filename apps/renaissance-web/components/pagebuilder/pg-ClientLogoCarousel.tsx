@@ -1,5 +1,13 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  type Variants,
+} from "motion/react";
 import type {
   ClientLogoCarousel as ClientLogoCarouselType,
   ClientLogoItem,
@@ -9,20 +17,226 @@ import { assetUrl } from "@1sp/utils/cloudinary";
 import Eyebrow from "@renaissance/components/ui/Eyebrow";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
-/* Seconds per logo, so perceived speed stays constant no matter how many
-   logos (or set repeats) the track holds. Editable per block in Studio
-   via the "Scroll Speed" field. */
-const SPEED_SECONDS_PER_LOGO: Record<string, number> = {
-  slow: 10,
-  normal: 7,
-  fast: 4,
+const GRID_SLOT_COUNT = 12;
+
+const SWAP_INTERVAL_MS: Record<string, number> = {
+  slow: 2600,
+  normal: 1800,
+  fast: 1100,
 };
 
-/**
- * Infinite client-logo marquee. Uses the `.logo-marquee-track` /
- * `.logo-carousel-mask` utilities from globals.css; the track is
- * duplicated once so the -50% keyframe loops seamlessly.
- */
+const GRID_REVEAL_VARIANTS: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      delayChildren: 0.06,
+      staggerChildren: 0.055,
+    },
+  },
+};
+
+const LOGO_CELL_REVEAL_VARIANTS: Variants = {
+  hidden: {
+    opacity: 0,
+    filter: "blur(12px)",
+    transform: "translateY(8px)",
+  },
+  visible: {
+    opacity: 1,
+    filter: "blur(0px)",
+    transform: "translateY(0px)",
+    transition: {
+      duration: 0.68,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+};
+
+type LogoEntry = {
+  id: string;
+  name: string;
+  src: string;
+};
+
+type LogoSlot = {
+  entry: LogoEntry;
+  position: number;
+  revision: number;
+};
+
+function createInitialSlots(logos: LogoEntry[]): LogoSlot[] {
+  return Array.from({ length: GRID_SLOT_COUNT }, (_, position) => ({
+    entry: logos[position % logos.length],
+    position,
+    revision: 0,
+  }));
+}
+
+function LogoSwapGrid({
+  logos,
+  speed,
+  grayscale,
+}: {
+  logos: LogoEntry[];
+  speed: string;
+  grayscale: boolean;
+}) {
+  const gridRef = React.useRef<HTMLDivElement>(null);
+  const shouldReduceMotion = useReducedMotion();
+  const [isInView, setIsInView] = React.useState(false);
+  const [hasEnteredView, setHasEnteredView] = React.useState(false);
+  const [isDocumentVisible, setIsDocumentVisible] = React.useState(
+    () => typeof document === "undefined" || document.visibilityState === "visible",
+  );
+  const [isPaused, setIsPaused] = React.useState(false);
+  const [slots, setSlots] = React.useState<LogoSlot[]>(() =>
+    createInitialSlots(logos),
+  );
+
+  React.useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          setHasEnteredView(true);
+        }
+      },
+      { threshold: 0.2 },
+    );
+
+    observer.observe(grid);
+    return () => observer.disconnect();
+  }, []);
+
+  React.useEffect(() => {
+    const handleVisibilityChange = () => {
+      setIsDocumentVisible(document.visibilityState === "visible");
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () =>
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, []);
+
+  React.useEffect(() => {
+    if (
+      shouldReduceMotion ||
+      isPaused ||
+      !isInView ||
+      !isDocumentVisible ||
+      logos.length < 2
+    ) {
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      setSlots((currentSlots) => {
+        const position = Math.floor(Math.random() * currentSlots.length);
+        const currentEntry = currentSlots[position].entry;
+        const alternatives = logos.filter((logo) => logo.id !== currentEntry.id);
+        const nextEntry =
+          alternatives[Math.floor(Math.random() * alternatives.length)];
+        const nextSlots = [...currentSlots];
+
+        nextSlots[position] = {
+          entry: nextEntry,
+          position,
+          revision: currentSlots[position].revision + 1,
+        };
+
+        return nextSlots;
+      });
+    }, SWAP_INTERVAL_MS[speed] ?? SWAP_INTERVAL_MS.normal);
+
+    return () => window.clearInterval(interval);
+  }, [isDocumentVisible, isInView, isPaused, logos, shouldReduceMotion, speed]);
+
+  return (
+    <motion.div
+      ref={gridRef}
+      className="grid grid-cols-6 grid-rows-2 gap-x-2 gap-y-4 sm:gap-x-3 md:gap-x-5 md:gap-y-6"
+      aria-label="Client logo grid"
+      variants={GRID_REVEAL_VARIANTS}
+      initial={shouldReduceMotion ? false : "hidden"}
+      animate={hasEnteredView || shouldReduceMotion ? "visible" : "hidden"}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onFocusCapture={() => setIsPaused(true)}
+      onBlurCapture={() => setIsPaused(false)}
+    >
+      {slots.map(({ entry, position, revision }) => {
+        const isFirstInstance =
+          slots.findIndex((slot) => slot.entry.id === entry.id) === position;
+
+        return (
+          <motion.div
+            key={position}
+            className="group/logo relative grid h-20 place-items-center overflow-hidden px-2 sm:h-24 md:h-28 md:px-5"
+            data-logo-slot={position}
+            variants={LOGO_CELL_REVEAL_VARIANTS}
+          >
+            <div className="relative h-8 w-full md:h-12">
+              <AnimatePresence initial={false} mode="sync">
+                <motion.div
+                  key={`${entry.id}-${revision}`}
+                  className="absolute inset-0"
+                  data-logo-id={entry.id}
+                  initial={
+                    shouldReduceMotion
+                      ? { opacity: 1 }
+                      : {
+                          opacity: 0,
+                          filter: "blur(8px)",
+                          transform: "scale(1.015)",
+                        }
+                  }
+                  animate={{
+                    opacity: 1,
+                    filter: "blur(0px)",
+                    transform: "scale(1)",
+                  }}
+                  exit={
+                    shouldReduceMotion
+                      ? { opacity: 1 }
+                      : {
+                          opacity: 0,
+                          filter: "blur(6px)",
+                          transform: "scale(0.985)",
+                          transition: {
+                            duration: 0.36,
+                            ease: [0.4, 0, 1, 1],
+                          },
+                        }
+                  }
+                  transition={{
+                    duration: shouldReduceMotion ? 0 : 0.68,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                >
+                  <Image
+                    src={entry.src}
+                    alt={isFirstInstance ? entry.name : ""}
+                    fill
+                    sizes="(min-width: 1480px) 224px, 16vw"
+                    className={`object-contain transition-[filter,opacity] duration-300 ${
+                      grayscale
+                        ? "grayscale opacity-70 group-hover/logo:grayscale-0 group-hover/logo:opacity-100"
+                        : ""
+                    }`}
+                  />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </motion.div>
+        );
+      })}
+    </motion.div>
+  );
+}
+
 function ClientLogoCarousel({
   data,
   presentationRole,
@@ -44,9 +258,18 @@ function ClientLogoCarousel({
 
   const clients: ClientLogoItem[] =
     (selectionMode === "manual" ? selectedClients : autoClients) ?? [];
-  const withLogos = clients.filter((c) => assetUrl(c.logo));
+  const logos = clients.flatMap((client, index) => {
+    const src = assetUrl(client.logo);
+    if (!src) return [];
 
-  if (withLogos.length === 0) {
+    return [{
+      id: client._id || `${client.name || "client"}-${index}`,
+      name: client.name || "Client logo",
+      src,
+    }];
+  });
+
+  if (logos.length === 0) {
     // Visible hint instead of a silent null so editors can see why the
     // block is empty (same pattern as SmartPeople / SmartUnitsGlobe).
     return (
@@ -73,44 +296,8 @@ function ClientLogoCarousel({
     ...(hideFromNav ? { "data-nav-hidden": "true" } : {}),
   };
 
-  // Each half of the -50% loop must be wider than any viewport, otherwise
-  // the loop point exposes whitespace. Repeat the set until a half holds
-  // at least 12 logos (~12 * 136px > 1600px).
-  const repeats = Math.max(1, Math.ceil(12 / withLogos.length));
-  const logosPerHalf = repeats * withLogos.length;
-  const secondsPerLogo =
-    SPEED_SECONDS_PER_LOGO[speed] ?? SPEED_SECONDS_PER_LOGO.normal;
-  const marqueeDuration = `${logosPerHalf * secondsPerLogo}s`;
-
-  const renderHalf = (ariaHidden: boolean) => (
-    <div
-      className="flex items-center gap-10 pr-10"
-      aria-hidden={ariaHidden || undefined}
-    >
-      {Array.from({ length: repeats }).flatMap((_, rep) =>
-        withLogos.map((client, idx) => (
-          <div
-            key={`${client._id || client.name || "client"}-${rep}-${idx}${ariaHidden ? "-dup" : ""}`}
-            className={`relative h-9 w-36 shrink-0 md:h-12 md:w-42 ${
-              grayscale
-                ? "grayscale opacity-60 transition-all duration-300 hover:grayscale-0 hover:opacity-100"
-                : ""
-            }`}
-          >
-            <Image
-              src={assetUrl(client.logo as any) || ""}
-              alt={ariaHidden || rep > 0 ? "" : client.name || "Client logo"}
-              fill
-              sizes="(min-width: 768px) 168px, 144px"
-              className="object-contain"
-            />
-          </div>
-        ))
-      )}
-    </div>
-  );
-
   const isServicesProof = presentationRole === "services";
+  const gridKey = logos.map((logo) => logo.id).join("|");
 
   return (
     <section
@@ -141,16 +328,13 @@ function ClientLogoCarousel({
           </div>
         )}
 
-        <div className="logo-marquee-pausable py-6 md:py-8">
-          <div className="logo-carousel-mask overflow-hidden">
-            <div
-              className="logo-marquee-track flex"
-              style={{ "--marquee-duration": marqueeDuration } as React.CSSProperties}
-            >
-              {renderHalf(false)}
-              {renderHalf(true)}
-            </div>
-          </div>
+        <div className="py-6 md:py-8">
+          <LogoSwapGrid
+            key={gridKey}
+            logos={logos}
+            speed={speed}
+            grayscale={grayscale}
+          />
         </div>
       </div>
     </section>

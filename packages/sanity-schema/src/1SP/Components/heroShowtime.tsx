@@ -125,6 +125,24 @@ export default defineType({
       group: "content",
     }),
     defineField({
+      name: "logoImage",
+      title: "Logo above headline",
+      type: "image",
+      description:
+        "Optional hero logo. Renaissance uses its action-teal wordmark when no image is selected.",
+      group: "content",
+      options: { hotspot: false },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alternative text",
+          type: "string",
+          description: "Describe the logo or brand name shown in the image.",
+        }),
+      ],
+      hidden: ({ document }) => document?.channel !== "renaissanceWeb",
+    }),
+    defineField({
       name: "headingTag",
       title: "Heading Tag",
       type: "string",
