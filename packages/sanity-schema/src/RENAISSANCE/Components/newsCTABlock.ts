@@ -7,7 +7,8 @@ export default defineType({
   type: "object",
   description:
     "A news banner with bolt-masked image or video and one large arrow link.",
-  hidden: ({ document }) => document?.channel !== "renaissanceWeb",
+  // Portable Text's insert menu treats hidden functions as truthy instead of
+  // evaluating them. Keep this type visible; validation below enforces channel.
   fields: [
     defineField({
       name: "headline",
