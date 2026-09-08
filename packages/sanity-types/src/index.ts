@@ -410,6 +410,21 @@ export interface RenaissanceAwardLogoWall {
     logos?: RenaissanceMediaItem[];
 }
 
+export interface RegisterCard extends CTA {
+    _key?: string;
+    _type?: "cta";
+}
+
+export interface RegisterBlock {
+    _type: "registerBlock";
+    _key?: string;
+    headline?: string;
+    description?: string;
+    cards?: RegisterCard[];
+    navPointName?: string;
+    hideFromNav?: boolean;
+}
+
 export interface FlzrTwoThirdsContentSection {
     _type: "flzrTwoThirdsContentSection";
     _key?: string;

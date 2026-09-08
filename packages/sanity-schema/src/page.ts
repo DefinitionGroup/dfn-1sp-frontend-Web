@@ -176,6 +176,7 @@ export default defineType({
                 { type: 'renaissanceSectionBand', title: 'Renaissance Section' },
                 { type: 'renaissancePortraitGrid', title: 'Renaissance Portrait Grid' },
                 { type: 'renaissanceAwardLogoWall', title: 'Renaissance Award Logo Wall' },
+                { type: 'registerBlock', title: 'Renaissance Register Block' },
                 { type: 'servicesHeroWithBadge' },
                 { type: 'intertitleCTA' },
                 { type: 'introBlockTypoSophisticated' },

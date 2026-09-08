@@ -18,6 +18,7 @@ import type {
   RenaissanceCarouselBackgroundTone,
   RenaissancePortraitGrid as RenaissancePortraitGridType,
   RenaissanceSectionRole,
+  RegisterBlock as RegisterBlockType,
 } from "@1sp/sanity-types";
 import type { Page } from "@1sp/sanity-types";
 import { HeroShowtime as HeroShowtimeType } from "@1sp/sanity-types";
@@ -29,7 +30,7 @@ import OneSpScope from "@root/components/onesp-group/OneSpScope";
 import RenaissanceSectionFrame from "./RenaissanceSectionFrame";
 import RenaissanceOrigins from "./RenaissanceOrigins";
 import RenaissanceNetwork from "./RenaissanceNetwork";
-import RenaissanceJoinUs from "./RenaissanceJoinUs";
+import RenaissanceRegisterBlock from "./RenaissanceRegisterBlock";
 import { partitionRenaissanceSections } from "@renaissance/lib/renaissanceSections";
 
 const CanonicalOneSpPageBuilder = dynamic(
@@ -407,6 +408,15 @@ export function PageBuilder({
                 />
               </ErrorBoundary>
             );
+          case "registerBlock":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <RenaissanceRegisterBlock
+                  key={key}
+                  data={block as RegisterBlockType}
+                />
+              </ErrorBoundary>
+            );
           case "cardContainerComponent":
             return (
               <ErrorBoundary key={`error-${key}`}>
@@ -721,6 +731,9 @@ export function PageBuilder({
     const subline = unit.blocks.find(
       ({ block }) => block._type === "sublineComponent",
     )?.block as any;
+    const register = unit.blocks.find(
+      ({ block }) => block._type === "registerBlock",
+    )?.block as RegisterBlockType | undefined;
 
     const legacyBlock = (block: any) => {
       if (!isLegacy) return block;
@@ -758,9 +771,15 @@ export function PageBuilder({
         }
       >
         {role === "joinUs" ? (
-          <RenaissanceJoinUs
-            title={isLegacy ? undefined : intro?.header?.mainHeadline}
-            description={isLegacy ? undefined : subline?.description || intro?.description}
+          <RenaissanceRegisterBlock
+            data={register ?? {
+              _type: "registerBlock",
+              headline: isLegacy ? undefined : intro?.header?.mainHeadline,
+              description: isLegacy
+                ? undefined
+                : subline?.description || intro?.description,
+              cards: isLegacy ? undefined : subline?.additionalContent,
+            }}
           />
         ) : (
           unit.blocks.map(({ block, sourceIndex }) =>

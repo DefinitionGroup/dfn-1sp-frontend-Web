@@ -69,7 +69,7 @@ export default defineType({
       title: "Desktop space before section",
       type: "string",
       description:
-        "Adds space above this section on desktop only. Mobile and tablet spacing remain unchanged.",
+        "Adds space above this section on desktop only. Mobile and tablet spacing remain unchanged. Join Us uses a fixed flush desktop treatment.",
       initialValue: "none",
       options: {
         list: [
@@ -80,7 +80,10 @@ export default defineType({
         ],
         layout: "radio",
       },
-      hidden: ({ parent }) => !startsSection(parent),
+      hidden: ({ parent }) =>
+        !startsSection(parent) ||
+        (parent as { sectionRole?: string } | undefined)?.sectionRole ===
+          "joinUs",
     }),
     defineField({
       name: "topBorder",

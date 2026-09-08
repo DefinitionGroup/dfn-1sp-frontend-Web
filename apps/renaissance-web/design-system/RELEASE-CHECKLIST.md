@@ -20,6 +20,8 @@ Use this checklist for every new or changed Renaissance page. A page is not comp
 - [ ] Every block is Core or has passed its Conditional gate in `COMPONENTS.md`.
 - [ ] Existing PageBuilder blocks and data contracts remain intact; Renaissance app-local presentation adapters own Figma-specific framing.
 - [ ] `renaissanceSectionBand` remains optional and backward-compatible; `renaissancePortraitGrid` and `renaissanceAwardLogoWall` remain Renaissance-only authoring choices.
+- [ ] The homepage Join Us section uses one `registerBlock`; its copy remains CMS-owned, the section matches Action Teal buttons, and its two valid CTAs render as square right-side service-image cards with an 80%→100% brightness interaction.
+- [ ] Join Us is flush to the preceding section on desktop with 32px top padding and 6px top corners; mobile/tablet preserve the 48px separation.
 - [ ] Optional desktop section spacing, centered 3px Action Teal top separator capped at 1680px, badge looping and carousel background tone work without changing mobile defaults or grouped PageBuilder content.
 - [ ] Every visible section has one purpose and a semantic heading.
 - [ ] Heading order is logical independent of visual size.

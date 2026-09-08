@@ -30,7 +30,8 @@ import siteSettings from './Global/siteSettings'
 import renaissanceSectionBand from './RENAISSANCE/Components/renaissanceSectionBand'
 import renaissancePortraitGrid from './RENAISSANCE/Components/renaissancePortraitGrid'
 import renaissanceAwardLogoWall from './RENAISSANCE/Components/renaissanceAwardLogoWall'
+import registerBlock from './RENAISSANCE/Components/registerBlock'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [page, menu, siteSettings, oneSpComponentGroup, translationGuidelines, caseStudy, unitCase, client, person, contactSubmission, ...OneSPschemaTypes, ...FLZRschemaTypes, ...CaseStudySchemaTypes, ...MSMschemaTypes, renaissanceSectionBand, renaissancePortraitGrid, renaissanceAwardLogoWall, link, cta, paragraph, size, services, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata, contactForm, oneSpComponentGroupReference],
+  types: [page, menu, siteSettings, oneSpComponentGroup, translationGuidelines, caseStudy, unitCase, client, person, contactSubmission, ...OneSPschemaTypes, ...FLZRschemaTypes, ...CaseStudySchemaTypes, ...MSMschemaTypes, renaissanceSectionBand, renaissancePortraitGrid, renaissanceAwardLogoWall, registerBlock, link, cta, paragraph, size, services, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata, contactForm, oneSpComponentGroupReference],
 }

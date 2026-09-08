@@ -131,6 +131,35 @@ test("keeps fallback service cards inside the services band", () => {
   );
 });
 
+test("composes the fallback Join Us section from one register block", () => {
+  const units = partitionRenaissanceSections(RENAISSANCE_HOMEPAGE_FALLBACK);
+  const joinUs = units.find(
+    (unit) => unit.kind === "section" && unit.marker.sectionRole === "joinUs",
+  );
+
+  assert.ok(joinUs && joinUs.kind === "section");
+  assert.deepEqual(
+    joinUs.blocks.map(({ block: joinBlock }) => joinBlock._type),
+    ["registerBlock"],
+  );
+
+  const register = joinUs.blocks[0]?.block as {
+    headline?: string;
+    description?: string;
+    cards?: Array<{ text?: string; link?: { externalUrl?: string } }>;
+  };
+  assert.equal(joinUs.marker.desktopTopMargin, "none");
+  assert.equal(register.headline, "Register with us");
+  assert.match(register.description ?? "", /content creator\/journalist/i);
+  assert.deepEqual(
+    register.cards?.map((card) => [card.text, card.link?.externalUrl]),
+    [
+      ["Content creators", "/contact"],
+      ["Media", "/contact"],
+    ],
+  );
+});
+
 test("keeps the published people proof compatible until composable blocks are added", () => {
   const publishedUnits = partitionRenaissanceSections([
     marker("people", "people"),

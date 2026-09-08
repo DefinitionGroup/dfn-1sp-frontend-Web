@@ -115,7 +115,7 @@ Hard diagonal streaks and skewed translucent planes are the signature motif. The
 
 Buttons are compact, confident rectangles with subtly softened 4px corners and a 22×14 diagonal arrow. Primary buttons use action teal with a white label, uppercase white eyebrow and white arrow at rest; as the hover mosaic appears, all three switch together to petrol. Dark buttons use ink and white; glass buttons are reserved for image-backed contexts. Hover assembles a bright teal/mist surface as flush squares scale up in a top-left to bottom-right cascade; the shader owns that surface change without a competing CSS background swap. The arrow shifts subtly after the mosaic begins, with restrained spring scale providing immediate feedback. Focus uses a visible petrol ring with offset; reduced motion replaces the mosaic with an immediate static mist surface and removes spring scaling.
 
-Origins and Join Us actions use the same `Button2` mosaic component as the hero. Origins reads its button label, destination and variant from the shared Sanity `cta` field; its logo list and visual mode are also explicit CMS values. The mosaic releases its shader resources on cleanup without explicitly losing the canvas context, so React's development remount can initialize it again.
+Origins uses the same `Button2` mosaic component as the hero and reads its button label, destination and variant from the shared Sanity `cta` field; its logo list and visual mode are also explicit CMS values. Join Us is owned by the Renaissance-only `registerBlock`: its two CTA records become square image-backed cards on the right of the editorial copy. Those cards reuse the Content Creators and Traditional PR service imagery at 80% brightness, transitioning to full brightness on hover or keyboard focus. The complete Register surface deliberately shares the Action Teal button colour. The mosaic releases its shader resources on cleanup without explicitly losing the canvas context, so React's development remount can initialize it again.
 
 ### Navigation
 
@@ -131,7 +131,7 @@ The approved services, network, people, and origin passages use the exact assets
 
 Game stories are image-first and full-bleed, with controlled dark overlays for white copy and accessible controls. Services use the current compact Figma composition and exact `service-01.jpg` through `service-06.jpg` assets. Network, people, and origin proof use their corresponding Figma background, logo, portrait, award, bolt, and client-logo assets without substitutions. The footer is a substantial ink destination with the white wordmark, four clear content columns, hairline divisions, and simple arrow movement on links.
 
-All Join Us actions use the canonical `/contact` route. Do not split content-creator or media intent into separate destinations unless that product decision is approved later.
+All Join Us cards use the canonical `/contact` route. Do not split content-creator or media intent into separate destinations unless that product decision is approved later.
 
 Client logos use a borderless fixed six-column, two-row signal grid. The grid resolves into view with a one-time staggered blur/fade; after that, individual slots randomly swap through a soft overlapping Motion crossfade while the geometry remains stable. Swapping pauses offscreen, while the document is hidden, on hover/focus, and for reduced motion. The unsupported Tencent AVIF logo is intentionally absent; do not restore it without a verified browser-safe asset.
 
@@ -178,7 +178,7 @@ Primitive names describe a stable brand color. Semantic names describe why it is
 | --- | --- | --- | --- |
 | `surface.page` | Sand `#edeae1` | default page field | text or dark media overlay |
 | `surface.quiet` | Mist `#dbe5e5` | founder, supporting narrative, quiet data | primary CTA without contrast check |
-| `surface.action` | Action Teal `#3b9ca7` | default primary button background with its approved white control label | white body copy or extended text |
+| `surface.action` | Action Teal `#3b9ca7` | default primary button background and the approved Join Us Register surface | white body copy; Register uses Ink for extended text |
 | `surface.brand` | Petrol `#245e66` | active line and brand field | long body-copy background unless text is white |
 | `surface.ink` | Ink `#163f45` | dark passages, footer, story frame | every section; dark is contrast, not the default mode |
 | `text.primary` | Ink `#163f45` | headings and body on paper/mist | text on ink/media |
@@ -225,7 +225,7 @@ Italic display text is an accent, limited to one short phrase per headline. It u
 - **Mobile grid:** 4 columns with 16–24px page insets.
 - **Readable text measure:** 48–68ch; campaign captions may be 32–48ch.
 - **Section spacing:** 48px compact, 64px standard mobile, 96px standard desktop, 128px immersive desktop. A section marker may add 32px, 64px or 96px before its section at the desktop breakpoint without changing smaller layouts.
-- **Origins and Join Us separation:** these sections start 48px below the previous block on mobile/tablet. An unset desktop badge margin defaults to 96px; an explicit Sanity desktop setting still takes precedence. This applies to CMS content as well as the fallback.
+- **Origins and Join Us separation:** both sections start 48px below the previous block on mobile/tablet. Origins keeps its 96px default desktop margin with explicit Sanity overrides. Join Us is flush on desktop, adds 32px top padding to its Action Teal shell, and rounds the shell's top corners with `radius.statement`.
 - **Component spacing:** use a 4px base rhythm; prefer 8, 12, 16, 24, 32, 48 and 64px.
 
 Do not use vertical space as a substitute for hierarchy. On 390px mobile, a non-interactive repeated item should normally stay below 18rem unless the media itself is the content.

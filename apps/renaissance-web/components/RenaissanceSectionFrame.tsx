@@ -15,7 +15,7 @@ const roleConfig: Record<
   people: { id: "people", surface: "bg-renaissance-ink text-white", tone: "dark" },
   origins: { id: "origins", surface: "bg-renaissance-paper", tone: "light" },
   reach: { id: "global-reach", surface: "bg-renaissance-mist", tone: "light" },
-  joinUs: { id: "join-us", surface: "bg-renaissance-paper", tone: "light" },
+  joinUs: { id: "join-us", surface: "bg-renaissance-button", tone: "light" },
   contact: { id: "contact", surface: "bg-renaissance-paper", tone: "light" },
 };
 
@@ -40,10 +40,13 @@ export default function RenaissanceSectionFrame({
   const isCompactBand = ["services", "origins", "joinUs"].includes(
     marker.sectionRole,
   );
-  const hasDefaultSeparation =
-    marker.sectionRole === "joinUs" || marker.sectionRole === "origins";
-  const desktopTopMargin =
-    marker.desktopTopMargin ?? (hasDefaultSeparation ? "24" : "none");
+  const isJoinUsBand = marker.sectionRole === "joinUs";
+  const hasMobileSeparation =
+    isJoinUsBand || marker.sectionRole === "origins";
+  const desktopTopMargin = isJoinUsBand
+    ? "none"
+    : marker.desktopTopMargin ??
+      (marker.sectionRole === "origins" ? "24" : "none");
   const desktopMargin = desktopTopMarginClass[desktopTopMargin] ?? "";
 
   return (
@@ -53,7 +56,7 @@ export default function RenaissanceSectionFrame({
       data-renaissance-section={marker.sectionRole}
       data-desktop-top-margin={desktopTopMargin}
       data-top-border={marker.topBorder ? "true" : undefined}
-      className={`relative scroll-mt-24 overflow-hidden font-renaissance md:scroll-mt-28 ${hasDefaultSeparation ? "max-lg:mt-12" : ""} ${desktopMargin} ${config.surface}`}
+      className={`relative scroll-mt-24 overflow-hidden font-renaissance md:scroll-mt-28 ${hasMobileSeparation ? "max-lg:mt-12" : ""} ${isJoinUsBand ? "lg:rounded-t-statement lg:pt-8" : ""} ${desktopMargin} ${config.surface}`}
     >
       {marker.topBorder ? (
         <div

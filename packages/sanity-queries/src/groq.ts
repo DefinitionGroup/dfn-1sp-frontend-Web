@@ -60,6 +60,20 @@ const ADDITIONAL_CONTENT_PROJECTION = `additionalContent[]{
   }
 }`;
 
+const REGISTER_BLOCK_PROJECTION = `_type == 'registerBlock' => {
+  ...,
+  cards[]{
+    ...,
+    link{
+      ...,
+      page->{
+        _id,
+        slug
+      }
+    }
+  }
+}`;
+
 /**
  * Resolve reusable 1SP component groups as part of the page request. Keeping
  * the group payload in the page query avoids client-side waterfalls and lets
@@ -297,6 +311,7 @@ export const PAGE_QUERY =
         page->{slug}
       }
     },
+    ${REGISTER_BLOCK_PROJECTION},
     ${ADDITIONAL_CONTENT_PROJECTION},
     _type == 'showtimeGallery' => {
       ...,
@@ -651,6 +666,7 @@ export const HOME_PAGE_QUERY =
         page->{slug}
       }
     },
+    ${REGISTER_BLOCK_PROJECTION},
     ${ADDITIONAL_CONTENT_PROJECTION},
     _type == 'showtimeGallery' => {
       ...,

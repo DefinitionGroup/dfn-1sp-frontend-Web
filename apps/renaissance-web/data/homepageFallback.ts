@@ -362,20 +362,16 @@ export const RENAISSANCE_HOMEPAGE_FALLBACK: PageBuilderBlock[] = [
     mode: "section",
     sectionRole: "joinUs",
     badgeLabel: "JOIN US",
-    desktopTopMargin: "24",
+    desktopTopMargin: "none",
   },
   {
-    _key: "renaissance-join-intro",
-    _type: "introBlockTypoSophisticated",
+    _key: "renaissance-register",
+    _type: "registerBlock",
     hideFromNav: true,
-    header: { mainHeadline: "Register with us" },
-  },
-  {
-    _key: "renaissance-join-subline",
-    _type: "sublineComponent",
+    headline: "Register with us",
     description:
       "If you are a content creator/journalist or influencer register with us now to get all the latest news from our clients!",
-    additionalContent: [
+    cards: [
       {
         _key: "join-content-creators",
         _type: "cta",
