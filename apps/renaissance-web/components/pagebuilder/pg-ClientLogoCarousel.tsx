@@ -178,7 +178,7 @@ function LogoSwapGrid({
             data-logo-slot={position}
             variants={LOGO_CELL_REVEAL_VARIANTS}
           >
-            <div className="relative h-8 w-full md:h-12">
+            <div className="relative h-[2.66rem] w-full md:h-16">
               <AnimatePresence initial={false} mode="sync">
                 <motion.div
                   key={`${entry.id}-${revision}`}
