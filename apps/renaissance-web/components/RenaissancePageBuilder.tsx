@@ -19,6 +19,7 @@ import type {
   RenaissancePortraitGrid as RenaissancePortraitGridType,
   RenaissanceSectionRole,
   RegisterBlock as RegisterBlockType,
+  NewsCTABlock as NewsCTABlockType,
 } from "@1sp/sanity-types";
 import type { Page } from "@1sp/sanity-types";
 import { HeroShowtime as HeroShowtimeType } from "@1sp/sanity-types";
@@ -31,6 +32,7 @@ import RenaissanceSectionFrame from "./RenaissanceSectionFrame";
 import RenaissanceOrigins from "./RenaissanceOrigins";
 import RenaissanceNetwork from "./RenaissanceNetwork";
 import RenaissanceRegisterBlock from "./RenaissanceRegisterBlock";
+import RenaissanceNewsCTABlock from "./RenaissanceNewsCTABlock";
 import { partitionRenaissanceSections } from "@renaissance/lib/renaissanceSections";
 
 const CanonicalOneSpPageBuilder = dynamic(
@@ -406,6 +408,12 @@ export function PageBuilder({
                   data={block as IntroBlockTypoSophisticatedType}
                   presentationRole={presentationRole}
                 />
+              </ErrorBoundary>
+            );
+          case "newsCTABlock":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <RenaissanceNewsCTABlock data={block as NewsCTABlockType} />
               </ErrorBoundary>
             );
           case "registerBlock":

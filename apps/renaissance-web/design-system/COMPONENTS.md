@@ -26,6 +26,10 @@ Registration in `RenaissancePageBuilder.tsx` means the renderer understands a bl
 | `contentSection` | Render general editorial content | structured portable text | single-purpose section; readable measure ≤68ch | all heading levels, lists, quotes, links, empty content |
 | `tabbedContentSection` | Compare related views where switching matters | 2–5 labelled panels | tabs only when the user benefits from choosing a view | keyboard roving, selected state, no-JS/readable fallback |
 
+### News CTA
+
+`newsCTABlock` is a Renaissance-only Core news action, approved against the supplied banner reference. It requires a headline, short text, Cloudinary image/video with alt text, and one valid destination. The 1680px sand banner has a 3px Action Teal outline, the carousel's stepped bolt adapted as a shallow media mask, and the existing diagonal arrow enlarged to 44–72px. Media sits left on desktop and above the copy on mobile. Body text uses Petrol for contrast. The headline link covers the banner; video pause is a separate keyboard-accessible control. Video pauses offscreen/when hidden, respects reduced motion, and retains a poster on failure. Incomplete media/destinations omit the block. Schema registration is separate from deployed Studio/schema availability; adding this block does not alter published page content.
+
 ## Conditional components
 
 | Block type | Allowed use | Gate before use |

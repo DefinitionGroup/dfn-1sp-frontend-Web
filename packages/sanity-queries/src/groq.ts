@@ -60,6 +60,14 @@ const ADDITIONAL_CONTENT_PROJECTION = `additionalContent[]{
   }
 }`;
 
+const NEWS_CTA_BLOCK_PROJECTION = `_type == 'newsCTABlock' => {
+  ...,
+  link{
+    ...,
+    page->{_id, slug}
+  }
+}`;
+
 const REGISTER_BLOCK_PROJECTION = `_type == 'registerBlock' => {
   ...,
   cards[]{
@@ -312,6 +320,7 @@ export const PAGE_QUERY =
       }
     },
     ${REGISTER_BLOCK_PROJECTION},
+    ${NEWS_CTA_BLOCK_PROJECTION},
     ${ADDITIONAL_CONTENT_PROJECTION},
     _type == 'showtimeGallery' => {
       ...,
@@ -667,6 +676,7 @@ export const HOME_PAGE_QUERY =
       }
     },
     ${REGISTER_BLOCK_PROJECTION},
+    ${NEWS_CTA_BLOCK_PROJECTION},
     ${ADDITIONAL_CONTENT_PROJECTION},
     _type == 'showtimeGallery' => {
       ...,

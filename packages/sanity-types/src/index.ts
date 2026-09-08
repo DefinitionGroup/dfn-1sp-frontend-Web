@@ -415,6 +415,17 @@ export interface RegisterCard extends CTA {
     _type?: "cta";
 }
 
+export interface NewsCTABlock {
+    _type: "newsCTABlock";
+    _key?: string;
+    headline?: string;
+    text?: string;
+    media?: CloudinaryAsset;
+    mediaAlt?: string;
+    poster?: CloudinaryAsset;
+    link?: Link;
+}
+
 export interface RegisterBlock {
     _type: "registerBlock";
     _key?: string;

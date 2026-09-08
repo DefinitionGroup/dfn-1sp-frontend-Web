@@ -177,6 +177,7 @@ export default defineType({
                 { type: 'renaissancePortraitGrid', title: 'Renaissance Portrait Grid' },
                 { type: 'renaissanceAwardLogoWall', title: 'Renaissance Award Logo Wall' },
                 { type: 'registerBlock', title: 'Renaissance Register Block' },
+                { type: 'newsCTABlock', title: 'Renaissance News CTA' },
                 { type: 'servicesHeroWithBadge' },
                 { type: 'intertitleCTA' },
                 { type: 'introBlockTypoSophisticated' },
