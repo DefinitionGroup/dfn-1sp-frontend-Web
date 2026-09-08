@@ -17,12 +17,12 @@ import { assetUrl } from "@1sp/utils/cloudinary";
 import Eyebrow from "@renaissance/components/ui/Eyebrow";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
-const GRID_SLOT_COUNT = 12;
+const GRID_SLOT_COUNT = 6;
 
 const SWAP_INTERVAL_MS: Record<string, number> = {
   slow: 2600,
   normal: 1800,
-  fast: 1100,
+  fast: 1500,
 };
 
 const GRID_REVEAL_VARIANTS: Variants = {
@@ -46,7 +46,7 @@ const LOGO_CELL_REVEAL_VARIANTS: Variants = {
     filter: "blur(0px)",
     transform: "translateY(0px)",
     transition: {
-      duration: 0.68,
+      duration: 1.5,
       ease: [0.16, 1, 0.3, 1],
     },
   },
@@ -157,7 +157,7 @@ function LogoSwapGrid({
   return (
     <motion.div
       ref={gridRef}
-      className="grid grid-cols-6 grid-rows-2 gap-x-2 gap-y-4 sm:gap-x-3 md:gap-x-5 md:gap-y-6"
+      className="grid grid-cols-6 grid-rows-1 gap-x-2 sm:gap-x-3 md:gap-x-5"
       aria-label="Client logo grid"
       variants={GRID_REVEAL_VARIANTS}
       initial={shouldReduceMotion ? false : "hidden"}
@@ -179,7 +179,7 @@ function LogoSwapGrid({
             variants={LOGO_CELL_REVEAL_VARIANTS}
           >
             <div className="relative h-[2.66rem] w-full md:h-16">
-              <AnimatePresence initial={false} mode="sync">
+              <AnimatePresence initial={false} mode="wait">
                 <motion.div
                   key={`${entry.id}-${revision}`}
                   className="absolute inset-0"
@@ -190,13 +190,13 @@ function LogoSwapGrid({
                       : {
                           opacity: 0,
                           filter: "blur(8px)",
-                          transform: "scale(1.015)",
+                          transform: "translateY(18px)",
                         }
                   }
                   animate={{
                     opacity: 1,
                     filter: "blur(0px)",
-                    transform: "scale(1)",
+                    transform: "translateY(0px)",
                   }}
                   exit={
                     shouldReduceMotion
@@ -204,15 +204,15 @@ function LogoSwapGrid({
                       : {
                           opacity: 0,
                           filter: "blur(6px)",
-                          transform: "scale(0.985)",
+                          transform: "translateY(-18px)",
                           transition: {
-                            duration: 0.36,
+                            duration: 0.75,
                             ease: [0.4, 0, 1, 1],
                           },
                         }
                   }
                   transition={{
-                    duration: shouldReduceMotion ? 0 : 0.68,
+                    duration: shouldReduceMotion ? 0 : 0.75,
                     ease: [0.16, 1, 0.3, 1],
                   }}
                 >

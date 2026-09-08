@@ -129,6 +129,7 @@ function prepareHomepage(source: SanityDocument) {
     uniquePeopleText: undefined,
   };
   logos.headline = "You’re in great company.";
+  logos.speed = "fast";
 
   peopleIntro.header = {
     ...(peopleIntro.header ?? {}),

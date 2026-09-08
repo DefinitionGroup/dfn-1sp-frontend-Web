@@ -175,7 +175,7 @@ export const RENAISSANCE_HOMEPAGE_FALLBACK: PageBuilderBlock[] = [
     _type: "clientLogoCarousel",
     headline: "You’re in great company.",
     selectionMode: "manual",
-    speed: "slow",
+    speed: "fast",
     grayscale: true,
     hideFromNav: true,
     selectedClients: [

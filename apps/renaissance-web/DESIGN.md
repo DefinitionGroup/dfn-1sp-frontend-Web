@@ -133,7 +133,7 @@ Game stories are image-first and full-bleed, with controlled dark overlays for w
 
 All Join Us cards use the canonical `/contact` route. Do not split content-creator or media intent into separate destinations unless that product decision is approved later.
 
-Client logos use a borderless fixed six-column, two-row signal grid. The grid resolves into view with a one-time staggered blur/fade; after that, individual slots randomly swap through a soft overlapping Motion crossfade while the geometry remains stable. Swapping pauses offscreen, while the document is hidden, on hover/focus, and for reduced motion. The unsupported Tencent AVIF logo is intentionally absent; do not restore it without a verified browser-safe asset.
+Client logos use a borderless fixed six-column, single-row signal grid. The grid resolves into view with a one-time staggered blur/fade; after that, one randomly selected slot swaps every 1.5 seconds through a sequential two-phase transition while the geometry remains stable. The outgoing logo first blurs and fades while rising fully out over 0.75 seconds; only after it disappears does the incoming logo rise from below, fade in and sharpen over the next 0.75 seconds. Swapping pauses offscreen, while the document is hidden, on hover/focus, and for reduced motion. The unsupported Tencent AVIF logo is intentionally absent; do not restore it without a verified browser-safe asset.
 
 ## Do's and Don'ts
 
