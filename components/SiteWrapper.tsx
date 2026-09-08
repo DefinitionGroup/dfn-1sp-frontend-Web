@@ -28,6 +28,7 @@
 import { getGlobalData } from "@1sp/sanity-queries";
 import FrontNavOverlay from "./menu/FrontNavOverlay";
 import Footer from "./menu/FooterNew";
+import FooterExternalBannerBlock from "./pagebuilder/server/FooterExternalBannerBlock";
 import { NavbarMenu, FooterMenu } from "@1sp/sanity-types/menu";
 import PageWithMapVertical from "./ui/PageWithMapVertical";
 import ScrollToTop from "./ui/ScrollToTop";
@@ -109,6 +110,9 @@ export default async function SiteWrapper({
               initialCaseStudies={overlayCaseStudies}
             />
             {children}
+            {channel === "1spWeb" && footer?.footerExternalBanner && (
+              <FooterExternalBannerBlock {...footer.footerExternalBanner} language={language} />
+            )}
             <Footer menuData={footer as FooterMenu} />
             <ScrollToTop />
           </PageWithMapVertical>

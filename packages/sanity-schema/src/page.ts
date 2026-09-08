@@ -197,6 +197,7 @@ export default defineType({
                 { type: 'smartUnitsGlobe' },
                 { type: 'globeComponent' },
                 { type: 'unitLogoGrid' },
+                { type: 'footerExternalBanner' },
                 { type: 'pageBuilderLogoFloat' },
                 { type: 'clientLogoCarousel' },
                 { type: 'pageBuilderPersonioJobs' },

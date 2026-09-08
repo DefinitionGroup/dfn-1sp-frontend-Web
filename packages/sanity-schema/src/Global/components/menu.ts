@@ -164,6 +164,15 @@ export default {
 
         /* Footer Fields */
         {
+            name: 'footerExternalBanner',
+            title: 'Footer External Banner',
+            type: 'footerExternalBanner',
+            group: 'footer',
+            description: 'Optional 1SP banner above the existing footer. Add media and text here to enable it.',
+            hidden: ({ document }: { document?: { menuType?: string; channel?: string } }) =>
+                document?.menuType !== 'Footer' || document?.channel !== '1spWeb',
+        },
+        {
             name: "footerColumns",
             title: "Footer Columns",
             type: "array",

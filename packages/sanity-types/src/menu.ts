@@ -1,3 +1,4 @@
+import type { FooterExternalBannerData } from "./footerExternalBanner";
 // Menu types for Sanity data
 export interface MenuItem {
     _key: string;
@@ -50,6 +51,7 @@ export interface SocialLink {
 }
 
 export interface FooterMenu {
+    footerExternalBanner?: FooterExternalBannerData | null;
     _id?: string;
     title?: string;
     menuType: "Footer";

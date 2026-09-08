@@ -965,6 +965,7 @@ export const NAVBAR_QUERY = defineQuery(`
 export const FOOTER_QUERY = defineQuery(`
 *[_type == "menu" && menuType == "Footer" && channel == $channel && language == $language][0]{
   _id,
+  footerExternalBanner{..., cta{..., link{..., page->{slug}}}},
   imageCloud,
   addressTitle,
   locations[]{
@@ -1593,6 +1594,17 @@ export const UNIT_LOGO_GRID_QUERY = defineQuery(`
       }
     }
   }
+}
+`);
+
+export const FOOTER_EXTERNAL_BANNER_UNITS_QUERY = defineQuery(`
+*[_type == "unit" && isActive == true && language == $language &&
+  ($channel in channel || ($channel == "1spWeb" && !defined(channel)))
+] | order(name asc) {
+  _id, name,
+  logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+  logoColor${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+  cta{..., link{..., page->{slug}}}
 }
 `);
 

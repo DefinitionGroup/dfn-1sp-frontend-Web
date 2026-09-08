@@ -34,6 +34,7 @@ import { sanityFetch } from "./fetch";
 import { defineQuery } from "next-sanity";
 import { getChannelFromEnv } from "@1sp/site-config";
 import type { NavbarMenu } from "@1sp/sanity-types/menu";
+import type { FooterExternalBannerData, FooterExternalBannerUnit } from "@1sp/sanity-types";
 
 const INTERACTIVE_CAROUSEL_FIELD_MAP = {
   "1spWeb": "connectedDataCarouselPromo1SP",
@@ -130,6 +131,7 @@ const GLOBAL_DATA_QUERY = defineQuery(/* groq */ `{
   },
   "footer": *[_type == "menu" && menuType == "Footer" && channel == $channel && language == $language][0]{
     _id,
+    footerExternalBanner{..., cta{..., link{..., page->{slug}}}},
     menuType,
     imageCloud,
     addressTitle,
@@ -267,6 +269,7 @@ export interface GlobalData {
     }>;
   } | null;
   footer: {
+    footerExternalBanner?: FooterExternalBannerData | null;
     _id: string;
     menuType: string;
     imageCloud: unknown;
@@ -728,6 +731,20 @@ export const getUnitLogoGridUnits = cache(
       tags: ["units"],
     });
 
+    return data || [];
+  },
+);
+
+// Legacy unassigned units belong to the original 1SP catalog only.
+// Explicit assignments and language always take precedence; no item limit.
+export const getFooterExternalBannerUnits = cache(
+  async (channel: string, language: string): Promise<FooterExternalBannerUnit[]> => {
+    const { FOOTER_EXTERNAL_BANNER_UNITS_QUERY } = await import("./groq");
+    const { data } = await sanityFetch({
+      query: FOOTER_EXTERNAL_BANNER_UNITS_QUERY,
+      params: { channel, language },
+      tags: ["units"],
+    });
     return data || [];
   },
 );

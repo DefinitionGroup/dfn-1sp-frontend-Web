@@ -1,4 +1,5 @@
 export type SanityID = string;
+export type { FooterExternalBannerData, FooterExternalBannerUnit } from "./footerExternalBanner";
 
 export type Reference<T = any> = { _ref: SanityID; _type?: string };
 

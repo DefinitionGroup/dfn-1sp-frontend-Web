@@ -19,6 +19,7 @@ import HeadlineChallenge from "./pagebuilder/cases/pg-HeadlineChallenge";
 import ComponentLoader from "./ui/ComponentLoader";
 import DeferredSection from "./ui/DeferredSection";
 import OneSpScope from "./onesp-group/OneSpScope";
+import FooterExternalBannerBlock from "./pagebuilder/server/FooterExternalBannerBlock";
 
 // Dynamically import heavy components to reduce initial bundle size
 const ShowtimeGallery = dynamic(
@@ -502,6 +503,12 @@ export function PageBuilder({
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <UnitLogoGrid key={key} {...(block as any)} language={language} />
+              </ErrorBoundary>
+            );
+          case "footerExternalBanner":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <FooterExternalBannerBlock {...block} language={language} />
               </ErrorBoundary>
             );
           case "pageBuilderLogoFloat":
