@@ -40,6 +40,7 @@ export default function RenaissanceSectionFrame({
   const isCompactBand = ["services", "origins", "joinUs"].includes(
     marker.sectionRole,
   );
+  const isReachBand = marker.sectionRole === "reach";
   const isJoinUsBand = marker.sectionRole === "joinUs";
   const hasMobileSeparation =
     isJoinUsBand || marker.sectionRole === "origins";
@@ -71,7 +72,7 @@ export default function RenaissanceSectionFrame({
         </div>
       ) : null}
       <div
-        className={`relative z-10 mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12 ${
+        className={`${isReachBand ? "relative md:absolute md:inset-x-0 md:top-0" : "relative"} z-10 mx-auto w-full max-w-[1680px] px-5 sm:px-8 lg:px-12 ${
           isCompactBand ? "pt-2" : "pt-14 md:pt-20"
         }`}
       >

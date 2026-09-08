@@ -21,6 +21,7 @@ Registration in `RenaissancePageBuilder.tsx` means the renderer understands a bl
 | `cardContainerComponent` | Scan a concise service set | 2–6 items, short title, max 140-character description | desktop grid; compact ruled list on mobile; no shadow | long title, 2/3/5/6 counts, empty item omission, contrast |
 | `twoColContentSection` | Pair a human/place/media anchor with narrative | meaningful media and alt text, 1–4 text blocks | 6/6 desktop split, stacked mobile; media not smaller than supporting copy | missing media, reverse layout, reduced parallax, optimized image/video |
 | `globeComponent` | Explain location coverage | one title, one short description, 1–6 verified locations | immersive desktop map; capped mobile map followed by scannable text list | canvas failure, reduced data/motion, keyboard-independent labels, small viewport |
+| `registerBlock` | Route creators and media contacts into registration | one headline, one short description, exactly two valid CTAs | Action Teal section; editorial copy on the left and two square image-backed actions on the right; cards stack below copy on mobile | invalid CTA omission, keyboard focus, external-link behavior, long labels |
 | `intertitleCTA` | Close a section or page with one action | one headline, optional subline, one short paragraph, one valid CTA | open editorial field with hairline; no surrounding card | missing/invalid link renders no CTA, internal/external/email intent, heading level |
 | `contentSection` | Render general editorial content | structured portable text | single-purpose section; readable measure ≤68ch | all heading levels, lists, quotes, links, empty content |
 | `tabbedContentSection` | Compare related views where switching matters | 2–5 labelled panels | tabs only when the user benefits from choosing a view | keyboard roving, selected state, no-JS/readable fallback |
@@ -37,7 +38,7 @@ Registration in `RenaissancePageBuilder.tsx` means the renderer understands a bl
 | `smartUnitsGallery`, `smartUnitsGlobe`, `unitLogoGrid` | multi-unit or network pages | confirm Renaissance is still the primary brand; do not replace the approved local reach pattern by default |
 | `resultsMetrics`, `headlineChallenge` | case-study evidence | every number and claim approved; never use placeholder metrics |
 | `pageBuilderPersonioJobs` | jobs page | external service behavior, filters, error/empty states and privacy review |
-| `sublineComponent`, `oneSPHeader`, `pageBuilderLogoFloat` | transitional or specialist compositions | verify duplicate-brand risk and semantic heading order |
+| `sublineComponent`, `oneSPHeader`, `pageBuilderLogoFloat` | transitional or specialist compositions | verify duplicate-brand risk and semantic heading order; do not compose the Renaissance homepage registration section from separate intro/subline blocks |
 
 ## Compatibility only
 
@@ -68,7 +69,7 @@ Compatibility blocks require explicit design review and a channel/data-scope che
 - Internal links stay in the current tab. HTTP(S) links may open externally only when user expectation is clear. `mailto:` and `tel:` never use `target="_blank"`.
 - Incomplete CMS actions render nothing; never fall back to `href="#"`.
 - Minimum action height: 44px for primary controls and all touch controls.
-- Brand/dark/glass hover fills with flush squares that scale up from top-left to bottom-right. Reduced motion uses an immediate static mist surface.
+- Brand, glass, and strands hover fills with flush squares that scale up from top-left to bottom-right. Reduced motion uses an immediate static mist surface.
 
 ### Story carousel
 
@@ -98,14 +99,24 @@ Compatibility blocks require explicit design review and a channel/data-scope che
 
 ### Global reach
 
-- The globe block places its CMS title and description on the left and an enlarged upper-hemisphere crop on the right from 768px; mobile stacks text above the globe. The split view uses a square canvas and 260-unit camera distance to fit the full silhouette width with side clearance at every breakpoint. A 3:2 viewport reveals the upper portion and fades its lower edge into the section background instead of cutting a hard rectangle. Location labels retain a readable screen size independent of camera distance.
+- The globe block places its CMS title and description on the left and an enlarged upper-hemisphere crop on the right from 768px; mobile stacks text above the globe. In the Reach band, the badge overlays the section instead of reserving a separate row, so the desktop WebGL viewport physically spans the full parent section and the badge shares the globe's vertical plane. A 9:4 grid slot keeps the section one third shorter than the previous 3:2 composition. Inside that full-height viewport, the square globe canvas is shifted upward by 35% and uses a 260-unit camera distance to fit the silhouette width with side clearance. Mobile retains the bounded stacked viewport without the desktop translation. Location labels retain a readable screen size independent of camera distance.
+- The three CMS location anchors expand into five deterministic network layers across Europe, America, and China. The layers weave through every region as one loop, producing exactly five times the original animated arcs and pulse points. Synthetic locations are visual-only and never receive labels; only the original CMS anchors retain their names and label connectors.
 - Locations are always available as text, independent of canvas/WebGL.
 - Mobile map height is capped at 55–65svh.
 - If WebGL or motion is unavailable, render a static map image/pattern with the same location list.
 
+### Registration block
+
+- `registerBlock` owns the complete Join Us composition: headline, description and exactly two CTA records.
+- The full section uses `surface.action` / Action Teal, matching the default primary-button background. On desktop, copy occupies the left five columns and both interactive cards occupy the right seven; on mobile, the cards stack below the copy.
+- On desktop the section has no top margin. Its Action Teal shell begins with 32px top padding and 6px rounded top corners; mobile/tablet retain the established 48px separation.
+- Cards are square, image-backed interaction containers with 4px corners. Content Creators uses `service-02.jpg`; Media uses `service-01.jpg`. Images rest at 80% brightness and transition to 100% on hover or keyboard focus.
+- A fixed Ink gradient preserves white-label contrast without changing the requested image-brightness transition. Focus remains clearly visible against the Action Teal section.
+- Invalid or incomplete CTA records are omitted. The homepage defaults remain “Content creators” and “Media”, both resolving to `/contact`.
+
 ### Footer
 
-- The homepage 1SP group and footer share a 1680px maximum width and aligned edges. The group has 6px upper corners; the footer has square upper corners and 6px lower corners, with no gap at their join.
+- The footer's Ink background follows the full page-band width and gutters used by the other homepage sections. Its inner content and the homepage 1SP group share a 1680px maximum width and aligned content edges. The group has 6px upper corners; the footer has square upper corners and 6px lower corners, with no gap at their join.
 - Footer content is derived from actual page/site data where possible.
 - Legal/company links remain readable and valid even when no Sanity page exists; use a deliberate empty/setup state rather than a false content page.
 - Footer is a destination, not a second homepage. Limit to four clear columns and one primary contact action.

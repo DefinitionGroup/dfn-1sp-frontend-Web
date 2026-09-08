@@ -273,7 +273,8 @@ async function RenaissanceFooter({
   ];
 
   return (
-    <footer className="mx-auto mb-12 w-[calc(100%-0.5rem)] max-w-[1680px]  overflow-hidden rounded-b-statement bg-renaissance-ink px-5 text-renaissance-paper sm:px-8 md:w-[calc(100%-2rem)] md:px-12">
+    <footer className="mx-auto mb-12 w-[calc(100%-0.5rem)] overflow-hidden rounded-b-statement bg-renaissance-ink text-renaissance-paper md:w-[calc(100%-2rem)]">
+      <div className="mx-auto w-full max-w-[1680px] px-5 sm:px-8 md:px-12">
 
         <div className="grid grid-cols-2 gap-x-6 gap-y-12 py-10 md:grid-cols-4 md:gap-x-10 md:py-12">
           <div>
@@ -390,6 +391,7 @@ async function RenaissanceFooter({
           ) : null}
         </div>
 
+      </div>
     </footer>
   );
 }

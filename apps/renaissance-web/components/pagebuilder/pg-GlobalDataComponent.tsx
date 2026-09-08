@@ -101,7 +101,7 @@ export default function GlobalDataComponent({
           backgroundTone === "muted" ? "bg-renaissance-mist" : "bg-renaissance-paper"
         }`}
       >
-        <div className="relative z-10 min-w-0 md:col-span-5">
+        <div className="relative z-10 min-w-0 md:col-span-5 md:col-start-1 md:row-start-1">
           {hasVisibleText(title) ? (
             <h2 className="renaissance-display max-w-[16ch] text-[clamp(2.7rem,3.5vw,3.75rem)] font-bold leading-[0.95] tracking-[-0.025em] text-renaissance-ink">
               {title}
@@ -114,18 +114,33 @@ export default function GlobalDataComponent({
           ) : null}
         </div>
         <div
-          data-globe-viewport
-          className="relative aspect-[3/2] min-w-0 overflow-hidden md:col-span-7"
-          style={{ maskImage: "linear-gradient(to bottom, black 68%, transparent 100%)" }}
+          className="relative aspect-[9/4] min-w-0 md:col-span-7 md:col-start-6 md:row-start-1"
         >
-          <div className="absolute inset-x-0 top-0 aspect-square">
-            {shouldLoadGlobe ? (
-              <World data={arcs} globeConfig={globeConfig} />
-            ) : (
-              <div className="absolute inset-0 grid place-items-center" aria-hidden="true">
-                <div className="h-64 w-64 rounded-full bg-renaissance-accent/10" />
-              </div>
-            )}
+          <div
+            data-globe-viewport
+            data-globe-arc-count={arcs.length}
+            data-globe-label-count={
+              arcs.filter((arc) => arc.label.trim().length > 0).length
+            }
+            className="absolute inset-0 overflow-hidden md:-bottom-16 md:-top-16"
+          >
+            <div className="absolute inset-x-0 top-0 aspect-square md:translate-y-[5%]">
+              {shouldLoadGlobe ? (
+                <World data={arcs} globeConfig={globeConfig} />
+              ) : (
+                <div className="absolute inset-0 grid place-items-center" aria-hidden="true">
+                  <div className="h-64 w-64 rounded-full bg-renaissance-accent/10" />
+                </div>
+              )}
+            </div>
+            <div
+              aria-hidden="true"
+              className={`pointer-events-none absolute inset-0 z-10 bg-gradient-to-b from-transparent from-[68%] ${
+                backgroundTone === "muted"
+                  ? "to-renaissance-mist"
+                  : "to-renaissance-paper"
+              }`}
+            />
           </div>
         </div>
       </div>

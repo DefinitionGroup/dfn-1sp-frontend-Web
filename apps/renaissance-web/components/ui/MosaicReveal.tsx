@@ -43,19 +43,21 @@ void main() {
   float start = wave * (1.0 - window);
   float local = smoothstep(start, start + window, uProgress);
   float eased = 1.0 - pow(1.0 - local, 3.0);
-  float scale = eased * (1.0 + 0.02 * smoothstep(0.8, 1.0, eased));
 
   vec2 centered = cellUv - 0.5;
-  float halfSpan = 0.5 * scale;
   float aa = 1.0 / cellPx;
+  // A grown tile spans past its own cell, so the softened edges of two
+  // neighbours overlap into full coverage instead of a half-alpha seam.
+  float halfSpan = eased * (0.5 + aa * 2.0);
   float coverage =
     smoothstep(halfSpan + aa, halfSpan - aa, abs(centered.x)) *
     smoothstep(halfSpan + aa, halfSpan - aa, abs(centered.y));
 
   float variation = hash21(cell + vec2(17.0, 31.0));
   vec3 tileColor = mix(PETROL, TEAL, 0.50 + variation * 0.28);
+  // Per-tile variation resolves into one flat surface, leaving no grid behind.
   float brighten = smoothstep(0.45, 1.0, uProgress);
-  tileColor = mix(tileColor, MIST, brighten * 0.90);
+  tileColor = mix(tileColor, MIST, brighten);
 
   gl_FragColor = vec4(tileColor, coverage);
 }

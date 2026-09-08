@@ -383,46 +383,48 @@ function ArcLabels({ data, fixedLabelSize = false }: Pick<WorldProps, "data"> & 
   const labelRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const labelPoints = useMemo(
     () =>
-      data.map((arc, idx) => {
-        const connectorStart = latLngToVector3(
-          arc.endLat,
-          arc.endLng,
-          LABEL_CONNECTOR_START_ALTITUDE
-        );
-        const normal = connectorStart.clone().normalize();
-        const horizontalTangent = new Vector3(
-          -normal.z,
-          0,
-          normal.x
-        ).normalize();
-        const verticalTangent = horizontalTangent
-          .clone()
-          .cross(normal)
-          .normalize();
-        const side = idx % 2 === 0 ? 1 : -1;
-        const vector = latLngToVector3(
-          arc.endLat,
-          arc.endLng,
-          LABEL_ALTITUDE
-        )
-          .add(horizontalTangent.multiplyScalar(side * LABEL_HORIZONTAL_OFFSET))
-          .add(
-            verticalTangent.multiplyScalar(
-              LABEL_VERTICAL_OFFSET + (idx % 3) * 1.5
-            )
+      data
+        .filter((arc) => arc.label.trim().length > 0)
+        .map((arc, idx) => {
+          const connectorStart = latLngToVector3(
+            arc.endLat,
+            arc.endLng,
+            LABEL_CONNECTOR_START_ALTITUDE
           );
-        return {
-          key: `${arc.label}-${idx}`,
-          vector,
-          normal: vector.clone().normalize(),
-          position: vector.toArray() as [number, number, number],
-          connectorStart: connectorStart.toArray() as [number, number, number],
-          color: arc.color,
-          text: arc.label,
-          labelOffsetX: arc.labelOffsetX ?? 0,
-          labelOffsetY: arc.labelOffsetY ?? 0,
-        };
-      }),
+          const normal = connectorStart.clone().normalize();
+          const horizontalTangent = new Vector3(
+            -normal.z,
+            0,
+            normal.x
+          ).normalize();
+          const verticalTangent = horizontalTangent
+            .clone()
+            .cross(normal)
+            .normalize();
+          const side = idx % 2 === 0 ? 1 : -1;
+          const vector = latLngToVector3(
+            arc.endLat,
+            arc.endLng,
+            LABEL_ALTITUDE
+          )
+            .add(horizontalTangent.multiplyScalar(side * LABEL_HORIZONTAL_OFFSET))
+            .add(
+              verticalTangent.multiplyScalar(
+                LABEL_VERTICAL_OFFSET + (idx % 3) * 1.5
+              )
+            );
+          return {
+            key: `${arc.label}-${idx}`,
+            vector,
+            normal: vector.clone().normalize(),
+            position: vector.toArray() as [number, number, number],
+            connectorStart: connectorStart.toArray() as [number, number, number],
+            color: arc.color,
+            text: arc.label,
+            labelOffsetX: arc.labelOffsetX ?? 0,
+            labelOffsetY: arc.labelOffsetY ?? 0,
+          };
+        }),
     [data]
   );
 
