@@ -194,7 +194,7 @@ function ServiceCard({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.55, delay: 0.18, ease: EASE_FLZR }}
-          className="absolute inset-x-3 bottom-3 z-10 rounded-[1.5rem] bg-[rgba(111,111,111,0.4)] px-4 py-3 text-white backdrop-blur-md sm:px-5 sm:py-4"
+          className="absolute inset-x-3 bottom-3 z-10 min-h-[100px] rounded-[1.5rem] bg-[rgba(111,111,111,0.4)] px-4 py-3 text-white backdrop-blur-md sm:px-5 sm:py-4"
         >
           <div className="flex items-end justify-between gap-4">
             <div className="min-w-0">

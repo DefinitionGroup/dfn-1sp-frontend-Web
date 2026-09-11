@@ -102,7 +102,7 @@ export default function CaseGalleryCard({
         distance={10}
         delay={0.4}
         duration={1}
-        className="z-1 col-span-1 col-start-1 row-start-2 grid min-h-28 grid-rows-[1fr_auto] px-2 pb-4 pt-4 opacity-100 md:min-h-32 md:pb-6"
+        className="z-1 col-span-1 col-start-1 row-start-2 flex flex-col justify-start gap-2 px-2 pb-4 pt-4 opacity-100 md:pb-6"
       >
         <div className="flex flex-col justify-start">
           <Link

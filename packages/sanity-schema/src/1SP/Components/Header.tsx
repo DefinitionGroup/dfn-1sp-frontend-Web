@@ -2,6 +2,7 @@ import React from "react";
 import { defineType, defineField, defineArrayMember } from "sanity";
 import { TextT } from "@phosphor-icons/react";
 import { isFlzrStyleChannel } from "../../shared/flzrVisibility";
+import HeroDarkeningInput from "../../components/HeroDarkeningInput";
 import { validateOptionalCta } from "../../shared/ctaValidation";
 
 type HeaderParent = {
@@ -61,7 +62,38 @@ export default defineType({
       group: "media",
     }),
 
+    defineField({
+      name: "showColorOverlay",
+      title: "Show Color Overlay",
+      type: "boolean",
+      description: "Apply the FLZR color tint over the hero image or video. Turn off to show the original media colors.",
+      initialValue: true,
+      hidden: ({ document }) => (document as { channel?: string } | undefined)?.channel !== "flizrWeb",
+      group: "media",
+    }),
+
+    defineField({
+      name: "mediaDarkening",
+      title: "Media Darkening",
+      type: "number",
+      description: "Darken the hero image or video independently of the color overlay. 0% keeps the original brightness; 100% is black.",
+      initialValue: 0,
+      validation: (rule) => rule.min(0).max(100).integer(),
+      components: { input: HeroDarkeningInput },
+      hidden: ({ document }) => (document as { channel?: string } | undefined)?.channel !== "flizrWeb",
+      group: "media",
+    }),
+
     // CONTENT
+    defineField({
+      name: "copyBottomLeft",
+      title: "Place Copy Bottom Left",
+      type: "boolean",
+      description: "Position the copy group at the bottom left with left-aligned text and elements. Turn off to center the group in the hero.",
+      initialValue: false,
+      hidden: ({ document }) => (document as { channel?: string } | undefined)?.channel !== "flizrWeb",
+      group: "content",
+    }),
     defineField({
       name: "showEyebrow",
       title: "Show Eyebrow",

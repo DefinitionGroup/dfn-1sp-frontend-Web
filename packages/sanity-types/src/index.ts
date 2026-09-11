@@ -568,6 +568,9 @@ export interface OneSPHeader {
     _type?: "oneSPHeader";
     media?: CloudinaryAsset;
     enableParallax?: boolean;
+    showColorOverlay?: boolean;
+    mediaDarkening?: number;
+    copyBottomLeft?: boolean;
 
     // content
     showEyebrow?: boolean;

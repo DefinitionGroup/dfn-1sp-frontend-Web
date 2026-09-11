@@ -11,6 +11,8 @@ interface HeroVideoCompProps {
     videoSrc?: string;
     imageSrc?: string;
     imageAlt?: string;
+    showColorOverlay?: boolean;
+    mediaDarkening?: number;
 }
 
 const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
@@ -18,7 +20,12 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     videoSrc,
     imageSrc,
     imageAlt = "",
+    showColorOverlay = true,
+    mediaDarkening = 0,
 }) => {
+    const darkeningOpacity = Number.isFinite(mediaDarkening)
+        ? Math.min(100, Math.max(0, mediaDarkening)) / 100
+        : 0;
     const containerRef = useRef<HTMLDivElement>(null);
     const posterImgRef = useRef<HTMLImageElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -150,7 +157,7 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
     return (
         <div ref={containerRef} className="absolute inset-0 mt-4 overflow-visible">
             {/* CSS-only clip-path reveal — paints from SSR HTML, no JS needed */}
-            <div className="absolute inset-x-0 inset-y-0 mx-auto w-[calc(100%-2rem)] max-w-[1680px] overflow-hidden rounded-4xl hero-clip-reveal sm:w-[calc(100%-3rem)] lg:w-[calc(100%-4rem)]">
+            <div className="absolute inset-0 w-full overflow-hidden rounded-4xl hero-clip-reveal">
                 {useVideo ? (
                     <div className="relative w-full h-full">
                         {/* Poster — the LCP element. Loads eagerly, high priority. */}
@@ -231,7 +238,12 @@ const HeroVideoComp: React.FC<HeroVideoCompProps> = ({
                     )
                 )}
 
-                <div className="flzr-hero-tint absolute inset-0 z-[2]" />
+                <div
+                    className="pointer-events-none absolute inset-0 z-[3] bg-black"
+                    style={{ opacity: darkeningOpacity }}
+                    aria-hidden="true"
+                />
+                {showColorOverlay && <div className="flzr-hero-tint absolute inset-0 z-[2]" aria-hidden="true" />}
             </div>
         </div>
     );

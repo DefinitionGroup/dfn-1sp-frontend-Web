@@ -9,12 +9,14 @@ type AnimatedEditorialHeadlineProps = {
   text: string;
   delay?: number;
   tone?: "gradient" | "white";
+  align?: "left" | "center";
 };
 
 export default function AnimatedEditorialHeadline({
   text,
   delay = 0.35,
   tone = "gradient",
+  align = "center",
 }: AnimatedEditorialHeadlineProps) {
   const prefersReducedMotion = useReducedMotion();
   const headline = text.trim();
@@ -23,7 +25,7 @@ export default function AnimatedEditorialHeadline({
 
   return (
     <motion.h1
-      className={`mx-auto max-w-[28ch] text-balance whitespace-pre-line font-flzr text-[clamp(1.9rem,1.4rem+2.6vw,4.25rem)] font-bold italic leading-[1.15] ${tone === "white" ? "text-white" : ""}`}
+      className={`${align === "left" ? "mr-auto text-left" : "mx-auto"} max-w-[28ch] text-balance whitespace-pre-line font-flzr text-[clamp(1.9rem,1.4rem+2.6vw,4.25rem)] font-bold italic leading-[1.15] ${tone === "white" ? "text-white" : ""}`}
       initial={prefersReducedMotion ? false : { opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, amount: 0.45 }}
