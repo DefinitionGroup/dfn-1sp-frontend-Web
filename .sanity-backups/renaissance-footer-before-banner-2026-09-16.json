@@ -1,0 +1,62 @@
+{
+  "_createdAt": "2026-08-12T09:47:16Z",
+  "_id": "menu-renaissance-footer-en",
+  "_rev": "sI2oR8E6UPeDz09pEku6Fv",
+  "_type": "menu",
+  "_updatedAt": "2026-08-12T09:47:16Z",
+  "addressTitle": "Locations",
+  "channel": "renaissanceWeb",
+  "copyright": "© 2026 Renaissance",
+  "imageCloud": {
+    "_key": "renaissance-footer-logo",
+    "_type": "cloudinary.asset",
+    "_version": 1,
+    "access_control": [],
+    "access_mode": "public",
+    "asset_folder": "1sp/Logos/RENAISSANCE",
+    "bytes": 3493,
+    "created_at": "2025-11-18T07:18:20Z",
+    "created_by": {
+      "id": "24bba5085cc9b3f795c06596ac66b9",
+      "type": "user"
+    },
+    "display_name": "renaissance-horz_logo_muh1rm",
+    "folder_id": "cd4aea1587891c9b9735490e7e252847d6",
+    "format": "svg",
+    "height": 593,
+    "id": "17a24f9bdd38da8ee1629ed1b6410a64",
+    "metadata": {},
+    "public_id": "renaissance-horz_logo_muh1rm",
+    "resource_type": "image",
+    "secure_url": "https://res.cloudinary.com/dsu07dnes/image/upload/v1763450300/renaissance-horz_logo_muh1rm.svg",
+    "tags": [],
+    "type": "upload",
+    "uploaded_by": {
+      "id": "24bba5085cc9b3f795c06596ac66b9",
+      "type": "user"
+    },
+    "url": "http://res.cloudinary.com/dsu07dnes/image/upload/v1763450300/renaissance-horz_logo_muh1rm.svg",
+    "version": 1763450300,
+    "width": 2862
+  },
+  "language": "en",
+  "locations": [
+    {
+      "_key": "renaissance-footer-uk",
+      "_type": "location",
+      "name": "United Kingdom"
+    },
+    {
+      "_key": "renaissance-footer-la",
+      "_type": "location",
+      "name": "Los Angeles"
+    },
+    {
+      "_key": "renaissance-footer-china",
+      "_type": "location",
+      "name": "China"
+    }
+  ],
+  "menuType": "Footer",
+  "title": "Menu"
+}

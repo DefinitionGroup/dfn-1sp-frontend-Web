@@ -66,6 +66,7 @@ Use this checklist for every new or changed Renaissance page. A page is not comp
 - [ ] Canonical URL and metadata match the Renaissance domain/locale strategy.
 - [ ] Sitemap and robots output are verified independently for this app.
 - [ ] Homepage, menus, footer and global content all use `renaissanceWeb` and the active language.
+- [ ] When configured, the shared 1SP network banner appears exactly once after the footer on homepage and inner pages. Its unit catalog intentionally uses `1spWeb` and the active language, excluding the parent 1SP Agency. Verify its white Renaissance host logo, scoped Aspekta font, links, hover/focus, mobile text and reduced-motion poster.
 - [ ] Studio and frontend use the same project ID, dataset and API version.
 - [ ] `pnpm doctor:sanity` has been checked before diagnosing missing content as a renderer issue.
 - [ ] Primary contact, legal and company routes return the intended content/state.

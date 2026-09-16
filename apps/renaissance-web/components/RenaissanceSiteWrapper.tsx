@@ -25,6 +25,7 @@ import {
 } from "@renaissance/lib/structured-data";
 import FrontNavOverlay from "./menu/FrontNavOverlay";
 import { FooterMenuProvider } from "./menu/FooterMenuContext";
+import RenaissanceFooterExternalBanner from "./RenaissanceFooterExternalBanner";
 import { NavbarMenuProvider } from "./menu/NavbarMenuContext";
 import { NavColorProvider } from "./menu/NavColorContext";
 import ScrollToTop from "./ui/ScrollToTop";
@@ -451,6 +452,9 @@ export default async function RenaissanceSiteWrapper({
               language={language}
               homePage={effectiveHomePage}
             />
+            {footer?.footerExternalBanner && (
+              <RenaissanceFooterExternalBanner data={footer.footerExternalBanner} language={language} />
+            )}
             <ScrollToTop />
           </div>
           {/* </PageWithMapVertical> */}

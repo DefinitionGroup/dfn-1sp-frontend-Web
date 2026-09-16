@@ -83,6 +83,8 @@ Petrol is the primary action and headline signal; teal is the supporting highlig
 
 ## Typography
 
+The optional 1SP network banner after the footer is an explicitly branded shared section. It keeps the approved 1SP Aspekta typography, lime CTA, compact unit grid and media behavior inside `OneSpScope`, with a white Renaissance host wordmark. These styles must not extend into Renaissance-owned content. Configure it through the Renaissance Footer menu rather than duplicating it in page content.
+
 IBM Plex Sans Variable owns display, headline, body, and UI roles. Use its weight axis across 100–700 and its width axis across 75–100; display roles are compressed to roughly 82.5%, labels remain slightly condensed, and body copy stays full width. Geist Mono is reserved for compact indices, telemetry-style eyebrows, and small system labels.
 
 Display copy is bold, tightly tracked, and close-set; body copy is calm and readable with a preferred measure of about 68 characters. Italic IBM Plex Sans may punctuate a short word or phrase in teal, but does not introduce a separate serif personality.

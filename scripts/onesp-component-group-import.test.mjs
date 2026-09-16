@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { createRequire } from "node:module";
 import {
   collectImportCandidates,
   copyBlocksForImport,
@@ -85,12 +86,25 @@ test("components without Sanity keys receive stable selection identities", () =>
   );
 });
 
-test("reusable 1SP groups dereference explicit content without host-channel filters", () => {
-  assert.equal(
-    ONE_SP_COMPONENT_GROUP_PROJECTION.includes("$channel"),
-    false,
-    "the reusable group projection must not inherit the host page channel",
-  );
+test("reusable 1SP groups dereference explicit content without host-channel filters", async () => {
+  // Renaissance-specific references legitimately use $channel. Exercise the
+  // actual 1SP references instead of banning that variable across the projection.
+  const require = createRequire(import.meta.url);
+  const { parse, evaluate } = createRequire(require.resolve("sanity/package.json"))("groq-js");
+  const dataset = [
+    { _id: "case", _type: "caseStudy", channel: ["1spWeb"], title: "1SP case" },
+    { _id: "group", _type: "oneSpComponentGroup", content: [
+      { _type: "smartCarousel", selectedCases: [{ _type: "reference", _ref: "case" }] },
+    ] },
+    { _id: "page", _type: "page", content: [
+      { _type: "oneSpComponentGroupReference", group: { _type: "reference", _ref: "group" } },
+    ] },
+  ];
+  const tree = parse(`*[_id == "page"][0]{content[]{${ONE_SP_COMPONENT_GROUP_PROJECTION}}}`);
+  for (const channel of ["flizrWeb", "renaissanceWeb"]) {
+    const result = await (await evaluate(tree, { dataset, params: { channel, language: "en" } })).get();
+    assert.equal(result.content[0].group.content[0].selectedCases[0]._id, "case");
+  }
   assert.match(ONE_SP_COMPONENT_GROUP_PROJECTION, /teamMembers\[\]->\{/);
   assert.match(ONE_SP_COMPONENT_GROUP_PROJECTION, /serviceItems\[\]->\{/);
   assert.equal(

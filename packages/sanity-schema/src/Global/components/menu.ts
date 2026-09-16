@@ -168,9 +168,9 @@ export default {
             title: 'Footer External Banner',
             type: 'footerExternalBanner',
             group: 'footer',
-            description: 'Optional 1SP network banner, shown after the FLZR footer or above the 1SP footer on every page in this language. Add media and text here to enable it.',
+            description: 'Optional 1SP network banner, shown after the FLZR or Renaissance footer or above the 1SP footer on every page in this language. Add media and text here to enable it.',
             hidden: ({ document }: { document?: { menuType?: string; channel?: string } }) =>
-                document?.menuType !== 'Footer' || !['1spWeb', 'flizrWeb'].includes(document?.channel || ''),
+                document?.menuType !== 'Footer' || !['1spWeb', 'flizrWeb', 'renaissanceWeb'].includes(document?.channel || ''),
         },
         {
             name: "footerColumns",
