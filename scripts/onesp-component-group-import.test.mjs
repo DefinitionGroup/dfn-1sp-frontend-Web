@@ -59,6 +59,20 @@ test("imported components are independent editable copies with fresh keys", () =
   assert.equal(copy.cta.link._ref, "page-id");
 });
 
+test("footer banners can be imported into reusable 1SP groups without losing their content", () => {
+  const banner = {
+    _type: "footerExternalBanner",
+    _key: "footer",
+    video: { secure_url: "https://example.com/network.mp4" },
+    cta: { text: "Explore 1SP", link: { linkType: "external", externalUrl: "https://www.1sp.agency" } },
+  };
+  const { candidates, unsupportedCount } = collectImportCandidates([banner]);
+  assert.equal(unsupportedCount, 0);
+  assert.equal(candidates.length, 1);
+  const [copy] = copyBlocksForImport(candidates.map(({ block }) => block), () => "copied-footer");
+  assert.deepEqual(copy, { ...banner, _key: "copied-footer" });
+});
+
 test("components without Sanity keys receive stable selection identities", () => {
   const result = collectImportCandidates([
     { _type: "contentSection", title: "First" },

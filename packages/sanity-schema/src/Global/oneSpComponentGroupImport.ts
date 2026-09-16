@@ -26,6 +26,7 @@ export const ONE_SP_REUSABLE_COMPONENT_TYPES = [
   "smartUnitsGlobe",
   "globeComponent",
   "unitLogoGrid",
+  "footerExternalBanner",
   "pageBuilderLogoFloat",
   "pageBuilderPersonioJobs",
 ] as const;

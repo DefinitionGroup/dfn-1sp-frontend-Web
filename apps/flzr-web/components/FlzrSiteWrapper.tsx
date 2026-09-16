@@ -29,6 +29,7 @@ import { NavbarMenuProvider } from "./menu/NavbarMenuContext";
 import { NavColorProvider } from "./menu/NavColorContext";
 import PageWithMapVertical from "./ui/PageWithMapVertical";
 import ScrollToTop from "./ui/ScrollToTop";
+import FlzrFooterExternalBanner from "./FlzrFooterExternalBanner";
 
 type OverlayCaseStudy = {
   _id: string;
@@ -436,6 +437,9 @@ export default async function FlzrSiteWrapper({
               language={language}
               homePage={homePage}
             />
+            {footer?.footerExternalBanner && (
+              <FlzrFooterExternalBanner data={footer.footerExternalBanner} language={language} />
+            )}
             <ScrollToTop />
           </div>
           {/* </PageWithMapVertical> */}

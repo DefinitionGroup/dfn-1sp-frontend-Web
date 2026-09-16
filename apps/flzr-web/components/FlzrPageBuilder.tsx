@@ -28,6 +28,7 @@ import HeadlineChallenge from "./pagebuilder/cases/pg-HeadlineChallenge";
 import ComponentLoader from "@flzr/components/ui/ComponentLoader";
 import DeferredSection from "@flzr/components/ui/DeferredSection";
 import OneSpScope from "@/components/onesp-group/OneSpScope";
+import FlzrFooterExternalBanner from "./FlzrFooterExternalBanner";
 
 const CanonicalOneSpPageBuilder = dynamic(
   () => import("@/components/PageBuilder").then((module) => module.PageBuilder),
@@ -645,6 +646,12 @@ export function PageBuilder({
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <UnitLogoGrid key={key} {...(block as any)} language={language} />
+              </ErrorBoundary>
+            );
+          case "footerExternalBanner":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <FlzrFooterExternalBanner data={block} language={language} />
               </ErrorBoundary>
             );
           case "clientLogoCarousel":
