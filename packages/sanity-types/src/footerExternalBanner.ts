@@ -16,6 +16,9 @@ export interface FooterExternalBannerData {
 export interface FooterExternalBannerUnit {
   _id: string;
   name?: string;
+  tagline?: string;
+  backgroundImage?: CloudinaryAsset;
+  footerHoverVideo?: CloudinaryAsset;
   logo?: CloudinaryAsset;
   logoColor?: CloudinaryAsset;
   cta?: CTA;

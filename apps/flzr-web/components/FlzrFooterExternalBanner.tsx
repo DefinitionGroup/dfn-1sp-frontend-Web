@@ -31,7 +31,8 @@ export default async function FlzrFooterExternalBanner({
   });
   return (
     <OneSpScope fullWidth>
-      <FooterExternalBanner data={data} units={linkedUnits} language={language} />
+      <FooterExternalBanner data={data} units={linkedUnits} language={language}
+        hostLogo={{ src: "/units/FLZR/flzr_logo.svg", alt: "FLZR" }} />
     </OneSpScope>
   );
 }

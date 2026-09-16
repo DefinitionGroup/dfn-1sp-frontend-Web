@@ -1,3 +1,4 @@
+import type { PeopleProof } from "../lib/renaissancePeopleProof";
 import type {
   RenaissanceDesktopTopMargin,
   RenaissanceSectionBand,
@@ -29,11 +30,11 @@ const desktopTopMarginClass: Record<RenaissanceDesktopTopMargin, string> = {
 export default function RenaissanceSectionFrame({
   marker,
   children,
-  showLegacyPeopleProof = false,
+  peopleProof,
 }: {
   marker: RenaissanceSectionBand;
   children: React.ReactNode;
-  showLegacyPeopleProof?: boolean;
+  peopleProof?: PeopleProof;
 }) {
   if (!marker.sectionRole) return <>{children}</>;
   const config = roleConfig[marker.sectionRole];
@@ -85,8 +86,8 @@ export default function RenaissanceSectionFrame({
         ) : null}
       </div>
       <div className="relative z-[1]">{children}</div>
-      {marker.sectionRole === "people" && showLegacyPeopleProof ? (
-        <RenaissancePeopleProof />
+      {marker.sectionRole === "people" && peopleProof ? (
+        <RenaissancePeopleProof {...peopleProof} />
       ) : null}
     </section>
   );

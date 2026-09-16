@@ -162,6 +162,18 @@ const createChannelStructure = (
                             ),
                           ])
                       ),
+                    ...(channelValue === 'renaissanceWeb' ? [
+                      S.listItem().title('Shared content').icon(SquaresFour).child(
+                        S.list().title('Renaissance shared content').items([
+                          ['renaissanceSharedPortraits', 'Portrait grids'],
+                          ['renaissanceSharedAwards', 'Award logo walls'],
+                        ].map(([type, title]) => S.listItem().title(title).icon(SquaresFour).child(
+                          S.documentTypeList(type).title(title)
+                            .filter('_type == $type && channel == "renaissanceWeb" && language == $language')
+                            .params({ type, language: lang.id })
+                        )))
+                      ),
+                    ] : []),
                     S.divider(),
                     createAssignedGlobalListItem(
                       S,
@@ -494,6 +506,8 @@ export const structure: StructureResolver = (S) =>
             "page",
             "menu",
             "siteSettings",
+            "renaissanceSharedPortraits",
+            "renaissanceSharedAwards",
             "caseStudy",
             "unit",
             "msmUnit",

@@ -11,7 +11,9 @@
 - Select the background video and optional poster through Cloudinary. Without a custom logo, the existing white/lime 1SP Agency logo is used. Configure the CTA text and destination explicitly.
 - Unit buttons use each active unit's existing logo and CTA. There is no item limit. Units without a logo display their name; those without a usable link display as non-interactive entries.
 
-Units are filtered by language and channel. For backwards compatibility, unassigned legacy units are included only for `1spWeb`; units explicitly assigned to other channels are excluded. The current English development catalog includes 11 entries, including the parent 1SP Agency.
+Units are filtered by language and channel. For backwards compatibility, unassigned legacy units are included only for `1spWeb`; units explicitly assigned to other channels are excluded. The footer query excludes the parent unit with slug `1sp-agency`, leaving ten English agency cards. It does not remove that document or hide it elsewhere.
+
+Edit each card in **Units → English → [Unit]**: **General → Tagline/Motto** supplies the text, **Media → Unit Background Image** supplies the hover image/poster, and **Media → Footer Banner Hover Video** optionally supplies a video. Hover and keyboard focus reveal media and text without shifting adjacent cards. Touch devices display image and text directly. Videos play only while hovered/focused and visible, respect the banner pause control, and remain disabled for reduced motion.
 
 The component uses five columns on desktop, three on tablet and two on mobile. Video playback is deferred until near the viewport, paused outside the viewport and controllable with a pause/play button. Reduced-motion preferences show the poster and disable entrance/hover movement, including when the preference changes while the page is open.
 

@@ -283,8 +283,9 @@ function PeopleShowcaseHero({
                     its card via panelVariants. */}
                 <motion.div
                   variants={panelVariants}
-                  className={`absolute z-10 flex flex-col gap-0.5 bg-[rgba(111,111,111,0.4)] backdrop-blur-md ${presentation === "dense" ? "inset-x-2 bottom-2 rounded-[1.1rem] px-3 py-2.5" : "bottom-3 left-3 w-fit max-w-[calc(100%-1.5rem)] rounded-[1.5rem] px-4 py-3 sm:px-5 sm:py-4"}`}
+                  className={`absolute z-10 flex min-h-[80px] items-center justify-between gap-3 bg-[rgba(111,111,111,0.4)] backdrop-blur-md ${presentation === "dense" ? "inset-x-2 bottom-2 rounded-[1.1rem] px-3 py-2.5" : "bottom-3 left-3 w-fit max-w-[calc(100%-1.5rem)] rounded-[1.5rem] px-4 py-3 sm:px-5 sm:py-4"}`}
                 >
+                  <div className="min-w-0 flex-1 flex flex-col gap-0.5">
                   {hasVisibleText(member.fullname || member.name) && (
                     <motion.h3
                       variants={panelItemVariants}
@@ -301,16 +302,17 @@ function PeopleShowcaseHero({
                       {member.position}
                     </motion.p>
                   )}
+                  </div>
                   {(email || profileUrl) && (
                     <motion.div
                       variants={panelItemVariants}
-                      className="mt-2 flex items-center gap-2"
+                      className="ml-auto flex shrink-0 flex-col items-center gap-1"
                     >
                       {email && (
                         <a
                           href={`mailto:${email}`}
                           aria-label={`Email ${member.fullname || member.name || ""}`}
-                          className="flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[#7c5cff] backdrop-blur-sm transition-colors hover:bg-[#7c5cff] hover:text-white"
+                          className="flex h-7 w-7 items-center justify-center rounded-full bg-white/90 text-[#7c5cff] backdrop-blur-sm transition-colors hover:bg-[#7c5cff] hover:text-white"
                         >
                           <svg
                             className="h-4 w-4"
@@ -329,7 +331,7 @@ function PeopleShowcaseHero({
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label={`LinkedIn profile of ${member.fullname || member.name || ""}`}
-                          className="flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[#7c5cff] backdrop-blur-sm transition-colors hover:bg-[#7c5cff] hover:text-white"
+                          className="flex h-7 w-7 items-center justify-center rounded-full bg-white/90 text-[#7c5cff] backdrop-blur-sm transition-colors hover:bg-[#7c5cff] hover:text-white"
                         >
                           {/* Inline so the glyph follows currentColor (the
                               public SVG has lime hardcoded) */}

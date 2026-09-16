@@ -162,6 +162,8 @@ async function handleRevalidation(body: SanityWebhookBody) {
     // were tagged with that specific tag, regardless of which page they're on.
 
     switch (_type) {
+        case "renaissanceSharedPortraits":
+        case "renaissanceSharedAwards":
         case "oneSpComponentGroup":
             // A reusable group can be referenced by pages in every frontend.
             revalidateTag("pages", "max");

@@ -81,6 +81,8 @@ Compatibility blocks require explicit design review and a channel/data-scope che
 - The frame closes with a 3px `accent.signal` bottom border; the slide index and previous/next controls sit together at the lower-left.
 - Maximum five curated stories on a landing page.
 - The first story is editorially selected, not random.
+- Each slide accepts a CMS video and image. Video wins when both are supplied; the image is its poster and reduced-motion fallback. Video-only slides derive their poster from Cloudinary.
+- An optional CMS CTA appears below the supporting text. Internal page references are resolved by the page query; missing labels or destinations render no button.
 - The containing `renaissanceSectionBand` may select a dark-green or light carousel surround without changing the carousel content contract.
 - Autoplay requires a visible pause control and stops for reduced motion, focus, hover and document invisibility.
 - Announce manual changes politely; do not announce every automatic change.

@@ -117,6 +117,16 @@ export default defineType({
             description: "Upload the unit's background image",
             group: 'media',
         },
+        defineField({
+            name: 'footerHoverVideo',
+            title: 'Footer Banner Hover Video',
+            type: 'cloudinary.asset',
+            group: 'media',
+            description: 'Optional video shown on hover or keyboard focus in the footer banner. Unit Background Image is the poster; Tagline/Motto supplies the card text.',
+            validation: (Rule) => Rule.custom((value) =>
+                !value || (value as { resource_type?: string }).resource_type === 'video'
+                    ? true : 'Choose a Cloudinary video.'),
+        }),
         {
             name: 'cta',
             title: 'Call to Action (CTA)',

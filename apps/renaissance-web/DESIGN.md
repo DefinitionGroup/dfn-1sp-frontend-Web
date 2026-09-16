@@ -125,11 +125,11 @@ The expanded navigation sits in page flow with the action-teal Renaissance logo 
 
 Section badge labels are controlled by Sanity. They use Signal Orange `#f49a24` and retain the exact Figma badge asset. On entry, the signet fades in while rotating clockwise from -90 degrees to 0 over 420ms; only the collapsed brackets are visible beside it. The brackets expand over 360ms, then the text decrypts. The final label width is reserved throughout to prevent layout shifts. Editors may opt a section into a looped descramble with a 3.2-second readable pause after the entrance and between cycles; loops stop while offscreen or when the document is hidden. With `prefers-reduced-motion`, the final readable badge appears immediately. Badges introduce sections only; they are not permitted in the hero.
 
-The approved services, network, people, and origin passages use the exact assets in `public/renaissance/figma/` and the compact compositions established by Figma file `nPhFDVszVftw0kl4D6afmr`. Renaissance app-local adapters may frame or augment existing PageBuilder blocks to achieve this presentation, but they must not fork or replace the shared block/data contracts.
+The approved network, people, and origin passages use the exact assets in `public/renaissance/figma/` and the compact compositions established by Figma file `nPhFDVszVftw0kl4D6afmr`. Renaissance app-local adapters may frame or augment existing PageBuilder blocks to achieve this presentation, but they must not fork or replace the shared block/data contracts.
 
 ### Media, Tiles, and Footer
 
-Game stories are image-first and full-bleed, with controlled dark overlays for white copy and accessible controls. Services use the current compact Figma composition and exact `service-01.jpg` through `service-06.jpg` assets. Network, people, and origin proof use their corresponding Figma background, logo, portrait, award, bolt, and client-logo assets without substitutions. The footer is a substantial ink destination with the white wordmark, four clear content columns, hairline divisions, and simple arrow movement on links.
+Game stories use CMS-selected full-bleed media, with video taking priority when both video and image are supplied. The image serves as the video poster and reduced-motion fallback; without an image, a poster is derived from the video. An optional CMS CTA appears beneath the supporting text and renders only with a valid label and destination. Controlled dark overlays preserve white-copy readability. Services preserve the current compact Figma composition and render each card’s CMS-selected `media` image or video without a hardcoded override. Network, people, and origin proof use their corresponding Figma background, logo, portrait, award, bolt, and client-logo assets without substitutions. The footer is a substantial ink destination with the white wordmark, four clear content columns, hairline divisions, and simple arrow movement on links.
 
 All Join Us cards use the canonical `/contact` route. Do not split content-creator or media intent into separate destinations unless that product decision is approved later.
 
@@ -142,7 +142,7 @@ Client logos use a borderless fixed six-column, single-row signal grid. The grid
 - **Do** keep the homepage logo above the headline hairline at no less than one-third width, preserve Renaissance in navigation, and let game imagery remain the dominant visual anchor.
 - **Do** use the approved palette and ink text for accessible contrast on sand and mist.
 - **Do** preserve the Pagebuilder-only content boundary and registered Renaissance block/data contracts; use app-local presentation adapters for the Figma layout.
-- **Do** preserve the exact Figma services, network, people, and origin assets and their compact desktop-to-mobile compositions.
+- **Do** preserve the compact desktop-to-mobile service composition with CMS-selected media, and the exact Figma network, people, and origin assets.
 - **Do** provide visible focus states, meaningful alt text, keyboard-operable controls, and reduced-motion behavior.
 - **Do** verify desktop, mobile, and short landscape viewports before release.
 
@@ -159,7 +159,7 @@ Client logos use a borderless fixed six-column, single-row signal grid. The grid
 
 This document is the canonical visual foundation for Renaissance. For the shipped redesign, Figma file `nPhFDVszVftw0kl4D6afmr` is the layout and content authority; runtime values live in `app/globals.css`; approved component behavior and Pagebuilder support tiers live in `design-system/COMPONENTS.md`; release criteria live in `design-system/RELEASE-CHECKLIST.md`. New work must update the relevant source in the same change when it alters a system contract. The independent finish verdict for this baseline is **Ship**.
 
-The current homepage demonstrates the target language, but it is not permission to duplicate raw Tailwind values. Repeated decisions become semantic roles; one-off values remain exceptions until they prove a reusable need. The optional, backward-compatible `renaissanceSectionBand` marker groups blocks and stores editor-controlled section presentation. The People Powered proof is composed from the existing intro plus the Renaissance-only `renaissancePortraitGrid` and `renaissanceAwardLogoWall` blocks; the wrapper-level hardcoded proof remains compatibility-only until the published Sanity page adopts those blocks.
+The current homepage demonstrates the target language, but it is not permission to duplicate raw Tailwind values. Repeated decisions become semantic roles; one-off values remain exceptions until they prove a reusable need. The optional, backward-compatible `renaissanceSectionBand` marker groups blocks and stores editor-controlled section presentation. The People Powered proof is composed from the existing intro plus the Renaissance-only `renaissancePortraitGrid` and `renaissanceAwardLogoWall` blocks; People sections resolve centrally edited defaults from Renaissance Site Settings, independently for portraits and awards. Explicit local blocks or shared references override their corresponding default. Hardcoded proof remains compatibility-only when no default reference is configured. See `docs/shared-content.md`.
 
 ## Design Principles
 

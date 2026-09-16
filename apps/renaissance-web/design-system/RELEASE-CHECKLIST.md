@@ -11,7 +11,7 @@ Use this checklist for every new or changed Renaissance page. A page is not comp
 - [ ] All claims, dates, client names and metrics are approved and sourced.
 - [ ] No FLZR violet, 1SP-specific styling or generic default font leaks into Renaissance UI.
 - [ ] Real game, person or place imagery is the main visual anchor.
-- [ ] Services, network, people and origin passages use the exact approved assets in `public/renaissance/figma/` and the current compact Figma compositions.
+- [ ] Services render each card’s CMS-selected image or video without a hardcoded override and preserve the compact Figma composition. Network, people and origin passages retain their approved assets in `public/renaissance/figma/`.
 - [ ] Section badge labels come from Sanity and use Signal Orange `#f49a24` with the approved Figma badge asset.
 - [ ] Alt text describes meaningful content; decorative repetitions use empty alt text.
 

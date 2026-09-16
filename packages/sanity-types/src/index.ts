@@ -76,9 +76,16 @@ export interface CardItem {
 }
 
 export interface CarouselItem {
+    id?: string | number;
     title?: string;
     subtitle?: string;
     image?: CloudinaryAsset;
+    video?: CloudinaryAsset;
+    description?: string;
+    category?: string;
+    logoSrc?: CloudinaryAsset;
+    logo?: CloudinaryAsset;
+    linkHref?: string;
     cta?: CTA;
 }
 
@@ -389,6 +396,12 @@ export interface RenaissanceSectionBand {
     topBorder?: boolean;
     badgeAnimationMode?: RenaissanceBadgeAnimationMode;
     carouselBackgroundTone?: RenaissanceCarouselBackgroundTone;
+    sharedDefaults?: {
+        portraitsConfigured?: boolean;
+        awardsConfigured?: boolean;
+        portraits?: { content?: RenaissancePortraitGrid } | null;
+        awards?: { content?: RenaissanceAwardLogoWall } | null;
+    } | null;
 }
 
 export interface RenaissanceMediaItem {

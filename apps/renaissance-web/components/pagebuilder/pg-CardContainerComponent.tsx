@@ -14,15 +14,6 @@ const columnClasses: Record<2 | 3 | 5 | 6, string> = {
   6: "lg:grid-cols-6",
 };
 
-const renaissanceServiceMedia = [
-  "/renaissance/figma/service-01.jpg",
-  "/renaissance/figma/service-02.jpg",
-  "/renaissance/figma/service-03.jpg",
-  "/renaissance/figma/service-04.jpg",
-  "/renaissance/figma/service-05.jpg",
-  "/renaissance/figma/service-06.jpg",
-] as const;
-
 export default function CardContainerComponent({
   data,
   presentationRole,
@@ -51,7 +42,6 @@ export default function CardContainerComponent({
               key={card._key || `${card.headline || "card"}-${index}`}
               card={card}
               index={index}
-              mediaOverride={renaissanceServiceMedia[index]}
             />
           ))}
         </div>

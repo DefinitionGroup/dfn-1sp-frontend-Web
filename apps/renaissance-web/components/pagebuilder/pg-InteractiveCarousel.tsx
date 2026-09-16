@@ -12,13 +12,13 @@ type PresentationProps = {
 type Props = ({ data: Carousel } | Carousel) & PresentationProps;
 
 function InteractiveCarouselWrapper(props: Props) {
-  const carousel: Carousel = "items" in props ? props : (props as any).data;
+  const carousel: Carousel = "data" in props ? props.data : props;
 
   if (!carousel?.items || carousel.items.length === 0) return null;
 
   return (
     <InteractiveCarousel
-      items={carousel.items as any}
+      items={carousel.items}
       backgroundTone={props.backgroundTone}
     />
   );

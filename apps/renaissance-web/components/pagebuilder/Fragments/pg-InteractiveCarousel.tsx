@@ -20,6 +20,7 @@ import type {
   CTA,
   RenaissanceCarouselBackgroundTone,
 } from "@1sp/sanity-types";
+import { localizedPath } from "@renaissance/lib/routes";
 import { assetUrl, ctaToButtonProps } from "@1sp/utils/cloudinary";
 
 interface UIItem {
@@ -75,18 +76,18 @@ function InteractiveCarousel({
 
   const carouselItems: UIItem[] = useMemo(() => {
     const list = (items ?? []).map((item, index) => ({
-      id: String((item as any)?.id ?? index),
+      id: String(item.id ?? index),
       title: item.title || "",
-      subtitle: item.subtitle || (item as any)?.category || "",
-      image: getCarouselImageUrl(assetUrl((item as any)?.image)) || "",
-      video: assetUrl((item as any)?.video) || undefined,
-      description: (item as any)?.description || "",
-      category: (item as any)?.category || undefined,
+      subtitle: item.subtitle || item.category || "",
+      image: getCarouselImageUrl(assetUrl(item.image)) || "",
+      video: assetUrl(item.video) || undefined,
+      description: item.description || "",
+      category: item.category || undefined,
       logosrc: getCarouselLogoUrl(
-        assetUrl((item as any)?.logoSrc || (item as any)?.logo),
+        assetUrl(item.logoSrc || item.logo),
       ),
-      cta: (item as any)?.cta,
-      linkHref: (item as any)?.linkHref || undefined,
+      cta: item.cta,
+      linkHref: item.linkHref || undefined,
     }));
 
     return list.filter((item) => Boolean(item.image || item.video));
@@ -142,7 +143,7 @@ function InteractiveCarousel({
   const active = carouselItems[currentIndex];
   const activeButton = ctaToButtonProps(active.cta);
   const activeVideoSources = getCarouselVideoSources(active.video);
-  const activePosterUrl = getCarouselPosterUrl(active.video);
+  const activePosterUrl = active.image || getCarouselPosterUrl(active.video);
   const duration = reduceMotion ? 0.01 : 0.72;
   const backgroundClass =
     backgroundTone === "light" ? "bg-renaissance-paper" : "bg-renaissance-ink";
@@ -189,7 +190,7 @@ function InteractiveCarousel({
               onDragEnd={handleDragEnd}
               className="absolute inset-0 cursor-grab bg-renaissance-mist active:cursor-grabbing"
             >
-              {active.video && shouldLoadVideo(currentIndex) ? (
+              {active.video && !reduceMotion && shouldLoadVideo(currentIndex) ? (
                 <motion.video
                   poster={activePosterUrl}
                   className="absolute inset-0 h-full w-full object-cover"
@@ -225,7 +226,7 @@ function InteractiveCarousel({
               <CarouselTextOverlay />
 
 
-              <div className="absolute inset-x-0 bottom-0 z-10 p-6 sm:p-9 lg:p-12">
+              <div className="absolute inset-x-0 bottom-0 z-10 p-6 pb-16 sm:p-9 sm:pb-16 lg:p-12 lg:pb-16">
                 <div className="max-w-[42rem]">
                   <motion.div
                     initial={{ opacity: 0, y: reduceMotion ? 0 : 22 }}
@@ -254,7 +255,7 @@ function InteractiveCarousel({
                     ) : null}
                     {activeButton ? (
                       <div className="mt-5">
-                        <Button2 {...activeButton} />
+                        <Button2 {...activeButton} href={localizedPath(activeButton.href)} />
                       </div>
                     ) : active.linkHref ? (
                       <div className="mt-5">
@@ -298,7 +299,7 @@ function InteractiveCarousel({
           </AnimatePresence>
 
           {carouselItems.map((item, index) =>
-            item.video && preloadedVideos.has(index) && index !== currentIndex ? (
+            item.video && !reduceMotion && preloadedVideos.has(index) && index !== currentIndex ? (
               <video
                 key={`preload-${index}`}
                 preload="metadata"

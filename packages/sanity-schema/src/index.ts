@@ -31,8 +31,10 @@ import renaissanceSectionBand from './RENAISSANCE/Components/renaissanceSectionB
 import renaissancePortraitGrid from './RENAISSANCE/Components/renaissancePortraitGrid'
 import renaissanceAwardLogoWall from './RENAISSANCE/Components/renaissanceAwardLogoWall'
 import registerBlock from './RENAISSANCE/Components/registerBlock'
+import { renaissanceSharedPortraits, renaissanceSharedAwards } from './RENAISSANCE/Documents/sharedContent'
+import renaissanceSharedContentReference from './RENAISSANCE/Components/renaissanceSharedContentReference'
 import newsCTABlock from './RENAISSANCE/Components/newsCTABlock'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [page, menu, siteSettings, oneSpComponentGroup, translationGuidelines, caseStudy, unitCase, client, person, contactSubmission, ...OneSPschemaTypes, ...FLZRschemaTypes, ...CaseStudySchemaTypes, ...MSMschemaTypes, renaissanceSectionBand, renaissancePortraitGrid, renaissanceAwardLogoWall, registerBlock, newsCTABlock, link, cta, paragraph, size, services, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata, contactForm, oneSpComponentGroupReference],
+  types: [renaissanceSharedPortraits, renaissanceSharedAwards, renaissanceSharedContentReference, page, menu, siteSettings, oneSpComponentGroup, translationGuidelines, caseStudy, unitCase, client, person, contactSubmission, ...OneSPschemaTypes, ...FLZRschemaTypes, ...CaseStudySchemaTypes, ...MSMschemaTypes, renaissanceSectionBand, renaissancePortraitGrid, renaissanceAwardLogoWall, registerBlock, newsCTABlock, link, cta, paragraph, size, services, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata, contactForm, oneSpComponentGroupReference],
 }

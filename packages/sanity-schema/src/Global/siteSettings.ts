@@ -26,6 +26,18 @@ export default defineType({
       hidden: true,
       validation: (Rule) => Rule.required(),
     }),
+    ...[
+      ['renaissanceDefaultPortraits', 'Default People portraits', 'renaissanceSharedPortraits'],
+      ['renaissanceDefaultAwards', 'Default People awards', 'renaissanceSharedAwards'],
+    ].map(([name, title, type]) => defineField({
+      name, title, type: 'reference', to: [{ type }],
+      hidden: ({ document }) => document?.channel !== 'renaissanceWeb',
+      description: 'Used by People sections without their own block of this type. Edit the shared document to update every instance.',
+      options: { filter: ({ document }) => ({
+        filter: 'channel == "renaissanceWeb" && language == $language',
+        params: { language: document?.language || 'en' },
+      }) },
+    })),
     defineField({
       name: "oneSpMembershipLabel",
       title: "1SP Membership Label",

@@ -1,3 +1,4 @@
+import { resolvePeopleProof } from "../lib/renaissancePeopleProof";
 import React, { Suspense } from "react";
 import dynamic from "next/dynamic";
 import type {
@@ -661,6 +662,12 @@ export function PageBuilder({
                 />
               </ErrorBoundary>
             );
+          case "renaissanceSharedContentReference": {
+            const shared = block.sharedContent;
+            if (shared?.channel !== channel || shared?.language !== language ||
+                !["renaissancePortraitGrid", "renaissanceAwardLogoWall"].includes(shared?.content?._type)) return null;
+            return renderBlock({ ...shared.content, _key: block._key }, i, isDeferred, presentationRole, carouselBackgroundTone);
+          }
           case "renaissancePortraitGrid":
             return (
               <ErrorBoundary key={`error-${key}`}>
@@ -769,14 +776,7 @@ export function PageBuilder({
       <RenaissanceSectionFrame
         key={unit.key}
         marker={unit.marker}
-        showLegacyPeopleProof={
-          role === "people" &&
-          !unit.blocks.some(({ block }) =>
-            ["renaissancePortraitGrid", "renaissanceAwardLogoWall"].includes(
-              block._type || "",
-            ),
-          )
-        }
+        peopleProof={role === 'people' ? resolvePeopleProof(unit.marker, unit.blocks.map(({ block }) => block)) : undefined}
       >
         {role === "joinUs" ? (
           <RenaissanceRegisterBlock

@@ -82,6 +82,37 @@ const REGISTER_BLOCK_PROJECTION = `_type == 'registerBlock' => {
   }
 }`;
 
+const RENAISSANCE_SHARED_DOCUMENT_FIELDS = `
+  _id, _type, title, channel, language,
+  channel == $channel && language == $language && $channel == "renaissanceWeb" => {content}
+`;
+const RENAISSANCE_SHARED_CONTENT_PROJECTION = `
+  _type == 'renaissanceSharedContentReference' => {
+    ...,
+    sharedContent->{${RENAISSANCE_SHARED_DOCUMENT_FIELDS}}
+  },
+  _type == 'renaissanceSectionBand' && sectionRole == 'people' && $channel == 'renaissanceWeb' => {
+    ...,
+    "sharedDefaults": *[_type == 'siteSettings' && channel == $channel && language == $language][0]{
+      "portraitsConfigured": defined(renaissanceDefaultPortraits._ref),
+      "awardsConfigured": defined(renaissanceDefaultAwards._ref),
+      "portraits": renaissanceDefaultPortraits->{${RENAISSANCE_SHARED_DOCUMENT_FIELDS}},
+      "awards": renaissanceDefaultAwards->{${RENAISSANCE_SHARED_DOCUMENT_FIELDS}}
+    }
+  }
+`;
+
+const CAROUSEL_PROJECTION = `_type == 'carousel' => {
+  ...,
+  items[]{
+    ...,
+    cta{
+      ...,
+      link{..., page->{_id, slug}}
+    }
+  }
+}`;
+
 /**
  * Resolve reusable 1SP component groups as part of the page request. Keeping
  * the group payload in the page query avoids client-side waterfalls and lets
@@ -102,6 +133,8 @@ export const ONE_SP_COMPONENT_GROUP_PROJECTION = `_type == 'oneSpComponentGroupR
     language,
     content[]{
       ...,
+      ${CAROUSEL_PROJECTION},
+    ${RENAISSANCE_SHARED_CONTENT_PROJECTION},
       cta{
         ...,
         link{
@@ -311,6 +344,8 @@ export const PAGE_QUERY =
   ...,
   content[]{
     ...,
+    ${CAROUSEL_PROJECTION},
+    ${RENAISSANCE_SHARED_CONTENT_PROJECTION},
     ${ONE_SP_COMPONENT_GROUP_PROJECTION},
     cta{
       ...,
@@ -667,6 +702,8 @@ export const HOME_PAGE_QUERY =
   ...,
   content[]{
     ...,
+    ${CAROUSEL_PROJECTION},
+    ${RENAISSANCE_SHARED_CONTENT_PROJECTION},
     ${ONE_SP_COMPONENT_GROUP_PROJECTION},
     cta{
       ...,
@@ -1599,9 +1636,12 @@ export const UNIT_LOGO_GRID_QUERY = defineQuery(`
 
 export const FOOTER_EXTERNAL_BANNER_UNITS_QUERY = defineQuery(`
 *[_type == "unit" && isActive == true && language == $language &&
+  coalesce(slug.current, "") != "1sp-agency" &&
   ($channel in channel || ($channel == "1spWeb" && !defined(channel)))
 ] | order(name asc) {
-  _id, name,
+  _id, name, tagline,
+  backgroundImage${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+  footerHoverVideo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
   logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
   logoColor${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
   cta{..., link{..., page->{slug}}}
