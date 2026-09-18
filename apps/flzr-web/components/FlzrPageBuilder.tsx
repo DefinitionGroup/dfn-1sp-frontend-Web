@@ -699,7 +699,8 @@ export function PageBuilder({
     }
 
     return (
-      <FlzrSectionFrame key={unit.key} marker={unit.marker}>
+      <FlzrSectionFrame key={unit.key} marker={unit.marker}
+        layout={unit.blocks.length === 1 && unit.blocks[0].block._type === "flzrTwoThirdsContentSection" ? "two-thirds" : "default"}>
         {unit.blocks.map(({ block, sourceIndex }) =>
           renderBlock(block, sourceIndex, isDeferred, true),
         )}

@@ -3,6 +3,7 @@
 import { startTransition, useEffect, useState } from "react";
 import CaseGalleryComponent from "@flzr/components/data/data-CaseGallery";
 import { getTranslations } from "@1sp/utils/translations";
+import { REFERENCE_CATEGORIES } from "@flzr/lib/reference-categories";
 
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 
@@ -34,6 +35,10 @@ interface CasesGalleryFilteredWithPaginationProps {
   rowsPerPage?: number;
 }
 
+function serviceFilterLabel(service: { name: string; taglabel?: string }, locale: string) {
+  return locale === "en" ? service.name : service.taglabel || service.name;
+}
+
 function CasesGalleryFilteredWithPagination({
   locale = "en",
   caseStudies = [],
@@ -48,24 +53,32 @@ function CasesGalleryFilteredWithPagination({
   const [activeFilter, setActiveFilter] = useState<string>("");
   const [filterAllText, setFilterAllText] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [category, setCategory] = useState("");
+  const categories = locale === "en"
+    ? [...new Set(caseStudies.map((study) => REFERENCE_CATEGORIES[study._id]).filter(Boolean))]
+    : [];
 
   // Set the "All" filter text once translations are loaded
   useEffect(() => {
     setFilterAllText(t.casesList.filterAll);
-    setActiveFilter(t.casesList.filterAll);
-  }, [t.casesList.filterAll]);
+    const requestedService = new URLSearchParams(window.location.search).get("service");
+    const service = caseStudies.flatMap((study) => study.services || []).find(
+      (entry) => entry.name === requestedService || entry.taglabel === requestedService,
+    );
+    setActiveFilter(service ? serviceFilterLabel(service, locale) : t.casesList.filterAll);
+  }, [t.casesList.filterAll, caseStudies, locale]);
 
   // Reset to page 1 when filter changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [activeFilter]);
+  }, [activeFilter, category]);
 
   // Extract unique services with both name and taglabel
   const serviceMap = new Map<string, { name: string; taglabel: string }>();
   caseStudies
     .flatMap((study) => study.services || [])
     .forEach((service) => {
-      const taglabel = service.taglabel || service.name;
+      const taglabel = serviceFilterLabel(service, locale);
       if (!serviceMap.has(taglabel)) {
         serviceMap.set(taglabel, {
           name: service.name,
@@ -92,13 +105,12 @@ function CasesGalleryFilteredWithPagination({
 
   // Filter case studies based on active filter
   const filteredCaseStudies =
-    activeFilter === filterAllText
-      ? caseStudies
-      : caseStudies.filter((study) =>
-          study.services?.some(
+    caseStudies.filter((study) =>
+      (!category || REFERENCE_CATEGORIES[study._id] === category) &&
+      (activeFilter === filterAllText || study.services?.some(
             (service) =>
-              (service.taglabel || service.name) === activeFilter
-          )
+              serviceFilterLabel(service, locale) === activeFilter
+          ))
         );
 
   // Pagination logic
@@ -131,6 +143,17 @@ function CasesGalleryFilteredWithPagination({
         className={`z-1 grid gap-8 col-span-12 ${paddingClass} col-start-1 container mx-auto row-start-1 grid-cols-12`}
       >
         <div className="z-1 col-span-12 col-start-1">
+          {showFilters && categories.length > 1 && (
+            <div className="mb-6 flex flex-wrap gap-x-6 gap-y-3 border-b border-neutral-200 pb-5">
+              {["", ...categories].map((value) => (
+                <button key={value} type="button" aria-pressed={category === value}
+                  onClick={() => { setCategory(value); setActiveFilter(filterAllText); }}
+                  className={`text-sm transition-colors ${category === value ? "text-flzr-violet underline underline-offset-8" : "text-neutral-600 hover:text-flzr-violet"}`}>
+                  {value || filterAllText}
+                </button>
+              ))}
+            </div>
+          )}
           {/* Filter Buttons */}
           {showFilters && filters.length > 1 && (
             <div className="flex flex-wrap gap-2 mb-8 justify-center md:justify-start">
@@ -140,6 +163,7 @@ function CasesGalleryFilteredWithPagination({
                   onClick={() => {
                     startTransition(() => {
                       setActiveFilter(filter);
+                      setCategory("");
                     });
                   }}
                   className={`px-4 py-1 text-xxs font-medium uppercase rounded-md transition-all duration-100 ${

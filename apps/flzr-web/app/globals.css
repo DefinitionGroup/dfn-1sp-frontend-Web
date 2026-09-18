@@ -598,6 +598,11 @@
     clamp(3.25rem, 2.5rem + 2.4vw, 5.5rem);
 }
 
+/* A hero owns its internal spacing; its band supplies the outer frame. */
+.flzr-section-content:has(> .flzr-home-hero) {
+  padding: 0;
+}
+
 .flzr-section-surface--paper {
   background: var(--color-flzr-paper);
 }
@@ -610,11 +615,13 @@
   background: var(--color-flzr-paper);
 }
 
-.flzr-section-band[data-section="careers"] .flzr-section-surface {
+.flzr-section-band[data-section="careers"] .flzr-section-surface,
+.flzr-section-band[data-layout="two-thirds"] .flzr-section-surface {
   background: var(--color-flzr-violet);
 }
 
-.flzr-section-band[data-section="careers"] .flzr-section-content {
+.flzr-section-band[data-section="careers"] .flzr-section-content,
+.flzr-section-band[data-layout="two-thirds"] .flzr-section-content {
   padding: 0;
 }
 
@@ -717,6 +724,10 @@
   .flzr-reach-map {
     margin-top: 0;
   }
+}
+
+.flzr-home-hero.flzr-home-hero--long {
+  height: auto;
 }
 
 .flzr-content-section--globe-overlay {

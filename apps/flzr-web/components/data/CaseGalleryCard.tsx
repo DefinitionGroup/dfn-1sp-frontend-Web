@@ -6,12 +6,14 @@ import Image from "next/image";
 import Link from "next/link";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import DeferredVideo from "@flzr/components/ui/DeferredVideo";
+import { REFERENCE_CATEGORIES } from "@flzr/lib/reference-categories";
 
 interface CaseStudy {
   _id: string;
   title: string;
   slug: { current: string };
   description?: string;
+  subtitle?: string;
   services?: { name: string }[];
   mainImageUrl?: string;
   mainVideoUrl?: string;
@@ -40,6 +42,7 @@ export default function CaseGalleryCard({
   onClick,
 }: CaseGalleryCardProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const caption = REFERENCE_CATEGORIES[item._id] ? item.subtitle : item.services?.map((service) => service.name).join(", ");
   const layoutKey = `${item._id}-${instanceId}-${id}`;
 
   // Parallax Logic
@@ -118,13 +121,13 @@ export default function CaseGalleryCard({
           </Link>
         </div>
 
-        {item.services && item.services.length > 0 && (
+        {caption && (
           <div className="flex justify-start">
             <motion.p
               layoutId={`description-${layoutKey}`}
               className="max-w-[80%] text-right text-xxs font-regular leading-snug text-neutral-500 md:text-xs dark:text-neutral-400"
             >
-              {item.services.map((s) => s.name).join(", ")}
+              {caption}
             </motion.p>
           </div>
         )}

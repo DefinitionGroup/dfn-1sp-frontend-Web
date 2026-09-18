@@ -1,0 +1,11 @@
+{
+  "publicSpreadsheetCells": 28,
+  "pages": 11,
+  "originalCases": 33,
+  "editorialCellsExcluded": [
+    "E24",
+    "E33"
+  ],
+  "pendingDashboard": true,
+  "verifiedDocuments": 45
+}

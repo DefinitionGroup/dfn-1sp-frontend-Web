@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { servicePageHref } from "@flzr/lib/service-pages";
 import {
   getAllCases,
   getAllServicesForChannel,
@@ -187,7 +188,7 @@ async function FlzrFooter({
   const socialLinks = footer?.socialLinks ?? [];
   const content = Array.isArray(homePage?.content) ? homePage.content : [];
   const needsAllCases = hasCaseListingBlocks(content);
-  const showsAllServices = content.some(
+  const showsAllServices = language === "en" || content.some(
     (block) =>
       block._type === "servicesGalleryFiltered" ||
       block._type === "flzrServicesGrid",
@@ -305,7 +306,7 @@ async function FlzrFooter({
               {services.map((service) => (
                 <li key={service._id ?? service.name}>
                   <Link
-                    href={`/${language}#services`}
+                    href={servicePageHref(service._id ?? "", language) ?? `/${language}/services`}
                     className={footerLinkClassName}
                   >
                     <span aria-hidden="true" className="mt-px text-white/30">
@@ -326,7 +327,7 @@ async function FlzrFooter({
                   key={location._key ?? `${location.name}-${location.detail}`}
                 >
                   <Link
-                    href={`/${language}#${globeSectionId}`}
+                    href={language === "en" ? "/en/contact" : `/${language}#${globeSectionId}`}
                     className={footerLinkClassName}
                   >
                     <span aria-hidden="true" className="mt-px text-white/30">

@@ -74,6 +74,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   const eyebrow = step.eyebrow?.trim() ?? "";
   const seoTitle = step.seoTitle?.trim();
   const headline = step.headline?.trim() ?? "";
+  const hasLongCopy = headline.length > 90;
   const headlineMode = step.headlineMode ?? "typewriter";
   const useHeadlineReveal =
     headlineMode === "headlineReveal" && hasVisibleText(headline);
@@ -101,6 +102,8 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   };
   const paragraphSizeClass = isIphoneLandscape
     ? "text-xs"
+    : hasLongCopy
+      ? "text-base sm:text-lg lg:text-xl"
     : useHeadlineReveal
       ? "text-2xl"
       : "text-base";
@@ -184,7 +187,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="flzr-home-hero relative z-1 mx-auto w-full max-w-[1680px] overflow-hidden iphone-landscape:!h-dvh"
+      className={`flzr-home-hero ${hasLongCopy ? "flzr-home-hero--long" : "iphone-landscape:!h-dvh"} relative z-1 mx-auto w-full max-w-[1680px] overflow-hidden`}
     >
       {!useHeadlineReveal && seoTitle && <h1 className="sr-only">{seoTitle}</h1>}
 
@@ -200,7 +203,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
       )}
 
       {/* Keep the copy within the media frame in either placement. */}
-      <div className={`absolute inset-0 z-10 flex w-full ${copyBottomLeft ? "items-end justify-start pb-6 pt-12 md:pb-8" : "items-center justify-center pt-12"}`}>
+      <div className={`${hasLongCopy ? "relative min-h-[inherit] pt-28" : "absolute inset-0 pt-12"} z-10 flex w-full ${copyBottomLeft ? "items-end justify-start pb-6 md:pb-8" : "items-center justify-center"}`}>
         {useHeadlineReveal ? (
           <div className={`flex flex-col ${copyBottomLeft ? "w-full max-w-[64rem] px-6 md:px-8 items-start text-left" : "px-8 md:px-16 items-center text-center"}`}>
             {eyebrowContent && (
@@ -219,6 +222,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
             <AnimatedEditorialHeadline
               text={headline}
+              compact={hasLongCopy}
               delay={0.35}
               tone="white"
               align={copyBottomLeft ? "left" : "center"}

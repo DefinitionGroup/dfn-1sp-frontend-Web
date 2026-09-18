@@ -7,6 +7,7 @@ import FlzrSectionLabel from "./FlzrSectionLabel";
 type FlzrSectionFrameProps = {
   marker: FlzrSectionBand;
   children: React.ReactNode;
+  layout?: "default" | "two-thirds";
 };
 
 const SURFACE_CLASSES: Record<FlzrSectionSurfaceTone, string> = {
@@ -18,6 +19,7 @@ const SURFACE_CLASSES: Record<FlzrSectionSurfaceTone, string> = {
 export default function FlzrSectionFrame({
   marker,
   children,
+  layout = "default",
 }: FlzrSectionFrameProps) {
   const surfaceTone = marker.surfaceTone && marker.surfaceTone in SURFACE_CLASSES
     ? marker.surfaceTone
@@ -29,13 +31,14 @@ export default function FlzrSectionFrame({
   const sectionName = badgeLabel
     ? badgeLabel.toLowerCase().replace(/[^a-z0-9]+/g, "-")
     : "section";
-  const labelTone = sectionName === "careers" ? "accent" : "neutral";
+  const labelTone = sectionName === "careers" || layout === "two-thirds" ? "accent" : "neutral";
 
   return (
     <div
       className="flzr-section-band"
       data-surface={surfaceTone}
       data-section={sectionName}
+      data-layout={layout}
     >
       <div
         className={`flzr-section-surface ${SURFACE_CLASSES[surfaceTone]}`}

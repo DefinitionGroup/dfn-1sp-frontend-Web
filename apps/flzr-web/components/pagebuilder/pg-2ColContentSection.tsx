@@ -221,9 +221,13 @@ function TwoColContentSection({
   };
 
   const contentContainerVariants = {
-    hidden: {},
+    hidden: prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 22 },
     visible: {
+      opacity: 1,
+      y: 0,
       transition: {
+        duration: prefersReducedMotion ? 0 : TYPE_REVEAL_DURATION,
+        ease: EASE_FLZR,
         delayChildren: prefersReducedMotion ? 0 : BODY_START_DELAY,
         staggerChildren: prefersReducedMotion ? 0 : BODY_STAGGER,
       },
@@ -261,12 +265,11 @@ function TwoColContentSection({
   const portableTextComponents = {
     block: {
       normal: ({ children }: any) => (
-        <motion.p
+        <p
           className={`${getContentClass(contentSize)} ${textColors.secondary} mb-5 leading-[1.55] last:mb-0`}
-          variants={contentItemVariants}
         >
           {children}
-        </motion.p>
+        </p>
       ),
       h2: ({ children }: any) => (
         hasVisibleNode(children) ? (

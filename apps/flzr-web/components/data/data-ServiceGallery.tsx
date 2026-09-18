@@ -19,6 +19,8 @@ import {
   type PanInfo,
 } from "motion/react";
 import Image from "next/image";
+import Link from "next/link";
+import { servicePageHref } from "@flzr/lib/service-pages";
 import DeferredVideo from "@flzr/components/ui/DeferredVideo";
 import {
   cloudinaryPosterUrl,
@@ -114,6 +116,7 @@ function getPageTargets(viewportWidth: number, limit: number): number[] {
 }
 
 interface ServiceCardProps {
+  locale: string;
   item: Service;
   index: number;
   layout: "carousel" | "grid";
@@ -122,12 +125,15 @@ interface ServiceCardProps {
 }
 
 function ServiceCard({
+  locale,
   item,
   index,
   layout,
   reducedMotion,
   onOpen,
 }: ServiceCardProps) {
+  const href = servicePageHref(item._id, locale);
+  const Card = href ? Link : "button";
   const { background, objectPosition } = getServiceMedia(item);
   const groups = item.servicegrouprel?.map((group) => group.name) ?? [];
   const gridSizes =
@@ -151,9 +157,10 @@ function ServiceCard({
           : "w-[78vw] max-w-[25rem] shrink-0 [scroll-snap-align:start] sm:w-[45vw] lg:w-[calc((100vw-8rem)/3.15)] lg:max-w-[26rem] 2xl:w-[calc((100vw-10rem)/4.15)] 2xl:max-w-[22rem]"
       }
     >
-      <button
-        type="button"
-        onClick={() => onOpen(item)}
+      <Card
+        href={href!}
+        type={href ? undefined : "button"}
+        onClick={href ? undefined : () => onOpen(item)}
         aria-label={`Open details for ${item.name}`}
         className="group relative block aspect-[6/7] w-full overflow-hidden rounded-[2rem] bg-neutral-900 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-500"
       >
@@ -216,7 +223,7 @@ function ServiceCard({
             </span>
           </div>
         </motion.div>
-      </button>
+      </Card>
     </motion.li>
   );
 }
@@ -462,6 +469,7 @@ export default function ServiceGalleryComponent({
           >
             {filteredItems.map((item, index) => (
               <ServiceCard
+                locale={locale}
                 key={item._id || `${item.name}-${index}`}
                 item={item}
                 index={index}
@@ -540,6 +548,7 @@ export default function ServiceGalleryComponent({
           >
             {filteredItems.map((item, index) => (
               <ServiceCard
+                locale={locale}
                 key={item._id || `${item.name}-${index}`}
                 item={item}
                 index={index}

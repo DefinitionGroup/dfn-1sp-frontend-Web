@@ -10,6 +10,7 @@ type AnimatedEditorialHeadlineProps = {
   delay?: number;
   tone?: "gradient" | "white";
   align?: "left" | "center";
+  compact?: boolean;
 };
 
 export default function AnimatedEditorialHeadline({
@@ -17,6 +18,7 @@ export default function AnimatedEditorialHeadline({
   delay = 0.35,
   tone = "gradient",
   align = "center",
+  compact = false,
 }: AnimatedEditorialHeadlineProps) {
   const prefersReducedMotion = useReducedMotion();
   const headline = text.trim();
@@ -25,7 +27,7 @@ export default function AnimatedEditorialHeadline({
 
   return (
     <motion.h1
-      className={`${align === "left" ? "mr-auto text-left" : "mx-auto"} max-w-[28ch] text-balance whitespace-pre-line font-flzr text-[clamp(1.9rem,1.4rem+2.6vw,4.25rem)] font-bold italic leading-[1.15] ${tone === "white" ? "text-white" : ""}`}
+      className={`${align === "left" ? "mr-auto text-left" : "mx-auto"} ${compact ? "max-w-[40ch] text-[clamp(1.75rem,1.2rem+2.2vw,3.25rem)]" : "max-w-[28ch] text-[clamp(1.9rem,1.4rem+2.6vw,4.25rem)]"} text-balance whitespace-pre-line font-flzr font-bold italic leading-[1.15] ${tone === "white" ? "text-white" : ""}`}
       initial={prefersReducedMotion ? false : { opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, amount: 0.45 }}
