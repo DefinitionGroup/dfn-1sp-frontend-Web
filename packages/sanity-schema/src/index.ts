@@ -15,6 +15,7 @@ import cta from './Global/Objects/cta'
 import paragraph from './Global/Objects/paragraph'
 import size from './Global/Objects/size'
 import services from './Global/Objects/services'
+import serviceWebsiteContent from './Global/Objects/serviceWebsiteContent'
 import serviceGroup from './Global/Objects/serviceGroup'
 import cloudinaryImage from './Global/Objects/cloudinaryImage'
 import mediaGalleryItem from './Global/Objects/mediaGalleryItem'
@@ -35,8 +36,9 @@ import registerBlock from './RENAISSANCE/Components/registerBlock'
 import { renaissanceSharedPortraits, renaissanceSharedAwards } from './RENAISSANCE/Documents/sharedContent'
 import renaissanceSharedContentReference from './RENAISSANCE/Components/renaissanceSharedContentReference'
 import renaissanceClientCollection from './RENAISSANCE/Documents/clientCollection'
+import renaissanceCaseCarousel from './RENAISSANCE/Components/renaissanceCaseCarousel'
 import newsCTABlock from './RENAISSANCE/Components/newsCTABlock'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [renaissanceClientCollection, renaissanceSharedPortraits, renaissanceSharedAwards, renaissanceSharedContentReference, page, menu, siteSettings, oneSpComponentGroup, translationGuidelines, caseStudy, caseWebsiteContent, unitCase, client, person, contactSubmission, ...OneSPschemaTypes, ...FLZRschemaTypes, ...CaseStudySchemaTypes, ...MSMschemaTypes, renaissanceSectionBand, renaissancePortraitGrid, renaissanceAwardLogoWall, registerBlock, newsCTABlock, link, cta, paragraph, size, services, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata, contactForm, oneSpComponentGroupReference],
+  types: [renaissanceCaseCarousel, renaissanceClientCollection, renaissanceSharedPortraits, renaissanceSharedAwards, renaissanceSharedContentReference, page, menu, siteSettings, oneSpComponentGroup, translationGuidelines, caseStudy, caseWebsiteContent, unitCase, client, person, contactSubmission, ...OneSPschemaTypes, ...FLZRschemaTypes, ...CaseStudySchemaTypes, ...MSMschemaTypes, renaissanceSectionBand, renaissancePortraitGrid, renaissanceAwardLogoWall, registerBlock, newsCTABlock, link, cta, paragraph, size, services, serviceWebsiteContent, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata, contactForm, oneSpComponentGroupReference],
 }

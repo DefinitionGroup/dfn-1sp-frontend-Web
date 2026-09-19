@@ -1,0 +1,37 @@
+{
+  "Events & Trade Shows": {
+    "_type": "cloudinary.asset",
+    "_version": 1,
+    "format": "mp4",
+    "height": 1076,
+    "public_id": "04_events_ovgk1z",
+    "resource_type": "video",
+    "secure_url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1786983326/04_events_ovgk1z.mp4",
+    "url": "http://res.cloudinary.com/dsu07dnes/video/upload/v1786983326/04_events_ovgk1z.mp4",
+    "version": 1786983326,
+    "width": 1924
+  },
+  "Paid Amplification": {
+    "_type": "cloudinary.asset",
+    "_version": 1,
+    "format": "mp4",
+    "height": 1076,
+    "public_id": "05_amplify_ut3q9r",
+    "resource_type": "video",
+    "secure_url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1786983326/05_amplify_ut3q9r.mp4",
+    "url": "http://res.cloudinary.com/dsu07dnes/video/upload/v1786983326/05_amplify_ut3q9r.mp4",
+    "version": 1786983326,
+    "width": 1924
+  },
+  "Measurement & AI": {
+    "_type": "cloudinary.asset",
+    "_version": 1,
+    "format": "mp4",
+    "height": 1076,
+    "public_id": "06_measure_ja0ias",
+    "resource_type": "video",
+    "secure_url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1786983473/06_measure_ja0ias.mp4",
+    "version": 1786983473,
+    "width": 1924
+  }
+}

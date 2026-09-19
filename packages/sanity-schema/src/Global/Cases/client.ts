@@ -1,3 +1,4 @@
+import {withChannelLabels} from "../../shared/channelPreview";
 import { defineType, defineField } from 'sanity'
 import { websiteChannelOptions } from '../../shared/channelOptions'
 
@@ -177,9 +178,11 @@ export default defineType({
     ],
     preview: {
         select: {
+            channels: "channel",
             title: 'name',
             subtitle: 'tagline',
             media: 'logo'
-        }
+        },
+        prepare({title, subtitle, media, channels}) { return {title, subtitle: withChannelLabels(subtitle, channels), media}; }
     }
 })

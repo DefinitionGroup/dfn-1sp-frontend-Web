@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import type {SanityClient} from '@sanity/client';
 import {createHash, randomUUID} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
@@ -119,7 +120,7 @@ async function prepare(client: any, all: any[]) {
   console.log(JSON.stringify({mode: 'prepared', documents: drafts.length, newPublished: plan.items.filter(i => !i.publishedRevision).length, updatedPublished: plan.items.filter(i => i.publishedRevision).length, schemaErrors: 0, schemaWarnings: warnings.length, dryRun: 'passed', unrelatedDrafts: all.filter(d => d._id.startsWith('drafts.') && !inScope(d)).length}));
 }
 
-async function verify(client: any, plan: any) {
+async function verify(client: SanityClient, plan: any) {
   const after = await client.fetch<any[]>(QUERY);
   const before = read('before');
   const affected = new Set(plan.items.flatMap((i: any) => [i.draftId, i.published._id]));

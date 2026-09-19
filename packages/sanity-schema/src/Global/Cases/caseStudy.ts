@@ -1,3 +1,4 @@
+import {withChannelLabels} from "../../shared/channelPreview";
 import { caseDiscoveryField } from './caseDiscovery';
 import { defineType, defineField } from 'sanity'
 import { ChartBarHorizontal } from '@phosphor-icons/react'
@@ -327,6 +328,7 @@ export default defineType({
     ],
     preview: {
         select: {
+            channels: "channel",
             title: 'title',
             subtitle: 'subtitle',
             media: 'mainImage',
@@ -337,7 +339,7 @@ export default defineType({
             const { title, subtitle, media, clientLogo, isPublished } = selection
             return {
                 title,
-                subtitle: subtitle || (isPublished ? 'Published' : 'Draft'),
+                subtitle: withChannelLabels(subtitle, selection.channels),
                 media: clientLogo || media,
                 badges: isPublished ? [] : [{ label: 'Unpublished', color: 'red' }]
             }

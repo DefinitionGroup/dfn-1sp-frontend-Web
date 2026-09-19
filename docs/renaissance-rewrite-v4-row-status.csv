@@ -5,23 +5,23 @@ Rewrite Comparison!F4,Home,Hero,H1,published,page-renaissance-home-en.content[re
 Rewrite Comparison!F5,Home,How can we help your business?,H2,published,page-renaissance-home-en.content[renaissance-stories-intro].header.mainHeadline
 Rewrite Comparison!F6,Home,How can we help your business?,Paragraph,published,page-renaissance-home-en.content[renaissance-stories-intro].description
 Rewrite Comparison!F7,Home,Core Services,H2,published,page-renaissance-home-en.content[renaissance-services-intro].header.mainHeadline
-Rewrite Comparison!F8,Home,Core Services,List Item,published,page-renaissance-home-en.content[renaissance-services].cards[rpr-v4-8].headline + text (split at dash)
-Rewrite Comparison!F9,Home,Core Services,List Item,published,page-renaissance-home-en.content[renaissance-services].cards[rpr-v4-9].headline + text (split at dash)
-Rewrite Comparison!F10,Home,Core Services,List Item,published,page-renaissance-home-en.content[renaissance-services].cards[rpr-v4-10].headline + text (split at dash)
-Rewrite Comparison!F11,Home,Core Services,List Item,published,page-renaissance-home-en.content[renaissance-services].cards[rpr-v4-11].headline + text (split at dash)
+Rewrite Comparison!F8,Home,Core Services,List Item,published,93e175b0-cfe2-4918-bedd-e4893c27e79a.siteContent[channel=renaissanceWeb].name + introText (Home service reference)
+Rewrite Comparison!F9,Home,Core Services,List Item,published,f172b651-99a4-4471-94c6-1ac402a109eb.siteContent[channel=renaissanceWeb].name + introText (Home service reference)
+Rewrite Comparison!F10,Home,Core Services,List Item,published,service-product-management-support-en.name + introText (Home service reference)
+Rewrite Comparison!F11,Home,Core Services,List Item,published,f6eea649-36bb-4398-907d-7df055747982.siteContent[channel=renaissanceWeb].name + introText (Home service reference)
 Rewrite Comparison!F12,Home,Awards,Paragraph,published,renaissance-shared-awards-en.content.description
 Rewrite Comparison!F13,Home,Register with us,H2,published,page-renaissance-home-en.content[renaissance-register].headline
 Rewrite Comparison!F14,Home,Register with us,Paragraph,published,page-renaissance-home-en.content[renaissance-register].description
 Rewrite Comparison!F15,Home,Footer,Paragraph,published,menu-renaissance-footer-en.renaissanceLegalText
 Rewrite Comparison!F16,Services,Hero,H1,published,page-renaissance-services-en.content[rpr-v4-services-hero].heading
 Rewrite Comparison!F17,Services,Hero,Paragraph,published,page-renaissance-services-en.content[rpr-v4-services-hero].paragraphs[0]
-Rewrite Comparison!F18,Services,Core Services,Paragraph,published,page-renaissance-services-en.content[rpr-v4-18].title + content (split at colon)
-Rewrite Comparison!F19,Services,Core Services,Paragraph,published,page-renaissance-services-en.content[rpr-v4-19].title + content (split at colon)
-Rewrite Comparison!F20,Services,Core Services,Paragraph,published,page-renaissance-services-en.content[rpr-v4-20].title + content (split at colon)
-Rewrite Comparison!F21,Services,Core Services,Paragraph,published,page-renaissance-services-en.content[rpr-v4-21].title + content (split at colon)
+Rewrite Comparison!F18,Services,Core Services,Paragraph,published,f6eea649-36bb-4398-907d-7df055747982.siteContent[channel=renaissanceWeb].name + serviceDescription (Services page reference)
+Rewrite Comparison!F19,Services,Core Services,Paragraph,published,93e175b0-cfe2-4918-bedd-e4893c27e79a.siteContent[channel=renaissanceWeb].name + serviceDescription (Services page reference)
+Rewrite Comparison!F20,Services,Core Services,Paragraph,published,service-product-management-support-en.name + serviceDescription (Services page reference)
+Rewrite Comparison!F21,Services,Core Services,Paragraph,published,f172b651-99a4-4471-94c6-1ac402a109eb.siteContent[channel=renaissanceWeb].name + serviceDescription (Services page reference)
 Rewrite Comparison!F22,Services,Other Services,H2,published,page-renaissance-services-en.content[rpr-v4-23].title
-Rewrite Comparison!F23,Services,Other Services,List Item,published,page-renaissance-services-en.content[rpr-v4-23].content
-Rewrite Comparison!F24,Services,Other Services,List Item,published,page-renaissance-services-en.content[rpr-v4-24].content
+Rewrite Comparison!F23,Services,Other Services,List Item,published,service-paid-media-planning-buying-en.serviceDescription (Services page reference)
+Rewrite Comparison!F24,Services,Other Services,List Item,published,d118cc4d-59f7-44a2-9ebd-64fffd1f773f.siteContent[channel=renaissanceWeb].serviceDescription (Services page reference)
 Rewrite Comparison!F25,About,Hero,H1,published,page-renaissance-about-us-en.content[rpr-v4-about-hero].heading + homepage People headline
 Rewrite Comparison!F26,About,Hero,Paragraph,published,page-renaissance-about-us-en.content[rpr-v4-about-hero].paragraphs[0] + homepage People description
 Rewrite Comparison!F27,About,About the Founder,Paragraph,excluded editorial instruction,Duplicate founder biography omitted; instruction is not public copy

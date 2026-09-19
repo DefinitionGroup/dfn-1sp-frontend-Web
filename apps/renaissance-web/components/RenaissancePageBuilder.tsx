@@ -13,6 +13,7 @@ import type {
   GalleryRevealStep as GalleryRevealStepType,
   GalleryOverview as GalleryOverviewType,
   Carousel as CarouselType,
+  RenaissanceCaseCarousel as RenaissanceCaseCarouselType,
   IntroBlockTypoSophisticated as IntroBlockTypoSophisticatedType,
   CardContainerComponent as CardContainerComponentType,
   ResultsMetricsComponent as ResultsMetricsComponentType,
@@ -36,6 +37,11 @@ import RenaissanceNetwork from "./RenaissanceNetwork";
 import RenaissanceRegisterBlock from "./RenaissanceRegisterBlock";
 import RenaissanceNewsCTABlock from "./RenaissanceNewsCTABlock";
 import { partitionRenaissanceSections } from "@renaissance/lib/renaissanceSections";
+
+const RenaissanceCaseCarousel = dynamic(() => import("./pagebuilder/pg-RenaissanceCaseCarousel"), {
+  loading: () => <ComponentLoader />,
+  ssr: true,
+});
 
 const CanonicalOneSpPageBuilder = dynamic(
   () => import("@root/components/PageBuilder").then((module) => module.PageBuilder),
@@ -514,6 +520,12 @@ export function PageBuilder({
                 />
               </ErrorBoundary>
             );
+          case "renaissanceCaseCarousel":
+            return channel === "renaissanceWeb" ? (
+              <ErrorBoundary key={`error-${key}`}>
+                <RenaissanceCaseCarousel data={block as RenaissanceCaseCarouselType} backgroundTone={carouselBackgroundTone} />
+              </ErrorBoundary>
+            ) : null;
           case "smartCarousel":
             return (
               <ErrorBoundary key={`error-${key}`}>

@@ -24,6 +24,7 @@ export default function CardInsideComponent({
       <div className="absolute inset-0 overflow-hidden">
         {mediaUrl && video ? (
           <video
+            style={card.mediaPosition ? {objectPosition: card.mediaPosition} : undefined}
             src={optimizedVideoUrl(mediaUrl, { maxWidth: 960 })}
             aria-label={card.altText || undefined}
             className="h-full w-full object-cover brightness-50 transition-transform duration-700 ease-out group-hover:scale-[1.045] group-hover:brightness-90 "
@@ -35,6 +36,7 @@ export default function CardInsideComponent({
           />
         ) : mediaUrl ? (
           <img
+            style={card.mediaPosition ? {objectPosition: card.mediaPosition} : undefined}
             src={mediaUrl}
             alt={card.altText || ""}
             className="h-full w-full object-cover brightness-50 transition-transform duration-700 ease-out group-hover:scale-[1.045] group-hover:brightness-90"

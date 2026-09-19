@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import type { WebsiteChannel } from "../packages/site-config/src/index.ts";
-import { createPresentationResolvers } from "../sanity/presentation/resolve.ts";
+import type { WebsiteChannel } from "../packages/site-config/src/index";
+import { createPresentationResolvers } from "../sanity/presentation/resolve";
 
 const CHANNELS: WebsiteChannel[] = [
   "1spWeb",

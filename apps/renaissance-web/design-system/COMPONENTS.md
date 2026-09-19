@@ -14,6 +14,7 @@ Registration in `RenaissancePageBuilder.tsx` means the renderer understands a bl
 | --- | --- | --- | --- | --- |
 | `heroShowTime` | Orient and convert | CMS-selectable logo with Renaissance wordmark fallback, one headline, short support, 1 primary + optional secondary CTA, real media, alt text | logo sits above the headline hairline at no less than one-third width; full-bleed dominant media; no cards, chips, stats or promos; one hero per page | logo/image/video fallback, reduced motion, short landscape, contrast-safe nav |
 | `introBlockTypoSophisticated` | Frame the next section | one main statement, up to two short supporting phrases, one paragraph | Sanity-selectable editorial split or compact stack; no CTA or card cluster | semantic heading level, long-copy wrap, muted-token contrast |
+| `renaissanceCaseCarousel` | Browse selected global cases | 1–12 ordered case references; Renaissance copy/media; valid case slug | reuses the interactive carousel’s media stage and shared teal overlay; copy-driven height; 44px controls | previous/next, arrow keys, swipe, persistent pause, optional seven-second advance, reduced motion, visibility-aware video, poster fallback |
 | `carousel` | Present selected campaign stories | 1–5 stories, title, image/video, short description, optional verified CTA | immersive single-stage media, never a tiled card row | pause/play, previous/next, active state, swipe, keyboard, reduced motion, optimized media |
 | `clientLogoCarousel` | Add client trust | verified logos and names | borderless fixed 6-column × 2-row signal grid; slots blur/fade in with a stagger on first view, then one random slot overlaps and softly crossfades into its next logo without shifting layout; decorative duplicates hidden | pauses offscreen/hidden/hover/focus, static reduced-motion state, small logo pools, supported formats, missing-logo omission |
 | `renaissancePortraitGrid` | Show the people behind the work | 2–8 named portraits with usable images | two columns on mobile, four on desktop; only the first four remain in the compact mobile composition; fixed Figma people-bolt stays decorative | missing images omitted, meaningful alt text, one-time reduced-motion-safe reveal |
@@ -99,6 +100,8 @@ Compatibility blocks require explicit design review and a channel/data-scope che
 
 ### Service set
 
+- Renaissance service cards and `contentSection` blocks may reference an assigned global `services` document. Cards resolve its website-specific name, short copy, background image/video, alt text and focus; content sections resolve the full service description with an optional page-owned section heading. The page retains layout, order and anchors. Inline authoring remains supported when no reference is selected.
+- Service website editions inherit shared fields unless overridden. Custom media may deliberately be empty; do not substitute another channel's artwork. Wrong-channel, wrong-language or missing targets omit the referenced item. See the [published service mapping](../../../docs/renaissance-global-services-and-studio.md).
 - Client-grid logos remain contained within their fixed cells, using 32px image height on mobile and 48px from 768px with matching responsive image sizes.
 - Cards are permitted on desktop because the repeated planes materially group the six services.
 - On mobile, use a compact editorial list unless a service card is itself clickable.
@@ -160,3 +163,11 @@ Global cases can supply `siteContent` editions by channel. The shared query laye
 `clientLogoCarousel` retains manual/auto selections and adds a Renaissance collection reference. Collection items resolve global clients with optional local artwork/display-name overrides and channel/language checks. `displayMode: grid` renders the complete roster; the default swap display remains for curated homepage selections. Supplied opaque JPEGs use a light surface with their original colours and aspect ratios. Preview option comparisons strip Sanity editing metadata while visible text retains editing overlays.
 
 The v4 workbook takes precedence for Renaissance copy. See `docs/renaissance-rewrite-v4-implementation.md` for the implemented milestone and pending page migration.
+
+### Renaissance case carousel
+
+Add **Renaissance Case Carousel** to a Renaissance page’s Content array, select cases and drag to reorder. It resolves the current Renaissance website edition of each global case. It does not duplicate case copy, media or identities. Only published-flagged cases assigned to `renaissanceWeb` and the page language are included. Deleted/unassigned references, missing title/slug, and cases without resolved media are omitted. An explicitly empty custom-media edition never falls back to another channel’s media.
+
+The Stories and Case carousels share `CarouselTextOverlay`. The new case block keeps the existing directional wipe and staged text entrance while allowing long case copy to determine the media stage’s height. Its controls stay outside the animated slide so keyboard focus survives transitions. Slide advancement defaults to manual; optional automatic advancement pauses on hover/focus. Video and advancement stop offscreen, in hidden documents, on explicit Pause, and for reduced motion. Single-case blocks omit previous/next; empty blocks render nothing. An optional unique navigation point creates a server-rendered anchor. Section-band background tone is inherited.
+
+The local-only `/dev/case-carousel` route demonstrates five real global cases through the actual PageBuilder and reference projection. It has standard, reduced-motion and automatic-slide modes, writes no CMS data, stays outside the sitemap, and returns 404 outside development. The published homepage is unchanged by adding this component.

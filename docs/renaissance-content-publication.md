@@ -2,6 +2,8 @@
 
 The user authorized publication on 19 September 2026 after local review. All **225 Renaissance English drafts** were published to Sanity project `wu6i3y0h`, dataset `production`, channel `renaissanceWeb`. Post-publication verification completed at `2026-09-19T16:49:29.670Z`.
 
+Later that day, the approved [global-services migration](renaissance-global-services-and-studio.md) published six global services and replaced duplicate Home/Services copy with references. It changed eight documents in a separate guarded transaction. The record below describes the original publication; its fixed manifest now intentionally differs for those two pages.
+
 ## Published scope
 
 | Document type | Published |
@@ -40,7 +42,7 @@ The local Next.js cache was explicitly revalidated through its signed revalidati
 
 The ignored `EXPORT/renaissance-rewrite-v4/publication/` folder holds the inventory, backup verification, before/after snapshots, exact plan, schema validation, dry-run response, publication result, data verification, signed local cache-revalidation result and HTTP verification. The earlier migration backup and source/metric recovery ledgers remain available.
 
-To verify this exact publication against its saved manifest:
+Historical command for comparing this exact publication against its saved manifest (Home/Services now intentionally differ; use the linked service record for the current migration check):
 
 ```sh
 RENAISSANCE_PUBLICATION_MODE=verify pnpm exec sanity exec scripts/renaissance-publish-content.ts --with-user-token

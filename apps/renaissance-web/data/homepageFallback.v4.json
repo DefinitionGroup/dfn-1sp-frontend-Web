@@ -311,6 +311,7 @@
         "_key": "rpr-v4-8",
         "_type": "cardInsideComponent",
         "headline": "Earned PR Campaign Planning",
+        "text": "getting your announcement and launch covered by the outlets your players actually read.",
         "media": {
           "_key": "g9wcQyMMNusrMz0rLUkKH",
           "_type": "cloudinary.asset",
@@ -344,12 +345,13 @@
           "version": 1786984909,
           "width": 1924
         },
-        "text": "getting your announcement and launch covered by the outlets your players actually read."
+        "altText": ""
       },
       {
         "_key": "rpr-v4-9",
         "_type": "cardInsideComponent",
         "headline": "Paid & Organic Influencer Planning",
+        "text": "matching your game to creators whose audience already plays titles like yours.",
         "media": {
           "_key": "dWrbz9vwBkfhnEduvDcjX",
           "_type": "cloudinary.asset",
@@ -383,22 +385,107 @@
           "version": 1786983325,
           "width": 1924
         },
-        "text": "matching your game to creators whose audience already plays titles like yours."
+        "altText": ""
       },
       {
         "_key": "rpr-v4-10",
         "_type": "cardInsideComponent",
         "headline": "Product Management & Support",
-        "text": "keeping your store page, assets, and first-party relationships launch-ready."
+        "text": "keeping your store page, assets, and first-party relationships launch-ready.",
+        "media": {
+          "_type": "cloudinary.asset",
+          "_version": 1,
+          "format": "mp4",
+          "height": 1076,
+          "public_id": "06_measure_ja0ias",
+          "resource_type": "video",
+          "secure_url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1786983473/06_measure_ja0ias.mp4",
+          "version": 1786983473,
+          "width": 1924
+        },
+        "altText": "A person studying illuminated charts and data panels"
       },
       {
         "_key": "rpr-v4-11",
         "_type": "cardInsideComponent",
         "headline": "Go-to-market Communication Planning",
-        "text": "one strategy that ties your business plan, audience, and sales goals together instead of three disconnected ones."
+        "text": "one strategy that ties your business plan, audience, and sales goals together instead of three disconnected ones.",
+        "media": {
+          "_key": "swRKwdwTkQMzsZFmT2KdC",
+          "_type": "cloudinary.asset",
+          "_version": 1,
+          "access_control": [],
+          "access_mode": "public",
+          "asset_folder": "",
+          "bytes": 10269717,
+          "created_at": "2026-03-20T16:23:03Z",
+          "created_by": {
+            "id": "24bba5085cc9b3f795c06596ac66b9",
+            "type": "user"
+          },
+          "display_name": "Go-To-Market_euzzvn",
+          "folder_id": "0000000000000000000000000000000001",
+          "format": "mp4",
+          "height": 1068,
+          "id": "5493e8b34ed96a4dedc35dfbb6d2b5f6",
+          "metadata": {},
+          "public_id": "Go-To-Market_euzzvn",
+          "resource_type": "video",
+          "secure_url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1774023783/Go-To-Market_euzzvn.mp4",
+          "tags": [],
+          "type": "upload",
+          "uploaded_by": {
+            "id": "24bba5085cc9b3f795c06596ac66b9",
+            "type": "user"
+          },
+          "url": "http://res.cloudinary.com/dsu07dnes/video/upload/v1774023783/Go-To-Market_euzzvn.mp4",
+          "version": 1774023783,
+          "width": 1936
+        },
+        "altText": "Laptop displaying a video game storefront surrounded by star ratings"
+      },
+      {
+        "_key": "rpr-v4-23-home",
+        "_type": "cardInsideComponent",
+        "headline": "Paid Media Planning & Buying",
+        "text": "deciding when, where, and how much to spend on paid promotion, via a trusted partner.",
+        "media": {
+          "_type": "cloudinary.asset",
+          "_version": 1,
+          "format": "mp4",
+          "height": 1076,
+          "public_id": "05_amplify_ut3q9r",
+          "resource_type": "video",
+          "secure_url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1786983326/05_amplify_ut3q9r.mp4",
+          "url": "http://res.cloudinary.com/dsu07dnes/video/upload/v1786983326/05_amplify_ut3q9r.mp4",
+          "version": 1786983326,
+          "width": 1924
+        },
+        "altText": ""
+      },
+      {
+        "_key": "rpr-v4-24-home",
+        "_type": "cardInsideComponent",
+        "headline": "Event Management & Production",
+        "text": "planning and producing launch events, VIP previews and industry awards from start to finish.",
+        "media": {
+          "_type": "cloudinary.asset",
+          "_version": 1,
+          "format": "mp4",
+          "height": 1076,
+          "public_id": "04_events_ovgk1z",
+          "resource_type": "video",
+          "secure_url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1786983326/04_events_ovgk1z.mp4",
+          "url": "http://res.cloudinary.com/dsu07dnes/video/upload/v1786983326/04_events_ovgk1z.mp4",
+          "version": 1786983326,
+          "width": 1924
+        },
+        "altText": ""
       }
     ],
-    "columns": 2
+    "columns": 3,
+    "cta": null,
+    "additionalContent": null
   },
   {
     "_key": "renaissance-client-logos",

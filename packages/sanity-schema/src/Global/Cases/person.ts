@@ -1,3 +1,4 @@
+import {withChannelLabels} from "../../shared/channelPreview";
 import React from 'react'
 import { defineType, defineField } from 'sanity'
 import { websiteChannelOptions } from '../../shared/channelOptions'
@@ -249,12 +250,13 @@ export default defineType({
     preview: {
         // select raw fields (we'll inspect for common url locations)
         select: {
+            channels: "channel",
             title: 'name',
             subtitle: 'tagline',
             image: 'image',
             video: 'video'
         },
-        prepare(selection: { title?: string; subtitle?: string; image?: any; video?: any }) {
+        prepare(selection: { channels?: string[]; title?: string; subtitle?: string; image?: any; video?: any }) {
             const { title, subtitle, image, video } = selection
 
             // Helper to try common URL locations on cloudinary asset objects
@@ -297,7 +299,7 @@ export default defineType({
 
             return {
                 title,
-                subtitle,
+                subtitle: withChannelLabels(subtitle, selection.channels),
                 media
             }
         }

@@ -286,6 +286,12 @@ const generateTemplates = (excludeBase = false) => {
     });
   }
 
+  for (const schemaType of ['caseStudy', 'person', 'client', 'services']) {
+    templates.push({id: `${schemaType}-global-browser`, title: 'Global document with selected scope', schemaType,
+      parameters: [{name:'language',type:'string'},{name:'channel',type:'string'}],
+      value: (params: {language?:string;channel?:string}) => ({language:params.language || 'en',channel:params.channel ? [params.channel] : []}),
+    });
+  }
   return templates;
 };
 

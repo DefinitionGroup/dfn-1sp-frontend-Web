@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import {serviceDescriptionBlocks, type ServiceSource} from "@renaissance/lib/serviceContent";
 import { stegaClean } from "@sanity/client/stega";
 import StaggeredFadeIn from "@renaissance/components/ui/StaggeredFadeIn";
 import StaggeredSlideUp from "@renaissance/components/ui/StaggeredSlideUp";
@@ -7,7 +8,7 @@ import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import Link from "next/link";
 import { hasVisibleNode, hasVisibleText } from "@1sp/utils/text-content";
-type ContentSectionData = {
+type ContentSectionData = ServiceSource & {
   anchorId?: string;
   title?: string;
   introHeading?: string;
@@ -35,6 +36,10 @@ const paddingClasses: Record<string, string> = {
 };
 
 function ContentSection({ data }: { data: ContentSectionData }) {
+  if (data?.serviceConfigured) {
+    if (!data.service?._id) return null;
+    data = {...data, title: data.title || data.service.name, content: serviceDescriptionBlocks(data.service)};
+  }
   const {
     anchorId,
     title,

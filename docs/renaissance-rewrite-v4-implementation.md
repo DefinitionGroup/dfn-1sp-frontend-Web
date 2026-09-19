@@ -17,7 +17,7 @@ The user authorized publication after local review, and all 225 Renaissance draf
 
 | Surface | Implemented composition |
 | --- | --- |
-| Home | Rewritten hero and metadata; story introduction and two linked campaign slides; four service cards; 12 selected client logos; team and awards; retained reach; Origins “Since 2015”; creator/media registration CTAs. |
+| Home | Rewritten hero and metadata; story introduction and two linked campaign slides; six service cards with video; 12 selected client logos; team and awards; retained reach; Origins “Since 2015”; creator/media registration CTAs. |
 | Services | Page introduction; four anchored `contentSection` blocks preserving complete rewritten paragraphs; paid-media partner section; separate events section. |
 | About | Rewritten introduction; 19 named portraits with global person references; How we work; the reusable Renaissance awards wall. |
 | Clients | F29/F30 introduction and an alphabetical 125-logo grid from the Renaissance-owned collection, with global client identities and local artwork overrides. |
@@ -26,7 +26,7 @@ The user authorized publication after local review, and all 225 Renaissance draf
 | Case bodies | `headlineChallenge` contains full introductory copy. The approved Results follow-up maps 60 source paragraphs into 107 scoped `resultsMetrics` groups with 248 metrics, explanations and preserved qualitative outcomes. Autonauts retains its attributed quote; six intro-only cases have no fabricated results section. |
 | Navigation/footer | Primary menu now links to actual pages. Footer stories and services link to their cases/section anchors; ICO copy is saved. Legal links point to the verified existing policy pages. |
 
-Homepage Product and Go-to-market service cards use the established text treatment without unrelated video. Suitable artwork can be added later. Shared portraits and awards also resolve in the fallback homepage. The fallback Home and Contact copy is aligned with v4. Existing Origins historical logos remain intact.
+All six homepage services now use distinct existing videos, including the data-analysis film for Product Management and the storefront/launch film for Go-to-market. Shared portraits and awards also resolve in the fallback homepage. The fallback Home and Contact copy is aligned with v4. Existing Origins historical logos remain intact.
 
 The 2025 Romeo announcement/activation and 2026 full launch remain separate cases. Verified legacy mappings produce 69 local redirects, including the two distinct Romeo URLs, `/about` and `/register`; no redirects have been deployed.
 
@@ -40,7 +40,7 @@ Cases, clients and people remain global documents filtered by channel and langua
 
 The **Website content** tab lets an assigned channel inherit shared copy or override its headline, subtitle/summary, hero, SEO, discovery metadata and complete body. **Start from shared content** creates an editable snapshot; **Use shared content** removes the overrides. Empty custom bodies and hidden optional text are explicit. Publishing a global document still publishes its whole draft, including all editions; editions do not have independent publishing lifecycles.
 
-The resolver is used by detail pages, listings, manually selected cases, carousels and MSM unit cases. All four frontends consume resolved SEO. New Renaissance-only cases use the shared default fields without a redundant identical edition. Services are authored as Renaissance page blocks; no duplicate global service identities were created just to hold page copy.
+The resolver is used by detail pages, listings, manually selected cases, carousels and MSM unit cases. All four frontends consume resolved SEO. New Renaissance-only cases use the shared default fields without a redundant identical edition. The subsequent [global-services migration](renaissance-global-services-and-studio.md) replaces inline service copy with six Home and six Services page references to six global service identities. Four existing services have Renaissance website editions; two new services use shared fields with Renaissance assignment. Copy and available media are published, and other-channel service content is preserved.
 
 Renaissance owns its client collections and artwork selections, awards collection and portrait presentation. Global identities remain reusable by other channels. Existing GSC Game World and Stefano Petrullo have published Renaissance membership while retaining their shared identity/artwork. Koelnmesse and Wired Productions were added as distinct clients required by campaigns; neither is silently conflated with a different supplied logo.
 
@@ -88,7 +88,7 @@ WATCHPACK_POLLING=1000 pnpm exec next dev --webpack -p 3000
 WATCHPACK_POLLING=1000 pnpm --filter @1sp/renaissance-web exec next dev --webpack -p 3003
 ```
 
-The import scripts default to dry-run, use an authenticated `sanity exec --with-user-token` session, require explicit apply flags and guard existing revisions/new-document collisions. Completed imports detect their own batch and preserve subsequent editorial edits. The earlier draft-only audit scripts are historical migration checks. Use `RENAISSANCE_PUBLICATION_MODE=verify pnpm exec sanity exec scripts/renaissance-publish-content.ts --with-user-token` to re-check this publication against its saved manifest; later editorial edits will intentionally require a new baseline. Do not replay migration/refinement scripts over later editorial work.
+The import scripts default to dry-run, use an authenticated `sanity exec --with-user-token` session, require explicit apply flags and guard existing revisions/new-document collisions. Completed imports detect their own batch and preserve subsequent editorial edits. The earlier draft-only audits and 225-document publication manifest are historical migration checks: Home and Services intentionally differ after the global-services migration. See its [current verification command and baseline](renaissance-global-services-and-studio.md). Do not replay migration/refinement scripts over later editorial work.
 
 ## Retained source and operational notes
 

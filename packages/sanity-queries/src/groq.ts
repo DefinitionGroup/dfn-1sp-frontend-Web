@@ -1,3 +1,4 @@
+import {servicePresentationFields, SERVICE_REFERENCE_PROJECTION} from "./service-presentation";
 import { defineQuery } from "next-sanity";
 import { casePresentationFields, CASE_BODY_PROJECTION } from "./case-presentation";
 
@@ -94,7 +95,18 @@ const RENAISSANCE_SHARED_DOCUMENT_FIELDS = `
   _id, _type, title, channel, language,
   channel == $channel && language == $language && $channel == "renaissanceWeb" => {content{..., _type == 'renaissancePortraitGrid' => {${RENAISSANCE_PORTRAIT_FIELDS}}}}
 `;
+export const RENAISSANCE_CASE_CAROUSEL_PROJECTION = `_type == 'renaissanceCaseCarousel' => {
+  "caseStudies": select($channel == 'renaissanceWeb' => selectedCases[
+    $channel in @->channel && @->language == $language && @->isPublished == true && defined(@->slug.current)
+  ]->{_id, slug, ${casePresentationFields()}}, [])
+}`;
+
 const RENAISSANCE_SHARED_CONTENT_PROJECTION = `
+  ${RENAISSANCE_CASE_CAROUSEL_PROJECTION},
+  _type == 'contentSection' && $channel == 'renaissanceWeb' => {${SERVICE_REFERENCE_PROJECTION}},
+  _type == 'cardContainerComponent' && $channel == 'renaissanceWeb' => {
+    cards[]{..., ${SERVICE_REFERENCE_PROJECTION}}
+  },
   _type == 'renaissancePortraitGrid' && $channel == 'renaissanceWeb' => {${RENAISSANCE_PORTRAIT_FIELDS}},
   _type == 'renaissanceSharedContentReference' => {
     ...,
@@ -645,13 +657,14 @@ export const PAGE_QUERY =
     },
     _type == 'smartServicesCarousel' => {
       ...,
-      selectedServices[$channel in @->channel]->{
+      selectedServices[$channel in @->channel && @->language == $language]->{
         _id,
         name,
         taglabel,
         introText,
         serviceDescription,
-        "backgroundAsset": serviceBackground.asset
+        "backgroundAsset": serviceBackground.asset,
+        ${servicePresentationFields()}
       }
     },
     _type == 'casesGalleryFiltered' => {
@@ -921,13 +934,14 @@ export const HOME_PAGE_QUERY =
     },
     _type == 'smartServicesCarousel' => {
       ...,
-      selectedServices[$channel in @->channel]->{
+      selectedServices[$channel in @->channel && @->language == $language]->{
         _id,
         name,
         taglabel,
         introText,
         serviceDescription,
-        "backgroundAsset": serviceBackground.asset
+        "backgroundAsset": serviceBackground.asset,
+        ${servicePresentationFields()}
       }
     },
     _type == 'casesGalleryFiltered' => {
@@ -1379,7 +1393,7 @@ export const SERVICES_QUERY = defineQuery(`
 `);
 
 export const SERVICES_BY_CHANNEL_QUERY = defineQuery(`
-*[_type == "services" && $channel in channel && language == $language] | order(coalesce(sortOrder, 2147483647) asc, name asc){
+*[_type == "services" && $channel in channel && language == $language] | order(coalesce(siteContent[channel == $channel][0].sortOrder, sortOrder, 2147483647) asc, name asc){
   _id,
   _updatedAt,
   name,
@@ -1409,13 +1423,14 @@ export const SERVICES_BY_CHANNEL_QUERY = defineQuery(`
     "logoUrl": logo.secure_url,
     backgroundImage,
     cta
-  }
+  },
+  ${servicePresentationFields()}
 }
 `);
 
 // Auto mode for the smart services carousel: all channel services, capped
 export const INTERACTIVE_SERVICES_CAROUSEL_QUERY = defineQuery(`
-*[_type == "services" && $channel in channel && language == $language] | order(coalesce(sortOrder, 2147483647) asc, name asc) [0...$maxItems] {
+*[_type == "services" && $channel in channel && language == $language] | order(coalesce(siteContent[channel == $channel][0].sortOrder, sortOrder, 2147483647) asc, name asc) [0...$maxItems] {
   _id,
   name,
   taglabel,
@@ -1427,7 +1442,8 @@ export const INTERACTIVE_SERVICES_CAROUSEL_QUERY = defineQuery(`
     description
   },
   sortOrder,
-  "backgroundAsset": serviceBackground.asset
+  "backgroundAsset": serviceBackground.asset,
+  ${servicePresentationFields()}
 }
 `);
 
@@ -1457,7 +1473,7 @@ export const CASE_STUDIES_BY_CHANNEL_LIMIT_QUERY = defineQuery(`
 `);
 
 export const SERVICES_BY_CHANNEL_LIMIT_QUERY = defineQuery(`
-*[_type == "services" && $channel in channel && language == $language] | order(coalesce(sortOrder, 2147483647) asc, name asc) [0...$maxItems] {
+*[_type == "services" && $channel in channel && language == $language] | order(coalesce(siteContent[channel == $channel][0].sortOrder, sortOrder, 2147483647) asc, name asc) [0...$maxItems] {
   _id,
   _updatedAt,
   name,
@@ -1471,7 +1487,8 @@ export const SERVICES_BY_CHANNEL_LIMIT_QUERY = defineQuery(`
   },
   sortOrder,
   serviceicon,
-  serviceBackground
+  serviceBackground,
+  ${servicePresentationFields()}
 }
 `);
 

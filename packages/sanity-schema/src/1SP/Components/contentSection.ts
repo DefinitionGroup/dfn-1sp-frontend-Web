@@ -1,4 +1,5 @@
 import { defineType, defineField, defineArrayMember } from "sanity";
+import {serviceReferenceField} from "../../shared/serviceReference";
 import { List } from "@phosphor-icons/react";
 
 export default defineType({
@@ -12,6 +13,7 @@ export default defineType({
         { name: "navigation", title: "Navigation" },
     ],
     fields: [
+        {...serviceReferenceField(), group: "content"},
         defineField({ name: "anchorId", title: "Section anchor", type: "string", group: "navigation", hidden: ({document}) => document?.channel !== "renaissanceWeb", validation: r => r.regex(/^[a-z][a-z0-9-]*$/) }),
         defineField({
             name: "navPointName",
@@ -32,7 +34,7 @@ export default defineType({
             name: "title",
             title: "Section Title",
             type: "string",
-            description: "Optional title for the entire section",
+            description: "Optional heading override. A selected global service supplies its name when this is empty.",
             group: "content",
         }),
         defineField({
@@ -53,11 +55,12 @@ export default defineType({
         }),
         defineField({
             name: "content",
+            hidden: ({parent}) => !!parent?.service?._ref,
             title: "Content",
             type: "array",
             description: "Rich text content - paste your text and apply formatting as needed",
             group: "content",
-            validation: (Rule) => Rule.required(),
+            validation: (Rule) => Rule.custom((value, context) => (context.parent as any)?.service?._ref || (value && value.length) ? true : "Content or a global service is required"),
             of: [
                 {
                     type: "block",
@@ -179,13 +182,14 @@ export default defineType({
     ],
     preview: {
         select: {
+            serviceName: "service.name",
             title: "title",
             introHeading: "introHeading",
             content: "content",
         },
-        prepare({ title, introHeading, content }) {
+        prepare({ title, introHeading, content, serviceName }) {
             const displayTitle =
-                title ||
+                title || serviceName ||
                 (introHeading ? introHeading.substring(0, 50) : null) ||
                 "Content Section";
 

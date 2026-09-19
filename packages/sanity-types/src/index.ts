@@ -98,6 +98,27 @@ export interface Carousel {
     items?: CarouselItem[];
 }
 
+export interface RenaissanceCarouselCase {
+    _id: string;
+    title?: string;
+    subtitle?: string;
+    description?: string;
+    slug?: {current?: string};
+    mainImage?: CloudinaryAsset;
+    mainVideo?: CloudinaryAsset;
+    mainImageUrl?: string;
+    mainVideoUrl?: string;
+}
+
+export interface RenaissanceCaseCarousel {
+    _type?: "renaissanceCaseCarousel";
+    _key?: string;
+    caseStudies?: RenaissanceCarouselCase[];
+    autoAdvance?: boolean;
+    navPointName?: string;
+    hideFromNav?: boolean;
+}
+
 /* Gallery step types (union of specific step objects) */
 export interface GalleryBase {
     badge?: BadgeModule;
@@ -255,6 +276,9 @@ export interface IntroBlockTypoSophisticated {
 }
 
 export interface CardInsideComponent {
+    mediaPosition?: string;
+    serviceConfigured?: boolean;
+    service?: Service | null;
     _key?: string;
     _type?: "cardInsideComponent";
     media?: CloudinaryAsset;
@@ -647,7 +671,23 @@ export interface ServiceDeliverable {
     description: string;
 }
 
+export interface ServiceWebsiteContent {
+    _type?: "serviceWebsiteContent";
+    _key?: string;
+    channel: string;
+    name?: string;
+    taglabel?: string;
+    introText?: string;
+    serviceDescription?: string;
+    deliverables?: ServiceDeliverable[];
+    sortOrder?: number;
+    mediaMode?: "inherit" | "custom";
+    serviceicon?: CloudinaryImage;
+    serviceBackground?: CloudinaryImage;
+}
+
 export interface Services {
+    siteContent?: ServiceWebsiteContent[];
     _id?: SanityID;
     _type?: "services";
     language?: string;
