@@ -25,6 +25,7 @@ export const CASE_BODY_PROJECTION = `
   "casesPageBuilder": select(siteContent[channel == $channel][0].bodyMode == "custom" => coalesce(siteContent[channel == $channel][0].casesPageBuilder, []), casesPageBuilder)[]{
     ...,
     services[]->{_id, name},
-    ctaButton{..., link{..., page->{slug}}}
+    ctaButton{..., link{..., page->{slug}}},
+    cta{..., link{..., page->{slug}}}
   }
 `;

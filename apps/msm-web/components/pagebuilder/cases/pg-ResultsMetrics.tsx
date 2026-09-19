@@ -28,6 +28,7 @@ type Metric = ResultMetric;
 
 interface ResultsMetricsProps {
   title: string;
+  quote?: {text: string; attribution: string};
   description?: string;
   context?: string;
   metrics?: Metric[];
@@ -40,6 +41,7 @@ interface ResultsMetricsProps {
 
 export default function ResultsMetrics({
   title,
+  quote,
   context,
   description,
   metrics = [],
@@ -136,6 +138,7 @@ export default function ResultsMetrics({
                     {description}
                   </p>
                 )}
+                {quote?.text && <blockquote className="max-w-3xl mt-8 text-xl leading-relaxed"><p>{quote.text}</p><footer className="mt-4 text-sm text-white/65">{quote.attribution}</footer></blockquote>}
               </StaggeredSlideUp>
             </div>
 
@@ -143,15 +146,15 @@ export default function ResultsMetrics({
             {metrics && metrics.length > 0 && (
               <div className="col-span-4 sm:col-span-6 md:col-span-12 mt-8 md:mt-12">
                 <div className="bg-neutral-900/60 backdrop-blur-lg   p-6 sm:p-8 md:p-10 lg:p-12">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
+                  <div className={`grid grid-cols-1 ${metrics.length > 1 ? 'sm:grid-cols-2' : ''} ${metrics.length > 2 ? 'xl:grid-cols-3' : ''} gap-6 sm:gap-8`}>
                     {metrics.map((metric, index) => (
                       <div
                         key={index}
-                        className="flex flex-col items-start pb-6 border-b border-white/15 last:border-b-0 sm:last:border-b sm:border-b"
+                        className="flex min-w-0 flex-col items-start pb-6 border-b border-white/15 last:border-b-0 sm:last:border-b sm:border-b"
                       >
                         {stegaClean(metric.type) === "animatedNumber" ? (
-                          <div className="mt-6 sm:mt-8 md:mt-12 mb-3 md:mb-4">
-                            {hasMetricFormatting(metric) ? <MetricNumber metric={metric} locale={locale} className="text-[40px] text-gray-100 md:text-[80px]" /> : <AnimateNumberinView
+                          <div className="mt-6 sm:mt-8 md:mt-12 mb-3 md:mb-4 w-full" style={{containerType: 'inline-size'}}>
+                            {hasMetricFormatting(metric) ? <MetricNumber metric={metric} locale={locale} className="text-[clamp(1.25rem,9cqw,5rem)] text-gray-100" /> : <AnimateNumberinView
                               number={metric.value}
                               format={{ minimumIntegerDigits: 1 }}
                               suffix={metric.suffix || ""}

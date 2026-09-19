@@ -1,3 +1,6 @@
+import {cleanMsmPreviewControls} from "@msm/lib/preview-controls";
+import MsmServiceDirectory from "./pagebuilder/server/MsmServiceDirectory";
+import ResultsMetrics from "./pagebuilder/cases/pg-ResultsMetrics";
 import React, { Suspense } from "react";
 import dynamic from "next/dynamic";
 import type {
@@ -280,7 +283,8 @@ export function PageBuilder({
 }: PageBuilderProps) {
   if (!Array.isArray(content) || content.length === 0) return null;
 
-  const renderBlock = (block: any, i: number, isDeferred = false) => {
+  const renderBlock = (rawBlock: any, i: number, isDeferred = false) => {
+    const block = cleanMsmPreviewControls(rawBlock);
     if (!block?._type) return null;
 
     const key = block._key ?? `${block._type}-${i}`;
@@ -557,6 +561,10 @@ export function PageBuilder({
               </ErrorBoundary>
             ) : null;
 
+          case "msmServiceDirectory":
+            return <MsmServiceDirectory key={key} {...block} language={language} />;
+          case "resultsMetrics":
+            return <ResultsMetrics key={key} {...block} />;
           default:
             return null;
     }

@@ -1,8 +1,10 @@
 import type { NextConfig } from "next";
 import path from "node:path";
 import { getDeploymentHeaders } from "@1sp/utils/deployment-tier";
+import contentRedirects from './data/content-redirects.json';
 
 const nextConfig: NextConfig = {
+  redirects: async () => contentRedirects,
   // Keep development file watching inside this monorepo. An unrelated
   // lockfile above it otherwise makes Turbopack scan the entire home folder.
   turbopack: { root: path.resolve(__dirname, "../..") },

@@ -3,6 +3,8 @@ import type { ResultMetric } from '@1sp/sanity-types';
 const scales = { none: 1, thousand: 1_000, million: 1_000_000, billion: 1_000_000_000 };
 const scaleLabels = { none: '', thousand: 'k', million: 'm', billion: 'bn' };
 const qualifierPrefixes = { exact: '', plus: '', moreThan: 'Over ', approximately: '~', nearly: 'Nearly ', lessThan: 'Under ' };
+const germanQualifierPrefixes = { exact: '', plus: '', moreThan: 'Über ', approximately: '~', nearly: 'Fast ', lessThan: 'Unter ' };
+const germanScaleLabels = { none: '', thousand: ' Tsd.', million: ' Mio.', billion: ' Mrd.' };
 // Sanity preview metadata belongs on editable text, never on formatting controls.
 const clean = (value: string | undefined) => value?.replace(/[\u200b-\u200f\ufeff]/g, '') ?? '';
 
@@ -16,8 +18,9 @@ export function metricPresentation(metric: ResultMetric, locale = 'en') {
     minimumFractionDigits: decimals ?? 0,
     maximumFractionDigits: decimals ?? 3,
   });
-  const prefix = `${qualifierPrefixes[qualifier] ?? ''}${clean(metric.prefix)}`;
-  const suffix = `${scaleLabels[scale] ?? ''}${clean(metric.suffix)}${qualifier === 'plus' ? '+' : ''}`;
+  const german = locale.toLowerCase().split('-')[0] === 'de';
+  const prefix = `${(german ? germanQualifierPrefixes : qualifierPrefixes)[qualifier] ?? ''}${clean(metric.prefix)}`;
+  const suffix = `${(german ? germanScaleLabels : scaleLabels)[scale] ?? ''}${clean(metric.suffix)}${qualifier === 'plus' ? '+' : ''}`;
   const text = (current: number) => `${prefix}${format.format(current)}${suffix}`;
   return { value, text, final: text(value), isStatic: clean(metric.animationMode) === 'static' };
 }

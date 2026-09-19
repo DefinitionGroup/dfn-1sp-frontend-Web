@@ -62,7 +62,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
   // Optional CTA below the hero copy (schema: oneSPHeader.cta)
   let ctaHref = step.cta?.link ? resolveLink(step.cta.link) : undefined;
-  if (ctaHref && ctaHref.startsWith("/") && !ctaHref.startsWith(`/${locale}`)) {
+  if (locale !== "en" && ctaHref && ctaHref.startsWith("/") && !ctaHref.startsWith(`/${locale}`)) {
     ctaHref = `/${locale}${ctaHref}`;
   }
   const ctaText = step.cta?.text;
@@ -74,6 +74,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   const useVideo = isVideoUrl(mediaUrl);
 
   const eyebrow = step.eyebrow ?? "Welcome at 1SP";
+  const editorialHeadline = step.headlineMode === "headlineReveal" ? step.headline : undefined;
   const seoTitle = step.seoTitle?.trim();
   const words = Array.isArray(step.rotatingText) ? step.rotatingText : [];
   const paragraphs = (step.paragraphs ?? []) as PortableTextBlock[];
@@ -151,9 +152,9 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="relative min-h-[80vh] h-[95vh] iphone-landscape:!h-dvh  overflow-hidden z-1"
+      className={editorialHeadline ? "relative min-h-[95svh] overflow-hidden z-1" : "relative min-h-[80vh] h-[95vh] iphone-landscape:!h-dvh overflow-hidden z-1"}
     >
-      <h1 className="sr-only">{seoTitle || "MSM.digital — Gaming, tech and consumer electronics marketing"}</h1>
+      {!editorialHeadline && <h1 className="sr-only">{seoTitle || "MSM.digital — Gaming, tech and consumer electronics marketing"}</h1>}
 
       {/* Blueprint corner markers (Vast grammar) */}
       <CornerMarkers
@@ -174,27 +175,30 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
       {/* Foreground content — white corner markers frame the
           eyebrow/headline/copy/CTA group. */}
-      <div className="absolute inset-x-0 bottom-20 md:bottom-12 iphone-landscape:bottom-0 z-10 max-w-9xl container mx-auto px-6 md:px-10 py-5">
+      <div className={editorialHeadline ? "relative z-10 container mx-auto px-6 md:px-10 pt-36 pb-16" : "absolute inset-x-0 bottom-20 md:bottom-12 iphone-landscape:bottom-0 z-10 max-w-9xl container mx-auto px-6 md:px-10 py-5"}>
         <SelectionFrame
           className="inline-block max-w-full"
           contentClassName="p-6 md:p-8 space-y-1"
           delay={250}
         >
-            <div className="pb-3 md:pb-4">
+            <div className="pb-3 md:pb-4 flex items-center gap-4">
               <MsmLogoAnimated
                 size={44}
                 className="h-11 w-11"
               />
+              {editorialHeadline && <span className="text-4xl md:text-6xl tracking-tight">MSM.digital</span>}
             </div>
 
             {hasVisibleText(eyebrow) && (
-              <h3 className="text-msm-cyan text-xl md:text-2xl tracking-tight pb-3">
+              <p className="text-msm-cyan text-xl md:text-2xl tracking-tight pb-3">
                 {eyebrow}
-              </h3>
+              </p>
             )}
 
-            {/* Decrypt-style rotating words */}
-            {words.length > 0 && <DecryptRotator text={words} />}
+            {/* Keep the signature decrypt effect for both authored headlines and rotating words. */}
+            {editorialHeadline ? (
+              <DecryptRotator text={[editorialHeadline]} variant="headline" />
+            ) : words.length > 0 && <DecryptRotator text={words} />}
 
             {/* Desktop paragraphs (rich text) */}
             {paragraphs.length > 0 && (

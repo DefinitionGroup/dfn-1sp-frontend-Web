@@ -48,6 +48,19 @@ export function createPresentationResolvers(channel: WebsiteChannel) {
   `
 
   const locations = {
+    person: defineLocations({
+      select: {name: 'name', language: 'language', channel: 'channel', siteContent: 'siteContent'},
+      resolve: (document: any) => {
+        const slug = document?.siteContent?.find((e: any) => e.channel === channel)?.slug?.current;
+        return {locations: channel === 'msmWeb' && slug && document?.channel?.includes(channel)
+          ? [{title: document.name, href: getPublicPath(channel, document.language, `/people/${slug}`)}] : []};
+      },
+    }),
+    msmUnit: defineLocations({
+      select: {name: 'name', language: 'language', slug: 'slug.current'},
+      resolve: (document: any) => ({locations: channel === 'msmWeb' && document?.slug
+        ? [{title: document.name, href: getPublicPath(channel, document.language, `/units/${document.slug}`)}] : []}),
+    }),
     page: defineLocations({
       select: {
         title: 'title',
@@ -103,6 +116,22 @@ export function createPresentationResolvers(channel: WebsiteChannel) {
   }
 
   const mainDocuments = defineDocuments([
+    ...(channel === 'msmWeb' ? ['services', 'people', 'units'].flatMap(kind => [
+      {
+        route: `/${kind}/:slug`,
+        filter: kind === 'services' ? `${pageFilter} && slug.current == $slug` : kind === 'people'
+          ? '_type == "person" && $channel in channel && language == $language && siteContent[channel == $channel][0].slug.current == $slug'
+          : '_type == "msmUnit" && language == $language && slug.current == $slug',
+        params: ({params}: any) => ({channel, language: site.defaultLocale, slug: kind === 'services' ? `services/${params.slug}` : params.slug}),
+      },
+      {
+        route: `/:locale/${kind}/:slug`,
+        filter: kind === 'services' ? `${pageFilter} && slug.current == $slug` : kind === 'people'
+          ? '_type == "person" && $channel in channel && language == $language && siteContent[channel == $channel][0].slug.current == $slug'
+          : '_type == "msmUnit" && language == $language && slug.current == $slug',
+        params: ({params}: any) => ({channel, language: params.locale, slug: kind === 'services' ? `services/${params.slug}` : params.slug}),
+      },
+    ]) : []),
     {
       route: '/',
       filter: homepageFilter,

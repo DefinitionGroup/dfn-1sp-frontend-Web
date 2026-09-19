@@ -1,3 +1,4 @@
+import {msmPath} from "@msm/lib/editorial";
 /**
  * Home Page
  * =========
@@ -93,7 +94,7 @@ export async function generateMetadata({
     description,
     keywords: page.metadata?.keywords ?? undefined,
     alternates: {
-      canonical: "/",
+      canonical: msmPath(language, ""),
     },
     openGraph: {
       title,

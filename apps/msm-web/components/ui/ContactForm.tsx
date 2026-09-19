@@ -5,6 +5,7 @@ import type { ContactFormSettings } from "@1sp/sanity-types";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
 type ContactFormProps = {
+  headingTag?: "h1" | "h2";
   language?: string;
   channel?: string;
   settings?: ContactFormSettings | null;
@@ -27,6 +28,7 @@ const defaultFormState: FormState = {
 };
 
 export default function ContactForm({
+  headingTag: Heading = "h2",
   language = "en",
   channel = "1spWeb",
   settings,
@@ -103,7 +105,7 @@ export default function ContactForm({
               Contact
             </span>
             {hasVisibleText(headline) ? (
-              <h2 className="text-3xl font-semibold leading-tight text-neutral-900 md:text-4xl">{headline}</h2>
+              <Heading className="text-3xl font-semibold leading-tight text-neutral-900 md:text-4xl">{headline}</Heading>
             ) : null}
             <p className="text-lg text-neutral-600">{subheadline}</p>
             {description ? <p className="text-neutral-500">{description}</p> : null}

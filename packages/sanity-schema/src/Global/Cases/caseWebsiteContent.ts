@@ -27,7 +27,7 @@ export default defineType({
     defineField({ name: 'isVerticalVideo', title: 'Vertical video', type: 'boolean', hidden: ({ parent }) => parent?.mediaMode !== 'custom' }),
     defineField({ name: 'bodyMode', title: 'Case body', type: 'string', initialValue: 'inherit', options: { layout: 'radio', list: [{ title: 'Use shared blocks', value: 'inherit' }, { title: 'Custom blocks (complete composition)', value: 'custom' }] } }),
     defineField({ name: 'casesPageBuilder', title: 'Website case blocks', type: 'array', hidden: ({ parent }) => parent?.bodyMode !== 'custom',
-      of: ['headlineChallenge', 'challengeAndSolution', 'approachSection', 'resultsMetrics'].map(type => ({ type })) }),
+      of: ['headlineChallenge', 'challengeAndSolution', 'approachSection', 'resultsMetrics', 'intertitleCTA'].map(type => ({ type })) }),
   ],
   preview: { select: { channel: 'channel', title: 'title', mode: 'bodyMode' }, prepare: ({ channel, title, mode }) => ({ title: SITE_CONFIGS[channel as keyof typeof SITE_CONFIGS]?.shortName || 'Choose a website', subtitle: title || (mode === 'custom' ? 'Custom case blocks' : 'Shared content with optional overrides') }) },
 });

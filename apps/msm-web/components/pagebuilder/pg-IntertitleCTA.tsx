@@ -73,7 +73,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   let buttonHref = cta?.link ? resolveLink(cta.link) : undefined;
   // Fix URL to include locale if it's an internal link
   if (
-    buttonHref &&
+    locale !== "en" && buttonHref &&
     buttonHref.startsWith("/") &&
     !buttonHref.startsWith(`/${locale}`)
   ) {

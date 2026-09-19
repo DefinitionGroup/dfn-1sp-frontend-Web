@@ -10,6 +10,8 @@ type HeaderParent = {
   showEyebrow?: boolean;
 };
 
+const isEditorialPage = (document?: unknown) => (document as {channel?: string})?.channel === "msmWeb" || isFlzrPage(document);
+
 const isFlzrPage = (document?: unknown) =>
   isFlzrStyleChannel(
     (document as { channel?: string } | undefined)?.channel,
@@ -101,7 +103,7 @@ export default defineType({
       description:
         "Show the small label above the hero headline. Hidden by default.",
       initialValue: false,
-      hidden: ({ document }) => !isFlzrPage(document),
+      hidden: ({ document }) => !isEditorialPage(document),
       group: "content",
     }),
     defineField({
@@ -136,7 +138,7 @@ export default defineType({
         ],
         layout: "radio",
       },
-      hidden: ({ document }) => !isFlzrPage(document),
+      hidden: ({ document }) => !isEditorialPage(document),
       group: "content",
     }),
     defineField({
@@ -147,13 +149,13 @@ export default defineType({
       description:
         "One visible H1. Line breaks are preserved and revealed as separate lines. Maximum 140 characters.",
       hidden: ({ document, parent }) =>
-        !isFlzrPage(document) ||
+        !isEditorialPage(document) ||
         (parent as HeaderParent | undefined)?.headlineMode !== "headlineReveal",
       validation: (Rule) =>
         Rule.max(140).custom((value, context) => {
           const parent = context.parent as HeaderParent | undefined;
           if (
-            isFlzrPage(context.document) &&
+            isEditorialPage(context.document) &&
             parent?.headlineMode === "headlineReveal" &&
             !value?.trim()
           ) {
@@ -176,7 +178,7 @@ export default defineType({
         Rule.custom((value, context) => {
           const parent = context.parent as HeaderParent | undefined;
           const mode = parent?.headlineMode ?? "typewriter";
-          if (!isFlzrPage(context.document) || mode !== "typewriter") return true;
+          if (!isEditorialPage(context.document) || mode !== "typewriter") return true;
 
           const hasText = Array.isArray(value)
             ? value.some((item) => typeof item === "string" && item.trim())

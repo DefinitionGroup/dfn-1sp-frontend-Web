@@ -1,5 +1,7 @@
+import {cleanMsmPreviewControls} from "@msm/lib/preview-controls";
 import React from "react";
 import dynamic from "next/dynamic";
+import IntertitleCTA from "./pagebuilder/pg-IntertitleCTA";
 import ErrorBoundary from "@msm/components/ErrorBoundary";
 
 // Dynamically import case study page builder components
@@ -54,7 +56,8 @@ export function CasePageBuilder({ content }: CasePageBuilderProps) {
 
   return (
     <>
-      {content.map((block: any, i: number) => {
+      {content.map((rawBlock: any, i: number) => {
+        const block = cleanMsmPreviewControls(rawBlock);
         if (!block?._type) return null;
 
         const key = block._key ?? `${block._type}-${i}`;
@@ -85,6 +88,8 @@ export function CasePageBuilder({ content }: CasePageBuilderProps) {
               </ErrorBoundary>
             );
 
+          case "intertitleCTA":
+            return <IntertitleCTA key={key} {...block} />;
           default:
             return null;
         }

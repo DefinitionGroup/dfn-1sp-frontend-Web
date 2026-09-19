@@ -70,7 +70,7 @@ export default function CaseGalleryMenu({
   useOutsideClick(ref, () => setActive(null));
 
   const handleViewCase = (slug: string) => {
-    router.push(`/cases/${slug}`);
+    router.push(`${locale === "en" ? "" : `/${locale}`}/cases/${slug}`);
   };
 
   return (

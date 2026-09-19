@@ -5,6 +5,7 @@ import type { MsmUnitSummary } from "./types";
 type UnitReference = { _ref?: string; _id?: string };
 
 type MsmUnitsGridBlockProps = {
+  items?: {reference?: {_ref?: string}; text?: string; linkLabel?: string}[];
   eyebrow?: string;
   headline?: string;
   intro?: string;
@@ -16,6 +17,7 @@ type MsmUnitsGridBlockProps = {
 };
 
 export default async function MsmUnitsGridBlock({
+  items = [],
   eyebrow = "OUR UNITS",
   headline = "Four units. One goal.",
   intro = "",
@@ -41,7 +43,7 @@ export default async function MsmUnitsGridBlock({
       headline={headline}
       intro={intro}
       language={language}
-      units={units as MsmUnitSummary[]}
+      units={(units as MsmUnitSummary[]).map(unit => {const teaser = items.find(t => t.reference?._ref === unit._id); return {...unit, claim: teaser?.text ?? unit.claim, linkLabel: teaser?.linkLabel};})}
       embedded={embedded}
     />
   );

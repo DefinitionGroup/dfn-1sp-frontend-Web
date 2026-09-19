@@ -1,0 +1,97 @@
+[
+  {
+    "type": "page",
+    "documents": 103,
+    "exclusiveAttributes": 894
+  },
+  {
+    "type": "caseStudy",
+    "documents": 246,
+    "exclusiveAttributes": 278
+  },
+  {
+    "type": "services",
+    "documents": 55,
+    "exclusiveAttributes": 126
+  },
+  {
+    "type": "menu",
+    "documents": 11,
+    "exclusiveAttributes": 115
+  },
+  {
+    "type": "unit",
+    "documents": 12,
+    "exclusiveAttributes": 100
+  },
+  {
+    "type": "person",
+    "documents": 89,
+    "exclusiveAttributes": 82
+  },
+  {
+    "type": "msmUnit",
+    "documents": 12,
+    "exclusiveAttributes": 37
+  },
+  {
+    "type": "renaissanceSharedPortraits",
+    "documents": 1,
+    "exclusiveAttributes": 21
+  },
+  {
+    "type": "renaissanceClientCollection",
+    "documents": 2,
+    "exclusiveAttributes": 20
+  },
+  {
+    "type": "renaissanceSharedAwards",
+    "documents": 1,
+    "exclusiveAttributes": 18
+  },
+  {
+    "type": "translation.metadata",
+    "documents": 116,
+    "exclusiveAttributes": 11
+  },
+  {
+    "type": "translationGuidelines",
+    "documents": 1,
+    "exclusiveAttributes": 10
+  },
+  {
+    "type": "siteSettings",
+    "documents": 4,
+    "exclusiveAttributes": 8
+  },
+  {
+    "type": "client",
+    "documents": 247,
+    "exclusiveAttributes": 5
+  },
+  {
+    "type": "sanity.previewUrlSecret",
+    "documents": 18,
+    "exclusiveAttributes": 4
+  },
+  {
+    "type": "contactSubmission",
+    "documents": 38,
+    "exclusiveAttributes": 4
+  },
+  {
+    "type": "pluginSecrets",
+    "documents": 1,
+    "exclusiveAttributes": 3
+  },
+  {
+    "type": "serviceGroup",
+    "documents": 7,
+    "exclusiveAttributes": 0
+  },
+  {
+    "type": "oneSpComponentGroup",
+    "documents": 2,
+    "exclusiveAttributes": 0
+  }
+]

@@ -22,6 +22,7 @@
  * - Canonical URLs prevent duplicate content across locales
  * - Full OpenGraph + Twitter card metadata for social sharing
  */
+import {notFound} from "next/navigation";
 import MsmPageBuilder from "@msm/components/MsmPageBuilder";
 // import CookieDeclaration from "@/components/CookieDeclaration";
 import { getAllCases, getAllPageSlugs, getAllServicesForChannel, getPageBySlug } from "@1sp/sanity-queries";
@@ -59,7 +60,7 @@ export async function generateStaticParams() {
   const pages = await getAllPageSlugs();
 
   return pages
-    .filter((page) => page.channel === "msmWeb")
+    .filter((page) => page.channel === "msmWeb" && !page.slug.includes("/"))
     .map((page) => ({
       locale: page.language || "en",
       slug: page.slug,
@@ -104,7 +105,7 @@ export async function generateMetadata({
     description,
     keywords: page.metadata?.keywords ?? undefined,
     alternates: {
-      canonical: `/${slug}`,
+      canonical: `${language === "en" ? "" : `/${language}`}/${slug}`,
     },
     openGraph: {
       title,
@@ -135,13 +136,7 @@ export default async function Page({
   // Uses cached fetch - deduped with generateMetadata call
   const page = await getPageBySlug(slug, channel, language);
 
-  if (!page) {
-    return (
-      <MsmSiteWrapper language={language} navColor="dark">
-        <NotFound />
-      </MsmSiteWrapper>
-    );
-  }
+  if (!page) notFound();
 
   const navbarVariant = page?.navbarVariant || "light";
   const contentBlocks = page?.content as any[] | undefined;

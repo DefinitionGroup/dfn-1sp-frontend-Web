@@ -7,6 +7,7 @@ export type MsmUnitSummary = {
   slug: { current: string };
   descriptor?: string;
   claim: string;
+  linkLabel?: string;
   body?: PortableTextBlock[];
   capabilities?: string[];
   sortOrder?: number;
@@ -35,6 +36,9 @@ export type MsmUnitCase = {
 };
 
 export type MsmUnitPerson = {
+  position?: string;
+  quote?: string;
+  phone?: string;
   isPrimary?: boolean;
   person?: {
     _id: string;
@@ -44,12 +48,18 @@ export type MsmUnitPerson = {
     position?: string;
     email?: string;
     profileUrl?: string;
+    profileSlug?: string;
     imageUrl?: string;
     videoUrl?: string;
   };
 };
 
 export type MsmUnitDetail = MsmUnitSummary & {
+  introductionHeading?: string;
+  leadershipHeading?: string;
+  casesHeading?: string;
+  additionalContent?: any[];
+  contactCta?: any;
   leadership?: MsmUnitPerson[];
   cases?: MsmUnitCase[];
 };

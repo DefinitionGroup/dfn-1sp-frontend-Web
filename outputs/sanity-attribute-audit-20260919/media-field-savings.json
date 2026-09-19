@@ -1,0 +1,54 @@
+[
+  {
+    "field": "_version",
+    "netReduction": 30
+  },
+  {
+    "field": "access_control",
+    "netReduction": 30
+  },
+  {
+    "field": "access_mode",
+    "netReduction": 33
+  },
+  {
+    "field": "asset_folder",
+    "netReduction": 30
+  },
+  {
+    "field": "bytes",
+    "netReduction": 33
+  },
+  {
+    "field": "created_at",
+    "netReduction": 33
+  },
+  {
+    "field": "created_by",
+    "netReduction": 90
+  },
+  {
+    "field": "display_name",
+    "netReduction": 30
+  },
+  {
+    "field": "folder_id",
+    "netReduction": 30
+  },
+  {
+    "field": "metadata",
+    "netReduction": 30
+  },
+  {
+    "field": "original_filename",
+    "netReduction": 2
+  },
+  {
+    "field": "tags",
+    "netReduction": 31
+  },
+  {
+    "field": "uploaded_by",
+    "netReduction": 90
+  }
+]

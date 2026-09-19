@@ -18,6 +18,9 @@ export default defineType({
     { name: 'seo', title: 'SEO' },
   ],
   fields: [
+    ...['introductionHeading', 'leadershipHeading', 'casesHeading'].map(name => defineField({name, type: 'string', group: 'content'})),
+    defineField({name: 'content', title: 'Additional content and contact', type: 'array', of: [{type: 'contentSection'}, {type: 'twoColContentSection'}, {type: 'intertitleCTA'}], group: 'content'}),
+    defineField({name: 'image', title: 'Hero Media', type: 'cloudinary.asset', group: 'media'}),
     defineField({
       name: 'language',
       title: 'Language',
@@ -89,7 +92,7 @@ export default defineType({
       group: 'content',
       of: [defineArrayMember({ type: 'string' })],
       options: { layout: 'tags' },
-      validation: (Rule) => Rule.required().min(1).unique(),
+      validation: (Rule) => Rule.unique(),
     }),
     defineField({
       name: 'caseStudies',
@@ -117,12 +120,19 @@ export default defineType({
       type: 'array',
       group: 'relationships',
       description: 'People come from the shared Person pool; the Person document is not modified.',
-      of: [defineArrayMember({ type: 'personReference' })],
+      of: [defineArrayMember({ type: 'personReference' }), defineArrayMember({type:'object',name:'msmUnitLeader',title:'Unit leader',fields:[
+        defineField({name:'person',type:'reference',to:[{type:'person'}],validation:r=>r.required(),options:{filter:({document})=>({filter:'language == $language && "msmWeb" in channel',params:{language:document.language}})}}),
+        defineField({name:'isPrimary',type:'boolean',title:'Primary contact'}),
+        defineField({name:'position',type:'string',title:'Role in this unit'}),
+        defineField({name:'quote',type:'text',title:'Quote'}),
+        defineField({name:'phone',type:'url',title:'Phone link',validation:r=>r.uri({scheme:['tel']})}),
+      ],preview:{select:{title:'person.name',subtitle:'position'}}})],
       validation: (Rule) => Rule.custom(uniquePersonReferences),
     }),
     defineField({
       name: 'heroMedia',
-      title: 'Hero Media',
+      title: 'Legacy Hero Media',
+      hidden: ({parent}) => !parent?.heroMedia,
       type: 'cloudinary.asset',
       group: 'media',
       description: 'Preferred permanent Unit hero asset.',

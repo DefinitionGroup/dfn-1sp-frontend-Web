@@ -27,6 +27,14 @@ test('old suffix-based metrics are not rescaled and encoded controls remain vali
  assert.equal(display({value:4.9e6,displayScale:'million\u200b' as any,qualifier:'plus\u200c' as any,decimalPlaces:1}),'4.9m+');
  assert(metricPresentation({...base,value:1,prefix:'#',animationMode:'static'}).isStatic);
 });
+test('German metric qualifiers and scales use German copy while English stays unchanged',()=>{
+ const metric: ResultMetric={...base,value:250000,qualifier:'moreThan'};
+ assert.equal(metricPresentation(metric,'de').final,'Über 250.000');
+ assert.equal(metricPresentation(metric,'en').final,'Over 250,000');
+ assert.equal(metricPresentation({...metric,value:2e6,displayScale:'million'},'de-DE').final,'Über 2 Mio.');
+ assert.equal(metricPresentation({...metric,value:1500,qualifier:'nearly'},'de').final,'Fast 1.500');
+ assert.equal(metricPresentation({...metric,value:10,qualifier:'lessThan'},'de').final,'Unter 10');
+});
 test('server output contains final accessible values without waiting for JavaScript',()=>{
  const html=renderToStaticMarkup(createElement(MetricNumber,{metric:{...base,value:4058049,decimalPlaces:0}}));
  assert.match(html,/class="sr-only">4,058,049/);

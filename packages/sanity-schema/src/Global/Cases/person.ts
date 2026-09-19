@@ -16,6 +16,7 @@ export default defineType({
         { name: 'settings', title: 'Settings' },
     ],
     fields: [
+        defineField({name: 'siteContent', title: 'Website content', type: 'array', group: 'content', of: [{type: 'personWebsiteContent'}], validation: r => r.custom(value => !value || new Set(value.map((v: any) => v.channel)).size === value.length || 'Only one edition per website.')}),
         defineField({
             name: 'language',
             title: 'Language',

@@ -10,7 +10,7 @@ import type { MsmUnitSummary } from "./types";
 import styles from "./units.module.css";
 import cards from "@msm/components/ui/SelectionCards.module.css";
 
-export default function MsmUnitsGrid({ headline, intro, language, units, embedded = false }: {
+export default function MsmUnitsGrid({ eyebrow, headline, intro, language, units, embedded = false }: {
   eyebrow: string;
   headline: string;
   intro: string;
@@ -27,7 +27,7 @@ export default function MsmUnitsGrid({ headline, intro, language, units, embedde
     <section id="msm-units" data-navpoint-name="MSM Units" className={styles.units} data-embedded={embedded}>
       <div className="container mx-auto px-[var(--container-padding)]">
       <SelectionSequence className={cards.sectionLayout}>
-        <Badgemodule text={language === "de" ? "Unsere Units" : "Our units"} subtitle="MSM.digital" />
+        <Badgemodule text={eyebrow || (language === "de" ? "Unsere Units" : "Our units")} subtitle="MSM.digital" />
         <div className={cards.sectionContent}>
       <header className={styles.header}>
           <Heading className="headline-display">{headline}</Heading>
@@ -46,7 +46,7 @@ export default function MsmUnitsGrid({ headline, intro, language, units, embedde
                   <ArrowUpRight size={24} aria-hidden="true" className={cards.arrow} />
                 </div>
                 <p className={cards.claim}>{unit.claim}</p>
-                <span className={cards.action}>{language === "de" ? "Unit entdecken" : "Explore unit"}</span>
+                <span className={cards.action}>{unit.linkLabel || (language === "de" ? "Unit entdecken" : "Explore unit")}</span>
               </div>
             </Link>
           </SelectionFrame>

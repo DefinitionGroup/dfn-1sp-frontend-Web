@@ -1,0 +1,83 @@
+{
+  "completedAt": "2026-09-19T21:23:12.113Z",
+  "projectId": "wu6i3y0h",
+  "dataset": "production",
+  "channel": "msmWeb",
+  "sourcePages": 202,
+  "sourceRows": 1977,
+  "draftsWritten": 430,
+  "types": {
+    "caseStudy": 127,
+    "person": 24,
+    "services": 33,
+    "client": 94,
+    "page": 47,
+    "msmUnit": 8,
+    "translation.metadata": 97
+  },
+  "metricInstances": 58,
+  "uploadedMedia": 327,
+  "attributes": {
+    "value": 1991,
+    "limit": 2000,
+    "unit": "number"
+  },
+  "publishedAndUnrelatedUnchanged": true,
+  "published": false,
+  "summaries": [
+    {
+      "language": "en",
+      "draftCases": 69,
+      "publishedCases": 5,
+      "units": [
+        {
+          "slug": "communications",
+          "cases": 29,
+          "leaders": 4
+        },
+        {
+          "slug": "channel-marketing",
+          "cases": 35,
+          "leaders": 4
+        },
+        {
+          "slug": "xr-labs",
+          "cases": 9,
+          "leaders": 1
+        },
+        {
+          "slug": "technology-systems",
+          "cases": 8,
+          "leaders": 1
+        }
+      ]
+    },
+    {
+      "language": "de",
+      "draftCases": 63,
+      "publishedCases": 0,
+      "units": [
+        {
+          "slug": "communications",
+          "cases": 29,
+          "leaders": 4
+        },
+        {
+          "slug": "channel-marketing",
+          "cases": 35,
+          "leaders": 4
+        },
+        {
+          "slug": "xr-labs",
+          "cases": 8,
+          "leaders": 1
+        },
+        {
+          "slug": "technology-systems",
+          "cases": 8,
+          "leaders": 1
+        }
+      ]
+    }
+  ]
+}

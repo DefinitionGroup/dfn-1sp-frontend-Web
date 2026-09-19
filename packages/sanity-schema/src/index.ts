@@ -5,6 +5,7 @@ import caseStudy from './Global/Cases/caseStudy'
 import caseWebsiteContent from './Global/Cases/caseWebsiteContent'
 import unitCase from './Global/Cases/unitCase'
 import client from './Global/Cases/client'
+import personWebsiteContent from './Global/Objects/personWebsiteContent'
 import person from './Global/Cases/person'
 import { OneSPschemaTypes } from './1spContent'
 import { FLZRschemaTypes } from './flzrContent'
@@ -40,5 +41,5 @@ import renaissanceCaseCarousel from './RENAISSANCE/Components/renaissanceCaseCar
 import newsCTABlock from './RENAISSANCE/Components/newsCTABlock'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [renaissanceCaseCarousel, renaissanceClientCollection, renaissanceSharedPortraits, renaissanceSharedAwards, renaissanceSharedContentReference, page, menu, siteSettings, oneSpComponentGroup, translationGuidelines, caseStudy, caseWebsiteContent, unitCase, client, person, contactSubmission, ...OneSPschemaTypes, ...FLZRschemaTypes, ...CaseStudySchemaTypes, ...MSMschemaTypes, renaissanceSectionBand, renaissancePortraitGrid, renaissanceAwardLogoWall, registerBlock, newsCTABlock, link, cta, paragraph, size, services, serviceWebsiteContent, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata, contactForm, oneSpComponentGroupReference],
+  types: [personWebsiteContent, renaissanceCaseCarousel, renaissanceClientCollection, renaissanceSharedPortraits, renaissanceSharedAwards, renaissanceSharedContentReference, page, menu, siteSettings, oneSpComponentGroup, translationGuidelines, caseStudy, caseWebsiteContent, unitCase, client, person, contactSubmission, ...OneSPschemaTypes, ...FLZRschemaTypes, ...CaseStudySchemaTypes, ...MSMschemaTypes, renaissanceSectionBand, renaissancePortraitGrid, renaissanceAwardLogoWall, registerBlock, newsCTABlock, link, cta, paragraph, size, services, serviceWebsiteContent, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata, contactForm, oneSpComponentGroupReference],
 }

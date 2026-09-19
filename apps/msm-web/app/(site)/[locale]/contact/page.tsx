@@ -1,3 +1,4 @@
+import {msmPath} from "@msm/lib/editorial";
 /**
  * Contact Page
  * ============
@@ -80,7 +81,7 @@ export async function generateMetadata({
     description,
     keywords: page.metadata?.keywords ?? undefined,
     alternates: {
-      canonical: "/contact",
+      canonical: msmPath(language, "contact"),
     },
     openGraph: {
       title,
@@ -154,7 +155,7 @@ export default async function ContactPage({
           },
           {
             name: getBreadcrumbLabel(language, "contact"),
-            url: `${CANONICAL_URL}/contact`,
+            url: `${CANONICAL_URL}${msmPath(language, "contact")}`,
           },
         ])}
       />
@@ -174,7 +175,7 @@ export default async function ContactPage({
             locale: language,
             id: `${CANONICAL_URL}/contact#service-catalog`,
             name: "Services",
-            url: `${CANONICAL_URL}/contact`,
+            url: `${CANONICAL_URL}${msmPath(language, "contact")}`,
           })}
         />
       )}
@@ -190,6 +191,12 @@ export default async function ContactPage({
 
       <div className="min-h-screen">
         <div className="min-h-screen px-1 md:px-2">
+          <ContactForm
+            headingTag="h1"
+            language={language}
+            channel={CHANNEL}
+            settings={page.contactForm}
+          />
           {contentBlocks?.length ? (
             <MsmPageBuilder
               content={contentBlocks}
@@ -198,11 +205,6 @@ export default async function ContactPage({
               deferAfter={2}
             />
           ) : null}
-          <ContactForm
-            language={language}
-            channel={CHANNEL}
-            settings={page.contactForm}
-          />
         </div>
       </div>
     </MsmSiteWrapper>

@@ -1,0 +1,58 @@
+[
+  {
+    "scenario": "Trim operational Cloudinary metadata only; retain identity, URLs, dimensions, format, duration and version",
+    "attributes": 1497,
+    "netReduction": 492,
+    "removedPaths": 492,
+    "addedPaths": 0
+  },
+  {
+    "scenario": "Unset null-valued properties everywhere",
+    "attributes": 1988,
+    "netReduction": 1,
+    "removedPaths": 1,
+    "addedPaths": 0
+  },
+  {
+    "scenario": "Unify root casesPageBuilder into content",
+    "attributes": 1897,
+    "netReduction": 92,
+    "removedPaths": 146,
+    "addedPaths": 54
+  },
+  {
+    "scenario": "Unify root casesPageBuilder into content AFTER media trim",
+    "attributes": 1437,
+    "netReduction": 552,
+    "removedPaths": 606,
+    "addedPaths": 54
+  },
+  {
+    "scenario": "Move embedded siteContent editions to referenced documents with root-level fields",
+    "attributes": 1915,
+    "netReduction": 74,
+    "removedPaths": 92,
+    "addedPaths": 18
+  },
+  {
+    "scenario": "Hypothetical post-publication state (all draft bodies replace matching published bodies)",
+    "attributes": 1988,
+    "netReduction": 1,
+    "removedPaths": 1,
+    "addedPaths": 0
+  },
+  {
+    "scenario": "Conservative media trim retaining tags, custom metadata, display name and original filename",
+    "attributes": 1590,
+    "netReduction": 399,
+    "removedPaths": 399,
+    "addedPaths": 0
+  },
+  {
+    "scenario": "Trim only Cloudinary operator and folder bookkeeping (four fields)",
+    "attributes": 1749,
+    "netReduction": 240,
+    "removedPaths": 240,
+    "addedPaths": 0
+  }
+]

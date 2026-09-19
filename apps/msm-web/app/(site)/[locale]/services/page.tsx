@@ -1,3 +1,4 @@
+import {msmPath} from "@msm/lib/editorial";
 /**
  * Services Page
  * =============
@@ -80,7 +81,7 @@ export async function generateMetadata({
     description,
     keywords: page.metadata?.keywords ?? undefined,
     alternates: {
-      canonical: "/services",
+      canonical: msmPath(language, "services"),
     },
     openGraph: {
       title,
@@ -168,7 +169,7 @@ export default async function ServicesPage({
           },
           {
             name: getBreadcrumbLabel(language, "services"),
-            url: `${CANONICAL_URL}/services`,
+            url: `${CANONICAL_URL}${msmPath(language, "services")}`,
           },
         ])}
       />

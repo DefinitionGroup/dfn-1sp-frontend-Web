@@ -14,6 +14,8 @@ export default defineType({
     ],
 
     fields: [
+        defineField({name: 'msmPageKind', title: 'MSM page kind', type: 'string', group: 'basic', options: {list: ['standard', 'service']}, hidden: ({document}) => document?.channel !== 'msmWeb'}),
+        defineField({name: 'services', title: 'Global service', type: 'array', of: [{type: 'reference', to: [{type: 'services'}], options: {filter: ({document}) => ({filter: 'language == $language && "msmWeb" in channel', params: {language: document.language}})}}], validation: r => r.max(1), group: 'basic', hidden: ({document}) => document?.channel !== 'msmWeb' || document?.msmPageKind !== 'service'}),
         defineField({
             name: 'language',
             title: 'Language',
@@ -204,6 +206,7 @@ export default defineType({
                 { type: 'clientLogoCarousel' },
                 { type: 'pageBuilderPersonioJobs' },
                 { type: 'msmUnitsGrid', title: 'MSM Units Grid' },
+                { type: 'msmServiceDirectory' },
                 // Portable text — covers what contentMSM / contentStudioCO2 used to hold
                 { type: 'block' },
             ],

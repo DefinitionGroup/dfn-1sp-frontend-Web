@@ -254,7 +254,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           <Image src={logoUrl} alt="" width={30} height={30} />
         </Link>
         <div className="flex items-center gap-3">
-          {mobileLinks.map((item) => <Link key={item._key} href={`${locale === "en" ? "" : `/${locale}`}/${item.slug}`} aria-current={pathname.replace(/^\/en/, "") === `/${item.slug}` ? "page" : undefined} className="flex min-h-11 items-center text-xs aria-[current=page]:text-msm-cyan">{item.displayName || item.title}</Link>)}
+          {mobileLinks.map((item) => <Link key={item._key} href={`${locale === "en" ? "" : `/${locale}`}/${item.slug}`} aria-current={pathname.replace(/^\/en/, "") === `${locale === "en" ? "" : `/${locale}`}/${item.slug}` ? "page" : undefined} className="flex min-h-11 items-center text-xs aria-[current=page]:text-msm-cyan">{item.displayName || item.title}</Link>)}
         </div>
       </nav>
       <nav
@@ -309,7 +309,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
               className=" flex items-start  justify-center">
               <Link
-                href={`/`}
+                href={locale === "en" ? "/" : `/${locale}`}
                 onClick={(e) => {
                   e.preventDefault();
                   router.push(`/`);
@@ -363,10 +363,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                     <span key={item._key} className={itemClass}>
                       <Link
                         className="hover:text-violet-400  transition-colors "
-                        href={`/${item.slug}`}
+                        href={`${locale === "en" ? "" : `/${locale}`}/${item.slug}`}
                         onClick={(e) => {
                           e.preventDefault();
-                          router.push(`/${item.slug}`);
+                          router.push(`${locale === "en" ? "" : `/${locale}`}/${item.slug}`);
                         }}
                       >
                         {item.displayName || item.title}

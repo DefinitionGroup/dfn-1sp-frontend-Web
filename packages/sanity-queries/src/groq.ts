@@ -568,8 +568,8 @@ export const PAGE_QUERY =
         fullname,
         position,
         email,
-        profileUrl,
-        tagline,
+        "profileUrl": select($channel == "msmWeb" && defined(siteContent[channel == $channel][0].slug.current) => "/" + select(language == "en" => "", language + "/") + "people/" + siteContent[channel == $channel][0].slug.current, profileUrl),
+        "tagline": coalesce(siteContent[channel == $channel][0].quote, tagline),
         channel,
         unit->{
           _id,
@@ -863,8 +863,8 @@ export const HOME_PAGE_QUERY =
         fullname,
         position,
         email,
-        profileUrl,
-        tagline,
+        "profileUrl": select($channel == "msmWeb" && defined(siteContent[channel == $channel][0].slug.current) => "/" + select(language == "en" => "", language + "/") + "people/" + siteContent[channel == $channel][0].slug.current, profileUrl),
+        "tagline": coalesce(siteContent[channel == $channel][0].quote, tagline),
         channel,
         unit->{
           _id,
@@ -1068,8 +1068,8 @@ export const CASE_STUDIES_QUERY = defineQuery(`
   description,
   services[]->{
     _id,
-    name,
-    taglabel
+    "name": coalesce(siteContent[channel == $channel][0].name, name),
+    "taglabel": coalesce(siteContent[channel == $channel][0].taglabel, taglabel)
   },
   mainImage,
   isVerticalVideo,
@@ -1120,8 +1120,8 @@ export const CASE_STUDIES_BY_IDS_QUERY = defineQuery(`
   description,
   services[]->{
     _id,
-    name,
-    taglabel
+    "name": coalesce(siteContent[channel == $channel][0].name, name),
+    "taglabel": coalesce(siteContent[channel == $channel][0].taglabel, taglabel)
   },
   mainImage,
   isVerticalVideo,
@@ -1256,7 +1256,7 @@ export const MSM_UNITS_QUERY = defineQuery(`
   metadata,
   heroMedia,
   heroImageSource,
-  "heroImageUrl": coalesce(heroMedia.secure_url, heroMedia.url, heroImageSource),
+  "heroImageUrl": coalesce(image.secure_url, image.url, heroMedia.secure_url, heroMedia.url, heroImageSource),
   heroAlt,
   unitMark,
   "unitMarkUrl": coalesce(unitMark.secure_url, unitMark.url),
@@ -1279,7 +1279,7 @@ export const MSM_UNITS_BY_IDS_QUERY = defineQuery(`
   metadata,
   heroMedia,
   heroImageSource,
-  "heroImageUrl": coalesce(heroMedia.secure_url, heroMedia.url, heroImageSource),
+  "heroImageUrl": coalesce(image.secure_url, image.url, heroMedia.secure_url, heroMedia.url, heroImageSource),
   heroAlt,
   unitMark,
   "unitMarkUrl": coalesce(unitMark.secure_url, unitMark.url),
@@ -1297,17 +1297,20 @@ export const MSM_UNIT_BY_SLUG_QUERY = defineQuery(`
   descriptor,
   claim,
   body,
+  introductionHeading, leadershipHeading, casesHeading,
+  "additionalContent": coalesce(content[_type != "intertitleCTA"], additionalContent),
+  "contactCta": coalesce(content[_type == "intertitleCTA"][0], contactCta),
   capabilities,
   sortOrder,
   metadata,
   heroMedia,
   heroImageSource,
-  "heroImageUrl": coalesce(heroMedia.secure_url, heroMedia.url, heroImageSource),
+  "heroImageUrl": coalesce(image.secure_url, image.url, heroMedia.secure_url, heroMedia.url, heroImageSource),
   heroAlt,
   unitMark,
   "unitMarkUrl": coalesce(unitMark.secure_url, unitMark.url),
-  leadership[]{
-    isPrimary,
+  leadership[person->language == $language && "msmWeb" in person->channel]{
+    isPrimary, position, quote, phone,
     person->{
       _id,
       name,
@@ -1316,19 +1319,20 @@ export const MSM_UNIT_BY_SLUG_QUERY = defineQuery(`
       position,
       email,
       profileUrl,
+      "profileSlug": siteContent[channel == "msmWeb"][0].slug.current,
       image,
       video,
       "imageUrl": coalesce(image.secure_url, image.url),
       "videoUrl": coalesce(video.secure_url, video.url)
     }
   },
-  "cases": caseStudies[]->{
+  "cases": caseStudies[@->language == $language && "msmWeb" in @->channel && @->isPublished == true]->{
     _id,
     title,
     subtitle,
     slug,
     description,
-    services[]->{_id, name, taglabel},
+    services[]->{_id, "name": coalesce(siteContent[channel == "msmWeb"][0].name, name), "taglabel": coalesce(siteContent[channel == "msmWeb"][0].taglabel, taglabel)},
     mainImage,
     mainVideo,
     isVerticalVideo,
@@ -1464,8 +1468,8 @@ export const CASE_STUDIES_BY_CHANNEL_LIMIT_QUERY = defineQuery(`
   },
   services[]->{
     _id,
-    name,
-    taglabel
+    "name": coalesce(siteContent[channel == $channel][0].name, name),
+    "taglabel": coalesce(siteContent[channel == $channel][0].taglabel, taglabel)
   },
   publishedAt,
   ${casePresentationFields()}

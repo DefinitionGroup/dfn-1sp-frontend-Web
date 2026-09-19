@@ -1,3 +1,5 @@
+import MsmPageBuilder from "@msm/components/MsmPageBuilder";
+import IntertitleCTA from "@msm/components/pagebuilder/pg-IntertitleCTA";
 import { PortableText } from "@portabletext/react";
 import Link from "next/link";
 import Image from "next/image";
@@ -51,16 +53,9 @@ export default function MsmUnitPage({ unit, language, units = [] }: { unit: MsmU
         <section className={`msm-section border-b border-white/20 ${cards.sectionLayout}`}>
           <Badgemodule text={unit.name} subtitle="MSM.digital" />
           <div className={cards.sectionContent}>
-            <h2 className="msm-title mb-8">{german ? "Unser Ansatz." : "Our approach."}</h2>
+            <h2 className="msm-title mb-8">{unit.introductionHeading || (german ? "Unser Ansatz." : "Our approach.")}</h2>
             <div className="msm-copy space-y-6 text-white/75 [&_p+p]:mt-6"><PortableText value={unit.body} /></div>
           </div>
-        </section>
-      ) : null}
-
-      {cases.length > 0 ? (
-        <section className="msm-section border-b border-white/20">
-          <h2 className="headline-display mb-12">{german ? "Unsere Arbeit." : "Work in action."}</h2>
-          <CaseGalleryComponent caseStudies={cases} locale={language} filterAllText={german ? "Alle" : "All"} />
         </section>
       ) : null}
 
@@ -83,14 +78,16 @@ export default function MsmUnitPage({ unit, language, units = [] }: { unit: MsmU
 
       {leadership.length > 0 ? (
         <section className="msm-section border-b border-white/20">
-          <h2 className="headline-display mb-12">{german ? "Die Menschen dahinter." : "People behind the work."}</h2>
+          <h2 className="headline-display mb-12">{unit.leadershipHeading || (german ? "Die Menschen dahinter." : "People behind the work.")}</h2>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {leadership.map(({ person, isPrimary }) => person ? (
+            {leadership.map(({ person, isPrimary, position, quote, phone }) => person ? (
               <article key={person._id}>
                 {person.imageUrl ? <div className="relative aspect-[4/5] overflow-hidden"><Image src={person.imageUrl} alt={person.altText || person.fullname || person.name || ""} fill sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover" /></div> : null}
                 <div className="border-t border-white/25 py-6">
-                  <h3 className="text-2xl">{person.fullname || person.name}</h3>
-                  {person.position ? <p className="mt-2 text-white/70">{person.position}</p> : null}
+                  <h3 className="text-2xl">{person.profileSlug ? <Link href={localizedPath(language, `people/${person.profileSlug}`)}>{person.fullname || person.name}</Link> : person.fullname || person.name}</h3>
+                  {(position || person.position) ? <p className="mt-2 text-white/70">{position || person.position}</p> : null}
+                  {quote ? <blockquote className="mt-5 text-lg leading-relaxed text-white/85">{quote}</blockquote> : null}
+                  {phone ? <a href={phone} className="mt-4 block text-white/80 underline underline-offset-4">{german ? "Anrufen" : "Call"}</a> : null}
                   {isPrimary ? <p className="msm-label mt-4 text-msm-cyan">{german ? "Kontakt" : "Your contact"}</p> : null}
                   {person.email ? <a href={`mailto:${person.email}`} className="mt-4 inline-block break-all text-white/80 underline underline-offset-4">{person.email}</a> : null}
                 </div>
@@ -100,13 +97,16 @@ export default function MsmUnitPage({ unit, language, units = [] }: { unit: MsmU
         </section>
       ) : null}
 
-      <section className="msm-section grid items-end gap-12 md:grid-cols-12">
-        <div className="md:col-span-8">
-          <h2 className="headline-display max-w-[17ch]">{german ? "Was kommt als Nächstes?" : "Let’s build what comes next."}</h2>
-          <p className="msm-copy mt-6 text-white/70">{german ? "Dein Projekt. Unsere Expertise." : "Your next project. Our shared expertise."}</p>
-        </div>
-        <div className="md:col-span-4 md:justify-self-end"><Button2 text={german ? "Projekt starten" : "Start a project"} href={localizedPath(language, "contact")} variant="violet" /></div>
-      </section>
+      {unit.additionalContent?.length ? <MsmPageBuilder content={unit.additionalContent} language={language} channel="msmWeb" /> : null}
+
+      {cases.length > 0 ? (
+        <section className="msm-section border-b border-white/20">
+          <h2 className="headline-display mb-12">{unit.casesHeading || (german ? "Unsere Arbeit." : "Work in action.")}</h2>
+          <CaseGalleryComponent caseStudies={cases} locale={language} filterAllText={german ? "Alle" : "All"} />
+        </section>
+      ) : null}
+
+      {unit.contactCta ? <IntertitleCTA {...unit.contactCta} /> : null}
 
       {related.length ? (
         <nav aria-label={german ? "Weitere MSM Units" : "More MSM units"} className="border-t border-white/25 px-[var(--container-padding)] pb-12">

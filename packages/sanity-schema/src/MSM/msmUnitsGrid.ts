@@ -5,6 +5,11 @@ export default defineType({
   title: 'MSM Units Grid',
   type: 'object',
   fields: [
+    defineField({name: 'items', title: 'Contextual unit teasers', type: 'array', of: [{type: 'object', name: 'msmUnitTeaser', fields: [
+      defineField({name: 'reference', title: 'Unit', type: 'reference', to: [{type: 'msmUnit'}], validation: r => r.required()}),
+      defineField({name: 'text', title: 'Teaser', type: 'text'}),
+      defineField({name: 'linkLabel', title: 'Link label', type: 'string'}),
+    ], preview: {select: {title: 'reference.name', subtitle: 'text'}}}]}),
     defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string', initialValue: 'OUR UNITS' }),
     defineField({ name: 'headline', title: 'Headline', type: 'string', validation: (Rule) => Rule.required() }),
     defineField({ name: 'intro', title: 'Introduction', type: 'text', rows: 4 }),

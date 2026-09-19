@@ -1,7 +1,8 @@
 "use client";
 // @sacred — approved hero mechanic (decrypt/descramble), tuned by Martin. Do not replace.
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { stegaClean } from "@sanity/client/stega";
 
 const SCRAMBLE_CHARS = "!<>-_\\/[]{}—=+*^?#ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -20,7 +21,7 @@ function scramble(word: string, revealed: number) {
   let out = "";
   for (let i = 0; i < word.length; i++) {
     const ch = word[i];
-    out += i < revealed || ch === " " ? ch : randomChar();
+    out += i < revealed || /\s/.test(ch) ? ch : randomChar();
   }
   return out;
 }
@@ -36,21 +37,25 @@ export default function DecryptRotator({
     "Gaming",
     "Technology",
   ],
+  variant = "rotating",
 }: {
   text?: string[];
+  variant?: "rotating" | "headline";
 }) {
-  const words = text.filter((w) => w.trim().length > 0);
+  // Preview annotations must not become scrambled characters or extend the reveal.
+  const words = text.map((word) => stegaClean(word)).filter((w) => w.trim().length > 0);
+  const contentKey = JSON.stringify(words);
+  const isHeadline = variant === "headline";
+  const Heading = isHeadline ? "h1" : "h2";
   // First paint must be deterministic (server HTML === client hydration),
   // so start with the plain word — the mount effect scrambles immediately.
   const [display, setDisplay] = useState(() =>
     words.length > 0 ? words[0] : ""
   );
-  const indexRef = useRef(0);
-  const wordsRef = useRef(words);
-  wordsRef.current = words;
-
   useEffect(() => {
-    if (wordsRef.current.length === 0) return;
+    const activeWords: string[] = JSON.parse(contentKey);
+    if (activeWords.length === 0) return;
+    let index = 0;
 
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -60,12 +65,13 @@ export default function DecryptRotator({
     let timeout: ReturnType<typeof setTimeout>;
 
     const run = () => {
-      const word = wordsRef.current[indexRef.current % wordsRef.current.length];
+      const word = activeWords[index % activeWords.length];
 
       if (reducedMotion) {
         setDisplay(word);
+        if (isHeadline) return;
         timeout = setTimeout(() => {
-          indexRef.current += 1;
+          index += 1;
           run();
         }, HOLD_MS);
         return;
@@ -78,8 +84,9 @@ export default function DecryptRotator({
         const revealed = Math.floor((now - start) / REVEAL_MS);
         if (revealed >= word.length) {
           setDisplay(word);
+          if (isHeadline) return;
           timeout = setTimeout(() => {
-            indexRef.current += 1;
+            index += 1;
             run();
           }, HOLD_MS);
           return;
@@ -101,34 +108,38 @@ export default function DecryptRotator({
       cancelAnimationFrame(raf);
       clearTimeout(timeout);
     };
-  }, []);
+  }, [contentKey, isHeadline]);
 
   if (words.length === 0) return null;
 
   return (
-    <h2
-      className="typewriter-rotator relative inline-grid max-w-full items-start font-aspekta font-medium leading-[0.8] text-white"
-      style={{ maxWidth: 900 }}
+    <Heading
+      className={isHeadline
+        ? "relative max-w-[28ch] whitespace-pre-line text-3xl md:text-5xl leading-tight pb-6"
+        : "typewriter-rotator relative inline-grid max-w-full items-start font-aspekta font-medium leading-[0.8] text-white"}
+      style={isHeadline ? undefined : { maxWidth: 900 }}
     >
-      {words.map((word, index) => (
+      <span className={isHeadline ? "relative block" : "contents"}>
+        {words.map((word, index) => (
+          <span
+            key={`${word}-${index}`}
+            aria-hidden
+            className="invisible col-start-1 row-start-1"
+            style={isHeadline ? undefined : textStyle}
+          >
+            {word}
+          </span>
+        ))}
         <span
-          key={`${word}-${index}`}
           aria-hidden
-          className="invisible col-start-1 row-start-1"
-          style={textStyle}
+          className={isHeadline ? "absolute inset-0 overflow-hidden" : "col-start-1 row-start-1"}
+          style={isHeadline ? undefined : textStyle}
         >
-          {word}
+          {display}
         </span>
-      ))}
-      <span
-        aria-hidden
-        className="col-start-1 row-start-1"
-        style={textStyle}
-      >
-        {display}
+        <span className="sr-only">{words.join(" ")}</span>
       </span>
-      <span className="sr-only">{words.join(" ")}</span>
-    </h2>
+    </Heading>
   );
 }
 

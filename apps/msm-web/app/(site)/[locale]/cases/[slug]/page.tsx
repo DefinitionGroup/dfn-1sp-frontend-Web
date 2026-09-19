@@ -1,3 +1,4 @@
+import {msmPath} from "@msm/lib/editorial";
 /**
  * Case Study Detail Page
  * ======================
@@ -106,7 +107,7 @@ export async function generateMetadata({
     title,
     description,
     alternates: {
-      canonical: `/cases/${slug}`,
+      canonical: msmPath(language, `cases/${slug}`),
     },
     openGraph: {
       title,
@@ -171,7 +172,7 @@ export default async function CaseStudyPage({
           },
           {
             name: caseStudy.title,
-            url: `${CANONICAL_URL}/cases/${slug}`,
+            url: `${CANONICAL_URL}${msmPath(language, `cases/${slug}`)}`,
           },
         ])}
       />

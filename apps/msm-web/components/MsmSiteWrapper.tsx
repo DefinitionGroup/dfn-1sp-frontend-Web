@@ -1,3 +1,4 @@
+import {sanityFetch} from "@1sp/sanity-queries/fetch";
 import Link from "next/link";
 import {
   getAllCases,
@@ -161,12 +162,13 @@ async function MsmFooter({
 }) {
   const site = getSiteConfig(CHANNEL);
   const socialLinks = footer?.socialLinks ?? [];
-  const [casesRaw, servicesRaw, pagesRaw] = await Promise.all([
+  const [casesRaw, servicesRaw, pagesRaw, servicePages] = await Promise.all([
     hasCaseStudies ? getAllCases(CHANNEL, language) : Promise.resolve([]),
     hasServices
       ? getAllServicesForChannel(CHANNEL, language)
       : Promise.resolve([]),
     getAllPageSitemapSlugs(CHANNEL),
+    sanityFetch<{slug:{current:string}; services:{_ref:string}[]}[]>({query: '*[_type == "page" && channel == "msmWeb" && language == $language && msmPageKind == "service"]{slug, services}', params:{language}}),
   ]);
 
   const cases = (casesRaw as FooterCase[])
@@ -189,7 +191,7 @@ async function MsmFooter({
     .filter((service) => Boolean(service.name))
     .map((service) => ({
       label: service.name!,
-      href: `${getLocalePath(language, "services")}#services`,
+      href: getLocalePath(language, servicePages.data.find(page=>page.services?.some(ref=>ref._ref===service._id))?.slug?.current || "services"),
     }))
     .slice(0, 12);
 
