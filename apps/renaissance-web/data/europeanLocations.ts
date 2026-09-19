@@ -1,3 +1,4 @@
+import { stegaClean } from "@sanity/client/stega";
 export type RenaissanceLocationLocale = "en" | "de" | "pl";
 
 export type RenaissanceEuropeanLocation = {
@@ -91,7 +92,7 @@ export function getRenaissanceGlobeSectionId(sectionTitle?: string): string {
   if (!sectionTitle) return "globe-component";
 
   return (
-    sectionTitle
+    stegaClean(sectionTitle)
       .replace(/[^a-zA-Z0-9\s]/g, "")
       .replace(/\s+/g, "-")
       .toLowerCase() || "globe-component"

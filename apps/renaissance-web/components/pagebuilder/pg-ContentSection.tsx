@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { stegaClean } from "@sanity/client/stega";
 import StaggeredFadeIn from "@renaissance/components/ui/StaggeredFadeIn";
 import StaggeredSlideUp from "@renaissance/components/ui/StaggeredSlideUp";
 import { PortableText } from "@portabletext/react";
@@ -7,6 +8,7 @@ import type { PortableTextBlock } from "@portabletext/types";
 import Link from "next/link";
 import { hasVisibleNode, hasVisibleText } from "@1sp/utils/text-content";
 type ContentSectionData = {
+  anchorId?: string;
   title?: string;
   introHeading?: string;
   introSubheading?: string;
@@ -19,9 +21,9 @@ type ContentSectionData = {
 };
 
 const contentSpanClasses: Record<string, string> = {
-  "6": "col-span-6",
-  "8": "col-span-8",
-  "10": "col-span-10",
+  "6": "col-span-12 lg:col-span-6",
+  "8": "col-span-12 lg:col-span-8",
+  "10": "col-span-12 lg:col-span-10",
   "12": "col-span-12",
 };
 
@@ -34,6 +36,7 @@ const paddingClasses: Record<string, string> = {
 
 function ContentSection({ data }: { data: ContentSectionData }) {
   const {
+    anchorId,
     title,
     introHeading,
     introSubheading,
@@ -45,24 +48,24 @@ function ContentSection({ data }: { data: ContentSectionData }) {
     hideFromNav = false,
   } = data || {};
 
-  const contentSpanClass = contentSpanClasses[columnSpan] ?? contentSpanClasses["8"];
-  const paddingClass = paddingClasses[paddingY] ?? paddingClasses["16"];
+  const contentSpanClass = contentSpanClasses[stegaClean(columnSpan)] ?? contentSpanClasses["8"];
+  const paddingClass = paddingClasses[stegaClean(paddingY)] ?? paddingClasses["16"];
 
   if (!content || content.length === 0) return null;
 
   // Generate section ID from title or intro heading
-  const sectionId = title
-    ? title
+  const sectionId = stegaClean(anchorId) || (title
+    ? stegaClean(title)
       .replace(/[^a-zA-Z0-9\s]/g, "")
       .replace(/\s+/g, "-")
       .toLowerCase()
     : introHeading
-      ? introHeading
+      ? stegaClean(introHeading)
         .substring(0, 30)
         .replace(/[^a-zA-Z0-9\s]/g, "")
         .replace(/\s+/g, "-")
         .toLowerCase()
-      : "content-section";
+      : "content-section");
 
   // Store nav-related data attributes
   const navPointDataAttr = {
@@ -71,7 +74,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
   };
 
   const getContentClass = (size?: string) => {
-    switch (size) {
+    switch (stegaClean(size)) {
       case "sm":
         return "text-sm";
       case "base":
@@ -154,7 +157,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
             href={value?.href}
             target={target}
             rel={rel}
-            className="text-blue-600 hover:text-blue-800 underline transition-colors"
+            className="text-renaissance-ink hover:text-renaissance-accent underline transition-colors"
           >
             {children}
           </Link>
@@ -167,7 +170,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
     <>
       {/* Introduction Section (if provided) */}
       {(hasVisibleText(introHeading) || hasVisibleText(introSubheading)) && (
-        <div className="grid grid-cols-12 z-1 mx-auto container relative font-renaissance">
+        <div className="grid scroll-mt-28 grid-cols-12 z-1 mx-auto container px-5 md:px-8 relative font-renaissance">
           <div className="z-1 grid gap-8 col-span-12 pt-12 mt-24 col-start-1 container mx-auto row-start-1 grid-cols-12">
             <div className="z-1 col-span-12 col-start-1">
               <div className="flex flex-col items-start gap-2  justify-center w-full">
@@ -205,7 +208,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
       <section
         id={sectionId}
         {...navPointDataAttr}
-        className="grid grid-cols-12 z-1 mx-auto container relative font-renaissance"
+        className="grid scroll-mt-28 grid-cols-12 z-1 mx-auto container px-5 md:px-8 relative font-renaissance"
       >
         <div
           className={`z-1 grid gap-8 col-span-12 ${paddingClass} col-start-1 container mx-auto row-start-1 grid-cols-12`}
@@ -220,7 +223,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
 
             {/* Content */}
             <StaggeredFadeIn viewThreshold={0.01}>
-              <div className="w-full  md:w-2/4">
+              <div className="w-full max-w-[70ch]">
                 <PortableText
                   value={content}
                   components={portableTextComponents}

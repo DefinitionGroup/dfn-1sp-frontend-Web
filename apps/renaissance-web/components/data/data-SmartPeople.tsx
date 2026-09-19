@@ -46,10 +46,10 @@ interface SmartPeopleProps {
 
 export default async function SmartPeople({
   maxItems = 6,
-  language = "de",
+  language = "en",
   channel = "renaissanceWeb",
 }: SmartPeopleProps) {
-  const people = await getSmartPeople(channel, maxItems) as Person[];
+  const people = await getSmartPeople(channel, maxItems, language) as Person[];
 
   if (people.length === 0) {
     return (

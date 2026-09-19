@@ -24,6 +24,7 @@
  * - Twitter card metadata for social sharing
  */
 import { getCaseBySlug, getAllCaseSlugs } from "@1sp/sanity-queries";
+import { stegaClean } from "next-sanity";
 import { notFound } from "next/navigation";
 import CaseStudyPageClient from "./CaseStudyPageClient";
 import FlzrSiteWrapper from "@flzr/components/FlzrSiteWrapper";
@@ -84,10 +85,10 @@ export async function generateMetadata({
     };
   }
 
-  const title = caseStudy.title;
-  const description =
-    caseStudy.description ||
-    `${caseStudy.title}${caseStudy.client?.name ? ` — ${caseStudy.client.name}` : ""} | Case Study`;
+  const title = stegaClean(caseStudy.seo?.title || caseStudy.title);
+  const description = stegaClean(
+    caseStudy.seo?.description ?? caseStudy.description ??
+    `${caseStudy.title}${caseStudy.client?.name ? ` — ${caseStudy.client.name}` : ""} | Case Study`);
 
   // Use mainImageUrl (Cloudinary secure_url) for OG image
   const ogImages = caseStudy.mainImageUrl

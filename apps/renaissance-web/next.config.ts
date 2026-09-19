@@ -1,10 +1,13 @@
 import type { NextConfig } from "next";
 import path from "node:path";
-import { getDeploymentHeaders } from "@1sp/utils/deployment-tier";
+import legacyRedirects from "./data/legacyRedirects.json";
+import { renaissanceDeploymentHeaders } from "./lib/deployment";
 
 const nextConfig: NextConfig = {
   experimental: {
     externalDir: true,
+    // Local Studio and Renaissance share localhost and separate preview sessions.
+    multiZoneDraftMode: process.env.NODE_ENV === "development",
   },
   // Pin Turbopack to this pnpm workspace so it can resolve the RENAISSANCE app and
   // linked workspace packages. Without this, an unrelated
@@ -40,7 +43,8 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
-  headers: () => getDeploymentHeaders("renaissance"),
+  headers: () => renaissanceDeploymentHeaders(),
+  redirects: async () => legacyRedirects.map(route => ({...route, permanent: true})),
 
 };
 

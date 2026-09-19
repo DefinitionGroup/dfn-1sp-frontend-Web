@@ -30,6 +30,7 @@
  */
 
 import { cache } from "react";
+import { stegaClean } from "@sanity/client/stega";
 import { sanityFetch } from "./fetch";
 import { defineQuery } from "next-sanity";
 import { getChannelFromEnv } from "@1sp/site-config";
@@ -159,7 +160,8 @@ const GLOBAL_DATA_QUERY = defineQuery(/* groq */ `{
       name,
       url
     },
-    copyright
+    copyright,
+    renaissanceLegalText
   },
   "hasCaseStudies": count(*[_type == "caseStudy" && $channel in channel && language == $language && isPublished == true]) > 0,
   "hasServices": count(*[_type == "services" && language == $language]) > 0
@@ -402,7 +404,7 @@ export const getLocalizedNavigation = cache(
 
     const resolvePage = (page?: NavigationPage | null) => {
       if (!page?._id) return null;
-      if (page.language === language && page.channel === channel) return page;
+      if (stegaClean(page.language) === language && stegaClean(page.channel) === channel) return page;
 
       const family = families.find((candidate) =>
         candidate.translations?.some(
@@ -415,7 +417,7 @@ export const getLocalizedNavigation = cache(
           ?.map((translation) => translation.value)
           .find(
             (candidate) =>
-              candidate?.language === language && candidate.channel === channel,
+              stegaClean(candidate?.language) === language && stegaClean(candidate?.channel) === channel,
           ) ?? null
       );
     };
@@ -429,7 +431,7 @@ export const getLocalizedNavigation = cache(
           logoUrl: baseMenu.logoUrl,
           oneSpMembershipLabel: baseMenu.oneSpMembershipLabel,
           menuItems: (baseMenu.menuItems ?? []).flatMap((item) => {
-            const route = item.route?.replace(/^\/+|\/+$/g, "");
+            const route = stegaClean(item.route)?.replace(/^\/+|\/+$/g, "");
             if (route) {
               return [
                 {
@@ -442,7 +444,7 @@ export const getLocalizedNavigation = cache(
             }
 
             const page = resolvePage(item.page);
-            const slug = page?.slug?.current;
+            const slug = stegaClean(page?.slug?.current);
             if (!page || !slug) return [];
 
             return [
@@ -451,7 +453,7 @@ export const getLocalizedNavigation = cache(
                 slug,
                 title: page.title ?? undefined,
                 displayName:
-                  usesSourceMenu || item.page?.language !== language
+                  usesSourceMenu || stegaClean(item.page?.language) !== language
                     ? undefined
                     : (item.displayName ?? undefined),
               },
@@ -464,7 +466,7 @@ export const getLocalizedNavigation = cache(
       menu,
       availableLocales: Array.from(
         new Set(
-          (result.availableLocales ?? []).filter((locale): locale is string =>
+          stegaClean(result.availableLocales ?? []).filter((locale): locale is string =>
             Boolean(locale),
           ),
         ),
@@ -670,13 +672,14 @@ export const getServicesForChannel = cache(
 );
 
 export const getSmartPeople = cache(
-  async (channel: string, maxItems: number) => {
+  async (channel: string, maxItems: number, language = "en") => {
     const { SMART_PEOPLE_QUERY } = await import("./groq");
 
     const { data } = await sanityFetch({
       query: SMART_PEOPLE_QUERY,
       params: {
         channel,
+        language,
         // GROQ [0...$maxItems] is exclusive, so pass the count as-is —
         // subtracting 1 here returned one fewer person than requested.
         maxItems: Math.max(0, maxItems),
@@ -976,3 +979,8 @@ export const getAllPageSitemapSlugs = cache(
     );
   },
 );
+
+export const getRenaissanceEnquiryEmail = cache(async (language = "en"): Promise<string | null> => {
+  const {data} = await sanityFetch({query: defineQuery(`*[_type == "siteSettings" && channel == "renaissanceWeb" && language == $language][0].renaissanceEnquiryEmail`), params: {language}});
+  return typeof data === "string" ? data : null;
+});

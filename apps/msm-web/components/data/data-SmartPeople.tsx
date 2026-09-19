@@ -49,7 +49,7 @@ export default async function SmartPeople({
   language = "de",
   channel = "msmWeb",
 }: SmartPeopleProps) {
-  const people = await getSmartPeople(channel, maxItems) as Person[];
+  const people = await getSmartPeople(channel, maxItems, language) as Person[];
 
   if (people.length === 0) {
     return (

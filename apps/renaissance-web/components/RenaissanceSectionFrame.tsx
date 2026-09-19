@@ -36,7 +36,9 @@ export default function RenaissanceSectionFrame({
   children: React.ReactNode;
   peopleProof?: PeopleProof;
 }) {
-  if (!marker.sectionRole) return <>{children}</>;
+  if (!marker.sectionRole || !Object.hasOwn(roleConfig, marker.sectionRole)) {
+    return <>{children}</>;
+  }
   const config = roleConfig[marker.sectionRole];
   const isCompactBand = ["services", "origins", "joinUs"].includes(
     marker.sectionRole,

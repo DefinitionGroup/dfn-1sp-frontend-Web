@@ -164,6 +164,7 @@ async function handleRevalidation(body: SanityWebhookBody) {
     switch (_type) {
         case "renaissanceSharedPortraits":
         case "renaissanceSharedAwards":
+        case "renaissanceClientCollection":
         case "oneSpComponentGroup":
             // A reusable group can be referenced by pages in every frontend.
             revalidateTag("pages", "max");

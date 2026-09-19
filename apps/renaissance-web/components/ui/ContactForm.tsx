@@ -1,10 +1,12 @@
 "use client";
 
+import { stegaClean } from "@sanity/client/stega";
 import { useState, type FormEvent, type ChangeEvent } from "react";
 import type { ContactFormSettings } from "@1sp/sanity-types";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
 type ContactFormProps = {
+  enquiryEmail?: string | null;
   language?: string;
   channel?: string;
   settings?: ContactFormSettings | null;
@@ -30,6 +32,7 @@ export default function ContactForm({
   language = "en",
   channel = "1spWeb",
   settings,
+  enquiryEmail,
 }: ContactFormProps) {
   const [formState, setFormState] = useState<FormState>(defaultFormState);
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
@@ -44,6 +47,12 @@ export default function ContactForm({
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (enquiryEmail) {
+      const subject = `Project enquiry: ${formState.company || formState.name}`;
+      const body = `${formState.message}\n\nName: ${formState.name}\nEmail: ${formState.email}\nCompany: ${formState.company}`;
+      window.location.href = `mailto:${stegaClean(enquiryEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      return;
+    }
     setStatus("submitting");
     setError("");
 
@@ -77,10 +86,10 @@ export default function ContactForm({
   const subheadline =
     settings?.subheadline || "Tell us a little bit about what you’re building and we’ll reach out.";
   const description = settings?.description;
-  const consentText =
+  const consentText = enquiryEmail ? "This opens your email app with your enquiry filled in. Review it and send it there." :
     settings?.consentText ||
     "By submitting this form, you agree that we may store your information to contact you about your request.";
-  const submitLabel = settings?.submitLabel || "Send message";
+  const submitLabel = enquiryEmail ? "Open email app" : settings?.submitLabel || "Send message";
   const successMessage =
     settings?.successMessage || "Thanks! We’ve received your message and will get back to you soon.";
   const errorMessage =
@@ -164,6 +173,7 @@ export default function ContactForm({
                   />
                 </label>
                 <p className="max-w-2xl text-xs leading-relaxed text-renaissance-ink/55">{consentText}</p>
+                {enquiryEmail && <p className="text-sm">Or email <a className="underline underline-offset-4" href={`mailto:${stegaClean(enquiryEmail)}`}>{enquiryEmail}</a>.</p>}
                 <div className="flex flex-wrap items-center justify-between gap-4 border-t border-renaissance-ink/20 pt-6">
                   {status === "error" ? (
                     <p role="alert" className="text-sm text-red-700">{error || errorMessage}</p>

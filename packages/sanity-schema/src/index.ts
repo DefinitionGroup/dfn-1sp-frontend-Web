@@ -2,6 +2,7 @@ import { type SchemaTypeDefinition } from 'sanity'
 import page from './page'
 import menu from './Global/components/menu'
 import caseStudy from './Global/Cases/caseStudy'
+import caseWebsiteContent from './Global/Cases/caseWebsiteContent'
 import unitCase from './Global/Cases/unitCase'
 import client from './Global/Cases/client'
 import person from './Global/Cases/person'
@@ -33,8 +34,9 @@ import renaissanceAwardLogoWall from './RENAISSANCE/Components/renaissanceAwardL
 import registerBlock from './RENAISSANCE/Components/registerBlock'
 import { renaissanceSharedPortraits, renaissanceSharedAwards } from './RENAISSANCE/Documents/sharedContent'
 import renaissanceSharedContentReference from './RENAISSANCE/Components/renaissanceSharedContentReference'
+import renaissanceClientCollection from './RENAISSANCE/Documents/clientCollection'
 import newsCTABlock from './RENAISSANCE/Components/newsCTABlock'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [renaissanceSharedPortraits, renaissanceSharedAwards, renaissanceSharedContentReference, page, menu, siteSettings, oneSpComponentGroup, translationGuidelines, caseStudy, unitCase, client, person, contactSubmission, ...OneSPschemaTypes, ...FLZRschemaTypes, ...CaseStudySchemaTypes, ...MSMschemaTypes, renaissanceSectionBand, renaissancePortraitGrid, renaissanceAwardLogoWall, registerBlock, newsCTABlock, link, cta, paragraph, size, services, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata, contactForm, oneSpComponentGroupReference],
+  types: [renaissanceClientCollection, renaissanceSharedPortraits, renaissanceSharedAwards, renaissanceSharedContentReference, page, menu, siteSettings, oneSpComponentGroup, translationGuidelines, caseStudy, caseWebsiteContent, unitCase, client, person, contactSubmission, ...OneSPschemaTypes, ...FLZRschemaTypes, ...CaseStudySchemaTypes, ...MSMschemaTypes, renaissanceSectionBand, renaissancePortraitGrid, renaissanceAwardLogoWall, registerBlock, newsCTABlock, link, cta, paragraph, size, services, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata, contactForm, oneSpComponentGroupReference],
 }

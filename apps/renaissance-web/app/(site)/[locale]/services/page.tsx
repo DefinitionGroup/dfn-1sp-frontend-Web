@@ -13,7 +13,7 @@
  */
 import { getAllCases, getAllServicesForChannel, getPageBySlug } from "@1sp/sanity-queries";
 import RenaissancePageBuilder from "@renaissance/components/RenaissancePageBuilder";
-import NotFound from "@renaissance/components/ui/not-found";
+import { notFound } from "next/navigation";
 import RenaissanceSiteWrapper from "@renaissance/components/RenaissanceSiteWrapper";
 import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
@@ -108,13 +108,7 @@ export default async function ServicesPage({
   // Uses cached fetch from centralized data layer
   const page = await getPageBySlug("services", CHANNEL, language);
 
-  if (!page) {
-    return (
-      <RenaissanceSiteWrapper language={language} navColor="light">
-        <NotFound />
-      </RenaissanceSiteWrapper>
-    );
-  }
+  if (!page) notFound();
 
   const navbarVariant = page?.navbarVariant || "light";
   const contentBlocks = page.content as any[] | undefined;
@@ -206,10 +200,9 @@ export default async function ServicesPage({
             content={contentBlocks}
             language={language}
             channel={CHANNEL}
-            deferAfter={2}
           />
         ) : (
-          <NotFound />
+          null
         )}
       </div>
     </RenaissanceSiteWrapper>

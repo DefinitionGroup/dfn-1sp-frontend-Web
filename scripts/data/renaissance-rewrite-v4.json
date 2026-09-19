@@ -1,0 +1,1367 @@
+{
+  "source": "RPR_Website_Rewrite_Comparison_v4.xlsx",
+  "sheet": "Rewrite Comparison",
+  "rows": [
+    {
+      "page": "Home",
+      "section": "Meta",
+      "block": "Meta Title",
+      "order": 1,
+      "rewrite": "Renaissance PR | Games Industry PR, Influencer & Launch Communications",
+      "row": 2
+    },
+    {
+      "page": "Home",
+      "section": "Meta",
+      "block": "Meta Description",
+      "order": 2,
+      "rewrite": "Games PR agency based in Warwick, UK, since 2015. Earned media, influencer, and go-to-market campaigns for indie and AAA studios worldwide - including GSC Game World, Funcom, and Mob Entertainment. MCV Best PR Agency finalist every year since 2015.",
+      "row": 3
+    },
+    {
+      "page": "Home",
+      "section": "Hero",
+      "block": "H1",
+      "order": 3,
+      "rewrite": "Getting the right coverage for your game shouldn't depend on luck.",
+      "row": 4
+    },
+    {
+      "page": "Home",
+      "section": "How can we help your business?",
+      "block": "H2",
+      "order": 4,
+      "rewrite": "Not sure which media and creators will actually move the needle for your launch?",
+      "row": 5
+    },
+    {
+      "page": "Home",
+      "section": "How can we help your business?",
+      "block": "Paragraph",
+      "order": 5,
+      "rewrite": "A campaign only works if it reaches the right outlets and creators for your specific game - not a generic media list. We build the media mix around your title's genre, platform, and audience, then time outreach to the moments (announcement, preview, launch) that actually move coverage. Since 2015 we've run this for teams from first-time indie studios to publishers like GSC Game World and Funcom.",
+      "row": 6
+    },
+    {
+      "page": "Home",
+      "section": "Core Services",
+      "block": "H2",
+      "order": 6,
+      "rewrite": "What we actually do",
+      "row": 7
+    },
+    {
+      "page": "Home",
+      "section": "Core Services",
+      "block": "List Item",
+      "order": 7,
+      "rewrite": "Earned PR Campaign Planning - getting your announcement and launch covered by the outlets your players actually read.",
+      "row": 8
+    },
+    {
+      "page": "Home",
+      "section": "Core Services",
+      "block": "List Item",
+      "order": 8,
+      "rewrite": "Paid & Organic Influencer Planning - matching your game to creators whose audience already plays titles like yours.",
+      "row": 9
+    },
+    {
+      "page": "Home",
+      "section": "Core Services",
+      "block": "List Item",
+      "order": 9,
+      "rewrite": "Product Management & Support - keeping your store page, assets, and first-party relationships launch-ready.",
+      "row": 10
+    },
+    {
+      "page": "Home",
+      "section": "Core Services",
+      "block": "List Item",
+      "order": 10,
+      "rewrite": "Go-to-market Communication Planning - one strategy that ties your business plan, audience, and sales goals together instead of three disconnected ones.",
+      "row": 11
+    },
+    {
+      "page": "Home",
+      "section": "Awards",
+      "block": "Paragraph",
+      "order": 11,
+      "rewrite": "Renaissance has been a Best PR Agency finalist at every MCV Awards since 2015, won MCV's Boutique PR Agency of the Year in 2019, was a PR Agency of the Year finalist in 2020, and won Best PR Campaign of the Year in 2022 (for The Ascent, with Curve Digital). We were also a TIGA Awards finalist for Best Service Provided in 2022, and MCV Develop PR Agency of the Year finalist in 2023, 2024, and 2025.",
+      "row": 12
+    },
+    {
+      "page": "Home",
+      "section": "Register with us",
+      "block": "H2",
+      "order": 12,
+      "rewrite": "Cover our clients' games first",
+      "row": 13
+    },
+    {
+      "page": "Home",
+      "section": "Register with us",
+      "block": "Paragraph",
+      "order": 13,
+      "rewrite": "If you're a content creator, register to get early access and review codes for our clients' upcoming titles.",
+      "row": 14
+    },
+    {
+      "page": "Home",
+      "section": "Footer",
+      "block": "Paragraph",
+      "order": 14,
+      "rewrite": "Information Commissioner's Office (ICO) registration: ZA349529",
+      "row": 15
+    },
+    {
+      "page": "Services",
+      "section": "Hero",
+      "block": "H1",
+      "order": 1,
+      "rewrite": "PR and comms services for game studios and publishers",
+      "row": 16
+    },
+    {
+      "page": "Services",
+      "section": "Hero",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "Whether you're an indie team announcing your first title or a publisher managing a global launch, here's exactly what we do and how it fits your campaign.",
+      "row": 17
+    },
+    {
+      "page": "Services",
+      "section": "Core Services",
+      "block": "Paragraph",
+      "order": 3,
+      "rewrite": "Go-to-market Communication Planning: most launch problems come from these pieces not talking to each other - your business plan, audience, marketing plan, and sales strategy. We plan them as one campaign from the start, so your PR push, influencer plan, and store page all point at the same launch date and the same audience.",
+      "row": 18
+    },
+    {
+      "page": "Services",
+      "section": "Core Services",
+      "block": "Paragraph",
+      "order": 4,
+      "rewrite": "Earned PR Campaign Planning: journalists and creators cover games faster when the pitch, assets, and timing make their job easy. We use our existing relationships with games media and creators worldwide to get your announcement and launch in front of the right audience without you having to build those relationships from scratch.",
+      "row": 19
+    },
+    {
+      "page": "Services",
+      "section": "Core Services",
+      "block": "Paragraph",
+      "order": 5,
+      "rewrite": "Product Management & Support: a great PR push falls flat if your store page, first-party relationships, or launch assets aren't ready when the coverage lands. We manage that groundwork so the traffic your campaign generates actually converts.",
+      "row": 20
+    },
+    {
+      "page": "Services",
+      "section": "Core Services",
+      "block": "Paragraph",
+      "order": 6,
+      "rewrite": "Paid & Organic Influencer Planning: finding creators whose existing audience already plays games like yours - organically or through paid partnerships - using our research tools and market knowledge, not a spray-and-pray creator list.",
+      "row": 21
+    },
+    {
+      "page": "Services",
+      "section": "Other Services",
+      "block": "H2",
+      "order": 7,
+      "rewrite": "Also available through our partner network",
+      "row": 22
+    },
+    {
+      "page": "Services",
+      "section": "Other Services",
+      "block": "List Item",
+      "order": 8,
+      "rewrite": "Paid Media Planning & Buying - via a trusted partner: deciding when, where, and how much to spend on paid promotion.",
+      "row": 23
+    },
+    {
+      "page": "Services",
+      "section": "Other Services",
+      "block": "List Item",
+      "order": 9,
+      "rewrite": "Event Management & Production: we've run launch events, VIP preview sessions, and even organised a national industry awards show (IIDEA's Italian Videogame Awards) - brief us and we'll handle it end to end.",
+      "row": 24
+    },
+    {
+      "page": "About",
+      "section": "Hero",
+      "block": "H1",
+      "order": 1,
+      "rewrite": "A 19-person games PR team, not a one-person agency with contractors",
+      "row": 25
+    },
+    {
+      "page": "About",
+      "section": "Hero",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "Every person on this page has worked in games - as journalists, PR leads, or in-house at studios and publishers - before joining Renaissance.",
+      "row": 26
+    },
+    {
+      "page": "About",
+      "section": "About the Founder",
+      "block": "Paragraph",
+      "order": 3,
+      "rewrite": "[REMOVE - DUPLICATE] This second, near-identical version of the founder bio should be deleted rather than rewritten.",
+      "row": 27
+    },
+    {
+      "page": "About",
+      "section": "So why choose Renaissance?",
+      "block": "Paragraph",
+      "order": 4,
+      "rewrite": "Our plans are built around five simple pillars, integrated from day one and measurable throughout. You pay for delivering the plan and hitting the KPIs we agree with you upfront - not for our time.",
+      "row": 28
+    },
+    {
+      "page": "Clients",
+      "section": "Hero",
+      "block": "H1",
+      "order": 1,
+      "rewrite": "Studios and publishers we've launched games for",
+      "row": 29
+    },
+    {
+      "page": "Clients",
+      "section": "Hero",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "From first-time indie teams to publishers like GSC Game World, Funcom, and Tencent - see the case studies behind some of these names on our Case Studies page.",
+      "row": 30
+    },
+    {
+      "page": "Contact",
+      "section": "Hero",
+      "block": "H1",
+      "order": 1,
+      "rewrite": "Let's talk about your launch",
+      "row": 31
+    },
+    {
+      "page": "Contact",
+      "section": "Hero",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "Tell us about your game and timeline below, and a member of the team will get back to you within two business days.",
+      "row": 32
+    },
+    {
+      "page": "Contact",
+      "section": "Contact Information",
+      "block": "Paragraph",
+      "order": 3,
+      "rewrite": "Email: hello@renaissancepr.biz (or contact Stefano Petrullo, Founder, directly at stefano@renaissancepr.biz)",
+      "row": 33
+    },
+    {
+      "page": "Register",
+      "section": "Hero",
+      "block": "H1",
+      "order": 1,
+      "rewrite": "Get early access and review codes for our clients' games",
+      "row": 34
+    },
+    {
+      "page": "Register",
+      "section": "Content Creator",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "If you're a content creator, register to get early access and review codes for our clients' upcoming titles.",
+      "row": 35
+    },
+    {
+      "page": "Register",
+      "section": "Media",
+      "block": "Paragraph",
+      "order": 3,
+      "rewrite": "If you're a journalist, editor, or freelance writer, register to get news and review copies from our clients as soon as they're available.",
+      "row": 36
+    },
+    {
+      "page": "Case Studies (index)",
+      "section": "Hero",
+      "block": "H1",
+      "order": 1,
+      "rewrite": "66 launches, from first-time indie teams to global publishers",
+      "row": 37
+    },
+    {
+      "page": "Case Studies (index)",
+      "section": "Hero",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "Filter by region below, or search by genre or platform to find a campaign like yours.",
+      "row": 38
+    },
+    {
+      "page": "CS: Guns Of Eschaton",
+      "section": "Intro",
+      "block": "H2",
+      "order": 1,
+      "rewrite": "Launching an unannounced IP without leaking it early",
+      "row": 39
+    },
+    {
+      "page": "CS: Guns Of Eschaton",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "4Divinity needed to reveal a brand-new IP, Guns of Eschaton, without early leaks, and build momentum through to its 2026 PC and console launch. Renaissance led the global PR and organic influencer campaign end to end.",
+      "row": 40
+    },
+    {
+      "page": "CS: Guns Of Eschaton",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 3,
+      "rewrite": "Within 7 days of the announcement: 238 articles, 545.6m UVPM, 50 from Tier 1 media (Terra Game On 32.3m, GameStar 11.1m, PC Gamer 10.8m, GamesRadar+ 10.5m, 3D Juegos 7.3m). A small, trusted pre-announcement creator group kept the reveal leak-free while generating 3.3m organic views from a 67.7m subscriber base. Ahead of Gamescom 2026, we ran an exclusive London preview across three two-hour sessions for 21 confirmed media and creators, including IGN, Eurogamer, Metro, GamesIndustry.biz, EDGE, and Jackfrags.",
+      "row": 41
+    },
+    {
+      "page": "CS: Dave The Diver In The Jungle DLC",
+      "section": "Intro",
+      "block": "H2",
+      "order": 1,
+      "rewrite": "Getting a returning-fan DLC noticed by players who never played the original",
+      "row": 42
+    },
+    {
+      "page": "CS: Dave The Diver In The Jungle DLC",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "MINTROCKET needed In The Jungle to land with existing Dave the Diver fans and reach players who'd never touched the original. Renaissance led the global PR and organic influencer campaign for the DLC's launch.",
+      "row": 43
+    },
+    {
+      "page": "CS: Dave The Diver In The Jungle DLC",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 3,
+      "rewrite": "Within 7 days of launch: 397+ articles, 1.2bn UVPM, 150+ from Tier 1 outlets, 50 reviews averaging 89.9. Highlights: IGN US (74.4m), Game8 US (31m), Terra Game On (32.3m), PlayGround (22.4m), GameRant US (16.5m). On the creator side: 4,058,049 views (1.8m YouTube, 2.1m Twitch VOD) across 681 channels and 1,200+ pieces of content, from a 36m combined subscriber base - including Gameranx, CohhCarnage, knekro, GameLinked and DansGaming.",
+      "row": 44
+    },
+    {
+      "page": "CS: Wax Heads",
+      "section": "Intro",
+      "block": "H2",
+      "order": 1,
+      "rewrite": "Covering a launch from announcement through to release, on one connected plan",
+      "row": 45
+    },
+    {
+      "page": "CS: Wax Heads",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "Curve Games needed one connected campaign spanning Wax Heads' release-date announcement through to its PC and console launch. Renaissance ran both the media and content-creator sides of that campaign.",
+      "row": 46
+    },
+    {
+      "page": "CS: Wax Heads",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 3,
+      "rewrite": "428 articles, 1.1bn UVPM, 88 reviews tracked. Highlights: IGN (80m), GameSpot (33m), Metro (12.7m), The Gamer (10.8m), Polygon (11.8m). Organic content-creator results: 422+ pieces of content across YouTube, Twitch and TikTok, 9.8m combined subscriber base, 1.3m+ views in the 7 days post-launch.",
+      "row": 47
+    },
+    {
+      "page": "CS: Poppy Playtime: Chapter 5",
+      "section": "Intro",
+      "block": "H2",
+      "order": 1,
+      "rewrite": "Bringing AAA-level comms polish to an indie franchise's biggest chapter yet",
+      "row": 48
+    },
+    {
+      "page": "CS: Poppy Playtime: Chapter 5",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "Mob Entertainment's earlier Poppy Playtime chapters had never had a fully-planned comms campaign behind them. For Chapter 5, Renaissance led the global PR and organic influencer strategy with two goals: grow mainstream and core media interest in the series, and raise Mob Entertainment's own profile as a developer.",
+      "row": 49
+    },
+    {
+      "page": "CS: Poppy Playtime: Chapter 5",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 3,
+      "rewrite": "New trailers, content reveals and an ARG campaign drove 12+ leadership interviews (BBC Gaming 19.4m, Variety 29.5m, GamesIndustry.biz, Insider Gaming). By launch: 700+ pieces of coverage, 3.75bn UVPM, led by IGN, The Mirror, Game Rant and Vandal. Creator coverage passed 380m views within a week, across 17,000+ Twitch channels, 1,500+ YouTube channels and 600+ social channels, from a combined subscriber base of nearly 1 billion. Result: sales exceeded expectations, concurrent players doubled versus Chapter 4, and the game reached #1 Global Top Seller on Steam and most-played on Twitch.",
+      "row": 50
+    },
+    {
+      "page": "CS: Starsand Island",
+      "section": "Intro",
+      "block": "H2",
+      "order": 1,
+      "rewrite": "Building momentum over a year so launch week isn't a cold start",
+      "row": 51
+    },
+    {
+      "page": "CS: Starsand Island",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "Seed Sparkle Lab needed its Early Access launch to open with media and creators already engaged, not starting from zero. Renaissance built that momentum across every key beat from 2025 through the PC Early Access launch in 2026.",
+      "row": 52
+    },
+    {
+      "page": "CS: Starsand Island",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 3,
+      "rewrite": "7 days after launch: 329 articles, 1.76bn potential reach, 218 guides published and still climbing daily. Highlights: GameRant, PC Gamer, GamesRadar, The Gamer, Eurogamer, 3DJuegos. Creator campaign: 1.1m+ views from 395 channels (21m+ combined subscribers), including a weeklong Kinda Funny sponsorship and a Yogscast 'Starsand Island Bingo' series their audience named a new favourite. 2,600+ Twitch streams tracked.",
+      "row": 53
+    },
+    {
+      "page": "CS: Romeo Is A Dead Man (2026, full launch)",
+      "section": "Intro",
+      "block": "H2",
+      "order": 1,
+      "rewrite": "Taking a Grasshopper game to non-Nintendo audiences for the first time",
+      "row": 54
+    },
+    {
+      "page": "CS: Romeo Is A Dead Man (2026, full launch)",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "Grasshopper Manufacture needed Romeo is a Dead Man - unusually, not a Nintendo-first title for them - to reach mainstream and non-Nintendo audiences it had never built relationships with. Renaissance focused the media and creator strategy on exactly that wider reach.",
+      "row": 55
+    },
+    {
+      "page": "CS: Romeo Is A Dead Man (2026, full launch)",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 3,
+      "rewrite": "Within 7 days: 455+ articles, 1.6bn UVPM (New York Times, The Guardian, MeriStation, IGN US, Screen Rant), 113 guides, 17 interviews, 111+ Metacritic/OpenCritic reviews. Creator campaign: 4,075,000+ views (2.8m YouTube, 1.2m Twitch VOD) across 401 channels from a 47m subscriber base. Stand-out editorial: an exclusive EDGE cover feature, and a Suda51 Katsu Curry collaboration with Radio Times/BBC Good Food Kitchen that Rock Paper Shotgun followed up by recreating every in-game recipe - all inside a two-week UK/US promotional tour ahead of launch.",
+      "row": 56
+    },
+    {
+      "page": "CS: Genigods Nezha",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Genigods Lab needed a brand-new game's reveal to land with maximum impact on day one. Renaissance secured that by pitching the trailer 1-2-1 to media and creators rather than a mass press release, and ran VIP embargoed reveal sessions alongside it.",
+      "row": 57
+    },
+    {
+      "page": "CS: Genigods Nezha",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "257 articles from 199 outlets in 7 days, 211.2m UVPM. Highlights: TechRadar UK, GameReactor, 3DJuegos, Gamingbible, Everyeye.it. Trailer distribution on both IGN and PlayStation's official YouTube channel reached 500,000+ combined views.",
+      "row": 58
+    },
+    {
+      "page": "CS: The God Slayer",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Pathea needed a new IP announcement to cut through rather than get lost in a press-release blast. Renaissance ran the reveal as direct 1-2-1 trailer pitches to media and creators, backed by VIP embargoed reveal sessions.",
+      "row": 59
+    },
+    {
+      "page": "CS: The God Slayer",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "328 articles from 240 outlets in 7 days, 577.9m UVPM. Highlights: IGN US, ScreenRant, GameRant, TechRadar UK, Galaxus. Organic creator campaign: 21m+ views across 450+ channels.",
+      "row": 60
+    },
+    {
+      "page": "CS: Yooka-Replaylee",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "PM Studios needed Americas-region PR and worldwide creator support for Yooka-Replaylee's multi-platform launch. Renaissance covered both.",
+      "row": 61
+    },
+    {
+      "page": "CS: Yooka-Replaylee",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "7 days post-launch: 1,200 articles, 2.1bn UVPM, 158 reviews. Highlights: IGN (105.5m), Forbes (78.3m), GameRant (47.4m), Sportskeeda, TechRadar, The Gamer, Vandal, Nintendo Life. Creator campaign: 512 pieces of content across YouTube and Twitch, 61.6m subscriber base, 1.4m+ views.",
+      "row": 62
+    },
+    {
+      "page": "CS: Ratatan",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "GSE needed one connected campaign from Ratatan's Summer Game Fest announcement through to its PC Early Access launch. Renaissance ran both the media and creator sides throughout.",
+      "row": 63
+    },
+    {
+      "page": "CS: Ratatan",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "327 articles, 1.3bn UVPM. Highlights: IGN US, Game Rant, GameSpot US, Vandal, GamesRadar+. Creator campaign: 5,400+ pieces of content, 65m subscriber base, 4.5m+ views - all organic.",
+      "row": 64
+    },
+    {
+      "page": "CS: Formula Legends",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "3DClouds needed one global communications partner covering PR, media, and creators from Formula Legends' announcement through its four-platform launch. Renaissance was that agency end to end.",
+      "row": 65
+    },
+    {
+      "page": "CS: Formula Legends",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "216 articles, 243.9m estimated potential views, 82 scored reviews in 7 days. Highlights: IGN US, RedBull DE, Multiplayer.it, Everyeye.it, Top Gear. Creator campaign: 200+ targeted creators, 267+ streams/videos, 730,000+ views from a 9.3m subscriber base.",
+      "row": 66
+    },
+    {
+      "page": "CS: Gamescom 2025",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Gamescom needed a global PR partner it could trust year after year - Renaissance has been that partner for four consecutive years, running the show's media ambassador programme and bringing 42 VIP media and 18 VIP content creators to the event from around the world.",
+      "row": 67
+    },
+    {
+      "page": "CS: Gamescom 2025",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "1,675 pieces of ambassador coverage, 34bn UVPM; 28,397 pieces of coverage worldwide mentioned Gamescom. Highlights: Tech Radar, GamesRadar+, PCGamesN, VGC, Jeux Video. Creator ambassador content: 142 pieces, up 215% year-on-year, 4.9m+ views from an 11.7m subscriber base.",
+      "row": 68
+    },
+    {
+      "page": "CS: Romeo Is A Dead Man (2025, Gamescom activation)",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Grasshopper Manufacture and director Goichi Suda (SUDA 51) wanted media and creators to get genuine hands-on time with Romeo is a Dead Man at Gamescom, not just a trailer. Renaissance built the on-site programme - hands-on sessions, bespoke director interviews, and a full B2B presence - at the client's direct request.",
+      "row": 69
+    },
+    {
+      "page": "CS: Romeo Is A Dead Man (2025, Gamescom activation)",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "27 media appointments, 73 pieces of content, 852,152,855 UVPM from Tier 1 outlets (PCGamesN, Gaming Bible, WCCFTech, Gamespot, Game Informer). Delivered via a full B2B presence, custom key art, and physical props produced with sister company Studio Co2. Several future exclusive opportunities secured; reported UVPM exceeded the client's Sony State of Play reveal earlier the same year.",
+      "row": 70
+    },
+    {
+      "page": "CS: Wuchang: Fallen Feathers",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "505 Games needed North and Latin America media communications covered for the final stretch of Wuchang: Fallen Feathers' pre-launch campaign. Renaissance led that regional push through to launch.",
+      "row": 71
+    },
+    {
+      "page": "CS: Wuchang: Fallen Feathers",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "SGF preview coverage: GameSpot, Screen Rant, Game Rant, IGN Brazil, Terra. Within 7 days of launch: 745+ articles, 4.9bn+ potential reach, 450+ guides from IGN, Polygon, Kotaku, Game8, TheGamer, and 120+ reviews across the Americas.",
+      "row": 72
+    },
+    {
+      "page": "CS: Dune: Awakening",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Funcom needed a 3-year European PR campaign for its biggest IP yet - the survival MMORPG Dune Awakening, tied to the Dune film franchise - coordinated across markets with local agency partners in Spain and Italy. Renaissance led that campaign from announcement through PC launch.",
+      "row": 73
+    },
+    {
+      "page": "CS: Dune: Awakening",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "3,257 articles and 40bn UVPM since announcement; the launch announcement alone drove 389 articles, 4.3bn reach, and 53 reviews within 7 days. Highlights: IGN UK, Areajugones, Sapo TEK, TGcom24.it, PC Gamer UK. Supported by live events at The Game Awards, Summer GameFest, Gamescom, a bespoke Oslo studio hands-on, and a Dune: Part 2 screening in LA.",
+      "row": 74
+    },
+    {
+      "page": "CS: Pipistrello and the Cursed Yoyo",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "PM Studios needed a coordinated multi-platform launch for Pipistrello and the Cursed Yoyo. Renaissance ran the PR and creator campaign across PC, PlayStation, Xbox and Switch.",
+      "row": 75
+    },
+    {
+      "page": "CS: Pipistrello and the Cursed Yoyo",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "130 articles, 319m UVPM, 79 reviews in 7 days. Highlights: IGN USA, GameRant, Gamespot, The Mirror, PC Gamer, Nintendo Life. Creator campaign: 295 pieces of content, 8.2m subscriber base, 564,000+ views - organic.",
+      "row": 76
+    },
+    {
+      "page": "CS: Xbox Retro Classics",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Antstream Arcade and Xbox needed PR and creator support across every English-speaking market for the Xbox Retro Classics collaboration. Renaissance covered both.",
+      "row": 77
+    },
+    {
+      "page": "CS: Xbox Retro Classics",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "248 articles, 687m UVPM in the first week; 53% of coverage named Antstream directly in the headline. 56 Tier 1 outlets, including Forbes, IGN US, GameSpot US, GameRant US. Creator campaign: 375,000+ views from a 3m subscriber base across 50 targeted Retro/Xbox channels.",
+      "row": 78
+    },
+    {
+      "page": "CS: S.T.A.L.K.E.R. Legends Of The Zone Trilogy",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "GSC Game World needed one global communications partner for every key beat of the S.T.A.L.K.E.R. Legends of the Zone Trilogy, from the launch-date announcement through to release across PC, Xbox and PlayStation. Renaissance ran that full media and creator distribution.",
+      "row": 79
+    },
+    {
+      "page": "CS: S.T.A.L.K.E.R. Legends Of The Zone Trilogy",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "350 articles, 2.9bn potential reach, 167 from Tier 1 media, within 7 days. Highlights: GameRant, TGcom24, Metro. Creator campaign: 1.2m views from a 7.9m subscriber base.",
+      "row": 80
+    },
+    {
+      "page": "CS: The Precinct",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Kwalee needed combined NA and EU PR and creator support for The Precinct, from announcement through its PC, PlayStation and Xbox launch. Renaissance covered both regions throughout.",
+      "row": 81
+    },
+    {
+      "page": "CS: The Precinct",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "775 articles, 3.6bn UVPM, 630+ review codes distributed, 290 reviews within 7 days of launch. Highlights: MeriStation, IGN US, GameRant, Sportskeeda (28 articles alone), Vandal. Backed by GDC meetings, a VIP London hands-on, and Steam Next Fest codes. Creator campaign: 200+ targeted creators, 9.1m+ views from a 164m combined subscriber base, 780+ Twitch streams (807,000 hours watched), 237 YouTube videos (4.4m+ views).",
+      "row": 82
+    },
+    {
+      "page": "CS: Yasha: Legends Of The Demon Blade",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "GSE needed a coordinated multi-platform launch campaign for Yasha: Legends of the Demon Blade. Renaissance ran the PR and creator strategy across PC, PlayStation, Xbox and Switch.",
+      "row": 83
+    },
+    {
+      "page": "CS: Yasha: Legends Of The Demon Blade",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "113 articles, 158.3m UVPM, 58 reviews in the first week. Highlights: IGN, Game8, Duniaki, Vice, CriticalHits. Creator campaign: 688 pieces of content, 11m subscriber base, 2.1m+ views - organic.",
+      "row": 84
+    },
+    {
+      "page": "CS: Revenge Of The Savage Planet",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Raccoon Logic needed a full 12-month campaign, not just a launch-week push, spanning Revenge of the Savage Planet's announcement through to its PC, Xbox and PlayStation release. Renaissance was the global PR, media and creator agency across that entire period.",
+      "row": 85
+    },
+    {
+      "page": "CS: Revenge Of The Savage Planet",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "850 articles, 5.3bn potential reach, 135 reviews and 160 guides within 7 days of launch - backed by hands-on events at GDC, The Game Awards, gamescom, and a UK VIP preview. Creator campaign: 500+ targeted creators, 4,000+ streams and 375 YouTube videos in week one, 6.4m organic views across the full 12-month campaign.",
+      "row": 86
+    },
+    {
+      "page": "CS: Hordes Of Hunger",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Kwalee needed combined NA and EU media and creator support for Hordes of Hunger's Early Access PC launch. Renaissance covered both regions.",
+      "row": 87
+    },
+    {
+      "page": "CS: Hordes Of Hunger",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "105 articles, 195.8m UVPM, 72 news pieces within 7 days. Highlights: IGN US, PCGamesN, 3d Juegos, Areajugones, WCCFTech. Creator campaign: 1m views from a 9.5m subscriber base. Media consistently cited the game's combat, weapon handling, visuals and core gameplay loop as standout strengths for an Early Access title.",
+      "row": 88
+    },
+    {
+      "page": "CS: Infinity Nikki",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Infold Games needed NA, UK and EMEA PR alongside worldwide creator management for Infinity Nikki's run-up to its PlayStation 5, PC and mobile launch. Renaissance covered every region and channel.",
+      "row": 89
+    },
+    {
+      "page": "CS: Infinity Nikki",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "1,195 articles, 14.3bn potential reach in 7 days. Highlights: IGN, ScreenRant, Sports Illustrated, Tgcom, GameRant, Gamespot. Coverage was strongly positive: Metacritic 80, a 9/10 from IGN with a GOTY nomination, and IGN hosting the guides on its homepage launch week. 10 million+ downloads in the first week.",
+      "row": 90
+    },
+    {
+      "page": "CS: S.T.A.L.K.E.R. 2: Heart of Chornobyl",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "GSC Game World needed a single agency to run S.T.A.L.K.E.R. 2 as a global release - coordinating with Xbox, SEGA and 4Divinity - without bringing in external agencies. Renaissance delivered the full 6-month strategy and activation as the core team, becoming its biggest single-title release handled solely in-house to date.",
+      "row": 91
+    },
+    {
+      "page": "CS: S.T.A.L.K.E.R. 2: Heart of Chornobyl",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "3,117 articles, 27bn potential reach, 1,491 from Tier 1 media within 7 days. 179 global reviews (IGN, Gamespot, GamesRadar+, TechRadar, Rock Paper Shotgun and more). Coverage drove the game to the No.1 PC store-discoverability spot globally. Events included 88 Tier 1 media/creators at SGF, 44 interviews and 55 hands-on sessions at gamescom, Prague/LA preview trips, and a sold-out BAFTA London documentary screening. Creator campaign: 320+ targeted creators, 80m+ organic views within 7 days, 110,000+ Twitch streams, 7,000+ channels across platforms.",
+      "row": 92
+    },
+    {
+      "page": "CS: Broken Sword Shadow Of Templars Reforged",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Revolution Software needed a multi-platform launch campaign for Broken Sword: Shadow of the Templars Reforged. Renaissance ran the PR and creator strategy across PC, PlayStation and Xbox, including two bespoke events at Revolution's York office.",
+      "row": 93
+    },
+    {
+      "page": "CS: Broken Sword Shadow Of Templars Reforged",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "197 articles, 698.4m UVPM, 64 reviews in the first week. Highlights: IGN US/UK, GameRant, iDNES.cz, Vandal, The Gamer. Creator campaign: 227 pieces of content, 10.8m subscriber base, 1.1m+ views.",
+      "row": 94
+    },
+    {
+      "page": "CS: My Time At Evershine",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Pathea needed its My Time at Evershine Kickstarter to hit funding momentum from day one - a different challenge from a game launch, since the campaign has to convert media coverage into backers within a fixed funding window. Renaissance ran the full pre-announce strategy: VIP reveal sessions, press releases, and ongoing media/creator management while the project was still in development.",
+      "row": 95
+    },
+    {
+      "page": "CS: My Time At Evershine",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "320 articles from 212 outlets, 1.3bn UVPM. Highlights: IGN, GameRant, Gamespot, GamesRadar+, The Gamer. Creator campaign: 25 pieces of content, 162.5k+ views from a 600k subscriber base - a strong result for a crowdfunding announcement specifically.",
+      "row": 96
+    },
+    {
+      "page": "CS: Gamescom 2024",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "For the third year running, Gamescom trusted Renaissance as its Global International agency - including the media ambassador programme that brought 49 VIP media and content creator attendees to the show from around the world.",
+      "row": 97
+    },
+    {
+      "page": "CS: Gamescom 2024",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "1,577 pieces of coverage, 31.6bn UVPM across Gamescom and ONL. Highlights: Gamerant, Tech Radar, TheGamer, GamesRadar+, Vandal, The Sun. Ambassador YouTube content: 45 pieces, 3.83m+ views from a 16m subscriber base.",
+      "row": 98
+    },
+    {
+      "page": "CS: Delta Force",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Timi Studios (Tencent) needed to relaunch the Delta Force brand after more than a decade away - a genuine comeback story that had to land credibly with both nostalgic and new players. Renaissance brokered the exclusive announcement at Gamescom 2023, then ran a global hands-on event and the full Summer Game Fest 2024 meeting programme ahead of launch.",
+      "row": 99
+    },
+    {
+      "page": "CS: Delta Force",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "630+ articles, 2.54bn reach in under 3 weeks for the Gamescom reveal (with Opening Night Live and an IGN YouTube exclusive at 642,000 organic views). Ahead of Summer Game Fest: 24 VIP Tier 1 outlets at a dedicated LA hands-on, 80+ attendees at Playdays, including IGN, PC Gamer, VGC and The Gamer. Cumulative campaign total to date: nearly 1,500 articles and over 8.5 billion combined reach.",
+      "row": 100
+    },
+    {
+      "page": "CS: Kena Bridge Of Spirits - Xbox",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Emberlab needed Kena: Bridge of Spirits' Xbox release - arriving well after the original PlayStation launch - to land as its own event, not an afterthought. Renaissance ran the announcement campaign for that Xbox release.",
+      "row": 101
+    },
+    {
+      "page": "CS: Kena Bridge Of Spirits - Xbox",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "362 articles, 1.1bn combined reach in the announcement week - a strong result for a delayed-platform release. Highlights: Interia PL, IGN, ScreenRant, GameSpot, GameRant, TheGamer.",
+      "row": 102
+    },
+    {
+      "page": "CS: Soulmask",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Qooland needed a fast, intense four-month campaign covering Soulmask's beta through to its 31 May 2024 PC launch. Renaissance ran that full arc, including securing an exclusive IGN trailer reveal off the back of the open beta's popularity.",
+      "row": 103
+    },
+    {
+      "page": "CS: Soulmask",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "582 articles, 4.5bn UVPM across the campaign. Highlights: IGN, The Mirror, GAMINGbible, TheGamer, PC Gamer. Creator outreach: 350+ creators contacted, 80+ responded, 435 YouTube videos and 6,000+ Twitch streams tracked, just under 20 million VOD views through end of June. Notable creator wins: MixiGaming, Shroud, Kamikatze, VanossGaming.",
+      "row": 104
+    },
+    {
+      "page": "CS: Capes",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Daedalic needed a focused review campaign to build awareness for Capes' multi-format release. Renaissance ran the media engagement to secure that review coverage.",
+      "row": 105
+    },
+    {
+      "page": "CS: Capes",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "452 pieces of coverage, 1.2bn combined UVPM. 68 Tier 1 articles, 79 reviews averaging ~7/10. Biggest wins: Vandal, PC Gamer, PCGamesN, Nintendo Life. Creator campaign: 190+ new targets researched, 152 channels created content in launch week alone, 2.3m+ total views, with organic wins on Twitch (WELOVEGAMES, mee_shell) and YouTube (Gameranx, Mortismal Gaming).",
+      "row": 106
+    },
+    {
+      "page": "CS: Pine Hearts",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Hyperluminal Games needed strategy and execution for Pine Hearts' Nintendo Switch and PC launch. Renaissance delivered a campaign spanning October through to the 23 May launch, built around the game's family-friendly, emotionally resonant identity.",
+      "row": 107
+    },
+    {
+      "page": "CS: Pine Hearts",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "234m+ UVPM within 7 days of launch, across specialist and mainstream media including GAMINGbible, BBC Radio Scotland, Mirror, PC Gamer and Eurogamer.",
+      "row": 108
+    },
+    {
+      "page": "CS: TMNT: Wrath Of The Mutants",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "GameMill needed a focused launch-day and review push for TMNT: Wrath of the Mutants' 23 April 2024 release. Renaissance ran that campaign - and, although not contractually obliged to, added last-minute organic content-creator outreach on top of it.",
+      "row": 109
+    },
+    {
+      "page": "CS: TMNT: Wrath Of The Mutants",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "54 articles, 86.6m UVPM. Highlights: The Gamer UK/NA, Nintendo Life UK, VGC UK. Last-minute creator outreach delivered 122.8k+ views across YouTube and Twitch.",
+      "row": 110
+    },
+    {
+      "page": "CS: Shadow Of The Depth",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Chillyroom needed a combined PR and content-creator strategy for Shadow of the Depth's Early Access launch. Renaissance delivered preview kit distribution and preview-key outreach to media, alongside a dedicated creator campaign.",
+      "row": 111
+    },
+    {
+      "page": "CS: Shadow Of The Depth",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "140m+ UVPM and 38 reviews within 7 days of launch. Creator campaign: 579,112+ organic VOD views across 121+ channels, a peak live viewership of 23,790, and 27,490 hours watched on Twitch - including roguelike creators Splattercat Gaming, Beelz and Lirik.",
+      "row": 112
+    },
+    {
+      "page": "CS: Powerwash Simulator: Warhammer 40K",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "FuturLab needed a tight one-month campaign covering the release-date announcement, launch day, and reviews for the PowerWash Simulator Warhammer 40,000 DLC. Renaissance ran that full arc across all platforms.",
+      "row": 113
+    },
+    {
+      "page": "CS: Powerwash Simulator: Warhammer 40K",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "261 articles, 811m UVPM. Highlights: IGN US, PC Gamer UK, TechRadar UK. 15 mostly positive reviews from PC Gamer UK, Polygon US and Rock Paper Shotgun UK.",
+      "row": 114
+    },
+    {
+      "page": "CS: New Cycle",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Daedalic needed a focused media and creator push in the final month before New Cycle's launch. Renaissance delivered that campaign - which went on to become, by Daedalic's own measure, the biggest non-licensed success in the publisher's history.",
+      "row": 115
+    },
+    {
+      "page": "CS: New Cycle",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "208 pieces of coverage, 862m UVPM in a 2-month window. Biggest wins: Screen Rant, PCGamesN, Gamestar, Eurogamer.de. Creator campaign: 70+ curated creators plus 350+ additional targets, 600+ Twitch channels, 250+ YouTube videos, 5m+ total views - including Zerator, Arcade Bulls and What a Buy.",
+      "row": 116
+    },
+    {
+      "page": "CS: Den Of Wolves",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "10 Chambers needed a brand-new IP to land credibly at The Game Awards 2023 without leaking early. Renaissance coordinated a 15-strong Tier 1 European media pre-announce briefing ahead of the reveal.",
+      "row": 117
+    },
+    {
+      "page": "CS: Den Of Wolves",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "351m UVPM from the 3-day briefing event; 313 articles and 1.8bn EU reach around the TGA reveal. Secured the front cover of EDGE magazine's February 2024 issue as part of a 3-way activation spanning the press tour, the TGA reveal, and an in-depth feature.",
+      "row": 118
+    },
+    {
+      "page": "CS: Exoborne",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Sharkmob and Level Infinite needed a new IP to build credible pre-launch momentum ahead of its Game Awards 2023 reveal. Renaissance coordinated digital briefings and 1-2-1 developer interviews with 40 European media ahead of the announcement.",
+      "row": 119
+    },
+    {
+      "page": "CS: Exoborne",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "316 articles, 2.7bn reach from the pre-announcement digital briefings. Secured a front cover for the March 2024 issue of a leading gaming magazine, as part of a multi-pronged activation spanning the pre-briefing, the TGA reveal, and an in-depth feature.",
+      "row": 120
+    },
+    {
+      "page": "CS: My Time At Sandrock",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Pathea needed to ramp up My Time at Sandrock's console launch in just 2 months, distributing review code to 700+ carefully selected targets across North America, South America and Europe. Renaissance delivered that strategy and execution.",
+      "row": 121
+    },
+    {
+      "page": "CS: My Time At Sandrock",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "6.9bn views from earned media in launch month, 117 reviews (20 Metacritic-approved) averaging 80+. Post-launch: 500,000+ organic views across 94 channels and 235 videos. Targeted outreach to lore- and slice-of-life-focused creators kept content flowing well past launch week - e.g. Twitch streamer SimplyPressStart (20,200 followers) streamed the game 28 times after console release.",
+      "row": 122
+    },
+    {
+      "page": "CS: Gamescom 2023",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Gamescom needed a trusted global PR partner - becoming, with this appointment, the first UK agency ever recruited to support the show on a global scale. Renaissance managed the pre-event press list for ONL and granted on-site press access throughout.",
+      "row": 123
+    },
+    {
+      "page": "CS: Gamescom 2023",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "299 pieces of coverage, 3.7bn UVPM across Gamescom and ONL, including a dedicated Geoff Keighley interview/digital conference. Coverage on Tech Radar, The Guardian, VGC, USA Today, The Radio Times, NME and IGN Brazil.",
+      "row": 124
+    },
+    {
+      "page": "CS: Broken Sword (2023)",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Revolution Software needed to reveal two connected projects at once - a remaster of its 1996 classic and a brand-new chapter, Parzival's Stone - without the two competing for attention or confusing a 30-year-old franchise's positioning for new audiences. Renaissance built the announcement around Xbox's Gamescom showcase to solve exactly that.",
+      "row": 125
+    },
+    {
+      "page": "CS: Broken Sword (2023)",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "270 articles, ~750m monthly reach, backed by 20+ Tier 1 media interviews in Cologne. TheGamer's Meg Pelliccio: \"This renaissance will reinvigorate the series & appeal to old fans and new players alike... for the new generation, like my young son, it's a whole new experience.\"",
+      "row": 126
+    },
+    {
+      "page": "CS: Synced",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Level Infinite and NExT Studios needed hands-on impressions from key opinion leaders and Tier 1 media ahead of SYNCED's launch - two years after its original 2021 Gamescom reveal. Renaissance built a dedicated London showcase event to deliver that.",
+      "row": 127
+    },
+    {
+      "page": "CS: Synced",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "20+ leading media and content channels attended, including The Gamer, Tech Radar, Eurogamer, PS Access and GGRecon - a combined 200m+ UVPM reach.",
+      "row": 128
+    },
+    {
+      "page": "CS: Dark Envoy",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Event Horizon needed both organic reach and paid amplification for Dark Envoy. Renaissance built a combined campaign, including securing a major advertorial partnership directly with Twitch.",
+      "row": 129
+    },
+    {
+      "page": "CS: Dark Envoy",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "Twitch homepage front-page placements in key territories drove hundreds of thousands of views. Curated paid talent across Twitch, YouTube and TikTok delivered just under 700,000 views at launch; combined with organic outreach, total campaign views passed 3,000,000.",
+      "row": 130
+    },
+    {
+      "page": "CS: IIDEA 2023 - IVGA & First Playable",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "IIDEA needed full end-to-end organisation of Italy's national videogame awards show and First Playable panels, plus its international press office. Renaissance ran the entire event.",
+      "row": 131
+    },
+    {
+      "page": "CS: IIDEA 2023 - IVGA & First Playable",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "Judging panel included Lucy James (Gamespot), Mike Channell (OBX), Jake Tucker (TechRadar) and Alexis Trust (Chucklefish), hosted by Aoife Wilson. 52 articles, 27.9m reach since the event, with VGC coverage doubling year-on-year. 500+ professionals from 180 studios and 45 publishers across 12 countries attended.",
+      "row": 132
+    },
+    {
+      "page": "CS: The Last Worker",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Wired Productions needed a genuinely long-term campaign for The Last Worker - one that could also solve an unusual creator problem: the game shipped in both VR and 'flat' versions, meaning two completely different creator audiences had to be targeted with different content approaches. Renaissance ran a 2-year PR and creator campaign across the USA, Germany, UK, Italy and France to do both.",
+      "row": 133
+    },
+    {
+      "page": "CS: The Last Worker",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "1,400+ articles, 14.7bn UMV across 5 territories over 2 years, including Edge, Forbes, The Guardian and The Sun. Dedicated events at PAX, Gamescom, Venice Film Festival and BAFTA. 140 reviews at launch; 115 creators engaged across 63 Twitch and 53 YouTube channels, 406,000+ views from a 4.9m subscriber base.",
+      "row": 134
+    },
+    {
+      "page": "CS: Luna Abyss",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Bonsai Collective needed Luna Abyss's GDC appearance on Epic's Unreal stand to convert into real global buzz, not just a demo booth. Renaissance flew media in a week early for exclusive hands-on time to build momentum through the show.",
+      "row": 135
+    },
+    {
+      "page": "CS: Luna Abyss",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "120+ articles, ~620m monthly audience, coverage across IGN's global network and a livestreamed Kinda Funny interview. RockPaperShotgun Editor-in-Chief Katharine Castle: \"Move over Returnal... Luna Abyss is your next favourite bullet hell shooter.\"",
+      "row": 136
+    },
+    {
+      "page": "CS: Peaky Blinders: The King's Ransom",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Maze Theory needed to launch a beloved TV franchise's VR debut in a way that reached both gaming press and mainstream media - a crossover challenge most game launches don't face. Renaissance served as the global agency for that launch.",
+      "row": 137
+    },
+    {
+      "page": "CS: Peaky Blinders: The King's Ransom",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "320 articles, ~1.1bn potential audience, including Radio Times, The Metro, IGN and The Gamer. 170+ creator channels covered the game organically. A standout activation: 40+ media and creators played the game at Peaky Blinders: The Rise, the real London venue built from the show's actual TV sets.",
+      "row": 138
+    },
+    {
+      "page": "CS: Wo Long: Fallen Dynasty",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Koei Tecmo needed media outreach across UK, GSA, Eastern Europe, Middle East and ANZ for Team Ninja's Wo Long: Fallen Dynasty. Renaissance ran that outreach, working with a German partner agency for regional coverage from announcement through launch.",
+      "row": 139
+    },
+    {
+      "page": "CS: Wo Long: Fallen Dynasty",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "3,094 articles, 10.5bn UVPM, 239 reviews to date. Creator campaign: 393 creators at launch, 14.4m+ views, growing to 18.9m+ total views and 1,240 pieces of content across 261 Twitch and 132 YouTube channels.",
+      "row": 140
+    },
+    {
+      "page": "CS: Inkulinati",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Daedalic needed Inkulinati's Early Access launch to stand out on the strength of its distinctive mechanics and art style - the way Obsidian's Pentiment had done for a similarly styled game. Renaissance built the Q1 2023 launch campaign around that comparison.",
+      "row": 141
+    },
+    {
+      "page": "CS: Inkulinati",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "31 reviews live day one across UK/AU/IT, 176m UVPM; 275 pieces of coverage overall, 1.6bn UVPM. Standouts: PC Gamer, RockPaperShotgun, a Eurogamer Recommended award, plus Financial Times and Forbes. Creator campaign: 29 curated creators, 36 pieces of content, 500,000+ views, including Skill-up and Mad Morph.",
+      "row": 142
+    },
+    {
+      "page": "CS: Metal Hellsinger",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Funcom needed sustained, ongoing media outreach for Metal Hellsinger - not just a launch spike - working through a network of European partner agencies. Renaissance has run that outreach continuously from mid-2022 through launch and beyond, including delivering the first-ever free Heavy Metal concert in Gamescom's history alongside media appointments with the developers and music talent.",
+      "row": 143
+    },
+    {
+      "page": "CS: Metal Hellsinger",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "The Gamescom concert and media programme drove 200+ organic articles, 698m potential audience. Full campaign to date: 1,487 articles, 13.3bn UVPM, 206 reviews.",
+      "row": 144
+    },
+    {
+      "page": "CS: Hubris",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Cyborn needed its visually and narratively ambitious VR title Hubris to reach media at scale during a launch window dense with Gamescom 2022 activity. Renaissance served as global lead agency, securing 39 media appointments across three days at the show.",
+      "row": 145
+    },
+    {
+      "page": "CS: Hubris",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "400 articles including IGN, Forbes, TheGamer, Eurogamer and NME, reaching an estimated 1.2bn monthly audience. Creator campaign: ~200 channels, 1m+ views from a ~6m subscriber base.",
+      "row": 146
+    },
+    {
+      "page": "CS: Arcade Paradise",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Wired Productions needed a full launch campaign for Arcade Paradise from April 2022 onward. Renaissance delivered it end to end: an in-person launch event, a Gamescom 2022 presence, and 157 reviews averaging over 77% on Metacritic.",
+      "row": 147
+    },
+    {
+      "page": "CS: Arcade Paradise",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "1,100+ articles, 11.6bn combined UVPM reach across the campaign. In-house creator team secured 763 engagements across Twitch and YouTube, 25.7m total organic views.",
+      "row": 148
+    },
+    {
+      "page": "CS: The Ascent",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Curve Digital needed Neon Giant's debut game to launch at a scale the studio had never attempted - the campaign went on to win Best Campaign of the Year at the MCV/Develop Awards 2022. Renaissance was the sole orchestrator of the biggest global PR, Community and Content Creator campaign in Curve Digital's history.",
+      "row": 149
+    },
+    {
+      "page": "CS: The Ascent",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "2,400+ articles ahead of launch (42 Tier 1 previews, one IGN developer-commentary exclusive), building to launch week: 500+ articles, 4.1bn reach, 828.6m estimated reads - a 7.4% share of voice across 8,000+ monitored publications, with 90% of global Tier 1 outlets covering the game on day one. Backed by an Xbox showcase reveal, an IGN First exclusive, and an Edge Magazine cover story. Content creators: 1,000+ pieces of content in under two weeks, 15m+ VOD views, 57,700 hours broadcast.",
+      "row": 150
+    },
+    {
+      "page": "CS: The Outer Worlds",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Private Division needed The Outer Worlds' UK campaign to convert IGN's 'Best RPG of the Year' momentum into mainstream visibility. Renaissance delivered that: multiple Guardian Culture front pages at both preview and review stage, plus an EMEA preview event for 40 top-tier media and content creators.",
+      "row": 151
+    },
+    {
+      "page": "CS: The Outer Worlds",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "Metacritic 86, 60+ UK reviews. Ranked 14th highest PS4 game of 2019 and 9th on Xbox One (Source: Metacritic); in October 2019, 4th most-covered game worldwide and 3rd most-viewed on Twitch (source: fancensus.com).",
+      "row": 152
+    },
+    {
+      "page": "CS: Autonauts",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Curve Digital needed a genuinely unusual premise - a colonisation-and-coding game - to find its audience in a short window (July to October 2019 announcement-to-launch). Renaissance was the lead PR agency, targeting specialist and mainstream media with a laser focus rather than a broad blast.",
+      "row": 153
+    },
+    {
+      "page": "CS: Autonauts",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "Cover feature in Wireframe Magazine, a lead review in The Guardian's G2 supplement, plus Eurogamer, Polygon and Rock Paper Shotgun coverage. 300+ articles, 50+ reviews, Metacritic 80. Creator campaign (100% organic): 36,666,410 YouTube views from 100+ creators, 203,605 hours watched on Twitch across 782 broadcasters.",
+      "row": 154
+    },
+    {
+      "page": "CS: Autonauts",
+      "section": "Client Quote",
+      "block": "Paragraph",
+      "order": 3,
+      "rewrite": "\"Renaissance provide fantastic bespoke PR plans suiting the individual needs of the product and provide a unique care unlike any other.\" - Michael Fisher, Product Manager, Curve Digital",
+      "row": 155
+    },
+    {
+      "page": "CS: Baldur's Gate (Enhanced Edition)",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Skybound and Beamdog needed Baldur's Gate: Enhanced Edition's EMEA console return to land with the weight the franchise deserves. Renaissance delivered 100+ EMEA reviews and coverage from TechRadar, Nintendo Life, Vandal, a studio profile in EDGE, and features across all Official Magazines.",
+      "row": 156
+    },
+    {
+      "page": "CS: The Walking Dead",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Skybound needed an EMEA strategy plus UK execution for the critically acclaimed The Walking Dead. Renaissance delivered 35+ reviews across gaming and mainstream UK press, and 200 EMEA articles versus 97 in the US region.",
+      "row": 157
+    },
+    {
+      "page": "CS: The Walking Dead",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "Secured a front cover on EDGE, which named The Walking Dead one of the biggest games of the decade - an honour LADBIBLE also gave the series.",
+      "row": 158
+    },
+    {
+      "page": "CS: Felix the Reaper",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Daedalic needed its distinctive indie title Felix the Reaper to reach beyond games media into mainstream pop culture. Renaissance secured a Wireframe front cover and a special mainstream feature in The Face (July 2019) on death and videogames.",
+      "row": 159
+    },
+    {
+      "page": "CS: Ancestors: The Humankind Odyssey",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Private Division needed Ancestors: The Humankind Odyssey - from Assassin's Creed creator Patrice Desilets - to stand out in the UK market. Renaissance secured a Wireframe front cover.",
+      "row": 160
+    },
+    {
+      "page": "CS: Ancestors: The Humankind Odyssey",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "UK ranked 3rd worldwide for organic influencer coverage (after the US and Brazil), with a New Scientist feature and interview, Guardian previews, and coverage across UK mainstream and specialist press.",
+      "row": 161
+    },
+    {
+      "page": "CS: Kerbal Space Program 2",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Private Division needed Kerbal Space Program 2's Gamescom announcement to make a real splash with PC's core audience. Renaissance secured the PC Gamer front page for the reveal.",
+      "row": 162
+    },
+    {
+      "page": "CS: Pacer",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "R8 Games needed one worldwide campaign for anti-gravity racer PACER, coordinated across a network of agencies in Germany, France and the US, with Renaissance executing the UK campaign directly. Results included homepage placements on The Sun and Telegraph, 100+ Gamescom meetings, and coverage on Jeux Video and Red Bull.",
+      "row": 163
+    },
+    {
+      "page": "CS: Beyond a Steel Sky",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Revolution Software needed Beyond a Steel Sky - the sequel to its award-winning Beneath a Steel Sky - to launch at a genuinely worldwide scale. Renaissance ran that launch.",
+      "row": 164
+    },
+    {
+      "page": "CS: Beyond a Steel Sky",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "73 Gamescom bookings, 280+ pieces of coverage from the reveal. A worldwide exclusive with IGN, localised into 25 languages across 114 countries, plus 2 front covers.",
+      "row": 165
+    },
+    {
+      "page": "CS: Disintegration",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Private Division needed Disintegration - the new game from Halo/Master Chief creator Marcus Lehto - to launch its worldwide announcement with real editorial weight. Renaissance secured a worldwide exclusive reveal, including 18 pages of dedicated coverage.",
+      "row": 166
+    },
+    {
+      "page": "CS: Yooka-Laylee",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Team17 and Playtonic needed Yooka-Laylee - the spiritual successor to Banjo-Kazooie - to launch at a scale matching its Kickstarter hype. Renaissance ran the worldwide launch, making it the first indie game ever to land the Official PlayStation Magazine front cover, twice.",
+      "row": 167
+    },
+    {
+      "page": "CS: Yooka-Laylee",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "Ranked in the Top 50 worldwide games-coverage list in 2017, independently audited by Fancensus.com.",
+      "row": 168
+    },
+    {
+      "page": "CS: Overcooked",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Team17 needed multi-BAFTA-winner Overcooked's global campaign to land AAA-level coverage despite its indie scale. Renaissance delivered that: a Metro Newspaper feature, global media and influencer praise (including organic coverage from PewDiePie), and a PlayStation best-PS4-game listing.",
+      "row": 169
+    },
+    {
+      "page": "CS: Overcooked",
+      "section": "Results",
+      "block": "Paragraph",
+      "order": 2,
+      "rewrite": "Renaissance led the global strategy and UK execution behind this result, across the 2016-17 campaign period.",
+      "row": 170
+    },
+    {
+      "page": "CS: Forgotton Anne",
+      "section": "Intro",
+      "block": "Paragraph",
+      "order": 1,
+      "rewrite": "Square Enix Collective needed Forgotton Anne to launch with both critical and mainstream weight. Renaissance delivered a worldwide reveal with Eurogamer at EGX 2017, an MYM front cover, and a soundtrack feature with Official PlayStation Magazine - contributing to it becoming the 11th highest-scoring Xbox game on Metacritic in 2018 (5th within its launch window) and a Top 21 Xbox game overall.",
+      "row": 171
+    }
+  ],
+  "sha256": "800360ce77e3a0e96ee7967ff2af22365207e537229b5aa408121f146d7b3c0f"
+}

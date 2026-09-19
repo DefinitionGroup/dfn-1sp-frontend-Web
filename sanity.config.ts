@@ -312,7 +312,7 @@ export default defineConfig({
           : [...prev, revalidateAction]
       }
 
-      if (schemaType === 'page' || schemaType === 'menu' || schemaType === 'siteSettings' || schemaType === 'oneSpComponentGroup' || schemaType === 'msmUnit' || schemaType === 'renaissanceSharedPortraits' || schemaType === 'renaissanceSharedAwards') {
+      if (schemaType === 'page' || schemaType === 'menu' || schemaType === 'siteSettings' || schemaType === 'oneSpComponentGroup' || schemaType === 'msmUnit' || schemaType === 'renaissanceSharedPortraits' || schemaType === 'renaissanceSharedAwards' || schemaType === 'renaissanceClientCollection') {
         return [...prev, revalidateAction]
       }
 

@@ -8,6 +8,7 @@ export default defineType({
   type: "document",
   icon: Gear,
   fields: [
+    defineField({name: "renaissanceEnquiryEmail", title: "Enquiry email", type: "string", description: "Temporary destination used by the email enquiry action. This opens the visitor’s email app; it does not send mail on the server.", hidden: ({document}) => document?.channel !== "renaissanceWeb", validation: r => r.email()}),
     defineField({
       name: "channel",
       title: "Channel",

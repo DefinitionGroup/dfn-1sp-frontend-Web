@@ -1,3 +1,4 @@
+import { stegaClean } from "@sanity/client/stega";
 import type {
   IntroBlockTypoSophisticated,
   RenaissanceSectionRole,
@@ -11,7 +12,8 @@ export function resolveRenaissanceIntroLayout(
   override: IntroBlockTypoSophisticated["renaissanceLayout"],
   presentationRole?: RenaissanceSectionRole,
 ): RenaissanceIntroLayout {
-  if (override) return override;
+  const layout = stegaClean(override);
+  if (layout === "compact" || layout === "editorial") return layout;
 
   return presentationRole === "stories" || presentationRole === "services" || presentationRole === "people"
     ? "compact"

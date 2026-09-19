@@ -100,6 +100,9 @@ export default function RenaissanceAwardLogoWall({
           })}
         </motion.div>
       ) : null}
+      {data.description ? (
+        <p className="mx-auto mt-10 max-w-3xl text-base leading-relaxed md:text-lg">{data.description}</p>
+      ) : null}
     </div>
   );
 }

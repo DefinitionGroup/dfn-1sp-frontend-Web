@@ -1,4 +1,5 @@
 import { defineQuery } from "next-sanity";
+import { casePresentationFields, CASE_BODY_PROJECTION } from "./case-presentation";
 
 const MINIMAL_CLOUDINARY_ASSET_PROJECTION = `{
   secure_url,
@@ -82,11 +83,19 @@ const REGISTER_BLOCK_PROJECTION = `_type == 'registerBlock' => {
   }
 }`;
 
+const RENAISSANCE_PORTRAIT_FIELDS = `
+  ...,
+  portraits[!defined(person._ref) || ($channel in person->channel && person->language == $language)]{
+    ..., "name": coalesce(name, person->fullname, person->name),
+    "position": coalesce(position, person->position), "image": coalesce(image, person->image)
+  }
+`;
 const RENAISSANCE_SHARED_DOCUMENT_FIELDS = `
   _id, _type, title, channel, language,
-  channel == $channel && language == $language && $channel == "renaissanceWeb" => {content}
+  channel == $channel && language == $language && $channel == "renaissanceWeb" => {content{..., _type == 'renaissancePortraitGrid' => {${RENAISSANCE_PORTRAIT_FIELDS}}}}
 `;
 const RENAISSANCE_SHARED_CONTENT_PROJECTION = `
+  _type == 'renaissancePortraitGrid' && $channel == 'renaissanceWeb' => {${RENAISSANCE_PORTRAIT_FIELDS}},
   _type == 'renaissanceSharedContentReference' => {
     ...,
     sharedContent->{${RENAISSANCE_SHARED_DOCUMENT_FIELDS}}
@@ -101,6 +110,22 @@ const RENAISSANCE_SHARED_CONTENT_PROJECTION = `
     }
   }
 `;
+
+const CLIENT_LOGO_BLOCK_PROJECTION = `_type == 'clientLogoCarousel' => {
+  ...,
+  selectedClients[$channel in @->channel && @->language == $language]->{
+    _id, name, slug, logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
+  },
+  "autoClients": select(selectionMode == "auto" => *[_type == "client" && $channel in channel && language == $language && defined(logo)] | order(name asc){
+    _id, name, slug, logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
+  }, []),
+  "collectionClients": select($channel == "renaissanceWeb" && collection->channel == $channel && collection->language == $language => collection->items[$channel in client->channel && client->language == $language]{
+    "_id": client->_id,
+    "name": coalesce(displayName, client->name),
+    "altText": coalesce(altText, displayName, client->name),
+    "logo": coalesce(logoOverride, client->logo)${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
+  }, [])
+}`;
 
 const CAROUSEL_PROJECTION = `_type == 'carousel' => {
   ...,
@@ -268,7 +293,9 @@ export const ONE_SP_COMPONENT_GROUP_PROJECTION = `_type == 'oneSpComponentGroupR
             logo
           },
           slug
-        }
+        ,
+        ${casePresentationFields('"1spWeb"')}
+      }
       },
       _type == 'casesGalleryFiltered' => {
         ...,
@@ -278,7 +305,9 @@ export const ONE_SP_COMPONENT_GROUP_PROJECTION = `_type == 'oneSpComponentGroupR
           slug,
           description,
           "mainImageUrl": mainImage.secure_url
-        }
+        ,
+        ${casePresentationFields('"1spWeb"')}
+      }
       },
       _type == 'casesGalleryFilteredWithPagination' => {
         ...,
@@ -288,7 +317,9 @@ export const ONE_SP_COMPONENT_GROUP_PROJECTION = `_type == 'oneSpComponentGroupR
           slug,
           description,
           "mainImageUrl": mainImage.secure_url
-        }
+        ,
+        ${casePresentationFields('"1spWeb"')}
+      }
       },
       _type == 'unitLogoGrid' => {
         ...,
@@ -594,7 +625,7 @@ export const PAGE_QUERY =
     },
     _type == 'smartCarousel' => {
       ...,
-      selectedCases[$channel in @->channel]->{
+      selectedCases[$channel in @->channel && @->language == $language && @->isPublished == true]->{
         _id,
         title,
         subtitle,
@@ -608,6 +639,8 @@ export const PAGE_QUERY =
           logo
         },
         slug
+      ,
+        ${casePresentationFields()}
       }
     },
     _type == 'smartServicesCarousel' => {
@@ -623,22 +656,26 @@ export const PAGE_QUERY =
     },
     _type == 'casesGalleryFiltered' => {
       ...,
-      selectedCases[$channel in @->channel]->{
+      selectedCases[$channel in @->channel && @->language == $language && @->isPublished == true]->{
         _id,
         title,
         slug,
         description,
         "mainImageUrl": mainImage.secure_url
+      ,
+        ${casePresentationFields()}
       }
     },
     _type == 'casesGalleryFilteredWithPagination' => {
       ...,
-      selectedCases[$channel in @->channel]->{
+      selectedCases[$channel in @->channel && @->language == $language && @->isPublished == true]->{
         _id,
         title,
         slug,
         description,
         "mainImageUrl": mainImage.secure_url
+      ,
+        ${casePresentationFields()}
       }
     },
     _type == 'unitLogoGrid' => {
@@ -677,23 +714,7 @@ export const PAGE_QUERY =
         logoSignet${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
       }
     },
-    _type == 'clientLogoCarousel' => {
-      ...,
-      selectedClients[]->{
-        _id,
-        name,
-        slug,
-        logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
-      },
-      selectionMode == "auto" => {
-        "autoClients": *[_type == "client" && $channel in channel && defined(logo)] | order(name asc) {
-          _id,
-          name,
-          slug,
-          logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
-        }
-      }
-    }
+    ${CLIENT_LOGO_BLOCK_PROJECTION}
   }
 }`);
 
@@ -880,7 +901,7 @@ export const HOME_PAGE_QUERY =
     },
     _type == 'smartCarousel' => {
       ...,
-      selectedCases[$channel in @->channel]->{
+      selectedCases[$channel in @->channel && @->language == $language && @->isPublished == true]->{
         _id,
         title,
         subtitle,
@@ -894,6 +915,8 @@ export const HOME_PAGE_QUERY =
           logo
         },
         slug
+      ,
+        ${casePresentationFields()}
       }
     },
     _type == 'smartServicesCarousel' => {
@@ -909,22 +932,26 @@ export const HOME_PAGE_QUERY =
     },
     _type == 'casesGalleryFiltered' => {
       ...,
-      selectedCases[$channel in @->channel]->{
+      selectedCases[$channel in @->channel && @->language == $language && @->isPublished == true]->{
         _id,
         title,
         slug,
         description,
         "mainImageUrl": mainImage.secure_url
+      ,
+        ${casePresentationFields()}
       }
     },
     _type == 'casesGalleryFilteredWithPagination' => {
       ...,
-      selectedCases[$channel in @->channel]->{
+      selectedCases[$channel in @->channel && @->language == $language && @->isPublished == true]->{
         _id,
         title,
         slug,
         description,
         "mainImageUrl": mainImage.secure_url
+      ,
+        ${casePresentationFields()}
       }
     },
     _type == 'unitLogoGrid' => {
@@ -963,23 +990,7 @@ export const HOME_PAGE_QUERY =
         logoSignet${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
       }
     },
-    _type == 'clientLogoCarousel' => {
-      ...,
-      selectedClients[]->{
-        _id,
-        name,
-        slug,
-        logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
-      },
-      selectionMode == "auto" => {
-        "autoClients": *[_type == "client" && $channel in channel && defined(logo)] | order(name asc) {
-          _id,
-          name,
-          slug,
-          logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
-        }
-      }
-    }
+    ${CLIENT_LOGO_BLOCK_PROJECTION}
   }
 }`);
 
@@ -1002,6 +1013,7 @@ export const NAVBAR_QUERY = defineQuery(`
 export const FOOTER_QUERY = defineQuery(`
 *[_type == "menu" && menuType == "Footer" && channel == $channel && language == $language][0]{
   _id,
+  renaissanceLegalText,
   footerExternalBanner{..., cta{..., link{..., page->{slug}}}},
   imageCloud,
   addressTitle,
@@ -1073,7 +1085,8 @@ export const CASE_STUDIES_QUERY = defineQuery(`
       claim
     },
     []
-  )
+  ),
+  ${casePresentationFields()}
 }
 `);
 
@@ -1124,7 +1137,8 @@ export const CASE_STUDIES_BY_IDS_QUERY = defineQuery(`
       claim
     },
     []
-  )
+  ),
+  ${casePresentationFields()}
 }
 `);
 
@@ -1208,56 +1222,9 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
     slug,
     "logoUrl": logo.secure_url
   },
-  casesPageBuilder[]{
-    _type,
-    _key,
-    title,
-    headline,
-    description,
-    navPointName,
-    hideFromNav,
-    showGridBackground,
-    paddingY,
-    badgeText,
-    badgeSubtitle,
-    badgeNumber,
-    contentType,
-    showContent,
-    challengeDescription,
-    challengeTitle,
-    challenges,
-    services[]->{_id, name},
-    showCta,
-    ctaHeading,
-    ctaParagraph,
-    showButton,
-    ctaButton{
-      ...,
-      link{
-        ...,
-        page->{slug}
-      }
-    },
-    showSolution,
-    solutionHeadline,
-    solution,
-    backgroundColor,
-    mainHeadline,
-    subHeadline,
-    approachDetails,
-    mediaType,
-    backgroundImage,
-    backgroundVideo,
-    enableParallax,
-    backgroundOpacity,
-    metrics[]{
-      type,
-      label,
-      value,
-      suffix
-    }
-  },
-  publishedAt
+  ${CASE_BODY_PROJECTION},
+  publishedAt,
+  ${casePresentationFields()}
 }
 `);
 
@@ -1359,6 +1326,8 @@ export const MSM_UNIT_BY_SLUG_QUERY = defineQuery(`
       "logoUrl": logo.secure_url
     },
     publishedAt
+  ,
+    ${casePresentationFields('"msmWeb"')}
   }
 }
 `);
@@ -1482,7 +1451,8 @@ export const CASE_STUDIES_BY_CHANNEL_LIMIT_QUERY = defineQuery(`
     name,
     taglabel
   },
-  publishedAt
+  publishedAt,
+  ${casePresentationFields()}
 }
 `);
 
@@ -1516,7 +1486,8 @@ count(*[_type == "services" && $channel in channel && language == $language]) > 
 export const SMART_PEOPLE_QUERY = defineQuery(`
 *[
   _type == "person" && 
-  smartPeoplePromo1SP == true &&
+  ($channel != "1spWeb" || smartPeoplePromo1SP == true) &&
+  language == $language &&
   $channel in channel
 ] | order(_createdAt desc) [0...$maxItems] {
   _id,
@@ -1601,7 +1572,8 @@ export const getInteractiveCarouselQuery = (carouselField: string) => `
   mainImage,
   mainVideo,
   client->{ _id, name, logo },
-  slug
+  slug,
+  ${casePresentationFields()}
 }
 `;
 

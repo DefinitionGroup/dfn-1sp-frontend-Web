@@ -36,7 +36,7 @@ export default function CardContainerComponent({
   if (presentationRole === "services") {
     return (
       <div className="mx-auto max-w-[1680px] px-5 pb-16 sm:px-8 md:pb-24 lg:px-12">
-        <div className="grid grid-cols-1 gap-x-2 gap-y-2 sm:grid-cols-2 lg:grid-cols-3">
+        <div className={`grid grid-cols-1 gap-x-2 gap-y-2 sm:grid-cols-2 ${columnClasses[columns]}`}>
           {data.cards.map((card, index) => (
             <CardInsideComponent
               key={card._key || `${card.headline || "card"}-${index}`}

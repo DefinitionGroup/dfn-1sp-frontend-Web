@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { stegaClean } from "@sanity/client/stega";
 import { motion, useReducedMotion, type Variants } from "motion/react";
 import type { RenaissancePortraitGrid as RenaissancePortraitGridData } from "@1sp/sanity-types";
 import { resolveRenaissanceMediaItems } from "@renaissance/lib/renaissanceMediaItems";
@@ -27,7 +28,9 @@ export default function RenaissancePortraitGrid({
 }: {
   data: RenaissancePortraitGridData;
 }) {
-  const portraits = resolveRenaissanceMediaItems(data.portraits).slice(0, 5);
+  const isDirectory = stegaClean(data.displayMode) === "directory";
+  const resolved = resolveRenaissanceMediaItems(data.portraits);
+  const portraits = isDirectory ? resolved : resolved.slice(0, 5);
   const shouldReduceMotion = useReducedMotion();
 
   if (portraits.length === 0) return null;
@@ -36,7 +39,7 @@ export default function RenaissancePortraitGrid({
 
   return (
     <div
-      className="relative py-4"
+      className="relative overflow-hidden py-4"
       data-component="renaissance-portrait-grid"
     >
       <Image
@@ -49,7 +52,7 @@ export default function RenaissancePortraitGrid({
       />
 
       <motion.div
-        className="relative mx-auto grid max-w-[1680px] grid-cols-2 gap-3 px-5 sm:px-8 md:grid-cols-5 md:gap-5 lg:px-12"
+        className={`relative mx-auto grid max-w-[1680px] grid-cols-2 gap-5 px-5 sm:px-8 ${isDirectory ? "md:grid-cols-4" : "md:grid-cols-5"} md:gap-5 lg:px-12`}
         variants={gridVariants}
         initial={shouldReduceMotion ? false : "hidden"}
         whileInView={shouldReduceMotion ? undefined : "visible"}
@@ -64,19 +67,25 @@ export default function RenaissancePortraitGrid({
               key={portrait.key}
               aria-hidden={isDuplicate || undefined}
               variants={shouldReduceMotion ? undefined : portraitVariants}
-              className="relative aspect-[0.78] overflow-hidden bg-renaissance-accent"
+              className="relative overflow-hidden"
             >
+              <div className="relative aspect-[0.78] overflow-hidden bg-renaissance-accent">
               <Image
                 src={portrait.src}
                 alt={isDuplicate ? "" : portrait.name}
                 fill
-                sizes="(max-width: 767px) 50vw, 20vw"
+                sizes={isDirectory ? "(max-width: 767px) 50vw, 25vw" : "(max-width: 767px) 50vw, 20vw"}
                 unoptimized={
                   portrait.src.startsWith("https://") &&
                   !portrait.src.startsWith("https://res.cloudinary.com/")
                 }
                 className="object-cover transition-transform duration-700 ease-out hover:scale-[1.025] motion-reduce:transition-none"
               />
+              </div>
+              {isDirectory && <figcaption className="py-4 text-base font-semibold">
+                {portrait.name}
+                {portrait.position && <span className="mt-1 block text-sm font-normal">{portrait.position}</span>}
+              </figcaption>}
             </motion.figure>
           );
         })}

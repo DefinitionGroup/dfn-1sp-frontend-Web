@@ -10,10 +10,11 @@
  * - ContactPage JSON-LD + BreadcrumbList structured data
  * - Hero video poster preload for LCP optimization
  */
+import { stegaClean } from "@sanity/client/stega";
 import RenaissancePageBuilder from "@renaissance/components/RenaissancePageBuilder";
 import RenaissanceSiteWrapper from "@renaissance/components/RenaissanceSiteWrapper";
 import ContactForm from "@renaissance/components/ui/ContactForm";
-import { getAllCases, getAllServicesForChannel, getPageBySlug } from "@1sp/sanity-queries";
+import { getAllCases, getAllServicesForChannel, getPageBySlug, getRenaissanceEnquiryEmail } from "@1sp/sanity-queries";
 import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@renaissance/lib/hero-utils";
@@ -122,9 +123,13 @@ export default async function ContactPage({
   // Uses cached fetch from centralized data layer
   const sanityPage = await getPageBySlug("contact", CHANNEL, language);
   const page = sanityPage || RENAISSANCE_CONTACT_FALLBACK;
+  const enquiryEmail = await getRenaissanceEnquiryEmail(language) || "hello@renaissancepr.biz";
 
   const navbarVariant = page?.navbarVariant || "light";
   const contentBlocks = page.content as any[] | undefined;
+  const registrationIndex = contentBlocks?.findIndex(block => stegaClean(block.anchorId) === "registration") ?? -1;
+  const beforeForm = registrationIndex >= 0 ? contentBlocks?.slice(0, registrationIndex) : contentBlocks;
+  const afterForm = registrationIndex >= 0 ? contentBlocks?.slice(registrationIndex) : [];
   const needsAllCases = hasCaseListingBlocks(contentBlocks);
   const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
 
@@ -198,17 +203,18 @@ export default async function ContactPage({
         <div className="min-h-screen px-1 md:px-2">
           {contentBlocks?.length ? (
             <RenaissancePageBuilder
-              content={contentBlocks}
+              content={beforeForm || []}
               language={language}
               channel={CHANNEL}
-              deferAfter={2}
             />
           ) : null}
           <ContactForm
             language={language}
             channel={CHANNEL}
             settings={page.contactForm}
+            enquiryEmail={enquiryEmail}
           />
+          {afterForm?.length ? <RenaissancePageBuilder content={afterForm} language={language} channel={CHANNEL} /> : null}
         </div>
       </div>
     </RenaissanceSiteWrapper>

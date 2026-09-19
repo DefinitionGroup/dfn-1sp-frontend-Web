@@ -505,7 +505,7 @@ export function PageBuilder({
           case "smartPeople":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <SmartPeople key={key} {...(block as any)} channel={channel} />
+                <SmartPeople key={key} {...(block as any)} channel={channel} language={language} />
               </ErrorBoundary>
             );
           case "smartUnitsGallery":

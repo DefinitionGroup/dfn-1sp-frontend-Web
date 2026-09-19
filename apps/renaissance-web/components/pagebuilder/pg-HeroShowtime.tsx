@@ -1,5 +1,7 @@
 "use client";
 
+import { hasVisibleText } from "@1sp/utils/text-content";
+import { stegaClean } from "next-sanity";
 import React from "react";
 import Image from "next/image";
 import type { HeroShowtime as HeroShowtimeType } from "@1sp/sanity-types";
@@ -54,14 +56,14 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
   const shouldUseVideo = Boolean((useVideo || backgroundImageIsVideo) && videoUrl);
   const logoImageUrl = resolveImageUrl(logoImage, { width: 1200 });
   const logoAlt = logoImage?.alt?.trim() || "Renaissance";
-  const HeadingTag = headingTag === "h1" ? "h1" : "h2";
+  const HeadingTag = stegaClean(headingTag) === "h1" ? "h1" : "h2";
   const ctaButtons = (Array.isArray(additionalContent) ? additionalContent : [])
     .map((cta) => ctaToButtonProps(cta))
     .filter(Boolean) as Array<NonNullable<ReturnType<typeof ctaToButtonProps>>>;
 
   // Generate section ID from heading or use a default
   const sectionId = heading
-    ? heading
+    ? stegaClean(heading)
       .replace(/[^a-zA-Z0-9\s]/g, "")
       .replace(/\s+/g, "-")
       .toLowerCase()
@@ -131,7 +133,7 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
             ) : null}
 
             <div className="flex flex-col items-start md:col-span-4 md:pb-1">
-              {subheading ? (
+              {hasVisibleText(subheading) ? (
                 <p className="text-balance text-xl font-semibold leading-[1.12] text-white sm:text-2xl">
                   {subheading}
                 </p>

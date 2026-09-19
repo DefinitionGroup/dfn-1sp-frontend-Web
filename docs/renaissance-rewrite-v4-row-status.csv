@@ -1,0 +1,171 @@
+Source cell,Page,Section,Role,Status,CMS destination
+Rewrite Comparison!F2,Home,Meta,Meta Title,published,page-renaissance-home-en.metadata.title
+Rewrite Comparison!F3,Home,Meta,Meta Description,published,page-renaissance-home-en.metadata.description
+Rewrite Comparison!F4,Home,Hero,H1,published,page-renaissance-home-en.content[renaissance-home-hero].heading
+Rewrite Comparison!F5,Home,How can we help your business?,H2,published,page-renaissance-home-en.content[renaissance-stories-intro].header.mainHeadline
+Rewrite Comparison!F6,Home,How can we help your business?,Paragraph,published,page-renaissance-home-en.content[renaissance-stories-intro].description
+Rewrite Comparison!F7,Home,Core Services,H2,published,page-renaissance-home-en.content[renaissance-services-intro].header.mainHeadline
+Rewrite Comparison!F8,Home,Core Services,List Item,published,page-renaissance-home-en.content[renaissance-services].cards[rpr-v4-8].headline + text (split at dash)
+Rewrite Comparison!F9,Home,Core Services,List Item,published,page-renaissance-home-en.content[renaissance-services].cards[rpr-v4-9].headline + text (split at dash)
+Rewrite Comparison!F10,Home,Core Services,List Item,published,page-renaissance-home-en.content[renaissance-services].cards[rpr-v4-10].headline + text (split at dash)
+Rewrite Comparison!F11,Home,Core Services,List Item,published,page-renaissance-home-en.content[renaissance-services].cards[rpr-v4-11].headline + text (split at dash)
+Rewrite Comparison!F12,Home,Awards,Paragraph,published,renaissance-shared-awards-en.content.description
+Rewrite Comparison!F13,Home,Register with us,H2,published,page-renaissance-home-en.content[renaissance-register].headline
+Rewrite Comparison!F14,Home,Register with us,Paragraph,published,page-renaissance-home-en.content[renaissance-register].description
+Rewrite Comparison!F15,Home,Footer,Paragraph,published,menu-renaissance-footer-en.renaissanceLegalText
+Rewrite Comparison!F16,Services,Hero,H1,published,page-renaissance-services-en.content[rpr-v4-services-hero].heading
+Rewrite Comparison!F17,Services,Hero,Paragraph,published,page-renaissance-services-en.content[rpr-v4-services-hero].paragraphs[0]
+Rewrite Comparison!F18,Services,Core Services,Paragraph,published,page-renaissance-services-en.content[rpr-v4-18].title + content (split at colon)
+Rewrite Comparison!F19,Services,Core Services,Paragraph,published,page-renaissance-services-en.content[rpr-v4-19].title + content (split at colon)
+Rewrite Comparison!F20,Services,Core Services,Paragraph,published,page-renaissance-services-en.content[rpr-v4-20].title + content (split at colon)
+Rewrite Comparison!F21,Services,Core Services,Paragraph,published,page-renaissance-services-en.content[rpr-v4-21].title + content (split at colon)
+Rewrite Comparison!F22,Services,Other Services,H2,published,page-renaissance-services-en.content[rpr-v4-23].title
+Rewrite Comparison!F23,Services,Other Services,List Item,published,page-renaissance-services-en.content[rpr-v4-23].content
+Rewrite Comparison!F24,Services,Other Services,List Item,published,page-renaissance-services-en.content[rpr-v4-24].content
+Rewrite Comparison!F25,About,Hero,H1,published,page-renaissance-about-us-en.content[rpr-v4-about-hero].heading + homepage People headline
+Rewrite Comparison!F26,About,Hero,Paragraph,published,page-renaissance-about-us-en.content[rpr-v4-about-hero].paragraphs[0] + homepage People description
+Rewrite Comparison!F27,About,About the Founder,Paragraph,excluded editorial instruction,Duplicate founder biography omitted; instruction is not public copy
+Rewrite Comparison!F28,About,So why choose Renaissance?,Paragraph,published,page-renaissance-about-us-en.content[rpr-v4-28].content
+Rewrite Comparison!F29,Clients,Hero,H1,published,page-renaissance-clients-en.content[rpr-v4-clients-hero].heading
+Rewrite Comparison!F30,Clients,Hero,Paragraph,published,page-renaissance-clients-en.content[rpr-v4-clients-hero].paragraphs[0]
+Rewrite Comparison!F31,Contact,Hero,H1,published,page-renaissance-contact-en.content[rpr-v4-contact-intro].header.mainHeadline
+Rewrite Comparison!F32,Contact,Hero,Paragraph,published,page-renaissance-contact-en.content[rpr-v4-contact-intro].description
+Rewrite Comparison!F33,Contact,Contact Information,Paragraph,published,page-renaissance-contact-en.content[rpr-v4-33].content
+Rewrite Comparison!F34,Register,Hero,H1,published,page-renaissance-contact-en.content[rpr-v4-registration].title (H2)
+Rewrite Comparison!F35,Register,Content Creator,Paragraph,published,page-renaissance-contact-en.content[rpr-v4-registration].content[rpr-v4-35]
+Rewrite Comparison!F36,Register,Media,Paragraph,published,page-renaissance-contact-en.content[rpr-v4-registration].content[rpr-v4-36]
+Rewrite Comparison!F37,Case Studies (index),Hero,H1,published,page-renaissance-cases-en.content[rpr-v4-cases-hero].heading
+Rewrite Comparison!F38,Case Studies (index),Hero,Paragraph,published,page-renaissance-cases-en.content[rpr-v4-cases-hero].paragraphs[0]
+Rewrite Comparison!F39,CS: Guns Of Eschaton,Intro,H2,published,case-renaissance-guns-of-eschaton-en.casesPageBuilder (CS: Guns Of Eschaton)
+Rewrite Comparison!F40,CS: Guns Of Eschaton,Intro,Paragraph,published,case-renaissance-guns-of-eschaton-en.casesPageBuilder (CS: Guns Of Eschaton)
+Rewrite Comparison!F41,CS: Guns Of Eschaton,Results,Paragraph,published; structured Results mapping,"case-renaissance-guns-of-eschaton-en.casesPageBuilder[rpr-v4-41, rpr-v4-41-2, rpr-v4-41-3] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F42,CS: Dave The Diver In The Jungle DLC,Intro,H2,published,case-renaissance-dave-the-diver-in-the-jungle-dlc-en.casesPageBuilder (CS: Dave The Diver In The Jungle DLC)
+Rewrite Comparison!F43,CS: Dave The Diver In The Jungle DLC,Intro,Paragraph,published,case-renaissance-dave-the-diver-in-the-jungle-dlc-en.casesPageBuilder (CS: Dave The Diver In The Jungle DLC)
+Rewrite Comparison!F44,CS: Dave The Diver In The Jungle DLC,Results,Paragraph,published; structured Results mapping,"case-renaissance-dave-the-diver-in-the-jungle-dlc-en.casesPageBuilder[rpr-v4-44, rpr-v4-44-2, rpr-v4-44-3] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F45,CS: Wax Heads,Intro,H2,published,case-renaissance-wax-heads-en.casesPageBuilder (CS: Wax Heads)
+Rewrite Comparison!F46,CS: Wax Heads,Intro,Paragraph,published,case-renaissance-wax-heads-en.casesPageBuilder (CS: Wax Heads)
+Rewrite Comparison!F47,CS: Wax Heads,Results,Paragraph,published; structured Results mapping,"case-renaissance-wax-heads-en.casesPageBuilder[rpr-v4-47, rpr-v4-47-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F48,CS: Poppy Playtime: Chapter 5,Intro,H2,published,case-renaissance-poppy-playtime-chapter-5-en.casesPageBuilder (CS: Poppy Playtime: Chapter 5)
+Rewrite Comparison!F49,CS: Poppy Playtime: Chapter 5,Intro,Paragraph,published,case-renaissance-poppy-playtime-chapter-5-en.casesPageBuilder (CS: Poppy Playtime: Chapter 5)
+Rewrite Comparison!F50,CS: Poppy Playtime: Chapter 5,Results,Paragraph,published; structured Results mapping,"case-renaissance-poppy-playtime-chapter-5-en.casesPageBuilder[rpr-v4-50, rpr-v4-50-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F51,CS: Starsand Island,Intro,H2,published,case-renaissance-starsand-island-en.casesPageBuilder (CS: Starsand Island)
+Rewrite Comparison!F52,CS: Starsand Island,Intro,Paragraph,published,case-renaissance-starsand-island-en.casesPageBuilder (CS: Starsand Island)
+Rewrite Comparison!F53,CS: Starsand Island,Results,Paragraph,published; structured Results mapping,"case-renaissance-starsand-island-en.casesPageBuilder[rpr-v4-53, rpr-v4-53-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F54,"CS: Romeo Is A Dead Man (2026, full launch)",Intro,H2,published,"case-renaissance-romeo-is-a-dead-man-2026-full-launch-en.casesPageBuilder (CS: Romeo Is A Dead Man (2026, full launch))"
+Rewrite Comparison!F55,"CS: Romeo Is A Dead Man (2026, full launch)",Intro,Paragraph,published,"case-renaissance-romeo-is-a-dead-man-2026-full-launch-en.casesPageBuilder (CS: Romeo Is A Dead Man (2026, full launch))"
+Rewrite Comparison!F56,"CS: Romeo Is A Dead Man (2026, full launch)",Results,Paragraph,published; structured Results mapping,"case-renaissance-romeo-is-a-dead-man-2026-full-launch-en.casesPageBuilder[rpr-v4-56, rpr-v4-56-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F57,CS: Genigods Nezha,Intro,Paragraph,published,case-renaissance-genigods-nezha-en.casesPageBuilder (CS: Genigods Nezha)
+Rewrite Comparison!F58,CS: Genigods Nezha,Results,Paragraph,published; structured Results mapping,"case-renaissance-genigods-nezha-en.casesPageBuilder[rpr-v4-58, rpr-v4-58-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F59,CS: The God Slayer,Intro,Paragraph,published,case-renaissance-the-god-slayer-en.casesPageBuilder (CS: The God Slayer)
+Rewrite Comparison!F60,CS: The God Slayer,Results,Paragraph,published; structured Results mapping,"case-renaissance-the-god-slayer-en.casesPageBuilder[rpr-v4-60, rpr-v4-60-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F61,CS: Yooka-Replaylee,Intro,Paragraph,published,case-renaissance-yooka-replaylee-en.casesPageBuilder (CS: Yooka-Replaylee)
+Rewrite Comparison!F62,CS: Yooka-Replaylee,Results,Paragraph,published; structured Results mapping,"case-renaissance-yooka-replaylee-en.casesPageBuilder[rpr-v4-62, rpr-v4-62-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F63,CS: Ratatan,Intro,Paragraph,published,case-renaissance-ratatan-en.casesPageBuilder (CS: Ratatan)
+Rewrite Comparison!F64,CS: Ratatan,Results,Paragraph,published; structured Results mapping,"case-renaissance-ratatan-en.casesPageBuilder[rpr-v4-64, rpr-v4-64-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F65,CS: Formula Legends,Intro,Paragraph,published,case-renaissance-formula-legends-en.casesPageBuilder (CS: Formula Legends)
+Rewrite Comparison!F66,CS: Formula Legends,Results,Paragraph,published; structured Results mapping,"case-renaissance-formula-legends-en.casesPageBuilder[rpr-v4-66, rpr-v4-66-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F67,CS: Gamescom 2025,Intro,Paragraph,published,case-renaissance-gamescom-2025-en.casesPageBuilder (CS: Gamescom 2025)
+Rewrite Comparison!F68,CS: Gamescom 2025,Results,Paragraph,published; structured Results mapping,"case-renaissance-gamescom-2025-en.casesPageBuilder[rpr-v4-68, rpr-v4-68-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F69,"CS: Romeo Is A Dead Man (2025, Gamescom activation)",Intro,Paragraph,published,"case-renaissance-romeo-is-a-dead-man-2025-gamescom-activation-en.casesPageBuilder (CS: Romeo Is A Dead Man (2025, Gamescom activation))"
+Rewrite Comparison!F70,"CS: Romeo Is A Dead Man (2025, Gamescom activation)",Results,Paragraph,published; structured Results mapping,"case-renaissance-romeo-is-a-dead-man-2025-gamescom-activation-en.casesPageBuilder[rpr-v4-70] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F71,CS: Wuchang: Fallen Feathers,Intro,Paragraph,published,case-renaissance-wuchang-fallen-feathers-en.casesPageBuilder (CS: Wuchang: Fallen Feathers)
+Rewrite Comparison!F72,CS: Wuchang: Fallen Feathers,Results,Paragraph,published; structured Results mapping,"case-renaissance-wuchang-fallen-feathers-en.casesPageBuilder[rpr-v4-72] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F73,CS: Dune: Awakening,Intro,Paragraph,published,case-renaissance-dune-awakening-en.casesPageBuilder (CS: Dune: Awakening)
+Rewrite Comparison!F74,CS: Dune: Awakening,Results,Paragraph,published; structured Results mapping,"case-renaissance-dune-awakening-en.casesPageBuilder[rpr-v4-74, rpr-v4-74-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F75,CS: Pipistrello and the Cursed Yoyo,Intro,Paragraph,published,case-renaissance-pipistrello-and-the-cursed-yoyo-en.casesPageBuilder (CS: Pipistrello and the Cursed Yoyo)
+Rewrite Comparison!F76,CS: Pipistrello and the Cursed Yoyo,Results,Paragraph,published; structured Results mapping,"case-renaissance-pipistrello-and-the-cursed-yoyo-en.casesPageBuilder[rpr-v4-76, rpr-v4-76-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F77,CS: Xbox Retro Classics,Intro,Paragraph,published,case-renaissance-xbox-retro-classics-en.casesPageBuilder (CS: Xbox Retro Classics)
+Rewrite Comparison!F78,CS: Xbox Retro Classics,Results,Paragraph,published; structured Results mapping,"case-renaissance-xbox-retro-classics-en.casesPageBuilder[rpr-v4-78, rpr-v4-78-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F79,CS: S.T.A.L.K.E.R. Legends Of The Zone Trilogy,Intro,Paragraph,published,case-renaissance-s-t-a-l-k-e-r-legends-of-the-zone-trilogy-en.casesPageBuilder (CS: S.T.A.L.K.E.R. Legends Of The Zone Trilogy)
+Rewrite Comparison!F80,CS: S.T.A.L.K.E.R. Legends Of The Zone Trilogy,Results,Paragraph,published; structured Results mapping,"case-renaissance-s-t-a-l-k-e-r-legends-of-the-zone-trilogy-en.casesPageBuilder[rpr-v4-80, rpr-v4-80-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F81,CS: The Precinct,Intro,Paragraph,published,case-renaissance-the-precinct-en.casesPageBuilder (CS: The Precinct)
+Rewrite Comparison!F82,CS: The Precinct,Results,Paragraph,published; structured Results mapping,"case-renaissance-the-precinct-en.casesPageBuilder[rpr-v4-82, rpr-v4-82-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F83,CS: Yasha: Legends Of The Demon Blade,Intro,Paragraph,published,case-renaissance-yasha-legends-of-the-demon-blade-en.casesPageBuilder (CS: Yasha: Legends Of The Demon Blade)
+Rewrite Comparison!F84,CS: Yasha: Legends Of The Demon Blade,Results,Paragraph,published; structured Results mapping,"case-renaissance-yasha-legends-of-the-demon-blade-en.casesPageBuilder[rpr-v4-84, rpr-v4-84-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F85,CS: Revenge Of The Savage Planet,Intro,Paragraph,published,case-renaissance-revenge-of-the-savage-planet-en.casesPageBuilder (CS: Revenge Of The Savage Planet)
+Rewrite Comparison!F86,CS: Revenge Of The Savage Planet,Results,Paragraph,published; structured Results mapping,"case-renaissance-revenge-of-the-savage-planet-en.casesPageBuilder[rpr-v4-86, rpr-v4-86-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F87,CS: Hordes Of Hunger,Intro,Paragraph,published,case-renaissance-hordes-of-hunger-en.casesPageBuilder (CS: Hordes Of Hunger)
+Rewrite Comparison!F88,CS: Hordes Of Hunger,Results,Paragraph,published; structured Results mapping,"case-renaissance-hordes-of-hunger-en.casesPageBuilder[rpr-v4-88, rpr-v4-88-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F89,CS: Infinity Nikki,Intro,Paragraph,published,case-renaissance-infinity-nikki-en.casesPageBuilder (CS: Infinity Nikki)
+Rewrite Comparison!F90,CS: Infinity Nikki,Results,Paragraph,published; structured Results mapping,"case-renaissance-infinity-nikki-en.casesPageBuilder[rpr-v4-90, rpr-v4-90-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F91,CS: S.T.A.L.K.E.R. 2: Heart of Chornobyl,Intro,Paragraph,published,9d295e99-7801-42b8-96e7-a15afb267e72.siteContent[renaissanceWeb].casesPageBuilder (CS: S.T.A.L.K.E.R. 2: Heart of Chornobyl)
+Rewrite Comparison!F92,CS: S.T.A.L.K.E.R. 2: Heart of Chornobyl,Results,Paragraph,published; structured Results mapping,"9d295e99-7801-42b8-96e7-a15afb267e72.siteContent[channel=renaissanceWeb].casesPageBuilder[rpr-v4-92, rpr-v4-92-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F93,CS: Broken Sword Shadow Of Templars Reforged,Intro,Paragraph,published,case-renaissance-broken-sword-shadow-of-templars-reforged-en.casesPageBuilder (CS: Broken Sword Shadow Of Templars Reforged)
+Rewrite Comparison!F94,CS: Broken Sword Shadow Of Templars Reforged,Results,Paragraph,published; structured Results mapping,"case-renaissance-broken-sword-shadow-of-templars-reforged-en.casesPageBuilder[rpr-v4-94, rpr-v4-94-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F95,CS: My Time At Evershine,Intro,Paragraph,published,case-renaissance-my-time-at-evershine-en.casesPageBuilder (CS: My Time At Evershine)
+Rewrite Comparison!F96,CS: My Time At Evershine,Results,Paragraph,published; structured Results mapping,"case-renaissance-my-time-at-evershine-en.casesPageBuilder[rpr-v4-96, rpr-v4-96-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F97,CS: Gamescom 2024,Intro,Paragraph,published,case-renaissance-gamescom-2024-en.casesPageBuilder (CS: Gamescom 2024)
+Rewrite Comparison!F98,CS: Gamescom 2024,Results,Paragraph,published; structured Results mapping,"case-renaissance-gamescom-2024-en.casesPageBuilder[rpr-v4-98, rpr-v4-98-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F99,CS: Delta Force,Intro,Paragraph,published,case-renaissance-delta-force-en.casesPageBuilder (CS: Delta Force)
+Rewrite Comparison!F100,CS: Delta Force,Results,Paragraph,published; structured Results mapping,"case-renaissance-delta-force-en.casesPageBuilder[rpr-v4-100, rpr-v4-100-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F101,CS: Kena Bridge Of Spirits - Xbox,Intro,Paragraph,published,case-renaissance-kena-bridge-of-spirits-xbox-en.casesPageBuilder (CS: Kena Bridge Of Spirits - Xbox)
+Rewrite Comparison!F102,CS: Kena Bridge Of Spirits - Xbox,Results,Paragraph,published; structured Results mapping,"case-renaissance-kena-bridge-of-spirits-xbox-en.casesPageBuilder[rpr-v4-102] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F103,CS: Soulmask,Intro,Paragraph,published,case-renaissance-soulmask-en.casesPageBuilder (CS: Soulmask)
+Rewrite Comparison!F104,CS: Soulmask,Results,Paragraph,published; structured Results mapping,"case-renaissance-soulmask-en.casesPageBuilder[rpr-v4-104, rpr-v4-104-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F105,CS: Capes,Intro,Paragraph,published,case-renaissance-capes-en.casesPageBuilder (CS: Capes)
+Rewrite Comparison!F106,CS: Capes,Results,Paragraph,published; structured Results mapping,"case-renaissance-capes-en.casesPageBuilder[rpr-v4-106, rpr-v4-106-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F107,CS: Pine Hearts,Intro,Paragraph,published,case-renaissance-pine-hearts-en.casesPageBuilder (CS: Pine Hearts)
+Rewrite Comparison!F108,CS: Pine Hearts,Results,Paragraph,published; structured Results mapping,"case-renaissance-pine-hearts-en.casesPageBuilder[rpr-v4-108] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F109,CS: TMNT: Wrath Of The Mutants,Intro,Paragraph,published,case-renaissance-tmnt-wrath-of-the-mutants-en.casesPageBuilder (CS: TMNT: Wrath Of The Mutants)
+Rewrite Comparison!F110,CS: TMNT: Wrath Of The Mutants,Results,Paragraph,published; structured Results mapping,"case-renaissance-tmnt-wrath-of-the-mutants-en.casesPageBuilder[rpr-v4-110, rpr-v4-110-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F111,CS: Shadow Of The Depth,Intro,Paragraph,published,case-renaissance-shadow-of-the-depth-en.casesPageBuilder (CS: Shadow Of The Depth)
+Rewrite Comparison!F112,CS: Shadow Of The Depth,Results,Paragraph,published; structured Results mapping,"case-renaissance-shadow-of-the-depth-en.casesPageBuilder[rpr-v4-112, rpr-v4-112-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F113,CS: Powerwash Simulator: Warhammer 40K,Intro,Paragraph,published,case-renaissance-powerwash-simulator-warhammer-40k-en.casesPageBuilder (CS: Powerwash Simulator: Warhammer 40K)
+Rewrite Comparison!F114,CS: Powerwash Simulator: Warhammer 40K,Results,Paragraph,published; structured Results mapping,"case-renaissance-powerwash-simulator-warhammer-40k-en.casesPageBuilder[rpr-v4-114] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F115,CS: New Cycle,Intro,Paragraph,published,case-renaissance-new-cycle-en.casesPageBuilder (CS: New Cycle)
+Rewrite Comparison!F116,CS: New Cycle,Results,Paragraph,published; structured Results mapping,"case-renaissance-new-cycle-en.casesPageBuilder[rpr-v4-116, rpr-v4-116-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F117,CS: Den Of Wolves,Intro,Paragraph,published,case-renaissance-den-of-wolves-en.casesPageBuilder (CS: Den Of Wolves)
+Rewrite Comparison!F118,CS: Den Of Wolves,Results,Paragraph,published; structured Results mapping,"case-renaissance-den-of-wolves-en.casesPageBuilder[rpr-v4-118, rpr-v4-118-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F119,CS: Exoborne,Intro,Paragraph,published,case-renaissance-exoborne-en.casesPageBuilder (CS: Exoborne)
+Rewrite Comparison!F120,CS: Exoborne,Results,Paragraph,published; structured Results mapping,"case-renaissance-exoborne-en.casesPageBuilder[rpr-v4-120] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F121,CS: My Time At Sandrock,Intro,Paragraph,published,case-renaissance-my-time-at-sandrock-en.casesPageBuilder (CS: My Time At Sandrock)
+Rewrite Comparison!F122,CS: My Time At Sandrock,Results,Paragraph,published; structured Results mapping,"case-renaissance-my-time-at-sandrock-en.casesPageBuilder[rpr-v4-122, rpr-v4-122-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F123,CS: Gamescom 2023,Intro,Paragraph,published,case-renaissance-gamescom-2023-en.casesPageBuilder (CS: Gamescom 2023)
+Rewrite Comparison!F124,CS: Gamescom 2023,Results,Paragraph,published; structured Results mapping,"case-renaissance-gamescom-2023-en.casesPageBuilder[rpr-v4-124] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F125,CS: Broken Sword (2023),Intro,Paragraph,published,case-renaissance-broken-sword-2023-en.casesPageBuilder (CS: Broken Sword (2023))
+Rewrite Comparison!F126,CS: Broken Sword (2023),Results,Paragraph,published; structured Results mapping,"case-renaissance-broken-sword-2023-en.casesPageBuilder[rpr-v4-126] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F127,CS: Synced,Intro,Paragraph,published,case-renaissance-synced-en.casesPageBuilder (CS: Synced)
+Rewrite Comparison!F128,CS: Synced,Results,Paragraph,published; structured Results mapping,"case-renaissance-synced-en.casesPageBuilder[rpr-v4-128] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F129,CS: Dark Envoy,Intro,Paragraph,published,case-renaissance-dark-envoy-en.casesPageBuilder (CS: Dark Envoy)
+Rewrite Comparison!F130,CS: Dark Envoy,Results,Paragraph,published; structured Results mapping,"case-renaissance-dark-envoy-en.casesPageBuilder[rpr-v4-130] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F131,CS: IIDEA 2023 - IVGA & First Playable,Intro,Paragraph,published,case-renaissance-iidea-2023-ivga-first-playable-en.casesPageBuilder (CS: IIDEA 2023 - IVGA & First Playable)
+Rewrite Comparison!F132,CS: IIDEA 2023 - IVGA & First Playable,Results,Paragraph,published; structured Results mapping,"case-renaissance-iidea-2023-ivga-first-playable-en.casesPageBuilder[rpr-v4-132, rpr-v4-132-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F133,CS: The Last Worker,Intro,Paragraph,published,case-renaissance-the-last-worker-en.casesPageBuilder (CS: The Last Worker)
+Rewrite Comparison!F134,CS: The Last Worker,Results,Paragraph,published; structured Results mapping,"case-renaissance-the-last-worker-en.casesPageBuilder[rpr-v4-134, rpr-v4-134-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F135,CS: Luna Abyss,Intro,Paragraph,published,case-renaissance-luna-abyss-en.casesPageBuilder (CS: Luna Abyss)
+Rewrite Comparison!F136,CS: Luna Abyss,Results,Paragraph,published; structured Results mapping,"case-renaissance-luna-abyss-en.casesPageBuilder[rpr-v4-136] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F137,CS: Peaky Blinders: The King's Ransom,Intro,Paragraph,published,case-renaissance-peaky-blinders-the-king-s-ransom-en.casesPageBuilder (CS: Peaky Blinders: The King's Ransom)
+Rewrite Comparison!F138,CS: Peaky Blinders: The King's Ransom,Results,Paragraph,published; structured Results mapping,"case-renaissance-peaky-blinders-the-king-s-ransom-en.casesPageBuilder[rpr-v4-138, rpr-v4-138-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F139,CS: Wo Long: Fallen Dynasty,Intro,Paragraph,published,case-renaissance-wo-long-fallen-dynasty-en.casesPageBuilder (CS: Wo Long: Fallen Dynasty)
+Rewrite Comparison!F140,CS: Wo Long: Fallen Dynasty,Results,Paragraph,published; structured Results mapping,"case-renaissance-wo-long-fallen-dynasty-en.casesPageBuilder[rpr-v4-140, rpr-v4-140-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F141,CS: Inkulinati,Intro,Paragraph,published,case-renaissance-inkulinati-en.casesPageBuilder (CS: Inkulinati)
+Rewrite Comparison!F142,CS: Inkulinati,Results,Paragraph,published; structured Results mapping,"case-renaissance-inkulinati-en.casesPageBuilder[rpr-v4-142, rpr-v4-142-2, rpr-v4-142-3] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F143,CS: Metal Hellsinger,Intro,Paragraph,published,case-renaissance-metal-hellsinger-en.casesPageBuilder (CS: Metal Hellsinger)
+Rewrite Comparison!F144,CS: Metal Hellsinger,Results,Paragraph,published; structured Results mapping,"case-renaissance-metal-hellsinger-en.casesPageBuilder[rpr-v4-144, rpr-v4-144-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F145,CS: Hubris,Intro,Paragraph,published,case-renaissance-hubris-en.casesPageBuilder (CS: Hubris)
+Rewrite Comparison!F146,CS: Hubris,Results,Paragraph,published; structured Results mapping,"case-renaissance-hubris-en.casesPageBuilder[rpr-v4-146, rpr-v4-146-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F147,CS: Arcade Paradise,Intro,Paragraph,published,case-renaissance-arcade-paradise-en.casesPageBuilder (CS: Arcade Paradise)
+Rewrite Comparison!F148,CS: Arcade Paradise,Results,Paragraph,published; structured Results mapping,"case-renaissance-arcade-paradise-en.casesPageBuilder[rpr-v4-148, rpr-v4-148-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F149,CS: The Ascent,Intro,Paragraph,published,case-renaissance-the-ascent-en.casesPageBuilder (CS: The Ascent)
+Rewrite Comparison!F150,CS: The Ascent,Results,Paragraph,published; structured Results mapping,"case-renaissance-the-ascent-en.casesPageBuilder[rpr-v4-150, rpr-v4-150-2, rpr-v4-150-3] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F151,CS: The Outer Worlds,Intro,Paragraph,published,case-renaissance-the-outer-worlds-en.casesPageBuilder (CS: The Outer Worlds)
+Rewrite Comparison!F152,CS: The Outer Worlds,Results,Paragraph,published; structured Results mapping,"case-renaissance-the-outer-worlds-en.casesPageBuilder[rpr-v4-152] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F153,CS: Autonauts,Intro,Paragraph,published,case-renaissance-autonauts-en.casesPageBuilder (CS: Autonauts)
+Rewrite Comparison!F154,CS: Autonauts,Results,Paragraph,published; structured Results mapping,"case-renaissance-autonauts-en.casesPageBuilder[rpr-v4-154, rpr-v4-154-2] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F155,CS: Autonauts,Client Quote,Paragraph,published,case-renaissance-autonauts-en.casesPageBuilder[rpr-v4-154-2].quote
+Rewrite Comparison!F156,CS: Baldur's Gate (Enhanced Edition),Intro,Paragraph,published,case-renaissance-baldur-s-gate-enhanced-edition-en.casesPageBuilder (CS: Baldur's Gate (Enhanced Edition))
+Rewrite Comparison!F157,CS: The Walking Dead,Intro,Paragraph,published,case-renaissance-the-walking-dead-en.casesPageBuilder (CS: The Walking Dead)
+Rewrite Comparison!F158,CS: The Walking Dead,Results,Paragraph,published; structured Results mapping,"case-renaissance-the-walking-dead-en.casesPageBuilder[rpr-v4-158] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F159,CS: Felix the Reaper,Intro,Paragraph,published,case-renaissance-felix-the-reaper-en.casesPageBuilder (CS: Felix the Reaper)
+Rewrite Comparison!F160,CS: Ancestors: The Humankind Odyssey,Intro,Paragraph,published,case-renaissance-ancestors-the-humankind-odyssey-en.casesPageBuilder (CS: Ancestors: The Humankind Odyssey)
+Rewrite Comparison!F161,CS: Ancestors: The Humankind Odyssey,Results,Paragraph,published; structured Results mapping,"case-renaissance-ancestors-the-humankind-odyssey-en.casesPageBuilder[rpr-v4-161] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F162,CS: Kerbal Space Program 2,Intro,Paragraph,published,case-renaissance-kerbal-space-program-2-en.casesPageBuilder (CS: Kerbal Space Program 2)
+Rewrite Comparison!F163,CS: Pacer,Intro,Paragraph,published,case-renaissance-pacer-en.casesPageBuilder (CS: Pacer)
+Rewrite Comparison!F164,CS: Beyond a Steel Sky,Intro,Paragraph,published,case-renaissance-beyond-a-steel-sky-en.casesPageBuilder (CS: Beyond a Steel Sky)
+Rewrite Comparison!F165,CS: Beyond a Steel Sky,Results,Paragraph,published; structured Results mapping,"case-renaissance-beyond-a-steel-sky-en.casesPageBuilder[rpr-v4-165] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F166,CS: Disintegration,Intro,Paragraph,published,case-renaissance-disintegration-en.casesPageBuilder (CS: Disintegration)
+Rewrite Comparison!F167,CS: Yooka-Laylee,Intro,Paragraph,published,case-renaissance-yooka-laylee-en.casesPageBuilder (CS: Yooka-Laylee)
+Rewrite Comparison!F168,CS: Yooka-Laylee,Results,Paragraph,published; structured Results mapping,"case-renaissance-yooka-laylee-en.casesPageBuilder[rpr-v4-168] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F169,CS: Overcooked,Intro,Paragraph,published,case-renaissance-overcooked-en.casesPageBuilder (CS: Overcooked)
+Rewrite Comparison!F170,CS: Overcooked,Results,Paragraph,published; structured Results mapping,"case-renaissance-overcooked-en.casesPageBuilder[rpr-v4-170] (metrics, context and explanatory copy; see renaissance-results-metrics-mapping.md)"
+Rewrite Comparison!F171,CS: Forgotton Anne,Intro,Paragraph,published,case-renaissance-forgotton-anne-en.casesPageBuilder (CS: Forgotton Anne)

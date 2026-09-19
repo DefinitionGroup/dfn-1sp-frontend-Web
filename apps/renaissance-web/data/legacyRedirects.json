@@ -1,0 +1,278 @@
+[
+  {
+    "source": "/about",
+    "destination": "/about-us"
+  },
+  {
+    "source": "/case-studies",
+    "destination": "/cases"
+  },
+  {
+    "source": "/register",
+    "destination": "/contact#registration"
+  },
+  {
+    "source": "/case-studies/guns-of-eschaton",
+    "destination": "/cases/guns-of-eschaton"
+  },
+  {
+    "source": "/case-studies/dave-the-diver-in-the-jungle-dlc",
+    "destination": "/cases/dave-the-diver-in-the-jungle-dlc"
+  },
+  {
+    "source": "/case-studies/wax-heads",
+    "destination": "/cases/wax-heads"
+  },
+  {
+    "source": "/case-studies/poppy-playtime-chapter-5",
+    "destination": "/cases/poppy-playtime-chapter-5"
+  },
+  {
+    "source": "/case-studies/starsand-island",
+    "destination": "/cases/starsand-island"
+  },
+  {
+    "source": "/case-studies/romeo-is-a-dead-man-1",
+    "destination": "/cases/romeo-is-a-dead-man-2026-full-launch"
+  },
+  {
+    "source": "/case-studies/genigods-nezha",
+    "destination": "/cases/genigods-nezha"
+  },
+  {
+    "source": "/case-studies/the-god-slayer",
+    "destination": "/cases/the-god-slayer"
+  },
+  {
+    "source": "/case-studies/yooka-replaylee",
+    "destination": "/cases/yooka-replaylee"
+  },
+  {
+    "source": "/case-studies/ratatan",
+    "destination": "/cases/ratatan"
+  },
+  {
+    "source": "/case-studies/formula-legends",
+    "destination": "/cases/formula-legends"
+  },
+  {
+    "source": "/case-studies/gamescom-2025",
+    "destination": "/cases/gamescom-2025"
+  },
+  {
+    "source": "/case-studies/romeo-is-a-dead-man",
+    "destination": "/cases/romeo-is-a-dead-man-2025-gamescom-activation"
+  },
+  {
+    "source": "/case-studies/wuchang-fallen-feathers",
+    "destination": "/cases/wuchang-fallen-feathers"
+  },
+  {
+    "source": "/case-studies/dune-awakening",
+    "destination": "/cases/dune-awakening"
+  },
+  {
+    "source": "/case-studies/pipistrello-and-the-cursed-yoyo",
+    "destination": "/cases/pipistrello-and-the-cursed-yoyo"
+  },
+  {
+    "source": "/case-studies/xbox-retro-classics",
+    "destination": "/cases/xbox-retro-classics"
+  },
+  {
+    "source": "/case-studies/s-t-a-l-k-e-r-legends-of-the-zone-trilogy",
+    "destination": "/cases/s-t-a-l-k-e-r-legends-of-the-zone-trilogy"
+  },
+  {
+    "source": "/case-studies/the-precinct",
+    "destination": "/cases/the-precinct"
+  },
+  {
+    "source": "/case-studies/yasha-legends-of-the-demon-blade",
+    "destination": "/cases/yasha-legends-of-the-demon-blade"
+  },
+  {
+    "source": "/case-studies/revenge-of-the-savage-planet",
+    "destination": "/cases/revenge-of-the-savage-planet"
+  },
+  {
+    "source": "/case-studies/hordes-of-hunger",
+    "destination": "/cases/hordes-of-hunger"
+  },
+  {
+    "source": "/case-studies/infinity-nikki",
+    "destination": "/cases/infinity-nikki"
+  },
+  {
+    "source": "/case-studies/s-t-a-l-k-e-r-2-heart-of-chornobyl",
+    "destination": "/cases/making-stalker-2-unmissableeverywhere-all-at-once"
+  },
+  {
+    "source": "/case-studies/broken-sword-shadow-of-the-templars-reforged",
+    "destination": "/cases/broken-sword-shadow-of-templars-reforged"
+  },
+  {
+    "source": "/case-studies/my-time-at-evershine",
+    "destination": "/cases/my-time-at-evershine"
+  },
+  {
+    "source": "/case-studies/gamescom-2024",
+    "destination": "/cases/gamescom-2024"
+  },
+  {
+    "source": "/case-studies/delta-force",
+    "destination": "/cases/delta-force"
+  },
+  {
+    "source": "/case-studies/kena-bridge-of-spirits-xbox",
+    "destination": "/cases/kena-bridge-of-spirits-xbox"
+  },
+  {
+    "source": "/case-studies/soulmask",
+    "destination": "/cases/soulmask"
+  },
+  {
+    "source": "/case-studies/capes",
+    "destination": "/cases/capes"
+  },
+  {
+    "source": "/case-studies/pine-hearts",
+    "destination": "/cases/pine-hearts"
+  },
+  {
+    "source": "/case-studies/tmnt-wrath-of-the-mutants",
+    "destination": "/cases/tmnt-wrath-of-the-mutants"
+  },
+  {
+    "source": "/case-studies/shadow-of-the-depth",
+    "destination": "/cases/shadow-of-the-depth"
+  },
+  {
+    "source": "/case-studies/powerwash-simulator-warhammer-40-000-dlc",
+    "destination": "/cases/powerwash-simulator-warhammer-40k"
+  },
+  {
+    "source": "/case-studies/new-cycle",
+    "destination": "/cases/new-cycle"
+  },
+  {
+    "source": "/case-studies/den-of-wolves",
+    "destination": "/cases/den-of-wolves"
+  },
+  {
+    "source": "/case-studies/exoborne",
+    "destination": "/cases/exoborne"
+  },
+  {
+    "source": "/case-studies/my-time-at-sandrock",
+    "destination": "/cases/my-time-at-sandrock"
+  },
+  {
+    "source": "/case-studies/gamescom-2023",
+    "destination": "/cases/gamescom-2023"
+  },
+  {
+    "source": "/case-studies/broken-sword",
+    "destination": "/cases/broken-sword-2023"
+  },
+  {
+    "source": "/case-studies/synced",
+    "destination": "/cases/synced"
+  },
+  {
+    "source": "/case-studies/dark-envoy",
+    "destination": "/cases/dark-envoy"
+  },
+  {
+    "source": "/case-studies/iidea-2023-ivga-first-playable",
+    "destination": "/cases/iidea-2023-ivga-first-playable"
+  },
+  {
+    "source": "/case-studies/the-last-worker",
+    "destination": "/cases/the-last-worker"
+  },
+  {
+    "source": "/case-studies/luna-abyss",
+    "destination": "/cases/luna-abyss"
+  },
+  {
+    "source": "/case-studies/peaky-blinders-the-kings-ransom",
+    "destination": "/cases/peaky-blinders-the-king-s-ransom"
+  },
+  {
+    "source": "/case-studies/wo-long-fallen-dynasty",
+    "destination": "/cases/wo-long-fallen-dynasty"
+  },
+  {
+    "source": "/case-studies/inkulinati",
+    "destination": "/cases/inkulinati"
+  },
+  {
+    "source": "/case-studies/metal-hellsinger",
+    "destination": "/cases/metal-hellsinger"
+  },
+  {
+    "source": "/case-studies/hubris",
+    "destination": "/cases/hubris"
+  },
+  {
+    "source": "/case-studies/arcade-paradise",
+    "destination": "/cases/arcade-paradise"
+  },
+  {
+    "source": "/case-studies/the-ascent",
+    "destination": "/cases/the-ascent"
+  },
+  {
+    "source": "/case-studies/the-outer-worlds",
+    "destination": "/cases/the-outer-worlds"
+  },
+  {
+    "source": "/case-studies/autonauts",
+    "destination": "/cases/autonauts"
+  },
+  {
+    "source": "/case-studies/baldours-gate-enhanced-edition",
+    "destination": "/cases/baldur-s-gate-enhanced-edition"
+  },
+  {
+    "source": "/case-studies/the-walking-dead",
+    "destination": "/cases/the-walking-dead"
+  },
+  {
+    "source": "/case-studies/felix-the-reaper",
+    "destination": "/cases/felix-the-reaper"
+  },
+  {
+    "source": "/case-studies/ancestors-the-humankind-odyssey",
+    "destination": "/cases/ancestors-the-humankind-odyssey"
+  },
+  {
+    "source": "/case-studies/kerbal-space-program-2",
+    "destination": "/cases/kerbal-space-program-2"
+  },
+  {
+    "source": "/case-studies/pacer",
+    "destination": "/cases/pacer"
+  },
+  {
+    "source": "/case-studies/beneath-a-steel-sky",
+    "destination": "/cases/beyond-a-steel-sky"
+  },
+  {
+    "source": "/case-studies/private-division",
+    "destination": "/cases/disintegration"
+  },
+  {
+    "source": "/case-studies/overwatch-2",
+    "destination": "/cases/yooka-laylee"
+  },
+  {
+    "source": "/case-studies/overcooked",
+    "destination": "/cases/overcooked"
+  },
+  {
+    "source": "/case-studies/forgotten-anne",
+    "destination": "/cases/forgotton-anne"
+  }
+]

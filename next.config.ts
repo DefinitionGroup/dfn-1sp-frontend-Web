@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
+import path from "node:path";
 import { getDeploymentHeaders } from "@1sp/utils/deployment-tier";
 
 const nextConfig: NextConfig = {
+  // Local Studio and site apps share localhost; preserve each other's preview cookie.
+  experimental: { multiZoneDraftMode: process.env.NODE_ENV === "development" },
+  // Keep local Studio watching inside the monorepo, not the home folder's lockfile root.
+  turbopack: { root: path.resolve(__dirname) },
   transpilePackages: [
     "@1sp/site-config",
     "@1sp/sanity-types",

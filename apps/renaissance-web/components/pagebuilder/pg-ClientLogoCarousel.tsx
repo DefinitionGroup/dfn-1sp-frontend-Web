@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import { stegaClean } from "next-sanity";
 import {
   AnimatePresence,
   motion,
@@ -56,6 +57,7 @@ type LogoEntry = {
   id: string;
   name: string;
   src: string;
+  alt?: string;
 };
 
 type LogoSlot = {
@@ -182,7 +184,7 @@ function LogoSwapGrid({
               <AnimatePresence initial={false} mode="wait">
                 <motion.div
                   key={`${entry.id}-${revision}`}
-                  className="absolute inset-0"
+                  className="absolute inset-0 bg-white"
                   data-logo-id={entry.id}
                   initial={
                     shouldReduceMotion
@@ -218,10 +220,10 @@ function LogoSwapGrid({
                 >
                   <Image
                     src={entry.src}
-                    alt={isFirstInstance ? entry.name : ""}
+                    alt={isFirstInstance ? entry.alt || entry.name : ""}
                     fill
                     sizes="(min-width: 1480px) 224px, 16vw"
-                    className={`object-contain transition-[filter,opacity] duration-300 ${
+                    className={`object-contain p-3 transition-[filter,opacity] duration-300 ${
                       grayscale
                         ? "grayscale opacity-70 group-hover/logo:grayscale-0 group-hover/logo:opacity-100"
                         : ""
@@ -250,14 +252,19 @@ function ClientLogoCarousel({
     selectionMode = "auto",
     selectedClients,
     autoClients,
+    collectionClients,
+    displayMode = "swap",
     speed = "normal",
     grayscale = true,
     navPointName,
     hideFromNav = true,
   } = data || {};
 
+  const mode = stegaClean(selectionMode);
+  const layout = stegaClean(displayMode);
+  const motionSpeed = stegaClean(speed);
   const clients: ClientLogoItem[] =
-    (selectionMode === "manual" ? selectedClients : autoClients) ?? [];
+    (mode === "collection" ? collectionClients : mode === "manual" ? selectedClients : autoClients) ?? [];
   const logos = clients.flatMap((client, index) => {
     const src = assetUrl(client.logo);
     if (!src) return [];
@@ -266,6 +273,7 @@ function ClientLogoCarousel({
       id: client._id || `${client.name || "client"}-${index}`,
       name: client.name || "Client logo",
       src,
+      alt: client.altText,
     }];
   });
 
@@ -310,7 +318,7 @@ function ClientLogoCarousel({
       }
       data-component="client-logo-carousel"
     >
-      <div className="container mx-auto w-full">
+      <div className="mx-auto w-full max-w-[1680px] px-5 sm:px-8 lg:px-12">
         {(hasVisibleText(eyebrow) || hasVisibleText(headline)) && (
           <div className="mb-8 flex flex-col items-center gap-3 text-center md:mb-12">
             {hasVisibleText(eyebrow) && !isServicesProof && <Eyebrow>{eyebrow}</Eyebrow>}
@@ -322,19 +330,23 @@ function ClientLogoCarousel({
                     : "text-title"
                 }
               >
-                {isServicesProof ? "You’re in great company." : headline}
+                {headline}
               </h2>
             )}
           </div>
         )}
 
         <div className="py-6 md:py-8">
-          <LogoSwapGrid
-            key={gridKey}
-            logos={logos}
-            speed={speed}
-            grayscale={grayscale}
-          />
+          {layout === 'grid' ? (
+            <ul className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-5" aria-label="Renaissance clients">
+              {logos.map(logo => <li key={logo.id} className="flex flex-col items-center gap-3">
+                <div className="flex h-28 w-full items-center justify-center bg-white p-3">
+                  <Image src={logo.src} alt={logo.alt || logo.name} width={160} height={88} sizes="160px" className="h-auto max-h-[88px] w-auto max-w-full object-contain" />
+                </div>
+                <span className="text-center text-sm text-renaissance-ink">{logo.name}</span>
+              </li>)}
+            </ul>
+          ) : <LogoSwapGrid key={gridKey} logos={logos} speed={motionSpeed} grayscale={grayscale} />}
         </div>
       </div>
     </section>

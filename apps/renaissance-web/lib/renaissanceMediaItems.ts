@@ -5,6 +5,7 @@ export type ResolvedRenaissanceMediaItem = {
   key: string;
   name: string;
   src: string;
+  position?: string;
 };
 
 export function resolveRenaissanceMediaItems(
@@ -21,6 +22,7 @@ export function resolveRenaissanceMediaItems(
         key: item._key || `${src}-${index}`,
         name: item.name?.trim() || "",
         src,
+        position: item.position,
       },
     ];
   });

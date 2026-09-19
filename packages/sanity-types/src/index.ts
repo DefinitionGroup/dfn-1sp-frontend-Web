@@ -240,6 +240,7 @@ export interface GalleryPeopleStep extends GalleryBase {
 }
 
 export interface IntroBlockTypoSophisticated {
+    renaissanceHeadingTag?: "h1" | "h2";
     _type?: "introBlockTypoSophisticated";
     header?: {
         superText?: string;
@@ -405,6 +406,8 @@ export interface RenaissanceSectionBand {
 }
 
 export interface RenaissanceMediaItem {
+    person?: { _ref?: string; _id?: string };
+    position?: string;
     _key?: string;
     name?: string;
     image?: CloudinaryAsset;
@@ -412,6 +415,7 @@ export interface RenaissanceMediaItem {
 }
 
 export interface RenaissancePortraitGrid {
+    displayMode?: "selection" | "directory";
     _type: "renaissancePortraitGrid";
     _key?: string;
     portraits?: RenaissanceMediaItem[];
@@ -421,6 +425,7 @@ export interface RenaissanceAwardLogoWall {
     _type: "renaissanceAwardLogoWall";
     _key?: string;
     headline?: string;
+    description?: string;
     logos?: RenaissanceMediaItem[];
 }
 
@@ -522,7 +527,10 @@ export interface Menu {
     copyright?: string;
 }
 
+export interface CaseDiscovery { regions?: string[]; genres?: string[]; platforms?: string[]; }
+
 export interface CaseStudy {
+    discovery?: CaseDiscovery;
     _id?: SanityID;
     language?: string;
     title?: string;
@@ -607,6 +615,7 @@ export interface OneSPHeader {
 
 /** Client reference resolved inside a clientLogoCarousel block */
 export interface ClientLogoItem {
+    altText?: string;
     _id?: SanityID;
     name?: string;
     slug?: { current?: string };
@@ -615,10 +624,12 @@ export interface ClientLogoItem {
 
 /** Animated client-logo display (schema: clientLogoCarousel) */
 export interface ClientLogoCarousel {
+    collectionClients?: ClientLogoItem[];
+    displayMode?: "swap" | "grid";
     _type?: "clientLogoCarousel";
     eyebrow?: string;
     headline?: string;
-    selectionMode?: "auto" | "manual";
+    selectionMode?: "auto" | "manual" | "collection";
     selectedClients?: ClientLogoItem[];
     /** Populated by GROQ when selectionMode is "auto" */
     autoClients?: ClientLogoItem[];
@@ -663,7 +674,29 @@ export interface ServiceGroup {
     services?: Reference<Services>[];
 }
 
+export interface CaseWebsiteContent {
+    discovery?: CaseDiscovery;
+    _type: 'caseWebsiteContent';
+    _key: string;
+    channel: string;
+    title?: string;
+    description?: string;
+    subtitle?: string;
+    hideDescription?: boolean;
+    hideSubtitle?: boolean;
+    seo?: { title?: string; description?: string };
+    mediaMode?: 'inherit' | 'custom';
+    mainImage?: CloudinaryAsset;
+    mainVideo?: CloudinaryAsset;
+    isVerticalVideo?: boolean;
+    bodyMode?: 'inherit' | 'custom';
+    casesPageBuilder?: CaseStudyData['casesPageBuilder'];
+}
+
 export interface CaseStudyData {
+    discovery?: CaseDiscovery;
+    siteContent?: CaseWebsiteContent[];
+    seo?: { title?: string; description?: string };
     _id: string;
     title: string;
     subtitle?: string;
@@ -771,19 +804,32 @@ export interface ApproachSectionComponent {
     paddingY?: string;
 }
 
+export interface ResultMetric {
+    _key?: string;
+    type: "vertical" | "horizontal" | "posNeg" | "animatedNumber";
+    label: string;
+    value: number;
+    suffix?: string;
+    prefix?: string;
+    description?: string;
+    context?: string;
+    displayScale?: "none" | "thousand" | "million" | "billion";
+    decimalPlaces?: number;
+    qualifier?: "exact" | "plus" | "moreThan" | "approximately" | "nearly" | "lessThan";
+    animationMode?: "countUp" | "static";
+}
+
 export interface ResultsMetricsComponent {
+    quote?: { text: string; attribution: string };
     _type: "resultsMetrics";
     _key: string;
     title: string;
     description?: string;
+    context?: string;
     badgeText?: string;
     badgeSubtitle?: string;
     badgeNumber?: string;
-    metrics?: Array<{
-        type: "vertical" | "horizontal" | "posNeg";
-        label: string;
-        value: number;
-    }>;
+    metrics?: ResultMetric[];
     backgroundImage?: CloudinaryAsset;
     backgroundOpacity?: number;
     enableParallax?: boolean;

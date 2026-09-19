@@ -13,6 +13,9 @@ export default defineType({
     { name: "navigation", title: "Navigation" },
   ],
   fields: [
+    defineField({ name: "renaissanceHeadingTag", title: "Renaissance heading level", type: "string", group: "content",
+      hidden: ({ document }) => document?.channel !== "renaissanceWeb",
+      options: { list: ["h1", "h2"], layout: "radio" } }),
     defineField({
       name: "header",
       title: "Typography",

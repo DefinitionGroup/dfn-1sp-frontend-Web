@@ -12,6 +12,8 @@ export default defineType({
         { name: "navigation", title: "Navigation" },
     ],
     fields: [
+        defineField({name: "selectionMode", title: "Campaign selection", type: "string", group: "content", initialValue: "auto", hidden: ({document}) => document?.channel !== "renaissanceWeb", options: {list: [{title: "All assigned campaigns", value: "auto"}, {title: "Selected campaigns", value: "manual"}]}}),
+        defineField({name: "selectedCases", title: "Selected campaigns", type: "array", group: "content", hidden: ({document, parent}) => document?.channel !== "renaissanceWeb" || parent?.selectionMode !== "manual", of: [{type: "reference", to: [{type: "caseStudy"}], options: {filter: ({document}) => ({filter: "$channel in channel && language == $language", params: {channel: document?.channel, language: document?.language}})}}]}),
         defineField({
             name: "navPointName",
             title: "Navigation Point Name",
@@ -39,7 +41,7 @@ export default defineType({
             title: "Show Filter Buttons",
             type: "boolean",
             initialValue: true,
-            description: "Enable filtering by services",
+            description: "Renaissance uses campaign regions and search. Other websites use service filters.",
             group: "content",
         }),
         defineField({
@@ -48,6 +50,7 @@ export default defineType({
             type: "number",
             initialValue: 12,
             description: "Number of items to show per page",
+            validation: Rule => Rule.integer().min(1).max(48),
             group: "content",
         }),
         defineField({

@@ -1,5 +1,6 @@
 "use client";
 
+import { stegaClean } from "@sanity/client/stega";
 import type {
   IntroBlockTypoSophisticated,
   RenaissanceSectionRole,
@@ -22,7 +23,8 @@ export default function IntroBlockTypoSophisticated({
     navPointName,
     hideFromNav = false,
   } = data || {};
-  const sectionIdSource = navPointName || header?.mainHeadline;
+  const Heading = stegaClean(data.renaissanceHeadingTag) === "h1" ? "h1" : "h2";
+  const sectionIdSource = stegaClean(navPointName || header?.mainHeadline);
   const sectionId = sectionIdSource
     ? sectionIdSource
         .substring(0, 40)
@@ -45,13 +47,13 @@ export default function IntroBlockTypoSophisticated({
           data-component="intro-block-typo-sophisticated"
         >
           {hasVisibleText(header?.mainHeadline) ? (
-            <h2
+            <Heading
               className={`renaissance-display max-w-[34ch] text-[clamp(2.65rem,3.5vw,3.75rem)] font-bold leading-[0.9] tracking-[-0.025em] ${
                 isDark ? "text-white" : "text-renaissance-ink"
               }`}
             >
               {header?.mainHeadline}
-            </h2>
+            </Heading>
           ) : null}
           {hasVisibleText(description) ? (
             <p
@@ -72,13 +74,13 @@ export default function IntroBlockTypoSophisticated({
         data-component="intro-block-typo-sophisticated"
       >
         {hasVisibleText(header?.mainHeadline) ? (
-          <h2
+          <Heading
             className={`renaissance-display text-[clamp(3.2rem,6.5vw,8rem)] font-bold leading-[0.84] md:col-span-7 ${
               isDark ? "text-white" : "text-renaissance-ink"
             }`}
           >
             {header?.mainHeadline}
-          </h2>
+          </Heading>
         ) : null}
         {hasVisibleText(description) ? (
           <p
@@ -106,6 +108,7 @@ export default function IntroBlockTypoSophisticated({
           <div className="grid grid-cols-4 py-16 sm:grid-cols-6 sm:py-24 md:grid-cols-12 lg:gap-8 lg:py-32 iphone-landscape:grid-cols-12">
             <div className="col-span-4 sm:col-span-6 md:col-span-12 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1">
               <PeopleIntroLayout
+                headingTag={Heading}
                 header={header}
                 description={description}
               />

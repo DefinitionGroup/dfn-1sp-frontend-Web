@@ -11,7 +11,7 @@
  */
 import { getPageBySlug, getAllCases } from "@1sp/sanity-queries";
 import RenaissancePageBuilder from "@renaissance/components/RenaissancePageBuilder";
-import NotFound from "@renaissance/components/ui/not-found";
+import { notFound } from "next/navigation";
 import RenaissanceSiteWrapper from "@renaissance/components/RenaissanceSiteWrapper";
 import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
@@ -93,6 +93,7 @@ export default async function CasesPage({
   // Uses cached fetch from centralized data layer
   const page = await getPageBySlug("cases", CHANNEL, language);
 
+  if (!page) notFound();
   const navbarVariant = page?.navbarVariant || "light";
 
   // Fetch all cases as fallback for auto-mode galleries (ItemList structured data)
@@ -167,7 +168,7 @@ export default async function CasesPage({
             deferAfter={2}
           />
         ) : (
-          <NotFound />
+          null
         )}
       </div>
     </RenaissanceSiteWrapper>

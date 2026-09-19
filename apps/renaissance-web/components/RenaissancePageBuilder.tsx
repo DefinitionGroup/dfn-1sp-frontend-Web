@@ -1,3 +1,4 @@
+import { resultSectionId } from "@1sp/utils/result-metrics";
 import { resolvePeopleProof } from "../lib/renaissancePeopleProof";
 import React, { Suspense } from "react";
 import dynamic from "next/dynamic";
@@ -522,7 +523,7 @@ export function PageBuilder({
           case "smartPeople":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <SmartPeople key={key} {...(block as any)} channel={channel} />
+                <SmartPeople key={key} {...(block as any)} channel={channel} language={language} />
               </ErrorBoundary>
             );
           case "smartUnitsGallery":
@@ -612,6 +613,7 @@ export function PageBuilder({
                 <ResultsMetrics
                   key={key}
                   {...(block as ResultsMetricsComponentType)}
+                  sectionId={resultSectionId(content, block, i)}
                 />
               </ErrorBoundary>
             );

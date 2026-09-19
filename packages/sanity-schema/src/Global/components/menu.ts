@@ -164,6 +164,11 @@ export default {
 
         /* Footer Fields */
         {
+            name: 'renaissanceLegalText', title: 'Renaissance legal text', type: 'text',
+            group: 'footer', rows: 2,
+            hidden: ({ document }: { document?: { channel?: string } }) => document?.channel !== 'renaissanceWeb',
+        },
+        {
             name: 'footerExternalBanner',
             title: 'Footer External Banner',
             type: 'footerExternalBanner',

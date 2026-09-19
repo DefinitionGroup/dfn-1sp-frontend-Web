@@ -1,5 +1,6 @@
 "use client";
 
+import { stegaClean } from "@sanity/client/stega";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useReducedMotion } from "motion/react";
@@ -14,7 +15,7 @@ const BRACKET_DURATION_MS = 360;
 type BadgePhase = "waiting" | "signet" | "expanding" | "decrypting" | "readable";
 
 function normalizeLabel(label: string) {
-  return label.replace(/^\s*\[|\]\s*$/g, "").trim().toUpperCase();
+  return stegaClean(label).replace(/^\s*\[|\]\s*$/g, "").trim().toUpperCase();
 }
 
 export default function RenaissanceSectionBadge({

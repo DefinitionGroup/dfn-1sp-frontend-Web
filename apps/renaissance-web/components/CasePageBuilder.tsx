@@ -1,3 +1,4 @@
+import { resultSectionId } from "@1sp/utils/result-metrics";
 import React from "react";
 import dynamic from "next/dynamic";
 import ErrorBoundary from "@renaissance/components/ErrorBoundary";
@@ -81,7 +82,7 @@ export function CasePageBuilder({ content }: CasePageBuilderProps) {
           case "resultsMetrics":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <ResultsMetrics key={key} {...block} />
+                <ResultsMetrics key={key} {...block} sectionId={resultSectionId(content, block, i)} />
               </ErrorBoundary>
             );
 

@@ -398,7 +398,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           const isServicesPage = item.slug?.includes("services");
           return !(
             (isCasesPage && !hasCaseStudies) ||
-            (isServicesPage && !hasServices)
+            (isServicesPage && !hasServices && !isRenaissanceChannel)
           );
         })
         .map((item) => ({
@@ -412,7 +412,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
   return (
     <>
-      <div className="container relative z-[99998] mx-auto h-20 px-3 pt-3 md:h-28 md:px-4 md:pt-6">
+      <div className="relative z-[99998] mx-auto w-full max-w-[1680px] h-20 px-3 pt-3 md:h-28 md:px-4 md:pt-6">
         <motion.nav
           ref={navRef}
           layout
@@ -434,13 +434,13 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           inert={!isNavVisible}
           data-nav-state={navState}
           data-nav-surface={isRenaissanceScrolled ? "frosted" : "transparent"}
-          className={`floating-nav z-99999 hidden items-center grid-cols-12 py-2 transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 md:grid ${
+          className={`floating-nav z-99999 hidden items-center grid-cols-[auto_1fr_auto] gap-8 py-2 transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 xl:grid ${
             isExpanded
               ? "relative mx-auto h-16 w-full rounded-control px-6"
               : "fixed left-0 right-0 top-6 mx-auto h-14 w-fit rounded-control px-5 iphone-landscape:top-2 iphone-landscape:scale-70"
           } ${isNavVisible ? "" : "pointer-events-none"} ${desktopSurfaceClass} ${navTextColor} ${className}`}
         >
-          <div className="col-span-2 flex items-center pr-16  justify-start">
+          <div className="flex items-center justify-start">
             <motion.div
               initial={false}
               animate={{ opacity: 1, y: 0 }}
@@ -481,7 +481,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             </motion.div>
           </div>
 
-          <motion.div className="col-span-7   flex items-center ">
+          <motion.div className="flex items-center justify-center">
             {menuData ? (
               <StaggeredSlideUp
                 className="flex items-center "
@@ -501,7 +501,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                     if (isCasesPage && !hasCaseStudies) {
                       return false;
                     }
-                    if (isServicesPage && !hasServices) {
+                    if (isServicesPage && !hasServices && !isRenaissanceChannel) {
                       return false;
                     }
                     return true;
@@ -552,7 +552,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               delay: 0.62,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="col-span-3 flex relative justify-end items-center align-start gap-1"
+            className="flex relative justify-end items-center align-start gap-1"
           >
             {/* All Cases button only on case detail pages */}
             {isCaseDetailRoute && (
@@ -599,7 +599,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           inert={!isNavVisible}
           data-nav-state={navState}
           data-nav-surface={isRenaissanceScrolled ? "frosted" : "transparent"}
-          className={`z-99999 flex items-center justify-between rounded-control transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 md:hidden ${
+          className={`z-99999 flex items-center justify-between rounded-control transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 xl:hidden ${
             isExpanded
               ? "relative mx-auto h-14 w-full px-4"
               : "fixed left-3 right-3 top-3 h-12 px-3"
@@ -683,7 +683,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             animate={{ clipPath: "inset(0 0 0 0)" }}
             exit={{ clipPath: "inset(0 0 100% 0)" }}
             transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[100000] flex flex-col bg-renaissance-ink px-6 pb-8 pt-5 text-white md:hidden"
+            className="fixed inset-0 z-[100000] flex flex-col bg-renaissance-ink px-6 pb-8 pt-5 text-white xl:hidden"
           >
             <div className="flex items-center justify-between border-b border-white/20 pb-5">
               <span

@@ -10,6 +10,7 @@ export default defineType({
     "Renaissance-only award statement, signal line and ordered award-logo wall.",
   hidden: ({ document }) => document?.channel !== "renaissanceWeb",
   fields: [
+    defineField({ name: "description", title: "Award statement", type: "text", rows: 6 }),
     defineField({
       name: "headline",
       title: "Headline",

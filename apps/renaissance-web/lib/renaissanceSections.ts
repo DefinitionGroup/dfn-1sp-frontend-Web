@@ -3,6 +3,7 @@ import type {
   RenaissanceSectionBand,
   RenaissanceSectionRole,
 } from "@1sp/sanity-types";
+import { stegaClean } from "@sanity/client/stega";
 
 export type RenaissanceSectionBlock = {
   block: PageBuilderBlock;
@@ -92,11 +93,21 @@ export function partitionRenaissanceSections(
 
     if (isSectionMarker(block)) {
       closeSection();
-      if (block.mode !== "reset" && block.sectionRole) {
+      // Preview strings carry edit metadata. Clean control values before they
+      // reach comparisons and lookup keys, while retaining editable copy.
+      const marker: RenaissanceSectionBand = {
+        ...block,
+        mode: stegaClean(block.mode),
+        sectionRole: stegaClean(block.sectionRole),
+        desktopTopMargin: stegaClean(block.desktopTopMargin),
+        badgeAnimationMode: stegaClean(block.badgeAnimationMode),
+        carouselBackgroundTone: stegaClean(block.carouselBackgroundTone),
+      };
+      if (marker.mode !== "reset" && marker.sectionRole) {
         openSection = {
           kind: "section",
           key: blockKey(block, sourceIndex),
-          marker: block,
+          marker,
           blocks: [],
         };
       }

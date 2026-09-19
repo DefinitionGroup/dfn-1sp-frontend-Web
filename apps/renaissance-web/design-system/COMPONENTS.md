@@ -54,6 +54,15 @@ Compatibility blocks require explicit design review and a channel/data-scope che
 
 ## Component behavior rules
 
+### Case Results
+
+- Use ordered `resultsMetrics` blocks for distinct outcomes or measurement periods. Each group has its own heading, optional context, supported metrics, explanatory copy and optional attributed quote. Narrative-only groups are valid; never fabricate counters for rankings or absent data.
+- Numbers sit directly on the Ink section surface, with explicit white headings/labels and hairline separators. Sections follow content height. Mobile uses one column; desktop uses two columns for two or four metrics and three otherwise. Preserve exact large values without horizontal overflow.
+- Store underlying numeric amounts; explicit scale, precision, qualifier and prefix/suffix control display. Keep reach, UVPM, views, scores and growth distinct. Legacy values without new formatting fields retain their existing interpretation.
+- Count up once at 25% visibility over 1.4 seconds with ease `[0.23, 1, 0.32, 1]`. Reserve final width and use tabular numerals. Server output, assistive text and reduced-motion output show the final value. CMS edits settle immediately after the initial animation.
+- The first Results group keeps `#results`; later groups use stable block-key anchors in both Renaissance builders. The unit/person Powered by block is omitted from the Renaissance case template; global relationships remain available.
+- Shared schema and renderer support is backward-compatible. The 19 September migration changes Renaissance English drafts only; the [mapping ledger](../../../docs/renaissance-results-metrics-mapping.md) records source claims and field destinations.
+
 ### Navigation
 
 - Desktop text targets are at least 24 × 24px, preferably 32px high.
@@ -142,3 +151,12 @@ Compatibility blocks require explicit design review and a channel/data-scope che
 | CTA label | 2–4 words, starts with a verb |
 
 Limits are guardrails, not truncation rules. If approved content exceeds them, adjust composition deliberately rather than clipping text.
+
+
+## Case editions and client collections (September 2026)
+
+Global cases can supply `siteContent` editions by channel. The shared query layer resolves title, summary, hero, SEO and a complete case body before Renaissance renders it. Shared identity and slug remain stable. Optional media must not render an empty image. Long case introductions are paragraphs under a semantic H2.
+
+`clientLogoCarousel` retains manual/auto selections and adds a Renaissance collection reference. Collection items resolve global clients with optional local artwork/display-name overrides and channel/language checks. `displayMode: grid` renders the complete roster; the default swap display remains for curated homepage selections. Supplied opaque JPEGs use a light surface with their original colours and aspect ratios. Preview option comparisons strip Sanity editing metadata while visible text retains editing overlays.
+
+The v4 workbook takes precedence for Renaissance copy. See `docs/renaissance-rewrite-v4-implementation.md` for the implemented milestone and pending page migration.

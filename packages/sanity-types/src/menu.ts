@@ -52,6 +52,7 @@ export interface SocialLink {
 
 export interface FooterMenu {
     footerExternalBanner?: FooterExternalBannerData | null;
+    renaissanceLegalText?: string;
     _id?: string;
     title?: string;
     menuType: "Footer";

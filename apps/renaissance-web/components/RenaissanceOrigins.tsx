@@ -1,3 +1,4 @@
+import { stegaClean } from "@sanity/client/stega";
 import Image from "next/image";
 import Button2 from "./ui/Button2";
 import { PortableText } from "@portabletext/react";
@@ -30,18 +31,18 @@ const titleClasses = { "neutral-700": "text-neutral-700", "neutral-400": "text-n
 export default function RenaissanceOrigins({ data }: { data: OriginsData }) {
   const logos = getOriginsLogos(data.renaissanceLogos);
   const button = ctaToButtonProps(data.cta);
-  const showsLogos = data.renaissanceMediaLayout === "logos";
+  const showsLogos = stegaClean(data.renaissanceMediaLayout) === "logos";
   const mediaSrc = assetUrl(data.useVideo ? data.video : data.image);
   return (
-    <div className={`mx-auto grid max-w-[1680px] gap-12 px-5 sm:px-8 md:grid-cols-12 md:items-center md:gap-x-10 lg:px-12 ${paddingClasses[data.paddingY ?? "24"] ?? paddingClasses["24"]}`}>
+    <div className={`mx-auto grid max-w-[1680px] gap-12 px-5 sm:px-8 md:grid-cols-12 md:items-center md:gap-x-10 lg:px-12 ${paddingClasses[stegaClean(data.paddingY) ?? "24"] ?? paddingClasses["24"]}`}>
       <div className={`md:col-span-5 ${data.reverseColumns ? "md:order-2" : ""}`}>
         {data.showTitle !== false && hasVisibleText(data.title) ? (
-          <h2 className={`renaissance-display text-[clamp(2.7rem,3.5vw,3.75rem)] font-bold leading-[0.9] tracking-[-0.025em] ${titleClasses[data.titleColor ?? "neutral-700"]}`}>
+          <h2 className={`renaissance-display text-[clamp(2.7rem,3.5vw,3.75rem)] font-bold leading-[0.9] tracking-[-0.025em] ${titleClasses[stegaClean(data.titleColor) ?? "neutral-700"]}`}>
             {data.title}
           </h2>
         ) : null}
         {Array.isArray(data.content) && data.content.length ? (
-          <div className={`mt-5 max-w-[34rem] leading-[1.4] text-renaissance-ink/75 ${contentClasses[data.contentSize ?? "lg"]}`}>
+          <div className={`mt-5 max-w-[34rem] leading-[1.4] text-renaissance-ink/75 ${contentClasses[stegaClean(data.contentSize) ?? "lg"]}`}>
             <PortableText
               value={data.content as never}
               components={{

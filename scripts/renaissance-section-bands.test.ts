@@ -1,9 +1,15 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { createRequire } from "node:module";
 
 import { RENAISSANCE_HOMEPAGE_FALLBACK } from "../apps/renaissance-web/data/homepageFallback";
 import { resolveRenaissanceIntroLayout } from "../apps/renaissance-web/lib/renaissanceIntroLayout";
 import { partitionRenaissanceSections } from "../apps/renaissance-web/lib/renaissanceSections";
+
+const require = createRequire(import.meta.url);
+const { vercelStegaCombine } = createRequire(require.resolve("@sanity/client"))("@vercel/stega");
+const previewValue = <T extends string>(value: T): T =>
+  vercelStegaCombine(value, { origin: "sanity.io", href: "http://localhost:3000/studio" }, false);
 
 const block = (_type: string, _key: string) => ({ _type, _key });
 type MarkerOptions = {
@@ -83,6 +89,44 @@ test("groups explicit markers and respects reset markers", () => {
   );
 });
 
+test("preview metadata preserves every section role and reset boundary", () => {
+  const roles = ["stories", "services", "people", "origins", "reach", "joinUs"] as const;
+  const encodedLabel = previewValue("ORIGINS");
+  const content = roles.flatMap((role) => [
+    {
+      ...marker(role, role),
+      sectionRole: previewValue(role),
+      mode: previewValue("section" as const),
+      desktopTopMargin: previewValue("24" as const),
+      badgeAnimationMode: previewValue("loop" as const),
+      carouselBackgroundTone: previewValue("light" as const),
+      badgeLabel: encodedLabel,
+    },
+    block("introBlockTypoSophisticated", `${role}-intro`),
+  ]);
+  const units = partitionRenaissanceSections([
+    ...content,
+    { ...marker("reset", "stories", "reset"), mode: previewValue("reset" as const) },
+    block("oneSpComponentGroupReference", "network"),
+  ]);
+  assert.equal(units.length, roles.length + 1);
+  roles.forEach((role, index) => {
+    const unit = units[index];
+    assert.equal(unit.kind, "section");
+    if (unit.kind !== "section") return;
+    assert.equal(unit.marker.sectionRole, role, "the frame and role-specific renderers need a plain lookup key");
+    assert.equal(unit.marker.mode, "section");
+    assert.equal(unit.marker.desktopTopMargin, "24");
+    assert.equal(unit.marker.badgeAnimationMode, "loop");
+    assert.equal(unit.marker.carouselBackgroundTone, "light");
+    assert.equal(unit.marker.badgeLabel, encodedLabel, "editorial text keeps its visual-editing metadata");
+  });
+  assert.equal(units.at(-1)?.kind, "block", "preview reset must close the preceding section");
+  const inputMarker = content[0];
+  assert.ok("sectionRole" in inputMarker);
+  assert.notEqual(inputMarker.sectionRole, roles[0], "partitioning must not mutate source content");
+});
+
 test("preserves optional section presentation settings", () => {
   const units = partitionRenaissanceSections([
     marker("stories", "stories", "section", {
@@ -149,13 +193,13 @@ test("composes the fallback Join Us section from one register block", () => {
     cards?: Array<{ text?: string; link?: { externalUrl?: string } }>;
   };
   assert.equal(joinUs.marker.desktopTopMargin, "none");
-  assert.equal(register.headline, "Register with us");
-  assert.match(register.description ?? "", /content creator\/journalist/i);
+  assert.equal(register.headline, "Cover our clients' games first");
+  assert.match(register.description ?? "", /content creator/i);
   assert.deepEqual(
     register.cards?.map((card) => [card.text, card.link?.externalUrl]),
     [
-      ["Content creators", "/contact"],
-      ["Media", "/contact"],
+      ["Content creators", "/contact#registration"],
+      ["Media", "/contact#registration"],
     ],
   );
 });

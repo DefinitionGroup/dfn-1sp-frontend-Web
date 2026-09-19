@@ -12,6 +12,7 @@ export default defineType({
         { name: "navigation", title: "Navigation" },
     ],
     fields: [
+        defineField({ name: "anchorId", title: "Section anchor", type: "string", group: "navigation", hidden: ({document}) => document?.channel !== "renaissanceWeb", validation: r => r.regex(/^[a-z][a-z0-9-]*$/) }),
         defineField({
             name: "navPointName",
             title: "Navigation Point Name",
@@ -87,6 +88,7 @@ export default defineType({
                                         name: "href",
                                         type: "url",
                                         title: "URL",
+                                        validation: (Rule) => Rule.uri({allowRelative: true, scheme: ["http", "https", "mailto"]}),
                                     },
                                     {
                                         name: "blank",

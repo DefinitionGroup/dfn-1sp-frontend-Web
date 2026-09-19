@@ -6,15 +6,15 @@ import { Analytics } from "@vercel/analytics/next";
 import CookiebotBanner from "@renaissance/components/CookiebotBanner";
 import GoogleAnalyticsConsent from "@renaissance/components/GoogleAnalyticsConsent";
 import {
-  getRobotsMetadata,
   shouldLoadProductionTracking,
 } from "@1sp/utils/deployment-tier";
+import { isRenaissancePublic, renaissanceRobotsMetadata } from "@renaissance/lib/deployment";
 import { getMetadataBaseUrl } from "@1sp/utils/site-url";
 import { getSiteConfig } from "@1sp/site-config";
 
 const RENAISSANCE_SITE = getSiteConfig("renaissanceWeb");
 const GOOGLE_MEASUREMENT_ID = process.env.NEXT_PUBLIC_RENAISSANCE_GOOGLE_MEASUREMENT_ID;
-const LOAD_PRODUCTION_TRACKING = shouldLoadProductionTracking();
+const LOAD_PRODUCTION_TRACKING = isRenaissancePublic() && shouldLoadProductionTracking();
 
 const geistMono = Geist_Mono({
   subsets: ["latin"],
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
   },
-  robots: getRobotsMetadata(),
+  robots: renaissanceRobotsMetadata(),
 };
 
 export default function RootLayout({

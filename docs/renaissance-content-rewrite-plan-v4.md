@@ -1,14 +1,17 @@
 # Renaissance v4 content mapping plan
 
-Revised 19 September 2026 following the global-content audit and channel-edition discussion. Production backup completed; implementation has not started. No CMS documents, application code, environment configuration, or deployments changed.
+Approved plan, revised 19 September 2026. The approved content implementation is now published; see [implementation status](renaissance-rewrite-v4-implementation.md) for the 169 reconciled copy entries and [publication record](renaissance-content-publication.md) for the 225 published documents, fresh backup and verification. The sections below preserve the approved mapping and its pre-implementation audit. The preceding workspace checkpoint is commit `c594befb5` on `multiseite/stage`.
 
 ## Current decisions and backup
 
+- Work in the repository's local embedded Studio and local Renaissance frontend, both connected to `wu6i3y0h/production`. A hosted Studio or Vercel deployment is not a prerequisite.
+- Prepare content as drafts in that dataset and verify it through authenticated local preview. Local Studio is the editing interface; the saved content remains in Sanity's hosted production dataset.
 - Keep global case, service, person and client identities.
 - Add a **Website content** tab to global cases, with editions for assigned channels. Existing content remains the shared default.
 - Each edition can inherit shared content or own its headline, summary, hero, SEO and complete case-block sequence. Support an explicit **Start from shared content** copy action and **Use shared content** reset; customised content must not silently resynchronise.
 - Implement and verify case editions first. Bulk content migration follows a successful representative preview.
 - Keep Renaissance-owned client-logo selections/artwork with global client references. Keep the existing Renaissance-only shared awards type.
+- Use the supplied `/Users/martin/Downloads/Logos/` library for Renaissance client proof: 129 JPEGs, inspected below. Reuse global clients where identities match; preserve their existing artwork for other sites.
 - The v4 rewrite is the copy authority for Renaissance. Other sites retain their current content unless explicitly changed.
 
 The requested backup of `wu6i3y0h/production` is complete:
@@ -19,7 +22,18 @@ The requested backup of `wu6i3y0h/production` is complete:
 - Manifest and checksum file are saved beside the archive. The folder is excluded from Git.
 - Cloudinary references are included; external media binaries are not copied. Sanity reported no native asset files.
 
-This backup protects the requested `production` dataset. It does not establish which dataset the deployed Renaissance preview uses. Verify that connection before content writes; if a different dataset is selected for implementation, back it up separately. Preserve the 13 existing production drafts rather than replacing them during migration.
+The user has now explicitly selected `production` for this work. Preserve existing drafts and refresh affected-document snapshots/revisions immediately before each write batch; the full export remains the baseline recovery artifact. The deployed preview's environment is not a dependency of this local implementation. Do not run old migration helpers that hardcode `dev-dataset` or switch datasets to accommodate them.
+
+## Local authoring and review workflow
+
+- Start the root Next.js app with `pnpm dev` and use its embedded Studio at `http://localhost:3000/studio`. Start Renaissance with `pnpm dev:renaissance` at `http://localhost:3003`. Reuse a verified running process if present; neither port had a listener during this review.
+- `sanity.config.ts` imports the shared schema and environment module and selects `http://localhost:3003` for Renaissance Presentation in development. Root and Renaissance environment files select project `wu6i3y0h`, dataset `production`, API `2025-09-16`; Renaissance explicitly selects `renaissanceWeb`.
+- Viewer-token configuration is present in both environments. The draft-mode route and shared fetch helper exist. Verify the signed-in Studio session, local-origin access, preview authentication and draft rendering when starting implementation; configured credentials do not prove that browser workflow works.
+- Local schema changes appear in the local Studio. Validate source schema/types/queries/renderers together. A stored-schema upload is a separate operation used by hosted schema consumers; neither it nor a Studio deployment is required merely to edit through the local Studio. See [Sanity's local development documentation](https://www.sanity.io/docs/studio/development) and [schema deployment documentation](https://www.sanity.io/docs/apis-and-sdks/schema-deployment).
+- A draft-only channel assignment must be visible in authenticated preview while remaining absent from ordinary published queries and sitemaps. The business flag `isPublished` and Sanity's draft/published document state are separate; never publish a pilot just to bypass a preview filter. If needed, narrowly adapt authenticated preview filtering while retaining ordinary publication rules.
+- Draft edits to an existing global case must preserve all unrelated draft fields. Publishing that document publishes its complete current draft, including every channel edition. Review the full document diff before any later publication; the Website content tab does not create independent publishing lifecycles.
+- Use the local Studio for editorial review. Repetitive imports can use repository scripts against the same explicit project/dataset, with dry-run manifests, revision guards and draft-only writes; no deployed Studio is involved. New draft references must follow the repository's weak-reference/strengthen-on-publish pattern where necessary.
+- The user approved implementation after final review. Current progress is recorded in the linked implementation status. Hosted Studio, stored-schema, frontend and public-domain releases are outside this local preparation phase.
 
 ## Recommendation
 
@@ -43,9 +57,9 @@ The rewrite takes precedence over the older Figma/content baseline in DESIGN.md.
 
 Project `wu6i3y0h`, API version `2025-09-16`, channel `renaissanceWeb`, language `en`.
 
-Both local root environment files and `apps/renaissance-web/.env.local` currently select `production`; the app file explicitly selects `renaissanceWeb`. Root Studio and frontend import the shared environment module. Ran the Sanity doctor for both `production` and `dev-dataset` and queried Renaissance documents in each. This checks local configuration and API content, not the deployed Vercel environment or signed-in Studio draft state.
+Both local root environment files and `apps/renaissance-web/.env.local` select `production`; the app file explicitly selects `renaissanceWeb`. FLZR and MSM local files also select production. Root Studio and frontend import the shared environment module. Re-ran `pnpm doctor:sanity -- --channel renaissanceWeb --language en` against production for this revision: one Renaissance homepage/page, one menu, five assigned clients and zero assigned cases/services/people/units. This checks local configuration and API content, not a signed-in browser session.
 
-Both datasets currently return:
+The earlier audit found this composition in both datasets; production remains the selected target and its assignment counts were reconfirmed:
 
 | Content | Count / state |
 | --- | --- |
@@ -58,7 +72,7 @@ Both datasets currently return:
 
 Therefore this is partly replacement and partly new page/content creation. Services and cases have routes but no Renaissance page documents. Contact has an app-local fallback and an enquiry form. About and Clients can use the generic page route once populated. The two homepage story slides are inline carousel items, not existing Renaissance case documents.
 
-Do not choose the write dataset implicitly. Record the intended Renaissance dataset and deployed preview environment at implementation start, align frontend and Studio, and apply only there. Do not copy changes into both datasets by default.
+Implementation is explicitly limited to `wu6i3y0h/production`, `renaissanceWeb/en`, and the shared contracts needed for its editions. Preserve other channels' content and published output. Do not mirror changes into `dev-dataset`.
 
 ## Proposed homepage composition
 
@@ -74,7 +88,7 @@ All row references below mean the `Rewrite Comparison` sheet.
 | `renaissance-stories` | F54–F56 or F69–F70; F61–F62 | Keep the `carousel` and existing Romeo/Yooka media after identity checks. Use concise source excerpts or reviewed teasers and link to their case pages. Current Romeo subtitle says “Global launch campaign · 2025”, while v4 separates the 2026 launch and 2025 Gamescom activation: resolve this before mapping. |
 | `renaissance-services-intro` | F7 | Replace “Six services. One mission.” with “What we actually do”. Remove or review the old supporting sentence rather than retaining a contradictory service count. |
 | `renaissance-services` | F8–F11 | Keep `cardContainerComponent`; replace six cards with four. Split each supplied list item at the label/explanation boundary into `cards[].headline` and `cards[].text`, preserving wording. Use two desktop columns and keep the established mobile presentation. |
-| `renaissance-client-logos` | Supporting proof; F29–F30 belong primarily on Clients | Keep `clientLogoCarousel`, but reconcile the selected clients against verified Renaissance relationships. Current references are Ubisoft, Xbox, Epic Games, Warner Bros. and Riot Games; v4 names a different client set. Do not assume either list invalid or complete. Reuse/create correctly scoped client references as appropriate. |
+| `renaissance-client-logos` | Supporting proof; F29–F30 belong primarily on Clients | Keep `clientLogoCarousel` and its motion, sourcing an editorial selection from the supplied 129-logo Renaissance collection. Reuse/create correctly scoped client references. Replace this surface's selection without deleting the five currently selected global client documents. The Clients page owns the fuller roster. |
 | `renaissance-people-intro` | F25–F26 reused from About | Use the revised team positioning as a section heading and paragraph after checking the 19-person claim and career-history statement. Keep approved shared portraits as selected team imagery. Four current portrait records are not a 19-person directory. |
 | Shared awards under People | F12 | Add optional `description` to `renaissanceAwardLogoWall` and populate `renaissance-shared-awards-en.content.description` with the full award paragraph. Keep logos and short heading. Update schema, type, query projection and renderer together; keep awards centrally reusable. |
 | `renaissance-global-reach` | No direct replacement | Retain `globeComponent` provisionally as additional supporting content. Verify the UK/Los Angeles/China wording and distinguish locations from partner coverage. Do not infer offices from campaign territories in the workbook. |
@@ -103,7 +117,7 @@ Events and paid media remain additional services on `/services`. The workbook it
 | --- | --- | --- | --- |
 | Services, 16–24 | `/services` | `heroShowTime.heading` F16, `.paragraphs[0]` F17; four `contentSection` sections for F18–F21 with semantic service anchors; partner heading F22 and paid-media item F23 in a separate `contentSection`; F24 event section; optional selected-case carousel with valid case links. | New Renaissance page. Use the four full service paragraphs here, short descriptions on Home. Do not force a six-service grid or hide the main offer in tabs. |
 | About, 25–28 | `/about-us` | `heroShowTime` F25/F26; `twoColContentSection` for one verified founder biography; `contentSection` for F28; `smartPeople` for a real roster if available; reusable awards/portraits for selected proof. | No About page or person documents assigned to Renaissance. Stefano already exists globally under 1SP and should be reused. F27 is a duplicate-removal proposal, not a biography. F28 refers to five pillars but does not provide the five definitions. Do not invent them or duplicate a founder section to mimic the old page. |
-| Clients, 29–30 | `/clients` | `heroShowTime` F29/F30; `clientLogoCarousel` with approved client references; selected `carousel` evidence and `/cases` link. | Five assigned clients are not the legacy roster. Match and enrich shared records, preserving legal entity/brand distinctions and approved logos. No 66-logo implication from 66 campaigns. |
+| Clients, 29–30 | `/clients` | `heroShowTime` F29/F30; the Renaissance client collection rendered as a browsable logo grid; selected `carousel` evidence and `/cases` link. | Account for all 129 supplied files, preserving brand distinctions and documenting artwork exceptions. Extend the existing logo block with a Renaissance grid presentation so the full roster is discoverable without waiting for the six-slot swap animation. No 66-logo implication from 66 campaigns. |
 | Contact, 31–33 | `/contact` | Text-led H1 F31 and paragraph F32 via existing intro block with an additive heading-level option; `contentSection` F33 with email links; existing route-owned `ContactForm`, configured through `page.contactForm`. | New CMS contact page replaces fallback. Current form persists enquiries to Sanity; inspected handler does not send email. Confirm monitoring/notification arrangements before promising a two-business-day reply. Do not add a second form inside page blocks. |
 | Register, 34–36 | `/contact#registration` | F34 as H2 under the contact H1; separate `contentSection` passages F35/F36 for creators and media, connected to an audience-aware version of the existing form. | Proposed consolidation preserves the established `/contact` decision. Add actual enquiry intent and relevant creator/outlet fields, or integrate the verified registration destination. A generic project enquiry is not automatically a working registration system. Any old `/register` URL needs a deliberate redirect after legacy URL verification. |
 | Case Studies index, 37–38 | `/cases` | `heroShowTime` F37/F38 followed by `casesGalleryFilteredWithPagination`, querying `renaissanceWeb/en`. | Existing renderer filters by services, not region, genre or platform. Extend taxonomy, query and UI to fulfil F38 before publishing it. Validate “66 launches”: 66 workbook entries include events, announcements and distinct campaign phases, and may not all become published launches. |
@@ -138,7 +152,7 @@ Global caseStudy
   existing default title/description/casesPageBuilder
   optional siteContent[]
     channel (unique within this language document)
-    title, summary, hero selection, SEO, optional site slug
+    title, summary, hero selection, SEO
     bodyMode: inherit | custom
     casesPageBuilder[] (the site's complete ordered composition)
 ```
@@ -147,11 +161,15 @@ The v4 Renaissance rewrite lives in the Renaissance edition. The current default
 
 Use one resolved case contract for detail pages, list cards, related cases, metadata, structured data, route lookup and sitemap entries. Resolve the site edition once. Preserve the global `_id` for relationships. Do not scatter fallback logic across components.
 
+Keep existing shared slugs in the first implementation. Edition-specific slugs are deferred until an actual URL requirement justifies collision validation, preview resolver changes and additional redirects. The rewrite can use a different title without changing the campaign's route. Required title/summary fields reject invalid empty overrides; optional fields must distinguish inherit from intentional removal.
+
 Use an explicit body mode, not per-block merge-by-index or `customBody.length ? customBody : sharedBody`: an intentionally empty/hidden section must not resurrect old copy. A custom edition uses its own complete block sequence; it does not duplicate the campaign entity. Validate supported blocks and required content before publication. Keep source facts and campaign scope traceable when different sites highlight different results.
 
 Initial site editions can use the existing four case blocks. Add a Renaissance-specific block only for an actual content need, such as an attributed quote. Do not allow the full general page-builder registry inside a case without matching schema, query and renderer support.
 
 This minimal model still publishes the global Sanity document as one unit. If separate editorial teams later need independent draft/publish cycles, move site editions into `casePresentation` documents referencing the same global case. That separates editorial lifecycle without duplicating campaigns. It is not required merely to allow different wording now.
+
+Limit the first Website content implementation to cases. Services, people and logos use the site-owned composition/presentation described below; a generic channel-edition framework across every global type is not needed for this rewrite.
 
 ### Services: allow different granularity
 
@@ -176,6 +194,30 @@ The nine logos in Origins are different: they are already page-local `renaissanc
 Keep canonical client records. Let a Renaissance-owned reusable logo collection select clients and order, with optional local artwork/display-name overrides. An item would contain `client` reference, optional `logoOverride`, optional `displayName`, and alt text. Resolve omitted artwork from the client record. Use an inline collection for a one-off page; use a reusable Renaissance collection where Home, Clients and Origins need the same selection. Do not duplicate client entities to get white logos or different artwork.
 
 A page's manual selection never grants publication permission automatically. Enforce channel/language eligibility in the picker, validation and query. The current implementation does not consistently do this; see verification below.
+
+### Supplied client-logo library — inspected 19 September 2026
+
+Source: `/Users/martin/Downloads/Logos/`. The user identifies these as Renaissance client logos. All 129 files decode as RGB JPEGs, total 1,701,586 bytes, with no byte-identical duplicates. Their longest side is at most 200 pixels; 59 are 200 × 200. The images have opaque backgrounds and varied built-in whitespace. Contact sheets were visually reviewed; filenames are input labels, not guaranteed canonical client names or instructions.
+
+| Mapping / asset issue | Planned handling |
+| --- | --- |
+| `GSC_Game_World.jpg` | Exact published English client-name match: `bf0e4443-5cd6-40c0-9422-f0a15a4195c5`, currently assigned to 1SP. Reuse the identity, add Renaissance assignment in draft and keep supplied Renaissance artwork in the collection override. |
+| `Tencent_Games.jpg` / existing Tencent | Candidate relationship with `2295e840-8019-443f-8b17-7d347d505ccd`; confirm whether the collection represents the same identity or a distinct brand before reuse. |
+| `Amazon_Kids.jpg` / existing Amazon | Sub-brand is not automatically the parent client `7442fb54-ca44-4880-ba04-bab0531fe77b`. Resolve identity explicitly; do not overwrite the Amazon name or logo. |
+| Other source names | No other exact normalised match among the 26 currently published client records. Check drafts, aliases and campaign relationships before creating genuinely new global `client` documents assigned only to Renaissance. Do not infer that every unmatched filename requires a new document. |
+| `Wired.jpg` | Visually appears to be a small photograph/graphic rather than a clean wordmark. Keep it in the import manifest as an artwork-review exception, not a guessed replacement logo. |
+| `Limit_Break.jpg` | Visible artwork reads “Limit Break Mentorship”. Verify that this is the intended client identity/artwork before displaying it. Other valid logos can proceed independently. |
+| Existing five Renaissance carousel clients | None has an exact filename match in this delivery. Use the supplied library as the new selection source; retain existing global records and references used elsewhere. Absence from this folder is not a deletion instruction. |
+
+Implementation rules:
+
+1. Preserve originals and record filename, SHA-256, dimensions, chosen display name, matched/new client identity, Cloudinary asset ID, collection membership/order and review status in an import manifest. All 129 files must be accounted for, including held artwork. Keep a local original-file copy beside migration recovery material; the earlier dataset export does not include these files or future Cloudinary uploads.
+2. Use the existing Cloudinary media workflow and `cloudinary.asset` contract. Upload usable supplied originals to a Renaissance-specific folder with deterministic IDs/checksums so re-running the import reuses assets. Do not replace a shared client's canonical logo with lower-resolution or different local artwork. No local `/Downloads/` paths go into CMS content.
+3. Implement one scoped `renaissanceClientCollection` document type, following the existing Renaissance shared-content pattern. Collections own ordered items with a global `client` reference, optional `logoOverride`, optional `displayName` and alt text. Pages can select different collections/subsets for Home, Clients and Origins. Existing `selectedClients` arrays remain compatible; the new collection path is optional and channel/language validated.
+4. Use a curated subset in the existing homepage swap grid; use a browsable full roster on Clients, alphabetically ordered unless editorial order is supplied. Origins remains a deliberate historical selection. Referencing one reusable collection must not force all three surfaces to display all 129 logos.
+5. Preserve aspect ratios, original brand colours and reasonable display size; use a consistent light logo area for these opaque JPEGs. Do not invert the entire JPEG, stretch, enlarge it into hero artwork or fabricate vector/transparent versions. Disable the optional grayscale treatment for this supplied colour set. Verify optical size, contrast, mobile layout and lazy loading; flag originals too small for the selected slot. Higher-resolution versions are an improvement, not a blanket prerequisite for draft composition.
+
+These files are client proof, not award assets. They do not resolve the missing award names/years/status or the rewrite's factual questions.
 
 ### Awards: already Renaissance-only
 
@@ -256,11 +298,12 @@ These are workbook-reported old-site findings, not newly verified live defects. 
 | Case prose | Fix the Renaissance `headlineChallenge` presentation: it currently renders the description as a large H2 and the title as H3. Use H2 for the section title and readable paragraph text for the description. Ensure long results support paragraphs/line breaks without clipping. |
 | Case quotes | Optional attributed quote within Results, especially F155. Keep it out of numeric metrics. |
 | Case discovery | Populate real campaign region/genre/platform data; extend the existing gallery/query for the promised region filter and genre/platform search. Do not relabel service tags as regions. |
+| Client proof | Add a scoped reusable client collection with artwork overrides, optional collection reference on the existing logo block and a Renaissance grid presentation for Clients. Keep the existing homepage swap presentation and legacy references compatible. |
 | Contact / registration | Keep one canonical destination; add intent handling and needed creator/media inputs plus verified processing. Current form's `website` field is a hidden honeypot, not a creator-channel URL: use a separate field. |
 | Footer | Optional Renaissance legal text, queried from footer settings and rendered in the legal area. |
-| Conditional shared-case override | Only if a confirmed existing global campaign needs Renaissance-specific narrative; do not duplicate the case or change other channels' text. |
+| Case website editions | Implement the agreed optional channel-edition tab and resolver first; populate it for confirmed shared campaigns and retain defaults elsewhere. Defer custom slugs and independent publishing documents. |
 
-No new homepage renderer or broad replacement block library is needed. For every schema extension, update schema, generated/shared types, GROQ projection, renderer, stored schema and Studio together. Keep defaults backward-compatible and site-specific presentation in `apps/renaissance-web`.
+No new homepage renderer or broad replacement block library is needed. For every schema extension, update schema, generated/shared types, GROQ projection, renderer and local Studio together. Stored-schema and hosted-Studio updates belong to a later release only when those consumers are needed. Keep defaults backward-compatible and site-specific presentation in `apps/renaissance-web`.
 
 Update the Renaissance design/component documentation to remove assumptions about six services and record the new copy authority. Update homepage/contact fallbacks and relevant component defaults so old copy cannot reappear when the CMS document is absent. Preserve intentional empty values instead of restoring superseded text through hardcoded defaults.
 
@@ -283,13 +326,13 @@ These are bounded publication questions; none blocks planning or preparation of 
 
 ## Execution sequence
 
-1. **Verify the implementation target.** Production backup is done. Check deployed Renaissance preview and Studio configuration, inventory current revisions/drafts and preserve other channels' outputs as the regression baseline. If working against a different dataset, create its own backup before writes. Do not switch environments merely to match an earlier assumption.
+1. **Start and verify the local workspace.** The project/dataset selection is confirmed and production backup is complete. Start root Studio and Renaissance locally; verify the signed-in editing and draft-preview flow against production. Refresh affected-document snapshots/revisions and preserve other channels' outputs as the regression baseline. No deployment or dataset switch is required.
 2. **Implement the case Website content tab.** Add the optional channel-edition schema, types and editor controls. Keep existing root content as the shared default. Provide explicit inherit/custom behaviour, a copy-from-shared action and reset-to-shared action. A custom body owns the entire ordered case-block array. Maintain one global case identity and existing relationships.
-3. **Resolve editions consistently and close mapping gaps.** Use one channel/language-aware case contract for routes, detail bodies, listings, related cases, metadata, structured data and sitemaps. Preserve `resultsMetrics.fullWidth`. Validate case block support and prevent cross-channel copy changes. Repair Smart People promotion/language handling and client-logo picker/query scoping before using those paths in the rewrite. Cover inheritance, explicit empty values, field preservation and other-channel isolation with focused tests.
-4. **Prove the model with a shared-case pilot.** Reconcile the existing STALKER 2 campaign and prepare a Renaissance draft edition using v4 copy. Preview the same global identity in Renaissance and 1SP/MSM: Renaissance shows its own narrative, other channels retain theirs. Verify editor controls, list/SEO consistency, links, desktop/mobile layout and draft behaviour. This is the first concrete review milestone; do not bulk-import before it works.
-5. **Implement Renaissance proof and copy support.** Curate client-logo collections with global references and optional local artwork; reuse global people in selected portrait presentations. Extend the existing Renaissance-only awards block with prose and accurate award labels. Adjust the four-service layout, long case prose/quotes, Contact H1, promised case discovery and registration handling. Preserve the current visual system and media where appropriate.
+3. **Resolve editions consistently and close case mapping gaps.** Use one channel/language-aware case contract for routes, detail bodies, listings, related cases, metadata, structured data and sitemaps. Preserve `resultsMetrics.fullWidth`. Validate case block support, draft preview and other-channel isolation. Cover inheritance, explicit empty values and field preservation with focused tests. Preserve shared slugs for this phase.
+4. **Prove the model with a shared-case pilot.** Reconcile the existing STALKER 2 campaign and prepare a Renaissance draft edition using v4 copy. Preview the same global identity locally in Renaissance and 1SP/MSM: Renaissance shows its own narrative, other channels retain theirs. Verify editor controls, list/SEO consistency, links, desktop/mobile layout and draft-only visibility. This is the first concrete review milestone; do not publish the pilot or bulk-import before it works.
+5. **Implement Renaissance proof and copy support.** Import the usable supplied logos through Cloudinary, reconcile client identities and create scoped collection drafts with local artwork overrides. Verify homepage subset and Clients roster rendering. Fix logo picker/query eligibility and Smart People promotion/language handling before using those paths. Reuse global people in selected portrait presentations. Extend the existing Renaissance-only awards block with prose and accurate award labels. Adjust the four-service layout, long case prose/quotes, Contact H1, promised case discovery and registration handling. Preserve the current visual system and media where appropriate.
 6. **Map and compose the rewritten site as drafts.** Create the row-level manifest with source cell, global identity, site edition, destination block key/field and editorial status. Compose Home, Services, About, Clients, Contact with registration, and Cases index. Migrate cases in batches after checking campaign identity, assets and references; include Romeo's two campaigns, Autonauts and an intro-only case as additional template checks. Preserve exact F copy and identify derived summaries separately. Use revision-guarded, idempotent patches that respect existing drafts. Resolve factual questions and legacy redirect mappings without inventing missing content.
-7. **Verify and release separately.** Check all source rows, CMS/fallback paths, responsive rendering, contact/registration, redirects, canonicals, sitemap, robots and preview non-indexability. Run Renaissance build plus 1SP and affected-channel checks for shared changes. Review exact content changes before publishing the corresponding documents and deploying schema/Studio/frontend. Production/domain/indexability changes remain a separate release decision.
+7. **Complete local review and prepare release.** Check all source rows and logo manifest entries, CMS/fallback paths, responsive rendering, contact/registration, redirects, canonicals, sitemap, robots and draft isolation. Run Renaissance build plus 1SP and affected-channel checks for shared changes. Review the saved drafts, full shared-document diffs and local UI. Publishing content or deploying frontend/Studio/stored schema is a later release step; none is required to complete the local implementation review.
 
 The immediate implementation deliverable is the channel-edition tab, its shared resolver and one verified shared-case preview. Completing the entire 66-entry rewrite is the subsequent content phase.
 
@@ -299,6 +342,9 @@ The immediate implementation deliverable is the channel-edition tab, its shared 
 - Cases without a site edition retain existing behaviour. Custom editions never unexpectedly inherit old body blocks; editor copy/reset actions have clear results.
 - Site editions are used consistently by cards, detail pages, metadata, structured data, route lookup and sitemaps.
 - Existing draft content survives migration; a channel-specific change does not overwrite another channel's fields.
+- Local Studio and Renaissance both use production; authenticated preview shows the pilot draft while ordinary requests and sitemaps exclude draft-only publication assignments. No publishing is used as a preview workaround.
+- All 129 supplied logos appear in the import manifest as matched, created or explicitly held for artwork/identity review. Canonical shared logos remain intact; Home and Clients resolve Renaissance collection artwork. Every displayed client passes channel/language checks.
+- The Clients page exposes the roster without relying solely on randomly rotating slots. Logos preserve aspect ratio and remain legible without oversized low-resolution rendering.
 - Every workbook row 2–171 is accounted for as mapped copy, derived/adapted placement, or editorial exception; F27 never renders publicly.
 - Full source copy survives extraction into fields; long paragraphs are not silently truncated or overwritten by legacy defaults.
 - Homepage has the four v4 core services, relevant media and no residual “Six services” claim.
@@ -310,7 +356,7 @@ The immediate implementation deliverable is the channel-edition tab, its shared 
 - Contact and registration receive the correct audience intent, save/process successfully and display appropriate success/error states.
 - Verify CMS and fallback home/contact paths, `/sitemap.xml`, `/robots.txt`, canonical URLs, locale-free routing, redirect targets and preview non-indexability.
 - Run Renaissance build and focused tests for changed behaviour; shared platform/schema/query changes also require the existing 1SP build and affected-channel regression checks.
-- Re-query saved/published documents and verify the deployed preview separately. A successful build alone is not content or publication verification.
+- Re-query saved drafts and published baselines separately and verify the local authenticated preview. Hosted deployment verification is deferred to the release phase. A successful build alone is not content or publication verification.
 
 ## Source-code references
 

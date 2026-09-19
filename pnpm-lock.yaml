@@ -591,6 +591,9 @@ importers:
 
   packages/sanity-schema:
     dependencies:
+      '@1sp/site-config':
+        specifier: workspace:*
+        version: link:../site-config
       '@phosphor-icons/react':
         specifier: ^2.1.10
         version: 2.1.10(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -619,6 +622,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      motion:
+        specifier: ^12
+        version: 12.42.2(@emotion/is-prop-valid@1.4.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react:
         specifier: ^18 || ^19
         version: 19.2.7
