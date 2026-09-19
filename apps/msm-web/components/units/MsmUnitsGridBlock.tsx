@@ -12,6 +12,7 @@ type MsmUnitsGridBlockProps = {
   selectedUnits?: UnitReference[];
   language?: string;
   channel?: string;
+  embedded?: boolean;
 };
 
 export default async function MsmUnitsGridBlock({
@@ -22,6 +23,7 @@ export default async function MsmUnitsGridBlock({
   selectedUnits = [],
   language = "en",
   channel = "msmWeb",
+  embedded = false,
 }: MsmUnitsGridBlockProps) {
   if (channel !== "msmWeb") return null;
 
@@ -40,6 +42,7 @@ export default async function MsmUnitsGridBlock({
       intro={intro}
       language={language}
       units={units as MsmUnitSummary[]}
+      embedded={embedded}
     />
   );
 }

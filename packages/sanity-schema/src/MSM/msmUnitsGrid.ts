@@ -7,7 +7,14 @@ export default defineType({
   fields: [
     defineField({ name: 'eyebrow', title: 'Eyebrow', type: 'string', initialValue: 'OUR UNITS' }),
     defineField({ name: 'headline', title: 'Headline', type: 'string', validation: (Rule) => Rule.required() }),
-    defineField({ name: 'intro', title: 'Introduction', type: 'text', rows: 4, validation: (Rule) => Rule.required() }),
+    defineField({ name: 'intro', title: 'Introduction', type: 'text', rows: 4 }),
+    defineField({
+      name: 'embedded',
+      title: 'Use as a section within a page',
+      description: 'Enable below a page hero. Disable when this block is the page introduction.',
+      type: 'boolean',
+      initialValue: true,
+    }),
     defineField({
       name: 'selectionMode',
       title: 'Unit Selection',

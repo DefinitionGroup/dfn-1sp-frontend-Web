@@ -30,23 +30,6 @@ interface IntertitleCTAProps {
   hideFromNav?: boolean;
 }
 
-// MSM brand accents readable on the dark paper background (purple/maroon
-// excluded for contrast). The pick is hashed from the content so it feels
-// random across the site but stays stable between server and client render.
-const BRAND_ACCENTS = [
-  "var(--color-msm-cyan)",
-  "var(--color-msm-magenta)",
-  "var(--color-msm-amber)",
-  "var(--color-msm-red)",
-  "var(--color-msm-teal)",
-];
-
-function pickAccent(seed: string): string {
-  let h = 7;
-  for (const ch of seed) h = (h * 31 + ch.charCodeAt(0)) | 0;
-  return BRAND_ACCENTS[Math.abs(h) % BRAND_ACCENTS.length];
-}
-
 const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   title,
   subtitle,
@@ -83,7 +66,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   };
 
   const titleClass = `headline-display text-neutral-50 text-balance ${isLeftAligned ? "text-left" : "text-center"}`;
-  const subtitleClass = `mt-5 text-2xl md:text-4xl font-semibold leading-snug ${isLeftAligned ? "text-left" : "text-center"}`;
+  const subtitleClass = `mt-5 text-xl md:text-2xl text-white/70 leading-relaxed ${isLeftAligned ? "text-left" : "text-center"}`;
   const buttonContainerClass = `w-fit min-w-40 ${isLeftAligned ? "self-start" : "mx-auto"} mt-10 block`;
 
   // Resolve CTA link and props
@@ -121,7 +104,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
         <div className={`z-1 py-20 md:py-28 col-span-12 px-[var(--container-padding)] container mx-auto row-start-1 grid-cols-12 ${paddingTopClass}`}>
           <StaggeredSlideUp {...defaultStaggeredProps}>
             {hasVisibleText(title) ? <h3 className={titleClass}>{title}</h3> : null}
-            <p className={subtitleClass} style={{ color: pickAccent(subtitle || title || "") }}>
+            <p className={subtitleClass}>
               {subtitle}
             </p>
           </StaggeredSlideUp>

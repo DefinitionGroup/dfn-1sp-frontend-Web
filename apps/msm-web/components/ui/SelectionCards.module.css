@@ -1,0 +1,35 @@
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2rem, 4vw, 4rem); }
+.card { min-width: 0; }
+.cardContent { height: 100%; }
+.link, .body { display: flex; flex-direction: column; height: 100%; padding: clamp(1rem, 2vw, 1.75rem); }
+.media { position: relative; display: grid; place-items: center; aspect-ratio: 16 / 10; overflow: hidden; background: var(--color-msm-surface); }
+.image { object-fit: cover; transition: transform 480ms var(--ease-vast-bezier); }
+.copy { display: flex; flex: 1; flex-direction: column; padding-top: clamp(1.5rem, 3vw, 2.5rem); }
+.titleRow { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.title { font-size: clamp(1.5rem, 2.4vw, 2.5rem); line-height: 1.15; letter-spacing: -0.025em; }
+.arrow { color: var(--color-msm-cyan); flex-shrink: 0; align-self: center; transition: transform 180ms ease-out; }
+.claim { margin-top: 1rem; max-width: 42ch; font-size: 1rem; line-height: 1.6; color: rgb(244 244 244 / 70%); }
+.action { margin-top: auto; padding-top: 2rem; font-size: 0.875rem; color: rgb(244 244 244 / 80%); }
+.link:focus-visible { outline-offset: 6px; }
+@media (hover: hover) and (pointer: fine) {
+  .link:hover .image { transform: scale(1.035); }
+  .link:hover .arrow { transform: translate(3px, -3px); }
+  .link:hover .action { color: var(--color-msm-cyan); }
+}
+@media (max-width: 767px) { .grid { grid-template-columns: 1fr; gap: 2rem; } }
+@media (prefers-reduced-motion: reduce) {
+  .image, .arrow { transition: none; }
+  .link:hover .image, .link:hover .arrow { transform: none; }
+}
+.sectionLayout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; align-items: start; }
+.sectionContent { min-width: 0; }
+@media (min-width: 768px) {
+  .sectionLayout { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  .sectionLayout > :first-child { grid-column: span 3; }
+  .sectionContent { grid-column: 4 / -1; }
+}
+@media (min-width: 1024px) {
+  .sectionLayout > :first-child { grid-column: span 2; }
+  .sectionContent { grid-column: 3 / -1; }
+}
+@media (min-width: 768px) and (max-width: 1023px) { .sectionContent .grid { grid-template-columns: 1fr; } }

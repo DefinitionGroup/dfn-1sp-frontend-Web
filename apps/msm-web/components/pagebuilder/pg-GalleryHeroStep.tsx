@@ -77,7 +77,7 @@ function GalleryHeroStepComponent(props: Props) {
         <div className="grid grid-cols-4 iphone-landscape:grid-cols-12 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 pt-16 sm:pt-24 lg:pt-32 pb-6 sm:pb-8 lg:pb-12">
           {/* Badge — responsive positioning (reinstated, mirrors root) */}
           {(step as any).badge?.text && (
-            <div className="hidden md:block md:col-span-2 md:mb-0 iphone-landscape:!hidden">
+            <div className="hidden md:block md:col-span-3 lg:col-span-2 md:mb-0 iphone-landscape:!hidden">
               <Badgemodule
                 text={(step as any).badge.text ?? ""}
                 subtitle={(step as any).badge.subtitle ?? ""}
@@ -88,7 +88,7 @@ function GalleryHeroStepComponent(props: Props) {
             </div>
           )}
 
-          <div className={`col-span-4 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 sm:col-span-6 ${(step as any).badge?.text ? "md:col-span-10 md:col-start-3" : "md:col-span-12"}`}>
+          <div className={`col-span-4 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 sm:col-span-6 ${(step as any).badge?.text ? "md:col-span-9 md:col-start-4 lg:col-span-10 lg:col-start-3" : "md:col-span-12"}`}>
             {hasVisibleText(step.typewriterText) && (
               <h2 className="headline-display mb-4 text-neutral-50 md:mb-2">
                 <Typewriter

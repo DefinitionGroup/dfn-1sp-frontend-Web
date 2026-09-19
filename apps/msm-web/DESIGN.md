@@ -15,20 +15,26 @@ typography:
   display:
     fontFamily: "AspektaVF, system-ui, sans-serif"
     fontSize: "clamp(2.25rem, 1.2rem + 3.5vw, 4.5rem)"
-    fontWeight: 700
+    fontWeight: 500
     lineHeight: 1.18
     letterSpacing: "-0.02em"
+  title:
+    fontFamily: "AspektaVF, system-ui, sans-serif"
+    fontSize: "clamp(1.75rem, 1rem + 2.7vw, 3.5rem)"
+    fontWeight: 500
+    lineHeight: 1.12
+    letterSpacing: "-0.025em"
   body:
     fontFamily: "AspektaVF, system-ui, sans-serif"
-    fontSize: "1rem"
-    fontWeight: 400
-    lineHeight: 1.5
+    fontSize: "clamp(1rem, 0.92rem + 0.35vw, 1.25rem)"
+    fontWeight: 500
+    lineHeight: 1.65
   label:
     fontFamily: "AspektaVF, system-ui, sans-serif"
-    fontSize: "0.64rem"
-    fontWeight: 700
-    lineHeight: 1.2
-    letterSpacing: "0.14em"
+    fontSize: "0.6875rem"
+    fontWeight: 500
+    lineHeight: 1.45
+    letterSpacing: "0.12em"
 rounded:
   none: "0"
 spacing:
@@ -36,17 +42,22 @@ spacing:
   sm: "1.6rem"
   md: "3.2rem"
   xxl: "6.4rem"
+  section: "clamp(4.5rem, 8vw, 8rem)"
   container: "clamp(1.5rem, 4vw, 4rem)"
 components:
-  angular-sector:
-    backgroundColor: "{colors.surface-black}"
+  selection-card:
     textColor: "{colors.ink-white}"
     rounded: "{rounded.none}"
-    padding: "1.5rem"
-  label-signal:
-    textColor: "{colors.signal-cyan}"
-    typography: "{typography.label}"
+    padding: "clamp(1rem, 2vw, 1.75rem)"
+  mobile-navigation:
+    backgroundColor: "rgb(10 12 13 / 90%)"
+    textColor: "{colors.ink-white}"
     rounded: "{rounded.none}"
+    padding: "0 1.25rem"
+  badge:
+    textColor: "{colors.ink-white}"
+    rounded: "{rounded.none}"
+    padding: "1.25rem"
 ---
 
 # Design System: MSM.digital
@@ -55,111 +66,128 @@ components:
 
 **Creative North Star: "Vast Space"**
 
-MSM.digital feels precise, expansive, and technically alive. Full-bleed media creates atmosphere; typography and hairline divisions establish order; the living mosaic mark provides the unmistakable brand signal. The composition is dark-first without becoming generic dark mode because the cube palette, angular geometry, and exact motion grammar carry the identity.
+MSM.digital feels precise, expansive, and technically alive. The existing homepage is the visual authority: full-bleed real media, Aspekta, angular geometry, hairlines, the living mosaic mark, and MosaicButton establish its identity for a gaming and marketing audience. Preserve the existing hero composition and effects.
 
-The interface is one continuous field rather than a collection of floating cards. Content is divided by hard edges, scale, and space. Motion arrives quickly and lands exactly, giving the surface presence without turning it into spectacle.
+The interface is one continuous field. One Medium weight creates hierarchy through scale, spacing, line height, and contrast. Linked Unit cards share the badge drawing signature; badges drag two staggered dotted selections in opposing diagonals, then retain content and four small homepage-style crosses with very dim dotted borders. This is a consolidation of the incumbent world, not a new visual concept.
 
 **Key Characteristics:**
 
-- Full-bleed photographic planes with controlled darkening for legibility.
-- Sharp, zero-radius geometry and one-pixel structural divisions.
-- One unified hero display token plus a disciplined section-title scale.
-- MSM cube colors used as signals, not broad decorative washes.
-- Ambient mosaic motion and precise reveal transitions.
+- Full-bleed real media with dark scrims for readable text.
+- Square corners, hairline divisions, and exact corner crosses.
+- Aspekta Medium throughout MSM-owned text.
+- Cube colors as focused brand and interaction signals.
+- Existing mosaic effects and purposeful, interruptible transitions.
 
 ## Colors
 
-The near-black field and warm white ink hold the composition while the cube palette appears in small, high-salience signals.
+Near-black fields and light ink support real media; the cube palette supplies concentrated color.
 
 ### Primary
 
-- **Signal Cyan** (`#03b8d4`): Active labels, focus signals, selection, and the primary cool facet of the MSM mark.
+- **Signal Cyan:** Selection, keyboard focus, active Unit indicators, and the cool facet of the mark.
 
 ### Secondary
 
-- **Signal Magenta** (`#d10dab`): Secondary mosaic accent and controlled interactive emphasis.
-- **Signal Orange** (`#ed4033`): Warm counterpoint inside the mark and occasional authored accent.
-- **Signal Amber** (`#f5991c`): Warm facet color reserved for the mosaic family.
+- **Signal Teal, Magenta, Red, Orange, and Amber:** The incumbent mosaic palette. Preserve its authored facet combinations rather than recoloring the identity.
 
 ### Neutral
 
-- **Paper Black** (`#0a0c0d`): Default page field.
-- **Surface Black** (`#14181a`): Tonal separation for sections and interactive media sectors.
-- **Ink White** (`#f4f4f4`): Primary text and high-contrast marks.
+- **Paper Black:** The page field.
+- **Surface Black:** Media fallback and tonal depth.
+- **Ink White:** Primary text and high-contrast marks.
 
-**The Signal Rule.** Cube colors are scarce signals. Do not turn them into full-section gradients or generic decorative backgrounds.
+**The Signal Rule.** Use cube colors for the mark, mosaic CTA, focus, and active state. Preserve authored imagery and hero effects; do not spread those colors into unrelated decorative surfaces.
 
 ## Typography
 
 **Display Font:** AspektaVF (with system sans fallback)
 **Body Font:** AspektaVF (with system sans fallback)
 
-**Character:** A single variable sans family creates cohesion through weight, scale, and tracking rather than ornamental font pairing. Headlines are confident, sentence case, and never italic.
+**Character:** One family and one Medium weight give MSM a coherent voice. Scale, line height, reading measure, and space create emphasis; headlines remain sentence case and non-italic.
 
 ### Hierarchy
 
-- **Display** (700, `clamp(2.25rem, 1.2rem + 3.5vw, 4.5rem)`, 1.18): Heroes and principal editorial displays use the `headline-display` utility.
-- **Title** (600, 1.875–3rem, compact): Unit names and structural section titles.
-- **Body** (400, 1–1.25rem, 1.5–1.75): Narrative copy, normally limited to 65–75 characters per line.
-- **Label** (700, 0.64rem, 0.14em, uppercase): Navigation microcopy, descriptors, and technical wayfinding.
+- **Display:** The fluid display role in the frontmatter serves heroes and principal headings.
+- **Title:** The smaller fluid title role serves the selected Unit and supporting section headings. The selected Unit resolves to 1.75rem on mobile.
+- **Body:** Fluid narrative copy uses the frontmatter body role and a maximum measure of 68ch; selected-Unit copy narrows further for the media composition.
+- **Label:** The compact uppercase role serves actual descriptors, navigation context, and badge subtitles. It is not permission to add decorative eyebrows above headings.
 
-**The Display Discipline Rule.** Use `headline-display` for heroes and principal displays; use the established title scale for section headings instead of inventing local sizes.
+**The One Weight Rule.** MSM-owned text uses Aspekta Medium (500), including strong and bold markup. Embedded canonical 1SP groups retain their presentation boundary; do not restyle their weight as a side effect.
+
+**The Display Discipline Rule.** Reuse the display, title, copy, and label roles. Do not add local bold/normal contrasts or competing display faces.
 
 ## Layout
 
-The page is a continuous 12-column field with fluid horizontal padding (`clamp(1.5rem, 4vw, 4rem)`). Promotional heroes are full-bleed visual planes. Below them, hard-edged sectors and asymmetric text columns create rhythm without card containers.
+Units and Services card blocks share `SelectionSequence`: one in-view trigger starts the badge at 0ms and cards at 200ms, 400ms, 600ms, and so on in document order. `SelectionFrame` owns the 200ms interval centrally; never reset the index per row. Reduced-motion and immediate keyboard-focus visibility remain supported.
 
-Desktop grids commonly split into two or twelve columns. Mobile collapses to one vertical sequence without losing full-bleed media or structural borders. Use generous section separation, compact internal groups, and no horizontal overflow.
+Homepage Units placement is authored in CMS content using `msmUnitsGrid`; the homepage never inserts it automatically. Use `embedded: true` below a hero for section-level headings. The English homepage places it between Services and Team. Editors can reorder or remove the block, and choose all active Units or a manual selection. Introduction copy is optional.
+
+Use a continuous full-width field with the fluid container and section spacing tokens. Unit detail content uses an asymmetric twelve-column layout at desktop, then one vertical sequence on mobile. Reading measure remains constrained inside generous sections.
+
+Units use a two-column grid of individually linked cards on desktop and a single column below 768px, on both the homepage and Units page. Each card contains a real 16:10 image, Unit name, claim, directional arrow, and exploration cue. Every card is one navigation target. Frames have square corners, no shadow, small crosses, and a very dim dotted perimeter. The grid follows a compact brand-and-heading introduction, replacing the former shared image stage and selector strip.
+
+Navigation changes at 768px: a fixed angular mobile bar with a 64px minimum height and 44px minimum-height links replaces the preserved desktop navigation. Real media remains full-bleed; controls and text stay within the container rhythm.
 
 ## Elevation & Depth
 
-Content planes are flat by default and do not use resting card shadows. Depth comes from photographic planes, tonal black surfaces, dark overlays, scale, clip reveals, and foreground/background motion. The sacred MosaicButton is the explicit exception: its `0 10px 28px rgba(0,0,0,0.45)` shadow lifts the signature CTA above the field.
+Content planes stay flat at rest. Depth comes from photographs, video, dark scrims, tonal surfaces, crop movement, and the existing refractive desktop navigation. MosaicButton retains its signature shadow, recorded in the sidecar; it is not a template for card shadows.
 
-**The Structural Depth Rule.** Prefer a one-pixel divider, tonal shift, or media crop. The MosaicButton shadow is the deliberate signature exception.
+**The Structural Depth Rule.** Use media, tonal separation, and hairlines for structure. Preserve signature button and desktop glass effects without copying them onto ordinary sections.
 
 ## Shapes
 
-All visible corners are square. Radius tokens resolve to zero and a global safeguard strips incidental rounded utilities. Geometry is built from rectangular planes, hairline borders, the triangular mosaic lattice, and occasional precise clip-path reveals.
+Visible corners are square. Radius tokens and the global safeguard resolve to zero. Rectangular media planes, one-pixel rules, the triangular mosaic lattice, and precise cross marks supply the form language.
 
 ## Components
 
 ### Mosaic Buttons
 
-- **Shape:** Rectangular, zero radius.
-- **Primary:** High-contrast label over the animated triangular mosaic lattice.
-- **Hover / Focus:** Facets respond in a localized wave; keyboard focus uses the cyan signal ring.
-- **Rule:** Reuse `Button2` / `MosaicButton`; do not approximate the signature CTA.
+Reuse Button2/MosaicButton for signature CTAs. Its rectangular lattice, ambient facets, hover response, keyboard treatment, and authored shadow remain intact. The Medium label follows the MSM weight contract. A sidecar preview cannot replace the production mosaic mechanism.
 
-### Angular Media Sectors
+### Selection Cards
 
-- **Corner Style:** Zero radius.
-- **Background:** Paper Black or Surface Black with a full-bleed image.
-- **Depth:** Dark overlays and crop movement, never a resting shadow.
-- **Border:** One-pixel white at low opacity.
-- **Internal Padding:** Fluid container token.
+`SelectionFrame` is the shared MSM primitive for cards and badges. It owns in-view detection, two diagonal dotted rectangle draws, moving small crosses, content reveal, and the faint resting border. Reuse this component for future cards rather than copying animation markup. `SelectionCards.module.css` supplies the shared Units and Services grid, media proportions, spacing, and type. Service cards are informational articles with full descriptions and the existing section CTA; Unit cards are direct links. The Services section replaces the former rotating sticky stack with this regular responsive grid.
 
-### Navigation
+Each card triggers once at 15% visibility. The right-hand card is offset by 120ms, while each frame retains its internal 180ms diagonal stagger. Images and text fade into the completed frame. The two strokes settle at 16% opacity each (on top of a 45% stroke color), making a quiet persistent perimeter. Keyboard focus immediately reveals the link content; reduced motion renders the complete faint frame and content immediately. Mouse hover gently scales only the photograph and shifts the arrow; touch does not rely on hover.
 
-Navigation is a thin fixed layer over the visual field. Labels are compact and neutral; the colorful MSM mark is the brand anchor. Mobile reduces navigation density rather than introducing a separate rounded control language.
+### Framed Badge
+
+A single in-view trigger at 15% visibility runs once per mount. Two pairs of small monospace + glyphs match the homepage's `font-mono text-xs` corner markers (14px in the current MSM type scale). In the first pair, one cross anchors the top-left and the other drags to the bottom-right, pulling out a dotted selection rectangle. A second pair repeats the action from top-right to bottom-left, staggered by 180ms. The crosses translate with the moving corners and never scale.
+
+Each pair appears 80ms before its 480ms drag. The first drag runs from 80–560ms; the second from 260–740ms, both with the existing Vast bezier. Rectangle strokes remain 1px with rounded 1px/3px dots. Each border dims to 16% opacity over 160ms starting 40ms after its drag completes. Content fades in without moving or scaling from 740–980ms. The final state retains the four small crosses, content, and a very dim dotted border.
+
+Badges are always square (1:1) at every breakpoint. Small, medium, and large sizes cap at 10rem, 12rem, and 15rem, shrinking to fit their parent. The mark and copy remain vertically arranged; container-relative type, mark size, and padding fit the square. Badge content is positioned inside the square so it cannot stretch the frame. This badge-only constraint does not apply to content cards. Reduced motion skips both selections and immediately shows content plus four stationary crosses, with very dim dotted borders. Absolute decoration and clipped drag planes prevent layout shifts and horizontal overflow.
+
+### Navigation and Text Links
+
+The mobile bar uses a near-opaque Paper Black field, a fine bottom rule, a small MSM logo, and compact links. The active destination is cyan. Keep the existing desktop refractive navigation and its effects. MSM-owned interactive elements receive a cyan 2px focus outline with 5px offset.
+
+Unit cards are single direct links with a cyan SVG arrow. Hover moves the arrow diagonally over 180ms; the complete card is keyboard accessible and readable without hover.
 
 ### Animated MSM Mark
 
-The cube facets ambiently flip within the approved mark palette and return home. It is the placeholder identity for Units until an editorial Unit mark exists. Reduced-motion users receive the complete static mark.
+Preserve the approved animated cube mark. It represents Units until editorial Unit logos exist. Its reduced-motion state is complete and static; do not approximate the identity with arbitrary triangles.
+
+### Conditional Editorial Sections
+
+Render Cases and People only from actual Unit assignments. The inspected content currently provides four Units and no assigned Cases or leaders; this absence does not justify invented cards, names, or projects.
 
 ## Do's and Don'ts
 
 ### Do:
 
-- **Do** use full-bleed contextual imagery as the dominant visual anchor.
-- **Do** structure lists and grids with hard edges, hairline borders, and spacing.
-- **Do** use the animated MSM mark and mosaic CTA as signature brand moments.
-- **Do** preserve readable copy measures and strong light-on-dark contrast.
-- **Do** make reduced-motion states complete rather than empty.
+- **Do** preserve the existing homepage, real media, hero effects, mark, and mosaic CTA as visual authority.
+- **Do** use Medium text with scale, spacing, and contrast for hierarchy.
+- **Do** use square geometry, hairlines, and crosses with precise alignment.
+- **Do** keep Unit selection explicit, keyboard-accessible, and usable on mobile.
+- **Do** show complete static content immediately for reduced motion.
+- **Do** show editorial Cases and People only when actually assigned.
 
 ### Don't:
 
-- **Don't** introduce rounded cards, pills, floating media panels, or soft dashboard tiles.
-- **Don't** add generic purple-on-white gradients or ornamental glow effects.
-- **Don't** create a new display font, serif voice, or italic headline style.
-- **Don't** use cube colors as broad decoration; keep them as signals.
-- **Don't** replace the existing button or mark motion with a generic animation.
+- **Don't** introduce a new visual world, random concept seed, or external reference direction.
+- **Don't** add bold/normal weight variation to MSM-owned text.
+- **Don't** introduce rounded cards, pills, or floating media panels.
+- **Don't** add redundant eyebrows to identify an already named Unit or section.
+- **Don't** replace signature hero, button, or mark effects with generic approximations.
+- **Don't** invent imagery, Unit logos, Case assignments, or leadership content.

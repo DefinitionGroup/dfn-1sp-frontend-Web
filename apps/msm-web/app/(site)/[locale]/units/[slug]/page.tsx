@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getAllMsmUnitSlugs, getMsmUnitBySlug } from "@1sp/sanity-queries";
+import { getAllMsmUnitSlugs, getMsmUnitBySlug, getMsmUnits } from "@1sp/sanity-queries";
 import MsmSiteWrapper from "@msm/components/MsmSiteWrapper";
 import MsmUnitPage from "@msm/components/units/MsmUnitPage";
-import type { MsmUnitDetail } from "@msm/components/units/types";
+import type { MsmUnitDetail, MsmUnitSummary } from "@msm/components/units/types";
 import { JsonLdScript, generateBreadcrumbJsonLd } from "@/lib/structured-data";
 import { MSM_CANONICAL_URL as CANONICAL_URL } from "@msm/lib/site-url";
 
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function UnitDetailPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
   const language = locale || "en";
-  const unit = await getMsmUnitBySlug(slug, language);
+  const [unit, units] = await Promise.all([getMsmUnitBySlug(slug, language), getMsmUnits(language)]);
   if (!unit) notFound();
 
   return (
@@ -62,8 +62,8 @@ export default async function UnitDetailPage({ params }: { params: Promise<{ loc
           { name: unit.name, url: `${CANONICAL_URL}/units/${slug}` },
         ])}
       />
-      <div className="min-h-screen px-1 pt-2 md:px-2">
-        <MsmUnitPage unit={unit as MsmUnitDetail} language={language} />
+      <div className="min-h-screen">
+        <MsmUnitPage unit={unit as MsmUnitDetail} language={language} units={units as MsmUnitSummary[]} />
       </div>
     </MsmSiteWrapper>
   );

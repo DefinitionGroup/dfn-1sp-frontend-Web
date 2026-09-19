@@ -435,7 +435,7 @@ export default async function MsmSiteWrapper({
       >
         <NavColorProvider color={navColor}>
           {/* <PageWithMapVertical> */}
-            <div className="min-h-screen bg-msm-paper text-msm-ink">
+            <div className="msm-site min-h-screen bg-msm-paper text-msm-ink">
               <FrontNavOverlay
                 menuData={nav as NavbarMenu}
                 color={navColor}

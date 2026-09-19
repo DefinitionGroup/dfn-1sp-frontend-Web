@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
+import path from "node:path";
 import { getDeploymentHeaders } from "@1sp/utils/deployment-tier";
 
 const nextConfig: NextConfig = {
+  // Keep development file watching inside this monorepo. An unrelated
+  // lockfile above it otherwise makes Turbopack scan the entire home folder.
+  turbopack: { root: path.resolve(__dirname, "../..") },
   experimental: {
     externalDir: true,
   },

@@ -8,7 +8,7 @@ web
 
 ## Users
 
-Prospective clients and existing partners use MSM.digital to understand the agency's specialist expertise, inspect relevant work, meet the responsible leaders, and decide whether to start a conversation. MSM editors manage the site through the shared Sanity Studio.
+Gaming and marketing decision-makers, prospective clients, and existing partners use MSM.digital to understand the agency's specialist expertise, inspect relevant work, meet the responsible leaders, and decide whether to start a conversation. MSM editors manage the site through the shared Sanity Studio.
 
 ## Product Purpose
 

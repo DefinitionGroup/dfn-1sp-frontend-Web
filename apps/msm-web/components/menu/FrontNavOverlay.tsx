@@ -238,9 +238,25 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
   const itemClass = `text-xs leading-compress tracking-wide font-medium mr-8 inline-block `;
   const navGlassRadius = 32;
+  const mobileLinks: NonNullable<NavbarMenu["menuItems"]> = (menuData?.menuItems?.length ? menuData.menuItems : [
+    { _key: "cases", slug: "cases", title: "Cases" },
+    { _key: "services", slug: "services", title: "Services" },
+    { _key: "contact", slug: "contact", title: "Contact" },
+    { _key: "units", slug: "units", title: "Units" },
+  ]).filter((item) => item.slug &&
+    (!item.slug.includes("cases") || hasCaseStudies) &&
+    (!item.slug.includes("services") || hasServices));
 
   return (
     <>
+      <nav aria-label="Main navigation" className="fixed inset-x-0 top-0 z-[99999] flex min-h-16 items-center justify-between gap-2 border-b border-white/15 bg-msm-paper/90 px-5 text-msm-ink backdrop-blur-md md:hidden">
+        <Link href={locale === "en" ? "/" : `/${locale}`} aria-label="MSM.digital home" className="flex min-h-11 min-w-11 items-center">
+          <Image src={logoUrl} alt="" width={30} height={30} />
+        </Link>
+        <div className="flex items-center gap-3">
+          {mobileLinks.map((item) => <Link key={item._key} href={`${locale === "en" ? "" : `/${locale}`}/${item.slug}`} aria-current={pathname.replace(/^\/en/, "") === `/${item.slug}` ? "page" : undefined} className="flex min-h-11 items-center text-xs aria-[current=page]:text-msm-cyan">{item.displayName || item.title}</Link>)}
+        </div>
+      </nav>
       <nav
         ref={navRef}
         style={{ zIndex: 99999 }}

@@ -113,7 +113,7 @@ function ServicesHeroWithBadge({
         >
           {/* Badge Module — responsive positioning (reinstated, mirrors root) */}
           {badgeText && (
-            <div className="hidden md:block md:col-span-2 md:mb-0 md:sticky md:top-24 self-start iphone-landscape:!hidden">
+            <div className="hidden md:block md:col-span-3 lg:col-span-2 md:mb-0 md:sticky md:top-24 self-start iphone-landscape:!hidden">
               <Badgemodule
                 text={badgeText}
                 subtitle={badgeSubtitle || ""}
@@ -124,7 +124,7 @@ function ServicesHeroWithBadge({
             </div>
           )}
 
-          <div className={`col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 ${badgeText ? "md:col-span-10 md:col-start-3" : "md:col-span-12"}`}>
+          <div className={`col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 ${badgeText ? "md:col-span-9 md:col-start-4 lg:col-span-10 lg:col-start-3" : "md:col-span-12"}`}>
             <StaggeredSlideUp
               className="flex flex-col items-start justify-start gap-4"
               delay={0.0}
@@ -133,7 +133,7 @@ function ServicesHeroWithBadge({
               distance={80}
             >
               {hasVisibleText(title) ? (
-                <TitleTag className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-gray-100 max-w-2xl tracking-tighter leading-[0.9] mb-2 md:mb-4">
+                <TitleTag className="headline-display text-msm-ink max-w-4xl mb-2 md:mb-4">
                   {title}
                 </TitleTag>
               ) : null}

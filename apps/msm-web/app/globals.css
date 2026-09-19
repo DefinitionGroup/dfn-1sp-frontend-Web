@@ -27,7 +27,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-aspekta-vf), system-ui, sans-serif;
-  /* Legacy alias — `font-aspekta` utilities now resolve to Cooper Hewitt */
+  /* Legacy alias resolves to the same MSM variable face. */
   --font-aspekta: var(--font-aspekta-vf), system-ui, sans-serif;
 
   /* Default fallback */
@@ -310,7 +310,7 @@
 }
 
 /* ── MSM typography paradigm ──────────────────────────────────────
-   Headlines are ALWAYS: AspektaVF, BOLD, sentence case, one unified
+   Headlines are ALWAYS: AspektaVF, Medium, sentence case, one unified
    size (--headline-size, hero included), relaxed tracking. No serifs,
    no italics anywhere on this channel. Do not add text-* size classes
    next to this utility — the token owns the size. */
@@ -318,7 +318,7 @@
   font-family: var(--font-aspekta-vf), system-ui, sans-serif;
   font-size: var(--headline-size);
   letter-spacing: var(--headline-tracking);
-  font-weight: 700;
+  font-weight: var(--msm-type-weight, 500);
   /* --tw-leading makes the line-height win over any text-* utility */
   --tw-leading: 1.18;
   line-height: 1.18;
@@ -334,26 +334,6 @@
       system-ui,
       -apple-system,
       sans-serif;
-  }
-
-  /* Gradient Text Utilities */
-  .text-gradient-lime {
-    background: linear-gradient(135deg,
-        var(--color-brand-lime-400),
-        var(--color-brand-lime-600));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .text-gradient-rainbow {
-    background: linear-gradient(135deg,
-        var(--color-brand-lime-400),
-        var(--color-purple-500),
-        var(--color-blue-500));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
   }
 
   /* Animation Utilities */
@@ -676,3 +656,156 @@ video {
   -moz-appearance: none;
   appearance: none;
 }
+
+
+/* MSM presentation contract. One weight; hierarchy comes from scale and space.
+   Canonical embedded 1SP groups retain their own presentation boundary. */
+.msm-site {
+  --msm-type-weight: 500;
+  --msm-section-space: clamp(4.5rem, 8vw, 8rem);
+  font-weight: var(--msm-type-weight);
+}
+.msm-site :where(h1, h2, h3, h4, h5, h6, p, span, a, button, label, input, textarea, select, li, strong, b, em, div):not(:where([data-onesp-component-group], [data-onesp-component-group] *)) {
+  font-weight: var(--msm-type-weight);
+}
+.msm-site :where(h1, h2, h3, h4, h5, h6) {
+  text-wrap: balance;
+}
+.msm-label {
+  font-size: 0.6875rem;
+  line-height: 1.45;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.msm-title {
+  font-size: clamp(1.75rem, 1rem + 2.7vw, 3.5rem);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.msm-copy {
+  font-size: clamp(1rem, 0.92rem + 0.35vw, 1.25rem);
+  line-height: 1.65;
+  max-width: 68ch;
+}
+.msm-section {
+  padding: var(--msm-section-space) var(--container-padding);
+}
+.msm-site :where(a, button, input, textarea, select):focus-visible {
+  outline: 2px solid var(--color-msm-cyan);
+  outline-offset: 5px;
+}
+
+/* Two dotted selections. Each pair keeps one cross anchored while the other
+   drags the opposite corner; percentage transforms follow any badge size. */
+.msm-badge-selection {
+  --msm-badge-drag-start: calc(80ms + var(--msm-draw-offset, 0ms));
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+  overflow-clip-margin: 0.5rem;
+  pointer-events: none;
+  color: var(--color-msm-cyan);
+  opacity: 0;
+}
+.msm-badge-selection[data-origin="right"] { --msm-badge-drag-start: calc(260ms + var(--msm-draw-offset, 0ms)); }
+.msm-badge-frame {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  width: calc(100% - 1px);
+  height: calc(100% - 1px);
+  fill: none;
+  stroke: rgb(244 244 244 / 45%);
+  stroke-width: 1;
+  stroke-dasharray: 1 3;
+  stroke-linecap: round;
+  transform-origin: 0 0;
+  opacity: 0;
+}
+.msm-badge-selection[data-origin="right"] .msm-badge-frame { transform-origin: 100% 0; }
+.msm-badge-cross {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+.msm-badge-selection[data-origin="right"] .msm-badge-cross {
+  left: auto;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+.msm-badge-handle { position: absolute; inset: 0; transform: translate(100%, 100%); }
+.msm-badge-selection[data-origin="right"] .msm-badge-handle { transform: translate(-100%, 100%); }
+.msm-badge-content { opacity: 0; }
+.msm-badge[data-entered="true"] .msm-badge-selection {
+  animation: msm-badge-reveal 1ms linear calc(var(--msm-badge-drag-start) - 80ms) both;
+}
+.msm-badge[data-entered="true"] .msm-badge-frame {
+  animation: msm-selection-expand 480ms var(--ease-vast-bezier) var(--msm-badge-drag-start) both,
+    msm-selection-clear 160ms linear calc(var(--msm-badge-drag-start) + 520ms) forwards;
+}
+.msm-badge[data-entered="true"] .msm-badge-handle {
+  animation: msm-selection-drag-left 480ms var(--ease-vast-bezier) var(--msm-badge-drag-start) both;
+}
+.msm-badge[data-entered="true"] [data-origin="right"] .msm-badge-handle {
+  animation-name: msm-selection-drag-right;
+}
+.msm-badge[data-entered="true"] .msm-badge-content {
+  animation: msm-badge-reveal 240ms cubic-bezier(0.23, 1, 0.32, 1) calc(740ms + var(--msm-draw-offset, 0ms)) both;
+}
+@keyframes msm-selection-expand {
+  from { transform: scale(0); opacity: 1; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes msm-selection-drag-left {
+  from { transform: translate(0, 0); }
+  to { transform: translate(100%, 100%); }
+}
+@keyframes msm-selection-drag-right {
+  from { transform: translate(0, 0); }
+  to { transform: translate(-100%, 100%); }
+}
+@keyframes msm-selection-clear { to { opacity: 0.16; } }
+@keyframes msm-badge-reveal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .msm-badge[data-entered] .msm-badge-frame { animation: none; opacity: 0.16; transform: none; }
+  .msm-badge[data-entered] .msm-badge-selection,
+  .msm-badge[data-entered] .msm-badge-content { animation: none; opacity: 1; }
+  .msm-badge[data-entered] .msm-badge-handle,
+  .msm-badge[data-entered] [data-origin="right"] .msm-badge-handle { animation: none; }
+}
+
+/* Keyboard navigation never waits for a decorative entrance. */
+.msm-badge:focus-within > .msm-badge-content { animation: none; opacity: 1; }
+
+/* Badge geometry is always square; SelectionFrame cards remain content-sized. */
+.msm-square-badge {
+  --msm-badge-size: 12rem;
+  width: min(100%, var(--msm-badge-size));
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 1;
+  flex: none;
+  align-self: start;
+  justify-self: start;
+  container-type: inline-size;
+}
+.msm-square-badge-sm { --msm-badge-size: 10rem; }
+.msm-square-badge-lg { --msm-badge-size: 15rem; }
+.msm-square-badge-content {
+  position: absolute;
+  inset: 0;
+  padding: clamp(0.75rem, 8cqi, 1.25rem);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.msm-square-badge-logo { width: clamp(1.5rem, 22cqi, 3.25rem); height: auto; flex-shrink: 0; }
+.msm-square-badge-title { font-size: clamp(0.75rem, 9cqi, 1.25rem); line-height: 1.2; letter-spacing: -0.02em; overflow-wrap: anywhere; }
+.msm-square-badge-subtitle { margin-top: 0.5rem; font-size: clamp(0.5rem, 5cqi, 0.6875rem); line-height: 1.4; letter-spacing: 0.1em; text-transform: uppercase; overflow-wrap: anywhere; }

@@ -2,7 +2,9 @@
 import React from "react";
 import type { GalleryPeopleStep, CloudinaryAsset } from "@1sp/sanity-types";
 import PeopleShowcaseHero from "../Fragments/pg-PeopleShowcaseHero";
-import CornerMarkers from "@msm/components/ui/CornerMarkers";
+import Badgemodule from "@msm/components/ui/Badgemodule";
+import cards from "@msm/components/ui/SelectionCards.module.css";
+import { useParams } from "next/navigation";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
 type Member = {
@@ -43,6 +45,7 @@ export default function PeopleStep({
     media?: CloudinaryAsset;
   };
 }) {
+  const locale = useParams()?.locale || "en";
   const members = step.teamMembers ?? [];
   const header = step.header ?? {};
 
@@ -67,75 +70,29 @@ export default function PeopleStep({
     : {};
 
   return (
-    <section
-      id={sectionId}
-      {...navPointDataAttr}
-      className="relative grid grid-cols-12 z-0  font-aspekta"
-    >
-
-      <div className="relative z-2 col-span-12 col-start-1 row-start-1 w-full">
-        <div className="container mx-auto ">
-          <div className="grid grid-cols-4 iphone-landscape:grid-cols-12 sm:grid-cols-6 md:grid-cols-12 lg:gap-8 py-16 sm:py-24 lg:py-32">
-
-            <div className="col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-12">
-
-              {/* Header Section — corner-marked field (people zone → teal)
-                  instead of border-t rule */}
-              <header className="relative p-4 sm:p-6 mb-8 md:mb-12">
-                <CornerMarkers className="text-msm-teal/50 text-xs" inset="0.375rem" />
-                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-10 iphone-landscape:grid-cols-4 gap-4 sm:gap-6">
-                  {/* Left: Titles */}
-                  <div className="col-span-4 sm:col-span-3 md:col-span-4 iphone-landscape:col-span-4">
-                    <div className="flex flex-col gap-2 sm:gap-4">
-                      {hasVisibleText(header.superText) && (
-                        <h2 className="eyebrow text-msm-teal">
-                          {header.superText}
-                        </h2>
-                      )}
-                      {hasVisibleText(header.mainHeadline) && (
-                        <h3 className="headline-display text-neutral-50">
-                          {header.mainHeadline}
-                        </h3>
-                      )}
-
-                      {(header.creativityTitle || header.uniquePeopleText) && (
-                        <div className="flex flex-col mt-2">
-                          {header.creativityTitle && (
-                            <span className="text-lg sm:text-xl md:text-2xl text-neutral-50">
-                              {header.creativityTitle}
-                            </span>
-                          )}
-                          {header.uniquePeopleText && (
-                            <span className="text-lg sm:text-xl md:text-2xl text-neutral-400">
-                              {header.uniquePeopleText}
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Right: Description */}
-                  {step.description && step.description.trim().length > 0 && (
-                    <div className="col-span-4 sm:col-span-3 md:col-span-5 md:col-start-6 iphone-landscape:col-span-4 iphone-landscape:col-start-1 mt-4 sm:mt-0 iphone-landscape:mt-4">
-                      <div className="pt-4 sm:pt-6 md:pt-0">
-                        <p className="text-sm sm:text-base text-neutral-500 leading-relaxed">
-                          {step.description}
-                        </p>
-                      </div>
-                    </div>
-                  )}
+    <section id={sectionId} {...navPointDataAttr} className="relative z-0 py-[var(--msm-section-space)] font-aspekta">
+      <div className="container mx-auto px-[var(--container-padding)]">
+        <div className={cards.sectionLayout}>
+          <Badgemodule text={locale === "de" ? "Unser Team" : "Our people"} subtitle="MSM.digital" />
+          <div className={cards.sectionContent}>
+            <header className="mb-12 md:mb-16">
+              {hasVisibleText(header.superText) && (
+                <p className="eyebrow text-msm-teal mb-4">{header.superText}</p>
+              )}
+              {hasVisibleText(header.mainHeadline) && (
+                <h2 className="headline-display text-neutral-50">{header.mainHeadline}</h2>
+              )}
+              {(header.creativityTitle || header.uniquePeopleText) && (
+                <div className="flex flex-col mt-6 text-lg sm:text-xl md:text-2xl">
+                  {header.creativityTitle && <span className="text-neutral-50">{header.creativityTitle}</span>}
+                  {header.uniquePeopleText && <span className="text-neutral-400">{header.uniquePeopleText}</span>}
                 </div>
-              </header>
-
-              {/* People Grid */}
-              <div className="mt-8 sm:mt-10 md:mt-12">
-                <PeopleShowcaseHero
-                  members={mappedMembers}
-                  initialVisibleCount={Math.min(8, mappedMembers.length)}
-                />
-              </div>
-            </div>
+              )}
+              {hasVisibleText(step.description) && (
+                <p className="msm-copy mt-6 text-white/70">{step.description}</p>
+              )}
+            </header>
+            <PeopleShowcaseHero members={mappedMembers} initialVisibleCount={Math.min(8, mappedMembers.length)} />
           </div>
         </div>
       </div>

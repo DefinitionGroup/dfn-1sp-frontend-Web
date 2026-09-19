@@ -2,7 +2,7 @@
 
 import React from "react";
 import HeroVideoComp from "@msm/components/pagebuilder/Fragments/HeroVideoComp";
-import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
+import SelectionFrame from "@msm/components/ui/SelectionFrame";
 import { assetUrl, resolveLink } from "@1sp/utils/cloudinary";
 import { useParams } from "next/navigation";
 import Button2 from "@msm/components/ui/Button2";
@@ -46,7 +46,7 @@ function highlightInline(text: string, highlight?: string): React.ReactNode {
   return (
     <>
       {before}
-      <span className="bg-gradient-to-r from-violet-300 to-violet-500 bg-clip-text text-transparent font-bold">
+      <span className="text-msm-cyan">
         {matched}
       </span>
       {after}
@@ -66,6 +66,10 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     ctaHref = `/${locale}${ctaHref}`;
   }
   const ctaText = step.cta?.text;
+  // Older imported homepage content points this project CTA to a legal page.
+  if (ctaText?.trim().toLowerCase() === "start a project" && /\/legal\/?$/.test(ctaHref || "")) {
+    ctaHref = locale === "en" ? "/contact" : `/${locale}/contact`;
+  }
   const mediaUrl = assetUrl(step.media as CloudinaryAsset | undefined);
   const useVideo = isVideoUrl(mediaUrl);
 
@@ -101,7 +105,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   const portableTextComponents = {
     block: {
       normal: ({ children }: { children?: React.ReactNode }) => (
-        <p className={`text-neutral-50 ${paragraphSizeClass} iphone-landscape:max-w-[66.6667%] lg:max-w-[50%]`}>
+        <p className={`text-neutral-50 ${paragraphSizeClass} max-w-[48ch]`}>
           {children}
         </p>
       ),
@@ -128,13 +132,13 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           // If highlight matched, render the highlighted version
           if (highlighted !== plainText) {
             return (
-              <p className={`text-neutral-500 ${paragraphSizeClass} iphone-landscape:max-w-1/2  lg:max-w-1/2`}>
+              <p className={`text-neutral-500 ${paragraphSizeClass} max-w-[48ch]`}>
                 {highlighted}
               </p>
             );
           }
           return (
-            <p className={`text-neutral-500 ${paragraphSizeClass} iphone-landscape:max-w-1/2  lg:max-w-1/2`}>
+            <p className={`text-neutral-500 ${paragraphSizeClass} max-w-[48ch]`}>
               {children}
             </p>
           );
@@ -149,7 +153,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
       {...navPointDataAttr}
       className="relative min-h-[80vh] h-[95vh] iphone-landscape:!h-dvh  overflow-hidden z-1"
     >
-      {seoTitle && <h1 className="sr-only">{seoTitle}</h1>}
+      <h1 className="sr-only">{seoTitle || "MSM.digital — Gaming, tech and consumer electronics marketing"}</h1>
 
       {/* Blueprint corner markers (Vast grammar) */}
       <CornerMarkers
@@ -170,28 +174,12 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
       {/* Foreground content — white corner markers frame the
           eyebrow/headline/copy/CTA group. */}
-      <div className="absolute bottom-24 md:bottom-24 iphone-landscape:bottom-0 md:relative z-10  max-w-9xl container md:mt-[50vh] iphone-landscape:mt-[50vh] mx-auto py-5">
-        <div className="relative inline-block max-w-full md:pr-16">
-          <CornerMarkers
-            className="text-white text-xs"
-            inset="0.125rem"
-            animateOnView
-            animationDelay={0.65}
-            stagger={0.18}
-            flickerDuration={0.24}
-            pronounced
-          />
-          <StaggeredSlideUp
-            className="px-4 md:px-4 space-y-1"
-            delay={1}
-            staggerDelay={0.08}
-            duration={0.5}
-            distance={20}
-            easing="spring"
-            rootMargin="0px 0px -20px 0px"
-            once={true}
-            animateImmediately={true}
-          >
+      <div className="absolute inset-x-0 bottom-20 md:bottom-12 iphone-landscape:bottom-0 z-10 max-w-9xl container mx-auto px-6 md:px-10 py-5">
+        <SelectionFrame
+          className="inline-block max-w-full"
+          contentClassName="p-6 md:p-8 space-y-1"
+          delay={250}
+        >
             <div className="pb-3 md:pb-4">
               <MsmLogoAnimated
                 size={44}
@@ -200,7 +188,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
             </div>
 
             {hasVisibleText(eyebrow) && (
-              <h3 className="eyebrow text-msm-cyan pb-1 max-w-1/4">
+              <h3 className="text-msm-cyan text-xl md:text-2xl tracking-tight pb-3">
                 {eyebrow}
               </h3>
             )}
@@ -234,8 +222,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
                 <Button2 text={ctaText} href={ctaHref} />
               </div>
             )}
-          </StaggeredSlideUp>
-        </div>
+        </SelectionFrame>
       </div>
 
     </section>

@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
-import StickyCardStack from "@msm/components/ui/StickyCardStack";
-import ArrowBig from "@msm/components/ui/arrowBig";
+import cards from "@msm/components/ui/SelectionCards.module.css";
+import { SelectionSequence } from "@msm/components/ui/SelectionFrame";
+import ServiceCards from "@msm/components/ui/ServiceCards";
 import Badgemodule from "@msm/components/ui/Badgemodule";
-import CornerMarkers from "@msm/components/ui/CornerMarkers";
 import CtaMiniComponent from "../Fragments/pg-CtaMiniComponent";
 import type {
   GalleryScrollHighlightStep,
@@ -96,74 +96,22 @@ export default function HighlightStep({
   const showCta = Boolean(cta && ctaUrl);
 
   return (
-    <section
-      id={sectionId}
-      {...navPointDataAttr}
-      className="z-12 mx-auto mt-8 min-h-[60vh] relative bg-msm-paper font-aspekta text-neutral-50"
-    >
-      <div className="relative z-10 container mx-auto px-[var(--container-padding)]">
-        {/* System pattern: corner markers frame the step (services zone → cyan) */}
-        <CornerMarkers className="text-msm-cyan/40 text-xs" inset="0.5rem" />
-        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 pt-16 pb-16">
-
-          {/* Left column: sticky badge + desktop CTA */}
-          {(badge || showCta) && (
-            <div className="hidden md:flex md:col-span-3 md:mb-0 md:sticky md:top-24 self-start flex-col gap-4 iphone-landscape:!hidden">
-              {badge && (
-                <Badgemodule
-                  text={badge.text ?? ""}
-                  subtitle={badge.subtitle ?? ""}
-                  numberEl={badge.numberEl ?? ""}
-                  size="md"
-                />
-              )}
-              {showCta && (
-                <div className="mt-8">
-                  <ArrowBig
-                    animate={true}
-                    size={48}
-                    color="white"
-                    className="mb-4 fill-white text-white iphone-landscape:hidden"
-                  />
-                  <CtaMiniComponent
-                    {...({
-                      className: "font-regular text-neutral-200 line-height-normal",
-                      heading: cta?.paragraph,
-                      buttonText: cta?.buttonText,
-                      buttonVariant: cta?.variant ?? "limesmall",
-                      url: ctaUrl,
-                      align: "left",
-                    } as any)}
-                  />
-                </div>
-              )}
-            </div>
-          )}
-
-          <div className={`col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 ${badge || showCta ? "md:col-span-9" : "md:col-span-12"}`}>
-            <StickyCardStack items={items} />
-          </div>
-
-          {/* Mobile CTA - shown at bottom on mobile */}
-          {showCta && (
-            <div className="col-span-4 sm:col-span-6 md:hidden iphone-landscape:!block iphone-landscape:col-span-12 mt-8">
-              <div className="flex flex-col border-t border-white/20 pt-8 items-start gap-4">
-
-                <CtaMiniComponent
-                  {...({
-                    className: "font-regular text-neutral-200 line-height-normal",
-                    heading: cta?.paragraph,
-
-                    buttonText: cta?.buttonText,
-                    buttonVariant: cta?.variant ?? "limesmall",
-                    url: ctaUrl,
-                    align: "center",
-                  } as any)}
-                />
-              </div>
-            </div>
-          )}
+    <section id={sectionId} {...navPointDataAttr} className="relative bg-msm-paper text-msm-ink py-[var(--msm-section-space)]">
+      <div className="container mx-auto px-[var(--container-padding)]">
+        <SelectionSequence className={cards.sectionLayout}>
+          <Badgemodule text={badge?.text || (locale === "de" ? "Was wir machen" : "What we do")} subtitle={badge?.subtitle || (locale === "de" ? "Unsere Services" : "Our services")} size="md" />
+          <div className={cards.sectionContent}>
+      <header className="mb-12 md:mb-16">
+        <h2 className="headline-display">{step.highlightText || (locale === "de" ? "Was wir machen." : "What we do.")}</h2>
+      </header>
+      <ServiceCards items={items} />
+      {showCta ? (
+        <div className="mt-12 border-t border-white/15 pt-8">
+          <CtaMiniComponent {...({ className: "text-neutral-200", heading: cta?.paragraph, buttonText: cta?.buttonText, buttonVariant: cta?.variant ?? "limesmall", url: ctaUrl, align: "left" } as any)} />
         </div>
+      ) : null}
+          </div>
+        </SelectionSequence>
       </div>
     </section>
   );

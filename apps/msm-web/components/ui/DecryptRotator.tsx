@@ -134,8 +134,8 @@ export default function DecryptRotator({
 
 const textStyle: React.CSSProperties = {
   fontSize: "var(--tw-text-size)",
-  // Unified headline paradigm: bold everywhere (Martin, July 2026)
-  fontWeight: 700,
+  // Unified MSM weight; hierarchy comes from scale, not bold spans.
+  fontWeight: 500,
   lineHeight: "var(--tw-text-lh)",
   letterSpacing: "var(--tw-text-ls)",
   color: "#ffffff",

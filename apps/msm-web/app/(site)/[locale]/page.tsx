@@ -193,7 +193,7 @@ export default async function Home({
 
       {/* Preload the hero poster for fast LCP */}
       <HeroPreloadLinks {...heroPreload} />
-      <div className="  min-h-screen px-1 md:px-4 ">
+      <div className="min-h-screen">
         {contentBlocks?.length ? (
           <MsmPageBuilder
             content={contentBlocks}
