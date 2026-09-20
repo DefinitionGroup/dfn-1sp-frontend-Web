@@ -27,6 +27,7 @@ import {
 } from '@1sp/site-config'
 import { structure } from './sanity/structure'
 import { createPresentationResolvers } from './sanity/presentation/resolve'
+import { CloudinaryStorageInput } from './sanity/components/CloudinaryStorageInput'
 
 const RELATIONSHIP_SYNC_ENABLED =
   process.env.NEXT_PUBLIC_ENABLE_RELATIONSHIP_SYNC === 'true';
@@ -299,6 +300,7 @@ export default defineConfig({
   basePath: '/studio',
   projectId,
   dataset,
+  form: {components: {input: CloudinaryStorageInput}},
   schema: {
     types: schemaTypesWithLanguageOptions,
     // Add all templates to the array

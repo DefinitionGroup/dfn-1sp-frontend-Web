@@ -1,0 +1,32 @@
+{
+  "projectId": "wu6i3y0h",
+  "dataset": "production",
+  "fields": [
+    "created_by",
+    "uploaded_by",
+    "folder_id",
+    "asset_folder"
+  ],
+  "backup": "EXPORT/production-before-media-stage1-20260920.tar.gz",
+  "apply": true,
+  "documents": 201,
+  "published": 172,
+  "drafts": 29,
+  "fieldsRemoved": 1539,
+  "estimatedReduction": 240,
+  "officialBefore": {
+    "value": 1991,
+    "limit": 2000,
+    "unit": "number"
+  },
+  "completedAt": "2026-09-20T10:31:05.585Z",
+  "officialAfter": {
+    "value": 1751,
+    "limit": 2000,
+    "unit": "number"
+  },
+  "allOtherFieldsPreserved": true,
+  "unrelatedDocumentsUnchanged": true,
+  "documentsPublished": 0,
+  "remainingBookkeepingFields": 0
+}
