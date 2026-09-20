@@ -89,7 +89,7 @@ export function CasePageBuilder({ content }: CasePageBuilderProps) {
             );
 
           case "intertitleCTA":
-            return <IntertitleCTA key={key} {...block} />;
+            return <IntertitleCTA key={key} {...block} caseLayout />;
           default:
             return null;
         }

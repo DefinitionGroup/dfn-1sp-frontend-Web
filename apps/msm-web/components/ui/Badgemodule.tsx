@@ -12,16 +12,17 @@ interface BadgemoduleProps {
   className?: string;
   variant?: "default" | "minimal" | "glass";
   size?: "sm" | "md" | "lg";
+  titleAs?: "p" | "h2" | "h3";
 }
 
 /** Two staggered diagonal selections leave the homepage's small corner crosses. */
-export default function Badgemodule({ text, subtitle, className, size = "md" }: BadgemoduleProps) {
+export default function Badgemodule({ text, subtitle, className, size = "md", titleAs: Title = "p" }: BadgemoduleProps) {
 
   return (
     <SelectionFrame className={cn("msm-square-badge", `msm-square-badge-${size}`, className)} contentClassName="msm-square-badge-content">
         <MsmLogoAnimated size={44} className="msm-square-badge-logo" />
         <div>
-          <p className="msm-square-badge-title text-msm-ink">{text}</p>
+          <Title className="msm-square-badge-title text-msm-ink">{text}</Title>
           {subtitle ? <p className="msm-square-badge-subtitle text-white/65">{subtitle}</p> : null}
         </div>
     </SelectionFrame>

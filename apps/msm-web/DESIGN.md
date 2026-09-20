@@ -200,6 +200,14 @@ Case galleries reuse `SelectionSequence` and `SelectionFrame`: two diagonal draw
 
 Case tiles use content-driven height and a 4:3 media button for the existing preview. The title and the signature `Button2` / `MosaicButton` action link directly to the case. Use one column on mobile, two from 768px and three from 1024px; preserve the editorial title, services and Unit attribution. Filter changes restart the sequence. Keyboard focus reveals content immediately.
 
+### Case Detail Sections
+
+MSM case bodies use a continuous Paper Black field. Shared CMS block names and copy remain intact; legacy light background selections do not control MSM presentation. `CaseSection.tsx` provides the common badge rail and reading column for challenge, solution, results, approach, introduction and case CTA blocks. Challenge and solution occupy separate rows within the same CMS block. Each row has one fine top divider and the same fluid vertical spacing.
+
+From 768px, the badge rail and narrative use a 3/9 grid within the 88rem outer container; below it, the badge stacks before the copy. Section badges are 10–12rem squares on desktop and 8rem on mobile, using the existing two-draw animation. A badge uses its authored label when supplied, otherwise the section title. When the label is the title, it is the semantic h2; do not repeat the title in the narrative. Distinct authored titles and subtitles remain visible. Copy stays within 65ch, at 1.7 line height and 82% Ink White.
+
+The full-bleed case hero retains its bottom-aligned title and Unit badge (10rem desktop, 7rem mobile). Quotes, metric values and diagrams remain in the reading column. Case CTA buttons align to that same column. Text-only results are content-driven; authored background media remains supported. Optional powered-by/contact content uses dark surfaces too. The minimap collects only case sections.
+
 ### Framed Badge
 
 A single in-view trigger at 15% visibility runs once per mount. Two pairs of small monospace + glyphs match the homepage's `font-mono text-xs` corner markers (14px in the current MSM type scale). In the first pair, one cross anchors the top-left and the other drags to the bottom-right, pulling out a dotted selection rectangle. A second pair repeats the action from top-right to bottom-left, staggered by 180ms. The crosses translate with the moving corners and never scale.

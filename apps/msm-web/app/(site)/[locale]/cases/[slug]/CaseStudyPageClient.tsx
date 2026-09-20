@@ -1,7 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import HeaderImageVideoComp from "@msm/components/data/Fragments/data-HeaderImageVideoComp";
-import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
+import EditorialReveal from "@msm/components/ui/EditorialReveal";
+import Badgemodule from "@msm/components/ui/Badgemodule";
+import styles from "@msm/components/pagebuilder/cases/CaseDetail.module.css";
 import LineMinimap, { NavPoint } from "@msm/components/ui/MapVertical";
 import { CasePageBuilder } from "@msm/components/CasePageBuilder";
 import CasePoweredByContact from "@msm/components/pagebuilder/cases/pg-CasePoweredByContact";
@@ -27,45 +29,28 @@ export default function CaseStudyPageClient({
   const t = getTranslations(locale);
   const [navPoints, setNavPoints] = useState<NavPoint[]>([]);
 
+  const pageRef = useRef<HTMLDivElement>(null);
+
   // Ensure body overflow is reset when component mounts
   useEffect(() => {
     document.body.style.overflow = "auto";
   }, []);
 
-  // Collect navigation points for minimap
+  // Only case sections belong in the minimap, never SVG or third-party IDs.
+  // Observe deferred PageBuilder sections as they mount.
   useEffect(() => {
+    const page = pageRef.current;
+    if (!page) return;
     const collectPageIds = () => {
-      setTimeout(() => {
-        const all = document.querySelectorAll<HTMLElement>("[id]");
-        const points: NavPoint[] = [];
-        all.forEach((el) => {
-          const id = el.id;
-          const isInFooter = el.closest("footer") !== null;
-
-          if (
-            id &&
-            !id.startsWith("headlessui-") &&
-            !id.startsWith("radix-") &&
-            !id.startsWith("__") &&
-            !id.startsWith("_") &&
-            id !== "_R_" &&
-            id.length > 2 &&
-            !/^\d+$/.test(id) &&
-            !/^\d+-\d+$/.test(id) &&
-            id !== "root" &&
-            !isInFooter
-          ) {
-            const customName = el.getAttribute("data-navpoint-name");
-            points.push({
-              id: id,
-              name: customName || id,
-            });
-          }
-        });
-        setNavPoints(points);
-      }, 500);
+      const sections = page.querySelectorAll<HTMLElement>("section[id], section > [id]");
+      setNavPoints(Array.from(sections)
+        .filter((section) => section.id && section.dataset.navHidden !== "true")
+        .map((section) => ({ id: section.id, name: section.dataset.navpointName || section.id })));
     };
     collectPageIds();
+    const observer = new MutationObserver(collectPageIds);
+    observer.observe(page, { childList: true, subtree: true });
+    return () => observer.disconnect();
   }, []);
 
   // Normalize main image / video URLs
@@ -82,8 +67,8 @@ export default function CaseStudyPageClient({
     "/placeholder.jpg";
 
   return (
-    <>
-      <section className="relative h-[95vh] w-full overflow-hidden  mx-auto">
+    <div ref={pageRef}>
+      <section id={t.ids.top} data-navpoint-name={t.ids.top} className={styles.hero}>
         <LineMinimap navPoints={navPoints} />
 
         {/* Background Image with Overlay */}
@@ -105,41 +90,25 @@ export default function CaseStudyPageClient({
         )}
 
 
-        {/* Hero Content */}
-        <div id={t.ids.top} className="" />
-        <div className="relative container flex flex-col justify-end  h-full z-20  mx-auto px-4 sm:px-6 md:px-8 lg:px-0">
-          <StaggeredSlideUp
-            delay={0.4}
-            className="max-w-full flex flex-col gap-3 sm:gap-4 lg:max-w-2/3 "
-          >
-            {hasVisibleText(caseStudy.subtitle) && (
-              <h2 className="text-violet-500 text-[10px] sm:text-xs   leading-compress  inline-block w-fit py-1  ">
-                {caseStudy.subtitle}
-              </h2>
-            )}
-            <h1 className="text-neutral-50 w-full md:w-2/3 pb-2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-6xl tracking-tight leading-none">
-              {caseStudy.title}
-            </h1>
-
-            {hasVisibleText(caseStudy.description) && (
-              <h3 className="text-neutral-50 w-full sm:w-3/4 md:w-1/2 pb-2 text-base sm:text-lg md:text-xl leading-relaxed">
-                {caseStudy.description}
-              </h3>
-            )}
-            {/* MSM Unit attribution is derived from Unit documents; Cases stay unchanged. */}
-            {(caseStudy.msmUnits || []).length > 0 && (
-              <div className="mb-4 flex w-fit flex-wrap gap-x-5 gap-y-2 border-t border-white/35 pt-3">
-                {(caseStudy.msmUnits || []).map((unit) =>
-                  hasVisibleText(unit.name) ? (
-
-                    <h2 key={unit._id} className="inline-block w-fit text-[10px] font-bold uppercase tracking-[0.13em] text-msm-cyan sm:text-xxs">
-                      {unit.name}
-                    </h2>
-                  ) : null
-                )}
+        <div className={`${styles.container} ${styles.heroInner}`}>
+          <div className={styles.heroGrid}>
+            <EditorialReveal className={styles.heroCopy}>
+              {hasVisibleText(caseStudy.subtitle) && (
+                <p className={styles.heroSubtitle}>{caseStudy.subtitle}</p>
+              )}
+              <h1 className={styles.heroTitle}>{caseStudy.title}</h1>
+              {hasVisibleText(caseStudy.description) && (
+                <p className={styles.heroDescription}>{caseStudy.description}</p>
+              )}
+            </EditorialReveal>
+            {(caseStudy.msmUnits || []).some((unit) => hasVisibleText(unit.name)) && (
+              <div className={styles.badges}>
+                {(caseStudy.msmUnits || []).map((unit) => hasVisibleText(unit.name) ? (
+                  <Badgemodule key={unit._id} text={unit.name} subtitle="" size="sm" className={styles.unitBadge} />
+                ) : null)}
               </div>
             )}
-          </StaggeredSlideUp>
+          </div>
         </div>
 
         {/* Corner Text */}
@@ -159,6 +128,6 @@ export default function CaseStudyPageClient({
         )}
 
       <CasePoweredByContact caseStudy={caseStudy} locale={locale} />
-    </>
+    </div>
   );
 }

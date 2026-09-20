@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import Button2 from "@msm/components/ui/Button2";
+import CaseSection from "./cases/CaseSection";
+import caseStyles from "./cases/CaseDetail.module.css";
 import EditorialReveal from "@msm/components/ui/EditorialReveal";
 import styles from "@msm/components/ui/EditorialBlocks.module.css";
 import { resolveLink } from "@1sp/utils/cloudinary";
@@ -19,6 +21,7 @@ interface StaggeredSlideUpProps {
 }
 
 interface IntertitleCTAProps {
+  caseLayout?: boolean;
   title: string;
   subtitle: string;
   cta?: CTA;
@@ -32,6 +35,7 @@ interface IntertitleCTAProps {
 
 const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   title,
+  caseLayout = false,
   subtitle,
   cta,
   navPointName,
@@ -66,6 +70,17 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
     ...(navPointName ? { "data-navpoint-name": navPointName } : {}),
     ...(hideFromNav ? { "data-nav-hidden": "true" } : {}),
   };
+
+  if (caseLayout) return (
+    <section id={sectionId} {...navPointDataAttr} className={caseStyles.darkSection}>
+      <div className={caseStyles.container}>
+        <CaseSection title={title}>
+          {hasVisibleText(subtitle) && <p className={caseStyles.copy}>{subtitle}</p>}
+          {buttonHref && buttonText && <Button2 text={buttonText} variant={buttonVariant} href={buttonHref} />}
+        </CaseSection>
+      </div>
+    </section>
+  );
 
   return (
     <section id={sectionId} {...navPointDataAttr} className={styles.cta}>

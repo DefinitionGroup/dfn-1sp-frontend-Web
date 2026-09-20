@@ -4,9 +4,10 @@ import type { ResultMetric } from "@1sp/sanity-types";
 import { MetricNumber } from "@1sp/utils/components/MetricNumber";
 import { hasMetricFormatting } from "@1sp/utils/result-metrics";
 
-import { useEffect } from "react";
 import { motion } from "motion/react";
-import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
+import EditorialReveal from "@msm/components/ui/EditorialReveal";
+import CaseSection from "./CaseSection";
+import styles from "./CaseDetail.module.css";
 import HeaderImageVideoComp2 from "@msm/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
 import AnimateNumberinView from "@msm/components/ui/AnimateNumberinView";
 import PercentageDiagramVertical from "@msm/components/ui/percentageDiagramVertical";
@@ -28,6 +29,8 @@ type Metric = ResultMetric;
 
 interface ResultsMetricsProps {
   title: string;
+  badgeText?: string;
+  badgeSubtitle?: string;
   quote?: {text: string; attribution: string};
   description?: string;
   context?: string;
@@ -41,6 +44,8 @@ interface ResultsMetricsProps {
 
 export default function ResultsMetrics({
   title,
+  badgeText,
+  badgeSubtitle,
   quote,
   context,
   description,
@@ -48,17 +53,11 @@ export default function ResultsMetrics({
   backgroundImage,
   backgroundOpacity = 0.7,
   enableParallax = false,
-  paddingY = "32",
   navPointName,
 }: ResultsMetricsProps) {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
   const t = getTranslations(locale);
-
-  // Ensure body overflow is reset when component mounts
-  useEffect(() => {
-    document.body.style.overflow = "auto";
-  }, []);
 
   const sectionId = t.ids.results;
 
@@ -103,49 +102,35 @@ export default function ResultsMetrics({
   };
 
   return (
-    <section className="relative overflow-hidden">
+    <section className={styles.darkSection}>
       <div
         id={sectionId}
-        data-navpoint-name={navPointName}
-        className="min-h-[80vh] md:min-h-[90vh] relative font-aspekta"
+        data-navpoint-name={navPointName || sectionId}
+        className={styles.results}
+        data-media={Boolean(backgroundMediaUrl)}
       >
-        <HeaderImageVideoComp2
+        {backgroundMediaUrl && <HeaderImageVideoComp2
           useVideo={useVideo}
           opacity={backgroundOpacity}
           imageSrc={!useVideo ? backgroundMediaUrl : undefined}
           videoSrc={useVideo ? backgroundMediaUrl : undefined}
           enableParallax={enableParallax}
-        />
+        />}
 
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 py-16 sm:py-24 lg:py-${paddingY}`}>
-            <div className="col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-12">
-              <StaggeredSlideUp
-                className="flex flex-col items-start justify-start gap-3"
-                delay={0.0}
-                staggerDelay={0.1}
-                duration={0.5}
-                distance={80}
-              >
-                {hasVisibleText(title) ? (
-                  <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-2 text-gray-100 max-w-xl tracking-tight leading-[1.1]">
-                    {title}
-                  </h2>
-                ) : null}
+        <div className={`relative z-10 ${styles.container}`}>
+          <CaseSection title={title} badgeText={badgeText} badgeSubtitle={badgeSubtitle}>
                 {context && <p className="text-sm text-gray-200">{context}</p>}
                 {description && (
-                  <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-xl leading-relaxed">
+                  <p className={`${styles.copy} text-gray-200`}>
                     {description}
                   </p>
                 )}
-                {quote?.text && <blockquote className="max-w-3xl mt-8 text-xl leading-relaxed"><p>{quote.text}</p><footer className="mt-4 text-sm text-white/65">{quote.attribution}</footer></blockquote>}
-              </StaggeredSlideUp>
-            </div>
+                {quote?.text && <blockquote className={styles.quote}><p>{quote.text}</p><footer>{quote.attribution}</footer></blockquote>}
 
             {/* Metrics grid - Responsive layout */}
             {metrics && metrics.length > 0 && (
-              <div className="col-span-4 sm:col-span-6 md:col-span-12 mt-8 md:mt-12">
-                <div className="bg-neutral-900/60 backdrop-blur-lg   p-6 sm:p-8 md:p-10 lg:p-12">
+              <div className={styles.metricPanel}>
+                <div className="w-full">
                   <div className={`grid grid-cols-1 ${metrics.length > 1 ? 'sm:grid-cols-2' : ''} ${metrics.length > 2 ? 'xl:grid-cols-3' : ''} gap-6 sm:gap-8`}>
                     {metrics.map((metric, index) => (
                       <div
@@ -191,12 +176,8 @@ export default function ResultsMetrics({
                             </motion.div>
                           </>
                         )}
-                        <StaggeredSlideUp
+                        <EditorialReveal
                           className="mt-2"
-                          delay={0.0}
-                          staggerDelay={0.1}
-                          duration={0.5}
-                          distance={80}
                         >
                           {hasVisibleText(metric.label) ? (
                             <h3 className="text-sm sm:text-base md:text-lg text-gray-200 tracking-tight leading-snug">
@@ -205,14 +186,14 @@ export default function ResultsMetrics({
                           ) : null}
                           {metric.description && <p className="mt-3 text-base leading-relaxed text-gray-200">{metric.description}</p>}
                           {metric.context && <p className="mt-2 text-sm text-gray-200">{metric.context}</p>}
-                        </StaggeredSlideUp>
+                        </EditorialReveal>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
             )}
-          </div>
+          </CaseSection>
         </div>
       </div>
     </section>

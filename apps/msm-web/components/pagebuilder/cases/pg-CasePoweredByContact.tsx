@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import styles from "./CaseDetail.module.css";
 import DeferredVideo from "@msm/components/ui/DeferredVideo";
 import Button2 from "@msm/components/ui/Button2";
 import { motion } from "motion/react";
@@ -81,13 +82,13 @@ export default function CasePoweredByContact({
 
   return (
     <section
-      className="relative bg-neutral-100 py-16 sm:py-20 lg:py-24 font-aspekta"
+      className={`${styles.darkSection} py-16 sm:py-20 lg:py-24 font-aspekta`}
       data-component="case-powered-by-contact"
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className={styles.container}>
         {unitLogos.length > 0 && (
           <div className="mx-auto w-full max-w-3xl">
-            <h2 className="text-center text-2xl sm:text-3xl tracking-tight text-neutral-900">
+            <h2 className="text-center text-2xl sm:text-3xl tracking-tight text-neutral-50">
               {t.caseStudy.poweredBy}
             </h2>
 
@@ -113,7 +114,7 @@ export default function CasePoweredByContact({
 
         {relatedPerson && (
           <div
-            className="max-w-5xl mx-auto bg-white  overflow-hidden shadow-2xl mt-14 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 items-end gap-8 lg:gap-10"
+            className="max-w-5xl mx-auto bg-msm-surface overflow-hidden border-t border-white/20 mt-14 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 items-end gap-8 lg:gap-10"
           >
             <div className="lg:col-span-7 p-8">
               <motion.p
@@ -121,7 +122,7 @@ export default function CasePoweredByContact({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
-                className=" text-sm tracking-tight leading-tight  text-neutral-500 "
+                className=" text-sm tracking-tight leading-tight  text-neutral-300 "
               >
                 {`${t.caseStudy.contactPrefix}`}
               </motion.p>
@@ -130,7 +131,7 @@ export default function CasePoweredByContact({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.3, ease: "easeOut" }}
-                className="text-xl sm:text-xl lg:text-2xl tracking-tight leading-tight text-neutral-700"
+                className="text-xl sm:text-xl lg:text-2xl tracking-tight leading-tight text-neutral-100"
               >
                 {t.caseStudy.wantToKnowMore}
               </motion.h3>
@@ -141,7 +142,7 @@ export default function CasePoweredByContact({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
-                className="mt-2 text-2xl sm:text-3xl lg:text-3xl tracking-tight leading-tight  text-violet-500"
+                className="mt-2 text-2xl sm:text-3xl lg:text-3xl tracking-tight leading-tight  text-msm-cyan"
               >
                 {`${personName}${personUnit ? ` @ ${personUnit}` : ""}`}
               </motion.p>
@@ -154,7 +155,7 @@ export default function CasePoweredByContact({
                 className=" flex flex-col gap-2 text-sm  text-neutral-300"
               >
                 {relatedPerson.position && (
-                  <p className=" text-sm tracking-tight leading-tight  text-neutral-500 mb-5 sm:mb-6 ">{relatedPerson.position}</p>
+                  <p className=" text-sm tracking-tight leading-tight  text-neutral-300 mb-5 sm:mb-6 ">{relatedPerson.position}</p>
                 )}
                 {relatedPerson.email && (
                   <Button2
@@ -181,7 +182,7 @@ export default function CasePoweredByContact({
               transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
               className="lg:col-span-5"
             >
-              <div className="relative ml-auto w-full max-w-[440px] overflow-hidden  bg-neutral-200 aspect-[5/4]">
+              <div className="relative ml-auto w-full max-w-[440px] overflow-hidden  bg-msm-surface aspect-[5/4]">
                 {personMediaUrl ? (
                   personIsVideo ? (
                     <DeferredVideo
@@ -201,7 +202,7 @@ export default function CasePoweredByContact({
                     />
                   )
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-neutral-200 text-neutral-500">
+                  <div className="flex h-full w-full items-center justify-center bg-msm-surface text-neutral-300">
                     {personName || "Contact"}
                   </div>
                 )}

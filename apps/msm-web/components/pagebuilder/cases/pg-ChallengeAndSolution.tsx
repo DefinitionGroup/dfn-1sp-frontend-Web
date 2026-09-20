@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
-import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
-import ListContainerComponent from "@msm/components/ui/ListContainerComponent";
-import ListItemComponent from "@msm/components/ui/ListItemComponent";
-import CtaMiniComponent from "@msm/components/pagebuilder/Fragments/pg-CtaMiniComponent";
+import CaseSection from "./CaseSection";
+import Button2 from "@msm/components/ui/Button2";
+import styles from "./CaseDetail.module.css";
 import { getTranslations } from "@1sp/utils/translations";
 import { useParams } from "next/navigation";
 import { resolveLink } from "@1sp/utils/cloudinary";
@@ -20,6 +18,8 @@ interface Service {
 
 interface ChallengeAndSolutionProps {
   title: string;
+  badgeText?: string;
+  badgeSubtitle?: string;
   description?: string;
   contentType?: "challenges" | "services";
   showContent?: boolean;
@@ -50,7 +50,7 @@ function isPortableText(value: unknown): value is PortableTextBlock[] {
 function SolutionContent({ solution }: { solution: PortableTextBlock[] | string }) {
   if (isPortableText(solution)) {
     return (
-      <div className="text-sm sm:text-base text-gray-800 max-w-lg leading-relaxed prose prose-sm prose-gray">
+      <div className={`${styles.copy} prose prose-invert`}>
         <PortableText value={solution} />
       </div>
     );
@@ -62,7 +62,7 @@ function SolutionContent({ solution }: { solution: PortableTextBlock[] | string 
   
   if (hasBullets) {
     return (
-      <ul className="text-sm sm:text-base text-gray-800 max-w-lg leading-relaxed space-y-2 list-disc list-inside">
+      <ul className={`${styles.copy} space-y-2 list-disc list-outside`}>
         {lines.map((line, idx) => (
           <li key={idx}>{line.replace(/^•\s*/, '')}</li>
         ))}
@@ -71,7 +71,7 @@ function SolutionContent({ solution }: { solution: PortableTextBlock[] | string 
   }
   
   return (
-    <p className="text-sm sm:text-base text-gray-800 max-w-lg leading-relaxed">
+    <p className={`${styles.copy}`}>
       {solution}
     </p>
   );
@@ -79,6 +79,8 @@ function SolutionContent({ solution }: { solution: PortableTextBlock[] | string 
 
 export default function ChallengeAndSolution({
   title,
+  badgeText,
+  badgeSubtitle,
   description,
   contentType = "challenges",
   showContent = true,
@@ -94,19 +96,12 @@ export default function ChallengeAndSolution({
   showSolution = true,
   solutionHeadline,
   solution,
-  backgroundColor = "bg-neutral-50",
-  paddingY = "32",
   navPointName,
   hideFromNav = false,
 }: ChallengeAndSolutionProps) {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
   const t = getTranslations(locale);
-
-  // Ensure body overflow is reset when component mounts
-  useEffect(() => {
-    document.body.style.overflow = "auto";
-  }, []);
 
   const sectionId = t.ids.content;
 
@@ -124,146 +119,30 @@ export default function ChallengeAndSolution({
   // Determine if content list should be rendered
   const shouldShowContent = showContent && hasContentItems;
 
-  // Determine list column classes based on whether CTA is shown
-  const listColumnClasses = shouldShowCta
-    ? "col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-5 md:col-start-3"
-    : "col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-5 md:col-start-1";
-
-  // Store nav-related data attributes
-  const navPointDataAttr = {
-    ...(navPointName ? { "data-navpoint-name": navPointName } : {}),
-    ...(hideFromNav ? { "data-nav-hidden": "true" } : {}),
-  };
-
   return (
-    <section className="relative overflow-hidden">
-      <div
-        id={sectionId}
-        {...navPointDataAttr}
-        className={`${backgroundColor} mt-8 relative font-aspekta`}
-      >
-
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 py-16 sm:py-24 lg:py-${paddingY}`}>
-            <div className="col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-12">
-              <StaggeredSlideUp
-                className="flex flex-col items-start justify-start gap-4"
-                delay={0.1}
-                staggerDelay={0.1}
-                duration={0.5}
-                distance={80}
-              >
-                {hasVisibleText(title) ? (
-                  <h2 className="text-3xl sm:text-4xl md:text-5xl text-gray-900 max-w-xl tracking-tight leading-[1.1] mb-4 md:mb-8">
-                    {title}
-                  </h2>
-                ) : null}
-                {description && (
-                  <p className="text-base sm:text-lg text-gray-800 max-w-lg leading-relaxed">
-                    {description}
-                  </p>
-                )}
-              </StaggeredSlideUp>
-            </div>
-
-            {/* Challenge/Services and Solution section */}
-            {shouldShowContent && (
-              <>
-                {/* CTA Mini - Responsive (only show if showCta is true) */}
-                {shouldShowCta && (
-                  <div className="col-span-4 sm:col-span-3 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-2 md:col-start-1 mt-6 md:mt-8">
-                    <CtaMiniComponent
-                      heading={
-                        ctaHeading ||
-                        (effectiveContentType === "challenges"
-                          ? (challengeTitle || t.caseStudy.challenge)
-                          : t.caseStudy.services)
-                      }
-                      paragraph={
-                        ctaParagraph ||
-                        (effectiveContentType === "challenges"
-                          ? (challengeDescription || t.caseStudy.challengeDescription)
-                          : `${t.caseStudy.servicesDescription} ${services?.map((s) => s.name).join(", ")}`)
-                      }
-                      buttonText={ctaButton?.text || ""}
-                      buttonVariant={(ctaButton?.variant as any) || "violetsmall"}
-                      url={
-                        ctaButton?.link ? resolveLink(ctaButton.link) : undefined
-                      }
-                      showButton={showButton}
-                      align="left"
-                    />
-                  </div>
-                )}
-
-                {/* List Items - Responsive (adjusts width based on CTA visibility) */}
-                <div className={`${listColumnClasses}   mt-6 md:mt-8 `}>
-                  <ListContainerComponent>
-                    {effectiveContentType === "challenges"
-                      ? challenges.map((challenge, idx) => (
-                        <ListItemComponent
-                          key={idx}
-                          size="small"
-                          fontWeight="normal"
-                          color="gray-700"
-                        >
-                          {challenge}
-                        </ListItemComponent>
-                      ))
-                      : services.map((service) => (
-                        <ListItemComponent
-                          key={service._id}
-                          size="small"
-                          fontWeight="normal"
-                          color="gray-700"
-                        >
-                          {service.name}
-                        </ListItemComponent>
-                      ))}
-                  </ListContainerComponent>
-
-                  {/* Solution */}
-                  {showSolution && solution && (
-                    <StaggeredSlideUp
-                      className="flex flex-col  mt-8 md:mt-10 items-start justify-start"
-                      delay={0.7}
-                      staggerDelay={0.1}
-                      duration={0.5}
-                      distance={80}
-                    >
-                      {hasVisibleText(solutionHeadline || t.caseStudy.solution) ? (
-                        <h3 className="text-xl sm:text-2xl leading-tight text-gray-900 max-w-lg font-semibold tracking-tight mb-4 md:mb-6">
-                          {solutionHeadline || t.caseStudy.solution}
-                        </h3>
-                      ) : null}
-                      <SolutionContent solution={solution} />
-                    </StaggeredSlideUp>
-                  )}
-                </div>
-              </>
-            )}
-
-            {/* Solution only (when content is hidden but solution is enabled) */}
-            {!shouldShowContent && showSolution && solution && (
-              <div className="col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-10 md:col-start-3 mt-6 md:mt-8">
-                <StaggeredSlideUp
-                  className="flex flex-col items-start justify-start"
-                  delay={0.3}
-                  staggerDelay={0.1}
-                  duration={0.5}
-                  distance={80}
-                >
-                  {hasVisibleText(solutionHeadline || t.caseStudy.solution) ? (
-                    <h3 className="text-xl sm:text-2xl leading-tight text-gray-900 max-w-lg font-semibold tracking-tight mb-4 md:mb-6">
-                      {solutionHeadline || t.caseStudy.solution}
-                    </h3>
-                  ) : null}
-                  <SolutionContent solution={solution} />
-                </StaggeredSlideUp>
-              </div>
-            )}
-          </div>
-        </div>
+    <section id={sectionId} data-navpoint-name={navPointName || title || sectionId}
+      data-nav-hidden={hideFromNav || undefined} className={styles.darkSection}>
+      <div className={styles.container}>
+        <CaseSection title={title} badgeText={badgeText} badgeSubtitle={badgeSubtitle}>
+          {hasVisibleText(description) && <p className={styles.copy}>{description}</p>}
+          {shouldShowContent && <ul className={styles.detailList}>
+            {effectiveContentType === "challenges"
+              ? (challenges ?? []).map((challenge, index) => <li key={index}>{challenge}</li>)
+              : (services ?? []).map((service) => <li key={service._id}>{service.name}</li>)}
+          </ul>}
+          {shouldShowCta && <div className={styles.detailCta}>
+            <h3 className={styles.subheading}>{ctaHeading || (effectiveContentType === "challenges"
+              ? (challengeTitle || t.caseStudy.challenge) : t.caseStudy.services)}</h3>
+            <p className={styles.copy}>{ctaParagraph || (effectiveContentType === "challenges"
+              ? (challengeDescription || t.caseStudy.challengeDescription)
+              : `${t.caseStudy.servicesDescription} ${(services ?? []).map((s) => s.name).join(", ")}`)}</p>
+            {showButton && ctaButton?.text && ctaButton.link && <Button2
+              text={ctaButton.text} href={resolveLink(ctaButton.link)} variant="violetsmall" />}
+          </div>}
+        </CaseSection>
+        {showSolution && solution && <CaseSection title={solutionHeadline || t.caseStudy.solution}>
+          <SolutionContent solution={solution} />
+        </CaseSection>}
       </div>
     </section>
   );
