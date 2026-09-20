@@ -1,17 +1,20 @@
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
-import {mkdirSync, readFileSync, writeFileSync} from 'node:fs';
+import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import {getCliClient} from 'sanity/cli';
 import {compactCloudinaryStorage, cloudinaryBookkeepingPaths, CLOUDINARY_BOOKKEEPING_FIELDS} from '../packages/utils/src/cloudinary-storage';
 import {attributeCount} from './msm-attributes';
 
-const root='EXPORT/media-storage-stage1-20260920';
-const backup='EXPORT/production-before-media-stage1-20260920.tar.gz';
+// Explicit paths prevent a later run from overwriting earlier recovery evidence.
+const root=process.env.CLOUDINARY_STORAGE_OUTPUT;
+const backup=process.env.CLOUDINARY_STORAGE_BACKUP;
 const query='*[!(_id in path("_.**")) && _type != "sanity.previewUrlSecret"]';
 const body=(d:any)=>{const {_rev,_updatedAt,...rest}=d;return rest;};
 const save=(name:string,data:unknown)=>writeFileSync(`${root}/${name}.json`,JSON.stringify(data,null,2)+'\n',{mode:0o600});
 async function main(){
+  assert(root && root.startsWith('EXPORT/'),'Set CLOUDINARY_STORAGE_OUTPUT to a fresh EXPORT/ directory');
+  assert(backup && backup.startsWith('EXPORT/'),'Set CLOUDINARY_STORAGE_BACKUP to a verified EXPORT/ archive');
   assert.equal(process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,'wu6i3y0h');
   assert.equal(process.env.NEXT_PUBLIC_SANITY_DATASET,'production');
   const client=getCliClient({apiVersion:'2025-09-16'}).withConfig({projectId:'wu6i3y0h',dataset:'production',perspective:'raw',useCdn:false});
@@ -23,6 +26,7 @@ async function main(){
   const baseline=execFileSync('tar',['-xOzf',backup,entry],{encoding:'utf8',maxBuffer:20_000_000}).trim().split('\n').map(l=>JSON.parse(l));
   const before=await client.fetch<any[]>(query);
   const stats=await client.request<any>({uri:'/data/stats/production'});
+  assert.equal(stats.stale,false,'Wait for fresh statistics before migrating');
   const changes=before.map(d=>({id:d._id,rev:d._rev,paths:cloudinaryBookkeepingPaths(d)})).filter(c=>c.paths.length);
   const projected=before.map(d=>compactCloudinaryStorage(d));
   const estimatedReduction=attributeCount(before)-attributeCount(projected);
@@ -33,6 +37,7 @@ async function main(){
   save('plan',{...summary,changes});console.log(JSON.stringify(summary,null,2));
   if(!summary.apply || !changes.length)return;
   for(const c of changes)assert.equal(baseline.find(d=>d._id===c.id)?._rev,c.rev,`Changed since backup: ${c.id}`);
+  assert(!existsSync(`${root}/before.json`),'Recovery snapshot already exists; use a fresh output directory');
   save('before',before);
   const transaction=client.transaction();
   for(const c of changes)transaction.patch(c.id,p=>p.ifRevisionId(c.rev).unset(c.paths));

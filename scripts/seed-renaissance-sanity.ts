@@ -150,7 +150,7 @@ function cloudinaryAsset(resource: CloudinaryResource, key: string) {
     if (resource[field] !== undefined) result[field] = resource[field];
   }
   if (resource.asset_id) result.id = resource.asset_id;
-  return result;
+  return compactCloudinaryStorage(result);
 }
 
 function mimeType(path: string) {

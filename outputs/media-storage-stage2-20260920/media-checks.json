@@ -1,0 +1,82 @@
+{
+  "assetOccurrencesByChannel": {
+    "1spWeb": 257,
+    "msmWeb": 384,
+    "flizrWeb": 179,
+    "studioco2Web": 7,
+    "renaissanceWeb": 427
+  },
+  "sampleDeliveryChecks": [
+    {
+      "channel": "1spWeb",
+      "resourceType": "video",
+      "status": 200,
+      "contentType": "video/mp4;codecs=avc1",
+      "url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1763328827/11_Timo_gww9ch.mp4"
+    },
+    {
+      "channel": "msmWeb",
+      "resourceType": "video",
+      "status": 200,
+      "contentType": "video/mp4;codecs=avc1",
+      "url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1763328827/11_Timo_gww9ch.mp4"
+    },
+    {
+      "channel": "1spWeb",
+      "resourceType": "image",
+      "status": 200,
+      "contentType": "image/svg+xml",
+      "url": "https://res.cloudinary.com/dsu07dnes/image/upload/v1758116578/Meta_Platforms_Inc._logo_mkjhnv.svg"
+    },
+    {
+      "channel": "flizrWeb",
+      "resourceType": "image",
+      "status": 200,
+      "contentType": "image/png",
+      "url": "https://res.cloudinary.com/dsu07dnes/image/upload/v1787329715/Mareike_gndqg3.png"
+    },
+    {
+      "channel": "flizrWeb",
+      "resourceType": "video",
+      "status": 200,
+      "contentType": "video/mp4;codecs=avc1",
+      "url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1775057878/21_Ron_qjujml.mp4"
+    },
+    {
+      "channel": "msmWeb",
+      "resourceType": "image",
+      "status": 200,
+      "contentType": "image/svg+xml",
+      "url": "https://res.cloudinary.com/dsu07dnes/image/upload/v1760535571/1sp-outline_igb22f.svg"
+    },
+    {
+      "channel": "studioco2Web",
+      "resourceType": "video",
+      "status": 200,
+      "contentType": "video/mp4;codecs=avc1",
+      "url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1763328834/14_Steve_bgstog.mp4"
+    },
+    {
+      "channel": "renaissanceWeb",
+      "resourceType": "video",
+      "status": 200,
+      "contentType": "video/mp4;codecs=avc1",
+      "url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1773931086/Video_Games_PR_yyimxx.mp4"
+    },
+    {
+      "channel": "renaissanceWeb",
+      "resourceType": "image",
+      "status": 200,
+      "contentType": "image/svg+xml",
+      "url": "https://res.cloudinary.com/dsu07dnes/image/upload/v1760535571/1sp-outline_igb22f.svg"
+    },
+    {
+      "channel": "studioco2Web",
+      "resourceType": "image",
+      "status": 200,
+      "contentType": "image/png",
+      "url": "https://res.cloudinary.com/dsu07dnes/image/upload/v1763461399/lufthansa_lsacjp.png"
+    }
+  ],
+  "allSamplesPassed": true
+}

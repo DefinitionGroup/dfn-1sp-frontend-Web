@@ -28,3 +28,5 @@ This guard is active in the local Studio build. No hosted Studio deployment was 
 Do not restore the full archive over subsequently edited production content. If rollback is needed, restore only the removed provider fields from the saved snapshot, with fresh revision guards. Backups preserve Cloudinary references; they do not contain Cloudinary-hosted media binaries.
 
 Stage 2 (broader metadata removal or composition restructuring) has not started. Globals, editions, document types and block layouts remain as before.
+
+Follow-up: [stage 2 media cleanup](SANITY_MEDIA_STORAGE_STAGE2.md) subsequently completed on the same date, bringing the official count to 1,592. The figures above remain the stage 1 historical record.
