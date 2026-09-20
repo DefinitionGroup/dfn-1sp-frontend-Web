@@ -809,3 +809,16 @@ video {
 .msm-square-badge-logo { width: clamp(1.5rem, 22cqi, 3.25rem); height: auto; flex-shrink: 0; }
 .msm-square-badge-title { font-size: clamp(0.75rem, 9cqi, 1.25rem); line-height: 1.2; letter-spacing: -0.02em; overflow-wrap: anywhere; }
 .msm-square-badge-subtitle { margin-top: 0.5rem; font-size: clamp(0.5rem, 5cqi, 0.6875rem); line-height: 1.4; letter-spacing: 0.1em; text-transform: uppercase; overflow-wrap: anywhere; }
+
+/* Case frames share the double draw; their handles flicker out after each stroke. */
+.msm-badge[data-transient-crosses="true"][data-entered="true"] .msm-badge-cross {
+  animation: msm-case-cross-dismiss 500ms steps(1, end) calc(var(--msm-badge-drag-start) + 480ms) both;
+}
+@keyframes msm-case-cross-dismiss {
+  0%, 40%, 70% { opacity: 1; }
+  20%, 55% { opacity: 0.2; }
+  100% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .msm-badge[data-transient-crosses="true"][data-entered] .msm-badge-cross { animation: none; opacity: 0; }
+}

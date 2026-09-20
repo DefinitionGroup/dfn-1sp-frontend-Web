@@ -143,7 +143,7 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
   });
 
   // Only animate when *actually* in the viewport (or explicitly told to)
-  const shouldAnimate = animateImmediately || isInView;
+  const shouldAnimate = prefersReducedMotion || animateImmediately || isInView;
 
   // Reduced-motion: skip to final state instantly
   const effectiveDuration = prefersReducedMotion ? 0.01 : duration;
@@ -169,8 +169,8 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
           key={`${id}-${index}`}
           index={index}
           isVisible={shouldAnimate}
-          delay={delay}
-          staggerDelay={staggerDelay}
+          delay={prefersReducedMotion ? 0 : delay}
+          staggerDelay={prefersReducedMotion ? 0 : staggerDelay}
           duration={effectiveDuration}
           distance={effectiveDistance}
           easing={easingCurve}

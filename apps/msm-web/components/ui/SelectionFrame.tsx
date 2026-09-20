@@ -19,19 +19,20 @@ export function SelectionSequence({ children, className }: { children: ReactNode
 }
 
 /** Shared MSM drawing signature for badges and interactive cards. */
-export default function SelectionFrame({ children, className, contentClassName, delay = 0, sequenceIndex = 0 }: {
+export default function SelectionFrame({ children, className, contentClassName, delay = 0, sequenceIndex = 0, transientCrosses = false }: {
   children: ReactNode;
   className?: string;
   contentClassName?: string;
   delay?: number;
   sequenceIndex?: number;
+  transientCrosses?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const ownEntered = useInView(ref, { once: true, amount: 0.15 });
   const sequenceEntered = useContext(SelectionSequenceContext);
   const entered = sequenceEntered ?? ownEntered;
   return (
-    <div ref={ref} data-entered={entered} className={cn("msm-badge relative", className)}
+    <div ref={ref} data-entered={entered} data-transient-crosses={transientCrosses || undefined} className={cn("msm-badge relative", className)}
       style={{ "--msm-draw-offset": `${delay + sequenceIndex * SELECTION_STAGGER_MS}ms` } as CSSProperties}>
       {(["left", "right"] as const).map((origin) => (
         <div key={origin} aria-hidden="true" data-origin={origin} className="msm-badge-selection">

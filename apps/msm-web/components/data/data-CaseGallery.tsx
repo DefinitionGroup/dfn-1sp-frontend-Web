@@ -3,11 +3,11 @@
 import React, { startTransition, useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useOutsideClick } from "@1sp/utils/hooks/use-outside-click";
-import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
 import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
 import Button2 from "@msm/components/ui/Button2";
 import Image from "next/image";
-import StaggeredFadeIn from "@msm/components/ui/StaggeredFadeIn";
+import {SelectionSequence} from "@msm/components/ui/SelectionFrame";
+import styles from "./CaseGalleryCard.module.css";
 import CaseGalleryCard from "./CaseGalleryCard";
 import DeferredVideo from "@msm/components/ui/DeferredVideo";
 
@@ -210,28 +210,19 @@ export default function CaseGalleryComponent({
         ) : null}
       </>
 
-      <ul className="w-full ">
-        <StaggeredFadeIn
-          key={activeFilter}
-          staggerDelay={0.2}
-          distance={10}
-          duration={1}
-          once={true}
-          className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1 mx-auto w-full min-h-full"
-        >
-          {filteredItems.map((item) => (
-            <CaseGalleryCard
-              key={`card-${item.title}-${id}`}
-              item={item}
-              id={id}
-              variant={variant}
-              activeFilter={activeFilter}
-              locale={locale}
-              onClick={() => openCase(item)}
-            />
-          ))}
-        </StaggeredFadeIn>
-      </ul>
+      <SelectionSequence key={`${activeFilter}-${filteredItems.map(item => item._id).join('-')}`} className={styles.grid}>
+        {filteredItems.map((item, index) => (
+          <CaseGalleryCard
+            key={item._id}
+            item={item}
+            id={id}
+            variant={variant}
+            sequenceIndex={index + 1}
+            locale={locale}
+            onClick={() => openCase(item)}
+          />
+        ))}
+      </SelectionSequence>
     </>
   );
 }

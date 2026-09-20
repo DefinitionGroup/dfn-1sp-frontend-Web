@@ -11,6 +11,7 @@ colors:
   signal-red: "#d61e45"
   signal-orange: "#ed4033"
   signal-amber: "#f5991c"
+  form-error: "#ffb8b0"
 typography:
   display:
     fontFamily: "AspektaVF, system-ui, sans-serif"
@@ -35,6 +36,33 @@ typography:
     fontWeight: 500
     lineHeight: 1.45
     letterSpacing: "0.12em"
+  editorial-heading:
+    fontFamily: "AspektaVF, system-ui, sans-serif"
+    fontSize: "clamp(1.75rem, 2.6vw, 3rem)"
+    fontWeight: 500
+    lineHeight: 1.12
+    letterSpacing: "-0.025em"
+  editorial-copy:
+    fontFamily: "AspektaVF, system-ui, sans-serif"
+    fontSize: "clamp(1.0625rem, 1.3vw, 1.25rem)"
+    fontWeight: 500
+    lineHeight: 1.7
+  editorial-support:
+    fontFamily: "AspektaVF, system-ui, sans-serif"
+    fontSize: "clamp(1rem, 1.4vw, 1.25rem)"
+    fontWeight: 500
+    lineHeight: 1.55
+  service-hero-title:
+    fontFamily: "AspektaVF, system-ui, sans-serif"
+    fontSize: "clamp(2.25rem, 5vw, 5rem)"
+    fontWeight: 500
+    lineHeight: 1.04
+    letterSpacing: "-0.03em"
+  service-hero-subtitle:
+    fontFamily: "AspektaVF, system-ui, sans-serif"
+    fontSize: "clamp(1.125rem, 1.6vw, 1.5rem)"
+    fontWeight: 500
+    lineHeight: 1.45
 rounded:
   none: "0"
 spacing:
@@ -58,6 +86,16 @@ components:
     textColor: "{colors.ink-white}"
     rounded: "{rounded.none}"
     padding: "1.25rem"
+  contact-input:
+    backgroundColor: "{colors.paper-black}"
+    textColor: "{colors.ink-white}"
+    rounded: "{rounded.none}"
+    padding: "0.875rem 1rem"
+  contact-submit:
+    backgroundColor: "{colors.signal-cyan}"
+    textColor: "{colors.paper-black}"
+    rounded: "{rounded.none}"
+    padding: "0.875rem 1.5rem"
 ---
 
 # Design System: MSM.digital
@@ -96,6 +134,8 @@ Near-black fields and light ink support real media; the cube palette supplies co
 - **Surface Black:** Media fallback and tonal depth.
 - **Ink White:** Primary text and high-contrast marks.
 
+Contact errors use **Form Error**, a light warm tone legible on the dark form surface. It is a semantic exception, not an additional decorative mosaic color. Success retains Ink White with a Signal Cyan divider.
+
 **The Signal Rule.** Use cube colors for the mark, mosaic CTA, focus, and active state. Preserve authored imagery and hero effects; do not spread those colors into unrelated decorative surfaces.
 
 ## Typography
@@ -111,6 +151,8 @@ Near-black fields and light ink support real media; the cube palette supplies co
 - **Title:** The smaller fluid title role serves the selected Unit and supporting section headings. The selected Unit resolves to 1.75rem on mobile.
 - **Body:** Fluid narrative copy uses the frontmatter body role and a maximum measure of 68ch; selected-Unit copy narrows further for the media composition.
 - **Label:** The compact uppercase role serves actual descriptors, navigation context, and badge subtitles. It is not permission to add decorative eyebrows above headings.
+- **Editorial heading, copy, and support:** Scoped roles for content sections, cases introductions, CTA bands, service directory rows, and contact forms. They retain Medium weight; prose stays within 68ch and support within 48ch. The CMS copy-size option remains supported.
+- **Service hero title and subtitle:** Scoped roles for `servicesHeroWithBadge`, with maximum measures of 22ch and 46ch. They do not replace the signature homepage hero typography.
 
 **The One Weight Rule.** MSM-owned text uses Aspekta Medium (500), including strong and bold markup. Embedded canonical 1SP groups retain their presentation boundary; do not restyle their weight as a side effect.
 
@@ -127,6 +169,8 @@ Use a continuous full-width field with the fluid container and section spacing t
 Units use a two-column grid of individually linked cards on desktop and a single column below 768px, on both the homepage and Units page. Each card contains a real 16:10 image, Unit name, claim, directional arrow, and exploration cue. Every card is one navigation target. Frames have square corners, no shadow, small crosses, and a very dim dotted perimeter. The grid follows a compact brand-and-heading introduction, replacing the former shared image stage and selector strip.
 
 Navigation changes at 768px: a fixed angular mobile bar with a 64px minimum height and 44px minimum-height links replaces the preserved desktop navigation. Real media remains full-bleed; controls and text stay within the container rhythm.
+
+Editorial blocks use `EditorialBlocks.module.css`: an 80rem maximum inner width and fluid section padding (`clamp(3rem, 6vw, 6rem)`). Content sections divide heading and reading column 4/8 from 768px and stack below it. When no heading is authored, desktop prose keeps its right-column alignment. Cases introductions reverse the emphasis to an 8/4 heading/support split. Contact uses a 5/7 split from 1024px and a single sequence below it, with top clearance (`clamp(7rem, 10vw, 10rem)`) for fixed navigation.
 
 ## Elevation & Depth
 
@@ -150,6 +194,12 @@ Reuse Button2/MosaicButton for signature CTAs. Its rectangular lattice, ambient 
 
 Each card triggers once at 15% visibility. The right-hand card is offset by 120ms, while each frame retains its internal 180ms diagonal stagger. Images and text fade into the completed frame. The two strokes settle at 16% opacity each (on top of a 45% stroke color), making a quiet persistent perimeter. Keyboard focus immediately reveals the link content; reduced motion renders the complete faint frame and content immediately. Mouse hover gently scales only the photograph and shifts the arrow; touch does not rely on hover.
 
+### Case Tiles
+
+Case galleries reuse `SelectionSequence` and `SelectionFrame`: two diagonal draws with 200ms staggering in document order. Case frames opt into `transientCrosses`; after each 480ms stroke the crosses flicker for 500ms and disappear, leaving the faint perimeter. Existing badges and service/Unit frames retain their resting crosses. Reduced motion shows the case content and faint frame immediately, without crosses or parallax.
+
+Case tiles use content-driven height and a 4:3 media button for the existing preview. The title and the signature `Button2` / `MosaicButton` action link directly to the case. Use one column on mobile, two from 768px and three from 1024px; preserve the editorial title, services and Unit attribution. Filter changes restart the sequence. Keyboard focus reveals content immediately.
+
 ### Framed Badge
 
 A single in-view trigger at 15% visibility runs once per mount. Two pairs of small monospace + glyphs match the homepage's `font-mono text-xs` corner markers (14px in the current MSM type scale). In the first pair, one cross anchors the top-left and the other drags to the bottom-right, pulling out a dotted selection rectangle. A second pair repeats the action from top-right to bottom-left, staggered by 180ms. The crosses translate with the moving corners and never scale.
@@ -171,6 +221,34 @@ Preserve the approved animated cube mark. It represents Units until editorial Un
 ### Conditional Editorial Sections
 
 Render Cases and People only from actual Unit assignments. The inspected content currently provides four Units and no assigned Cases or leaders; this absence does not justify invented cards, names, or projects.
+
+### Editorial Content and Cases Introduction
+
+`contentSection` keeps authored rich text intact on the dark page field. A fine top rule separates the 4/8 heading-and-prose composition; paragraphs, lists, quotations, and inline links retain readable spacing. Copy uses light ink at 82% opacity, with cyan list markers, link underlines, and quotation rules. Strong markup emphasizes contrast while retaining Medium weight. `casesIntro` uses a larger Ink White heading and smaller cyan support; both stack on mobile.
+
+`EditorialReveal` keeps text readable at first paint (`initial={false}`), then settles it upward by 12px on first entry with a non-bouncing spring (`visualDuration: 0.35`). It never hides text behind an opacity gate. Reduced motion targets the complete static state; shared stagger helpers also remove child delay and stagger waits.
+
+### Service Hero with Badge
+
+`servicesHeroWithBadge` is a full-bleed media plane with bottom-aligned copy and the existing square badge. Its height is content-driven above a fluid minimum (`clamp(30rem, 68svh, 52rem)`). From 768px the badge occupies the right column; on mobile it follows the copy in the normal flow. Authored CTA details and list items remain present when supplied. Preserve these content slots and the badge mechanism rather than inventing overlays or additional labels.
+
+`HeaderImageVideoComp2` applies its dark scrim immediately; the service hero uses 60% opacity. It retains a stable video element and poster, plays only while visible without reduced motion, and pauses otherwise. Optional parallax spans 0–10% of the media height and stops under reduced motion. This supporting-media behavior does not replace the separate signature homepage hero effects.
+
+### Intertitle CTA Band
+
+`intertitleCTA` is a compact text-and-action band between fine horizontal rules. Copy and the existing MosaicButton sit together on desktop and wrap into a vertical sequence on mobile. Supporting copy stays within 52ch. Preserve authored labels and destinations; use the existing button variant rather than a new CTA style. Press feedback translates the action by 2px over 100ms and becomes static for reduced motion.
+
+### Service Directory
+
+`MsmServiceDirectory` uses individually linked horizontal rows divided by hairlines. From 768px each row arranges an optional 16:10 source thumbnail, text, and cyan arrow in a 3/8/arrow grid. Mobile places the thumbnail above the text and arrow. One complete row is one navigation target; its title, description, and exploration label remain visible without hover. Fine-pointer hover scales only the image to 1.035 over 400ms and moves the arrow diagonally by 4px over 180ms; reduced motion removes these transforms.
+
+This row pattern belongs only to the service directory. Existing Units and Services selection grids continue to use `SelectionFrame`, `SelectionCards.module.css`, and their badge-first sequence.
+
+### Contact Form
+
+The contact block uses a Surface Black field and angular Paper Black inputs with a 35%-opacity Ink White border. Inputs retain a 16px text size, a 3.25rem minimum height, visible labels, and cyan focus/caret treatments; the textarea is at least 11rem tall and vertically resizable. The form sits directly in the layout without a raised panel or shadow.
+
+The submit action uses Signal Cyan with Paper Black text, a 3rem minimum height, Ink White hover fill, and subtle 2px press feedback. Submission keeps the existing content and request behavior: the form announces busy state, errors use `role="alert"`, and success uses `role="status"`. Keep form feedback readable on the dark surface and preserve the global keyboard focus outline. Reduced motion removes submit transitions and press translation.
 
 ## Do's and Don'ts
 

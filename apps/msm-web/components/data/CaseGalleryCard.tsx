@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "motion/react";
-import Image from "next/image";
-import Link from "next/link";
-import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
-import DeferredVideo from "@msm/components/ui/DeferredVideo";
+import {useRef} from 'react';
+import {motion, useScroll, useTransform, useSpring, useReducedMotion} from 'motion/react';
+import Image from 'next/image';
+import Link from 'next/link';
+import DeferredVideo from '@msm/components/ui/DeferredVideo';
+import SelectionFrame from '@msm/components/ui/SelectionFrame';
+import Button2 from '@msm/components/ui/Button2';
+import styles from './CaseGalleryCard.module.css';
 
 interface CaseStudy {
   _id: string;
@@ -28,112 +30,42 @@ interface CaseStudy {
 interface CaseGalleryCardProps {
   item: CaseStudy;
   id: string;
-  variant?: "light";
-  activeFilter?: string;
+  variant?: 'light';
+  sequenceIndex?: number;
   locale?: string;
   onClick: () => void;
 }
 
-export default function CaseGalleryCard({
-  item,
-  id,
-  variant,
-  activeFilter,
-  locale = "en",
-  onClick,
-}: CaseGalleryCardProps) {
+export default function CaseGalleryCard({item, id, variant, sequenceIndex = 0, locale = 'en', onClick}: CaseGalleryCardProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+  const {scrollYProgress} = useScroll({target: ref, offset: ['start end', 'end start']});
+  const y = useTransform(scrollYProgress, [0, 1], ['-10%', '10%']);
+  const springY = useSpring(y, {stiffness: 400, damping: 90});
+  const href = `${locale === 'en' ? '' : `/${locale}`}/cases/${item.slug.current}`;
 
-  // Parallax Logic
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-
-  // Transform Y for parallax effect (image moves slower than container)
-  const y = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
-  // Add spring for smoothness
-  const springY = useSpring(y, { stiffness: 400, damping: 90 });
-
-  return (
-
-    <motion.div
-      layoutId={`card-${item.title}-${id}`}
-      key={`card-${item.title}-${id}`}
-      onClick={onClick}
-      ref={ref}
-      className="col-span-1 grid grid-cols-1 grid-row-1 row-span-1  md:min-h-[500px] group/card overflow-hidden md:h-[500px] cursor-pointer card-hover"
-    >
-      <motion.div
-        layoutId={`image-${item.title}-${id}`}
-        className="col-start-1 col-span-1 row-start-1 bg-black   min-h-[260px] md:h-[300px] md:min-h-full rounded-sm overflow-hidden relative"
-      >
-        <motion.div style={{ y: springY }} className="w-full h-[120%]   relative -top-[10%]">
-          {item.mainVideoUrl ? (
-            <DeferredVideo
-              src={item.mainVideoUrl}
-              maxWidth={640}
-              className="w-full h-full object-cover object-top opacity-80 transition-all group-hover/card:opacity-100"
-              mountDelay={300}
-              posterFrame="0"
-            />
-          ) : (
-            <Image
-              width={1000}
-              height={1000}
-              src={item.mainImageUrl || "/placeholder.png"}
-              alt={item.title}
-              className="w-full h-full object-cover group-hover/card:opacity-100 object-top  opacity-80 transition-all"
-            />
-          )}
-
-             {item.client?.logoUrl ? (
-            <motion.img
-              layoutId={`logo-${item.title}-${id}`}
-              src={item.client?.logoUrl}
-              alt={item.title}
-              className={` min-w-[144px] max-w-full max-h-7 object-contain absolute left-4 top-12 object-left invert`}
-            />
-          ) : null}  
+  return <SelectionFrame sequenceIndex={sequenceIndex} transientCrosses className={styles.frame} contentClassName={styles.content}>
+    <motion.article ref={ref} layoutId={`card-${item.title}-${id}`} className={styles.card} data-variant={variant}>
+      <motion.button type="button" onClick={onClick} aria-label={`${locale === 'de' ? 'Vorschau' : 'Preview'}: ${item.title}`}
+        layoutId={`image-${item.title}-${id}`} className={styles.media}>
+        <motion.div style={{y: reduced ? 0 : springY}} className={styles.mediaInner}>
+          {item.mainVideoUrl ? <DeferredVideo src={item.mainVideoUrl} maxWidth={640} className={styles.image} mountDelay={300} posterFrame="0" />
+            : <Image src={item.mainImageUrl || '/placeholder.png'} alt={item.title} fill sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" className={styles.image} />}
         </motion.div>
-      </motion.div>
-
-      <StaggeredSlideUp
-        key={activeFilter}
-        staggerDelay={0.2}
-        distance={10}
-        delay={0.4}
-        duration={1}
-        className={`col-start-1  col-span-1 flex flex-col opacity-100 row-start-2 p-2  mt-4 mb-8 md:mb-16 z-1 h-[250px]`}
-      >
-        <div className={`flex-col flex justify-start mb-2`}>
-      <Link href={`${locale === "en" ? "" : `/${locale}`}/cases/${item.slug?.current}`} className="contents">
-            <motion.h3
-              layoutId={`title-${item.title}-${id}`}
-              className={`font-medium md:ext-lg leading-snug max-w-[350px] tracking-tight ${variant !== "light" ? "" : "invert"
-                } text-neutral-600 hover:text-neutral-400 transition-colors dark:text-neutral-200 md:text-left`}
-            >
-              {item.title}
-            </motion.h3>  </Link>
+        {item.client?.logoUrl && <motion.img layoutId={`logo-${item.title}-${id}`} src={item.client.logoUrl} alt="" className={styles.logo} />}
+      </motion.button>
+      <div className={styles.copy}>
+        <Link href={href} className={styles.titleLink}>
+          <motion.h3 layoutId={`title-${item.title}-${id}`} className={styles.title}>{item.title}</motion.h3>
+        </Link>
+        {Boolean(item.services?.length) && <motion.p layoutId={`description-${item.description}-${id}`} className={styles.services}>
+          {item.services!.map(service => service.name).join(', ')}
+        </motion.p>}
+        {Boolean(item.msmUnits?.length) && <p className={styles.units}>{item.msmUnits!.map(unit => unit.name).join(' / ')}</p>}
+        <div className={styles.action}>
+          <Button2 variant="violetsmall" text={locale === 'de' ? 'Case ansehen' : 'View Case Study'} href={href} />
         </div>
-
-        {item.services && item.services.length > 0 && (
-          <div className="flex justify-end   ">
-            <motion.p
-              layoutId={`description-${item.description}-${id}`}
-              className="text-neutral-400   md:text-left text-xxs font-regular md:text-xs dark:text-neutral-400"
-            >
-              {item.services.map((s) => s.name).join(", ")}
-            </motion.p>
-          </div>
-        )}
-        {item.msmUnits && item.msmUnits.length > 0 ? (
-          <p className="mt-3 border-t border-white/15 pt-3 text-[10px] font-bold uppercase tracking-[0.13em] text-msm-cyan">
-            {item.msmUnits.map((unit) => unit.name).join(" / ")}
-          </p>
-        ) : null}
-      </StaggeredSlideUp>
-    </motion.div>
-
-  );
+      </div>
+    </motion.article>
+  </SelectionFrame>;
 }

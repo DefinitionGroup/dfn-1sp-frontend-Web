@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-18T12:10:08.756428+00:00",
+  "generatedAt": "2026-09-20T12:59:18.704216+00:00",
   "title": "Design System: MSM.digital",
   "extensions": {
     "colorMeta": {
@@ -138,6 +138,21 @@
           "#f8bc68",
           "#fce5be"
         ]
+      },
+      "form-error": {
+        "role": "tertiary",
+        "displayName": "Form Error",
+        "canonical": "#ffb8b0",
+        "tonalRamp": [
+          "#361512",
+          "#592420",
+          "#7d3832",
+          "#a25249",
+          "#c9766b",
+          "#e9998e",
+          "#ffb8b0",
+          "#fff0ed"
+        ]
       }
     },
     "typographyMeta": {
@@ -156,6 +171,26 @@
       "label": {
         "displayName": "Label",
         "purpose": "Actual descriptors and compact navigation context, never decorative eyebrows."
+      },
+      "editorial-heading": {
+        "displayName": "Editorial Heading",
+        "purpose": "Content section, cases introduction, CTA band, directory, and contact headings; Aspekta Medium."
+      },
+      "editorial-copy": {
+        "displayName": "Editorial Copy",
+        "purpose": "Readable dark-field rich text up to 68ch; default lg role with authored CMS size options retained."
+      },
+      "editorial-support": {
+        "displayName": "Editorial Support",
+        "purpose": "Secondary editorial copy up to 48ch; cyan in CasesIntro."
+      },
+      "service-hero-title": {
+        "displayName": "Service Hero Title",
+        "purpose": "Bottom-aligned servicesHeroWithBadge title up to 22ch; does not replace the signature homepage hero."
+      },
+      "service-hero-subtitle": {
+        "displayName": "Service Hero Subtitle",
+        "purpose": "Supporting servicesHeroWithBadge copy up to 46ch."
       }
     },
     "shadows": [
@@ -205,6 +240,31 @@
         "name": "reduced-motion",
         "value": "0ms",
         "purpose": "Immediate content, small crosses and faint dotted frames; no card transforms."
+      },
+      {
+        "name": "editorial-settle",
+        "value": "12px to 0; spring; bounce 0; visualDuration 0.35s",
+        "purpose": "First-entry editorial settle with initial=false; text stays readable and reduced motion targets the static state."
+      },
+      {
+        "name": "directory-image-hover",
+        "value": "400ms var(--ease-vast-bezier); scale 1.035",
+        "purpose": "Fine-pointer service directory image hover only; static for reduced motion."
+      },
+      {
+        "name": "directory-arrow-hover",
+        "value": "180ms ease-out; translate(4px, -4px)",
+        "purpose": "Fine-pointer directory destination cue; static for reduced motion."
+      },
+      {
+        "name": "editorial-action-press",
+        "value": "100ms ease-out; translateY(2px)",
+        "purpose": "CTA band and contact submit press response; removed for reduced motion."
+      },
+      {
+        "name": "supporting-header-media",
+        "value": "0–10% optional parallax; 300ms video opacity transition",
+        "purpose": "Immediate scrim and stable video DOM. Offscreen or reduced-motion video pauses; reduced motion disables parallax and video opacity transition."
       }
     ],
     "breakpoints": [
@@ -236,7 +296,16 @@
       "contentEvidence": "Four Units; no Case or leadership assignments in the inspected content.",
       "notCanonized": "Legacy eyebrow utilities or redundant heading labels; the redundant Unit eyebrow has been removed.",
       "badgeGeometry": "Always square: aspect-ratio 1, widths capped at 10/12/15rem for sm/md/lg and constrained to parent width. Vertical content at every breakpoint; container-relative sizing.",
-      "cardSystem": "SelectionFrame and SelectionCards.module.css shared by Units links and Services articles. Services retain source media, complete copy and existing section CTA; no rotating sticky stack."
+      "cardSystem": "SelectionFrame and SelectionCards.module.css shared by Units links and Services articles. Services retain source media, complete copy and existing section CTA; no rotating sticky stack.",
+      "editorialBlocks": {
+        "source": "components/ui/EditorialBlocks.module.css and components/ui/EditorialReveal.tsx",
+        "record": "docs/records/msm/msm-block-redesign-2026-09-20.md",
+        "scope": "contentSection, servicesHeroWithBadge, intertitleCTA, casesIntro, MsmServiceDirectory, ContactForm, supporting header media and shared reduced-motion stagger timing.",
+        "contentContract": "Presentation changes preserve authored copy, CMS content, media and destinations.",
+        "layout": "80rem inner width; 4/8 content split and 8/4 cases introduction from 768px; 5/7 contact split from 1024px. Contact top clearance clamp(7rem, 10vw, 10rem).",
+        "directoryBoundary": "Linked service directory rows only; Units and Services SelectionFrame grids and badge-first sequencing remain unchanged.",
+        "review": "Desktop/mobile and reduced-motion captures in .impeccable/review/block-redesign/."
+      }
     }
   },
   "components": [
@@ -270,6 +339,29 @@
       "description": "Geometry and typography preview only; production must reuse Button2/MosaicButton for its triangular lattice and effects.",
       "html": "<button class=\"ds-mosaic-button\">Start a project<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M6 18 18 6M6 6h12v12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg></button>",
       "css": ".ds-mosaic-button{display:inline-flex;align-items:center;gap:1rem;overflow:hidden;border:0;border-radius:0;padding:.75rem 1.5rem .75rem 3rem;background:#14181a;color:white;box-shadow:0 10px 28px rgba(0,0,0,.45);font:500 .64rem/1.5 AspektaVF,sans-serif;letter-spacing:.05em;cursor:pointer;transition:transform 200ms,color 200ms}.ds-mosaic-button:hover{transform:scale(.99)}.ds-mosaic-button:focus-visible{outline:2px solid #03b8d4;outline-offset:5px}@media(prefers-reduced-motion:reduce){.ds-mosaic-button{transition:none}.ds-mosaic-button:hover{transform:none}}"
+    },
+    {
+      "name": "Contact Input",
+      "kind": "input",
+      "refersTo": "contact-input",
+      "description": "Angular dark input with readable 16px type, visible label, cyan caret and keyboard focus.",
+      "html": "<label class=\"ds-contact-field\">Email<input class=\"ds-contact-input\" type=\"email\" autocomplete=\"email\" placeholder=\"you@example.com\"></label>",
+      "css": ".ds-contact-field{display:grid;gap:.75rem;padding:1rem;color:#f4f4f4;background:#14181a;font:500 .9375rem/1.55 AspektaVF,sans-serif}.ds-contact-input{width:100%;min-width:0;min-height:3.25rem;border:1px solid rgb(244 244 244 / 35%);border-radius:0;background:#0a0c0d;padding:.875rem 1rem;font:500 1rem/1.55 AspektaVF,sans-serif;color:#f4f4f4;caret-color:#03b8d4;transition:border-color 120ms ease-out}.ds-contact-input::placeholder{color:rgb(244 244 244 / 60%)}.ds-contact-input:focus{border-color:#03b8d4}.ds-contact-input:focus-visible{outline:2px solid #03b8d4;outline-offset:5px}"
+    },
+    {
+      "name": "Contact Submit",
+      "kind": "button",
+      "refersTo": "contact-submit",
+      "description": "High-contrast cyan form action with busy-state feedback; signature editorial CTAs still use MosaicButton.",
+      "html": "<button class=\"ds-contact-submit\" type=\"submit\">Send message</button>",
+      "css": ".ds-contact-submit{min-height:3rem;padding:.875rem 1.5rem;border:1px solid #03b8d4;border-radius:0;background:#03b8d4;color:#0a0c0d;font:500 1rem/1.5 AspektaVF,sans-serif;cursor:pointer;transition:background-color 120ms ease-out,transform 100ms ease-out}.ds-contact-submit:hover{background:#f4f4f4}.ds-contact-submit:active{transform:translateY(2px)}.ds-contact-submit:focus-visible{outline:2px solid #03b8d4;outline-offset:5px}.ds-contact-submit:disabled{cursor:wait;opacity:.65}@media(prefers-reduced-motion:reduce){.ds-contact-submit{transition:none}.ds-contact-submit:active{transform:none}}"
+    },
+    {
+      "name": "Service Directory Row",
+      "kind": "custom",
+      "description": "Single linked row with optional source thumbnail, complete copy and cyan arrow. This preview omits media; SelectionFrame grids remain separate.",
+      "html": "<a class=\"ds-directory-row\" href=\"/services\"><div><h2>Services</h2><span class=\"ds-directory-action\">Explore service</span></div><svg class=\"ds-directory-arrow\" width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M5 19 19 5M5 5h14v14\" stroke=\"currentColor\" stroke-width=\"1.5\"/></svg></a>",
+      "css": ".ds-directory-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:1.5rem;padding:2rem 1rem;border-block:1px solid rgb(244 244 244 / 20%);background:#0a0c0d;color:#f4f4f4;text-decoration:none;font:500 1rem/1.6 AspektaVF,sans-serif}.ds-directory-row h2{margin:0;font:500 clamp(1.75rem,2.6vw,3rem)/1.12 AspektaVF,sans-serif;letter-spacing:-.025em}.ds-directory-action{display:block;margin-top:1rem;font-size:.875rem}.ds-directory-arrow{color:#03b8d4;transition:transform 180ms ease-out}.ds-directory-row:focus-visible{outline:2px solid #03b8d4;outline-offset:5px}.ds-directory-row:active .ds-directory-arrow{transform:translate(2px,-2px)}@media(hover:hover) and (pointer:fine){.ds-directory-row:hover .ds-directory-arrow{transform:translate(4px,-4px)}.ds-directory-row:hover .ds-directory-action{color:#03b8d4}}@media(prefers-reduced-motion:reduce){.ds-directory-arrow{transition:none}.ds-directory-row:hover .ds-directory-arrow,.ds-directory-row:active .ds-directory-arrow{transform:none}}"
     }
   ],
   "narrative": {

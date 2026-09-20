@@ -4,6 +4,7 @@ These documents preserve approved mappings, implementation decisions and verific
 
 ## MSM
 
+- [MSM block redesign — 20 September 2026](msm/msm-block-redesign-2026-09-20.md)
 - [MSM migration and publication record](msm/MSM_CONTENT_MIGRATION.md)
 - [MSM rewrite mapping plan](msm/MSM_REWRITE_MAPPING_PLAN.md)
 - [MSM: Konsolidierung auf Basis der Homepage](msm/msm-design-consolidation-plan.md)
@@ -32,4 +33,3 @@ These documents preserve approved mappings, implementation decisions and verific
 - [Sanity attribute model options](sanity/SANITY_ATTRIBUTE_MODEL_OPTIONS.md)
 - [Cloudinary storage cleanup — stage 1](sanity/SANITY_MEDIA_STORAGE_STAGE1.md)
 - [Cloudinary storage cleanup — stage 2](sanity/SANITY_MEDIA_STORAGE_STAGE2.md)
-

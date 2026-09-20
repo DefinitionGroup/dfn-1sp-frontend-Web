@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
 import Button2 from "@msm/components/ui/Button2";
-import Link from "next/link";
+import EditorialReveal from "@msm/components/ui/EditorialReveal";
+import styles from "@msm/components/ui/EditorialBlocks.module.css";
 import { resolveLink } from "@1sp/utils/cloudinary";
 import { useParams } from "next/navigation";
 import type { CTA } from "@1sp/sanity-types";
@@ -34,41 +34,11 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   title,
   subtitle,
   cta,
-  staggeredProps = {},
-  containerClassName = "flex-col w-full  md:min-w-64 justify-center mx-auto ",
-  alignment = "center",
-  paddingTop = "0",
   navPointName,
   hideFromNav = false,
 }) => {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
-  const isLeftAligned = alignment === "left";
-
-  // Padding top classes
-  const paddingTopMap: Record<string, string> = {
-    "0": "",
-    "12": "pt-12",
-    "24": "pt-24",
-    "48": "pt-48",
-  };
-  const paddingTopClass = paddingTopMap[paddingTop] || "";
-
-  const defaultStaggeredProps: StaggeredSlideUpProps = {
-    className: `flex flex-col ${isLeftAligned ? "items-start" : "items-center"} font-normal justify-center  w-full min-w-full `,
-    delay: 0.0,
-    debug: false,
-    easing: "smooth",
-    staggerDelay: 0.1,
-    duration: 0.5,
-    distance: 20,
-    ...staggeredProps,
-  };
-
-  const titleClass = `headline-display text-neutral-50 text-balance ${isLeftAligned ? "text-left" : "text-center"}`;
-  const subtitleClass = `mt-5 text-xl md:text-2xl text-white/70 leading-relaxed ${isLeftAligned ? "text-left" : "text-center"}`;
-  const buttonContainerClass = `w-fit min-w-40 ${isLeftAligned ? "self-start" : "mx-auto"} mt-10 block`;
-
   // Resolve CTA link and props
   let buttonHref = cta?.link ? resolveLink(cta.link) : undefined;
   // Fix URL to include locale if it's an internal link
@@ -98,28 +68,19 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   };
 
   return (
-    <div id={sectionId} {...navPointDataAttr} className={`${containerClassName} `}>
-      <div className="grid z-1 mx-auto container relative font-aspekta">
-        {/* Background grid (optional visual helper) */}
-        <div className={`z-1 py-20 md:py-28 col-span-12 px-[var(--container-padding)] container mx-auto row-start-1 grid-cols-12 ${paddingTopClass}`}>
-          <StaggeredSlideUp {...defaultStaggeredProps}>
-            {hasVisibleText(title) ? <h3 className={titleClass}>{title}</h3> : null}
-            <p className={subtitleClass}>
-              {subtitle}
-            </p>
-          </StaggeredSlideUp>
-          {buttonHref && buttonText && (
-            <div className={buttonContainerClass}>
-              <Button2
-                text={buttonText}
-                variant={buttonVariant}
-                href={buttonHref}
-              />
-            </div>
-          )}
-        </div>
+    <section id={sectionId} {...navPointDataAttr} className={styles.cta}>
+      <div className={styles.inner}>
+        <EditorialReveal className={styles.ctaInner}>
+          <div className={styles.ctaCopy}>
+            {hasVisibleText(title) && <h3 className={styles.heading}>{title}</h3>}
+            {hasVisibleText(subtitle) && <p>{subtitle}</p>}
+          </div>
+          {buttonHref && buttonText && <div className={styles.ctaAction}>
+            <Button2 text={buttonText} variant={buttonVariant} href={buttonHref} />
+          </div>}
+        </EditorialReveal>
       </div>
-    </div>
+    </section>
   );
 };
 
