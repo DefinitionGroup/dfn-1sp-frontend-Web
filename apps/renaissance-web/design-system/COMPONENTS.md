@@ -162,7 +162,7 @@ Global cases can supply `siteContent` editions by channel. The shared query laye
 
 `clientLogoCarousel` retains manual/auto selections and adds a Renaissance collection reference. Collection items resolve global clients with optional local artwork/display-name overrides and channel/language checks. `displayMode: grid` renders the complete roster; the default swap display remains for curated homepage selections. Supplied opaque JPEGs use a light surface with their original colours and aspect ratios. Preview option comparisons strip Sanity editing metadata while visible text retains editing overlays.
 
-The v4 workbook takes precedence for Renaissance copy. See `docs/renaissance-rewrite-v4-implementation.md` for the implemented milestone and pending page migration.
+The v4 workbook takes precedence for Renaissance copy. See `docs/records/renaissance/renaissance-rewrite-v4-implementation.md` for the implemented milestone and pending page migration.
 
 ### Renaissance case carousel
 

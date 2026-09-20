@@ -1,3 +1,5 @@
+> Historical snapshot: the operational facts below were recorded on 2026-07-09. Branch, dataset, tooling and completion claims are not current state. Use [the documentation index](docs/README.md) and [architecture](docs/ARCHITECTURE.md) to resume work. Original release boundaries are retained as history, not reissued authorization.
+
 # Project Memory — 1SP Multisite Frontend
 
 > Verified against the repository and readable Sanity datasets on 2026-07-09.
@@ -233,7 +235,7 @@ shared packages or routes.
 
 ## Performance Plan Status
 
-`PERFORMANCE_PLAN.md` is a February 2026 snapshot and must not be treated as a
+`docs/archive/audits/PERFORMANCE_PLAN.md` is a February 2026 snapshot and must not be treated as a
 current benchmark after the Next 16/Turbopack upgrade.
 
 - The custom `splitChunks` override has already been removed.
@@ -255,24 +257,24 @@ Read documents by purpose and freshness:
 |---|---|---|
 | `AGENTS.md` | Non-breaking rules, multisite ownership, verification policy | Valid policy; not a status report |
 | `MEMORY.md` | Current operational orientation and release gates | Current as of date above |
-| `docs/AUDIT-2026-07-channel-cache-mode.md` | Recent isolation/cache incident and applied fixes | Current; follow-ups remain |
+| `docs/archive/audits/AUDIT-2026-07-channel-cache-mode.md` | Recent isolation/cache incident and applied fixes | Current; follow-ups remain |
 | `migrations/unify-page-content/RUNBOOK.md` | Production migration safety | Critical procedure; branch names/state text is dated |
-| `docs/MSM_LAUNCH.md` | MSM launch checklist and brand inputs | Partly current; data counts/design status are stale |
-| `docs/multisite-platform-plan.md` | Original architecture intent | Good vision; phase status is obsolete |
-| `TODO.MD` | Early FLZR scope and January feature history | Stale as an active task list |
-| `docs/HANDOFF.md` | Prior worktree handoff and migration history | Historical; "uncommitted" and branch claims are stale |
-| `docs/MULTI_SITE.md` | Earlier state-of-play | Historical; incorrectly says MSM is not started |
+| `docs/archive/platform/MSM_LAUNCH.md` | MSM launch checklist and brand inputs | Partly current; data counts/design status are stale |
+| `docs/archive/platform/multisite-platform-plan.md` | Original architecture intent | Good vision; phase status is obsolete |
+| `docs/archive/platform/TODO.MD` | Early FLZR scope and January feature history | Stale as an active task list |
+| `docs/archive/platform/HANDOFF.md` | Prior worktree handoff and migration history | Historical; "uncommitted" and branch claims are stale |
+| `docs/archive/platform/MULTI_SITE.md` | Earlier state-of-play | Historical; incorrectly says MSM is not started |
 | `docs/VERCEL_DEPLOYMENT.md` | Three-project repo-side build model | Newer deployment intent; dashboard state unverified |
 | `docs/VERCEL_DEPLOYMENTS.md` | Older two-project deployment explanation | Superseded by singular file above |
 | `CLAUDE.md` | Some conventions and code map | Mixed; still says Next 15, `content1sp`, old query paths |
 | `GEMINI.md`, `README.md` | Historical/basic setup | Too stale/boilerplate for architecture decisions |
 | `docs/PAGEBUILDER_COMPONENT_GUIDE.md` | Conceptual block workflow | Paths, type imports, and `content1sp` steps need updating |
-| `docs/CLEANUP-COMPONENTS.md`, `docs/UNUSED.md` | January cleanup snapshot | Re-run usage analysis before deleting anything |
-| `PERFORMANCE_PLAN.md` | Historical performance hypotheses | Re-baseline before acting |
-| `RECIPE.md`, `docs/RECIPE.md` | Generic multisite lessons | Templates, not project state |
-| `RECIPE-V5.md` | Historical Sanity v5 recipe | Obsolete for this branch, which uses Sanity 6 |
+| `docs/archive/audits/CLEANUP-COMPONENTS.md`, `docs/archive/audits/UNUSED.md` | January cleanup snapshot | Re-run usage analysis before deleting anything |
+| `docs/archive/audits/PERFORMANCE_PLAN.md` | Historical performance hypotheses | Re-baseline before acting |
+| `docs/templates/new-multisite-project.md`, `docs/templates/single-site-to-multisite.md` | Generic multisite lessons | Templates, not project state |
+| `docs/templates/new-multisite-project-sanity-v5.md` | Historical Sanity v5 recipe | Obsolete for this branch, which uses Sanity 6 |
 
-Narrow feature documents such as `docs/MSM_NAV_GLASS.md`,
+Narrow feature documents such as `docs/archive/audits/MSM_NAV_GLASS.md`,
 `docs/CONTACT_FORM.md`, and `docs/SANITY_NULL_HANDLING.md` remain useful when
 working in those exact areas, but verify their file paths against the app being
 changed.

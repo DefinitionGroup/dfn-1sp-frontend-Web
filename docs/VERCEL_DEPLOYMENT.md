@@ -1,10 +1,5 @@
-# Archived Vercel Deployment Guide
+# Deployment documentation moved
 
-This guide described an older branch, project, preview, and dataset strategy. Its
-executable instructions have been removed so they cannot be mistaken for the current
-rollout.
+Use [Deployment verification](DEPLOYMENT.md) for current release checks. The [July test deployment plan](../deploymentplan.md) retains its historical scope and evidence; verify provider configuration and dataset selection before reusing it.
 
-Use [`../deploymentplan.md`](../deploymentplan.md) as the only deployment runbook for
-the three `multisite/test` projects on `dev-dataset`.
-
-Git history retains the previous guide if historical comparison is needed.
+Git history preserves the older guide.

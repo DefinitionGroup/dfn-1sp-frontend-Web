@@ -2,6 +2,8 @@
 
 This repository is evolving from a single 1SP website into a multi-site frontend platform powered by one Sanity CMS. Follow these rules when making changes.
 
+For task-specific guides, completed records and deferred plans, start with [docs/README.md](docs/README.md). Historical handoffs are dated evidence, not the current work queue.
+
 ## Production Baseline
 
 - The current 1SP website is live. Preserve its existing runtime behavior unless a task explicitly says to migrate or change it.
@@ -44,11 +46,11 @@ This repository is evolving from a single 1SP website into a multi-site frontend
 
 ## Frontend Architecture Direction
 
-- FLZR should become an independent frontend app with its own routing, layout, navigation, SEO, sitemap, robots, tracking, fonts, and page-builder registry.
+- FLZR is an independent frontend app with its own routing, layout, navigation, SEO, sitemap, robots, tracking, fonts, and page-builder registry.
 - Reuse shared logic through packages or clearly separated shared modules.
 - Case pages may share the same data contract and logic, but markup and styling can be site-specific.
 - Page builders should follow the same pattern across websites, but each website may have a different component set.
-- Do not force FLZR through `content1sp`; use a FLZR-specific page-builder field/registry when implementing FLZR pages.
+- Pages use unified `content[]` storage. Use FLZR's own PageBuilder registry and renderer; preserve app-specific presentation when sharing data contracts.
 
 ## Renaissance Status
 

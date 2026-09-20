@@ -1,35 +1,27 @@
 # FLZR Web
 
-Independent frontend shell for the `flizrWeb` Sanity channel.
+Independent frontend for `flizrWeb`, using shared Sanity contracts and its own shell, rendering and visual language. Configured languages: EN, DE and PL; [site-config](../../packages/site-config/src/index.ts) is authoritative.
 
-## Run Locally
+## Run locally
 
-From the repository root:
+From the repository root, after configuring this app's environment:
 
-```bash
-pnpm dev:flzr
-pnpm build:flzr
-pnpm start:flzr
+```sh
+pnpm --filter @1sp/flzr-web exec next dev --turbopack -p 3001
+pnpm --filter @1sp/flzr-web build
+pnpm --filter @1sp/flzr-web exec next start -p 3001
 ```
 
-The app expects its own environment variables. Start from `.env.example` and configure the real values in the FLZR Vercel project.
+The start command requires a completed build. Local frontend: `http://localhost:3001`. The shared local Studio runs in the root app at `http://localhost:3000/studio`.
 
-Minimum public env for build/dev:
+Use this app's `.env.example` as a starting point. Confirm `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, `NEXT_PUBLIC_SANITY_API_VERSION`, `NEXT_PUBLIC_CHANNEL=flizrWeb` and `NEXT_PUBLIC_SITE_URL=http://localhost:3001`. Root environment files do not automatically configure this app. Select the dataset for the task explicitly rather than copying an older deployment snapshot.
 
-```bash
-NEXT_PUBLIC_SANITY_PROJECT_ID=wu6i3y0h
-NEXT_PUBLIC_SANITY_DATASET=production
-NEXT_PUBLIC_SANITY_API_VERSION=2025-09-16
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-```
+Run the root Sanity doctor with `--channel flizrWeb --language en`, then compare its root environment with the app's loaded environment. See [local debugging](../../docs/local-sanity-debugging.md).
 
-## Scope
+## Ownership and references
 
-- Fetches website pages and global content through `flizrWeb`.
-- Supports `en`, `de`, and `pl` route params.
-- Reuses shared root components and Sanity query helpers through the root `@/*` alias.
-- Owns its app shell through `components/FlzrSiteWrapper.tsx`.
-- Owns its page-builder boundary through `components/FlzrPageBuilder.tsx`, which currently renders the same module registry as 1SP for editor continuity.
-- Keeps the current 1SP root app untouched.
-
-This is still a shell. FLZR-specific layout, navigation, selected page-builder component forks, fonts, and visual language are the next implementation step.
+- App shell: [components/FlzrSiteWrapper.tsx](components/FlzrSiteWrapper.tsx).
+- PageBuilder: [components/FlzrPageBuilder.tsx](components/FlzrPageBuilder.tsx).
+- Global content remains channel/language scoped; pages use unified `content[]`.
+- [Documentation index](../../docs/README.md) and [deployment verification](../../docs/DEPLOYMENT.md).
+- [FLZR content records](../../docs/records/README.md#flzr), including the September homepage rollback. Earlier scaffold-only notes are historical.

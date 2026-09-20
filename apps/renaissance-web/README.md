@@ -1,35 +1,30 @@
-# RENAISSANCE Web
+# Renaissance Web
 
-Independent frontend for the `renaissanceWeb` Sanity channel.
+Independent frontend for `renaissanceWeb`, using shared Sanity contracts and its own shell, rendering and visual language. Configured languages: EN; [site-config](../../packages/site-config/src/index.ts) is authoritative.
 
-## Run Locally
+## Run locally
 
-From the repository root:
+From the repository root, after configuring this app's environment:
 
-```bash
-pnpm dev:renaissance
-pnpm build:renaissance
-pnpm start:renaissance
+```sh
+pnpm --filter @1sp/renaissance-web exec next dev --turbopack -p 3003
+pnpm --filter @1sp/renaissance-web build
+pnpm --filter @1sp/renaissance-web exec next start -p 3003
 ```
 
-The app expects its own environment variables. Start from `.env.example` and configure the real values in the RENAISSANCE Vercel project.
+The start command requires a completed build. Local frontend: `http://localhost:3003`. The shared local Studio runs in the root app at `http://localhost:3000/studio`.
 
-Minimum public env for build/dev:
+Use this app's `.env.example` as a starting point. Confirm `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, `NEXT_PUBLIC_SANITY_API_VERSION`, `NEXT_PUBLIC_CHANNEL=renaissanceWeb` and `NEXT_PUBLIC_SITE_URL=http://localhost:3003`. Root environment files do not automatically configure this app. Select the dataset for the task explicitly rather than copying an older deployment snapshot.
 
-```bash
-NEXT_PUBLIC_SANITY_PROJECT_ID=wu6i3y0h
-NEXT_PUBLIC_SANITY_DATASET=dev-dataset
-NEXT_PUBLIC_SANITY_API_VERSION=2025-09-16
-NEXT_PUBLIC_SITE_URL=http://localhost:3003
-```
+Run the root Sanity doctor with `--channel renaissanceWeb --language en`, then compare its root environment with the app's loaded environment. See [local debugging](../../docs/local-sanity-debugging.md).
 
-## Scope
+## Ownership and references
 
-- Fetches website pages and global content through `renaissanceWeb`.
-- Supports English initially, with locale-free public URLs and an extensible internal locale route.
-- Reuses shared contracts and Sanity query helpers while owning its brand-specific shell and UI.
-- Owns its app shell through `components/RenaissanceSiteWrapper.tsx`.
-- Owns its page-builder boundary through `components/RenaissancePageBuilder.tsx`, with full FLZR module parity and isolated support for reusable 1SP component groups.
-- Preserves the current 1SP root app's public runtime behavior.
+- App shell: [components/RenaissanceSiteWrapper.tsx](components/RenaissanceSiteWrapper.tsx).
+- PageBuilder: [components/RenaissancePageBuilder.tsx](components/RenaissancePageBuilder.tsx).
+- Global content remains channel/language scoped; pages use unified `content[]`.
+- [Documentation index](../../docs/README.md) and [deployment verification](../../docs/DEPLOYMENT.md).
+- [Product](PRODUCT.md), [design](DESIGN.md), [component contract](design-system/COMPONENTS.md) and [release checklist](design-system/RELEASE-CHECKLIST.md).
+- [Content records](../../docs/records/README.md#renaissance).
 
-Until the first Renaissance homepage exists in Sanity, the root route renders a branded no-index setup state.
+Public URLs are locale-free, with an internal English route. The homepage is CMS-first and can use [homepageFallback.ts](data/homepageFallback.ts) when CMS content is absent. Confirm the active dataset before interpreting a fallback as a defect. Configuration currently has a preview URL and no production domain; this is not a public-launch record.

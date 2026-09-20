@@ -1,3 +1,5 @@
+> Historical migration/recovery reference. Current page schema and queries already use `content[]`; do not infer that this migration is pending from the instructions below. Refresh the target dataset and deployed consumers first. See [architecture](../../docs/ARCHITECTURE.md) and the [deferred case-storage recipe](../../docs/SANITY_DATA_STRUCTURE_RECIPE.md), which concerns a different field migration.
+
 # Runbook — `unify-page-content` migration
 
 > **Critical**: this migration involves both code deploy AND data writes, and

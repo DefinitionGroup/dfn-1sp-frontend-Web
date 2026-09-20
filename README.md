@@ -1,50 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 1SP multisite frontend
 
-## Debug badges in development
+One pnpm workspace powers the root 1SP website and the FLZR, MSM and Renaissance apps, with shared Sanity contracts and site-owned presentation.
 
-Component-level debug badges are hidden by default. To enable them locally, add the following to `.env.local` and restart your dev server:
+Start with the [documentation index](docs/README.md). Repository rules live in [AGENTS.md](AGENTS.md).
 
-```bash
-NEXT_PUBLIC_DEBUG_BADGES=true
-```
+## Local development
 
-Any other value (or omitting the variable) keeps the badges hidden.
+Use the Node version in `.nvmrc` and pnpm from `package.json`. Install with `pnpm install --frozen-lockfile`. Each app needs its own environment; root environment files do not automatically configure nested apps.
 
-## Getting Started
+| Surface | Command from repository root | Local URL |
+| --- | --- | --- |
+| 1SP + embedded Studio | `pnpm dev` | `http://localhost:3000`, Studio at `/studio` |
+| FLZR | `pnpm --filter @1sp/flzr-web exec next dev --turbopack -p 3001` | `http://localhost:3001` |
+| MSM | `pnpm --filter @1sp/msm-web exec next dev --turbopack -p 3002` | `http://localhost:3002` |
+| Renaissance | `pnpm dev:renaissance` | `http://localhost:3003` |
 
-First, run the development server:
+Confirm project, dataset, API version, channel and language before diagnosing missing content or making CMS changes. See [local Sanity debugging](docs/local-sanity-debugging.md). A dataset named `production` and a public frontend deployment are separate concerns; verify both explicitly.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Build and verification
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 1SP/Studio: `pnpm build`
+- FLZR: `pnpm build:flzr`
+- MSM: `pnpm --filter @1sp/msm-web build`
+- Renaissance: `pnpm build:renaissance`
+- Dataset capacity: `pnpm doctor:sanity-capacity`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Use the relevant `test:*` scripts in [package.json](package.json) and focused tests under `scripts/`. A shared change needs verification in the affected apps as well as existing 1SP behavior.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Where to work
 
-## Learn More
+- [Architecture and ownership](docs/ARCHITECTURE.md)
+- [Studio filtering tutorial](<docs/studiocustomize -tut.md>)
+- [Adding PageBuilder blocks](docs/PAGEBUILDER_COMPONENT_GUIDE.md)
+- [Deployment verification](docs/DEPLOYMENT.md)
+- [Deferred data structure recipe](docs/SANITY_DATA_STRUCTURE_RECIPE.md)
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-## Docs
-
-- [Contact form integration](docs/CONTACT_FORM.md)
+Component debug badges are off by default. Set `NEXT_PUBLIC_DEBUG_BADGES=true` in the relevant local environment and restart to enable them. Use `pnpm dev:diag` for the root CSS diagnostic mode.

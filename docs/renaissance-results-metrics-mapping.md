@@ -1,6 +1,8 @@
+> Source mapping record from September 2026. Retained at this path for `scripts/renaissance-results-audit.ts`; subsequent CMS edits may differ. See [completed-work records](records/README.md#renaissance).
+
 # Renaissance Results — source and metric mapping
 
-Published mapping, 19 September 2026. See the [publication record](renaissance-content-publication.md). Values and labels are derived from the supplied v4 rewrite, not independent verification of campaign measurements. Every case uses the existing global identity and Renaissance body ownership. Original paragraphs and revision snapshots remain in the ignored recovery folder.
+Published mapping, 19 September 2026. See the [publication record](records/renaissance/renaissance-content-publication.md). Values and labels are derived from the supplied v4 rewrite, not independent verification of campaign measurements. Every case uses the existing global identity and Renaissance body ownership. Original paragraphs and revision snapshots remain in the ignored recovery folder.
 
 ## Guns Of Eschaton
 

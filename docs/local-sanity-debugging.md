@@ -7,13 +7,13 @@ Use this runbook before changing code for missing local pages, empty Studio list
 Run from the repo root:
 
 ```bash
-npm run doctor:sanity
+pnpm doctor:sanity
 ```
 
 For a specific site/language:
 
 ```bash
-npm run doctor:sanity -- --channel flizrWeb --language en
+pnpm doctor:sanity --channel flizrWeb --language en
 ```
 
 The doctor prints the active Sanity project, dataset, API version, checked channel/language, aggregate document counts, and channel distributions. It does not fetch document titles, body content, or write data.
@@ -52,6 +52,9 @@ Current website channels:
 - `flizrWeb`
 - `msmWeb`
 - `studioco2Web`
+- `renaissanceWeb`
 
 Use the exact channel values above. Do not introduce spelling variants such as `flzrWeb`.
 
+
+The root command loads root environment files. Compare these with the environment actually loaded by each nested app; root diagnostics alone do not verify app configuration. Channel/language support is defined in [site-config](../packages/site-config/src/index.ts). For attribute pressure, run `pnpm doctor:sanity-capacity`; use its live count rather than an old report.

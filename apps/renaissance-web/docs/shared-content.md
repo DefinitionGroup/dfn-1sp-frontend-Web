@@ -1,3 +1,5 @@
+> Active editing model with a dated trial record below. The September publication work is recorded under [Renaissance records](../../../docs/records/README.md#renaissance); trial dataset and local-port values are historical.
+
 # Renaissance shared content trial
 
 ## Editorial model

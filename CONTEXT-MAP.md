@@ -2,7 +2,7 @@
 
 ## Contexts
 
-- [MSM Website](./apps/msm-web/CONTEXT.md) — presents MSM.digital and its specialist Units through the MSM channel.
+- [MSM Website](apps/msm-web/CONTEXT.md) — presents MSM.digital and its specialist Units through the MSM channel.
 
 ## Relationships
 

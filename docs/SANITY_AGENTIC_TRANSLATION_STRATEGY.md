@@ -1,3 +1,5 @@
+> Planned workflow with previously implemented foundations. This is not confirmation of current provider/API readiness or a production automation rollout. Recheck the translation audit, active dataset and official provider documentation before a pilot.
+
 # Sanity agentic translation strategy
 
 ## Outcome
