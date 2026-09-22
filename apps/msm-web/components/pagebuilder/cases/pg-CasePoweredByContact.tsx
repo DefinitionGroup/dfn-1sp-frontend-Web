@@ -4,7 +4,7 @@ import Image from "next/image";
 import styles from "./CaseDetail.module.css";
 import DeferredVideo from "@msm/components/ui/DeferredVideo";
 import Button2 from "@msm/components/ui/Button2";
-import { motion } from "motion/react";
+import CaseReveal from "./CaseReveal";
 import { getTranslations } from "@1sp/utils/translations";
 import type { CaseStudyData, CloudinaryAsset } from "@1sp/sanity-types";
 import { assetUrl } from "@1sp/utils/cloudinary";
@@ -116,70 +116,50 @@ export default function CasePoweredByContact({
           <div
             className="max-w-5xl mx-auto bg-msm-surface overflow-hidden border-t border-white/20 mt-14 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 items-end gap-8 lg:gap-10"
           >
-            <div className="lg:col-span-7 p-8">
-              <motion.p
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
+            <CaseReveal content className="lg:col-span-7 p-8">
+              <p
                 className=" text-sm tracking-tight leading-tight  text-neutral-300 "
               >
                 {`${t.caseStudy.contactPrefix}`}
-              </motion.p>
-              <motion.h3
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.3, ease: "easeOut" }}
+              </p>
+              <h3
                 className="text-xl sm:text-xl lg:text-2xl tracking-tight leading-tight text-neutral-100"
               >
                 {t.caseStudy.wantToKnowMore}
-              </motion.h3>
+              </h3>
 
 
-              <motion.p
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
+              <p
                 className="mt-2 text-2xl sm:text-3xl lg:text-3xl tracking-tight leading-tight  text-msm-cyan"
               >
                 {`${personName}${personUnit ? ` @ ${personUnit}` : ""}`}
-              </motion.p>
+              </p>
 
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.5, ease: "easeOut" }}
+              <div
                 className=" flex flex-col gap-2 text-sm  text-neutral-300"
               >
                 {relatedPerson.position && (
                   <p className=" text-sm tracking-tight leading-tight  text-neutral-300 mb-5 sm:mb-6 ">{relatedPerson.position}</p>
                 )}
                 {relatedPerson.email && (
-                  <Button2
+                  <div data-case-reveal-target><Button2
                     variant="violetsmallrounded"
                     magnetic={false}
                     text={relatedPerson.email}
                     href={`mailto:${relatedPerson.email}`}
-                  />
+                  /></div>
                 )}
                 {relatedPerson.profileUrl && (
-                  <Button2 variant="violetsmallrounded"
+                  <div data-case-reveal-target><Button2 variant="violetsmallrounded"
                     magnetic={false}
                     text={t.caseStudy.linkedInProfile}
                     href={relatedPerson.profileUrl}
-                  />
+                  /></div>
                 )}
-              </motion.div>
-            </div>
+              </div>
+            </CaseReveal>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
+            <CaseReveal
               className="lg:col-span-5"
             >
               <div className="relative ml-auto w-full max-w-[440px] overflow-hidden  bg-msm-surface aspect-[5/4]">
@@ -207,7 +187,7 @@ export default function CasePoweredByContact({
                   </div>
                 )}
               </div>
-            </motion.div>
+            </CaseReveal>
           </div>
         )}
       </div>

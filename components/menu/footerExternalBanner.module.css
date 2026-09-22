@@ -18,11 +18,15 @@
 .hostLogo { display: block; width: clamp(90px, 6.3vw, 134px); height: auto; margin-bottom: 12px; }
 .hostHeader { border-bottom: 1px solid rgb(255 255 255 / 25%); padding-bottom: 16px; margin-bottom: 24px; }
 .hostHeader .eyebrow { margin: 0; font-size: clamp(12px, 0.85vw, 18px); }
-.intro { display: grid; grid-template-columns: 0.9fr 3fr; gap: clamp(20px, 3.7vw, 140px); align-items: start; }
+/* Intro shares the unit grid: logo in column 1, copy from column 2 to the end. */
+.intro { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); column-gap: clamp(10px, 0.8vw, 17px); align-items: start; }
+.message { grid-column: 2 / -1; }
 .brand, .message { min-width: 0; }
 .eyebrow { margin: 0 0 24px; font-size: clamp(14px, 1.25vw, 24px); line-height: 1.3; text-transform: uppercase; }
-.logo { display: block; width: 100%; height: auto; }
+.logo { display: block; width: 77%; height: auto; }
 .message { display: flex; flex-direction: column; align-items: flex-start; gap: clamp(26px, 3.6vw, 72px); }
+.copy { display: flex; flex-direction: column; gap: clamp(12px, 1.1vw, 22px); }
+.headline { margin: 0; font-size: clamp(26px, 2.3vw, 46px); font-weight: 600; line-height: 1.1; text-wrap: balance; }
 .text { margin: 0; font-size: clamp(18px, 1.4vw, 26px); line-height: 1.5; text-wrap: pretty; white-space: pre-line; }
 .cta { display: inline-flex; gap: 32px; align-items: center; justify-content: space-between; min-height: 48px; padding: 12px 16px; background: var(--banner-accent); color: #17220e; font-size: 14px; font-weight: 600; transition: background-color 180ms ease; }
 .cta:hover { background: #c4ff78; }
@@ -52,13 +56,16 @@
   .content { width: auto; padding: 64px 40px 24px; }
   .unit { min-height: 160px; }
   .unitText { font-size: 12px; }
-  .intro { grid-template-columns: 1fr 2fr; gap: 48px; }
+  .intro { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 16px; }
+  .logo { width: 66%; }
   .units { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 }
 @media (max-width: 639px) {
   .content { padding: 48px 24px 20px; }
-  .intro { grid-template-columns: 1fr; gap: 32px; }
-  .brand { width: min(66%, 260px); }
+  .intro { grid-template-columns: 1fr; row-gap: 32px; }
+  .message { grid-column: auto; }
+  .brand { width: min(44%, 173px); }
+  .logo { width: 100%; }
   .eyebrow { margin-bottom: 16px; }
   .message { gap: 24px; }
   .units { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }

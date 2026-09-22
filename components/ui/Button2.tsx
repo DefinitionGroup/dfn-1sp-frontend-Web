@@ -9,9 +9,10 @@ import MagneticButton from "./MagneticButton";
 
 interface Button2Props {
   text?: string;
+  eyebrow?: string;
   className?: string;
   href?: string;
-  variant?: "default" | "black" | "lime" | "limesmall" | "limesmallrounded" | "ghost";
+  variant?: "default" | "black" | "lime" | "limesmall" | "limesmallrounded" | "minimenu" | "ghost";
   magnetic?: boolean;
 }
 
@@ -44,6 +45,11 @@ const variantStyles: Record<
     bottom: "border-neutral-800 bg-neutral-800 text-white! px-4  py-2 ",
     container: "h-9",
   },
+  minimenu: {
+    top: "border-lime-500/30 bg-[#afff40] text-[#121212] w-full h-full items-center px-2 py-1",
+    bottom: "border-neutral-900 bg-[#121212] text-white w-full h-full items-center px-2 py-1",
+    container: "h-9 pointer-coarse:h-11 min-w-[110px] w-[110px]",
+  },
   limesmallrounded: {
     top: "border-lime-500/30 text-xxs rounded-full bg-lime-400 text-black! px-2 py-1 ",
     bottom:
@@ -52,14 +58,16 @@ const variantStyles: Record<
   },
 };
 
-function Button2({ text, className, href, variant = "default", magnetic = true }: Button2Props) {
+function Button2({ text, eyebrow, className, href, variant = "default", magnetic = true }: Button2Props) {
   const isExternal = !!href && /^(https?:|mailto:|tel:)/.test(href);
   const router = useOptimizedTransitionRouter();
+  const eyebrowText = eyebrow?.trim();
 
   if (!hasVisibleText(text)) return null;
 
   const safeVariant: NonNullable<Button2Props["variant"]> =
     variant in variantStyles ? variant : "default";
+  const isMiniMenu = safeVariant === "minimenu";
 
   const baseTop =
     "pointer-events-auto text-xxs absolute rounded-xs top-0 left-0 border justify-between font-medium flex w-fit hover:cursor-pointer tracking-wider group-hover/btn:-top-12 transition-all duration-250 ease-in-out";
@@ -75,18 +83,24 @@ function Button2({ text, className, href, variant = "default", magnetic = true }
 
   const containerClass = cn(
     "inline-block relative top-0 left-0 min-w-full ml-[1px] overflow-hidden group/btn",
-    variantStyles[safeVariant].container
+    variantStyles[safeVariant].container,
+    eyebrowText && !isMiniMenu && "h-14"
   );
 
   const content = (rotated: boolean) => (
     <div className="flex justify-between items-center w-full ">
-      <span className="text-xxs">{text}</span>
+      <span className="text-xxs">
+        {eyebrowText ? <span className="flex flex-col gap-0.5 leading-tight">
+          <span className={cn("font-medium normal-case tracking-normal", isMiniMenu ? "text-[9px]" : "text-[10px]")}>{eyebrowText}</span>
+          <span className={isMiniMenu ? "text-[10px]" : "text-xs"}>{text}</span>
+        </span> : text}
+      </span>
       <ArrowRightIcon
         className={cn(
           rotated ? "rotate-0" : "-rotate-45",
           "transition-transform"
         )}
-        size={16}
+        size={isMiniMenu ? 12 : 16}
       />
     </div>
   );
@@ -110,6 +124,8 @@ function Button2({ text, className, href, variant = "default", magnetic = true }
             target="_blank"
             rel="noopener noreferrer nofollow"
             className={bottomClass}
+            aria-hidden={eyebrowText ? true : undefined}
+            tabIndex={eyebrowText ? -1 : undefined}
           >
             {content(true)}
           </Link>

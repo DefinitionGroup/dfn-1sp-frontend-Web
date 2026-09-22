@@ -128,7 +128,10 @@ export default function FooterExternalBanner({ data, units = [], language = "en"
             <Image src={assetUrl(data.logo) || "/ci/1sp-fulllogotype.svg"} alt={data.logoAlt || "1SP Agency"} width={440} height={238} unoptimized className={styles.logo} />
           </div>
           <div className={styles.message}>
-            {data.text && <p className={styles.text}>{data.text}</p>}
+            {(data.headline || data.text) && <div className={styles.copy}>
+              {data.headline && <h2 className={styles.headline}>{data.headline}</h2>}
+              {data.text && <p className={styles.text}>{data.text}</p>}
+            </div>}
             {cta && <Link href={localizeHref(cta.href, language)} className={styles.cta}
               target={data.cta?.link?.linkType === "external" ? "_blank" : undefined}
               rel={data.cta?.link?.linkType === "external" ? "noopener noreferrer" : undefined}>

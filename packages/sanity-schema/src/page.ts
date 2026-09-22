@@ -207,6 +207,8 @@ export default defineType({
                 { type: 'pageBuilderPersonioJobs' },
                 { type: 'msmUnitsGrid', title: 'MSM Units Grid' },
                 { type: 'msmServiceDirectory' },
+                { type: 'interactiveServiceCarousel', title: 'InteractiveServiceCarousel' },
+                { type: 'msmMediaFeature', title: 'MSM Media Feature' },
                 // Portable text — covers what contentMSM / contentStudioCO2 used to hold
                 { type: 'block' },
             ],

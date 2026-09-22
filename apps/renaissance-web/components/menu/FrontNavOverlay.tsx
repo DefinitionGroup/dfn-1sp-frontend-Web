@@ -12,7 +12,7 @@ import {
 import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
 import { usePathname } from "next/navigation";
 import CaseGalleryMenu from "../data/data-CaseGalleryMenu";
-import Button2 from "../ui/Button2";
+import OneSpMembershipButton from "@/components/ui/OneSpMembershipButton";
 import { NavbarMenu } from "@1sp/sanity-types/menu";
 import LanguageSelector, { type LanguageOption } from "./LanguageSelector";
 import { localizedPath } from "@renaissance/lib/routes";
@@ -571,12 +571,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 frosted={isRenaissanceScrolled}
               />
             ) : null}
-            <Button2
-              variant="limesmall"
-              href="https://1sp.agency"
-              eyebrow={menuData?.oneSpMembershipLabel || "proud member of"}
-              text="1SP.agency"
-            />
+            <OneSpMembershipButton eyebrow={menuData?.oneSpMembershipLabel} />
           </motion.div>
         </motion.nav>
         <motion.nav
@@ -738,13 +733,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               </ol>
             </nav>
 
-            <a
-              href="https://1sp.agency"
-              className="flex items-center justify-between border-t border-white/20 pt-5 text-sm text-white/70"
-            >
-              <span>Part of the 1SP Agency family</span>
-              <span aria-hidden="true">↗</span>
-            </a>
+            <OneSpMembershipButton eyebrow={menuData?.oneSpMembershipLabel} />
           </motion.div>
         ) : null}
       </AnimatePresence>

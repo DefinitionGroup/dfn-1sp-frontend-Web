@@ -9,7 +9,7 @@ For the broader roadmap and conceptual rationale, see
 [`multisite-platform-plan.md`](multisite-platform-plan.md).
 
 For the Sanity migration that completes Phase 1A, see
-[`../migrations/unify-page-content/RUNBOOK.md`](../../../migrations/unify-page-content/RUNBOOK.md).
+[Archived page-content migration runbook](../migrations/unify-page-content-runbook.md).
 
 ---
 
@@ -63,7 +63,7 @@ is the only step that mutates dataset state, and it has not run yet.
    site immediately (same checklist). Vercel rollback is one click if needed.
 
 5. **Run the Sanity migration** per
-   [`migrations/unify-page-content/RUNBOOK.md`](../../../migrations/unify-page-content/RUNBOOK.md).
+   [`docs/archived/migrations/unify-page-content-runbook.md`](../migrations/unify-page-content-runbook.md).
    This is the only irreversible step. Has a documented rollback path.
 
 6. **Communicate to editors**: from now on, edit the **Content** field. The old
@@ -248,7 +248,7 @@ via the tag-based `/api/revalidate` webhook (`pages`, `page:${slug}`, etc.); the
   trivial when convenient.
 - **`apps/flzr-web` cross-app reach** into root `@/components/*` for a few
   cookie/analytics components. Should become FLZR's own.
-- **`docs/archive/platform/MULTI_SITE.md`** (this file) and `docs/archive/platform/multisite-platform-plan.md`
+- **`docs/archived/platform/MULTI_SITE.md`** (this file) and `docs/archived/platform/multisite-platform-plan.md`
   cover overlapping ground. Both exist intentionally: this one is
   operational state, the other is forward-looking vision. Merge them only if
   one becomes clearly stale.
@@ -258,7 +258,7 @@ via the tag-based `/api/revalidate` webhook (`pages`, `page:${slug}`, etc.); the
 ## How to pick up later
 
 1. Read this file top to bottom.
-2. Read `migrations/unify-page-content/RUNBOOK.md` if you're about to run the
+2. Read `docs/archived/migrations/unify-page-content-runbook.md` if you're about to run the
    migration.
 3. Read `multisite-platform-plan.md` if you're planning the next major step.
 4. `TaskList` in tooling shows the current task graph with dependencies.

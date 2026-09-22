@@ -24,8 +24,8 @@ The root 1SP app ships with a Contact page that combines PageBuilder modules wit
 
 ## How it works
 - The Contact page fetches the Sanity page document with slug `contact` and renders `PageBuilder` modules first. The form always renders after the modules.
-- The form sends `name`, `email`, `company`, `message`, plus `language` and `channel` to `/api/contact`.
-- The API validates required fields and email format, then creates a `contactSubmission` document with status `new` and timestamp.
+- The form sends its contact fields and language to `/api/contact`. The API determines the authoritative channel from server environment configuration, not a client-supplied channel; it validates language against that site’s configured locales.
+- The API already applies a fixed-window request limit, a honeypot, field-length/email validation and an oversized `Content-Length` check. These are existing protections, not a complete abuse-prevention guarantee. It then creates a `contactSubmission` document with status `new` and timestamp.
 
 ## Testing locally
 
@@ -37,5 +37,5 @@ Submission creates a real CMS record in the configured dataset. Choose an approp
 ## Optional tweaks
 - **Navigation**: Add `/contact` to menus (e.g., `components/ui/HamburgerGradientMenu.tsx` already includes it).
 - **Styling**: Adjust `components/ui/ContactForm.tsx` for brand tweaks (colors, layout, copy).
-- **Validation**: Extend the API route if you need spam checks or rate limiting.
+- **Validation**: Review the existing controls in `app/api/contact/route.ts` before extending abuse protection; verify deployment behavior separately.
 - **Notifications**: Hook webhooks or email from Studio on new `contactSubmission` documents.

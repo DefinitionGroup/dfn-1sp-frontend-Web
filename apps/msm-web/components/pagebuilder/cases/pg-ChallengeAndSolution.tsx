@@ -136,8 +136,8 @@ export default function ChallengeAndSolution({
             <p className={styles.copy}>{ctaParagraph || (effectiveContentType === "challenges"
               ? (challengeDescription || t.caseStudy.challengeDescription)
               : `${t.caseStudy.servicesDescription} ${(services ?? []).map((s) => s.name).join(", ")}`)}</p>
-            {showButton && ctaButton?.text && ctaButton.link && <Button2
-              text={ctaButton.text} href={resolveLink(ctaButton.link)} variant="violetsmall" />}
+            {showButton && ctaButton?.text && ctaButton.link && <div data-case-reveal-target><Button2
+              text={ctaButton.text} href={resolveLink(ctaButton.link)} variant="violetsmall" /></div>}
           </div>}
         </CaseSection>
         {showSolution && solution && <CaseSection title={solutionHeadline || t.caseStudy.solution}>

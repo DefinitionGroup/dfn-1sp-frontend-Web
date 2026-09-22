@@ -16,6 +16,7 @@ import PageWithMapVertical from "./ui/PageWithMapVertical";
 import ScrollToTop from "./ui/ScrollToTop";
 import CornerMarkers from "./ui/CornerMarkers";
 import MsmLogoAnimated from "./ui/MsmLogoAnimated";
+import MsmFooterExternalBanner from "./MsmFooterExternalBanner";
 
 type OverlayCaseStudy = {
   _id: string;
@@ -455,6 +456,9 @@ export default async function MsmSiteWrapper({
                 hasCaseStudies={hasCaseStudies}
                 hasServices={hasServices}
               />
+              {footer?.footerExternalBanner && (
+                <MsmFooterExternalBanner data={footer.footerExternalBanner} language={language} />
+              )}
               <ScrollToTop />
             </div>
           {/* </PageWithMapVertical> */}

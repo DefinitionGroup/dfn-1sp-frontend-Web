@@ -21,9 +21,9 @@ For example, choose **Globals → Services → Renaissance → English**. The li
 
 | File | Responsibility |
 | --- | --- |
-| [sanity/structure.ts](/Users/martin/DEV/1SP-dfn-1sp-frontend/sanity/structure.ts) | Adds the custom pane to the navigation and connects rows to document editors. |
-| [GlobalsBrowser.tsx](/Users/martin/DEV/1SP-dfn-1sp-frontend/packages/sanity-schema/src/Studio/GlobalsBrowser.tsx) | Renders controls, fetches results, listens for changes and handles pagination. |
-| [globalBrowserModel.ts](/Users/martin/DEV/1SP-dfn-1sp-frontend/packages/sanity-schema/src/Studio/globalBrowserModel.ts) | Contains the GROQ query, scope validation, channel labels and creation defaults. |
+| [sanity/structure.ts](../sanity/structure.ts) | Adds the custom pane to the navigation and connects rows to document editors. |
+| [GlobalsBrowser.tsx](../packages/sanity-schema/src/Studio/GlobalsBrowser.tsx) | Renders controls, fetches results, listens for changes and handles pagination. |
+| [globalBrowserModel.ts](../packages/sanity-schema/src/Studio/globalBrowserModel.ts) | Contains the GROQ query, scope validation, channel labels and creation defaults. |
 
 The component is exported as `@1sp/sanity-schema/studio`. It uses the project's existing React, Sanity UI and icon packages.
 
@@ -61,7 +61,7 @@ function changeScope(key: string, value: string) {
 
 This makes channel/language selections bookmarkable. Search text and the number of loaded rows remain local React state; they are not saved in the URL.
 
-`globalBrowserScope()` checks incoming values and defaults to **All channels / English**. Website choices come from `WEBSITE_CHANNELS` and `SITE_CONFIGS`; languages come from `getGlobalLanguageDefinitions()` in the [central site configuration](/Users/martin/DEV/1SP-dfn-1sp-frontend/packages/site-config/src/index.ts).
+`globalBrowserScope()` checks incoming values and defaults to **All channels / English**. Website choices come from `WEBSITE_CHANNELS` and `SITE_CONFIGS`; languages come from `getGlobalLanguageDefinitions()` in the [central site configuration](../packages/site-config/src/index.ts).
 
 **4. Filter documents with GROQ**
 
@@ -98,9 +98,9 @@ Here, `^._id` refers to the outer document being checked. The full query also ex
 
 `client.listen()` watches the current document type. Events trigger another query, grouped with a 200 ms debounce. Effect cleanup removes the listener and prevents obsolete responses from updating the pane. Loading, empty and retry states are rendered explicitly.
 
-**New document** uses an `IntentLink` and templates registered in [sanity.config.ts](/Users/martin/DEV/1SP-dfn-1sp-frontend/sanity.config.ts). The selected language and channel become initial values. All channels or Unassigned starts with an empty channel array. All languages, or a language unsupported by the selected website, hides creation until a valid scope is chosen. Filtering existing documents does not change their assignments.
+**New document** uses an `IntentLink` and templates registered in [sanity.config.ts](../sanity.config.ts). The selected language and channel become initial values. All channels or Unassigned starts with an empty channel array. All languages, or a language unsupported by the selected website, hides creation until a valid scope is chosen. Filtering existing documents does not change their assignments.
 
-Services use a neutral `SquaresFour` icon in both the custom browser and their [schema preview](/Users/martin/DEV/1SP-dfn-1sp-frontend/packages/sanity-schema/src/Global/Objects/services.ts). Saved website artwork stays in the service media fields. Other content types retain their thumbnails.
+Services use a neutral `SquaresFour` icon in both the custom browser and their [schema preview](../packages/sanity-schema/src/Global/Objects/services.ts). Saved website artwork stays in the service media fields. Other content types retain their thumbnails.
 
 **7. Check or extend the implementation**
 

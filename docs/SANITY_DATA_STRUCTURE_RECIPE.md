@@ -2,6 +2,8 @@
 
 Status: **Deferred — resume after the current content work.**
 
+The [service ownership handoff](SERVICE_CONTENT_HANDOFF.md) is a separate workstream. Its audit and documentation updates do not start Stage 3 or authorize an attribute migration.
+
 Recorded: 2026-09-20. This document preserves a proposed sequence; it does not authorize a migration. Refresh the evidence and confirm scope when the work resumes.
 
 ## Purpose and boundaries

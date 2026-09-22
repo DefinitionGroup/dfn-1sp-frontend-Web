@@ -76,7 +76,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
       <div className={caseStyles.container}>
         <CaseSection title={title}>
           {hasVisibleText(subtitle) && <p className={caseStyles.copy}>{subtitle}</p>}
-          {buttonHref && buttonText && <Button2 text={buttonText} variant={buttonVariant} href={buttonHref} />}
+          {buttonHref && buttonText && <div data-case-reveal-target><Button2 text={buttonText} variant={buttonVariant} href={buttonHref} /></div>}
         </CaseSection>
       </div>
     </section>

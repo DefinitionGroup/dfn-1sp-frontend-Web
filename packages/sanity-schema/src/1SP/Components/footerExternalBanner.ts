@@ -10,6 +10,7 @@ export default defineType({
     defineField({ name: "eyebrow", title: "Eyebrow", type: "string", initialValue: "Proud to be a" }),
     defineField({ name: "logo", title: "Logo", type: "cloudinary.asset", description: "Optional. Defaults to the white and lime 1SP Agency logo." }),
     defineField({ name: "logoAlt", title: "Logo alternative text", type: "string", initialValue: "1SP Agency" }),
+    defineField({ name: "headline", title: "Headline", type: "string", description: "Shown above the text, right of the logo." }),
     defineField({ name: "text", title: "Text", type: "text", rows: 3, initialValue: "1SP is a powerhouse of specialist agencies ready to accelerate growth at every stage of your customer journey. Our One Shared Passion? Gaming, Technology and Consumer Electronics." }),
     defineField({ name: "video", title: "Background video", type: "cloudinary.asset", validation: (rule) => rule.custom((value) => !value || (value as { resource_type?: string }).resource_type === "video" ? true : "Choose a Cloudinary video.") }),
     defineField({ name: "poster", title: "Background poster", type: "cloudinary.asset", description: "Shown while loading, when motion is reduced, or if the video cannot play. Otherwise derived from the video." }),
@@ -17,7 +18,7 @@ export default defineType({
     defineField({ name: "copyright", title: "Copyright", type: "string", description: "Optional small line below the unit buttons." }),
   ],
   preview: {
-    select: { subtitle: "eyebrow" },
+    select: { subtitle: "headline" },
     prepare: ({ subtitle }) => ({ title: "Footer External Banner", subtitle }),
   },
 });

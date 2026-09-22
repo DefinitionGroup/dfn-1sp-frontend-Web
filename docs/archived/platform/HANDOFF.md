@@ -67,9 +67,9 @@
 
 ### Docs added
 
-- `docs/archive/platform/MULTI_SITE.md` — operational handoff for the multi-site platform
+- `docs/archived/platform/MULTI_SITE.md` — operational handoff for the multi-site platform
 - `docs/templates/single-site-to-multisite.md` — generic blueprint for new multi-site projects
-- `migrations/unify-page-content/RUNBOOK.md` — production migration procedure with attribute-limit context
+- `docs/archived/migrations/unify-page-content-runbook.md` — production migration procedure with attribute-limit context
 - `apps/flzr-web/vercel.json` (uncommitted) — monorepo build config for FLZR Vercel project
 
 ---
@@ -99,7 +99,7 @@
    - Env vars: `NEXT_PUBLIC_CHANNEL=flizrWeb` + `NEXT_PUBLIC_SANITY_DATASET=dev-dataset` + Sanity tokens + Cloudinary
    - Known caveat: hero video will 404 (MP4s excluded from repo, migrate to Cloudinary later)
 
-### Gated path to production — see `migrations/unify-page-content/RUNBOOK.md`
+### Gated path to production — see `docs/archived/migrations/unify-page-content-runbook.md`
 
 > ⚠️ **The order is not "migrate then merge" or "merge then migrate" — it's
 > interleaved.** Because `origin/main` still reads `page.content1sp[]`
@@ -143,7 +143,7 @@ Sanity datasets have a hard limit on unique `(field path, datatype)` combination
 the same data under `content` while legacy paths still exist), which on this
 project pushes past the limit. **Cleanup must run immediately after migration,
 with no human review between them.** This was discovered on `dev-dataset` and
-is now documented in `migrations/unify-page-content/RUNBOOK.md` §
+is now documented in `docs/archived/migrations/unify-page-content-runbook.md` §
 "Attribute limit."
 
 ### The Sanity CLI yargs bug
@@ -227,7 +227,7 @@ open http://localhost:3000/studio
 
 ### To pick up production migration
 
-1. Read `migrations/unify-page-content/RUNBOOK.md` end to end
+1. Read `docs/archived/migrations/unify-page-content-runbook.md` end to end
 2. Run the dataset export (step 5 of the runbook)
 3. Run `run.mjs` + `cleanup-legacy.mjs` against `production` back-to-back
 4. Smoke-test
@@ -237,9 +237,9 @@ open http://localhost:3000/studio
 
 ## Files to read first if you have 15 minutes
 
-1. **This file** (`docs/archive/platform/HANDOFF.md`) — orientation
-2. **`docs/archive/platform/MULTI_SITE.md`** — operational state of the multi-site platform
-3. **`migrations/unify-page-content/RUNBOOK.md`** — production migration steps with all the gotchas
+1. **This file** (`docs/archived/platform/HANDOFF.md`) — orientation
+2. **`docs/archived/platform/MULTI_SITE.md`** — operational state of the multi-site platform
+3. **`docs/archived/migrations/unify-page-content-runbook.md`** — production migration steps with all the gotchas
 4. **`docs/templates/single-site-to-multisite.md`** — the generic playbook (useful if applying these patterns elsewhere)
 
 ## Files to read first if you have an hour

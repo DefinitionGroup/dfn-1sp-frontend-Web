@@ -8,7 +8,7 @@ This folder turns the visual direction in [../DESIGN.md](../DESIGN.md) into a re
 2. **Visual foundations and tokens:** [../DESIGN.md](../DESIGN.md)
 3. **Approved components and Pagebuilder contracts:** [COMPONENTS.md](COMPONENTS.md)
 4. **Release acceptance criteria:** [RELEASE-CHECKLIST.md](RELEASE-CHECKLIST.md)
-5. **Historical audit evidence (recheck findings before reuse):** [August design audit](../../../docs/archive/audits/renaissance-design-audit-2026-08-11.md)
+5. **Historical audit evidence (recheck findings before reuse):** [August design audit](../../../docs/archived/audits/renaissance-design-audit-2026-08-11.md)
 
 When code and documentation disagree, do not silently choose one. Verify the current browser result, update the implementation or record a design decision, then update the affected document in the same change.
 

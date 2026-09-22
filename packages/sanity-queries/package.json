@@ -15,6 +15,7 @@
     "./token": "./src/token.ts",
     "./safe-fetch": "./src/safe-fetch.ts",
     "./stega-utils": "./src/stega-utils.ts",
+    "./service-presentation": "./src/service-presentation.ts",
     "./service-queries": "./src/service-queries.ts"
   },
   "types": "./src/index.ts",

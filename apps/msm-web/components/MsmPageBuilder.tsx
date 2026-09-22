@@ -1,3 +1,4 @@
+import InteractiveServiceCarouselBlock from "./pagebuilder/server/InteractiveServiceCarouselBlock";
 import {cleanMsmPreviewControls} from "@msm/lib/preview-controls";
 import MsmServiceDirectory from "./pagebuilder/server/MsmServiceDirectory";
 import ResultsMetrics from "./pagebuilder/cases/pg-ResultsMetrics";
@@ -22,6 +23,8 @@ import HeadlineChallenge from "./pagebuilder/cases/pg-HeadlineChallenge";
 import ComponentLoader from "@msm/components/ui/ComponentLoader";
 import DeferredSection from "@msm/components/ui/DeferredSection";
 import OneSpScope from "@/components/onesp-group/OneSpScope";
+import MsmFooterExternalBanner from "./MsmFooterExternalBanner";
+import MsmMediaFeature from "./pagebuilder/pg-MsmMediaFeature";
 
 const CanonicalOneSpPageBuilder = dynamic(
   () => import("@/components/PageBuilder").then((module) => module.PageBuilder),
@@ -534,6 +537,12 @@ export function PageBuilder({
                 <UnitLogoGrid key={key} {...(block as any)} language={language} />
               </ErrorBoundary>
             );
+          case "footerExternalBanner":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <MsmFooterExternalBanner data={block} language={language} />
+              </ErrorBoundary>
+            );
           case "pageBuilderLogoFloat":
             return (
               <ErrorBoundary key={`error-${key}`}>
@@ -561,6 +570,14 @@ export function PageBuilder({
               </ErrorBoundary>
             ) : null;
 
+          case "interactiveServiceCarousel":
+            return <InteractiveServiceCarouselBlock key={key} {...block} language={language} channel={channel} />;
+          case "msmMediaFeature":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <MsmMediaFeature key={key} {...(block as any)} language={language} />
+              </ErrorBoundary>
+            );
           case "msmServiceDirectory":
             return <MsmServiceDirectory key={key} {...block} language={language} />;
           case "resultsMetrics":

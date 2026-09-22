@@ -170,6 +170,7 @@ function CasesGalleryFilteredWithPagination({
             activeFilter={filterAllText} // Force "All" because we already filtered
             locale={locale}
             filterAllText={filterAllText}
+            paginate={false}
           />
 
           {/* Pagination Controls */}

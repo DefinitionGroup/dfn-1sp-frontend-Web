@@ -11,7 +11,7 @@ interface HeaderImageVideoCompProps {
 }
 
 export default function HeaderImageVideoComp2({
-  useVideo = false, imageSrc = '/hero-bg-home2-34f136.png', videoSrc = '/video/atf.mp4',
+  useVideo = false, imageSrc, videoSrc,
   imageAlt = 'Hero Background', className = '', enableParallax = true, opacity = 0.5,
 }: HeaderImageVideoCompProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -21,7 +21,7 @@ export default function HeaderImageVideoComp2({
   const [readySource, setReadySource] = useState<string>();
   const {scrollYProgress} = useScroll({target: ref, offset: ['start start', 'end start']});
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '10%']);
-  const poster = useVideo ? cloudinaryPosterUrl(videoSrc, {maxWidth: 1280}) : undefined;
+  const poster = useVideo && videoSrc ? cloudinaryPosterUrl(videoSrc, {maxWidth: 1280}) || imageSrc : imageSrc;
   const showVideo = visible && reduced === false;
   const ready = showVideo && readySource === videoSrc;
 
@@ -34,7 +34,7 @@ export default function HeaderImageVideoComp2({
 
   return <div ref={ref} className={`absolute inset-0 overflow-hidden bg-msm-paper ${className}`}>
     <motion.div className="absolute inset-0" style={{y: enableParallax && !reduced ? y : 0}}>
-      {useVideo ? <>
+      {useVideo && videoSrc ? <>
         {poster && <Image src={poster} alt={imageAlt} fill sizes="100vw" priority unoptimized className="object-cover" />}
         <video ref={videoRef} src={optimizedVideoUrl(videoSrc, {maxWidth: 1280, quality: 'good', autoCodec: true})}
           muted loop playsInline preload="none" onCanPlay={() => setReadySource(videoSrc)}

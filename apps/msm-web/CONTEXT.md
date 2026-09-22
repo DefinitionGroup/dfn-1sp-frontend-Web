@@ -24,6 +24,8 @@ _Avoid_: MSM Case copy
 A systemwide Person who may be presented by one or more website channels. MSM may reference the Person without owning or modifying them.
 _Avoid_: MSM Person copy
 
+Website editions can intentionally override the presentation of shared Cases and People. “Without owning or modifying” above describes Unit attribution: selecting a Unit’s cases/leaders does not write relationships back to those shared documents. It does not prohibit separately authorized edits to a website edition. Service ownership is documented in the [platform guide](../../docs/SERVICE_CONTENT.md).
+
 **Unit Page**:
 The public page for one MSM Unit, combining its expertise, leadership, attributed Cases, and contact path.
 _Avoid_: Unit profile card

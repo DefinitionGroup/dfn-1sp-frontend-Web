@@ -8,7 +8,7 @@ Use this guide to establish the target and evidence for a release. It does not d
 - [scripts/vercel-ignore.mjs](../scripts/vercel-ignore.mjs) defines the checked-out branch/path filtering behavior.
 - [site-config](../packages/site-config/src/index.ts) defines channels, locales and domain defaults.
 - The Vercel project settings define the actual connected branch, app root, environment values and domains. Verify them live for the release being performed.
-- [The July test deployment plan](../deploymentplan.md) retains its original scope and acceptance record. Its three-project topology and `dev-dataset` assumptions are historical, not a current environment inventory.
+- [The July test deployment plan](archived/platform/test-deployment-plan-2026-07.md) retains its original scope and acceptance record. Its three-project topology and `dev-dataset` assumptions are historical, not a current environment inventory.
 
 ## Release sequence
 

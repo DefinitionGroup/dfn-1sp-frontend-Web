@@ -7,7 +7,7 @@ import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
 import { usePathname } from "next/navigation";
 import CaseGalleryMenu from "../data/data-CaseGalleryMenu";
-import Button2 from "../ui/Button2";
+import OneSpMembershipButton from "@/components/ui/OneSpMembershipButton";
 import { GlassSurface, menuGlassSurfaceProps } from "../ui/glass-surface";
 import { NavbarMenu } from "@1sp/sanity-types/menu";
 
@@ -441,15 +441,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 All Cases
               </button>
             )}
-            <div className=" min-w-[110px] w-[50px]  h-full  relative  top-2 right-22   ">
-              <Button2
-                variant="violet"
-                className="overflow-hidden block absolute   "
-                href="https://1sp.agency"
-                eyebrow={menuData?.oneSpMembershipLabel || "proud member of"}
-                text="1SP.agency"
-              />
-            </div>
+            <OneSpMembershipButton eyebrow={menuData?.oneSpMembershipLabel} />
           </div>
 
 

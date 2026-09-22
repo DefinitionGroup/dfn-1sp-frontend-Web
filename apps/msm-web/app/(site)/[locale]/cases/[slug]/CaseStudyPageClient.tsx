@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import HeaderImageVideoComp from "@msm/components/data/Fragments/data-HeaderImageVideoComp";
-import EditorialReveal from "@msm/components/ui/EditorialReveal";
+import CaseReveal from "@msm/components/pagebuilder/cases/CaseReveal";
+import DecryptRotator from "@msm/components/ui/DecryptRotator";
 import Badgemodule from "@msm/components/ui/Badgemodule";
 import styles from "@msm/components/pagebuilder/cases/CaseDetail.module.css";
 import LineMinimap, { NavPoint } from "@msm/components/ui/MapVertical";
@@ -76,7 +77,7 @@ export default function CaseStudyPageClient({
           <HeaderImageVideoComp
             useVideo={true} className="z-1  overflow-hidden "
             videoSrc={mainVideoUrl}
-            enableParallax={true}
+            imageSrc={mainImageUrl}
             opacity="opacity-70"
             enableVertical={caseStudy.isVerticalVideo}
           />
@@ -84,7 +85,6 @@ export default function CaseStudyPageClient({
           <HeaderImageVideoComp
             useVideo={false}
             imageSrc={mainImageUrl}
-            enableParallax={true}
             opacity="opacity-50"
           />
         )}
@@ -92,15 +92,15 @@ export default function CaseStudyPageClient({
 
         <div className={`${styles.container} ${styles.heroInner}`}>
           <div className={styles.heroGrid}>
-            <EditorialReveal className={styles.heroCopy}>
+            <CaseReveal className={styles.heroCopy}>
               {hasVisibleText(caseStudy.subtitle) && (
                 <p className={styles.heroSubtitle}>{caseStudy.subtitle}</p>
               )}
-              <h1 className={styles.heroTitle}>{caseStudy.title}</h1>
+              <DecryptRotator text={[caseStudy.title]} variant="headline" className={styles.heroTitle} revealDurationMs={700} delayMs={60} />
               {hasVisibleText(caseStudy.description) && (
                 <p className={styles.heroDescription}>{caseStudy.description}</p>
               )}
-            </EditorialReveal>
+            </CaseReveal>
             {(caseStudy.msmUnits || []).some((unit) => hasVisibleText(unit.name)) && (
               <div className={styles.badges}>
                 {(caseStudy.msmUnits || []).map((unit) => hasVisibleText(unit.name) ? (

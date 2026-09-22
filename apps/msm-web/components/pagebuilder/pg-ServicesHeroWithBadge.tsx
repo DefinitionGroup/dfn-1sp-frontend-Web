@@ -75,7 +75,7 @@ export default function ServicesHeroWithBadge({
     ? `/${locale}${renderedCta.href}` : renderedCta?.href;
   return <section id={t.ids.top} data-navpoint-name={navPointName} className={styles.hero}>
     <HeaderImageVideoComp2 useVideo={useVideo}
-      imageSrc={!useVideo ? backgroundImage?.asset?.secure_url : undefined}
+      imageSrc={backgroundImage?.asset?.secure_url}
       videoSrc={useVideo ? backgroundVideo?.asset?.secure_url : undefined}
       imageAlt={backgroundImage?.alt || backgroundVideo?.alt || ''}
       enableParallax={enableParallax} opacity={0.6} />

@@ -5,7 +5,6 @@ import { MetricNumber } from "@1sp/utils/components/MetricNumber";
 import { hasMetricFormatting } from "@1sp/utils/result-metrics";
 
 import { motion } from "motion/react";
-import EditorialReveal from "@msm/components/ui/EditorialReveal";
 import CaseSection from "./CaseSection";
 import styles from "./CaseDetail.module.css";
 import HeaderImageVideoComp2 from "@msm/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
@@ -176,9 +175,7 @@ export default function ResultsMetrics({
                             </motion.div>
                           </>
                         )}
-                        <EditorialReveal
-                          className="mt-2"
-                        >
+                        <div className="mt-2">
                           {hasVisibleText(metric.label) ? (
                             <h3 className="text-sm sm:text-base md:text-lg text-gray-200 tracking-tight leading-snug">
                               {metric.label}
@@ -186,7 +183,7 @@ export default function ResultsMetrics({
                           ) : null}
                           {metric.description && <p className="mt-3 text-base leading-relaxed text-gray-200">{metric.description}</p>}
                           {metric.context && <p className="mt-2 text-sm text-gray-200">{metric.context}</p>}
-                        </EditorialReveal>
+                        </div>
                       </div>
                     ))}
                   </div>

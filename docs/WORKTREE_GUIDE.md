@@ -1,6 +1,6 @@
 # Working in the correct checkout
 
-Use the actual Git state instead of paths or branch names copied from a past task. The [original worktree snapshot](archive/guides/worktree-guide-original.md) is retained as history.
+Use the actual Git state instead of paths or branch names copied from a past task. The [original worktree snapshot](archived/guides/worktree-guide-original.md) is retained as history.
 
 ## Before editing or committing
 

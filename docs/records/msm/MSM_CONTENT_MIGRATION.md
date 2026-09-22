@@ -2,11 +2,13 @@
 
 # MSM content migration and publication record
 
-**Publication update, 20 September 2026:** All 430 migration drafts were published to `wu6i3y0h / production` following explicit user authorization. No MSM drafts remain. The 10 unrelated content drafts remain untouched. English resolves 69 cases and four Units; German resolves 63 cases and four Units. Homepage, service/legal routes and representative case metrics were checked using the published perspective. See [publication verification](../../../outputs/msm-publication-20260920/verification.json). The text below records the original draft handoff.
+**Publication update, 20 September 2026:** All 430 migration drafts were published to `wu6i3y0h / production` following explicit user authorization. No MSM drafts remained at that publication checkpoint. The 10 unrelated content drafts remain untouched. English resolves 69 cases and four Units; German resolves 63 cases and four Units. Homepage, service/legal routes and representative case metrics were checked using the published perspective. See [publication verification](../../../outputs/msm-publication-20260920/verification.json). The text below records the original draft handoff. The [21 September service audit](msm-service-content-audit-2026-09-21.md) found a later AR-Link draft; the publication checkpoint is not a current draft count.
 
 Publication used one atomic transaction with revision checks on both draft and existing published documents, a successful server dry run, and zero schema errors or warnings. Fresh recovery archive: `EXPORT/production-before-msm-publish-20260920.tar.gz` (973 documents, parsed and SHA-256 verified). Protected before/after snapshots and the publication plan are in `EXPORT/msm-publication-20260920/`. Published content matches the drafts, with reference strengthening applied where requested by Sanity. Other channel editions are unchanged; ten shared people records gain previously missing portraits from the approved migration, also available to their other assigned channels. The post-publication attribute count is 1,567 / 2,000.
 
 The local MSM cache was revalidated. Unauthenticated requests to `/` and `/de` return HTTP 200 and the newly published English/German headlines. No frontend deployment or Git commit was performed as part of this content publication.
+
+## Original draft-only implementation — 19 September 2026
 
 Implemented on 19 September 2026 against Sanity project `wu6i3y0h`, dataset `production`, channel `msmWeb`. The migration is **draft-only**. Published documents and unrelated documents were compared with the baseline and remain unchanged. No deployment or publication was performed.
 

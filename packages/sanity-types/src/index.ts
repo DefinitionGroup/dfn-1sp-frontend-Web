@@ -912,3 +912,20 @@ export interface Service {
     servicegrouprel?: { _id: string; name: string; taglabel?: string }[];
     unitsrel?: { _id: string; name: string; slug: { current: string } }[];
 }
+
+/* MSM Media Feature — framed passage with a darkened background video, headline, copy and one CTA. */
+export interface MsmMediaFeatureComponent {
+    _type: "msmMediaFeature";
+    _key?: string;
+    eyebrow?: string;
+    headline?: string;
+    text?: string;
+    video?: CloudinaryAsset;
+    poster?: CloudinaryAsset;
+    /** 10–100. 100 shows the video untouched; lower values darken it behind the text. */
+    brightness?: number;
+    ctaLabel?: string;
+    cta?: CTA;
+    navPointName?: string;
+    hideFromNav?: boolean;
+}

@@ -2,6 +2,8 @@
 
 Status: **proposal, not implemented**. Audited 2026-09-20. Goal confirmed by the user: **qualified client enquiries and recruitment applications, with separate journeys**.
 
+Follow-up context, 21 September: the shared green `minimenu` membership button has since been implemented in the local worktree. The navigation proposals below remain unapproved conversion hypotheses, not instructions to replace that later requested component. For service data ownership, use the [current handoff](SERVICE_CONTENT_HANDOFF.md); this plan concerns journeys and presentation.
+
 ## Recommendation
 
 Preserve FLZR's identity and approved content. First make the next action obvious and easy: a persistent client enquiry route, a contact page that starts with the form, and a recruitment page that helps candidates find the right FLZR opportunity. Then improve how services, cases and the homepage support those decisions.

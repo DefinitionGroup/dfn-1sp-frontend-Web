@@ -9,7 +9,7 @@ Use this checklist for every new or changed Renaissance page. A page is not comp
 - [ ] The homepage hero logo sits above the headline hairline at no less than one-third width; an empty CMS asset falls back to the action-teal Renaissance wordmark.
 - [ ] The page has one primary user job and one primary conversion.
 - [ ] All claims, dates, client names and metrics are approved and sourced.
-- [ ] No FLZR violet, 1SP-specific styling or generic default font leaks into Renaissance UI.
+- [ ] No FLZR violet, 1SP-specific styling or generic default font leaks into Renaissance-owned UI. The shared 1SP membership button and network footer deliberately retain their scoped 1SP identity.
 - [ ] Real game, person or place imagery is the main visual anchor.
 - [ ] Services render each card’s CMS-selected image or video without a hardcoded override and preserve the compact Figma composition. Network, people and origin passages retain their approved assets in `public/renaissance/figma/`.
 - [ ] Section badge labels come from Sanity and use Signal Orange `#f49a24` with the approved Figma badge asset.

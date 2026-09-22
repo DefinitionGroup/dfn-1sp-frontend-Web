@@ -2,7 +2,7 @@
 
 One pnpm workspace powers the root 1SP website and the FLZR, MSM and Renaissance apps, with shared Sanity contracts and site-owned presentation.
 
-Start with the [documentation index](docs/README.md). Repository rules live in [AGENTS.md](AGENTS.md).
+Start with the [documentation index](docs/README.md). For the whole platform, read the [project handoff](docs/HANDOFF.md). Repository rules live in [AGENTS.md](AGENTS.md).
 
 ## Local development
 

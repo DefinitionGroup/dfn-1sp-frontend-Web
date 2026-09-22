@@ -7,7 +7,7 @@ import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
 import { usePathname } from "next/navigation";
 import CaseGalleryMenu from "../data/data-CaseGalleryMenu";
-import Button2 from "../ui/Button2";
+import OneSpMembershipButton from "@/components/ui/OneSpMembershipButton";
 import { NavbarMenu } from "@1sp/sanity-types/menu";
 import LanguageSelector, { type LanguageOption } from "./LanguageSelector";
 
@@ -593,12 +593,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 frosted={isFlzrScrolled}
               />
             ) : null}
-            <Button2
-              variant="limesmall"
-              href="https://1sp.agency"
-              eyebrow={menuData?.oneSpMembershipLabel || "proud member of"}
-              text="1SP.agency"
-            />
+            <OneSpMembershipButton eyebrow={menuData?.oneSpMembershipLabel} />
           </motion.div>
         </motion.nav>
         <motion.nav
@@ -722,13 +717,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 );
               })}
             </ul>
-            <a
-              href="https://1sp.agency"
-              className="flex items-center justify-between rounded-full bg-flzr-violet px-5 py-4 text-sm font-bold text-white"
-            >
-              <span>{menuData?.oneSpMembershipLabel || "Proud member of 1SP"}</span>
-              <span>1SP.agency ↗</span>
-            </a>
+            <OneSpMembershipButton eyebrow={menuData?.oneSpMembershipLabel} />
           </nav>
         </motion.div>
       ) : null}

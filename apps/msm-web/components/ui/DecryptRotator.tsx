@@ -3,6 +3,7 @@
 
 import React, { useEffect, useState } from "react";
 import { stegaClean } from "@sanity/client/stega";
+import { useReducedMotion } from "motion/react";
 
 const SCRAMBLE_CHARS = "!<>-_\\/[]{}—=+*^?#ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -38,10 +39,18 @@ export default function DecryptRotator({
     "Technology",
   ],
   variant = "rotating",
+  className,
+  revealDurationMs,
+  delayMs = 0,
 }: {
   text?: string[];
   variant?: "rotating" | "headline";
+  className?: string;
+  /** Optional cap for long case headlines; homepage timing remains unchanged. */
+  revealDurationMs?: number;
+  delayMs?: number;
 }) {
+  const prefersReducedMotion = useReducedMotion();
   // Preview annotations must not become scrambled characters or extend the reveal.
   const words = text.map((word) => stegaClean(word)).filter((w) => w.trim().length > 0);
   const contentKey = JSON.stringify(words);
@@ -81,7 +90,8 @@ export default function DecryptRotator({
       let lastShuffle = 0;
 
       const tick = (now: number) => {
-        const revealed = Math.floor((now - start) / REVEAL_MS);
+        const characterMs = revealDurationMs ? Math.min(REVEAL_MS, revealDurationMs / word.length) : REVEAL_MS;
+        const revealed = Math.floor((now - start) / characterMs);
         if (revealed >= word.length) {
           setDisplay(word);
           if (isHeadline) return;
@@ -102,21 +112,22 @@ export default function DecryptRotator({
       raf = requestAnimationFrame(tick);
     };
 
-    run();
+    if (delayMs && !reducedMotion) timeout = setTimeout(run, delayMs);
+    else run();
 
     return () => {
       cancelAnimationFrame(raf);
       clearTimeout(timeout);
     };
-  }, [contentKey, isHeadline]);
+  }, [contentKey, isHeadline, revealDurationMs, delayMs, prefersReducedMotion]);
 
   if (words.length === 0) return null;
 
   return (
     <Heading
-      className={isHeadline
+      className={className || (isHeadline
         ? "relative max-w-[28ch] whitespace-pre-line text-3xl md:text-5xl leading-tight pb-6"
-        : "typewriter-rotator relative inline-grid max-w-full items-start font-aspekta font-medium leading-[0.8] text-white"}
+        : "typewriter-rotator relative inline-grid max-w-full items-start font-aspekta font-medium leading-[0.8] text-white")}
       style={isHeadline ? undefined : { maxWidth: 900 }}
     >
       <span className={isHeadline ? "relative block" : "contents"}>

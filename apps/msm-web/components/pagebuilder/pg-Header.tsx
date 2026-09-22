@@ -102,11 +102,12 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     ...(hideFromNav ? { "data-nav-hidden": "true" } : {}),
   };
   const paragraphSizeClass = isIphoneLandscape ? "text-xs" : "text-base";
+  const paragraphWidthClass = editorialHeadline ? "max-w-[68ch]" : "max-w-[48ch]";
 
   const portableTextComponents = {
     block: {
       normal: ({ children }: { children?: React.ReactNode }) => (
-        <p className={`text-neutral-50 ${paragraphSizeClass} max-w-[48ch]`}>
+        <p className={`text-neutral-50 ${paragraphSizeClass} ${paragraphWidthClass}`}>
           {children}
         </p>
       ),
@@ -133,13 +134,13 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           // If highlight matched, render the highlighted version
           if (highlighted !== plainText) {
             return (
-              <p className={`text-neutral-500 ${paragraphSizeClass} max-w-[48ch]`}>
+              <p className={`text-neutral-500 ${paragraphSizeClass} ${paragraphWidthClass}`}>
                 {highlighted}
               </p>
             );
           }
           return (
-            <p className={`text-neutral-500 ${paragraphSizeClass} max-w-[48ch]`}>
+            <p className={`text-neutral-500 ${paragraphSizeClass} ${paragraphWidthClass}`}>
               {children}
             </p>
           );
@@ -175,9 +176,9 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
       {/* Foreground content — white corner markers frame the
           eyebrow/headline/copy/CTA group. */}
-      <div className={editorialHeadline ? "relative z-10 container mx-auto px-6 md:px-10 pt-36 pb-16" : "absolute inset-x-0 bottom-20 md:bottom-12 iphone-landscape:bottom-0 z-10 max-w-9xl container mx-auto px-6 md:px-10 py-5"}>
+      <div className={editorialHeadline ? "relative z-10 container mx-auto flex min-h-[95svh] items-center px-6 md:px-10 py-28 md:py-24" : "absolute inset-x-0 bottom-20 md:bottom-12 iphone-landscape:bottom-0 z-10 max-w-9xl container mx-auto px-6 md:px-10 py-5"}>
         <SelectionFrame
-          className="inline-block max-w-full"
+          className={editorialHeadline ? "w-full max-w-6xl" : "inline-block max-w-full"}
           contentClassName="p-6 md:p-8 space-y-1"
           delay={250}
         >
@@ -197,7 +198,11 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
             {/* Keep the signature decrypt effect for both authored headlines and rotating words. */}
             {editorialHeadline ? (
-              <DecryptRotator text={[editorialHeadline]} variant="headline" />
+              <DecryptRotator
+                text={[editorialHeadline]}
+                variant="headline"
+                className="relative max-w-[40ch] whitespace-pre-line text-3xl md:text-5xl leading-tight pb-6"
+              />
             ) : words.length > 0 && <DecryptRotator text={words} />}
 
             {/* Desktop paragraphs (rich text) */}

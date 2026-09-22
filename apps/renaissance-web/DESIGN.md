@@ -121,6 +121,8 @@ Origins uses the same `Button2` mosaic component as the hero and reads its butto
 
 ### Navigation
 
+The 1SP membership link is a deliberate network-brand exception: desktop and mobile navigation use the shared `OneSpMembershipButton` with the canonical 1SP `minimenu` variant, Aspekta, and 1SP green `#afff40`. It is 110×36px, with a 44px height for coarse pointers, compact two-line copy and a 12px arrow. Its membership eyebrow remains CMS-owned; the scoped palette does not affect Renaissance buttons.
+
 The expanded navigation sits in page flow with the action-teal Renaissance logo and ink links on sand. It reinforces the hero's brand signal without competing with its typography. After 64px of scroll it compacts into a white translucent 4px-corner shell; it may hide after three idle seconds and returns with renewed scroll activity. Mobile uses the same compact corner treatment and a full-screen ink menu with the Renaissance logo in action teal, numbered Geist Mono indices, large compressed links, hairline separators, and explicit open/close labels.
 
 ### Section Badges and Adapted Sections

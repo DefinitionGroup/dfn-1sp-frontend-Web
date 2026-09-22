@@ -1,6 +1,6 @@
 # Architecture and content ownership
 
-Repository reference, checked against source on 2026-09-20. This describes the checked-out code, not the state of a hosted deployment.
+Repository reference, checked against source on 2026-09-21. This describes the checked-out code, not the state of a hosted deployment.
 
 ## Applications and shared contracts
 
@@ -25,11 +25,13 @@ Shared packages own schema, query contracts, types, PageBuilder plumbing and uti
 - Renaissance also has site-owned client collections and shared portrait/award compositions; see [its component contract](../apps/renaissance-web/design-system/COMPONENTS.md) and [shared-content guide](../apps/renaissance-web/docs/shared-content.md).
 - Translations use separate language documents linked by translation metadata.
 
+Service descriptions have different current consumers across the apps. Use [Service content](SERVICE_CONTENT.md) for the maintained editing contract and [the handoff](SERVICE_CONTENT_HANDOFF.md) for proposed consolidation. A service reference does not automatically replace inline page copy. Renaissance already renders referenced descriptions; FLZR and MSM also have independent page narratives.
+
 ## Storage and rendering
 
 Pages use unified `content[]`; the old per-channel page arrays are historical. Cases currently retain root and edition `casesPageBuilder[]`. Moving the root case field to `content[]` is **deferred**, as described in the [data structure recipe](SANITY_DATA_STRUCTURE_RECIPE.md).
 
-Schema definitions live in [packages/sanity-schema/src](../packages/sanity-schema/src/). Shared projections live in [groq.ts](../packages/sanity-queries/src/groq.ts), with case-edition resolution in [case-presentation.ts](../packages/sanity-queries/src/case-presentation.ts). App-specific builders select their own renderers; sharing storage does not require sharing the visual design.
+Schema definitions live in [packages/sanity-schema/src](../packages/sanity-schema/src). Shared projections live in [groq.ts](../packages/sanity-queries/src/groq.ts), with case-edition resolution in [case-presentation.ts](../packages/sanity-queries/src/case-presentation.ts). App-specific builders select their own renderers; sharing storage does not require sharing the visual design.
 
 Cloudinary objects currently remain embedded. The [storage policy](../packages/utils/src/cloudinary-storage.ts) and [Studio input](../sanity/components/CloudinaryStorageInput.tsx) prevent known redundant provider fields from returning. Media references are a proposed later stage, not the current model.
 

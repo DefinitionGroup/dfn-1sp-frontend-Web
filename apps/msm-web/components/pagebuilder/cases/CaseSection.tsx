@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import Badgemodule from "@msm/components/ui/Badgemodule";
-import EditorialReveal from "@msm/components/ui/EditorialReveal";
+import CaseReveal from "./CaseReveal";
 import { hasVisibleText } from "@1sp/utils/text-content";
 import styles from "./CaseDetail.module.css";
 
@@ -21,10 +21,10 @@ export default function CaseSection({ title, badgeText, badgeSubtitle, children 
         {hasVisibleText(label) && <Badgemodule text={label!} subtitle={badgeSubtitle || ""}
           titleAs={distinctTitle ? "p" : "h2"} className={styles.sectionBadge} />}
       </div>
-      <EditorialReveal className={styles.narrativeBody}>
+      <CaseReveal content className={styles.narrativeBody}>
         {distinctTitle && <h2 className={styles.heading}>{title}</h2>}
         {children}
-      </EditorialReveal>
+      </CaseReveal>
     </div>
   );
 }

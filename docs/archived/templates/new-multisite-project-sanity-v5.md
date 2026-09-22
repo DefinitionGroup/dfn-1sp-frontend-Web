@@ -1,4 +1,6 @@
-> Reusable template for a separate project, not setup instructions for this repository. Version examples and provider behavior require verification before reuse. See the [template index](README.md).
+> Archived on 21 September 2026. Historical evidence; do not execute as the current work queue. Start with the [project handoff](../../HANDOFF.md).
+
+> Reusable template for a separate project, not setup instructions for this repository. Version examples and provider behavior require verification before reuse. See the [template index](../../templates/README.md).
 
 # RECIPE V5 — Multi-channel, Multi-language Sanity v5 + Vercel + Next.js Template, with Content Agent translation
 
@@ -1277,7 +1279,7 @@ guidance was grounded by reading the live Sanity docs at recipe-writing
 time. Verify all version-dependent claims at execution time.
 
 Key operational docs in the source repo:
-- `docs/archive/platform/MULTI_SITE.md` — state-of-play
+- `docs/archived/platform/MULTI_SITE.md` — state-of-play
 - `migrations/<name>/RUNBOOK.md` — per-migration runbook
 - `packages/pagebuilder-core/README.md` — block contract usage
 - `docs/templates/new-multisite-project.md` — the v1 recipe (no v5, no Content Agent)

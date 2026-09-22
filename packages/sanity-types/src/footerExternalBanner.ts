@@ -6,6 +6,7 @@ export interface FooterExternalBannerData {
   eyebrow?: string;
   logo?: CloudinaryAsset;
   logoAlt?: string;
+  headline?: string;
   text?: string;
   video?: CloudinaryAsset;
   poster?: CloudinaryAsset;

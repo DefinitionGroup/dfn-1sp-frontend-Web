@@ -1,4 +1,6 @@
-> Historical rollout record: last verified 2026-07-11. The three-project topology, branch and dataset values below describe that test rollout. For a new release, use [Deployment verification](docs/DEPLOYMENT.md) and check actual provider settings. This record does not authorize a new cutover.
+> Archived on 21 September 2026. Historical evidence; do not execute as the current work queue. Start with the [project handoff](../../HANDOFF.md).
+
+> Historical rollout record: last verified 2026-07-11. The three-project topology, branch and dataset values below describe that test rollout. For a new release, use [Deployment verification](../../DEPLOYMENT.md) and check actual provider settings. This record does not authorize a new cutover.
 
 # Monorepo Test Deployment Plan
 

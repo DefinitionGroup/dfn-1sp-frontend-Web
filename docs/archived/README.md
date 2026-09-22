@@ -32,8 +32,15 @@ Use the [documentation index](../README.md), [architecture](../ARCHITECTURE.md) 
 
 - [Original PageBuilder component overview](guides/Components.MD) — superseded by the current PageBuilder guide.
 
-## Historical records retained in place
+## Archived operational records
 
-- [July project memory](../../MEMORY.md) — source and dataset snapshot from July, not current task state.
-- [July test deployment plan](../../deploymentplan.md) — original test rollout boundaries and evidence.
-- [Page-content migration runbook](../../migrations/unify-page-content/RUNBOOK.md) — recovery/migration reference; not a pending migration checklist.
+- [July project memory](platform/project-memory-2026-07.md) — source and dataset snapshot from July, not current task state.
+- [July test deployment plan](platform/test-deployment-plan-2026-07.md) — original test rollout boundaries and evidence.
+- [Page-content migration runbook](migrations/unify-page-content-runbook.md) — recovery/migration reference; not a pending migration checklist.
+
+## Obsolete deployment pointers and template
+
+- [Former deployment guide pointer](guides/VERCEL_DEPLOYMENT.md) and [former deployment reference pointer](guides/VERCEL_DEPLOYMENTS.md): use the maintained [deployment verification guide](../DEPLOYMENT.md).
+- [Sanity v5 template](templates/new-multisite-project-sanity-v5.md): historical version-specific blueprint; this checkout uses Sanity 6.
+
+The directory was renamed from `docs/archive/` to `docs/archived/` on 21 September 2026. The [move manifest](../records/project/documentation-moves-2026-09-21.csv) records every relocation. Source/recovery information was retained; archival does not mark old findings as fixed.

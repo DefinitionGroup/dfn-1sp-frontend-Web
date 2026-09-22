@@ -1714,7 +1714,7 @@ order. Verify after each phase.
 This recipe was distilled from work on the 1SP multi-site monorepo. Key
 operational docs in that repo that you may want to mirror in yours:
 
-- `docs/archive/platform/MULTI_SITE.md` — state-of-play / handoff doc
+- `docs/archived/platform/MULTI_SITE.md` — state-of-play / handoff doc
 - `migrations/<name>/RUNBOOK.md` — per-migration runbook
 - `packages/pagebuilder-core/README.md` — block contract usage
 

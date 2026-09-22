@@ -1,0 +1,90 @@
+path,status,purpose_or_caveat
+AGENTS.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+CLAUDE.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+CONTEXT-MAP.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+GEMINI.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+README.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+apps/flzr-web/README.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+apps/msm-web/CONTEXT.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+apps/msm-web/DESIGN.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+apps/msm-web/PRODUCT.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+apps/msm-web/README.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+apps/msm-web/docs/adr/0001-unit-owned-shared-content-attribution.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+apps/renaissance-web/DESIGN.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+apps/renaissance-web/PRODUCT.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+apps/renaissance-web/README.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+apps/renaissance-web/design-system/COMPONENTS.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+apps/renaissance-web/design-system/README.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+apps/renaissance-web/design-system/RELEASE-CHECKLIST.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+apps/renaissance-web/docs/shared-content.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+docs/ARCHITECTURE.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+docs/CONTACT_FORM.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+docs/DEPLOYMENT.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+docs/FLZR_CONVERSION_PLAN.md,proposed-or-deferred,Proposed client and recruitment journeys
+docs/FLZR_CONVERSION_SOURCE_AUDIT.md,dated-record,Source/audit evidence; metric mapping path retained for generating script
+docs/HANDOFF.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+docs/PAGEBUILDER_COMPONENT_GUIDE.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+docs/PROJECT_FEATURES.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+docs/PROJECT_OPERATIONS.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+docs/README.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+docs/SANITY_AGENTIC_TRANSLATION_STRATEGY.md,proposed-or-deferred,Implemented foundations plus proposed translation pilots
+docs/SANITY_DATA_STRUCTURE_RECIPE.md,proposed-or-deferred,Stage 3 and later deferred by user
+docs/SANITY_NULL_HANDLING.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+docs/SERVICE_CONTENT.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+docs/SERVICE_CONTENT_HANDOFF.md,proposed-or-deferred,Audited proposal; preserve website-specific ownership
+docs/WORKTREE_GUIDE.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+docs/archived/README.md,archived,Historical evidence only; refresh findings before reuse
+docs/archived/audits/AUDIT-2026-07-channel-cache-mode.md,archived,Historical evidence only; refresh findings before reuse
+docs/archived/audits/CLEANUP-COMPONENTS.md,archived,Historical evidence only; refresh findings before reuse
+docs/archived/audits/MSM_NAV_GLASS.md,archived,Historical evidence only; refresh findings before reuse
+docs/archived/audits/PERFORMANCE_PLAN.md,archived,Historical evidence only; refresh findings before reuse
+docs/archived/audits/REFACTOR.MD,archived,Historical evidence only; refresh findings before reuse
+docs/archived/audits/UNUSED.md,archived,Historical evidence only; refresh findings before reuse
+docs/archived/audits/UpdatedStaggerAnimation.md,archived,Historical evidence only; refresh findings before reuse
+docs/archived/audits/renaissance-design-audit-2026-08-11.md,archived,Historical evidence only; refresh findings before reuse
+docs/archived/guides/Components.MD,archived,Historical evidence only; refresh findings before reuse
+docs/archived/guides/VERCEL_DEPLOYMENT.md,archived,Historical evidence only; refresh findings before reuse
+docs/archived/guides/VERCEL_DEPLOYMENTS.md,archived,Historical evidence only; refresh findings before reuse
+docs/archived/guides/pagebuilder-guide-original.md,archived,Historical evidence only; refresh findings before reuse
+docs/archived/guides/worktree-guide-original.md,archived,Historical evidence only; refresh findings before reuse
+docs/archived/migrations/unify-page-content-runbook.md,archived,Historical evidence only; refresh findings before reuse
+docs/archived/platform/HANDOFF.md,archived,Historical evidence only; refresh findings before reuse
+docs/archived/platform/MSM_LAUNCH.md,archived,Historical evidence only; refresh findings before reuse
+docs/archived/platform/MULTI_SITE.md,archived,Historical evidence only; refresh findings before reuse
+docs/archived/platform/TODO.MD,archived,Historical evidence only; refresh findings before reuse
+docs/archived/platform/multisite-platform-plan.md,archived,Historical evidence only; refresh findings before reuse
+docs/archived/platform/project-memory-2026-07.md,archived,Historical evidence only; refresh findings before reuse
+docs/archived/platform/test-deployment-plan-2026-07.md,archived,Historical evidence only; refresh findings before reuse
+docs/archived/templates/new-multisite-project-sanity-v5.md,archived,Historical evidence only; refresh findings before reuse
+docs/footer-external-banner.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+docs/local-sanity-debugging.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+docs/records/README.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/flzr/FLZR_CONTENT_BLOCK_PLAN.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/flzr/flzr-english-content-plan.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/flzr/flzr-english-implementation.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/msm/MSM_CONTENT_MIGRATION.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/msm/MSM_REWRITE_MAPPING_PLAN.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/msm/msm-block-redesign-2026-09-20.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/msm/msm-design-consolidation-plan.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/msm/msm-design-implementation.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/msm/msm-service-content-audit-2026-09-21.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/project/project-handoff-review-2026-09-21.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/renaissance/renaissance-content-publication.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/renaissance/renaissance-content-rewrite-plan-v4.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/renaissance/renaissance-global-services-implementation-2026-09-19.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/renaissance/renaissance-results-metrics-implementation.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/renaissance/renaissance-results-metrics-plan.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/renaissance/renaissance-rewrite-v4-implementation.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/sanity/SANITY_ATTRIBUTE_MODEL_OPTIONS.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/sanity/SANITY_MEDIA_STORAGE_STAGE1.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/sanity/SANITY_MEDIA_STORAGE_STAGE2.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/sanity/documentation-review-2026-09-21.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/records/sanity/service-content-ownership-audit-2026-09-21.md,dated-record,"Preserve source, implementation or verification provenance; measurements apply to recorded date"
+docs/renaissance-case-carousel.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+docs/renaissance-global-services-and-studio.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+docs/renaissance-results-metrics-mapping.md,dated-record,Source/audit evidence; metric mapping path retained for generating script
+docs/studiocustomize -tut.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"
+docs/templates/README.md,template,"Blueprint for other projects, not current repository setup"
+docs/templates/new-multisite-project.md,template,"Blueprint for other projects, not current repository setup"
+docs/templates/single-site-to-multisite.md,template,"Blueprint for other projects, not current repository setup"
+packages/pagebuilder-core/README.md,current-reference,"Maintained orientation, design contract or task guide; runtime/configuration remains authoritative"

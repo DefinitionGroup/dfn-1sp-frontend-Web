@@ -20,6 +20,8 @@ Run the root Sanity doctor with `--channel msmWeb --language en`, then compare i
 
 ## Ownership and references
 
+For service editing and page relationships, use the shared [service content guide](../../docs/SERVICE_CONTENT.md) and [consolidation handoff](../../docs/SERVICE_CONTENT_HANDOFF.md). These separate current behavior from proposed migrations.
+
 - App shell: [components/MsmSiteWrapper.tsx](components/MsmSiteWrapper.tsx).
 - PageBuilder: [components/MsmPageBuilder.tsx](components/MsmPageBuilder.tsx).
 - Global content remains channel/language scoped; pages use unified `content[]`.

@@ -208,6 +208,16 @@ From 768px, the badge rail and narrative use a 3/9 grid within the 88rem outer c
 
 The full-bleed case hero retains its bottom-aligned title and Unit badge (10rem desktop, 7rem mobile). Quotes, metric values and diagrams remain in the reading column. Case CTA buttons align to that same column. Text-only results are content-driven; authored background media remains supported. Optional powered-by/contact content uses dark surfaces too. The minimap collects only case sections.
 
+### Case Motion
+
+Case heroes reuse the homepage `DecryptRotator` headline mechanic, with a 700ms reveal cap and 60ms start offset. The component reserves the final text geometry and exposes one stable screen-reader label. Homepage defaults and rotating timing remain unchanged.
+
+`CaseReveal` observes each reading unit independently: challenge/intro copy, actual Portable Text paragraphs, approach list items, results copy, quote and attribution, metric labels, and CTA/contact text and actions. CaseSection enables content targeting; it never animates both a container and its descendants. Numeric count-ups and badge drawing keep their own existing behavior. Hero text and contact media use direct-child targeting.
+
+Each item plays once when it enters 15% inside the viewport (inset capped at 120px). Use a 12px upward settle, 600ms gentle curve (`0.25, 0.1, 0.25, 1`), and 90ms stagger among items entering together, capped at 270ms. Offscreen items wait for their own intersection, including later paragraphs in a long solution. Resize recalculates the inset. Native Web Animations animate transform and opacity from readable server HTML; keyboard focus settles the local sequence immediately, and reduced motion cancels it. Avoid word-by-word effects on long case paragraphs.
+
+Case media has no pixel texture, entrance zoom, parallax or heavy blur. A 450ms fade and a static dark scrim keep the full-bleed image steady and text legible. Video plays only while in view, pauses offscreen, and uses its poster for reduced motion or playback failure. Existing badge drawing and mosaic button behavior remain unchanged.
+
 ### Framed Badge
 
 A single in-view trigger at 15% visibility runs once per mount. Two pairs of small monospace + glyphs match the homepage's `font-mono text-xs` corner markers (14px in the current MSM type scale). In the first pair, one cross anchors the top-left and the other drags to the bottom-right, pulling out a dotted selection rectangle. A second pair repeats the action from top-right to bottom-left, staggered by 180ms. The crosses translate with the moving corners and never scale.
@@ -241,6 +251,10 @@ Render Cases and People only from actual Unit assignments. The inspected content
 `servicesHeroWithBadge` is a full-bleed media plane with bottom-aligned copy and the existing square badge. Its height is content-driven above a fluid minimum (`clamp(30rem, 68svh, 52rem)`). From 768px the badge occupies the right column; on mobile it follows the copy in the normal flow. Authored CTA details and list items remain present when supplied. Preserve these content slots and the badge mechanism rather than inventing overlays or additional labels.
 
 `HeaderImageVideoComp2` applies its dark scrim immediately; the service hero uses 60% opacity. It retains a stable video element and poster, plays only while visible without reduced motion, and pauses otherwise. Optional parallax spans 0–10% of the media height and stops under reduced motion. This supporting-media behavior does not replace the separate signature homepage hero effects.
+
+### Media Feature
+
+`msmMediaFeature` is one reusable framed passage for feature moments such as hashtaglove. The frame draws itself with the case tile selection signature (two dotted selections dragging opposite corners, crosses that dismiss), then its content fades in: a full-bleed background video behind a darkening scrim whose strength editors set in Studio (video brightness, 10–100), with a bottom legibility ramp. The copy then rises in sequence: eyebrow, headline on the editorial scale, support copy within 46ch, and one MosaicButton whose eyebrow line carries the "Let's talk" label. No hover interaction, no telemetry; reduced motion shows the poster and renders the copy immediately.
 
 ### Intertitle CTA Band
 
@@ -277,3 +291,9 @@ The submit action uses Signal Cyan with Paper Black text, a 3rem minimum height,
 - **Don't** add redundant eyebrows to identify an already named Unit or section.
 - **Don't** replace signature hero, button, or mark effects with generic approximations.
 - **Don't** invent imagery, Unit logos, Case assignments, or leadership content.
+
+### Interactive Service Carousel
+
+`interactiveServiceCarousel` is an MSM PageBuilder block with an ordered array of Globals service references. The server resolves MSM/language assignments, channel presentation overrides and the service's explicit MSM page relationship. Missing or unassigned services and services without a destination are omitted; shared documents are never duplicated.
+
+The horizontal rail shows three angular media cards on desktop, two on tablet, and one plus the next card edge on mobile. A Motion transform track supports elastic touch/mouse dragging (0.18 edge resistance), horizontal trackpad scrolling, arrow controls and focused-rail arrow/Home/End keys. All movement settles onto measured card stops with a spring (stiffness 180, damping 24, mass 1); native scroll snap is disabled. Autoplay advances one stop every 5.5 seconds, reversing at either end. It pauses while the rail is hovered, focused or dragged, outside the viewport, in a hidden tab, or through the pause control. Reduced motion disables autoplay and animated settling. Cards reuse SelectionFrame's two-draw, transient-cross animation and Button2. The selected visible card alone plays its video; stable video elements pause/resume without reloading. The pause control also pauses previews, and reduced motion uses posters. Focus remains on navigation controls; tabbing reaches the actual service links. The full service directory stays below this curated introduction.
