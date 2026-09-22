@@ -1,4 +1,8 @@
 const TEST_DEPLOYMENT_TIER = "test";
+// Beta projects render the production dataset on a generated *.vercel.app
+// URL. They share the test tier's noindex/no-tracking behaviour but skip the
+// dev-dataset identity checks, which only apply to the monorepo test lane.
+const BETA_DEPLOYMENT_TIER = "beta";
 const TEST_ROBOTS_HEADER_VALUE = "noindex, nofollow, noarchive, nosnippet";
 const TEST_SANITY_PROJECT_ID = "wu6i3y0h";
 const TEST_SANITY_DATASET = "dev-dataset";
@@ -31,6 +35,61 @@ function configuredSiteUrl(): string | undefined {
 function parseSiteUrl(value: string): URL {
   const withProtocol = /^https?:\/\//i.test(value) ? value : `https://${value}`;
   return new URL(withProtocol);
+}
+
+function assertGeneratedVercelSiteUrl(siteUrl: string, requirement: string): void {
+  let parsedSiteUrl: URL;
+  try {
+    parsedSiteUrl = parseSiteUrl(siteUrl);
+  } catch {
+    throw new Error(`${requirement} requires a valid generated Vercel project URL.`);
+  }
+
+  if (
+    parsedSiteUrl.protocol !== "https:" ||
+    !parsedSiteUrl.hostname.endsWith(".vercel.app") ||
+    parsedSiteUrl.hostname === "vercel.app" ||
+    parsedSiteUrl.port ||
+    parsedSiteUrl.username ||
+    parsedSiteUrl.password ||
+    parsedSiteUrl.pathname !== "/" ||
+    parsedSiteUrl.search ||
+    parsedSiteUrl.hash
+  ) {
+    throw new Error(
+      `${requirement} requires an origin-only https://*.vercel.app site URL; production and custom domains are prohibited in this phase.`,
+    );
+  }
+
+  const vercelProductionUrl =
+    environmentValue("VERCEL_PROJECT_PRODUCTION_URL") ||
+    environmentValue("NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL");
+
+  if (
+    vercelProductionUrl &&
+    parsedSiteUrl.origin !== parseSiteUrl(vercelProductionUrl).origin
+  ) {
+    throw new Error(
+      "The configured test site URL must exactly match VERCEL_PROJECT_PRODUCTION_URL.",
+    );
+  }
+}
+
+function assertSafeBetaConfiguration(): void {
+  if (normalizedEnv("MONOREPO_TEST_PROJECT") === "true") {
+    throw new Error(
+      "DEPLOYMENT_TIER=beta cannot be combined with MONOREPO_TEST_PROJECT=true; use DEPLOYMENT_TIER=test there.",
+    );
+  }
+
+  const siteUrl = configuredSiteUrl();
+  if (!siteUrl) {
+    throw new Error(
+      "DEPLOYMENT_TIER=beta requires an explicit beta site URL or Vercel project production URL for canonical metadata.",
+    );
+  }
+
+  assertGeneratedVercelSiteUrl(siteUrl, "DEPLOYMENT_TIER=beta");
 }
 
 function assertSafeTestConfiguration(
@@ -111,43 +170,7 @@ function assertSafeTestConfiguration(
     );
   }
 
-  let parsedSiteUrl: URL;
-  try {
-    parsedSiteUrl = parseSiteUrl(siteUrl!);
-  } catch {
-    throw new Error(
-      "MONOREPO_TEST_PROJECT=true requires a valid generated Vercel project URL.",
-    );
-  }
-
-  if (
-    parsedSiteUrl.protocol !== "https:" ||
-    !parsedSiteUrl.hostname.endsWith(".vercel.app") ||
-    parsedSiteUrl.hostname === "vercel.app" ||
-    parsedSiteUrl.port ||
-    parsedSiteUrl.username ||
-    parsedSiteUrl.password ||
-    parsedSiteUrl.pathname !== "/" ||
-    parsedSiteUrl.search ||
-    parsedSiteUrl.hash
-  ) {
-    throw new Error(
-      "MONOREPO_TEST_PROJECT=true requires an origin-only https://*.vercel.app site URL; production and custom domains are prohibited in this phase.",
-    );
-  }
-
-  const vercelProductionUrl =
-    environmentValue("VERCEL_PROJECT_PRODUCTION_URL") ||
-    environmentValue("NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL");
-
-  if (
-    vercelProductionUrl &&
-    parsedSiteUrl.origin !== parseSiteUrl(vercelProductionUrl).origin
-  ) {
-    throw new Error(
-      "The configured test site URL must exactly match VERCEL_PROJECT_PRODUCTION_URL.",
-    );
-  }
+  assertGeneratedVercelSiteUrl(siteUrl!, "MONOREPO_TEST_PROJECT=true");
 }
 
 /**
@@ -157,6 +180,10 @@ function assertSafeTestConfiguration(
  */
 export function isTestDeployment(expectedSite?: TestSite): boolean {
   const tier = normalizedEnv("DEPLOYMENT_TIER");
+  if (tier === BETA_DEPLOYMENT_TIER) {
+    assertSafeBetaConfiguration();
+    return true;
+  }
   assertSafeTestConfiguration(tier, expectedSite);
   return tier === TEST_DEPLOYMENT_TIER;
 }

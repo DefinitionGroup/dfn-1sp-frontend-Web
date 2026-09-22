@@ -200,3 +200,42 @@ test("ordinary production behavior remains unchanged without the test marker", (
     assert.deepEqual(getDeploymentHeaders(), []);
   });
 });
+
+const validBetaEnvironment = {
+  DEPLOYMENT_TIER: "beta",
+  NEXT_PUBLIC_CHANNEL: "msmWeb",
+  NEXT_PUBLIC_SANITY_DATASET: "production",
+  NEXT_PUBLIC_SANITY_PROJECT_ID: "wu6i3y0h",
+  NEXT_PUBLIC_SITE_URL: "https://msm-beta.vercel.app",
+  VERCEL_PROJECT_PRODUCTION_URL: "msm-beta.vercel.app",
+};
+
+test("a beta project on the production dataset disables indexing and production tracking", () => {
+  withEnvironment(validBetaEnvironment, () => {
+    assert.equal(isTestDeployment("msm"), true);
+    assert.equal(shouldLoadProductionTracking(), false);
+    assert.equal(getRobotsMetadata().index, false);
+    assert.match(
+      getDeploymentHeaders("msm")[0].headers[0].value,
+      /noindex, nofollow, noarchive, nosnippet/,
+    );
+  });
+});
+
+test("the beta tier refuses custom domains and the monorepo test marker", () => {
+  for (const [values, message] of [
+    [{ NEXT_PUBLIC_SITE_URL: "https://www.1sp.agency", VERCEL_PROJECT_PRODUCTION_URL: "www.1sp.agency" }, /origin-only/],
+    [{ NEXT_PUBLIC_SITE_URL: "https://msm-beta.vercel.app/path" }, /origin-only/],
+    [{ NEXT_PUBLIC_SITE_URL: undefined, VERCEL_PROJECT_PRODUCTION_URL: undefined }, /explicit beta site URL/],
+    [{ VERCEL_PROJECT_PRODUCTION_URL: "other-beta.vercel.app" }, /exactly match/],
+    [{ MONOREPO_TEST_PROJECT: "true" }, /cannot be combined/],
+  ]) {
+    const environment = { ...validBetaEnvironment, ...values };
+    for (const key of Object.keys(environment)) {
+      if (environment[key] === undefined) delete environment[key];
+    }
+    withEnvironment(environment, () => {
+      assert.throws(() => isTestDeployment(), message);
+    });
+  }
+});
