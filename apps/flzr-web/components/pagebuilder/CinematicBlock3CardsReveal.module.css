@@ -36,7 +36,7 @@
 .cardCopy p { margin-top: 0.85rem; max-width: 26rem; font-size: var(--text-body-fluid); line-height: 1.5; color: rgb(255 255 255 / 0.88); }
 .action { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; font-size: 0.875rem; }
 .action span { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; flex-shrink: 0; border-radius: 50%; background: var(--color-flzr-violet); color: white; font-size: 1.25rem; transition: transform 200ms var(--ease-flzr); }
-.outro { display: flex; flex-direction: column; align-items: center; gap: 1rem; max-width: 40rem; margin: 1.1rem auto 0; text-align: center; font-size: var(--text-body-fluid); line-height: 1.5; color: var(--color-flzr-copy); text-wrap: balance; }
+.outro { display: flex; flex-direction: column; align-items: center; gap: 1rem; max-width: 40rem; margin: 1.1rem auto 0; text-align: center; font-size: var(--text-body-fluid); line-height: 1.5; color: var(--color-neutral-500); text-wrap: balance; }
 .outroAction { display: flex; justify-content: center; }
 @media (hover: hover) and (pointer: fine) {
   .cardLink:hover .action span { transform: translate(3px, -3px); }

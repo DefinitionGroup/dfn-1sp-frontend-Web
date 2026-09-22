@@ -139,6 +139,20 @@ const CLIENT_LOGO_BLOCK_PROJECTION = `_type == 'clientLogoCarousel' => {
   }, [])
 }`;
 
+/* Cinematic 3 cards reveal: the closing button and every card link may point
+   at internal pages, so their references must be dereferenced like `cta`. */
+const CINEMATIC_REVEAL_PROJECTION = `_type == 'cinematicBlock3CardsReveal' => {
+  ...,
+  outroCta{
+    ...,
+    link{..., page->{_id, slug}}
+  },
+  cards[]{
+    ...,
+    link{..., page->{_id, slug}}
+  }
+}`;
+
 const CAROUSEL_PROJECTION = `_type == 'carousel' => {
   ...,
   items[]{
@@ -171,6 +185,7 @@ export const ONE_SP_COMPONENT_GROUP_PROJECTION = `_type == 'oneSpComponentGroupR
     content[]{
       ...,
       ${CAROUSEL_PROJECTION},
+      ${CINEMATIC_REVEAL_PROJECTION},
     ${RENAISSANCE_SHARED_CONTENT_PROJECTION},
       cta{
         ...,
@@ -388,6 +403,7 @@ export const PAGE_QUERY =
   content[]{
     ...,
     ${CAROUSEL_PROJECTION},
+    ${CINEMATIC_REVEAL_PROJECTION},
     ${RENAISSANCE_SHARED_CONTENT_PROJECTION},
     ${ONE_SP_COMPONENT_GROUP_PROJECTION},
     cta{
@@ -737,6 +753,7 @@ export const HOME_PAGE_QUERY =
   content[]{
     ...,
     ${CAROUSEL_PROJECTION},
+    ${CINEMATIC_REVEAL_PROJECTION},
     ${RENAISSANCE_SHARED_CONTENT_PROJECTION},
     ${ONE_SP_COMPONENT_GROUP_PROJECTION},
     cta{
