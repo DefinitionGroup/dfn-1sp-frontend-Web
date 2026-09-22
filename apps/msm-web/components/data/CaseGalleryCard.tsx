@@ -58,9 +58,6 @@ export default function CaseGalleryCard({item, id, variant, sequenceIndex = 0, l
         <Link href={href} className={styles.titleLink}>
           <motion.h3 layoutId={`title-${item.title}-${id}`} className={styles.title}>{item.title}</motion.h3>
         </Link>
-        {Boolean(item.services?.length) && <motion.p layoutId={`description-${item.description}-${id}`} className={styles.services}>
-          {item.services!.map(service => service.name).join(', ')}
-        </motion.p>}
         {Boolean(item.msmUnits?.length) && <p className={styles.units}>{item.msmUnits!.map(unit => unit.name).join(' / ')}</p>}
         <div className={styles.action}>
           <Button2 variant="violetsmall" text={locale === 'de' ? 'Case ansehen' : 'View Case Study'} href={href} />

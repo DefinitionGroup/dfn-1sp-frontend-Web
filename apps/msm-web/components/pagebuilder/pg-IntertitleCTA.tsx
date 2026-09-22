@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { type CSSProperties } from "react";
 import Button2 from "@msm/components/ui/Button2";
 import CaseSection from "./cases/CaseSection";
 import caseStyles from "./cases/CaseDetail.module.css";
@@ -29,6 +29,7 @@ interface IntertitleCTAProps {
   containerClassName?: string;
   alignment?: "center" | "left";
   paddingTop?: "0" | "12" | "24" | "48";
+  paddingBottom?: "0" | "12" | "24" | "48";
   navPointName?: string;
   hideFromNav?: boolean;
 }
@@ -40,6 +41,8 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   cta,
   navPointName,
   hideFromNav = false,
+  paddingTop = "0",
+  paddingBottom = "0",
 }) => {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
@@ -65,6 +68,13 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
       .toLowerCase()
     : "intertitle-section";
 
+  // Editor-controlled extra space, added to the block's own section padding.
+  const extraSpace: Record<string, string> = { "12": "3rem", "24": "6rem", "48": "12rem" };
+  const spacingStyle: CSSProperties = {
+    ...(extraSpace[paddingTop] ? { paddingTop: `calc(var(--cta-pad, 0px) + ${extraSpace[paddingTop]})` } : {}),
+    ...(extraSpace[paddingBottom] ? { paddingBottom: `calc(var(--cta-pad, 0px) + ${extraSpace[paddingBottom]})` } : {}),
+  };
+
   // Store nav-related data attributes
   const navPointDataAttr = {
     ...(navPointName ? { "data-navpoint-name": navPointName } : {}),
@@ -72,7 +82,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   };
 
   if (caseLayout) return (
-    <section id={sectionId} {...navPointDataAttr} className={caseStyles.darkSection}>
+    <section id={sectionId} {...navPointDataAttr} className={caseStyles.darkSection} style={spacingStyle}>
       <div className={caseStyles.container}>
         <CaseSection title={title}>
           {hasVisibleText(subtitle) && <p className={caseStyles.copy}>{subtitle}</p>}
@@ -83,7 +93,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   );
 
   return (
-    <section id={sectionId} {...navPointDataAttr} className={styles.cta}>
+    <section id={sectionId} {...navPointDataAttr} className={styles.cta} style={spacingStyle}>
       <div className={styles.inner}>
         <EditorialReveal className={styles.ctaInner}>
           <div className={styles.ctaCopy}>

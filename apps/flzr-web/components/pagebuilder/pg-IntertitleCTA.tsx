@@ -14,6 +14,7 @@ interface IntertitleCTAProps {
   containerClassName?: string;
   alignment?: "center" | "left";
   paddingTop?: "0" | "12" | "24" | "48";
+  paddingBottom?: "0" | "12" | "24" | "48";
   navPointName?: string;
   hideFromNav?: boolean;
   inheritSectionSurface?: boolean;
@@ -27,6 +28,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   containerClassName,
   alignment = "center",
   paddingTop = "0",
+  paddingBottom = "0",
   navPointName,
   hideFromNav = false,
   inheritSectionSurface = false,
@@ -45,6 +47,13 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   const paddingTopClass = inheritSectionSurface && paddingTop === "0"
     ? "pt-5 sm:pt-7"
     : paddingTopMap[paddingTop] || "";
+  const paddingBottomMap: Record<string, string> = {
+    "0": "",
+    "12": "pb-12",
+    "24": "pb-24",
+    "48": "pb-48",
+  };
+  const paddingBottomClass = paddingBottomMap[paddingBottom] || "";
   const hasSubline = hasVisibleText(subline);
   const resolvedContainerClassName = containerClassName ?? (
     inheritSectionSurface
@@ -94,7 +103,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
       data-section-footer={inheritSectionSurface ? "true" : undefined}
     >
       <div
-        className={`relative mx-auto w-full max-w-[1480px] font-flzr ${inheritSectionSurface ? "px-0" : "px-4 sm:px-6 lg:px-8"} ${paddingTopClass}`}
+        className={`relative mx-auto w-full max-w-[1480px] font-flzr ${inheritSectionSurface ? "px-0" : "px-4 sm:px-6 lg:px-8"} ${paddingTopClass} ${paddingBottomClass}`}
       >
         <div
           className={`flex w-full flex-col ${isLeftAligned ? "items-start" : "items-center"}`}

@@ -175,6 +175,7 @@ export default defineType({
                 { type: 'servicesGalleryFiltered' },
                 { type: 'flzrServicesGrid', title: 'FLZR Services Grid' },
                 { type: 'flzrSectionBand', title: 'FLZR Section Band' },
+                { type: 'cinematicBlock3CardsReveal', title: 'Cinematic 3 Cards Reveal' },
                 { type: 'renaissanceSectionBand', title: 'Renaissance Section' },
                 { type: 'renaissanceCaseCarousel', title: 'Renaissance Case Carousel' },
                 { type: 'renaissanceSharedContentReference', title: 'Renaissance Shared Content' },

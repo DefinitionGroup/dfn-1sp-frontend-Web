@@ -1,0 +1,68 @@
+/* Cinematic 3 cards reveal, FLZR edition. Ported from the aquamed build:
+   same scene mechanics, FLZR ink/violet palette, media radius and the
+   italic uppercase headline voice. Sits outside section bands because the
+   pinned stage needs an unclipped scroll container. */
+.section {
+  --cinematic-ink: var(--color-flzr-ink);
+  --cinematic-radius: var(--radius-media);
+  position: relative;
+  width: min(calc(100% - 1rem), var(--flzr-shell-max));
+  margin: 0 auto;
+  color: var(--color-flzr-ink);
+}
+.stage { position: relative; padding: 5rem 1.5rem 3rem; }
+.heroCopy { position: relative; max-width: 46rem; margin: 0 auto 4rem; }
+.staticHeroMedia { position: absolute; inset: 0; z-index: -1; overflow: hidden; border-radius: var(--cinematic-radius); background: var(--cinematic-ink); }
+.staticHeroMedia img, .staticHeroMedia video { width: 100%; height: 100%; object-fit: cover; }
+[data-animated="false"] .stage { padding: 0 0 3rem; }
+[data-animated="false"] .heroCopy { isolation: isolate; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; max-width: none; min-height: 38rem; padding: 6rem max(1.5rem, 6vw) 3.5rem; color: white; }
+[data-animated="false"] .revealTitle { padding: 0 1.5rem; }
+[data-animated="false"] .cards { padding: 0 1.5rem; }
+[data-animated="false"] .outro { padding: 0 1.5rem; }
+.brand { margin: 0 0 1rem; font-size: clamp(3rem, 7vw, 6rem); line-height: 0.9; letter-spacing: -0.03em; color: var(--color-flzr-lavender); }
+.heroCopy h2 { max-width: 13em; font-size: var(--text-section-title); line-height: var(--text-section-title--line-height); text-wrap: balance; color: var(--color-flzr-violet); }
+.intro { max-width: 30rem; margin: 1.25rem 0 1.75rem; font-size: var(--text-body-fluid); line-height: 1.5; color: rgb(255 255 255 / 0.85); }
+.revealTitle { max-width: 20em; margin: 0 auto 2.5rem; text-align: center; font-size: var(--text-section-title); line-height: var(--text-section-title--line-height); text-wrap: balance; color: var(--color-flzr-violet); }
+.cards { display: grid; gap: 1.25rem; max-width: 73rem; margin: auto; }
+.card { position: relative; min-height: 28rem; color: white; }
+.media { position: absolute; inset: 0; overflow: hidden; border-radius: var(--cinematic-radius); background: var(--cinematic-ink); }
+.media img, .media video { width: 100%; height: 100%; object-fit: cover; }
+.shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(19 16 25 / 0.05) 20%, rgb(19 16 25 / 0.25) 45%, rgb(19 16 25 / 0.9) 100%); }
+.cardCopy { position: absolute; inset: 0; }
+.cardLink { display: flex; flex-direction: column; justify-content: flex-end; width: 100%; height: 100%; padding: clamp(1.5rem, 2.4vw, 2.5rem); border-radius: var(--cinematic-radius); color: inherit; text-decoration: none; }
+.cardLink:focus-visible { outline: 3px solid var(--color-flzr-violet); outline-offset: 5px; }
+/* FLZR's base layer paints every h3 violet; on the dark card media the title stays white. */
+.cardCopy h3 { font-size: clamp(1.5rem, 2.2vw, 2.25rem); line-height: 1.02; text-wrap: balance; color: white; }
+.cardCopy p { margin-top: 0.85rem; max-width: 26rem; font-size: var(--text-body-fluid); line-height: 1.5; color: rgb(255 255 255 / 0.88); }
+.action { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; font-size: 0.875rem; }
+.action span { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; flex-shrink: 0; border-radius: 50%; background: var(--color-flzr-violet); color: white; font-size: 1.25rem; transition: transform 200ms var(--ease-flzr); }
+.outro { display: flex; flex-direction: column; align-items: center; gap: 1rem; max-width: 40rem; margin: 1.1rem auto 0; text-align: center; font-size: var(--text-body-fluid); line-height: 1.5; color: var(--color-flzr-copy); text-wrap: balance; }
+.outroAction { display: flex; justify-content: center; }
+@media (hover: hover) and (pointer: fine) {
+  .cardLink:hover .action span { transform: translate(3px, -3px); }
+}
+@media (min-width: 900px) {
+  .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .primary { grid-column: 2; grid-row: 1; }
+  .left { grid-column: 1; grid-row: 1; }
+  .right { grid-column: 3; grid-row: 1; }
+}
+.section[data-animated="true"] { height: 220svh; }
+.section[data-animated="true"][data-playback="automatic"] { height: calc(100svh + 160px); }
+[data-animated="true"] .stage { position: sticky; top: 0; height: 100svh; padding: 0; overflow: clip; border-radius: var(--cinematic-radius); }
+[data-animated="true"] .heroCopy { position: absolute; z-index: 3; left: 7%; bottom: 12%; margin: 0; color: white; }
+[data-animated="true"] .revealTitle { position: absolute; z-index: 3; top: 11%; left: 15%; width: 70%; margin: 0; }
+[data-animated="true"] .cards { display: contents; }
+[data-animated="true"] .card { position: absolute; top: 30%; bottom: 21%; width: 28%; min-height: 0; }
+[data-animated="true"] .left { left: 5%; z-index: 1; }
+[data-animated="true"] .right { right: 5%; z-index: 1; }
+[data-animated="true"] .primary { inset: 0; width: 100%; z-index: 2; pointer-events: none; }
+[data-animated="true"] .primary .media { border-radius: 0; }
+[data-animated="true"] .primary .cardCopy { inset: 30% 35% 21%; pointer-events: auto; }
+[data-animated="true"] .primary .media img, [data-animated="true"] .primary .media video { transform-origin: 50% 65%; }
+/* Centered via auto margins: the transform is owned by the Motion timeline, and max-width caps the box below 60%. */
+[data-animated="true"] .outro { position: absolute; z-index: 3; inset-inline: 0; top: calc(79% + 1.1rem); width: min(60%, 40rem); margin: 0 auto; gap: 0.9rem; }
+@media (prefers-reduced-motion: reduce) {
+  .action span { transition: none; }
+  .cardLink:hover .action span { transform: none; }
+}

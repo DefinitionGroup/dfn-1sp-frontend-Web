@@ -398,6 +398,34 @@ export interface FlzrSectionBand {
     badgeLabel?: string;
 }
 
+/* FLZR cinematic 3 cards reveal — pinned scroll scene, first card opens full-bleed. */
+export interface CinematicRevealCard {
+    _key?: string;
+    title?: string;
+    text?: string;
+    image?: CloudinaryAsset;
+    imageAlt?: string;
+    video?: CloudinaryAsset;
+    link?: Link;
+    linkLabel?: string;
+}
+
+export interface CinematicBlock3CardsRevealComponent {
+    _type: "cinematicBlock3CardsReveal";
+    _key?: string;
+    brand?: string;
+    title?: string;
+    text?: string;
+    cta?: CTA;
+    revealTitle?: string;
+    outro?: string;
+    outroCta?: CTA;
+    cards?: CinematicRevealCard[];
+    autoComplete?: boolean;
+    navPointName?: string;
+    hideFromNav?: boolean;
+}
+
 export type RenaissanceSectionRole =
     | "stories"
     | "services"

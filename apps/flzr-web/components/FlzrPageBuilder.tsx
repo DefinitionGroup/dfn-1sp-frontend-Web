@@ -29,6 +29,7 @@ import ComponentLoader from "@flzr/components/ui/ComponentLoader";
 import DeferredSection from "@flzr/components/ui/DeferredSection";
 import OneSpScope from "@/components/onesp-group/OneSpScope";
 import FlzrFooterExternalBanner from "./FlzrFooterExternalBanner";
+import CinematicBlock3CardsReveal from "./pagebuilder/pg-CinematicBlock3CardsReveal";
 
 const CanonicalOneSpPageBuilder = dynamic(
   () => import("@/components/PageBuilder").then((module) => module.PageBuilder),
@@ -576,6 +577,12 @@ export function PageBuilder({
                   channel={channel}
                   inheritSectionSurface={withinSectionBand}
                 />
+              </ErrorBoundary>
+            );
+          case "cinematicBlock3CardsReveal":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <CinematicBlock3CardsReveal key={key} {...(block as any)} language={language} />
               </ErrorBoundary>
             );
           case "flzrServicesGrid":

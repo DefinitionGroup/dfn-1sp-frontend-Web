@@ -36,7 +36,7 @@
 .heroDetails { display: grid; gap: 2rem; margin-top: 2.5rem; max-width: 56rem; }
 .heroList { display: grid; gap: 0.75rem; }
 .heroList li { padding-block: 0.65rem; border-bottom: 1px solid rgb(244 244 244 / 25%); line-height: 1.5; }
-.cta { padding: clamp(2.5rem, 5vw, 5rem) var(--container-padding); color: var(--color-msm-ink); }
+.cta { --cta-pad: clamp(2.5rem, 5vw, 5rem); padding: var(--cta-pad) var(--container-padding); color: var(--color-msm-ink); }
 .ctaInner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2rem 3rem; border-block: 1px solid rgb(244 244 244 / 20%); padding-block: clamp(2rem, 4vw, 3.5rem); }
 .ctaCopy { flex: 1 1 24rem; min-width: 0; max-width: 52rem; }
 .ctaCopy p { margin-top: 1rem; max-width: 52ch; font-size: clamp(1.0625rem, 1.5vw, 1.375rem); line-height: 1.6; color: rgb(244 244 244 / 72%); }
