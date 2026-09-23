@@ -1,3 +1,4 @@
+import localFont from "next/font/local";
 import { Geist_Mono, IBM_Plex_Sans } from "next/font/google";
 import type { Metadata } from "next";
 import "./globals.css";
@@ -32,6 +33,19 @@ const ibmPlexSans = IBM_Plex_Sans({
   axes: ["wdth"],
 });
 
+// The 1SP face, used only inside embedded 1SP component groups. Not
+// preloaded: pages without a 1SP group never request the file.
+const aspekta = localFont({
+  src: [
+    { path: "./fonts/AspektaVF.woff2", style: "normal" },
+    { path: "./fonts/AspektaVF.ttf", style: "normal" },
+  ],
+  variable: "--font-aspekta-source",
+  display: "swap",
+  weight: "50 1000",
+  preload: false,
+});
+
 export const metadata: Metadata = {
   metadataBase: getMetadataBaseUrl(),
   title: {
@@ -61,7 +75,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${ibmPlexSans.variable} ${geistMono.variable}`}
+      className={`${ibmPlexSans.variable} ${aspekta.variable} ${geistMono.variable}`}
       style={{ colorScheme: "light" }}
       suppressHydrationWarning
     >

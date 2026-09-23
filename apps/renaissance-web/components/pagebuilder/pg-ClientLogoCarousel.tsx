@@ -18,7 +18,13 @@ import { assetUrl } from "@1sp/utils/cloudinary";
 import Eyebrow from "@renaissance/components/ui/Eyebrow";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
-const GRID_SLOT_COUNT = 6;
+const GRID_ROWS = 3;
+const MAX_GRID_COLUMNS = 6;
+const MOBILE_GRID_COLUMNS = 3;
+// Slots never repeat a logo, so rotation needs logos held back in a pool.
+// The pool is at least this large so a logo that just faded out has fully
+// left its cell before it can be picked again elsewhere.
+const MIN_ROTATION_POOL = 1;
 
 const SWAP_INTERVAL_MS: Record<string, number> = {
   slow: 2600,
@@ -66,9 +72,35 @@ type LogoSlot = {
   revision: number;
 };
 
-function createInitialSlots(logos: LogoEntry[]): LogoSlot[] {
-  return Array.from({ length: GRID_SLOT_COUNT }, (_, position) => ({
-    entry: logos[position % logos.length],
+type GridLayout = {
+  columns: number;
+  slotCount: number;
+};
+
+/**
+ * Three full rows, as wide as the logo count allows while keeping at least
+ * MIN_ROTATION_POOL logos off-grid for the swap animation. Too few logos for
+ * that: show every logo once, statically.
+ */
+function getGridLayout(logoCount: number): GridLayout {
+  const rotatingColumns = Math.floor(
+    (logoCount - MIN_ROTATION_POOL) / GRID_ROWS,
+  );
+
+  if (rotatingColumns >= 2) {
+    const columns = Math.min(MAX_GRID_COLUMNS, rotatingColumns);
+    return { columns, slotCount: columns * GRID_ROWS };
+  }
+
+  return {
+    columns: Math.max(1, Math.ceil(logoCount / GRID_ROWS)),
+    slotCount: logoCount,
+  };
+}
+
+function createInitialSlots(logos: LogoEntry[], slotCount: number): LogoSlot[] {
+  return logos.slice(0, slotCount).map((entry, position) => ({
+    entry,
     position,
     revision: 0,
   }));
@@ -91,9 +123,17 @@ function LogoSwapGrid({
     () => typeof document === "undefined" || document.visibilityState === "visible",
   );
   const [isPaused, setIsPaused] = React.useState(false);
+  const { columns, slotCount } = getGridLayout(logos.length);
   const [slots, setSlots] = React.useState<LogoSlot[]>(() =>
-    createInitialSlots(logos),
+    createInitialSlots(logos, slotCount),
   );
+  // Off-grid logos in first-in, first-out order: the logo that faded out
+  // longest ago comes back first, and one that just left waits its turn.
+  const poolRef = React.useRef<LogoEntry[]>(logos.slice(slotCount));
+  const lastPositionsRef = React.useRef<number[]>([]);
+  // Rotation state lives in refs and is advanced outside the state updater,
+  // which React may run twice; the pool must be mutated exactly once a tick.
+  const slotsRef = React.useRef(slots);
 
   React.useEffect(() => {
     const grid = gridRef.current;
@@ -129,37 +169,49 @@ function LogoSwapGrid({
       isPaused ||
       !isInView ||
       !isDocumentVisible ||
-      logos.length < 2
+      poolRef.current.length === 0
     ) {
       return;
     }
 
     const interval = window.setInterval(() => {
-      setSlots((currentSlots) => {
-        const position = Math.floor(Math.random() * currentSlots.length);
-        const currentEntry = currentSlots[position].entry;
-        const alternatives = logos.filter((logo) => logo.id !== currentEntry.id);
-        const nextEntry =
-          alternatives[Math.floor(Math.random() * alternatives.length)];
-        const nextSlots = [...currentSlots];
+      const pool = poolRef.current;
+      const currentSlots = slotsRef.current;
+      const nextEntry = pool.shift();
+      if (!nextEntry) return;
 
-        nextSlots[position] = {
-          entry: nextEntry,
-          position,
-          revision: currentSlots[position].revision + 1,
-        };
+      // Skip the cells swapped in the last two ticks so no cell is
+      // interrupted mid-transition.
+      const recent = lastPositionsRef.current;
+      const allPositions = currentSlots.map((slot) => slot.position);
+      const candidates = allPositions.filter((position) => !recent.includes(position));
+      const choices = candidates.length > 0 ? candidates : allPositions;
+      const position = choices[Math.floor(Math.random() * choices.length)];
+      const nextSlots = [...currentSlots];
 
-        return nextSlots;
-      });
+      pool.push(currentSlots[position].entry);
+      lastPositionsRef.current = [position, ...recent].slice(0, 2);
+      nextSlots[position] = {
+        entry: nextEntry,
+        position,
+        revision: currentSlots[position].revision + 1,
+      };
+
+      slotsRef.current = nextSlots;
+      setSlots(nextSlots);
     }, SWAP_INTERVAL_MS[speed] ?? SWAP_INTERVAL_MS.normal);
 
     return () => window.clearInterval(interval);
-  }, [isDocumentVisible, isInView, isPaused, logos, shouldReduceMotion, speed]);
+  }, [isDocumentVisible, isInView, isPaused, shouldReduceMotion, speed]);
 
   return (
     <motion.div
       ref={gridRef}
-      className="grid grid-cols-6 grid-rows-1 gap-x-2 sm:gap-x-3 md:gap-x-5"
+      className="grid grid-cols-[repeat(var(--logo-cols-mobile),minmax(0,1fr))] gap-x-2 gap-y-2 sm:gap-x-3 md:grid-cols-[repeat(var(--logo-cols),minmax(0,1fr))] md:gap-x-5 md:gap-y-4"
+      style={{
+        "--logo-cols": columns,
+        "--logo-cols-mobile": Math.min(MOBILE_GRID_COLUMNS, columns),
+      } as React.CSSProperties}
       aria-label="Client logo grid"
       variants={GRID_REVEAL_VARIANTS}
       initial={shouldReduceMotion ? false : "hidden"}
@@ -170,9 +222,6 @@ function LogoSwapGrid({
       onBlurCapture={() => setIsPaused(false)}
     >
       {slots.map(({ entry, position, revision }) => {
-        const isFirstInstance =
-          slots.findIndex((slot) => slot.entry.id === entry.id) === position;
-
         return (
           <motion.div
             key={position}
@@ -220,9 +269,9 @@ function LogoSwapGrid({
                 >
                   <Image
                     src={entry.src}
-                    alt={isFirstInstance ? entry.alt || entry.name : ""}
+                    alt={entry.alt || entry.name}
                     fill
-                    sizes="(min-width: 1480px) 224px, 16vw"
+                    sizes={`(min-width: 768px) ${Math.round(100 / columns)}vw, ${Math.round(100 / Math.min(MOBILE_GRID_COLUMNS, columns))}vw`}
                     className={`object-contain p-3 transition-[filter,opacity] duration-300 ${
                       grayscale
                         ? "grayscale opacity-70 group-hover/logo:grayscale-0 group-hover/logo:opacity-100"
@@ -313,8 +362,8 @@ function ClientLogoCarousel({
       {...navPointDataAttr}
       className={
         isServicesProof
-          ? "w-full bg-renaissance-paper py-12 md:py-16"
-          : "w-full py-16 md:py-24"
+          ? "w-full bg-white py-12 md:py-16"
+          : "w-full bg-white py-16 md:py-24"
       }
       data-component="client-logo-carousel"
     >

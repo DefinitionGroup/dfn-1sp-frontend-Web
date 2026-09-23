@@ -76,6 +76,15 @@
   font: inherit;
 }
 
+/* Every headline inside a 1SP group is white in the 1SP face, whichever host
+   renders it. Host bases color headings (FLZR violet, Renaissance teal) and
+   set their own family; this unlayered rule outranks those and any layered
+   utility color on the heading element itself. */
+.root :global(:is(h1, h2, h3, h4, h5, h6)) {
+  color: #ffffff;
+  font-family: var(--font-aspekta), sans-serif;
+}
+
 /* The host apps define their own display-scale typewriter variables. Restore
    the canonical 1SP scale inside a reusable group and keep long rotating copy
    within the group's content width. */
