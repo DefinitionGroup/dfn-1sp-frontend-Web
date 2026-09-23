@@ -75,9 +75,15 @@ export default function CaseStudyPageClient({
     (caseStudy.mainImageUrl as string | undefined) ||
     "/placeholder.jpg";
 
+  // Portrait stills (e.g. the 500×650 flzr.com reference shots) would blur at
+  // full bleed, so they take the same right-half slot as vertical video.
+  const isPortraitImage =
+    (caseStudy.mainImage?.height ?? 0) > (caseStudy.mainImage?.width ?? 0);
+
   return (
     <>
-      <section className="relative h-[95vh] w-full overflow-hidden  mx-auto">
+      {/* Same inset frame as the home hero: 16px gutter, 1680px cap, statement radius */}
+      <section className="relative mx-auto mt-2 h-[95vh] w-full max-w-[1680px] overflow-hidden rounded-4xl md:w-[calc(100%-1rem)]">
         <LineMinimap navPoints={navPoints} />
 
         {/* Background Image with Overlay */}
@@ -95,6 +101,7 @@ export default function CaseStudyPageClient({
             imageSrc={mainImageUrl}
             enableParallax={true}
             opacity="opacity-50"
+            enableVertical={isPortraitImage}
           />
         )}
 

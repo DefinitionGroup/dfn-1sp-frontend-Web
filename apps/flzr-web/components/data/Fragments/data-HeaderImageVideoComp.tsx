@@ -130,14 +130,16 @@ const HeaderImageVideoComp: React.FC<HeaderImageVideoCompProps> = ({
             )}
           </div>
         ) : (
-          <Image
-            src={imageSrc}
-            alt={imageAlt}
-            fill
-            sizes="100vw"
-            className="object-cover"
-            priority
-          />
+          <div className={enableVertical ? "absolute right-0 top-0 w-1/2 h-full" : "absolute inset-0"}>
+            <Image
+              src={imageSrc}
+              alt={imageAlt}
+              fill
+              sizes={enableVertical ? "50vw" : "100vw"}
+              className="object-cover"
+              priority
+            />
+          </div>
         )}
 
         <motion.div

@@ -962,3 +962,11 @@ video {
   -moz-appearance: none;
   appearance: none;
 }
+
+/* Embedded 1SP component groups keep the 1SP face: remap the host's sans and
+   legacy aspekta tokens so font-sans / font-aspekta utilities inside the
+   group resolve to Aspekta instead of the host family. */
+[data-onesp-component-group] {
+  --font-sans: var(--font-aspekta-source), system-ui, sans-serif;
+  --font-aspekta: var(--font-aspekta-source), system-ui, sans-serif;
+}
