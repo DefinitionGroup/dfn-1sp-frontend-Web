@@ -30,6 +30,16 @@
       ],
       "port": 3000,
       "autoPort": true
+    },
+    {
+      "name": "renaissance-web",
+      "runtimeExecutable": "zsh",
+      "runtimeArgs": [
+        "-c",
+        "export PATH=\"$HOME/.nvm/versions/node/v22.14.0/bin:$PATH\"; pnpm --filter @1sp/renaissance-web dev"
+      ],
+      "port": 3003,
+      "autoPort": true
     }
   ]
 }
