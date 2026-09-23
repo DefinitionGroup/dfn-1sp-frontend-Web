@@ -63,7 +63,7 @@ const StyleSheet = () => {
         .number {
           font-size: 48px;
           letter-spacing: -0.014rem;
-          font-weight: var(--msm-type-weight, 500);
+          font-weight: var(--msm-type-weight, 300);
           font-variation-settings: "opsz" 30, "wght" 530;
         }
 

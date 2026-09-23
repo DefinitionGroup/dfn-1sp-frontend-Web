@@ -318,7 +318,7 @@
   font-family: var(--font-aspekta-vf), system-ui, sans-serif;
   font-size: var(--headline-size);
   letter-spacing: var(--headline-tracking);
-  font-weight: var(--msm-type-weight, 500);
+  font-weight: var(--msm-type-weight, 300);
   /* --tw-leading makes the line-height win over any text-* utility */
   --tw-leading: 1.18;
   line-height: 1.18;
@@ -661,7 +661,7 @@ video {
 /* MSM presentation contract. One weight; hierarchy comes from scale and space.
    Canonical embedded 1SP groups retain their own presentation boundary. */
 .msm-site {
-  --msm-type-weight: 500;
+  --msm-type-weight: 300;
   --msm-section-space: clamp(4.5rem, 8vw, 8rem);
   font-weight: var(--msm-type-weight);
 }
@@ -809,6 +809,41 @@ video {
 .msm-square-badge-logo { width: clamp(1.5rem, 22cqi, 3.25rem); height: auto; flex-shrink: 0; }
 .msm-square-badge-title { font-size: clamp(0.75rem, 9cqi, 1.25rem); line-height: 1.2; letter-spacing: -0.02em; overflow-wrap: anywhere; }
 .msm-square-badge-subtitle { margin-top: 0.5rem; font-size: clamp(0.5rem, 5cqi, 0.6875rem); line-height: 1.4; letter-spacing: 0.1em; text-transform: uppercase; overflow-wrap: anywhere; }
+
+/* Headline words fade in flickering, dealt into random start slots. */
+.msm-word-flicker {
+  display: inline-block;
+  opacity: 0;
+  animation: msm-word-flicker-in 420ms steps(1, end) both;
+}
+@keyframes msm-word-flicker-in {
+  0% { opacity: 0; }
+  18% { opacity: 0.45; }
+  30% { opacity: 0.08; }
+  48% { opacity: 0.75; }
+  62% { opacity: 0.25; }
+  78% { opacity: 0.9; }
+  100% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .msm-word-flicker { animation: none; opacity: 1; }
+}
+
+/* Frames whose job is done: the dashed borders flicker out once the framed
+   content has landed. The crosses stay as the lasting marker. */
+.msm-badge[data-transient-frames="true"][data-entered="true"] .msm-badge-frame {
+  animation: msm-selection-expand 480ms var(--ease-vast-bezier) var(--msm-badge-drag-start) both,
+    msm-selection-clear 160ms linear calc(var(--msm-badge-drag-start) + 520ms) forwards,
+    msm-frame-dismiss 520ms steps(1, end) calc(var(--msm-badge-drag-start) + var(--msm-frame-dismiss-after, 480ms)) forwards;
+}
+@keyframes msm-frame-dismiss {
+  0%, 38%, 68% { opacity: 0.16; }
+  22%, 54% { opacity: 0.03; }
+  100% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .msm-badge[data-transient-frames="true"][data-entered] .msm-badge-frame { animation: none; opacity: 0; }
+}
 
 /* Case frames share the double draw; their handles flicker out after each stroke. */
 .msm-badge[data-transient-crosses="true"][data-entered="true"] .msm-badge-cross {

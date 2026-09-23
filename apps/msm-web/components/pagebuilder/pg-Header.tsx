@@ -6,7 +6,8 @@ import SelectionFrame from "@msm/components/ui/SelectionFrame";
 import { assetUrl, resolveLink } from "@1sp/utils/cloudinary";
 import { useParams } from "next/navigation";
 import Button2 from "@msm/components/ui/Button2";
-import DecryptRotator from "@msm/components/ui/DecryptRotator";
+import DecryptRotator, { decryptRevealMs } from "@msm/components/ui/DecryptRotator";
+import FlickerWords, { flickerWordsMs } from "@msm/components/ui/FlickerWords";
 import CornerMarkers from "@msm/components/ui/CornerMarkers";
 import MsmLogoAnimated from "@msm/components/ui/MsmLogoAnimated";
 import { PortableText } from "@portabletext/react";
@@ -87,6 +88,15 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
   const leftMark = step.cornerLeftText ?? "SUPER*";
   const rightMark = step.cornerRightText ?? "/ 1SP";
+
+  // Hero intro timeline: the headline flickers in word by word, then the
+  // eyebrow decrypts, then the selection frame's crosses flicker away.
+  const FRAME_DELAY_MS = 250;
+  const EYEBROW_GAP_MS = 200;
+  const headlineMs = editorialHeadline
+    ? flickerWordsMs(editorialHeadline)
+    : decryptRevealMs(words[0] ?? "");
+  const eyebrowDelayMs = headlineMs + EYEBROW_GAP_MS;
 
   // Generate section ID from eyebrow or default
   const sectionId = eyebrow
@@ -180,7 +190,9 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
         <SelectionFrame
           className={editorialHeadline ? "w-full max-w-6xl" : "inline-block max-w-full"}
           contentClassName="p-6 md:p-8 space-y-1"
-          delay={250}
+          delay={FRAME_DELAY_MS}
+          /* Once the copy has landed the borders flicker away; the crosses stay. */
+          dismissFramesAfterMs={Math.max(480, eyebrowDelayMs + decryptRevealMs(eyebrow) + 300 - FRAME_DELAY_MS)}
         >
             <div className="pb-3 md:pb-4 flex items-center gap-4">
               <MsmLogoAnimated
@@ -190,17 +202,22 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
               {editorialHeadline && <span className="text-4xl md:text-6xl tracking-tight">MSM.digital</span>}
             </div>
 
+            {/* The eyebrow decrypts only once the headline has finished flickering. */}
             {hasVisibleText(eyebrow) && (
-              <p className="text-msm-cyan text-xl md:text-2xl tracking-tight pb-3">
-                {eyebrow}
-              </p>
+              <DecryptRotator
+                text={[eyebrow]}
+                variant="headline"
+                as="p"
+                delayMs={eyebrowDelayMs}
+                className="text-msm-cyan text-xl md:text-2xl tracking-tight pb-3"
+              />
             )}
 
-            {/* Keep the signature decrypt effect for both authored headlines and rotating words. */}
+            {/* Authored headlines flicker in word by word; the rotating words
+                keep the signature decrypt effect. */}
             {editorialHeadline ? (
-              <DecryptRotator
-                text={[editorialHeadline]}
-                variant="headline"
+              <FlickerWords
+                text={editorialHeadline}
                 className="relative max-w-[40ch] whitespace-pre-line text-3xl md:text-5xl leading-tight pb-6"
               />
             ) : words.length > 0 && <DecryptRotator text={words} />}

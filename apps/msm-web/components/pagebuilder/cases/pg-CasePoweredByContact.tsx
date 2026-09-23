@@ -103,7 +103,9 @@ export default function CasePoweredByContact({
                     alt={unit.name || "Unit logo"}
                     fill
                     sizes="(max-width: 640px) 50vw, 240px"
-                    className="object-contain p-5 sm:p-6"
+                    // Unit logos ship in mixed colors; brightness-0 + invert
+                    // renders any of them white on this dark band, held at 66%.
+                    className="object-contain p-5 sm:p-6 brightness-0 invert opacity-[0.66]"
                     unoptimized
                   />
                 </div>

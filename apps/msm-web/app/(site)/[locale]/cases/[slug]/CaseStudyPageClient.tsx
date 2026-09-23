@@ -1,11 +1,10 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import HeaderImageVideoComp from "@msm/components/data/Fragments/data-HeaderImageVideoComp";
 import CaseReveal from "@msm/components/pagebuilder/cases/CaseReveal";
 import DecryptRotator from "@msm/components/ui/DecryptRotator";
 import Badgemodule from "@msm/components/ui/Badgemodule";
 import styles from "@msm/components/pagebuilder/cases/CaseDetail.module.css";
-import LineMinimap, { NavPoint } from "@msm/components/ui/MapVertical";
 import { CasePageBuilder } from "@msm/components/CasePageBuilder";
 import CasePoweredByContact from "@msm/components/pagebuilder/cases/pg-CasePoweredByContact";
 import { getTranslations } from "@1sp/utils/translations";
@@ -28,30 +27,11 @@ export default function CaseStudyPageClient({
   locale,
 }: CaseStudyPageClientProps) {
   const t = getTranslations(locale);
-  const [navPoints, setNavPoints] = useState<NavPoint[]>([]);
-
   const pageRef = useRef<HTMLDivElement>(null);
 
   // Ensure body overflow is reset when component mounts
   useEffect(() => {
     document.body.style.overflow = "auto";
-  }, []);
-
-  // Only case sections belong in the minimap, never SVG or third-party IDs.
-  // Observe deferred PageBuilder sections as they mount.
-  useEffect(() => {
-    const page = pageRef.current;
-    if (!page) return;
-    const collectPageIds = () => {
-      const sections = page.querySelectorAll<HTMLElement>("section[id], section > [id]");
-      setNavPoints(Array.from(sections)
-        .filter((section) => section.id && section.dataset.navHidden !== "true")
-        .map((section) => ({ id: section.id, name: section.dataset.navpointName || section.id })));
-    };
-    collectPageIds();
-    const observer = new MutationObserver(collectPageIds);
-    observer.observe(page, { childList: true, subtree: true });
-    return () => observer.disconnect();
   }, []);
 
   // Normalize main image / video URLs
@@ -70,7 +50,6 @@ export default function CaseStudyPageClient({
   return (
     <div ref={pageRef}>
       <section id={t.ids.top} data-navpoint-name={t.ids.top} className={styles.hero}>
-        <LineMinimap navPoints={navPoints} />
 
         {/* Background Image with Overlay */}
         {mainVideoUrl ? (

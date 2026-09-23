@@ -1,5 +1,5 @@
 "use client";
-import React, { type CSSProperties } from "react";
+import React, { useLayoutEffect, useState, type CSSProperties } from "react";
 import Button2 from "@msm/components/ui/Button2";
 import CaseSection from "./cases/CaseSection";
 import caseStyles from "./cases/CaseDetail.module.css";
@@ -9,6 +9,28 @@ import { resolveLink } from "@1sp/utils/cloudinary";
 import { useParams } from "next/navigation";
 import type { CTA } from "@1sp/sanity-types";
 import { hasVisibleText } from "@1sp/utils/text-content";
+
+/* Brand accents that clear 3:1 on the MSM paper. Purple (2.55:1) and maroon
+   (2.07:1) are deliberately left out — they read as dimmed, not accented. */
+const CTA_ACCENTS = [
+  "--color-msm-magenta",
+  "--color-msm-cyan",
+  "--color-msm-teal",
+  "--color-msm-teal-deep",
+  "--color-msm-orange",
+  "--color-msm-amber",
+  "--color-msm-red",
+] as const;
+
+/** A different accent each time the CTA mounts; magenta until hydration, so
+    server and client markup agree. */
+function useRandomAccent() {
+  const [accent, setAccent] = useState<string>(CTA_ACCENTS[0]);
+  useLayoutEffect(() => {
+    setAccent(CTA_ACCENTS[Math.floor(Math.random() * CTA_ACCENTS.length)]);
+  }, []);
+  return `var(${accent})`;
+}
 
 interface StaggeredSlideUpProps {
   className?: string;
@@ -68,12 +90,15 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
       .toLowerCase()
     : "intertitle-section";
 
+  const ctaAccent = useRandomAccent();
+
   // Editor-controlled extra space, added to the block's own section padding.
   const extraSpace: Record<string, string> = { "12": "3rem", "24": "6rem", "48": "12rem" };
   const spacingStyle: CSSProperties = {
     ...(extraSpace[paddingTop] ? { paddingTop: `calc(var(--cta-pad, 0px) + ${extraSpace[paddingTop]})` } : {}),
     ...(extraSpace[paddingBottom] ? { paddingBottom: `calc(var(--cta-pad, 0px) + ${extraSpace[paddingBottom]})` } : {}),
-  };
+    "--msm-cta-accent": ctaAccent,
+  } as CSSProperties;
 
   // Store nav-related data attributes
   const navPointDataAttr = {

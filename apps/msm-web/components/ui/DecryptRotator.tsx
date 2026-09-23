@@ -14,6 +14,13 @@ const SHUFFLE_MS = 30;
 /** ms a fully decrypted word stays on screen */
 const HOLD_MS = 2200;
 
+/** How long a decrypt pass takes, so callers can chain animations after it. */
+export function decryptRevealMs(text: string, revealDurationMs?: number) {
+  const clean = stegaClean(text ?? "");
+  const characterMs = revealDurationMs ? Math.min(REVEAL_MS, revealDurationMs / Math.max(clean.length, 1)) : REVEAL_MS;
+  return Math.round(clean.length * characterMs);
+}
+
 function randomChar() {
   return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
 }
@@ -42,6 +49,7 @@ export default function DecryptRotator({
   className,
   revealDurationMs,
   delayMs = 0,
+  as,
 }: {
   text?: string[];
   variant?: "rotating" | "headline";
@@ -49,13 +57,18 @@ export default function DecryptRotator({
   /** Optional cap for long case headlines; homepage timing remains unchanged. */
   revealDurationMs?: number;
   delayMs?: number;
+  /** Render as a non-heading element (labels, eyebrows). Default keeps h1/h2. */
+  as?: "p" | "span" | "div";
 }) {
   const prefersReducedMotion = useReducedMotion();
   // Preview annotations must not become scrambled characters or extend the reveal.
   const words = text.map((word) => stegaClean(word)).filter((w) => w.trim().length > 0);
   const contentKey = JSON.stringify(words);
   const isHeadline = variant === "headline";
-  const Heading = isHeadline ? "h1" : "h2";
+  const Heading = as ?? (isHeadline ? "h1" : "h2");
+  // A delayed run stays invisible until its turn, so it never shows the plain
+  // word first. Server and client agree because it depends only on delayMs.
+  const [started, setStarted] = useState(!delayMs);
   // First paint must be deterministic (server HTML === client hydration),
   // so start with the plain word — the mount effect scrambles immediately.
   const [display, setDisplay] = useState(() =>
@@ -74,6 +87,7 @@ export default function DecryptRotator({
     let timeout: ReturnType<typeof setTimeout>;
 
     const run = () => {
+      setStarted(true);
       const word = activeWords[index % activeWords.length];
 
       if (reducedMotion) {
@@ -128,7 +142,10 @@ export default function DecryptRotator({
       className={className || (isHeadline
         ? "relative max-w-[28ch] whitespace-pre-line text-3xl md:text-5xl leading-tight pb-6"
         : "typewriter-rotator relative inline-grid max-w-full items-start font-aspekta font-medium leading-[0.8] text-white")}
-      style={isHeadline ? undefined : { maxWidth: 900 }}
+      style={{
+        ...(isHeadline ? undefined : { maxWidth: 900 }),
+        ...(started ? undefined : {visibility: "hidden" as const}),
+      }}
     >
       <span className={isHeadline ? "relative block" : "contents"}>
         {words.map((word, index) => (
@@ -157,7 +174,7 @@ export default function DecryptRotator({
 const textStyle: React.CSSProperties = {
   fontSize: "var(--tw-text-size)",
   // Unified MSM weight; hierarchy comes from scale, not bold spans.
-  fontWeight: 500,
+  fontWeight: "var(--msm-type-weight, 300)" as unknown as number,
   lineHeight: "var(--tw-text-lh)",
   letterSpacing: "var(--tw-text-ls)",
   color: "#ffffff",

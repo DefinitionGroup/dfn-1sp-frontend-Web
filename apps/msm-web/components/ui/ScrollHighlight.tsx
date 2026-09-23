@@ -423,7 +423,7 @@ function Stylesheet() {
 
       .skill-description {
      
-        font-weight: var(--msm-type-weight, 500);
+        font-weight: var(--msm-type-weight, 300);
         line-height: 1.5;
         margin-top: 0.75rem;
         text-transform: none;
