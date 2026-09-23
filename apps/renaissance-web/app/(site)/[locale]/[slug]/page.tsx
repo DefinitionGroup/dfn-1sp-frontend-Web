@@ -53,6 +53,9 @@ import {
 
 // Allow new pages to be rendered on-demand (ISR)
 export const dynamicParams = true;
+// Re-fetch Sanity content every 60s, matching the home and listing routes, so
+// published edits land without a webhook or redeploy.
+export const revalidate = 60;
 const SUPPORTED_LOCALES = new Set<string>(getSiteConfig("renaissanceWeb").locales);
 
 /**
