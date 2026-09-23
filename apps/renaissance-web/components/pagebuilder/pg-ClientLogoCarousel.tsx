@@ -225,11 +225,11 @@ function LogoSwapGrid({
         return (
           <motion.div
             key={position}
-            className="group/logo relative grid h-20 place-items-center overflow-hidden px-2 sm:h-24 md:h-28 md:px-5"
+            className="group/logo relative grid h-20 place-items-center overflow-hidden px-1 sm:h-24 md:h-28 md:px-3"
             data-logo-slot={position}
             variants={LOGO_CELL_REVEAL_VARIANTS}
           >
-            <div className="relative h-[2.66rem] w-full md:h-16">
+            <div className="relative h-9 w-full md:h-17">
               <AnimatePresence initial={false} mode="wait">
                 <motion.div
                   key={`${entry.id}-${revision}`}
@@ -272,7 +272,7 @@ function LogoSwapGrid({
                     alt={entry.alt || entry.name}
                     fill
                     sizes={`(min-width: 768px) ${Math.round(100 / columns)}vw, ${Math.round(100 / Math.min(MOBILE_GRID_COLUMNS, columns))}vw`}
-                    className={`object-contain p-3 transition-[filter,opacity] duration-300 ${
+                    className={`object-contain p-1 transition-[filter,opacity] duration-300 ${
                       grayscale
                         ? "grayscale opacity-70 group-hover/logo:grayscale-0 group-hover/logo:opacity-100"
                         : ""
