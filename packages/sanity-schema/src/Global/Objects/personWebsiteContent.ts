@@ -12,6 +12,7 @@ export default defineType({
       const count = await context.getClient({apiVersion: '2025-09-16'}).fetch('count(*[_type == "person" && language == $language && !(_id in [$id, $draft]) && siteContent[channel == $channel][0].slug.current == $slug])', {language: context.document.language, channel, slug, id, draft: `drafts.${id}`});
       return count === 0;
     }}, validation: r => r.required()}),
+    defineField({name: 'image', title: 'Website image', type: 'cloudinary.asset', description: 'Replaces the shared profile image on this website only.'}),
     defineField({name: 'seo', title: 'SEO', type: 'metadata'}),
     defineField({name: 'phone', title: 'Phone link', type: 'url', validation:r=>r.uri({scheme:['tel']})}),
     defineField({name: 'quote', title: 'Personal quote', type: 'text'}),

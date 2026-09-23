@@ -221,12 +221,7 @@ export const ONE_SP_COMPONENT_GROUP_PROJECTION = `_type == 'oneSpComponentGroupR
         teamMembers[]->{
           _id,
           name,
-          image{
-            ...,
-            secure_url,
-            resource_type,
-            public_id
-          },
+          "image": coalesce(siteContent[channel == $channel][0].image, image),
           video{
             ...,
             secure_url,
@@ -460,12 +455,7 @@ export const PAGE_QUERY =
           teamMembers[$channel in @->channel]->{
             _id,
             name,
-            image{
-              ...,
-              secure_url,
-              resource_type,
-              public_id
-            },
+            "image": coalesce(siteContent[channel == $channel][0].image, image),
             video{
               ...,
               secure_url,
@@ -568,12 +558,7 @@ export const PAGE_QUERY =
       teamMembers[$channel in @->channel]->{
         _id,
         name,
-        image{
-          ...,
-          secure_url,
-          resource_type,
-          public_id
-        },
+        "image": coalesce(siteContent[channel == $channel][0].image, image),
         video{
           ...,
           secure_url,
@@ -792,12 +777,7 @@ export const HOME_PAGE_QUERY =
           teamMembers[$channel in @->channel]->{
             _id,
             name,
-            image{
-              ...,
-              secure_url,
-              resource_type,
-              public_id
-            },
+            "image": coalesce(siteContent[channel == $channel][0].image, image),
             video{
               ...,
               secure_url,
@@ -864,12 +844,7 @@ export const HOME_PAGE_QUERY =
       teamMembers[$channel in @->channel]->{
         _id,
         name,
-        image{
-          ...,
-          secure_url,
-          resource_type,
-          public_id
-        },
+        "image": coalesce(siteContent[channel == $channel][0].image, image),
         video{
           ...,
           secure_url,
@@ -1238,7 +1213,7 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
       position,
       email,
       profileUrl,
-      image,
+      "image": coalesce(siteContent[channel == $channel][0].image, image),
       video,
       unit->{
         _id,
@@ -1531,7 +1506,7 @@ export const SMART_PEOPLE_QUERY = defineQuery(`
   _id,
   name,
   slug,
-  image,
+  "image": coalesce(siteContent[channel == $channel][0].image, image),
   video,
   altText,
   fullname,
