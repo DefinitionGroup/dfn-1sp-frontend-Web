@@ -1627,6 +1627,7 @@ export const FOOTER_EXTERNAL_BANNER_UNITS_QUERY = defineQuery(`
   _id, name, tagline,
   backgroundImage${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
   footerHoverVideo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
+  footerBannerLogo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
   logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
   logoColor${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
   cta{..., link{..., page->{slug}}}

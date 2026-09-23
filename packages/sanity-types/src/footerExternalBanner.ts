@@ -20,6 +20,7 @@ export interface FooterExternalBannerUnit {
   tagline?: string;
   backgroundImage?: CloudinaryAsset;
   footerHoverVideo?: CloudinaryAsset;
+  footerBannerLogo?: CloudinaryAsset;
   logo?: CloudinaryAsset;
   logoColor?: CloudinaryAsset;
   cta?: CTA;

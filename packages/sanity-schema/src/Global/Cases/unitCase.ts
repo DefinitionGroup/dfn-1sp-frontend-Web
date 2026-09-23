@@ -118,6 +118,13 @@ export default defineType({
             group: 'media',
         },
         defineField({
+            name: 'footerBannerLogo',
+            title: 'Footer Banner Logo',
+            type: 'cloudinary.asset',
+            group: 'media',
+            description: 'White logo on a 200×105 artboard, used only in the 1SP network footer banner so all units line up. Falls back to Unit Logo.',
+        }),
+        defineField({
             name: 'footerHoverVideo',
             title: 'Footer Banner Hover Video',
             type: 'cloudinary.asset',

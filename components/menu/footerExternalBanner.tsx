@@ -41,7 +41,7 @@ function UnitCard({ unit, language, reducedMotion, paused }: {
   const cardRef = useRef<HTMLLIElement>(null);
   const inView = useInView(cardRef, { amount: 0.1 });
   const active = hovered || focused;
-  const logo = assetUrl(unit.logo) || assetUrl(unit.logoColor);
+  const logo = assetUrl(unit.footerBannerLogo) || assetUrl(unit.logo) || assetUrl(unit.logoColor);
   const href = resolveCtaLink(unit.cta?.link);
   const label = unit.name || "1SP unit";
   const videoUrl = assetUrl(unit.footerHoverVideo);
