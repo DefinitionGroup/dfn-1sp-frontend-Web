@@ -7,12 +7,12 @@ import {
   AnimatePresence,
   motion,
   useMotionValueEvent,
+  useReducedMotion,
   useScroll,
 } from "motion/react";
 import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
 import { usePathname } from "next/navigation";
 import CaseGalleryMenu from "../data/data-CaseGalleryMenu";
-import OneSpMembershipButton from "@/components/ui/OneSpMembershipButton";
 import { NavbarMenu } from "@1sp/sanity-types/menu";
 import LanguageSelector, { type LanguageOption } from "./LanguageSelector";
 import { localizedPath } from "@renaissance/lib/routes";
@@ -102,6 +102,83 @@ const RENAISSANCE_LOGO_MASK_STYLE: React.CSSProperties = {
 
 type NavState = "expanded" | "compact" | "hidden";
 
+function RenaissanceLogoLockup({
+  logoClassName,
+  alt,
+}: {
+  logoClassName: string;
+  alt: string;
+}) {
+  return (
+    <span role="img" aria-label={alt} className="flex flex-col gap-[3px]">
+      <span
+        aria-hidden="true"
+        className={`block bg-renaissance-button ${logoClassName}`}
+        style={RENAISSANCE_LOGO_MASK_STYLE}
+      />
+      {/* Centred under the wordmark, which starts ~28% into the logo. */}
+      <span
+        aria-hidden="true"
+        className="block pl-[28%] text-center text-[0.47rem] font-bold uppercase leading-none tracking-[0.18em] text-renaissance-button"
+      >
+        A 1SP Agency
+      </span>
+    </span>
+  );
+}
+
+const ONESP_AGENCY_URL = "https://1sp.agency";
+// Trails the main nav so the pair reads as a staggered sequence.
+const AGENCY_PILL_STAGGER_S = 0.09;
+
+/** Detached 1SP agency link; stays pinned at the top even when the nav hides. */
+function OneSpAgencyPill({
+  compact = false,
+  reduceMotion = false,
+  className = "",
+}: {
+  compact?: boolean;
+  reduceMotion?: boolean;
+  className?: string;
+}) {
+  const delay = reduceMotion ? 0 : AGENCY_PILL_STAGGER_S;
+  return (
+    <motion.a
+      href={ONESP_AGENCY_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="1SP Agency website (opens in a new tab)"
+      layout="position"
+      initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+      transition={{
+        // A layout delay would show the new position first, so the pill trails
+        // the nav with a slightly slower spring instead.
+        layout: {
+          type: "spring",
+          bounce: 0.08,
+          visualDuration: reduceMotion ? 0.45 : 0.45 + AGENCY_PILL_STAGGER_S * 2,
+        },
+        opacity: { duration: 0.32, ease: "easeOut", delay: 0.2 + delay },
+        y: { duration: 0.42, ease: [0.22, 1, 0.36, 1], delay: 0.2 + delay },
+      }}
+      className={`pointer-events-auto flex shrink-0 items-center justify-center rounded-control bg-black text-white shadow-lg shadow-renaissance-ink/10 transition-colors duration-200 hover:bg-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-renaissance-button ${
+        compact ? "w-[3.75rem]" : "w-[7.5rem]"
+      } ${className}`}
+    >
+      <Image
+        src="/ci/1sp-fulllogotype-blk.svg"
+        alt=""
+        width={compact ? 34 : 58}
+        height={compact ? 19 : 31}
+        className="h-auto brightness-0 invert"
+        style={{ width: compact ? 34 : 58 }}
+      />
+    </motion.a>
+  );
+}
+
 const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   className = "",
   color = "light",
@@ -127,6 +204,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
     null,
   );
   const navRef = React.useRef<HTMLElement>(null);
+  const reduceMotion = useReducedMotion() ?? false;
   const copy = NAV_COPY[locale] ?? NAV_COPY.en;
   const isRenaissanceChannel = channel === "renaissanceWeb";
 
@@ -413,6 +491,13 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   return (
     <>
       <div className="relative z-[99998] mx-auto w-full max-w-[1680px] h-20 px-3 pt-3 md:h-28 md:px-4 md:pt-6">
+        <div
+          className={`pointer-events-none hidden items-stretch gap-3 xl:flex ${
+            isExpanded
+              ? "relative w-full"
+              : "fixed left-0 right-0 top-6 mx-auto w-fit iphone-landscape:top-2 iphone-landscape:scale-70"
+          }`}
+        >
         <motion.nav
           ref={navRef}
           layout
@@ -434,11 +519,9 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           inert={!isNavVisible}
           data-nav-state={navState}
           data-nav-surface={isRenaissanceScrolled ? "frosted" : "transparent"}
-          className={`floating-nav z-99999 hidden items-center grid-cols-[auto_1fr_auto] gap-8 py-2 transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 xl:grid ${
-            isExpanded
-              ? "relative mx-auto h-16 w-full rounded-control px-6"
-              : "fixed left-0 right-0 top-6 mx-auto h-14 w-fit rounded-control px-5 iphone-landscape:top-2 iphone-landscape:scale-70"
-          } ${isNavVisible ? "" : "pointer-events-none"} ${desktopSurfaceClass} ${navTextColor} ${className}`}
+          className={`floating-nav z-99999 grid items-center grid-cols-[auto_1fr_auto] gap-8 rounded-control py-2 transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 ${
+            isExpanded ? "h-16 min-w-0 flex-1 px-6" : "h-14 px-5"
+          } ${isNavVisible ? "pointer-events-auto" : "pointer-events-none"} ${desktopSurfaceClass} ${navTextColor} ${className}`}
         >
           <div className="flex items-center justify-start">
             <motion.div
@@ -461,11 +544,9 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 className="flex items-center justify-center"
               >
                 {isRenaissanceChannel ? (
-                  <span
-                    role="img"
-                    aria-label={logoAlt}
-                    className={`${logoClassName} block h-[2.625rem] w-[12.375rem] bg-renaissance-button`}
-                    style={RENAISSANCE_LOGO_MASK_STYLE}
+                  <RenaissanceLogoLockup
+                    alt={logoAlt}
+                    logoClassName={`${logoClassName} h-[2.3rem] w-[11rem]`}
                   />
                 ) : (
                   <Image
@@ -571,9 +652,15 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 frosted={isRenaissanceScrolled}
               />
             ) : null}
-            <OneSpMembershipButton eyebrow={menuData?.oneSpMembershipLabel} />
           </motion.div>
         </motion.nav>
+        <OneSpAgencyPill reduceMotion={reduceMotion} />
+        </div>
+        <div
+          className={`pointer-events-none flex items-stretch gap-1.5 xl:hidden ${
+            isExpanded ? "relative w-full" : "fixed left-3 right-3 top-3"
+          }`}
+        >
         <motion.nav
           layout
           initial={false}
@@ -594,11 +681,9 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           inert={!isNavVisible}
           data-nav-state={navState}
           data-nav-surface={isRenaissanceScrolled ? "frosted" : "transparent"}
-          className={`z-99999 flex items-center justify-between rounded-control transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 xl:hidden ${
-            isExpanded
-              ? "relative mx-auto h-14 w-full px-4"
-              : "fixed left-3 right-3 top-3 h-12 px-3"
-          } ${isNavVisible ? "" : "pointer-events-none"} ${mobileSurfaceClass} ${navTextColor}`}
+          className={`z-99999 flex min-w-0 flex-1 items-center justify-between rounded-control transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 ${
+            isExpanded ? "h-14 px-4" : "h-12 px-3"
+          } ${isNavVisible ? "pointer-events-auto" : "pointer-events-none"} ${mobileSurfaceClass} ${navTextColor}`}
         >
           <motion.div
             initial={false}
@@ -619,11 +704,9 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               }}
             >
               {isRenaissanceChannel ? (
-                <span
-                  role="img"
-                  aria-label={logoAlt}
-                  className={`${logoClassName} block h-9 w-[10.875rem] bg-renaissance-button`}
-                  style={RENAISSANCE_LOGO_MASK_STYLE}
+                <RenaissanceLogoLockup
+                  alt={logoAlt}
+                  logoClassName={`${logoClassName} h-[1.9rem] w-[9.2rem]`}
                 />
               ) : (
                 <Image
@@ -670,6 +753,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             </button>
           </motion.div>
         </motion.nav>
+        <OneSpAgencyPill compact reduceMotion={reduceMotion} />
+        </div>
       </div>
       <AnimatePresence>
         {showMobileMenu ? (
@@ -733,7 +818,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               </ol>
             </nav>
 
-            <OneSpMembershipButton eyebrow={menuData?.oneSpMembershipLabel} />
+            <OneSpAgencyPill
+              reduceMotion={reduceMotion}
+              className="h-14 self-start ring-1 ring-white/25"
+            />
           </motion.div>
         ) : null}
       </AnimatePresence>
