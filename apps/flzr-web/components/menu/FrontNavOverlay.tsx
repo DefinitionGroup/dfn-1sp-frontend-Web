@@ -123,12 +123,19 @@ function OneSpAgencyPill({
       layout="position"
       initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
+      whileTap={reduceMotion ? undefined : { scale: 0.97 }}
       transition={{
-        layout: { type: "spring", bounce: 0.08, visualDuration: 0.45, delay },
+        // A layout delay would show the new position first, so the pill trails
+        // the nav with a slightly slower spring instead.
+        layout: {
+          type: "spring",
+          bounce: 0.08,
+          visualDuration: reduceMotion ? 0.45 : 0.45 + AGENCY_PILL_STAGGER_S * 2,
+        },
         opacity: { duration: 0.32, ease: "easeOut", delay: 0.2 + delay },
         y: { duration: 0.42, ease: [0.22, 1, 0.36, 1], delay: 0.2 + delay },
       }}
-      className={`pointer-events-auto flex shrink-0 items-center justify-center rounded-full bg-black text-white shadow-[0_8px_26px_rgba(33,25,49,0.12)] transition-[background-color,transform] duration-200 hover:bg-neutral-800 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flzr-violet ${
+      className={`pointer-events-auto flex shrink-0 items-center justify-center rounded-full bg-black text-white shadow-[0_8px_26px_rgba(33,25,49,0.12)] transition-colors duration-200 hover:bg-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flzr-violet ${
         compact ? "w-[3.75rem]" : "w-[6.75rem]"
       } ${className}`}
     >
