@@ -3,11 +3,15 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import StaggeredSlideUp from "../ui/StaggeredSlideUp";
-import { motion, useMotionValueEvent, useScroll } from "motion/react";
+import {
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+} from "motion/react";
 import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
 import { usePathname } from "next/navigation";
 import CaseGalleryMenu from "../data/data-CaseGalleryMenu";
-import OneSpMembershipButton from "@/components/ui/OneSpMembershipButton";
 import { NavbarMenu } from "@1sp/sanity-types/menu";
 import LanguageSelector, { type LanguageOption } from "./LanguageSelector";
 
@@ -84,6 +88,62 @@ function FlzrMenuLogo({ className }: { className?: string }) {
   );
 }
 
+function FlzrMenuLockup({ logoClassName }: { logoClassName: string }) {
+  return (
+    <span className="flex flex-col items-center gap-[3px]">
+      <FlzrMenuLogo className={logoClassName} />
+      <span className="text-[0.5rem] font-bold uppercase leading-none tracking-[0.01em] text-black">
+        A 1SP Agency
+      </span>
+    </span>
+  );
+}
+
+const ONESP_AGENCY_URL = "https://1sp.agency";
+// Trails the main nav so the pair reads as a staggered sequence.
+const AGENCY_PILL_STAGGER_S = 0.09;
+
+/** Detached 1SP agency link; stays pinned at the top even when the nav hides. */
+function OneSpAgencyPill({
+  compact = false,
+  reduceMotion = false,
+  className = "",
+}: {
+  compact?: boolean;
+  reduceMotion?: boolean;
+  className?: string;
+}) {
+  const delay = reduceMotion ? 0 : AGENCY_PILL_STAGGER_S;
+  return (
+    <motion.a
+      href={ONESP_AGENCY_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="1SP Agency website (opens in a new tab)"
+      layout="position"
+      initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        layout: { type: "spring", bounce: 0.08, visualDuration: 0.45, delay },
+        opacity: { duration: 0.32, ease: "easeOut", delay: 0.2 + delay },
+        y: { duration: 0.42, ease: [0.22, 1, 0.36, 1], delay: 0.2 + delay },
+      }}
+      className={`pointer-events-auto flex shrink-0 items-center justify-center rounded-full bg-black text-white shadow-[0_8px_26px_rgba(33,25,49,0.12)] transition-[background-color,transform] duration-200 hover:bg-neutral-800 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flzr-violet ${
+        compact ? "w-[3.75rem]" : "w-[6.75rem]"
+      } ${className}`}
+    >
+      <Image
+        src="/ci/1sp-fulllogotype-blk.svg"
+        alt=""
+        width={compact ? 34 : 55}
+        height={compact ? 19 : 30}
+        className="h-auto brightness-0 invert"
+        style={{ width: compact ? 34 : 55 }}
+      />
+    </motion.a>
+  );
+}
+
 const NAV_COPY: Record<
   string,
   {
@@ -154,6 +214,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
     null,
   );
   const navRef = React.useRef<HTMLElement>(null);
+  const reduceMotion = useReducedMotion() ?? false;
   const copy = NAV_COPY[locale] ?? NAV_COPY.en;
   const isFlzrChannel = channel === "flizrWeb";
 
@@ -421,6 +482,13 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   return (
     <>
       <div className="relative z-[99998] mx-auto h-20 w-[calc(100%-1rem)] max-w-[1278px] pt-3 md:h-28 md:pt-6">
+        <div
+          className={`pointer-events-none hidden items-stretch gap-3 md:flex ${
+            isExpanded
+              ? "relative w-full"
+              : "fixed left-0 right-0 top-6 mx-auto w-[calc(100%-2rem)] max-w-[1278px] iphone-landscape:top-2 iphone-landscape:scale-70"
+          }`}
+        >
         <motion.nav
           ref={navRef}
           layout
@@ -442,11 +510,9 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           inert={!isNavVisible}
           data-nav-state={navState}
           data-nav-surface={isFlzrChannel ? "paper" : isFlzrScrolled ? "frosted" : "transparent"}
-          className={`floating-nav z-99999 hidden items-center grid-cols-12 py-2 transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 md:grid ${
-            isExpanded
-              ? "relative mx-auto h-[3.6rem] w-full rounded-[2rem] px-6"
-              : "fixed left-0 right-0 top-6 mx-auto h-14 w-[calc(100%-2rem)] max-w-[1278px] rounded-full px-6 iphone-landscape:top-2 iphone-landscape:scale-70"
-          } ${isNavVisible ? "" : "pointer-events-none"} ${desktopSurfaceClass} ${navTextColor} ${className}`}
+          className={`floating-nav z-99999 grid min-w-0 flex-1 items-center grid-cols-12 px-6 py-2 transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 ${
+            isExpanded ? "h-[3.6rem] rounded-[2rem]" : "h-14 rounded-full"
+          } ${isNavVisible ? "pointer-events-auto" : "pointer-events-none"} ${desktopSurfaceClass} ${navTextColor} ${className}`}
         >
           <div className="col-span-2 flex items-center pr-16  justify-start">
             <motion.div
@@ -469,7 +535,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 className="flex items-center justify-center"
               >
                 {isFlzrChannel ? (
-                  <FlzrMenuLogo className="h-auto w-24" />
+                  <FlzrMenuLockup logoClassName="h-auto w-24" />
                 ) : (
                   <Image
                     src={logoUrl}
@@ -593,9 +659,15 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 frosted={isFlzrScrolled}
               />
             ) : null}
-            <OneSpMembershipButton eyebrow={menuData?.oneSpMembershipLabel} />
           </motion.div>
         </motion.nav>
+        <OneSpAgencyPill reduceMotion={reduceMotion} />
+        </div>
+        <div
+          className={`pointer-events-none flex items-stretch gap-1.5 md:hidden ${
+            isExpanded ? "relative w-full" : "fixed left-3 right-3 top-3"
+          }`}
+        >
         <motion.nav
           layout
           initial={{ opacity: 0, y: 14 }}
@@ -616,11 +688,9 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           inert={!isNavVisible}
           data-nav-state={navState}
           data-nav-surface={isFlzrChannel ? "paper" : isFlzrScrolled ? "frosted" : "transparent"}
-          className={`z-99999 flex items-center justify-between rounded-full transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 md:hidden ${
-            isExpanded
-              ? "relative mx-auto h-14 w-full px-4"
-              : "fixed left-3 right-3 top-3 h-12 px-3"
-          } ${isNavVisible ? "" : "pointer-events-none"} ${mobileSurfaceClass} ${navTextColor}`}
+          className={`z-99999 flex min-w-0 flex-1 items-center justify-between rounded-full transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 ${
+            isExpanded ? "h-14 px-4" : "h-12 px-3"
+          } ${isNavVisible ? "pointer-events-auto" : "pointer-events-none"} ${mobileSurfaceClass} ${navTextColor}`}
         >
           <motion.div
             initial={{ opacity: 0, y: 7 }}
@@ -641,7 +711,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               }}
             >
               {isFlzrChannel ? (
-                <FlzrMenuLogo className="h-auto w-[81px]" />
+                <FlzrMenuLockup logoClassName="h-auto w-[81px]" />
               ) : (
                 <Image
                   src={logoUrl}
@@ -684,6 +754,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             </div>
           </motion.div>
         </motion.nav>
+        <OneSpAgencyPill compact reduceMotion={reduceMotion} />
+        </div>
       </div>
       {showMobileMenu ? (
         <motion.div
@@ -700,7 +772,17 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               {visibleMenuItems.map((item, index) => {
                 const href = getMenuItemHref(item.slug);
                 return (
-                  <li key={item._key} className="border-b border-flzr-violet/20">
+                  <motion.li
+                    key={item._key}
+                    initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.36,
+                      ease: [0.22, 1, 0.36, 1],
+                      delay: reduceMotion ? 0 : 0.08 + index * 0.06,
+                    }}
+                    className="border-b border-flzr-violet/20"
+                  >
                     <Link
                       ref={index === 0 ? firstMobileLinkRef : undefined}
                       href={href}
@@ -713,11 +795,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                     >
                       {item.displayName || item.title}
                     </Link>
-                  </li>
+                  </motion.li>
                 );
               })}
             </ul>
-            <OneSpMembershipButton eyebrow={menuData?.oneSpMembershipLabel} />
           </nav>
         </motion.div>
       ) : null}
