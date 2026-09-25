@@ -651,6 +651,8 @@ export interface OneSPHeader {
     seoTitle?: string;
     headlineMode?: "typewriter" | "headlineReveal";
     headline?: string;
+    /** FLZR only: violet background behind each headline line. Defaults to on. */
+    headlineBackground?: boolean;
     rotatingText?: string[];
     paragraphs?: any[];
     mobileParagraphs?: any[];

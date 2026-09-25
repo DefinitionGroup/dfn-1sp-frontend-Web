@@ -7,6 +7,7 @@ import { validateOptionalCta } from "../../shared/ctaValidation";
 
 type HeaderParent = {
   headlineMode?: "typewriter" | "headlineReveal";
+  headlineBackground?: boolean;
   showEyebrow?: boolean;
 };
 
@@ -163,6 +164,18 @@ export default defineType({
           }
           return true;
         }),
+      group: "content",
+    }),
+    defineField({
+      name: "headlineBackground",
+      title: "Violet Headline Background",
+      type: "boolean",
+      description:
+        "Set the editorial headline on a violet background that follows each line. On by default.",
+      initialValue: true,
+      hidden: ({ document, parent }) =>
+        (document as { channel?: string } | undefined)?.channel !== "flizrWeb" ||
+        (parent as HeaderParent | undefined)?.headlineMode !== "headlineReveal",
       group: "content",
     }),
     defineField({

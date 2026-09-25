@@ -105,7 +105,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     : hasLongCopy
       ? "text-base sm:text-lg lg:text-xl"
     : useHeadlineReveal
-      ? "text-2xl"
+      ? "text-base md:text-2xl"
       : "text-base";
 
   const portableTextComponents = {
@@ -225,6 +225,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
               compact={hasLongCopy}
               delay={0.35}
               tone="white"
+              highlighted={step.headlineBackground !== false}
               align={copyBottomLeft ? "left" : "center"}
             />
 
