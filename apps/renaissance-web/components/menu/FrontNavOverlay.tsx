@@ -89,41 +89,25 @@ const NAV_HIDE_SCROLL_Y = 228;
 const NAV_DIRECTION_THRESHOLD = 4;
 const NAV_IDLE_HIDE_MS = 3000;
 
-const RENAISSANCE_LOGO_MASK_STYLE: React.CSSProperties = {
-  WebkitMaskImage: "url('/logos/renaissance-horz_logo.svg')",
-  maskImage: "url('/logos/renaissance-horz_logo.svg')",
-  WebkitMaskPosition: "center",
-  maskPosition: "center",
-  WebkitMaskRepeat: "no-repeat",
-  maskRepeat: "no-repeat",
-  WebkitMaskSize: "contain",
-  maskSize: "contain",
-};
-
 type NavState = "expanded" | "compact" | "hidden";
 
+/** Full lockup (tagline, wordmark, "A 1SP Agency") in its supplied colours. */
 function RenaissanceLogoLockup({
-  logoClassName,
+  className,
   alt,
 }: {
-  logoClassName: string;
+  className: string;
   alt: string;
 }) {
   return (
-    <span role="img" aria-label={alt} className="flex flex-col gap-[3px]">
-      <span
-        aria-hidden="true"
-        className={`block bg-renaissance-button ${logoClassName}`}
-        style={RENAISSANCE_LOGO_MASK_STYLE}
-      />
-      {/* Centred under the wordmark, which starts ~28% into the logo. */}
-      <span
-        aria-hidden="true"
-        className="block pl-[28%] text-center text-[0.47rem] font-bold uppercase leading-none tracking-[0.18em] text-renaissance-button"
-      >
-        A 1SP Agency
-      </span>
-    </span>
+    <Image
+      src="/logos/renaissance-lockup.svg"
+      alt={alt}
+      width={379}
+      height={81}
+      priority
+      className={`h-auto ${className}`}
+    />
   );
 }
 
@@ -546,7 +530,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 {isRenaissanceChannel ? (
                   <RenaissanceLogoLockup
                     alt={logoAlt}
-                    logoClassName={`${logoClassName} h-[2.3rem] w-[11rem]`}
+                    className={`${logoClassName} w-[12.875rem]`}
                   />
                 ) : (
                   <Image
@@ -706,7 +690,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               {isRenaissanceChannel ? (
                 <RenaissanceLogoLockup
                   alt={logoAlt}
-                  logoClassName={`${logoClassName} h-[1.9rem] w-[9.2rem]`}
+                  className={`${logoClassName} w-[9.2rem]`}
                 />
               ) : (
                 <Image
