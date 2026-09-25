@@ -209,7 +209,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
                 variant="headline"
                 as="p"
                 delayMs={eyebrowDelayMs}
-                className="text-msm-cyan text-xl md:text-2xl tracking-tight pb-3"
+                className="msm-headline text-msm-cyan text-xl md:text-2xl tracking-tight pb-3"
               />
             )}
 

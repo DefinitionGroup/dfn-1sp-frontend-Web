@@ -310,7 +310,7 @@
 }
 
 /* ── MSM typography paradigm ──────────────────────────────────────
-   Headlines are ALWAYS: AspektaVF, Medium, sentence case, one unified
+   Headlines are ALWAYS: AspektaVF, Regular (400), sentence case, one unified
    size (--headline-size, hero included), relaxed tracking. No serifs,
    no italics anywhere on this channel. Do not add text-* size classes
    next to this utility — the token owns the size. */
@@ -318,7 +318,7 @@
   font-family: var(--font-aspekta-vf), system-ui, sans-serif;
   font-size: var(--headline-size);
   letter-spacing: var(--headline-tracking);
-  font-weight: var(--msm-type-weight, 300);
+  font-weight: var(--msm-headline-weight, 400);
   /* --tw-leading makes the line-height win over any text-* utility */
   --tw-leading: 1.18;
   line-height: 1.18;
@@ -658,15 +658,22 @@ video {
 }
 
 
-/* MSM presentation contract. One weight; hierarchy comes from scale and space.
+/* MSM presentation contract. Two weights: body 300, headlines 400; the rest of
+   the hierarchy comes from scale and space. Use .msm-headline for display lines
+   that are not heading elements.
    Canonical embedded 1SP groups retain their own presentation boundary. */
 .msm-site {
   --msm-type-weight: 300;
+  --msm-headline-weight: 400;
   --msm-section-space: clamp(4.5rem, 8vw, 8rem);
   font-weight: var(--msm-type-weight);
 }
 .msm-site :where(h1, h2, h3, h4, h5, h6, p, span, a, button, label, input, textarea, select, li, strong, b, em, div):not(:where([data-onesp-component-group], [data-onesp-component-group] *)) {
   font-weight: var(--msm-type-weight);
+}
+.msm-site :where(h1, h2, h3, h4, h5, h6, .headline-display, .msm-title, .msm-headline):not(:where([data-onesp-component-group], [data-onesp-component-group] *)),
+.msm-site :where(h1, h2, h3, h4, h5, h6, .headline-display, .msm-title, .msm-headline) *:not(:where([data-onesp-component-group], [data-onesp-component-group] *)) {
+  font-weight: var(--msm-headline-weight);
 }
 .msm-site :where(h1, h2, h3, h4, h5, h6) {
   text-wrap: balance;

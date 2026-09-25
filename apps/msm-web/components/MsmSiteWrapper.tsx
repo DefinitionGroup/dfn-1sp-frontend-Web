@@ -289,7 +289,7 @@ async function MsmFooter({
                 Digital growth partner
               </span>
             </div>
-            <p className="mt-7 max-w-2xl text-[clamp(1.75rem,1.2rem+2vw,3.25rem)] font-semibold leading-[0.98] tracking-[-0.04em] text-white">
+            <p className="msm-headline mt-7 max-w-2xl text-[clamp(1.75rem,1.2rem+2vw,3.25rem)] leading-[0.98] tracking-[-0.04em] text-white">
               {statement}
             </p>
           </div>
