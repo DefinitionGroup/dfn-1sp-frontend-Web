@@ -922,6 +922,11 @@ export interface GlobeComponent {
     sectionSubtitle?: string;
     locations?: GlobeLocation[];
     viewMode?: "default" | "centralEuropeStatic";
+    hideFromNav?: boolean;
+    /** MSM only: small line above the button text. */
+    ctaLabel?: string;
+    /** MSM only: one MosaicButton below the location list. */
+    cta?: CTA;
 }
 
 export interface Service {
