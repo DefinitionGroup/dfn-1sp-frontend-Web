@@ -271,7 +271,7 @@ function PageBuilderPersonioJobs({
   React.useEffect(() => {
     const controller = new AbortController();
 
-    async function loadJobsAndUnits() {
+    async function loadJobs() {
       try {
         setIsLoading(true);
         setError(null);
@@ -282,17 +282,10 @@ function PageBuilderPersonioJobs({
           language,
         });
 
-        const [jobsResponse, fetchedUnits] = await Promise.all([
-          fetch(`/api/personio/jobs?${query.toString()}`, {
-            method: "GET",
-            signal: controller.signal,
-          }),
-          client.fetch<Unit[]>(
-            UNIT_LOGO_FLOAT_QUERY,
-            { language, maxItems: 200 },
-            { next: { revalidate: 300 } }
-          ),
-        ]);
+        const jobsResponse = await fetch(`/api/personio/jobs?${query.toString()}`, {
+          method: "GET",
+          signal: controller.signal,
+        });
 
         const payload = (await jobsResponse.json()) as PersonioJobsResponse;
 
@@ -301,20 +294,36 @@ function PageBuilderPersonioJobs({
         }
 
         setJobs(Array.isArray(payload.jobs) ? payload.jobs : []);
-        setUnits(Array.isArray(fetchedUnits) ? fetchedUnits : []);
       } catch (err) {
-        if ((err as Error).name === "AbortError") return;
+        if (controller.signal.aborted) return;
         setJobs([]);
-        setUnits([]);
         setError(
           err instanceof Error ? err.message : "Could not load open positions."
         );
       } finally {
-        setIsLoading(false);
+        if (!controller.signal.aborted) setIsLoading(false);
       }
     }
 
-    loadJobsAndUnits();
+    // Unit logos only decorate the cards and feed the unit filter, so a
+    // failed Sanity request must not hide the job list.
+    async function loadUnits() {
+      try {
+        const fetchedUnits = await client.fetch<Unit[]>(
+          UNIT_LOGO_FLOAT_QUERY,
+          { language, maxItems: 200 },
+          { next: { revalidate: 300 } }
+        );
+        if (controller.signal.aborted) return;
+        setUnits(Array.isArray(fetchedUnits) ? fetchedUnits : []);
+      } catch {
+        if (controller.signal.aborted) return;
+        setUnits([]);
+      }
+    }
+
+    loadJobs();
+    loadUnits();
 
     return () => controller.abort();
   }, [maxItems, onlyPublished, language]);
