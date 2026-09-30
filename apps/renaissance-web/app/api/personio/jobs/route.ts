@@ -760,12 +760,19 @@ const getJobs = async (
         return bTime - aTime;
       });
   } catch (error) {
-    const isNotFoundOnV2 =
-      error instanceof PersonioApiError &&
-      error.status === 502 &&
-      error.details?.includes("/v2/recruiting/jobs");
+    // The v2 endpoint needs an OAuth token with recruiting scope (a missing
+    // scope returns 403). The public XML feed lists the same postings, so any
+    // v2 failure falls back to it when the feed is configured.
+    if (!getXmlFeedUrl(normalizedLanguage)) throw error;
 
-    if (!isNotFoundOnV2) throw error;
+    console.warn("Personio v2 jobs unavailable, using XML feed:", {
+      details:
+        error instanceof PersonioApiError
+          ? error.details ?? error.message
+          : error instanceof Error
+            ? error.message
+            : "Unknown error",
+    });
 
     normalizedJobs = await fetchJobsFromXmlFeed(language);
     source = "xml";
