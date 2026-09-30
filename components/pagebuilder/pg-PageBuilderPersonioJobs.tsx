@@ -70,7 +70,7 @@ type JobFilterMetadata = {
   contractCategory: JobContractCategory | null;
 };
 
-const DEFAULT_JOB_LOGO_URL = "/1sp-fallback.svg";
+const DEFAULT_JOB_LOGO_URL = "/ci/1sp-fulllogotype-blk.svg";
 
 const tagToneClasses: Record<TagTone, string> = {
   location: " bg-lime-400 font-bold text-black",
