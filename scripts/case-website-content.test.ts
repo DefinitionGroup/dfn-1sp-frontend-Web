@@ -15,6 +15,16 @@ async function run(query: string, docs: any[], channel = 'renaissanceWeb') {
   return (await evaluate(parse(query, { params }), { dataset: docs, params })).get();
 }
 
+test('MSM social and indexing overrides stay within the MSM case edition', async () => {
+  const seo = {openGraphTitle: 'MSM campaign', openGraphDescription: 'MSM social copy', openGraphImage: {asset: asset('msm.jpg')}, noIndex: true};
+  const doc = {...base, channel: [...base.channel, 'msmWeb'], siteContent: [{_key: 'msm', channel: 'msmWeb', seo}]};
+  const msm = await run(CASE_STUDY_BY_SLUG_QUERY, [doc], 'msmWeb');
+  for (const [field, value] of Object.entries(seo)) assert.deepEqual(msm.seo[field], value);
+  const shared = await run(CASE_STUDY_BY_SLUG_QUERY, [doc], '1spWeb');
+  assert.equal(shared.seo.openGraphTitle, undefined);
+  assert.equal(shared.seo.noIndex, undefined);
+});
+
 test('all case entry points resolve one channel edition and preserve other channels', async () => {
   const doc = { ...base, siteContent: [edition] };
   const queries = [CASE_STUDY_BY_SLUG_QUERY, CASE_STUDIES_QUERY, CASE_STUDIES_BY_IDS_QUERY, CASE_STUDIES_BY_CHANNEL_LIMIT_QUERY, getInteractiveCarouselQuery('connectedDataCarouselPromoRenaissance')];

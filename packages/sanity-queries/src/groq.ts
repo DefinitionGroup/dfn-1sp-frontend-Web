@@ -88,7 +88,8 @@ const RENAISSANCE_PORTRAIT_FIELDS = `
   ...,
   portraits[!defined(person._ref) || ($channel in person->channel && person->language == $language)]{
     ..., "name": coalesce(name, person->fullname, person->name),
-    "position": coalesce(position, person->position), "image": coalesce(image, person->image)
+    "position": coalesce(position, person->position),
+    "image": coalesce(image, person->siteContent[channel == $channel][0].image, person->image)
   }
 `;
 const RENAISSANCE_SHARED_DOCUMENT_FIELDS = `
@@ -1312,9 +1313,9 @@ export const MSM_UNIT_BY_SLUG_QUERY = defineQuery(`
       email,
       profileUrl,
       "profileSlug": siteContent[channel == "msmWeb"][0].slug.current,
-      image,
+      "image": coalesce(siteContent[channel == "msmWeb"][0].image, image),
       video,
-      "imageUrl": coalesce(image.secure_url, image.url),
+      "imageUrl": coalesce(siteContent[channel == "msmWeb"][0].image.secure_url, siteContent[channel == "msmWeb"][0].image.url, image.secure_url, image.url),
       "videoUrl": coalesce(video.secure_url, video.url)
     }
   },

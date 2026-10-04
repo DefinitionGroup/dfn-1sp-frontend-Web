@@ -2,6 +2,7 @@ import { caseDiscoveryField } from './caseDiscovery';
 import { defineField, defineType } from 'sanity';
 import { SITE_CONFIGS, WEBSITE_CHANNELS } from '@1sp/site-config';
 import CaseEditionInput from './CaseEditionInput';
+import {msmMetadataFields} from '../Objects/metadata';
 
 export const caseSeoFields = [
   defineField({ name: 'title', title: 'SEO title', type: 'string' }),
@@ -21,7 +22,13 @@ export default defineType({
     defineField({ name: 'description', title: 'Summary override', type: 'text', rows: 4, description: 'Unset inherits the shared summary.', hidden: ({ parent }) => parent?.hideDescription === true }),
     defineField({ name: 'hideSubtitle', title: 'Hide subtitle on this website', type: 'boolean' }),
     defineField({ name: 'subtitle', title: 'Subtitle override', type: 'string', hidden: ({ parent }) => parent?.hideSubtitle === true }),
-    defineField({ name: 'seo', title: 'SEO overrides', type: 'object', fields: caseSeoFields }),
+    defineField({ name: 'seo', title: 'SEO overrides', type: 'object', fields: [
+      ...caseSeoFields,
+      ...msmMetadataFields.map(field => ({...field, hidden: ({document, path}: any) => {
+        const key = path.find((segment: any) => segment?._key)?._key;
+        return document?.siteContent?.find((edition: any) => edition._key === key)?.channel !== 'msmWeb';
+      }})),
+    ] }),
     defineField({ name: 'mediaMode', title: 'Hero media', type: 'string', initialValue: 'inherit', options: { layout: 'radio', list: [{ title: 'Use shared media', value: 'inherit' }, { title: 'Custom media (replaces image and video)', value: 'custom' }] } }),
     ...(['mainImage', 'mainVideo'] as const).map(name => defineField({ name, title: name === 'mainImage' ? 'Hero image' : 'Hero video', type: 'cloudinary.asset', hidden: ({ parent }) => parent?.mediaMode !== 'custom' })),
     defineField({ name: 'isVerticalVideo', title: 'Vertical video', type: 'boolean', hidden: ({ parent }) => parent?.mediaMode !== 'custom' }),

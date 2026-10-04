@@ -6,7 +6,7 @@ Updated 21 September 2026. **Current phase: audits and documentation complete; s
 
 1. Read [Service content](SERVICE_CONTENT.md) for current ownership and [Architecture](ARCHITECTURE.md) for platform boundaries.
 2. Read the [cross-site audit](records/sanity/service-content-ownership-audit-2026-09-21.md); use the [MSM audit](records/msm/msm-service-content-audit-2026-09-21.md) and [CSV](records/msm/msm-service-content-audit-2026-09-21.csv) when working on individual service/page pairs.
-3. Inspect the current worktree before implementation. At this handoff, branch is `multiseite/stage`, HEAD is `e31b074917e01e011d567c94766244e2a2a34b04`, and there are substantial uncommitted MSM carousel/motion, shared menu-button, schema and documentation changes. Preserve them; this handoff is not a clean-checkout or remote-push assertion.
+3. Inspect the current worktree before implementation. At this handoff, branch was `multiseite/stage` at `e31b074917e01e011d567c94766244e2a2a34b04` with uncommitted MSM carousel/motion, shared menu-button, schema and documentation changes. Those were committed in `3d2fe05b5` on 22 September; see the [whole-project handoff](HANDOFF.md) for the current Git state.
 4. Refresh scope and source data using [local diagnostics](local-sanity-debugging.md). The audits used `wu6i3y0h/production`, API `2025-09-16`, with explicit site/language filters. Read both published and drafts before preparing mutations.
 
 Done with orientation when the intended site/language, dataset, actual Git state, affected consumers and pending drafts are identified. Then agree the implementation scope rather than replaying an old migration script.

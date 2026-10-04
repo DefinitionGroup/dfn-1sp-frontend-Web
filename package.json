@@ -18,7 +18,7 @@
     "seed:msm-units": "node --env-file=.env --env-file=.env.local scripts/seed-msm-units.mjs",
     "seed:msm-units:cli": "sanity exec scripts/seed-msm-units-cli.mjs --with-user-token",
     "test:deployment-tier": "node --experimental-strip-types --test scripts/deployment-tier.test.mjs",
-    "test:component-import": "node --experimental-strip-types --test scripts/onesp-component-group-import.test.mjs",
+    "test:component-import": "tsx --test scripts/onesp-component-group-import.test.mjs",
     "test:cta-contract": "tsx --test scripts/cta-contract.test.ts",
     "test:flzr-section-bands": "tsx --test scripts/flzr-section-bands.test.ts",
     "test:renaissance-section-bands": "tsx --test scripts/renaissance-section-bands.test.ts",

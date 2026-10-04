@@ -1,11 +1,12 @@
+import {JsonLdScript, CANONICAL_URL} from '@msm/lib/structured-data';
+import {buildMsmMetadata} from '@msm/lib/metadata';
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllMsmUnitSlugs, getMsmUnitBySlug, getMsmUnits } from "@1sp/sanity-queries";
 import MsmSiteWrapper from "@msm/components/MsmSiteWrapper";
 import MsmUnitPage from "@msm/components/units/MsmUnitPage";
 import type { MsmUnitDetail, MsmUnitSummary } from "@msm/components/units/types";
-import { JsonLdScript, generateBreadcrumbJsonLd } from "@/lib/structured-data";
-import { MSM_CANONICAL_URL as CANONICAL_URL } from "@msm/lib/site-url";
+import { generateBreadcrumbJsonLd } from "@/lib/structured-data";
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -23,18 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const unit = await getMsmUnitBySlug(slug, locale || "en");
   if (!unit) return { title: "Unit not found" };
 
-  const title = unit.metadata?.title || `${unit.name} | MSM.digital`;
-  const description = unit.metadata?.description || unit.claim;
-  const images = unit.heroImageUrl ? [{ url: unit.heroImageUrl, alt: unit.heroAlt || unit.name }] : [];
-
-  return {
-    title,
-    description,
-    keywords: unit.metadata?.keywords || undefined,
-    alternates: { canonical: `${locale === "en" ? "" : `/${locale}`}/units/${slug}` },
-    openGraph: { title, description, type: "website", locale, images },
-    twitter: { card: "summary_large_image", title, description, images: images.map((image) => image.url) },
-  };
+  return buildMsmMetadata({locale, path: `units/${slug}`, title: unit.name, description: unit.claim, metadata: unit.metadata, fallbackImage: unit.heroImageUrl});
 }
 
 export default async function UnitDetailPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
@@ -45,7 +35,7 @@ export default async function UnitDetailPage({ params }: { params: Promise<{ loc
 
   return (
     <MsmSiteWrapper language={language} navColor="light">
-      <JsonLdScript
+      <JsonLdScript locale={language}
         data={{
           "@context": "https://schema.org",
           "@type": "Organization",
@@ -55,7 +45,7 @@ export default async function UnitDetailPage({ params }: { params: Promise<{ loc
           parentOrganization: { "@type": "Organization", name: "MSM.digital", url: CANONICAL_URL },
         }}
       />
-      <JsonLdScript
+      <JsonLdScript locale={language}
         data={generateBreadcrumbJsonLd([
           { name: "Home", url: CANONICAL_URL },
           { name: "Units", url: `${CANONICAL_URL}/units` },

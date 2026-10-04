@@ -1,3 +1,5 @@
+import {JsonLdScript, CANONICAL_URL} from '@msm/lib/structured-data';
+import {buildMsmMetadata} from '@msm/lib/metadata';
 import {msmPath} from "@msm/lib/editorial";
 /**
  * Cases Listing Page
@@ -19,13 +21,11 @@ import { getChannelFromEnv, getSiteConfig } from "@1sp/site-config";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
-  JsonLdScript,
   generateCollectionPageJsonLd,
   generateBreadcrumbJsonLd,
   generateItemListJsonLd,
   extractCaseItemsFromContent,
   getBreadcrumbLabel,
-  CANONICAL_URL,
   type CaseItemForList,
 } from "@/lib/structured-data";
 
@@ -46,42 +46,7 @@ export async function generateMetadata({
   const language = locale || "en";
   const page = await getPageBySlug("cases", CHANNEL, language);
 
-  const title = page?.metadata?.title || "Cases";
-  const description = page?.metadata?.description;
-  const ogImageUrl = resolveImageUrl(page?.metadata?.image, { width: 1200, height: 630 });
-
-  const ogImages = ogImageUrl
-    ? [
-      {
-        url: ogImageUrl,
-        width: 1200,
-        height: 630,
-        alt: title,
-      },
-    ]
-    : [];
-
-  return {
-    title,
-    description,
-    keywords: page?.metadata?.keywords ?? undefined,
-    alternates: {
-      canonical: msmPath(language, "cases"),
-    },
-    openGraph: {
-      title,
-      description: description || undefined,
-      locale: language,
-      type: "website",
-      images: ogImages,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description: description || undefined,
-      images: ogImages.map((img) => img.url),
-    },
-  };
+  return buildMsmMetadata({locale: language, path: 'cases', title: page?.title || 'Cases', metadata: page?.metadata});
 }
 
 export default async function CasesPage({
@@ -124,7 +89,7 @@ export default async function CasesPage({
   return (
     <MsmSiteWrapper language={language} navColor={navbarVariant}>
       {/* Structured Data (JSON-LD) */}
-      <JsonLdScript
+      <JsonLdScript locale={language}
         data={generateCollectionPageJsonLd({
           title: page?.metadata?.title || "Cases",
           slug: "cases",
@@ -134,7 +99,7 @@ export default async function CasesPage({
           mainEntityId: caseItems.length > 0 ? itemListId : undefined,
         })}
       />
-      <JsonLdScript
+      <JsonLdScript locale={language}
         data={generateBreadcrumbJsonLd([
           {
             name: getBreadcrumbLabel(language, "home"),
@@ -147,7 +112,7 @@ export default async function CasesPage({
         ])}
       />
       {caseItems.length > 0 && (
-        <JsonLdScript
+        <JsonLdScript locale={language}
           data={generateItemListJsonLd({
             items: caseItems,
             locale: language,

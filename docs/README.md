@@ -1,6 +1,8 @@
 # Documentation
 
-Start with the [whole-project handoff](HANDOFF.md). It covers all four webapps, shared CMS contracts, Studio, previews, integrations, current work and operational quirks. Reviewed 21 September 2026; [scope and findings](records/project/project-handoff-review-2026-09-21.md).
+Start with the [whole-project handoff](HANDOFF.md). It covers all four webapps, shared CMS contracts, Studio, previews, integrations, current work and operational quirks. Reviewed 21 September 2026 ([scope and findings](records/project/project-handoff-review-2026-09-21.md)); updated 4 October 2026 with the later commits, their side effects and open issues.
+
+The subsequent [MSM fixes, SEO and legal-copy review](records/msm/msm-fixes-seo-and-legal-review-2026-10-04.md) records the current uncommitted implementation and staging CMS patch. Live 1SP reads `dev-dataset`; `production` is currently the staging ground.
 
 ## Orientation
 

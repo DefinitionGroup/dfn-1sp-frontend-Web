@@ -2,7 +2,7 @@ import {stegaClean} from '@sanity/client/stega';
 
 // Preview annotations belong on visible copy. Enum/CSS/URL comparisons need
 // their original values or draft mode can render a different composition.
-const controls = new Set(['headlineMode','selectionMode','titleTag','paddingY','paddingTop','marginBottom','textAlign','alignment','variant','linkType','externalUrl','type','resource_type','format','animationMode','displayScale','qualifier','diagramType','style']);
+const controls = new Set(['headlineMode','selectionMode','titleTag','paddingY','paddingTop','paddingBottom','marginBottom','textAlign','alignment','variant','linkType','externalUrl','type','resource_type','format','animationMode','displayScale','qualifier','diagramType','style']);
 export function cleanMsmPreviewControls<T>(value: T): T {
   if (Array.isArray(value)) return value.map(cleanMsmPreviewControls) as T;
   if (typeof value === 'string') return (stegaClean(value) === '' ? '' : value) as T;

@@ -53,6 +53,17 @@ test('localized unit references preserve scope and use effective case titles',as
   const data=await run(MSM_UNIT_BY_SLUG_QUERY,[unit,caseA,{...caseA,_id:'wrong',language:'en'},person,{...person,_id:'wrong-person',channel:['1spWeb']}],{language:'de',slug:'test'});
   assert.deepEqual(data.cases.map((c:any)=>c.title),['MSM title']);assert.equal(data.leadership.length,1);
 });
+test('unit leadership resolves the MSM portrait without changing another website',async()=>{
+  const shared={_type:'cloudinary.asset',secure_url:'https://example.test/shared.jpg'};
+  const override={_type:'cloudinary.asset',secure_url:'https://example.test/msm.jpg'};
+  const person={_id:'portrait-person',_type:'person',name:'Person',language:'en',channel:['msmWeb','1spWeb'],image:shared,siteContent:[{channel:'msmWeb',image:override},{channel:'1spWeb',image:{secure_url:'https://example.test/1sp.jpg'}}]};
+  const unit={_id:'portrait-unit',_type:'msmUnit',language:'en',slug:{current:'portrait-test'},leadership:[{person:{_ref:person._id}}]};
+  const result=await run(MSM_UNIT_BY_SLUG_QUERY,[unit,person],{language:'en',slug:'portrait-test'});
+  assert.deepEqual(result.leadership[0].person.image,override);
+  assert.equal(result.leadership[0].person.imageUrl,override.secure_url);
+  const fallback=await run(MSM_UNIT_BY_SLUG_QUERY,[unit,{...person,siteContent:[]}],{language:'en',slug:'portrait-test'});
+  assert.equal(fallback.leadership[0].person.imageUrl,shared.secure_url);
+});
 test('home has one visible editorial hero and channel-specific staff quotes',async()=>{
   const home=await run(HOME_PAGE_QUERY,documents,{channel:'msmWeb',language:'en'});
   assert.equal(home.content[0].headlineMode,'headlineReveal');assert.deepEqual(home.content[0].mobileParagraphs,[]);
@@ -77,9 +88,10 @@ test('case service tags come from project cards rather than global navigation',(
 test('preview annotations cannot change layout choices or create empty copy',()=>{
   const {vercelStegaCombine}=createRequire(require.resolve('@sanity/client'))('@vercel/stega');
   const marked=(s:string)=>vercelStegaCombine(s,{origin:'sanity.io',href:'http://localhost:3000/studio'},false);
-  const input={headlineMode:marked('headlineReveal'),selectionMode:marked('manual'),titleTag:marked('h1'),headline:marked('Approved copy'),eyebrow:marked(''),children:[{text:' '}]};
+  const input={headlineMode:marked('headlineReveal'),selectionMode:marked('manual'),titleTag:marked('h1'),paddingBottom:marked('lg'),headline:marked('Approved copy'),eyebrow:marked(''),children:[{text:' '}]};
   const output=cleanMsmPreviewControls(input);
   assert.equal(output.headlineMode,'headlineReveal');assert.equal(output.selectionMode,'manual');assert.equal(output.titleTag,'h1');
+  assert.equal(output.paddingBottom,'lg');
   assert.equal(output.headline,input.headline);assert.equal(output.eyebrow,'');assert.equal(output.children[0].text,' ');
 });
 test('attribute preflight counts shared paths once and nested types separately',()=>{

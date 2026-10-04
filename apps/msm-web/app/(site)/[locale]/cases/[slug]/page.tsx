@@ -1,3 +1,5 @@
+import {JsonLdScript, CANONICAL_URL} from '@msm/lib/structured-data';
+import {buildMsmMetadata} from '@msm/lib/metadata';
 import {msmPath} from "@msm/lib/editorial";
 /**
  * Case Study Detail Page
@@ -31,11 +33,9 @@ import CaseStudyPageClient from "./CaseStudyPageClient";
 import MsmSiteWrapper from "@msm/components/MsmSiteWrapper";
 import type { Metadata } from "next";
 import {
-  JsonLdScript,
   generateCaseStudyJsonLd,
   generateBreadcrumbJsonLd,
   getBreadcrumbLabel,
-  CANONICAL_URL,
 } from "@/lib/structured-data";
 
 export const revalidate = 60;
@@ -86,46 +86,7 @@ export async function generateMetadata({
     };
   }
 
-  const title = stegaClean(caseStudy.seo?.title || caseStudy.title);
-  const description = stegaClean(
-    caseStudy.seo?.description ?? caseStudy.description ??
-    `${caseStudy.title}${caseStudy.client?.name ? ` — ${caseStudy.client.name}` : ""} | Case Study`);
-
-  // Use mainImageUrl (Cloudinary secure_url) for OG image
-  const ogImages = caseStudy.mainImageUrl
-    ? [
-        {
-          url: caseStudy.mainImageUrl,
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ]
-    : [];
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: msmPath(language, `cases/${slug}`),
-    },
-    openGraph: {
-      title,
-      description,
-      locale: language,
-      type: "article",
-      images: ogImages,
-      ...(caseStudy.publishedAt && {
-        publishedTime: caseStudy.publishedAt,
-      }),
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: ogImages.map((img) => img.url),
-    },
-  };
+  return buildMsmMetadata({locale: language, path: `cases/${slug}`, title: caseStudy.title, description: caseStudy.description, metadata: caseStudy.seo, fallbackImage: caseStudy.mainImageUrl, type: 'article', publishedAt: caseStudy.publishedAt});
 }
 
 export default async function CaseStudyPage({
@@ -147,7 +108,7 @@ export default async function CaseStudyPage({
   return (
     <MsmSiteWrapper language={language} navColor="light">
       {/* Structured Data (JSON-LD) */}
-      <JsonLdScript
+      <JsonLdScript locale={language}
         data={generateCaseStudyJsonLd({
           title: caseStudy.title,
           slug,
@@ -160,7 +121,7 @@ export default async function CaseStudyPage({
           units: caseStudy.units,
         })}
       />
-      <JsonLdScript
+      <JsonLdScript locale={language}
         data={generateBreadcrumbJsonLd([
           {
             name: getBreadcrumbLabel(language, "home"),

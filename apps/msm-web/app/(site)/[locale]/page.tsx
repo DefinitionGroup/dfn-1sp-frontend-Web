@@ -1,3 +1,5 @@
+import {JsonLdScript, CANONICAL_URL} from '@msm/lib/structured-data';
+import {buildMsmMetadata} from '@msm/lib/metadata';
 import {msmPath} from "@msm/lib/editorial";
 /**
  * Home Page
@@ -29,7 +31,6 @@ import { getChannelFromEnv, getSiteConfig } from "@1sp/site-config";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
-  JsonLdScript,
   generateHomepageJsonLd,
   generateBreadcrumbJsonLd,
   generateItemListJsonLd,
@@ -44,7 +45,6 @@ import {
   extractUnitsFromContent,
   generateUnitsListJsonLd,
   getBreadcrumbLabel,
-  CANONICAL_URL,
 } from "@/lib/structured-data";
 
 export const revalidate = 60;
@@ -72,44 +72,7 @@ export async function generateMetadata({
     };
   }
 
-  const title = page.metadata?.title || page.title || "Home";
-  const description =
-    page.metadata?.description ||
-    "1SP is a full-service agency specializing in brand engagement, experiential marketing, creative content, and talent management.";
-  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
-
-  const ogImages = ogImageUrl
-    ? [
-      {
-        url: ogImageUrl,
-        width: 1200,
-        height: 630,
-        alt: title,
-      },
-    ]
-    : [];
-
-  return {
-    title,
-    description,
-    keywords: page.metadata?.keywords ?? undefined,
-    alternates: {
-      canonical: msmPath(language, ""),
-    },
-    openGraph: {
-      title,
-      description,
-      locale: language,
-      type: "website",
-      images: ogImages,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: ogImages.map((img) => img.url),
-    },
-  };
+  return buildMsmMetadata({locale: language, path: '', title: page.title || 'Home', metadata: page.metadata});
 }
 
 export default async function Home({
@@ -145,14 +108,14 @@ export default async function Home({
   return (
     <MsmSiteWrapper language={language} navColor={navbarVariant}>
       {/* Structured Data (JSON-LD) */}
-      <JsonLdScript
+      <JsonLdScript locale={language}
         data={generateHomepageJsonLd({
           locale: language,
           logoUrl: globalData.nav?.logoUrl,
           socialLinks: globalData.footer?.socialLinks,
         })}
       />
-      <JsonLdScript
+      <JsonLdScript locale={language}
         data={generateBreadcrumbJsonLd([
           {
             name: getBreadcrumbLabel(language, "home"),
@@ -162,7 +125,7 @@ export default async function Home({
       />
       {/* ItemList for case carousels / galleries on the homepage */}
       {caseItems.length > 0 && (
-        <JsonLdScript
+        <JsonLdScript locale={language}
           data={generateItemListJsonLd({
             items: caseItems,
             locale: language,
@@ -171,7 +134,7 @@ export default async function Home({
         />
       )}
       {services.length > 0 && (
-        <JsonLdScript
+        <JsonLdScript locale={language}
           data={generateServiceCatalogJsonLd({
             services,
             locale: language,
@@ -185,11 +148,11 @@ export default async function Home({
       {/* Person & Unit structured data from page builder content */}
       {(() => {
         const people = extractPeopleFromContent(contentBlocks);
-        return people.length > 0 ? <JsonLdScript data={generatePeopleListJsonLd({ people })} /> : null;
+        return people.length > 0 ? <JsonLdScript locale={language} data={generatePeopleListJsonLd({ people })} /> : null;
       })()}
       {(() => {
         const units = extractUnitsFromContent(contentBlocks);
-        return units.length > 0 ? <JsonLdScript data={generateUnitsListJsonLd({ units })} /> : null;
+        return units.length > 0 ? <JsonLdScript locale={language} data={generateUnitsListJsonLd({ units })} /> : null;
       })()}
 
       {/* Preload the hero poster for fast LCP */}

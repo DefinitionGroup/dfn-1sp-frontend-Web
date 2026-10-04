@@ -16,7 +16,13 @@ export function casePresentationFields(channel = '$channel') {
     "mainVideoUrl": coalesce((${video}).secure_url, (${video}).url, (${video}).asset->url),
     "seo": {
       "title": coalesce(${edition}.seo.title, ${edition}.title, seo.title, title),
-      "description": coalesce(${edition}.seo.description, select(${edition}.hideDescription == true => "", coalesce(${edition}.description, seo.description, description)))
+      "description": coalesce(${edition}.seo.description, select(${edition}.hideDescription == true => "", coalesce(${edition}.description, seo.description, description))),
+      ${channel} == "msmWeb" => {
+        "openGraphTitle": ${edition}.seo.openGraphTitle,
+        "openGraphDescription": ${edition}.seo.openGraphDescription,
+        "openGraphImage": ${edition}.seo.openGraphImage,
+        "noIndex": ${edition}.seo.noIndex
+      }
     }
   `;
 }

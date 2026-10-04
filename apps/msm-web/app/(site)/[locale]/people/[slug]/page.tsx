@@ -1,3 +1,4 @@
+import {buildMsmMetadata} from '@msm/lib/metadata';
 import type {Metadata} from 'next';
 import {notFound} from 'next/navigation';
 import Image from 'next/image';
@@ -12,9 +13,7 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
   const {locale, slug} = await params;
   const person = await getMsmPerson(slug, locale);
   if (!person) return {};
-  const title = person.edition.seo?.title || person.fullname || person.name;
-  const description = person.edition.seo?.description;
-  return {title, description, alternates: {canonical: msmPath(locale, `people/${slug}`)}, openGraph: {title, description, type: 'profile'}};
+  return buildMsmMetadata({locale, path: `people/${slug}`, title: person.fullname || person.name, description: person.position, metadata: person.edition.seo, fallbackImage: person.image, type: 'profile'});
 }
 export default async function PersonPage({params}: Props) {
   const {locale, slug} = await params;

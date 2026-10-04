@@ -1,3 +1,4 @@
+import {buildMsmMetadata} from '@msm/lib/metadata';
 import localFont from "next/font/local";
 import type { Metadata } from "next";
 import "./globals.css";
@@ -6,13 +7,10 @@ import { Analytics } from "@vercel/analytics/next";
 import CookiebotBanner from "@/components/CookiebotBanner";
 import GoogleAnalyticsConsent from "@/components/GoogleAnalyticsConsent";
 import {
-  getRobotsMetadata,
   shouldLoadProductionTracking,
 } from "@1sp/utils/deployment-tier";
-import { getSiteConfig } from "@1sp/site-config";
 import { MSM_CANONICAL_URL } from "@msm/lib/site-url";
 
-const MSM_SITE = getSiteConfig("msmWeb");
 const GOOGLE_MEASUREMENT_ID = process.env.NEXT_PUBLIC_MSM_GOOGLE_MEASUREMENT_ID;
 const LOAD_PRODUCTION_TRACKING = shouldLoadProductionTracking();
 
@@ -30,20 +28,7 @@ const aspekta = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL(MSM_CANONICAL_URL),
-  title: {
-    default: MSM_SITE.seo.defaultTitle,
-    template: "%s",
-  },
-  description: MSM_SITE.seo.defaultDescription,
-  openGraph: {
-    type: "website",
-    siteName: MSM_SITE.name,
-    locale: MSM_SITE.defaultLocale,
-  },
-  twitter: {
-    card: "summary_large_image",
-  },
-  robots: getRobotsMetadata(),
+  ...buildMsmMetadata({title: 'MSM.digital'}),
 };
 
 export default function RootLayout({

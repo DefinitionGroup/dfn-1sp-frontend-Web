@@ -1,4 +1,5 @@
 import type { PortableTextBlock } from "@portabletext/types";
+import type { PageMetadata } from "@1sp/sanity-types";
 
 export type MsmUnitSummary = {
   _id: string;
@@ -16,11 +17,7 @@ export type MsmUnitSummary = {
   unitMarkUrl?: string;
   caseCount?: number;
   leadershipCount?: number;
-  metadata?: {
-    title?: string;
-    description?: string;
-    keywords?: string[];
-  };
+  metadata?: PageMetadata;
 };
 
 export type MsmUnitCase = {

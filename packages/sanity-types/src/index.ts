@@ -527,6 +527,18 @@ export interface PageBuilderBlock {
 }
 
 /* Documents */
+export interface PageMetadata {
+    title?: string;
+    description?: string;
+    image?: CloudinaryAsset;
+    openGraphTitle?: string;
+    openGraphDescription?: string;
+    openGraphImage?: CloudinaryAsset;
+    keywords?: string[];
+    noIndex?: boolean;
+    excludeFromSitemap?: boolean;
+}
+
 export interface Page {
     _id?: SanityID;
     _createdAt?: string;
@@ -534,13 +546,7 @@ export interface Page {
     language?: string;
     title?: string;
     slug?: { current?: string };
-    metadata?: {
-        title?: string;
-        description?: string;
-        image?: CloudinaryAsset;
-        keywords?: string[];
-        excludeFromSitemap?: boolean;
-    };
+    metadata?: PageMetadata;
     channel?: "1spWeb" | "msmWeb" | "studioco2Web" | "flizrWeb" | "renaissanceWeb" | string;
     navbarVariant?: "light" | "dark";
     contactForm?: ContactFormSettings;
@@ -754,7 +760,7 @@ export interface CaseWebsiteContent {
     subtitle?: string;
     hideDescription?: boolean;
     hideSubtitle?: boolean;
-    seo?: { title?: string; description?: string };
+    seo?: PageMetadata;
     mediaMode?: 'inherit' | 'custom';
     mainImage?: CloudinaryAsset;
     mainVideo?: CloudinaryAsset;
@@ -766,7 +772,7 @@ export interface CaseWebsiteContent {
 export interface CaseStudyData {
     discovery?: CaseDiscovery;
     siteContent?: CaseWebsiteContent[];
-    seo?: { title?: string; description?: string };
+    seo?: PageMetadata;
     _id: string;
     title: string;
     subtitle?: string;

@@ -1,3 +1,5 @@
+import {JsonLdScript, CANONICAL_URL} from '@msm/lib/structured-data';
+import {buildMsmMetadata} from '@msm/lib/metadata';
 /**
  * Dynamic Page
  * ============
@@ -32,7 +34,6 @@ import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
-  JsonLdScript,
   generateWebPageJsonLd,
   generateBreadcrumbJsonLd,
   generateItemListJsonLd,
@@ -48,7 +49,6 @@ import {
   generateUnitsListJsonLd,
   getBreadcrumbLabel,
 } from "@/lib/structured-data";
-import { MSM_CANONICAL_URL as CANONICAL_URL } from "@msm/lib/site-url";
 
 // Allow new pages to be rendered on-demand (ISR)
 export const dynamicParams = true;
@@ -85,42 +85,7 @@ export async function generateMetadata({
     };
   }
 
-  const title = page.metadata?.title || page.title;
-  const description = page.metadata?.description;
-  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
-
-  const ogImages = ogImageUrl
-    ? [
-      {
-        url: ogImageUrl,
-        width: 1200,
-        height: 630,
-        alt: title,
-      },
-    ]
-    : [];
-
-  return {
-    title,
-    description,
-    keywords: page.metadata?.keywords ?? undefined,
-    alternates: {
-      canonical: `${language === "en" ? "" : `/${language}`}/${slug}`,
-    },
-    openGraph: {
-      title,
-      description: description || undefined,
-      locale: language,
-      type: "website",
-      images: ogImages,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description: description || undefined,
-      images: ogImages.map((img) => img.url),
-    },
-  };
+  return buildMsmMetadata({locale: language, path: slug, title: page.title, metadata: page.metadata});
 }
 
 export default async function Page({
@@ -160,7 +125,7 @@ export default async function Page({
       {/* Structured Data (JSON-LD) */}
       {page && (
         <>
-          <JsonLdScript
+          <JsonLdScript locale={language}
             data={generateWebPageJsonLd({
               title: page.metadata?.title || page.title || slug,
               slug,
@@ -170,7 +135,7 @@ export default async function Page({
               canonicalUrl: CANONICAL_URL,
             })}
           />
-          <JsonLdScript
+          <JsonLdScript locale={language}
             data={generateBreadcrumbJsonLd([
               {
                 name: getBreadcrumbLabel(language, "home"),
@@ -184,7 +149,7 @@ export default async function Page({
           />
           {/* ItemList for case carousels / galleries on this page */}
           {caseItems.length > 0 && (
-            <JsonLdScript
+            <JsonLdScript locale={language}
               data={generateItemListJsonLd({
                 items: caseItems,
                 locale: language,
@@ -193,7 +158,7 @@ export default async function Page({
             />
           )}
           {services.length > 0 && (
-            <JsonLdScript
+            <JsonLdScript locale={language}
               data={generateServiceCatalogJsonLd({
                 services,
                 locale: language,
@@ -206,11 +171,11 @@ export default async function Page({
           {/* Person & Unit structured data from page builder content */}
           {(() => {
             const people = extractPeopleFromContent(contentBlocks);
-            return people.length > 0 ? <JsonLdScript data={generatePeopleListJsonLd({ people })} /> : null;
+            return people.length > 0 ? <JsonLdScript locale={language} data={generatePeopleListJsonLd({ people })} /> : null;
           })()}
           {(() => {
             const units = extractUnitsFromContent(contentBlocks);
-            return units.length > 0 ? <JsonLdScript data={generateUnitsListJsonLd({ units })} /> : null;
+            return units.length > 0 ? <JsonLdScript locale={language} data={generateUnitsListJsonLd({ units })} /> : null;
           })()}
         </>
       )}

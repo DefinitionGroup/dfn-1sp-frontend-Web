@@ -9,6 +9,7 @@ These documents preserve approved mappings, implementation decisions and verific
 
 ## MSM
 
+- [MSM fixes, SEO and supplied legal-copy review — 4 October 2026](msm/msm-fixes-seo-and-legal-review-2026-10-04.md) — verified local fixes, revision-guarded staging CMS changes and legal/privacy differences; uncommitted.
 - [MSM service content ownership audit — 21 September 2026](msm/msm-service-content-audit-2026-09-21.md) — live read-only comparison of services, website editions and landing pages; consolidation recommendations are not implemented.
 - [MSM block redesign — 20 September 2026](msm/msm-block-redesign-2026-09-20.md)
 - [MSM migration and publication record](msm/MSM_CONTENT_MIGRATION.md)

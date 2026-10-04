@@ -47,4 +47,8 @@ test('person references resolve within Renaissance and English while legacy inli
  const docs=[{_id:'home',_type:'page',channel:'renaissanceWeb',language:'en',isHomepage:true,content:[{_type:'renaissancePortraitGrid',portraits:[{_key:'a',person:{_ref:'person'}},{_key:'foreign',person:{_ref:'other'}},{_key:'legacy',name:'Legacy',imageUrl:'/legacy.jpg'}]}]},{_id:'person',_type:'person',channel:['renaissanceWeb'],language:'en',fullname:'Named person',position:'Founder',image:{secure_url:'portrait.jpg'}},{_id:'other',_type:'person',channel:['1spWeb'],language:'en',fullname:'Other channel'}];
  const portraits=(await query(HOME_PAGE_QUERY,docs)).content[0].portraits;
  assert.equal(portraits.length,2);assert.equal(portraits[0].name,'Named person');assert.equal(portraits[0].image.secure_url,'portrait.jpg');assert.equal(portraits[1].name,'Legacy');
+ (docs[1] as any).siteContent=[{channel:'renaissanceWeb',image:{secure_url:'renaissance.jpg'}}];
+ assert.equal((await query(HOME_PAGE_QUERY,docs)).content[0].portraits[0].image.secure_url,'renaissance.jpg');
+ (docs[0].content[0].portraits[0] as any).image={secure_url:'local.jpg'};
+ assert.equal((await query(HOME_PAGE_QUERY,docs)).content[0].portraits[0].image.secure_url,'local.jpg');
 });
