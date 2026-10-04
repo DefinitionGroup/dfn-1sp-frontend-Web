@@ -168,7 +168,7 @@ Use a continuous full-width field with the fluid container and section spacing t
 
 Units use a two-column grid of individually linked cards on desktop and a single column below 768px, on both the homepage and Units page. Each card contains a real 16:10 image, Unit name, claim, directional arrow, and exploration cue. Every card is one navigation target. Frames have square corners, no shadow, small crosses, and a very dim dotted perimeter. The grid follows a compact brand-and-heading introduction, replacing the former shared image stage and selector strip.
 
-Navigation changes at 768px: a fixed angular mobile bar with a 64px minimum height and 44px minimum-height links replaces the preserved desktop navigation. Real media remains full-bleed; controls and text stay within the container rhythm.
+Navigation changes at 768px: a fixed angular mobile bar with a 56px height and a Menu disclosure replaces desktop navigation. Its expanded destinations retain 44px minimum-height targets. A separate black 1SP Agency link sits beside either bar and stays pinned when scrolling hides the main navigation. Real media remains full-bleed; controls and text stay within the container rhythm.
 
 Editorial blocks use `EditorialBlocks.module.css`: an 80rem maximum inner width and fluid section padding (`clamp(3rem, 6vw, 6rem)`). Content sections divide heading and reading column 4/8 from 768px and stack below it. When no heading is authored, desktop prose keeps its right-column alignment. Cases introductions reverse the emphasis to an 8/4 heading/support split. Contact uses a 5/7 split from 1024px and a single sequence below it, with top clearance (`clamp(7rem, 10vw, 10rem)`) for fixed navigation.
 
@@ -228,7 +228,7 @@ Badges are always square (1:1) at every breakpoint. Small, medium, and large siz
 
 ### Navigation and Text Links
 
-The mobile bar uses a near-opaque Paper Black field, a fine bottom rule, a small MSM logo, and compact links. The active destination is cyan. Keep the existing desktop refractive navigation and its effects. MSM-owned interactive elements receive a cyan 2px focus outline with 5px offset.
+The mobile bar uses a near-opaque Paper Black field, a fine perimeter rule, a small MSM logo, and a Menu disclosure. The active destination is cyan; Escape and clicking outside close the disclosure. Keep the desktop refractive navigation and its effects. Both bars reserve a separate fixed surface for the white 1SP Agency lockup on black, following the Renaissance treatment with MSM's square corners. The Agency link opens `https://1sp.agency` in a new tab and remains visible when the bar hides while scrolling down. Hidden bars are inert; scrolling up reveals them. MSM-owned interactive elements receive a cyan 2px focus outline with 5px offset.
 
 Unit cards are single direct links with a cyan SVG arrow. Hover moves the arrow diagonally over 180ms; the complete card is keyboard accessible and readable without hover.
 

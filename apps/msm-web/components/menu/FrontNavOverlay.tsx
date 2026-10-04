@@ -2,12 +2,10 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import StaggeredSlideUp from "../ui/StaggeredSlideUp";
-import { motion, useMotionValueEvent, useScroll } from "motion/react";
+import { motion, useMotionValueEvent, useReducedMotion, useScroll } from "motion/react";
 import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
 import { usePathname } from "next/navigation";
 import CaseGalleryMenu from "../data/data-CaseGalleryMenu";
-import OneSpMembershipButton from "@/components/ui/OneSpMembershipButton";
 import { GlassSurface, menuGlassSurfaceProps } from "../ui/glass-surface";
 import { NavbarMenu } from "@1sp/sanity-types/menu";
 
@@ -59,6 +57,29 @@ const msmNavGlassSurfaceProps = {
 // See docs/MSM_NAV_GLASS.md.
 const MotionGlassSurface = motion.create(GlassSurface);
 
+/** A separate fixed surface, so hiding the glass bar never hides this link. */
+function OneSpAgencyLink({ reduceMotion }: { reduceMotion: boolean }) {
+  return (
+    <motion.a
+      href="https://1sp.agency"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="1SP Agency website (opens in a new tab)"
+      data-onesp-agency=""
+      whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+      className="fixed right-3 top-3 z-[100000] flex h-14 w-[3.75rem] items-center justify-center bg-black text-white transition-colors duration-200 hover:bg-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-msm-cyan md:right-4 md:top-4 md:h-16 md:w-[7.5rem]"
+    >
+      <Image
+        src="/ci/1sp-fulllogotype-blk.svg"
+        alt=""
+        width={58}
+        height={31}
+        className="h-auto w-[34px] brightness-0 invert md:w-[58px]"
+      />
+    </motion.a>
+  );
+}
+
 const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   className = "",
   color = "light",
@@ -72,6 +93,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   const router = useOptimizedTransitionRouter();
   const pathname = usePathname() || "";
   const [showOverlay, setShowOverlay] = React.useState(false);
+  const [showMobileMenu, setShowMobileMenu] = React.useState(false);
+  const mobileNavRef = React.useRef<HTMLElement>(null);
+  const mobileMenuButtonRef = React.useRef<HTMLButtonElement>(null);
+  const reduceMotion = useReducedMotion() ?? false;
   const [caseStudies, setCaseStudies] = React.useState<CaseStudy[]>(initialCaseStudies);
   const [isCasesLoading, setIsCasesLoading] = React.useState(false);
   const [hasLoadedCases, setHasLoadedCases] = React.useState(
@@ -95,13 +120,15 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   }, []);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    if (!hasInitialAnimationCompleted) return; // Don't hide during initial animation
+    if (!hasInitialAnimationCompleted && !reduceMotion) return;
 
     const direction = latest > lastScrollY.current ? "down" : "up";
     const threshold = 10; // Minimum scroll distance to trigger show/hide
 
     if (Math.abs(latest - lastScrollY.current) > threshold) {
-      if (direction === "down" && latest > 100) {
+      if (latest <= 100) {
+        setIsNavVisible(true);
+      } else if (direction === "down") {
         setIsNavVisible(false);
       } else if (direction === "up") {
         setIsNavVisible(true);
@@ -109,6 +136,28 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
       lastScrollY.current = latest;
     }
   });
+
+  React.useEffect(() => {
+    if (!showMobileMenu) return;
+
+    function dismissOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setShowMobileMenu(false);
+        mobileMenuButtonRef.current?.focus();
+      }
+    }
+    function dismissOutside(event: PointerEvent) {
+      if (event.target instanceof Node && !mobileNavRef.current?.contains(event.target)) {
+        setShowMobileMenu(false);
+      }
+    }
+    document.addEventListener("keydown", dismissOnEscape);
+    document.addEventListener("pointerdown", dismissOutside);
+    return () => {
+      document.removeEventListener("keydown", dismissOnEscape);
+      document.removeEventListener("pointerdown", dismissOutside);
+    };
+  }, [showMobileMenu]);
 
   // Match case detail pages: /cases/[slug] or /locale/cases/[slug]
   const isCaseDetailRoute = React.useMemo(() => {
@@ -131,14 +180,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
     return "light";
   }, [isCaseDetailRoute, isAnyCasesRoute, color]);
 
-  const [detectedTheme, setDetectedTheme] = React.useState<"light" | "dark">(
-    effectiveColor
-  );
-
-  // Keep detectedTheme in sync with effectiveColor prop
-  React.useEffect(() => {
-    setDetectedTheme(effectiveColor);
-  }, [effectiveColor]);
+  const detectedTheme = effectiveColor;
 
   // Disable body scroll when overlay is open
   React.useEffect(() => {
@@ -237,7 +279,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   }, [channel, hasLoadedCases, isCaseDetailRoute, isCasesLoading, locale, showOverlay]);
 
   const itemClass = `text-xs leading-compress tracking-wide font-medium mr-8 inline-block `;
-  const navGlassRadius = 32;
+  const navGlassRadius = 0;
+  const isBarVisible = isNavVisible || showMobileMenu || showOverlay;
   const mobileLinks: NonNullable<NavbarMenu["menuItems"]> = (menuData?.menuItems?.length ? menuData.menuItems : [
     { _key: "cases", slug: "cases", title: "Cases" },
     { _key: "services", slug: "services", title: "Services" },
@@ -249,53 +292,93 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
   return (
     <>
-      <nav aria-label="Main navigation" className="fixed inset-x-0 top-0 z-[99999] flex min-h-16 items-center justify-between gap-2 border-b border-white/15 bg-msm-paper/90 px-5 text-msm-ink backdrop-blur-md md:hidden">
+      <motion.nav
+        ref={mobileNavRef}
+        aria-label="Main navigation"
+        aria-hidden={!isBarVisible}
+        inert={!isBarVisible}
+        data-nav-state={isBarVisible ? "visible" : "hidden"}
+        initial={false}
+        animate={{ opacity: isBarVisible ? 1 : 0, y: isBarVisible ? 0 : -84 }}
+        transition={{ duration: reduceMotion ? 0 : 0.3, ease: [0.4, 0, 0.2, 1] }}
+        className={`fixed left-3 right-[5rem] top-3 z-[99999] border border-white/15 bg-msm-paper/90 text-msm-ink backdrop-blur-md md:hidden ${isBarVisible ? "" : "pointer-events-none"}`}
+      >
+        <div className="flex h-14 items-center justify-between gap-2 px-3">
         <Link href={locale === "en" ? "/" : `/${locale}`} aria-label="MSM.digital home" className="flex min-h-11 min-w-11 items-center">
           <Image src={logoUrl} alt="" width={30} height={30} />
         </Link>
-        <div className="flex items-center gap-3">
-          {mobileLinks.map((item) => <Link key={item._key} href={`${locale === "en" ? "" : `/${locale}`}/${item.slug}`} aria-current={pathname.replace(/^\/en/, "") === `${locale === "en" ? "" : `/${locale}`}/${item.slug}` ? "page" : undefined} className="flex min-h-11 items-center text-xs aria-[current=page]:text-msm-cyan">{item.displayName || item.title}</Link>)}
+        <button
+          ref={mobileMenuButtonRef}
+          type="button"
+          aria-expanded={showMobileMenu}
+          aria-controls="msm-mobile-menu"
+          aria-label={showMobileMenu ? (locale === "de" ? "Menü schließen" : "Close menu") : (locale === "de" ? "Menü öffnen" : "Open menu")}
+          onClick={() => setShowMobileMenu((open) => !open)}
+          className="flex min-h-11 items-center gap-3 px-2 text-xs uppercase tracking-wider"
+        >
+          <span>{locale === "de" ? "Menü" : "Menu"}</span>
+          <span aria-hidden="true" className="grid gap-1">
+            <span className="block h-px w-4 bg-current" />
+            <span className="block h-px w-4 bg-current" />
+          </span>
+        </button>
         </div>
-      </nav>
+        {showMobileMenu && (
+          <motion.div
+            id="msm-mobile-menu"
+            initial={reduceMotion ? false : { opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.2 }}
+            className="flex max-h-[calc(100svh-6rem)] flex-col overflow-y-auto border-t border-white/15 px-3 py-2"
+          >
+            {mobileLinks.map((item) => <Link key={item._key} href={`${locale === "en" ? "" : `/${locale}`}/${item.slug}`} onClick={() => setShowMobileMenu(false)} aria-current={pathname.replace(/^\/en/, "") === `${locale === "en" ? "" : `/${locale}`}/${item.slug}` ? "page" : undefined} className="flex min-h-11 items-center px-2 text-sm aria-[current=page]:text-msm-cyan">{item.displayName || item.title}</Link>)}
+          </motion.div>
+        )}
+      </motion.nav>
+      <OneSpAgencyLink reduceMotion={reduceMotion} />
       <nav
         ref={navRef}
         style={{ zIndex: 99999 }}
-        className={`floating-nav z-99999 hidden fixed  left-0 w-full h-20 right-0 md:block iphone-landscape:scale-70 iphone-landscape:top-2 mx-auto ${textColor} ${className}`}
+        aria-label="Main navigation"
+        aria-hidden={!isBarVisible}
+        inert={!isBarVisible}
+        data-nav-state={isBarVisible ? "visible" : "hidden"}
+        className={`floating-nav hidden fixed left-4 right-[9.5rem] top-4 h-16 md:block ${isBarVisible ? "" : "pointer-events-none"} ${textColor} ${className}`}
       >
         <MotionGlassSurface
           key={hasInitialAnimationCompleted ? "settled" : "intro"}
           {...msmNavGlassSurfaceProps}
           borderRadius={navGlassRadius}
-          contentClassName="pointer-events-auto  w-[100vw]  w-full items-center px-6 py-2"
+          contentClassName="w-full items-center justify-between gap-6 px-6 py-2"
           width="100%"
           height="100%"
           initial={
-            hasInitialAnimationCompleted
+            hasInitialAnimationCompleted || reduceMotion
               ? false
-              : { opacity: 0, scale: 0.95, y: 0, clipPath: "inset(45% 49.9% 45% 49.9% round 999px)" }
+              : { opacity: 0, scale: 1, y: 0, clipPath: "inset(0% 49.9% 0% 49.9%)" }
           }
           animate={
-            hasInitialAnimationCompleted
+            hasInitialAnimationCompleted || reduceMotion
               ? {
-                opacity: isNavVisible ? 1 : 0,
-                y: isNavVisible ? 0 : -100,
+                opacity: isBarVisible ? 1 : 0,
+                y: isBarVisible ? 0 : -100,
                 scale: 1,
-                clipPath: "inset(0% 0% 0% 0%  1)",
+                clipPath: "inset(0%)",
               }
               : {
                 opacity: [0, 1, 1],
-                scale: [2, 1, 1],
+                scale: [1, 1, 1],
                 clipPath: [
-                  "inset(0% 49% 0% 49%  1)",       // full height pill
-                  "inset(0% 49% 0% 49%  1)",       // full height pill
-                  "inset(0% 0% 0% 0%  9919px)"          // full width menu
+                  "inset(0% 49% 0% 49%)",
+                  "inset(0% 49% 0% 49%)",
+                  "inset(0%)",
                 ],
               }
           }
           transition={
-            hasInitialAnimationCompleted
+            hasInitialAnimationCompleted || reduceMotion
               ? {
-                duration: 0.3,
+                duration: reduceMotion ? 0 : 0.3,
                 ease: [0.4, 0, 0.2, 1]
               }
               : {
@@ -304,7 +387,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               }
           }
         >
-          <div className="col-span-2 flex items-center pr-16 ml-32 justify-start">
+          <div className="flex shrink-0 items-center justify-start">
             <motion.div
 
               className=" flex items-start  justify-center">
@@ -312,7 +395,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 href={locale === "en" ? "/" : `/${locale}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  router.push(`/`);
+                  router.push(locale === "en" ? "/" : `/${locale}`);
                 }}
                 aria-label="Home"
                 className="flex items-center justify-center"
@@ -331,22 +414,12 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
           <motion.div
 
-            className="col-span-7   flex items-center "
+            className="flex flex-1 items-center justify-center"
           >
 
 
             {menuData?.menuItems && menuData.menuItems.length > 0 ? (
-              <StaggeredSlideUp
-                className="flex items-center "
-                delay={1.3}
-                staggerDelay={0.08}
-                duration={0.5}
-                distance={10}
-                easing="spring"
-                rootMargin="0px 0px -20px 0px"
-                once={true}
-                animateImmediately={true}
-              >
+              <div className="flex items-center">
                 {menuData.menuItems
                   .filter((item) => {
                     const isCasesPage = item.slug?.includes("cases");
@@ -362,8 +435,9 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                   .map((item) => (
                     <span key={item._key} className={itemClass}>
                       <Link
-                        className="hover:text-violet-400  transition-colors "
+                        className="transition-colors hover:text-msm-cyan aria-[current=page]:text-msm-cyan"
                         href={`${locale === "en" ? "" : `/${locale}`}/${item.slug}`}
+                        aria-current={pathname.replace(/^\/en/, "") === `${locale === "en" ? "" : `/${locale}`}/${item.slug}` ? "page" : undefined}
                         onClick={(e) => {
                           e.preventDefault();
                           router.push(`${locale === "en" ? "" : `/${locale}`}/${item.slug}`);
@@ -373,7 +447,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                       </Link>
                     </span>
                   ))}
-              </StaggeredSlideUp>
+              </div>
             ) : (
               <>
                 <span className={itemClass}>
@@ -430,7 +504,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
           </motion.div>
 
-          <div className=" flex relative justify-end w-full h-full items-center align-start   gap-1">
+          <div className="relative flex shrink-0 items-center justify-end gap-1">
             {/* All Cases button only on case detail pages */}
             {isCaseDetailRoute && (
               <button
@@ -441,7 +515,6 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 All Cases
               </button>
             )}
-            <OneSpMembershipButton eyebrow={menuData?.oneSpMembershipLabel} />
           </div>
 
 

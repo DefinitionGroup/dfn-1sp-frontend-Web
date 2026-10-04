@@ -2,15 +2,15 @@
 
 Reviewed 21 September 2026 against the local checkout; **updated 4 October 2026** with the 21 commits since then, a side-effect review of each and a read-only check of content in the `production` dataset, currently used as staging. This is the entry point for the **entire 1SP multisite platform**, not only service consolidation. Use [the documentation index](README.md) for task-specific guides, [the feature map](PROJECT_FEATURES.md) for implementation locations, and [operations](PROJECT_OPERATIONS.md) for previews, data changes and verification.
 
-The subsequent [MSM implementation and legal-copy review](records/msm/msm-fixes-seo-and-legal-review-2026-10-04.md) records uncommitted fixes, metadata fields, successful builds and the authorized staging CMS mutation. The resolved findings below refer to that follow-up; remaining risks still need their own checks.
+The subsequent [MSM implementation and legal-copy review](records/msm/msm-fixes-seo-and-legal-review-2026-10-04.md) records fixes, metadata fields, successful builds and the authorized staging CMS mutation, committed and pushed in `cc0b37a4c`. The resolved findings below refer to that follow-up; remaining risks still need their own checks.
 
 ## Establish the current state
 
 1. Read [AGENTS.md](../AGENTS.md), this handoff and the target app's design guide when changing its frontend. Several app design guides are now partly stale. See [stale documentation](#stale-documentation-found-4-october).
 2. Inspect `git status`, branch and HEAD. At the 4 October update:
-   - The worktree is on `multiseite/stage` at HEAD `c0364fc992671fd580c0f39ac9b57f29561a240f`, level with the reviewed `origin/multiseite/stage`. The documentation review and subsequent MSM fixes are uncommitted.
+   - The documentation review and subsequent MSM fixes were committed and pushed on `multiseite/stage` in `cc0b37a4c60865c50f7d6539a7c29150d56d9a56`, verified against the remote branch. The requested detached MSM navigation treatment follows that checkpoint.
    - The uncommitted work recorded on 21 September (MSM carousel and case motion, the shared membership button, schema wiring, documentation) was committed in `3d2fe05b5`.
-   - `origin/main`, the live 1SP site, is `daca0aa48` plus the two Personio hotfix PRs (#140, #141). Stage is 64 commits ahead of `main`. The 4 commits on `main` that stage lacks are patch-equivalent to `34adb3776` and `c0364fc99`, plus their merge commits.
+   - At the reviewed base, `origin/main`, the live 1SP site, was `daca0aa48` plus the two Personio hotfix PRs (#140, #141), and stage was 64 commits ahead of `main`. The 4 commits on `main` that stage lacked were patch-equivalent to `34adb3776` and `c0364fc99`, plus their merge commits. The subsequent checkpoint adds one stage commit; refresh remote refs before release decisions.
 3. Identify the app, channel, language, dataset and published/draft perspective. Verify environment and content with [local Sanity diagnostics](local-sanity-debugging.md) before diagnosing missing content.
 4. Find the relevant renderer, schema, query and current editing owner using [the feature map](PROJECT_FEATURES.md). Read dated records only for evidence and rationale.
 5. Before publishing or releasing, establish the requested scope and current provider state using [deployment verification](DEPLOYMENT.md). Old approvals recorded in archived runbooks are historical.
@@ -99,7 +99,8 @@ The homepage is the visual reference for angular framing, badges, selection sequ
 
 - **Hero:** authored headlines (`headlineReveal`, used on both homepages) now flicker in word by word (`FlickerWords`). The eyebrow decrypts afterwards and the selection frames dismiss.
 - **Decrypt effect:** rotating words keep the `@sacred` `DecryptRotator` decrypt effect.
-- **Preview controls:** annotations must be cleaned from control values so drafts choose the same renderer/animation as published content. The uncommitted follow-up adds the previously missing `paddingBottom`.
+- **Preview controls:** annotations must be cleaned from control values so drafts choose the same renderer/animation as published content. The committed follow-up adds the previously missing `paddingBottom`.
+- **Navigation follow-up:** a separate black 1SP Agency link replaces MSM's lime membership button and remains fixed when scrolling hides the glass bar. Mobile navigation uses a compact Menu disclosure with the same CMS destinations and square corners.
 - **SEO:** the follow-up centralizes metadata, adds editable social overrides and noindex, honors preview guards and uses existing Cloudinary stills. MSM JSON-LD now owns its brand and localized routes. See the [verification record](records/msm/msm-fixes-seo-and-legal-review-2026-10-04.md).
 
 MSM Units own references to cases and people; follow [the relationship decision](../apps/msm-web/docs/adr/0001-unit-owned-shared-content-attribution.md). The Services directory, service carousel, global service editions and service pages are separate consumers, with the duplication documented in the service audit.
@@ -179,14 +180,14 @@ Severity: **bug** = wrong today; **risk** = breaks under a plausible condition; 
 | --- | --- | --- | --- |
 | Risk | Studio | Studio served from `main` lacks the three new block types and the new fields. Staging `production` content already uses them (MSM homepages, FLZR home/agency); opening that dataset in main's Studio bundle would show unknown types/fields | Verify the Studio dataset and bundle editors use; use stage's schema when editing those staging documents |
 | Risk | Staging drafts | Twelve draft documents in staging `production`: eleven content drafts and one internal preview-secret document. Content drafts include 1SP Home (`drafts.e9c40d17…`, 20 Sep), MSM Units (2 Oct), 1SP `test`, an MSM service, FLZR `TOMS` and navbar menu, a client and four service groups | Review content draft diffs before publishing or the future dataset switch. These staging drafts do not currently publish to live 1SP; drafts in live `dev-dataset` were not checked |
-| Resolved, uncommitted | People | Renaissance portraits, MSM leadership and profiles now resolve the website-image override and shared fallback | Query fixtures and affected builds pass; see the follow-up record |
-| Resolved, uncommitted | MSM preview | `paddingBottom` is now included in preview-control cleaning | Annotated preview fixture passes |
+| Resolved, committed | People | Renaissance portraits, MSM leadership and profiles now resolve the website-image override and shared fallback | Query fixtures and affected builds pass; see the follow-up record |
+| Resolved, committed | MSM preview | `paddingBottom` is now included in preview-control cleaning | Annotated preview fixture passes |
 | Risk | FLZR conversion | The slim footer removed the site-wide “Start a project” enquiry link. Case pages without a contact person now have no enquiry path. The DEKRA badge is no longer rendered anywhere | Confirm the intent; reconcile with the [conversion plan](FLZR_CONVERSION_PLAN.md) |
 | Risk | Shared groups | `OneSpScope` forces every group heading white, unlayered. Light-surface blocks allowed in groups (Personio job cards, cards step, dimmed two-tone headings) would show white on light grey | Published group use found in staging `production`: FLZR DE/PL homepage with dark blocks. Check live `dev-dataset` before merging and inspect new light-surface group compositions |
 | Risk | FLZR cinematic | Pinning fails if the block sits inside a section band (`.flzr-section-surface` has `overflow: hidden`). Hydration remount shifts layout on desktop. Phones fetch the first video twice in the static layout. Cards are `inert` until revealed (keyboard skip) | Browser-check before promotion; consider guarding placement |
 | Risk | MSM motion/SSR | Text is hidden until JS or scroll: the DecryptRotator delay (case h1, hero eyebrow), Media Feature and globe copy at opacity 0, FlickerWords visible→hidden→visible on hydration. Also contradicts `DESIGN.md` (“never hides text behind an opacity gate”) | Browser-check slow-hydration and no-JS behavior |
 | Risk | MSM gallery | The server renders 12 cases and mobile drops to 6 after hydration (layout shift). Later pages are absent from server HTML, page state is not in the URL, and pagination also hits people/unit pages | Accept or adjust before promotion |
-| Resolved, uncommitted | MSM | Optional service carousel now handles null/invalid selections and catches its CMS fetch failure | Forced-outage harness returns safely; browser carousel navigation passes |
+| Resolved, committed | MSM | Optional service carousel now handles null/invalid selections and catches its CMS fetch failure | Forced-outage harness returns safely; browser carousel navigation passes |
 | Risk | MSM globe | Globe now faces `initialPosition.lng`, which also changes the `smartUnitsGlobe` block | Check pages using smart units globe |
 | Risk | Deployment | The beta tier skips dataset/channel/site/token validation. A beta project with the wrong `NEXT_PUBLIC_CHANNEL` passes | Check env per beta project when (re)deploying |
 | Risk | FLZR content | All 30 replacement case images are 500px wide and now feed og:image, carousels and gallery cards | Source larger files where visible |
@@ -194,7 +195,7 @@ Severity: **bug** = wrong today; **risk** = breaks under a plausible condition; 
 | Note | Renaissance | The lockup teal `#3e9da7` differs from token `#3b9ca7`. A preloaded Aspekta copy in the footer banner may download alongside the new non-preloaded one | Visual/perf check |
 | Note | Blocks | `interactiveServiceCarousel` is not channel-gated in Studio and other sites have no renderer. `paddingBottom` is supported by FLZR, MSM and Renaissance. `msmMediaFeature` is validation-gated | Optional Studio guard for the carousel |
 | Note | Code health | `footer-backup-full.tsx` is dead code. `PageWithMapVertical` is no longer used, so MSM `navPointName`/`hideFromNav` fields do nothing. The rotating MSM hero words keep an inline weight of 300 against the 400 headline rule | Clean up when touching these files |
-| Resolved, uncommitted | Tooling | `test:component-import` now uses `tsx`, resolving the pre-existing extensionless-import failure | `pnpm test:component-import` passes 5/5 |
+| Resolved, committed | Tooling | `test:component-import` now uses `tsx`, resolving the pre-existing extensionless-import failure | `pnpm test:component-import` passes 5/5 |
 | Note | Tooling | `.claude/launch.json` relies on `autoPort` (dev scripts have no `-p`); FLZR is declared on 3000, not 3001 | Cosmetic |
 
 ### Verification performed for the initial handoff review
@@ -241,7 +242,7 @@ See [operations](PROJECT_OPERATIONS.md) for Draft Mode, revalidation, integratio
 | Decision needed | Promotion path | Decide when stage merges to `main` (live 1SP and its Studio), when live 1SP switches from `dev-dataset` to the prepared `production` dataset, and when FLZR/MSM/Renaissance get production projects. These are separate release decisions |
 | Audited, proposed | Service ownership consolidation | Resolve ownership and pilot MSM; preserve Renaissance references and FLZR modal/page behavior. [Scoped queue](SERVICE_CONTENT_HANDOFF.md) |
 | Content follow-up | MSM DE parity; FLZR case-media `RETIRE_OWN_VIDEO`; units without `footerBannerLogo`; FLZR DE/PL footer banner; open drafts | Confirm intent per item; record script runs under `records/` |
-| Implemented, uncommitted | Person-image coverage, MSM preview spacing, carousel recovery, import runner, MSM SEO and homepage globe removal | Builds and scoped checks pass; [implementation record](records/msm/msm-fixes-seo-and-legal-review-2026-10-04.md) |
+| Committed and pushed, `cc0b37a4c` | Person-image coverage, MSM preview spacing, carousel recovery, import runner, MSM SEO and homepage globe removal | Builds and scoped checks pass; [implementation record](records/msm/msm-fixes-seo-and-legal-review-2026-10-04.md) |
 | Editorial reconciliation | Supplied MSM legal and privacy Word files differ from the existing legal bodies | Comparison recorded; select entity scope and German wording before replacing bodies |
 | Small documentation fixes | Studio Content help text and `oneSpMembershipLabel` description | Separate scoped edits |
 | Documentation debt | App design guides and FLZR conversion docs (below) | Update the owning guides |

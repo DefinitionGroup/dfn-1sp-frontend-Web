@@ -1,6 +1,6 @@
 # MSM fixes SEO and legal content review
 
-Implemented and checked on 4 October 2026 in `multiseite/stage`, based on `c0364fc992671fd580c0f39ac9b57f29561a240f`. Code and documentation are uncommitted. No Git push or hosted deployment was performed.
+Implemented and checked on 4 October 2026 in `multiseite/stage`, based on `c0364fc992671fd580c0f39ac9b57f29561a240f`. Code and documentation were committed and pushed in `cc0b37a4c60865c50f7d6539a7c29150d56d9a56`, verified against the remote branch. No hosted deployment was verified.
 
 ## Scope and implementation
 
@@ -15,6 +15,14 @@ The requested sequence was to fix the confirmed defects, remove the homepage glo
 - Corrected a browser-confirmed existing defect: MSM JSON-LD previously identified its website, organization and several routes as 1SP. The MSM adapter scopes those generated identities and routes to MSM while preserving third-party URLs. The root 1SP generators are unchanged.
 
 Sharing uses existing Cloudinary assets. Videos supply JPEG still frames. The default image is a still from MSM's existing `MSM_VIDEO_WIP_ndnprm` homepage video, at 1200 × 630. No AI image generation was used. An initially attempted Next.js fallback-image route failed on its variable font and was removed from the final change.
+
+## Subsequent navigation update
+
+After the checkpoint push, the user requested the Renaissance menu treatment for MSM. MSM now renders the white 1SP Agency lockup on a separate black fixed link, with its existing square-corner design. It remains visible while scrolling hides the main glass bar. The mobile bar has a Menu disclosure with the same CMS destinations, Escape/outside dismissal and inert hidden navigation. Reduced motion skips animated navigation translations and press scaling. This follow-up changes only MSM presentation and documentation; it makes no CMS mutation and forms a separate navigation commit after the checkpoint.
+
+The desktop links now appear with the bar, without restarting a second reveal when the glass filter remounts. Invalid entrance clip-path values were replaced with valid square inset masks; reduced-motion startup immediately resolves to `inset(0%)`, opacity 1 and no transform. The desktop home link also retains the active locale.
+
+Verification after the final navigation change: MSM production build passed (165 routes), scoped ESLint reported zero warnings/errors, and `git diff --check` passed. Browser checks at 1440, 768, 390 and 320px confirmed no horizontal overflow or overlap with the Agency surface, including the case-detail All Cases control at 768px. Assertions verified bar hide/restore and unchanged Agency position in normal and reduced motion. EN/DE mobile destinations, active state, outside dismissal, Escape/focus return, keyboard focus visibility and navigation to Contact were checked. The final browser session reported no page errors; an earlier hidden, stalled automation session was closed and the scroll assertions repeated in a fresh visible session.
 
 ## Sanity changes and recovery
 
