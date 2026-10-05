@@ -103,7 +103,7 @@ export default function CaseStudyPageClient({
       {caseStudy.casesPageBuilder &&
         Array.isArray(caseStudy.casesPageBuilder) &&
         caseStudy.casesPageBuilder.length > 0 && (
-          <CasePageBuilder content={caseStudy.casesPageBuilder} />
+          <CasePageBuilder content={caseStudy.casesPageBuilder} hasConnectedPerson={caseStudy.people?.some((entry) => Boolean(entry?.person))} />
         )}
 
       <CasePoweredByContact caseStudy={caseStudy} locale={locale} />

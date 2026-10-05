@@ -1,4 +1,4 @@
-import GlobalsBrowser from "@1sp/sanity-schema/studio";
+import GlobalsBrowser, {GLOBAL_BROWSER_TYPES} from "@1sp/sanity-schema/studio";
 import type {
   StructureResolver,
   ListItemBuilder,
@@ -66,8 +66,19 @@ const createAssignedGlobalListItem = (
   channel: string,
   language: string,
   icon: React.ComponentType
-): ListItemBuilder =>
-  S.listItem()
+): ListItemBuilder => {
+  // Assigned shortcuts share Globals' search, draft handling and pagination.
+  // Units retain their existing list because they are not a GlobalsBrowser type.
+  if (GLOBAL_BROWSER_TYPES.some(type => type === schemaType)) {
+    return S.listItem().title(title).icon(icon).child(
+      S.component().title(`${title} (${language.toUpperCase()})`)
+        .component(GlobalsBrowser)
+        .options({schemaType, fixedScope: {channel, language}})
+        .child((documentId: string) => S.document().documentId(documentId).schemaType(schemaType))
+    );
+  }
+
+  return S.listItem()
     .title(title)
     .icon(icon)
     .child(
@@ -79,6 +90,7 @@ const createAssignedGlobalListItem = (
           createGlobalDocWithChannel(S, schemaType, channel, language),
         ])
     );
+};
 
 // --------- Channel Structure ---------
 

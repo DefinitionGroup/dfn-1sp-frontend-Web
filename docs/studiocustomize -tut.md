@@ -4,7 +4,7 @@
 
 The Globals browser is a small React component inside Sanity Studio. It gives Case Studies, People, Clients and Services the same channel selector, language selector, search field and document list. Selecting a row opens Sanity's normal document editor.
 
-The customization changes how editors find content. It keeps the existing global documents, references and channel assignments. **Globals** remains the navigation title, and website-specific **Assigned …** shortcuts still lead to those same documents.
+The customization changes how editors find content. It keeps the existing global documents, references and channel assignments. **Globals** remains the navigation title. Website-specific **Assigned Case Studies, Services, People and Clients** shortcuts use the same browser with their channel and language fixed; selecting that same scope in Globals gives identical search results. Assigned Units retain the standard Studio list.
 
 ```mermaid
 flowchart LR
@@ -77,7 +77,7 @@ _type == $schemaType
 )
 ```
 
-The membership check matters because global documents can belong to several channels. Search matches shared names/titles and website-edition names/titles. It strips user-entered wildcards, adds word-prefix wildcards and uses `useDeferredValue` for the search input; this is not a fixed-delay debounce or full-text body search.
+The membership check matters because global documents can belong to several channels. Search matches shared names, titles, subtitles, descriptions, slugs, document IDs and SEO text, plus website-edition names, titles, subtitles, descriptions and SEO text. Cases also match the related client's shared and website-edition names. Every search word must match, but words can appear in different fields. For example, **Klett** finds **Digitizing the Way You Learn** through its related client, **Ernst Klett Verlag**. Search strips user-entered wildcards, adds word-prefix wildcards and uses `useDeferredValue` for the search input; this is not a fixed-delay debounce or full-text page-builder body search.
 
 The query returns both `total` and `items`. It initially fetches 100 rows; **Load more** increases the limit by 100 and fetches the expanded list again. Rows sort alphabetically using the selected website's name/title when available, with the document ID as a stable tie-breaker.
 
@@ -96,7 +96,7 @@ Here, `^._id` refers to the outer document being checked. The full query also ex
 
 **6. Keep results current and creation predictable**
 
-`client.listen()` watches the current document type. Events trigger another query, grouped with a 200 ms debounce. Effect cleanup removes the listener and prevents obsolete responses from updating the pane. Loading, empty and retry states are rendered explicitly.
+`client.listen()` watches the current document type, plus clients when browsing cases so client-name changes refresh searches. Events trigger another query, grouped with a 200 ms debounce. Effect cleanup removes the listener and prevents obsolete responses from updating the pane. Loading, empty and retry states are rendered explicitly.
 
 **New document** uses an `IntentLink` and templates registered in [sanity.config.ts](../sanity.config.ts). The selected language and channel become initial values. All channels or Unassigned starts with an empty channel array. All languages, or a language unsupported by the selected website, hides creation until a valid scope is chosen. Filtering existing documents does not change their assignments.
 
@@ -111,7 +111,7 @@ pnpm exec tsx --test scripts/globals-browser.test.ts
 pnpm exec tsc --noEmit
 ```
 
-The five existing tests cover Unassigned, draft precedence, combined filtering/search, pagination counts and creation defaults. In local Studio, also check a channel filter, an empty language result, opening a document and loading more than 100 rows.
+The tests cover Unassigned, draft precedence, combined filtering/search, pagination counts, creation defaults, the Klett case regression, metadata/edition search and fixed assigned-scope parity. In local Studio, also compare an assigned shortcut with the same Globals filters, check an empty language result, open a document and load more than 100 rows.
 
 To add another global type, add it to `GLOBAL_BROWSER_TYPES`, register its `createGlobalBrowser(...)` navigation item and add its creation template. Check that its fields match the query's assumptions: `channel[]`, `language`, and `name` or `title`. Adapt its title/thumbnail projection if necessary. New website choices come from central site configuration; they do not require another hardcoded dropdown list.
 

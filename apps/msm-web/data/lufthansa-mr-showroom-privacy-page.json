@@ -1,0 +1,1481 @@
+{
+  "_id": "page-msm-privacy-policy-for-lufthansa-mr-showroom-en",
+  "_type": "page",
+  "title": "Privacy Policy for Lufthansa MR Showroom",
+  "slug": {
+    "_type": "slug",
+    "current": "privacy-policy-for-lufthansa-mr-showroom"
+  },
+  "channel": "msmWeb",
+  "language": "en",
+  "isHomepage": false,
+  "navbarVariant": "light",
+  "metadata": {
+    "_type": "metadata",
+    "title": "Privacy Policy for Lufthansa MR Showroom | MSM.digital",
+    "description": "Privacy Policy for Lufthansa MR Showroom: collection, use and disclosure of personal data, privacy rights and contact information.",
+    "openGraphTitle": "Privacy Policy for Lufthansa MR Showroom | MSM.digital",
+    "openGraphDescription": "Privacy Policy for Lufthansa MR Showroom: collection, use and disclosure of personal data, privacy rights and contact information."
+  },
+  "content": [
+    {
+      "_key": "hero",
+      "_type": "servicesHeroWithBadge",
+      "title": "Privacy Policy",
+      "titleTag": "h1",
+      "subtitle": "Lufthansa MR Showroom",
+      "showCta": false,
+      "useVideo": true,
+      "backgroundVideo": {
+        "_type": "cloudinaryImage",
+        "asset": {
+          "_key": "Pfelxvk1i2It3CpKSt4y8",
+          "_type": "cloudinary.asset",
+          "display_name": "Zuckerberg_Inflight_n6u4ue",
+          "duration": 17.706009,
+          "format": "mp4",
+          "height": 1920,
+          "id": "6526f01eb6cf6b1e75e3ff4900b698ad",
+          "metadata": {},
+          "public_id": "Zuckerberg_Inflight_n6u4ue",
+          "resource_type": "video",
+          "secure_url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1763461276/Zuckerberg_Inflight_n6u4ue.mp4",
+          "tags": [],
+          "type": "upload",
+          "url": "http://res.cloudinary.com/dsu07dnes/video/upload/v1763461276/Zuckerberg_Inflight_n6u4ue.mp4",
+          "version": 1763461276,
+          "width": 1080
+        },
+        "alt": "Lufthansa mixed reality inflight experience"
+      },
+      "enableParallax": false
+    },
+    {
+      "_key": "policy-0",
+      "_type": "contentSection",
+      "title": "Overview",
+      "contentSize": "lg",
+      "navPointName": "Overview",
+      "content": [
+        {
+          "_key": "paragraph-0",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "Last updated: June 20, 2023"
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-1",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You."
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-2",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_key": "policy-1",
+      "_type": "contentSection",
+      "title": "Interpretation and Definitions",
+      "contentSize": "lg",
+      "navPointName": "Interpretation and Definitions",
+      "content": [
+        {
+          "_key": "paragraph-3",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural."
+            }
+          ]
+        },
+        {
+          "_key": "heading-4",
+          "_type": "block",
+          "style": "h3",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": "Definitions"
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-4",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "For the purposes of this Privacy Policy:"
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-5",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "Account"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " means a unique account created for You to access our Service or parts of our Service."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-6",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "Affiliate"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " means an entity that controls, is controlled by or is under common control with a party, where “control” means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-7",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "Application"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " refers to Lufthansa MR Showroom, the software program provided by the Company."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-8",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "Company (referred to as either “the Company”, “We”, “Us” or “Our” in this Agreement)"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " refers to MSM.digital AR / VR Labs GmbH, Hamburger Straße 11, 22083 Hamburg."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-9",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "Country"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " refers to: Germany"
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-10",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "Device"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " means any device that can access the Service such as a computer, a cellphone, a digital tablet, or a head-mounted display."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-11",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "Personal Data is any information that relates to an identified or identifiable individual."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-12",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "Service"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " refers to the Application."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-13",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "Service Provider"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " means any natural or legal person who processes the data on behalf of the Company. It refers to third-party companies or individuals employed by the Company to facilitate the Service, to provide the Service on behalf of the Company, to perform services related to the Service or to assist the Company in analyzing how the Service is used."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-14",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "Usage Data"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " refers to data collected automatically, either generated by the use of the Service or from the Service infrastructure itself (for example, the duration of a page visit)."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-15",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "You"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        }
+      ]
+    },
+    {
+      "_key": "policy-2",
+      "_type": "contentSection",
+      "title": "Collecting Your Personal Data",
+      "contentSize": "lg",
+      "navPointName": "Collecting Your Personal Data",
+      "content": [
+        {
+          "_key": "heading-16",
+          "_type": "block",
+          "style": "h3",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": "Personal Data"
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-16",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You. Personally identifiable information may include, but is not limited to:"
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-17",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "Email address"
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-18",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "Usage Data"
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "heading-19",
+          "_type": "block",
+          "style": "h3",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": "Usage Data"
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-19",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "Usage Data is collected automatically when using the Service."
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-20",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "Usage Data may include information such as Your Device’s Internet Protocol address (e.g. IP address), browser type, browser version, the pages of our Service that You visit, the time and date of Your visit, the time spent on those pages, unique device identifiers and other diagnostic data."
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-21",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "When You access the Service by or through a mobile device, We may collect certain information automatically, including, but not limited to, the type of mobile device You use, Your mobile device unique ID, the IP address of Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers and other diagnostic data."
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-22",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "We may also collect information that Your browser sends whenever You visit our Service or when You access the Service by or through a mobile device."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_key": "policy-3",
+      "_type": "contentSection",
+      "title": "Use of Your Personal Data",
+      "contentSize": "lg",
+      "navPointName": "Use of Your Personal Data",
+      "content": [
+        {
+          "_key": "paragraph-23",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "The Company may use Personal Data for the following purposes:"
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-24",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "To provide and maintain our Service, including to monitor the usage of our Service."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-25",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "To manage Your Account:"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " to manage Your registration as a user of the Service. The Personal Data You provide can give You access to different functionalities of the Service that are available to You as a registered user."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-26",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "For the performance of a contract:"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " the development, compliance and undertaking of the purchase contract for the products, items or services You have purchased or of any other contract with Us through the Service."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-27",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "To contact You:"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " To contact You by email, telephone calls, SMS, or other equivalent forms of electronic communication, such as a mobile application’s push notifications regarding updates or informative communications related to the functionalities, products or contracted services, including the security updates, when necessary or reasonable for their implementation."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-28",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "To provide You with news, special offers and general information about other goods, services and events which we offer that are similar to those that you have already purchased or enquired about unless You have opted not to receive such information."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-29",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "To manage Your requests:"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " To attend and manage Your requests to Us."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-30",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "For business transfers:"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " We may use Your information to evaluate or conduct a merger, divestiture, restructuring, reorganization, dissolution, or other sale or transfer of some or all of Our assets, whether as a going concern or as part of bankruptcy, liquidation, or similar proceeding, in which Personal Data held by Us about our Service users is among the assets transferred."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-31",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "For other purposes:"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " We may use Your information for other purposes, such as data analysis, identifying usage trends, determining the effectiveness of our promotional campaigns and to evaluate and improve our Service, products, services, marketing and your experience."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "heading-32",
+          "_type": "block",
+          "style": "h3",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": "Sharing Your Personal Data"
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-32",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "We may share Your personal information in the following situations:"
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-33",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "With Service Providers:"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " We may share Your personal information with Service Providers to monitor and analyze the use of our Service, to contact You."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-34",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "For business transfers:"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " We may share or transfer Your personal information in connection with, or during negotiations of, any merger, sale of Company assets, financing, or acquisition of all or a portion of Our business to another company."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-35",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "With Affiliates:"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " We may share Your information with Our affiliates, in which case we will require those affiliates to honor this Privacy Policy. Affiliates include Our parent company and any other subsidiaries, joint venture partners or other companies that We control or that are under common control with Us."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-36",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "With business partners:"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " We may share Your information with Our business partners to offer You certain products, services or promotions."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-37",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "With other users:"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " when You share personal information or otherwise interact in the public areas with other users, such information may be viewed by all users and may be publicly distributed outside."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-38",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "label",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "With Your consent:"
+            },
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": " We may disclose Your personal information for any other purpose with Your consent."
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        }
+      ]
+    },
+    {
+      "_key": "policy-4",
+      "_type": "contentSection",
+      "title": "Retention of Your Personal Data",
+      "contentSize": "lg",
+      "navPointName": "Retention of Your Personal Data",
+      "content": [
+        {
+          "_key": "paragraph-39",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "The Company will retain Your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use Your Personal Data to the extent necessary to comply with our legal obligations (for example, if we are required to retain your data to comply with applicable laws), resolve disputes, and enforce our legal agreements and policies."
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-40",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "The Company will also retain Usage Data for internal analysis purposes. Usage Data is generally retained for a shorter period of time, except when this data is used to strengthen the security or to improve the functionality of Our Service, or We are legally obligated to retain this data for longer time periods."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_key": "policy-5",
+      "_type": "contentSection",
+      "title": "Transfer of Your Personal Data",
+      "contentSize": "lg",
+      "navPointName": "Transfer of Your Personal Data",
+      "content": [
+        {
+          "_key": "paragraph-41",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "Your information, including Personal Data, is processed at the Company’s operating offices and in any other places where the parties involved in the processing are located. It means that this information may be transferred to — and maintained on — computers located outside of Your state, province, country or other governmental jurisdiction where the data protection laws may differ than those from Your jurisdiction."
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-42",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "Your consent to this Privacy Policy followed by Your submission of such information represents Your agreement to that transfer."
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-43",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "The Company will take all steps reasonably necessary to ensure that Your data is treated securely and in accordance with this Privacy Policy and no transfer of Your Personal Data will take place to an organization or a country unless there are adequate controls in place including the security of Your data and other personal information."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_key": "policy-6",
+      "_type": "contentSection",
+      "title": "Delete Your Personal Data",
+      "contentSize": "lg",
+      "navPointName": "Delete Your Personal Data",
+      "content": [
+        {
+          "_key": "paragraph-44",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "You have the right to delete or request that We assist in deleting the Personal Data that We have collected about You."
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-45",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "Our Service may give You the ability to delete certain information about You from within the Service."
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-46",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "You may update, amend, or delete Your information at any time by signing in to Your Account, if you have one, and visiting the account settings section that allows you to manage Your personal information. You may also contact Us to request access to, correct, or delete any personal information that You have provided to Us."
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-47",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "Please note, however, that We may need to retain certain information when we have a legal obligation or lawful basis to do so."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_key": "policy-7",
+      "_type": "contentSection",
+      "title": "Disclosure of Your Personal Data",
+      "contentSize": "lg",
+      "navPointName": "Disclosure of Your Personal Data",
+      "content": [
+        {
+          "_key": "heading-48",
+          "_type": "block",
+          "style": "h3",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": "Business Transactions"
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-48",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "If the Company is involved in a merger, acquisition or asset sale, Your Personal Data may be transferred. We will provide notice before Your Personal Data is transferred and becomes subject to a different Privacy Policy."
+            }
+          ]
+        },
+        {
+          "_key": "heading-49",
+          "_type": "block",
+          "style": "h3",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": "Law Enforcement"
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-49",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "Under certain circumstances, the Company may be required to disclose Your Personal Data if required to do so by law or in response to valid requests by public authorities (e.g. a court or a government agency)."
+            }
+          ]
+        },
+        {
+          "_key": "heading-50",
+          "_type": "block",
+          "style": "h3",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "text",
+              "_type": "span",
+              "marks": [],
+              "text": "Other Legal Requirements"
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-50",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "The Company may disclose Your Personal Data in the good faith belief that such action is necessary to:"
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-51",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "Comply with a legal obligation"
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-52",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "Protect and defend the rights or property of the Company"
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-53",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "Prevent or investigate possible wrongdoing in connection with the Service"
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-54",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "Protect the personal safety of Users of the Service or the public"
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-55",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "Protect against legal liability"
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        }
+      ]
+    },
+    {
+      "_key": "policy-8",
+      "_type": "contentSection",
+      "title": "Security of Your Personal Data",
+      "contentSize": "lg",
+      "navPointName": "Security of Your Personal Data",
+      "content": [
+        {
+          "_key": "paragraph-56",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "The security of Your Personal Data is important to Us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While We strive to use commercially acceptable means to protect Your Personal Data, We cannot guarantee its absolute security."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_key": "policy-9",
+      "_type": "contentSection",
+      "title": "Children’s Privacy",
+      "contentSize": "lg",
+      "navPointName": "Children’s Privacy",
+      "content": [
+        {
+          "_key": "paragraph-57",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "Our Service does not address anyone under the age of 13. We do not knowingly collect personally identifiable information from anyone under the age of 13. If You are a parent or guardian and You are aware that Your child has provided Us with Personal Data, please contact Us. If We become aware that We have collected Personal Data from anyone under the age of 13 without verification of parental consent, We take steps to remove that information from Our servers."
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-58",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "If We need to rely on consent as a legal basis for processing Your information and Your country requires consent from a parent, We may require Your parent’s consent before We collect and use that information."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_key": "policy-10",
+      "_type": "contentSection",
+      "title": "Links to Other Websites",
+      "contentSize": "lg",
+      "navPointName": "Links to Other Websites",
+      "content": [
+        {
+          "_key": "paragraph-59",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "Our Service may contain links to other websites that are not operated by Us. If You click on a third party link, You will be directed to that third party’s site. We strongly advise You to review the Privacy Policy of every site You visit."
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-60",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "We have no control over and assume no responsibility for the content, privacy policies or practices of any third party sites or services."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_key": "policy-11",
+      "_type": "contentSection",
+      "title": "Changes to This Privacy Policy",
+      "contentSize": "lg",
+      "navPointName": "Changes to This Privacy Policy",
+      "content": [
+        {
+          "_key": "paragraph-61",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "We may update Our Privacy Policy from time to time. We will notify You of any changes by posting the new Privacy Policy on this page."
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-62",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "We will let You know via email and/or a prominent notice on Our Service, prior to the change becoming effective and update the “Last updated” date at the top of this Privacy Policy."
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-63",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_key": "policy-12",
+      "_type": "contentSection",
+      "title": "Contact Us",
+      "contentSize": "lg",
+      "navPointName": "Contact Us",
+      "content": [
+        {
+          "_key": "paragraph-64",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "If you have any questions about this Privacy Policy, You can contact us:"
+            }
+          ]
+        },
+        {
+          "_key": "paragraph-65",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [
+            {
+              "_key": "link-0",
+              "_type": "link",
+              "href": "mailto:info@msm.digital",
+              "blank": false
+            }
+          ],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "By email: "
+            },
+            {
+              "_key": "span-1",
+              "_type": "span",
+              "marks": [
+                "link-0"
+              ],
+              "text": "info@msm.digital"
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        },
+        {
+          "_key": "paragraph-66",
+          "_type": "block",
+          "style": "normal",
+          "markDefs": [
+            {
+              "_key": "link-0",
+              "_type": "link",
+              "href": "https://www.msm.digital/contact/",
+              "blank": false
+            }
+          ],
+          "children": [
+            {
+              "_key": "span-0",
+              "_type": "span",
+              "marks": [],
+              "text": "By visiting this page on our website: "
+            },
+            {
+              "_key": "span-1",
+              "_type": "span",
+              "marks": [
+                "link-0"
+              ],
+              "text": "https://www.msm.digital/contact/"
+            }
+          ],
+          "listItem": "bullet",
+          "level": 1
+        }
+      ]
+    }
+  ]
+}

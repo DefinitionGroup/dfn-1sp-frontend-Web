@@ -5,7 +5,9 @@ import {useClient, usePerspective} from 'sanity';
 import {IntentLink} from 'sanity/router';
 import {usePaneRouter, type UserComponent} from 'sanity/structure';
 import {SITE_CONFIGS, WEBSITE_CHANNELS} from '@1sp/site-config';
-import {GLOBAL_BROWSER_LANGUAGES, GLOBAL_BROWSER_QUERY, channelLabels, globalBrowserScope, globalCreateTemplate, type GlobalBrowserType} from './globalBrowserModel';
+import {GLOBAL_BROWSER_LANGUAGES, GLOBAL_BROWSER_QUERY, channelLabels, globalBrowserScope, globalBrowserSearch, globalCreateTemplate, type GlobalBrowserScope, type GlobalBrowserType} from './globalBrowserModel';
+
+export {GLOBAL_BROWSER_TYPES} from './globalBrowserModel';
 
 type Item = {_id:string; sourceId?:string; title:string; channel?:string[]; language?:string; hasPublished:boolean; image?:string};
 type Result = {total:number; items:Item[]};
@@ -16,7 +18,8 @@ const GlobalsBrowser: UserComponent = ({options, childItemId}) => {
   const router = usePaneRouter();
   const {selectedPerspectiveName, perspectiveStack} = usePerspective();
   const perspectiveKey = selectedPerspectiveName ? perspectiveStack.join(',') : 'raw';
-  const {channel, language} = globalBrowserScope(router.params);
+  const fixedScope = options?.fixedScope as GlobalBrowserScope | undefined;
+  const {channel, language} = globalBrowserScope(router.params, fixedScope);
   const [search, setSearch] = useState('');
   const deferredSearch = useDeferredValue(search);
   const [limit, setLimit] = useState(100);
@@ -30,17 +33,16 @@ const GlobalsBrowser: UserComponent = ({options, childItemId}) => {
     let active = true;
     let timer: ReturnType<typeof setTimeout> | undefined;
     setLoading(true); setError(undefined);
-    const words = deferredSearch.trim().replace(/[*?]/g, '').split(/\s+/).filter(Boolean);
     async function load() {
       try {
-        const data = await client.fetch<Result>(GLOBAL_BROWSER_QUERY, {schemaType, channel, language, search:words.length ? words.map(w=>`${w}*`).join(' ') : '', limit}, {perspective:perspectiveKey === 'raw' ? 'raw' : perspectiveKey.split(',')});
+        const data = await client.fetch<Result>(GLOBAL_BROWSER_QUERY, {schemaType, channel, language, search:globalBrowserSearch(deferredSearch), limit}, {perspective:perspectiveKey === 'raw' ? 'raw' : perspectiveKey.split(',')});
         if (active) {setResult(data); setError(undefined);}
       } catch (err) {
         if (active) setError(err instanceof Error ? err.message : 'Could not load documents.');
       } finally {if(active) setLoading(false);}
     }
     void load();
-    const subscription = client.listen('*[_type == $schemaType]', {schemaType}, {includeResult:false, visibility:'query'}).subscribe({
+    const subscription = client.listen('*[_type == $schemaType || ($schemaType == "caseStudy" && _type == "client")]', {schemaType}, {includeResult:false, visibility:'query'}).subscribe({
       next: () => {clearTimeout(timer); timer=setTimeout(()=>void load(),200);},
       error: () => {if(active) setError('Live updates disconnected. Retry to reconnect.');},
     });
@@ -53,7 +55,7 @@ const GlobalsBrowser: UserComponent = ({options, childItemId}) => {
   }
 
   return <Stack space={3} padding={3}>
-    <Flex gap={2} wrap="wrap">
+    {fixedScope ? <Text size={1} muted>{channelLabels([channel])} · {GLOBAL_BROWSER_LANGUAGES.find(l=>l.id===language)?.title || language.toUpperCase()}</Text> : <Flex gap={2} wrap="wrap">
       <Stack space={2} flex={1} style={{minWidth:140}}>
         <Label size={0}><label htmlFor={`${schemaType}-channel`}>Channel</label></Label>
         <Select id={`${schemaType}-channel`} value={channel} onChange={e=>changeScope('channel',e.currentTarget.value)}>
@@ -68,7 +70,7 @@ const GlobalsBrowser: UserComponent = ({options, childItemId}) => {
           <option value="all">All languages</option>
         </Select>
       </Stack>
-    </Flex>
+    </Flex>}
     <TextInput aria-label="Search documents" placeholder="Search documents…" value={search} onChange={e=>{setSearch(e.currentTarget.value);setLimit(100);}} />
     <Flex align="center" justify="space-between" gap={2}>
       <Text size={1} muted aria-live="polite">{loading ? 'Loading…' : `${result.total} document${result.total===1?'':'s'}`}</Text>

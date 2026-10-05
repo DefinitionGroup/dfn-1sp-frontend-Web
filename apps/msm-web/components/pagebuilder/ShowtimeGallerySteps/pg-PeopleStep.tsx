@@ -73,7 +73,7 @@ export default function PeopleStep({
     <section id={sectionId} {...navPointDataAttr} className="relative z-0 py-[var(--msm-section-space)] font-aspekta">
       <div className="container mx-auto px-[var(--container-padding)]">
         <div className={cards.sectionLayout}>
-          <Badgemodule text={locale === "de" ? "Unser Team" : "Our people"} subtitle="MSM.digital" />
+          <Badgemodule text={step.badge?.text ?? (locale === "de" ? "Unser Team" : "Our people")} subtitle={step.badge?.subtitle ?? "MSM.digital"} />
           <div className={cards.sectionContent}>
             <header className="mb-12 md:mb-16">
               {hasVisibleText(header.superText) && (

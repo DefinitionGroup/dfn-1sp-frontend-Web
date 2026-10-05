@@ -35,6 +35,7 @@ import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
   generateWebPageJsonLd,
+  generateContactPageJsonLd,
   generateBreadcrumbJsonLd,
   generateItemListJsonLd,
   generateServiceCatalogJsonLd,
@@ -126,7 +127,11 @@ export default async function Page({
       {page && (
         <>
           <JsonLdScript locale={language}
-            data={generateWebPageJsonLd({
+            data={slug === 'contact' ? generateContactPageJsonLd({
+              locale: language,
+              title: page.metadata?.title || page.title || slug,
+              description: page.metadata?.description,
+            }) : generateWebPageJsonLd({
               title: page.metadata?.title || page.title || slug,
               slug,
               description: page.metadata?.description,

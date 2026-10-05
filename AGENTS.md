@@ -46,6 +46,11 @@ For task-specific guides, completed records and deferred plans, start with [docs
 
 ## Frontend Architecture Direction
 
+- Editor-first page composition: use the existing page-builder route and registered blocks for CMS pages. Check the available blocks before choosing an implementation.
+- Store page copy, media, links, people selection and section order in editable `content[]`; use the existing reference editors for shared documents.
+- Add a custom page composition, new block type or route-level content assembly only when a concrete requirement cannot be met by existing blocks. First explain the missing capability and why reuse fails, then obtain explicit user approval. Preserving an exact layout alone does not justify an exception.
+- Verify that an editor can find, edit, reorder and remove every page section in Studio before declaring CMS page work complete.
+
 - FLZR is an independent frontend app with its own routing, layout, navigation, SEO, sitemap, robots, tracking, fonts, and page-builder registry.
 - Reuse shared logic through packages or clearly separated shared modules.
 - Case pages may share the same data contract and logic, but markup and styling can be site-specific.

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {createRequire} from 'node:module';
-import {GLOBAL_BROWSER_QUERY, globalBrowserScope, globalCreateTemplate, channelLabels} from '../packages/sanity-schema/src/Studio/globalBrowserModel';
+import {GLOBAL_BROWSER_QUERY, globalBrowserScope, globalBrowserSearch, globalCreateTemplate, channelLabels} from '../packages/sanity-schema/src/Studio/globalBrowserModel';
 const require = createRequire(import.meta.url);
 const {parse,evaluate} = createRequire(require.resolve('sanity/package.json'))('groq-js');
 const doc = (id:string, channel?:string[], language='en') => ({_id:id,_type:'person',name:id,channel,language});
@@ -29,6 +29,34 @@ test('channel membership, language, edition names and search compose correctly',
 test('pagination retains the full filtered count',async()=>{
   const result=await query([doc('one'),doc('two')],{limit:1});
   assert.equal(result.total,2);assert.equal(result.items.length,1);
+});
+test('Klett case is searchable by client, subtitle, slug, ID, SEO and mixed-field words',async()=>{
+  const client={_id:'client-klett',_type:'client',name:'Ernst Klett Verlag',siteContent:[{channel:'msmWeb',name:'Klett Sprachen'}]};
+  const caseStudy={_id:'case-msm-ernst-klett-verlag-printed-content-enrichment-en',_type:'caseStudy',title:'Digitizing the Way You Learn',subtitle:'Linking printed and multimedia content',slug:{current:'ernst-klett-verlag-printed-content-enrichment'},client:{_ref:client._id},channel:['msmWeb'],language:'en',seo:{title:'CouplAR Content Enrichment'},description:'Interactive textbooks'};
+  const german={...caseStudy,_id:'german-case',language:'de'};
+  const otherSite={...caseStudy,_id:'other-site-case',channel:['flizrWeb']};
+  for (const text of ['Klett','printed','enrichment','CouplAR','textbooks','Sprachen','Klett Digitizing','case-msm-ernst-klett-verlag-printed-content-enrichment-en']) {
+    const result=await query([client,caseStudy,german,otherSite],{schemaType:'caseStudy',channel:'msmWeb',search:globalBrowserSearch(text)});
+    assert.equal(result.total,1,text);
+    assert.equal(result.items[0]._id,caseStudy._id,text);
+  }
+});
+test('search tolerates missing metadata and combines shared and website-edition fields',async()=>{
+  const data=[doc('basic',['msmWeb']),{...doc('edition',['msmWeb']),siteContent:[{channel:'msmWeb',title:'Local offering',subtitle:'Retail experts',description:'Interactive experiences',seo:{description:'Campaign excellence'}}]}];
+  assert.equal((await query(data,{search:globalBrowserSearch('basic')})).total,1);
+  for (const text of ['Local','Retail','Interactive','Campaign','edition Retail']) {
+    assert.equal((await query(data,{search:globalBrowserSearch(text)})).total,1,text);
+  }
+  assert.equal(globalBrowserSearch('  Klett*  printed?  '),'Klett* printed*');
+  assert.equal(globalBrowserSearch(' * ? '),'');
+});
+test('assigned scope overrides URL filters and produces the same results as Globals',async()=>{
+  const assigned=globalBrowserScope({channel:'all',language:'de'},{channel:'msmWeb',language:'en'});
+  assert.deepEqual(assigned,{channel:'msmWeb',language:'en'});
+  const global=globalBrowserScope({channel:'msmWeb',language:'en'});
+  const data=[doc('english',['msmWeb']),doc('german',['msmWeb'],'de'),doc('other',['flizrWeb'])];
+  assert.deepEqual(await query(data,assigned),await query(data,global));
+  assert.deepEqual(globalCreateTemplate('caseStudy',assigned.channel,assigned.language)?.parameters,{channel:'msmWeb',language:'en'});
 });
 test('scope URLs and creation templates never silently assign the default website',()=>{
   assert.deepEqual(globalBrowserScope({channel:'unknown',language:'unknown'}),{channel:'all',language:'en'});

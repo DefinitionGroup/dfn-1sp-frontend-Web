@@ -118,7 +118,6 @@ export default async function CaseStudyPage({
           publishedAt: caseStudy.publishedAt,
           clientName: caseStudy.client?.name,
           services: caseStudy.services,
-          units: caseStudy.units,
         })}
       />
       <JsonLdScript locale={language}

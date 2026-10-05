@@ -9,7 +9,6 @@ import { getTranslations } from "@1sp/utils/translations";
 import type { CaseStudyData, CloudinaryAsset } from "@1sp/sanity-types";
 import { assetUrl } from "@1sp/utils/cloudinary";
 
-type CaseUnit = NonNullable<CaseStudyData["units"]>[number];
 type CasePersonRelation = NonNullable<CaseStudyData["people"]>[number];
 type CasePerson = NonNullable<CasePersonRelation["person"]>;
 
@@ -42,38 +41,16 @@ function pickPrimaryPerson(people: CaseStudyData["people"]): CasePerson | null {
   );
 }
 
-function getUnitLogoUrl(unit: CaseUnit): string | undefined {
-  return (
-    assetUrl(unit.logoColor) ||
-    assetUrl(unit.logo) ||
-    assetUrl(unit.logoSignet) ||
-    unit.logoUrl
-  );
-}
-
 export default function CasePoweredByContact({
   caseStudy,
   locale,
 }: CasePoweredByContactProps) {
   const t = getTranslations(locale);
-  const units = caseStudy.units || [];
   const relatedPerson = pickPrimaryPerson(caseStudy.people);
 
-  const unitLogos = units
-    .map((unit) => ({
-      unit,
-      logoUrl: getUnitLogoUrl(unit),
-    }))
-    .filter((entry): entry is { unit: CaseUnit; logoUrl: string } =>
-      Boolean(entry.logoUrl)
-    );
-
-  if (unitLogos.length === 0 && !relatedPerson) {
-    return null;
-  }
+  if (!relatedPerson) return null;
 
   const personName = relatedPerson?.fullname || relatedPerson?.name || "";
-  const personUnit = relatedPerson?.unit?.name || units[0]?.name || "";
   const personMedia = relatedPerson?.video || relatedPerson?.image || null;
   const personMediaUrl = assetUrl(personMedia);
   const personLabel =
@@ -86,37 +63,9 @@ export default function CasePoweredByContact({
       data-component="case-powered-by-contact"
     >
       <div className={styles.container}>
-        {unitLogos.length > 0 && (
-          <div className="mx-auto w-full max-w-3xl">
-            <h2 className="text-center text-2xl sm:text-3xl tracking-tight text-neutral-50">
-              {t.caseStudy.poweredBy}
-            </h2>
-
-            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-              {unitLogos.map(({ unit, logoUrl }) => (
-                <div
-                  key={unit._id}
-                  className="relative aspect-[3/2] w-[calc(50%-0.375rem)] sm:w-[calc(33.333%-0.667rem)] "
-                >
-                  <Image
-                    src={logoUrl}
-                    alt={unit.name || "Unit logo"}
-                    fill
-                    sizes="(max-width: 640px) 50vw, 240px"
-                    // Unit logos ship in mixed colors; brightness-0 + invert
-                    // renders any of them white on this dark band, held at 66%.
-                    className="object-contain p-5 sm:p-6 brightness-0 invert opacity-[0.66]"
-                    unoptimized
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         {relatedPerson && (
           <div
-            className="max-w-5xl mx-auto bg-msm-surface overflow-hidden border-t border-white/20 mt-14 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 items-end gap-8 lg:gap-10"
+            className="max-w-5xl mx-auto bg-msm-surface overflow-hidden border-t border-white/20 grid grid-cols-1 lg:grid-cols-12 items-end gap-8 lg:gap-10"
           >
             <CaseReveal content className="lg:col-span-7 p-8">
               <p
@@ -134,7 +83,7 @@ export default function CasePoweredByContact({
               <p
                 className="mt-2 text-2xl sm:text-3xl lg:text-3xl tracking-tight leading-tight  text-msm-cyan"
               >
-                {`${personName}${personUnit ? ` @ ${personUnit}` : ""}`}
+                {personName}
               </p>
 
               <div
