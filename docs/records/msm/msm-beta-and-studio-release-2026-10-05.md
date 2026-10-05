@@ -38,3 +38,25 @@ The commit was pushed to `origin/multiseite/stage` and independently checked wit
 The stored schema in staging `wu6i3y0h/production` was backed up and updated through the installed Sanity CLI API, then verified against the extracted 139-type schema. New revision: `q3TmcawVlts6ghyzOCpYFa`, updated `2026-10-05T11:52:33Z`. Backups and extracted schema remain in ignored `EXPORT/msm-release-2026-10-05/`.
 
 Hosted Studio verified Acer's published “Let’s talk” CTA opens with its content fields and appears as a valid block. The editable case builder's add-item menu includes “Intertitle CTA”. A fresh Studio session was needed to observe the updated bundle. Studio and MSM's Acer route return HTTP 200 with beta non-indexing headers. Acer's published document and revision `e08bcd09-7ff4-4fb1-b24f-d52dd7d229d4` remain unchanged; no content or assignments were saved or published.
+
+## Final coordinated case-contact and social-links release
+
+After the other agent finished, all pending changes were committed and pushed to `origin/multiseite/stage`. The final deployed source is `fcea22dfc9f199b76dd3ecad9a9b60f083bfc1e6`, including the earlier `f0b01900c` and `8b3191b61` changes. `git ls-remote` independently confirmed the final SHA. Both deployments used an isolated `git archive` of that commit.
+
+| Target | URL | Deployment | Result |
+| --- | --- | --- | --- |
+| MSM beta | https://msm-beta.vercel.app | `dpl_7tGteLdoy6QHC5fSupD1QnPVbBnF` | READY |
+| Shared embedded Studio | https://1sp-beta.vercel.app/studio | `dpl_67wLQhdfG9tTSCMYSZp612UvVGzM` | READY |
+
+The provider confirms the same full source SHA on both deployments and the expected project IDs and aliases. MSM was deployed first, followed by Studio. The existing beta environments continue to use staging `wu6i3y0h/production`; live 1SP remains untouched.
+
+The final 140-type schema, including `msmSocialLinks` and its Content color selector, was deployed through the installed Sanity CLI's authenticated schema API after the standard CLI again aborted in native Rolldown. The previous schema was backed up before writing; the stored result was re-read and verified for exact structural equality. Verified revision: `q3TmcawVlts6ghyzODa015`, updated `2026-10-05T16:22:43Z`. Backup and final extracted schema are in ignored `EXPORT/msm-contact-social-links-2026-10-05/`.
+
+Hosted verification:
+
+- MSM homepage, Cases, English/German Contact, Lufthansa privacy page, case API, sitemap and robots return HTTP 200. Beta indexing restrictions remain in place.
+- Acer renders Kirsten Hücker's connected-person email; imported Lufthansa renders Camillo Stark's. Both case sections omit imported unit logos. Acer's contact section also omits the redundant Contact label and legacy duplicate contact CTA.
+- Shared Studio, sitemap and robots return HTTP 200. Signed-in hosted Studio opens the English Contact draft and recognizes the social-links block. Its editor displays sortable links, editable section heading and Content color selector with White and all nine MSM palette choices.
+- The final social-links agent record documents passing MSM/root builds, focused lint, schema extraction and desktop/mobile verification after the palette addition. Earlier focused contact/Globals tests and deployment checks also passed.
+
+English and German social-links conversions remain drafts. This release did not publish page content or change people/unit assignments. The public Contact pages continue to use their existing published content until the drafts are published separately.
