@@ -27,4 +27,14 @@ The standard schema CLI aborted in native Rolldown, including outside the sandbo
 - Homepage, Cases, Services, Contact, Units, German homepage, Acer case detail, sitemap, robots and shared Studio returned HTTP 200. Beta responses retain `noindex`; robots disallows crawling.
 - Signed-in hosted Studio opened the Acer case and displayed all four MSM unit choices, published membership, review links, Reload assignments and the disabled Save unit drafts button before any edits.
 
-The Acer editor also displays an existing `intertitleCTA` block that is invalid for its case-builder list. This release did not alter that registry or case content; the content/schema mismatch remains for separate review. Verification did not save assignments or publish units.
+The initial release exposed an existing `intertitleCTA` block that was invalid for the shared case-builder list. The follow-up below resolves that mismatch. Verification did not save assignments or publish units.
+
+## Acer CTA schema follow-up
+
+Source commit `14abb0b1ecdcc271c229be09f514b605887934ae` adds `intertitleCTA` to the shared `caseStudy.casesPageBuilder` list and its TypeScript union. The website-edition list and MSM renderer already supported the block. The root production build, focused ESLint and diff checks passed; extraction changed only the `caseStudy` type.
+
+The commit was pushed to `origin/multiseite/stage` and independently checked with `git ls-remote`. Root Studio deployment `dpl_5NakdnBKnnWwDnD6mtTgsQ9xkosd` is READY at https://1sp-beta.vercel.app/studio; provider metadata confirms that full source SHA. MSM does not need another frontend deployment for this schema-only fix.
+
+The stored schema in staging `wu6i3y0h/production` was backed up and updated through the installed Sanity CLI API, then verified against the extracted 139-type schema. New revision: `q3TmcawVlts6ghyzOCpYFa`, updated `2026-10-05T11:52:33Z`. Backups and extracted schema remain in ignored `EXPORT/msm-release-2026-10-05/`.
+
+Hosted Studio verified Acer's published “Let’s talk” CTA opens with its content fields and appears as a valid block. The editable case builder's add-item menu includes “Intertitle CTA”. A fresh Studio session was needed to observe the updated bundle. Studio and MSM's Acer route return HTTP 200 with beta non-indexing headers. Acer's published document and revision `e08bcd09-7ff4-4fb1-b24f-d52dd7d229d4` remain unchanged; no content or assignments were saved or published.
