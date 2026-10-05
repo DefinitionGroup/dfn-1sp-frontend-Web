@@ -9,6 +9,7 @@ These documents preserve approved mappings, implementation decisions and verific
 
 ## MSM
 
+- [MSM beta and shared Studio release — 5 October 2026](msm/msm-beta-and-studio-release-2026-10-05.md) — committed source, verified beta deployments, stored schema and hosted desktop/mobile/Studio checks.
 - [MSM fixes, SEO and supplied legal-copy review — 4 October 2026](msm/msm-fixes-seo-and-legal-review-2026-10-04.md) — verified local fixes, revision-guarded staging CMS changes and legal/privacy differences; committed and pushed in `cc0b37a4c`, with a subsequent detached-navigation update.
 - [MSM service content ownership audit — 21 September 2026](msm/msm-service-content-audit-2026-09-21.md) — live read-only comparison of services, website editions and landing pages; consolidation recommendations are not implemented.
 - [MSM block redesign — 20 September 2026](msm/msm-block-redesign-2026-09-20.md)
