@@ -210,6 +210,7 @@ export default defineType({
                 { type: 'msmServiceDirectory' },
                 { type: 'interactiveServiceCarousel', title: 'InteractiveServiceCarousel' },
                 { type: 'msmMediaFeature', title: 'MSM Media Feature' },
+                { type: 'msmSocialLinks', title: 'MSM Social Links' },
                 // Portable text — covers what contentMSM / contentStudioCO2 used to hold
                 { type: 'block' },
             ],

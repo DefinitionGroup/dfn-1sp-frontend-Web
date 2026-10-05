@@ -969,6 +969,24 @@ export interface Service {
     unitsrel?: { _id: string; name: string; slug: { current: string } }[];
 }
 
+export type MsmSocialPlatform = 'messenger' | 'whatsapp' | 'facebook' | 'instagram' | 'linkedin';
+export interface MsmSocialLinksComponent {
+    _type: 'msmSocialLinks';
+    _key?: string;
+    title?: string;
+    color?: 'white' | 'cyan' | 'teal' | 'teal-deep' | 'magenta' | 'purple' | 'maroon' | 'red' | 'orange' | 'amber';
+    links?: Array<{
+        _type?: 'msmSocialLink';
+        _key: string;
+        platform: MsmSocialPlatform;
+        label?: string;
+        url: string;
+        openInNewTab?: boolean;
+    }>;
+    navPointName?: string;
+    hideFromNav?: boolean;
+}
+
 /* MSM Media Feature — framed passage with a darkened background video, headline, copy and one CTA. */
 export interface MsmMediaFeatureComponent {
     _type: "msmMediaFeature";

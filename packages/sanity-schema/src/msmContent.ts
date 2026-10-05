@@ -3,5 +3,6 @@ import msmServiceDirectory from './MSM/msmServiceDirectory'
 import msmUnit from './MSM/msmUnit'
 import msmUnitsGrid from './MSM/msmUnitsGrid'
 import msmMediaFeature from './MSM/msmMediaFeature'
+import msmSocialLinks from './MSM/msmSocialLinks'
 
-export const MSMschemaTypes = [msmUnit, msmUnitsGrid, msmServiceDirectory, interactiveServiceCarousel, msmMediaFeature]
+export const MSMschemaTypes = [msmUnit, msmUnitsGrid, msmServiceDirectory, interactiveServiceCarousel, msmMediaFeature, msmSocialLinks]

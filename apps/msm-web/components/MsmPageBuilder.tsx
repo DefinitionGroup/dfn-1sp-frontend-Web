@@ -25,6 +25,8 @@ import DeferredSection from "@msm/components/ui/DeferredSection";
 import OneSpScope from "@/components/onesp-group/OneSpScope";
 import MsmFooterExternalBanner from "./MsmFooterExternalBanner";
 import MsmMediaFeature from "./pagebuilder/pg-MsmMediaFeature";
+import MsmSocialLinks from "./pagebuilder/pg-MsmSocialLinks";
+import type {MsmSocialLinksComponent} from "@1sp/sanity-types";
 
 const CanonicalOneSpPageBuilder = dynamic(
   () => import("@/components/PageBuilder").then((module) => module.PageBuilder),
@@ -580,6 +582,8 @@ export function PageBuilder({
             );
           case "msmServiceDirectory":
             return <MsmServiceDirectory key={key} {...block} language={language} />;
+          case "msmSocialLinks":
+            return <MsmSocialLinks key={key} data={block as MsmSocialLinksComponent} language={language} />;
           case "resultsMetrics":
             return <ResultsMetrics key={key} {...block} />;
           default:
