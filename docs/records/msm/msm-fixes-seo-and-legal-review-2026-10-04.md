@@ -81,3 +81,15 @@ No legal-body update was applied as part of this comparison. A subsequent reconc
 - Existing Cloudinary sharing image returned HTTP 200, `image/jpeg`, 1200 × 630.
 
 This verifies the local branch and the scoped staging CMS mutation. Hosted deployments, current provider configuration, webhook delivery, analytics consent behavior and full no-JS/reduced-motion behavior were not re-certified. The remaining handoff risks and the Word-copy reconciliation remain separate work.
+
+## Subsequent legal-page formatting correction
+
+The user subsequently requested correction of excessive paragraph gaps and imported line breaks on the disclaimer and privacy policy. `scripts/msm-legal-formatting.mjs` corrected only the four existing published MSM EN/DE pages in `wu6i3y0h` / `production` (staging), in revision-guarded transaction `9xwYgO7OlTajAgagjo8FQ9`. Live 1SP's `dev-dataset` was not changed.
+
+Each disclaimer company now forms one paragraph with simple line breaks between its name, postal address, contact and registration details. The privacy policy's related contact lines, inline-numbered German clauses and provider details use compact line groups. Imported newlines within sentences, names, street addresses and bullet items became spaces. Missing source separators in German registry details, the German data-protection contact and the English HubSpot address were restored. The authored German HubSpot address retains its intentional line breaks.
+
+Pre-write assertions verified identical non-whitespace text, link destinations and inline emphasis, as well as idempotence. Post-write comparisons verified the intended content and every unrelated field. This formatting task does not resolve the separate Word-copy reconciliation described above.
+
+Recovery files are ignored under `EXPORT/msm-legal-formatting-2026-10-04/`, including `before-1791146649244.json`, `plan.json`, `after.json` and `receipt.json`. Backup SHA-256: `9ede9831795383229f3eaeadfdb9cf182af43f3a03219e4f72768f5f8f122498`.
+
+The refreshed MSM production build passed (165 routes); the migration script passed ESLint and `git diff --check`. Browser checks covered all four legal pages at 1440px and 390px, plus both English routes at 320px, with no horizontal overflow or console errors. Prose and list items now wrap naturally; company and contact details retain only their intended breaks. Screenshot evidence is under `.impeccable/review/msm-{disclaimer,privacy}-formatting-{desktop,mobile}.jpg`. The local preview was restarted at port 3000; no hosted deployment or Git publication was performed.

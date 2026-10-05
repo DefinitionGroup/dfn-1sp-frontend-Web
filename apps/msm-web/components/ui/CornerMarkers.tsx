@@ -89,7 +89,7 @@ export default function CornerMarkers({
   const markers = positions.map(([v, h]) => {
     const markerKey = `${v}-${h}`;
     const markerProps = {
-      className: `absolute font-mono leading-none ${className}`,
+      className: `absolute font-aspekta leading-none ${className}`,
       style: { [v]: inset, [h]: inset } as React.CSSProperties,
     };
 

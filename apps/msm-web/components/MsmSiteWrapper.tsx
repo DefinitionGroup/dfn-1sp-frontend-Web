@@ -8,6 +8,7 @@ import {
 } from "@1sp/sanity-queries";
 import { getSiteConfig } from "@1sp/site-config";
 import type { FooterMenu, NavbarMenu } from "@1sp/sanity-types/menu";
+import AiContentDisclosure from "@/components/AiContentDisclosure";
 import FrontNavOverlay from "./menu/FrontNavOverlay";
 import { FooterMenuProvider } from "./menu/FooterMenuContext";
 import { NavbarMenuProvider } from "./menu/NavbarMenuContext";
@@ -92,7 +93,7 @@ function FooterColumnHeading({
 }) {
   const content = (
     <>
-      <span className="font-mono text-white/30">{index}</span>
+      <span className="font-aspekta text-white/30">{index}</span>
       <span>{title}</span>
       {href ? (
         <span
@@ -124,7 +125,7 @@ function FooterLinkItem({ link }: { link: FooterLink }) {
     <>
       <span
         aria-hidden="true"
-        className="mt-px shrink-0 font-mono text-msm-cyan/45 transition-colors duration-300 group-hover:text-msm-cyan"
+        className="mt-px shrink-0 font-aspekta text-msm-cyan/45 transition-colors duration-300 group-hover:text-msm-cyan"
       >
         +
       </span>
@@ -285,7 +286,7 @@ async function MsmFooter({
                 size={56}
                 className="h-12 w-12 md:h-14 md:w-14"
               />
-              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-white/45">
+              <span className="font-aspekta text-[10px] font-bold uppercase tracking-[0.16em] text-white/45">
                 Digital growth partner
               </span>
             </div>
@@ -302,7 +303,7 @@ async function MsmFooter({
               <span>Start a project</span>
               <span
                 aria-hidden="true"
-                className="font-mono text-xl text-msm-cyan transition-transform duration-300 group-hover:translate-x-1"
+                className="font-aspekta text-xl text-msm-cyan transition-transform duration-300 group-hover:translate-x-1"
               >
                 ↗
               </span>
@@ -386,12 +387,12 @@ async function MsmFooter({
           </p>
         </div>
 
-        <div className="flex flex-col gap-4 border-t border-white/15 py-6 font-mono text-[10px] uppercase tracking-[0.1em] text-white/40 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 border-t border-white/15 py-6 font-aspekta text-[10px] uppercase tracking-[0.1em] text-white/40 sm:flex-row sm:items-center sm:justify-between">
           <p>
             {footer?.copyright ||
               `© ${new Date().getFullYear()} MSM.DIGITAL`}
           </p>
-          <div className="flex flex-wrap gap-x-5 gap-y-2">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-4">
             <Link
               href={getLocalePath(language, "contact")}
               className="transition-colors duration-300 hover:text-white"
@@ -411,6 +412,9 @@ async function MsmFooter({
                   {link.name}
                 </a>
               ))}
+            <div className="normal-case">
+              <AiContentDisclosure />
+            </div>
           </div>
         </div>
       </div>

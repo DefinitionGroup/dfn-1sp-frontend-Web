@@ -1,0 +1,67 @@
+.desktopPanel { position: fixed; z-index: 99999; top: 5.5rem; left: 1rem; right: 9.5rem; max-width: 64rem; background: var(--color-msm-paper); color: var(--color-msm-ink); border: 1px solid rgb(244 244 244 / 20%); padding: clamp(1.25rem, 2.5vw, 2rem); }
+.desktopPanel::before { content: ""; position: absolute; top: -0.6rem; left: 0; right: 0; height: 0.6rem; }
+.desktopClose { position: absolute; right: 1rem; top: 1rem; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; color: var(--color-msm-ink); }
+.caseHeading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1.25rem; margin-right: 3rem; border-bottom: 1px solid rgb(244 244 244 / 20%); font-size: 1.5rem; letter-spacing: -0.025em; }
+.allCases { display: inline-grid; grid-template-columns: minmax(0, 1fr) 1.25rem; align-items: center; gap: 1rem; flex-shrink: 0; min-height: 2.75rem; padding: 0.5rem 1.25rem; background: var(--color-msm-cyan); color: var(--color-msm-paper); font-size: 0.875rem; letter-spacing: 0; transition: background 150ms ease-out; }
+.allCases > svg { display: block; width: 1.125rem; height: 1.125rem; justify-self: center; }
+.allCases:hover { background: var(--color-msm-ink); }
+.caseTools { display: grid; grid-template-columns: minmax(0, 1fr) minmax(9rem, 0.6fr); gap: 0.75rem; margin-block: 1.25rem; }
+.search { display: flex; align-items: center; gap: 0.625rem; border-bottom: 1px solid rgb(244 244 244 / 30%); min-width: 0; color: rgb(244 244 244 / 70%); }
+.search input { width: 100%; min-width: 0; min-height: 2.75rem; background: transparent; font-size: 0.875rem; color: var(--color-msm-ink); outline: none; caret-color: var(--color-msm-cyan); }
+.search input::-webkit-search-cancel-button { display: none; }
+.search input::placeholder { color: rgb(244 244 244 / 65%); opacity: 1; }
+.search:focus-within { border-color: var(--color-msm-cyan); }
+.search button { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; flex-shrink: 0; }
+.unitFilter { position: relative; min-width: 0; }
+.unitFilter select { appearance: none; width: 100%; min-width: 0; min-height: 2.75rem; padding: 0.5rem 2.75rem 0.5rem 0.75rem; background: var(--color-msm-surface); color: var(--color-msm-ink); border: 1px solid rgb(244 244 244 / 25%); font: inherit; font-size: 0.875rem; }
+.unitFilter > svg { position: absolute; top: 50%; inset-inline-end: 0.875rem; width: 1rem; height: 1rem; transform: translateY(-50%); pointer-events: none; color: var(--color-msm-ink); }
+.caseContent { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 2rem; }
+.caseResults { min-width: 0; }
+.resultCount { margin-bottom: 0.625rem; min-height: 1rem; color: rgb(244 244 244 / 65%); font-size: 0.75rem; font-variant-numeric: tabular-nums; }
+.caseList { list-style: none; margin: 0; padding: 0 0.75rem 0 0; max-height: min(23rem, calc(100dvh - 19rem)); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--color-msm-cyan) var(--color-msm-surface); }
+.caseLink { display: flex; align-items: center; justify-content: space-between; gap: 1.25rem; min-height: 4rem; padding: 0.875rem 0.5rem; border-bottom: 1px solid rgb(244 244 244 / 15%); transition: color 150ms ease-out, background 150ms ease-out; }
+.caseLink > span { min-width: 0; }
+.caseLink svg { flex-shrink: 0; color: var(--color-msm-cyan); transition: transform 180ms ease-out; }
+.caseLink:hover, .caseLink:focus-visible, .caseLink[data-preview=true] { background: rgb(3 184 212 / 7%); }
+.caseLink:hover svg { transform: translate(2px, -2px); }
+.caseClient { display: block; margin-bottom: 0.25rem; color: rgb(244 244 244 / 65%); font-size: 0.75rem; line-height: 1.3; }
+.caseTitle { display: block; font-size: 0.9375rem; line-height: 1.4; overflow-wrap: anywhere; }
+.casePreview { min-width: 0; padding-top: 1.625rem; }
+.previewMedia { position: relative; aspect-ratio: 4 / 3; background: var(--color-msm-surface); overflow: hidden; }
+.previewMedia img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.casePreview p { margin-top: 1rem; font-size: 1.25rem; line-height: 1.25; letter-spacing: -0.02em; }
+.casePreview > span { display: block; margin-top: 0.625rem; color: rgb(244 244 244 / 70%); font-size: 0.8125rem; line-height: 1.5; }
+.caseMessage { padding-block: 2rem; font-size: 0.9375rem; line-height: 1.5; }
+.caseMessage button { margin-top: 0.75rem; min-height: 2.75rem; color: var(--color-msm-cyan); text-decoration: underline; text-underline-offset: 0.25em; }
+.mobileDialog { position: fixed; inset: 0; margin: 0; border: 0; padding: 0; width: 100%; max-width: none; height: 100dvh; max-height: none; overflow: hidden; background: radial-gradient(ellipse at 90% 80%, rgb(3 184 212 / 12%), transparent 65%), var(--color-msm-paper); color: var(--color-msm-ink); }
+.mobileDialog::backdrop { background: var(--color-msm-paper); }
+.shader { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.45; pointer-events: none; }
+.mobileShell { position: relative; height: 100%; display: flex; flex-direction: column; padding: max(1.25rem, env(safe-area-inset-top)) max(1.5rem, env(safe-area-inset-right)) max(1.25rem, env(safe-area-inset-bottom)) max(1.5rem, env(safe-area-inset-left)); }
+.mobileHeading { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid rgb(244 244 244 / 20%); }
+.mobileBrand { display: inline-flex; align-items: center; gap: 0.75rem; min-width: 0; font-size: clamp(1.5rem, 6.2vw, 2rem); letter-spacing: -0.035em; white-space: nowrap; }
+.mobileBrand img { flex-shrink: 0; width: 2rem; height: 2rem; }
+.closeButton { display: grid; place-items: center; min-width: 2.75rem; min-height: 2.75rem; margin-right: -0.5rem; }
+.mobileBody { display: flex; flex-direction: column; align-items: stretch; flex: 1; min-height: 0; padding-block: clamp(1.5rem, 5dvh, 3rem); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--color-msm-cyan) transparent; }
+.mobileLinks { width: 100%; margin-block: auto; }
+.mobileRow { border-bottom: 1px solid rgb(244 244 244 / 22%); }
+.mobileDestination { display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%; min-height: 4.75rem; padding-block: 1rem; color: inherit; text-align: left; font-size: clamp(1.875rem, 8.5vw, 2.75rem); line-height: 1.15; letter-spacing: -0.025em; }
+.mobileDestination[aria-current=page], .mobileDestination[aria-expanded=true] { color: var(--color-msm-cyan); }
+.mobileDestination svg { flex-shrink: 0; color: var(--color-msm-cyan); transition: transform 200ms ease-out; }
+.rotated { transform: rotate(45deg); }
+.caseAccordion { overflow: hidden; }
+.mobileCases { padding-bottom: 1.25rem; }
+.mobileCases .caseHeading { margin-right: 0; padding-bottom: 0; border: 0; font-size: 0.875rem; letter-spacing: 0; }
+.mobileCases .allCases { gap: 0.75rem; }
+.mobileCases .caseTools { grid-template-columns: minmax(0, 1fr); gap: 0.625rem; margin-block: 0.875rem; }
+.mobileCases :is(input, select) { font-size: 1rem; }
+.mobileCases .caseContent { grid-template-columns: minmax(0, 1fr); }
+.mobileCases .caseList { max-height: min(18rem, 32dvh); }
+.mobileCases .caseLink[data-preview=true] { background: transparent; }
+.mobileFooter { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; border-top: 1px solid rgb(244 244 244 / 20%); padding-top: 1.25rem; }
+.mobileFooter a { display: inline-flex; align-items: center; gap: 1rem; min-height: 2.75rem; font-size: 0.9375rem; }
+.mobileFooter a:first-child svg { color: var(--color-msm-cyan); }
+.caseBrowser :is(a, button, select):focus-visible, .mobileShell :is(a, button):focus-visible, .desktopClose:focus-visible { outline: 2px solid var(--color-msm-cyan); outline-offset: 3px; }
+.caseList .caseLink:focus-visible { outline-offset: -2px; }
+@media (max-width: 900px) and (min-width: 768px) { .caseHeading { font-size: 1.25rem; } .caseContent { gap: 1rem; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); } }
+@media (max-height: 600px) { .mobileBody { align-items: flex-start; padding-block: 1rem; } .mobileDestination { min-height: 3.5rem; padding-block: 0.75rem; font-size: 1.875rem; } }
+@media (prefers-reduced-motion: reduce) { .caseBrowser *, .mobileShell * { transition: none; } }

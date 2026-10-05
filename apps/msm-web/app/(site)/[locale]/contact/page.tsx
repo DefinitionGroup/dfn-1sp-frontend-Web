@@ -5,7 +5,7 @@ import {msmPath} from "@msm/lib/editorial";
  * Contact Page
  * ============
  *
- * Displays the contact page with PageBuilder content and contact form.
+ * Displays the MSM hero, source-backed company details and contact people.
  *
  * ## SEO (March 2026)
  *
@@ -16,8 +16,11 @@ import {msmPath} from "@msm/lib/editorial";
 import MsmPageBuilder from "@msm/components/MsmPageBuilder";
 import MsmSiteWrapper from "@msm/components/MsmSiteWrapper";
 import NotFound from "@msm/components/ui/not-found";
-import ContactForm from "@msm/components/ui/ContactForm";
-import { getAllCases, getAllServicesForChannel, getPageBySlug } from "@1sp/sanity-queries";
+import MsmContactDetailsBlock from '@msm/components/contact/MsmContactDetailsBlock';
+import MsmContactPeopleBlock from '@msm/components/contact/MsmContactPeopleBlock';
+import {getContactCompanies, getContactChannels} from '@msm/lib/contact-content';
+import {getMsmContactPeople} from '@msm/lib/contact-data';
+import { getAllCases, getAllServicesForChannel, getHomePage, getPageBySlug } from "@1sp/sanity-queries";
 import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import { getChannelFromEnv, getSiteConfig } from "@1sp/site-config";
 import type { Metadata } from "next";
@@ -55,7 +58,7 @@ export async function generateMetadata({
   const { locale } = await params;
   const language = locale || "en";
 
-  const page = await getPageBySlug("contact", CHANNEL, language);
+  const page = await getPageBySlug('contact', CHANNEL, language);
 
   if (!page) {
     return { title: "Contact" };
@@ -72,8 +75,13 @@ export default async function ContactPage({
   const { locale } = await params;
   const language = locale || "en";
 
-  // Uses cached fetch from centralized data layer
-  const page = await getPageBySlug("contact", CHANNEL, language);
+  // Source documents are independent; React cache deduplicates metadata reads.
+  const [page, disclaimer, homepage, contactPeople] = await Promise.all([
+    getPageBySlug('contact', CHANNEL, language),
+    getPageBySlug('disclaimer', CHANNEL, language),
+    getHomePage(CHANNEL, language),
+    getMsmContactPeople(language),
+  ]);
 
   if (!page) {
     return (
@@ -84,7 +92,20 @@ export default async function ContactPage({
   }
 
   const navbarVariant = page?.navbarVariant || "light";
-  const contentBlocks = page.content as any[] | undefined;
+  const authoredBlocks = (page.content || []) as any[];
+  const companies = getContactCompanies(disclaimer?.content as any[] | undefined);
+  const channels = getContactChannels(authoredBlocks);
+  const mainEmail = companies[0]?.details.flatMap(block => block.markDefs || []).find(mark => typeof mark.href === 'string' && mark.href.startsWith('mailto:'))?.href as string | undefined;
+  const authoredHero = authoredBlocks.find(block => ['oneSPHeader', 'servicesHeroWithBadge'].includes(block._type));
+  const hero = authoredHero || {
+    _type: 'oneSPHeader', _key: 'contact-hero', headlineMode: 'headlineReveal', eyebrow: '',
+    headline: page.contactForm?.headline || (language === 'de' ? 'Kontaktiere uns' : 'Get in touch'),
+    paragraphs: page.contactForm?.subheadline ? [{_type: 'block', _key: 'contact-intro', style: 'normal', markDefs: [], children: [{_type: 'span', _key: 'text', marks: [], text: page.contactForm.subheadline}]}] : [],
+    media: homepage?.content?.find((block: any) => block._type === 'oneSPHeader')?.media,
+    ...(mainEmail ? {cta: {text: mainEmail.replace('mailto:', ''), link: {linkType: 'external', externalUrl: mainEmail}}} : {}),
+  };
+  const supplementaryBlocks = authoredBlocks.filter(block => !['contact-links', 'social-links'].includes(block._key) && !['oneSPHeader', 'servicesHeroWithBadge', 'galleryPeopleStep'].includes(block._type));
+  const contentBlocks = [hero, ...supplementaryBlocks];
   const needsAllCases = hasAutoCaseListingBlocks(contentBlocks);
   const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
 
@@ -99,7 +120,7 @@ export default async function ContactPage({
   // Extract structured data from page builder content
   const caseItems = extractCaseItemsFromContent(contentBlocks, mapCasesToItemList(allCasesRaw));
   const services = mapServicesToCatalogItems(allServicesRaw);
-  const people = extractPeopleFromContent(contentBlocks);
+  const people = extractPeopleFromContent([...contentBlocks, {_type: 'galleryPeopleStep', teamMembers: contactPeople}]);
   const units = extractUnitsFromContent(contentBlocks);
 
   return (
@@ -156,15 +177,12 @@ export default async function ContactPage({
 
       <div className="min-h-screen">
         <div className="min-h-screen px-1 md:px-2">
-          <ContactForm
-            headingTag="h1"
-            language={language}
-            channel={CHANNEL}
-            settings={page.contactForm}
-          />
-          {contentBlocks?.length ? (
+          <MsmPageBuilder content={[hero]} language={language} channel={CHANNEL} />
+          <MsmContactDetailsBlock companies={companies} channels={channels} language={language} />
+          <MsmContactPeopleBlock people={contactPeople} language={language} />
+          {supplementaryBlocks.length ? (
             <MsmPageBuilder
-              content={contentBlocks}
+              content={supplementaryBlocks}
               language={language}
               channel={CHANNEL}
               deferAfter={2}

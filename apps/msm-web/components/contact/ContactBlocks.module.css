@@ -1,0 +1,28 @@
+.section { padding: var(--msm-section-space) var(--container-padding); color: var(--color-msm-ink); }
+.inner { max-width: 88rem; margin-inline: auto; }
+.heading { max-width: 22ch; margin-bottom: 3rem; }
+.companies { display: grid; gap: 3rem; }
+.company { min-width: 0; border-top: 1px solid rgb(244 244 244 / 20%); padding-top: 1.5rem; }
+.company h3 { margin-bottom: 1rem; font-size: clamp(1.25rem, 1.7vw, 1.5rem); line-height: 1.2; letter-spacing: -0.02em; }
+.details { color: rgb(244 244 244 / 82%); font-size: 1rem; line-height: 1.65; overflow-wrap: anywhere; }
+.details p { margin: 0; }
+.details a, .email, .channel { text-decoration: underline; text-decoration-color: var(--color-msm-cyan); text-underline-offset: 0.22em; transition: color 150ms ease-out; }
+.details a:hover, .email:hover, .channel:hover, .profile:hover { color: var(--color-msm-cyan); }
+.channels { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid rgb(244 244 244 / 20%); }
+.channel { display: inline-flex; align-items: center; min-height: 2.75rem; }
+.people { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.5rem 2rem; }
+.person { min-width: 0; }
+.personBody { padding: 1rem; height: 100%; }
+.portrait { position: relative; aspect-ratio: 1; overflow: hidden; background: var(--color-msm-surface); }
+.image { object-fit: cover; transition: transform 480ms var(--ease-vast-bezier); }
+.personCopy { padding-top: 1.5rem; }
+.person h3 { font-size: clamp(1.5rem, 1.8vw, 1.75rem); line-height: 1.15; letter-spacing: -0.02em; }
+.position { margin-top: 0.75rem; color: rgb(244 244 244 / 72%); line-height: 1.5; }
+.email { display: flex; align-items: center; width: fit-content; max-width: 100%; min-height: 2.75rem; margin-top: 0.75rem; font-size: 1rem; overflow-wrap: anywhere; }
+.profile { display: inline-flex; align-items: center; gap: 0.75rem; min-height: 2.75rem; font-size: 1rem; transition: color 150ms ease-out; }
+.profile svg { color: var(--color-msm-cyan); flex-shrink: 0; }
+@media (min-width:640px) { .people { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width:768px) { .companies { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width:1280px) { .people { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (hover:hover) and (pointer:fine) { .person:hover .image { transform: scale(1.035); } }
+@media (prefers-reduced-motion:reduce) { .image, .details a, .email, .channel, .profile { transition: none; } .person:hover .image { transform: none; } }

@@ -29,6 +29,8 @@
   --font-sans: var(--font-aspekta-vf), system-ui, sans-serif;
   /* Legacy alias resolves to the same MSM variable face. */
   --font-aspekta: var(--font-aspekta-vf), system-ui, sans-serif;
+  /* Legacy utilities in shared renderers follow MSM's standard family too. */
+  --font-mono: var(--font-aspekta-vf), system-ui, sans-serif;
 
   /* Default fallback */
   --headline-line-height: 1.1;

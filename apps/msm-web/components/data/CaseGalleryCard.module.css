@@ -16,7 +16,7 @@
 .action { margin-top: auto; padding-top: 1.75rem; max-width: 100%; }
 /* Pager: same 48px outlined controls as the service carousel, sitting right under the rows. */
 .pager { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; margin-top: clamp(1.5rem, 3vw, 3rem); padding-top: 1.25rem; border-top: 1px solid rgb(244 244 244 / 18%); }
-.pagerCount { font-family: var(--font-mono, ui-monospace, monospace); font-size: 0.6875rem; line-height: 1; letter-spacing: 0.12em; color: rgb(244 244 244 / 60%); font-variant-numeric: tabular-nums; }
+.pagerCount { font-family: var(--font-aspekta-vf), system-ui, sans-serif; font-size: 0.6875rem; line-height: 1; letter-spacing: 0.12em; color: rgb(244 244 244 / 60%); font-variant-numeric: tabular-nums; }
 .pagerControls { display: flex; flex-shrink: 0; gap: 0.5rem; }
 .pagerControls button { width: 48px; height: 48px; display: grid; place-items: center; border: 1px solid rgb(244 244 244 / 30%); background: transparent; color: inherit; cursor: pointer; transition: color 180ms, border-color 180ms; }
 .pagerControls button:disabled { opacity: 0.25; cursor: default; }

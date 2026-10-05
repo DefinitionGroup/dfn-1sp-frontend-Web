@@ -45,8 +45,8 @@ export default function SelectionFrame({ children, className, contentClassName, 
           <svg className="msm-badge-frame" width="100%" height="100%">
             <rect x="0.5" y="0.5" width="100%" height="100%" vectorEffect="non-scaling-stroke" />
           </svg>
-          <span className="msm-badge-cross font-mono text-xs leading-none">+</span>
-          <span className="msm-badge-handle"><span className="msm-badge-cross font-mono text-xs leading-none">+</span></span>
+          <span className="msm-badge-cross font-aspekta text-xs leading-none">+</span>
+          <span className="msm-badge-handle"><span className="msm-badge-cross font-aspekta text-xs leading-none">+</span></span>
         </div>
       ))}
       <div className={cn("msm-badge-content", contentClassName)}>{children}</div>
