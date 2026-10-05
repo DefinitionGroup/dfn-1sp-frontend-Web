@@ -20,6 +20,7 @@
     "test:deployment-tier": "node --experimental-strip-types --test scripts/deployment-tier.test.mjs",
     "test:component-import": "tsx --test scripts/onesp-component-group-import.test.mjs",
     "test:cta-contract": "tsx --test scripts/cta-contract.test.ts",
+    "test:msm-unit-assignments": "tsx --test scripts/msm-unit-assignments.test.ts",
     "test:flzr-section-bands": "tsx --test scripts/flzr-section-bands.test.ts",
     "test:renaissance-section-bands": "tsx --test scripts/renaissance-section-bands.test.ts",
     "prepare:renaissance-figma-drafts": "sanity exec scripts/prepare-renaissance-figma-drafts.ts --with-user-token",

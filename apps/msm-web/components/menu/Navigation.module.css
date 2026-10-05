@@ -1,4 +1,4 @@
-.desktopPanel { position: fixed; z-index: 99999; top: 5.5rem; left: 1rem; right: 9.5rem; max-width: 64rem; background: var(--color-msm-paper); color: var(--color-msm-ink); border: 1px solid rgb(244 244 244 / 20%); padding: clamp(1.25rem, 2.5vw, 2rem); }
+.desktopPanel { position: fixed; z-index: 99999; top: 5.5rem; left: 1rem; width: min(64rem, calc(100vw - 2rem)); background: var(--color-msm-paper); color: var(--color-msm-ink); box-shadow: 0 16px 48px rgb(0 0 0 / 28%), 0 4px 16px rgb(0 0 0 / 12%); padding: clamp(1.25rem, 2.5vw, 2rem); }
 .desktopPanel::before { content: ""; position: absolute; top: -0.6rem; left: 0; right: 0; height: 0.6rem; }
 .desktopClose { position: absolute; right: 1rem; top: 1rem; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; color: var(--color-msm-ink); }
 .caseHeading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1.25rem; margin-right: 3rem; border-bottom: 1px solid rgb(244 244 244 / 20%); font-size: 1.5rem; letter-spacing: -0.025em; }

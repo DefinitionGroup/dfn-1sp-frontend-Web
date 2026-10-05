@@ -82,6 +82,33 @@ export default function FrontNavOverlay({ className = "", color = "light", menuD
   }, []);
   React.useEffect(() => () => { if (closeTimer.current) clearTimeout(closeTimer.current); }, []);
 
+  React.useLayoutEffect(() => {
+    if (!showCases) return;
+    const trigger = casesTrigger.current;
+    const panel = casesPanel.current;
+    if (!trigger || !panel) return;
+
+    function positionPanel() {
+      if (!trigger || !panel) return;
+      const bounds = trigger.getBoundingClientRect();
+      const width = panel.offsetWidth;
+      const centeredLeft = bounds.left + bounds.width / 2 - width / 2;
+      // Center on Cases, shifting only enough to retain a 16px viewport gutter.
+      panel.style.left = `${Math.max(16, Math.min(centeredLeft, document.documentElement.clientWidth - width - 16))}px`;
+    }
+
+    positionPanel();
+    const observer = new ResizeObserver(positionPanel);
+    observer.observe(trigger);
+    observer.observe(panel);
+    if (navRef.current) observer.observe(navRef.current);
+    window.addEventListener("resize", positionPanel);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", positionPanel);
+    };
+  }, [showCases, pathname, hasInitialAnimationCompleted]);
+
   useMotionValueEvent(scrollY, "change", (latest) => {
     if (!hasInitialAnimationCompleted && !reduceMotion) return;
     if (Math.abs(latest - lastScrollY.current) > 10) {
@@ -147,7 +174,10 @@ export default function FrontNavOverlay({ className = "", color = "light", menuD
     </nav>
     <AnimatePresence>
       {showCases && <motion.div ref={casesPanel} id="msm-desktop-cases" role="region" aria-label={german ? "Case Studies" : "Case studies"} className={`${styles.desktopPanel} hidden md:block`}
-        initial={reduceMotion ? false : { opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: reduceMotion ? 0 : 0.22, ease: [0.16, 1, 0.3, 1] }}
+        initial={reduceMotion ? false : { opacity: 0, transform: "translateY(16px)" }}
+        animate={{ opacity: 1, transform: "translateY(0px)" }}
+        exit={{ opacity: 0, transform: reduceMotion ? "translateY(0px)" : "translateY(16px)", transition: { duration: reduceMotion ? 0 : 0.18, ease: [0.4, 0, 1, 1] } }}
+        transition={{ type: "tween", duration: reduceMotion ? 0 : 0.3, ease: [0.16, 1, 0.3, 1] }}
         onPointerEnter={clearClose} onPointerLeave={scheduleClose}
         onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node) && !casesTrigger.current?.contains(event.relatedTarget as Node)) closeCases(); }}>
         <button type="button" className={styles.desktopClose} aria-label={german ? "Cases schließen" : "Close case studies"} onClick={() => { closeCases(); casesTrigger.current?.focus(); }}><X size={20} /></button>

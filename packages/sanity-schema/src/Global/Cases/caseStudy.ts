@@ -6,11 +6,13 @@ import { ChartBar } from '@phosphor-icons/react'
 import { Equalizer } from '@phosphor-icons/react'
 import { websiteChannelOptions } from '../../shared/channelOptions'
 import { caseSeoFields } from './caseWebsiteContent'
+import MsmUnitAssignmentsInput from './MsmUnitAssignmentsInput'
 
 export default defineType({
     name: 'caseStudy',
     title: 'Case Study',
     type: 'document',
+    components: {input: MsmUnitAssignmentsInput},
     groups: [
         { name: 'content', title: 'Shared content' },
         { name: 'media', title: 'Media' },
