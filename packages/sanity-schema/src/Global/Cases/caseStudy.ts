@@ -319,6 +319,7 @@ export default defineType({
                 { type: 'challengeAndSolution' },
                 { type: 'approachSection' },
                 { type: 'resultsMetrics' },
+                { type: 'intertitleCTA' },
             ],
             description: 'Build your case study page using modular components',
             group: 'pageBuilder'

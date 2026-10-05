@@ -826,8 +826,23 @@ export interface CaseStudyData {
         | ChallengeAndSolutionComponent
         | ApproachSectionComponent
         | ResultsMetricsComponent
+        | IntertitleCTAComponent
     >;
     publishedAt?: string;
+}
+
+export interface IntertitleCTAComponent {
+    _type: "intertitleCTA";
+    _key: string;
+    title: string;
+    subline?: string;
+    subtitle: string;
+    cta?: CTA;
+    alignment?: "center" | "left";
+    paddingTop?: "0" | "12" | "24" | "48";
+    paddingBottom?: "0" | "12" | "24" | "48";
+    navPointName?: string;
+    hideFromNav?: boolean;
 }
 
 export interface HeadlineChallengeComponent {
