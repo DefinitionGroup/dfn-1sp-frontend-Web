@@ -68,11 +68,6 @@ export default function CasePoweredByContact({
             className="max-w-5xl mx-auto bg-msm-surface overflow-hidden border-t border-white/20 grid grid-cols-1 lg:grid-cols-12 items-end gap-8 lg:gap-10"
           >
             <CaseReveal content className="lg:col-span-7 p-8">
-              <p
-                className=" text-sm tracking-tight leading-tight  text-neutral-300 "
-              >
-                {`${t.caseStudy.contactPrefix}`}
-              </p>
               <h3
                 className="text-xl sm:text-xl lg:text-2xl tracking-tight leading-tight text-neutral-100"
               >
