@@ -26,6 +26,17 @@ function localizeHref(href: string, language: string) {
   return href.startsWith(`${prefix}/`) ? href.slice(prefix.length) : href;
 }
 
+function orderUnits(units: FooterExternalBannerUnit[], order: FooterExternalBannerData["unitOrder"]) {
+  const refs = (order ?? []).map((ref) => ref?._ref);
+  if (!refs.some(Boolean)) return units;
+  const rank = (unit: FooterExternalBannerUnit) => {
+    const index = refs.indexOf(unit._id);
+    return index === -1 ? refs.length : index;
+  };
+  // The sort is stable, so unlisted units keep the query's A–Z order after the listed ones.
+  return [...units].sort((a, b) => rank(a) - rank(b));
+}
+
 function UnitCard({ unit, language, reducedMotion }: {
   unit: FooterExternalBannerUnit;
   language: string;
@@ -40,6 +51,8 @@ function UnitCard({ unit, language, reducedMotion }: {
   const logo = assetUrl(unit.footerBannerLogo) || assetUrl(unit.logo) || assetUrl(unit.logoColor);
   const href = resolveCtaLink(unit.cta?.link);
   const label = unit.name || "1SP unit";
+  const discipline = unit.footerBannerLabel?.trim();
+  const accessibleName = discipline ? `${label}, ${discipline.replace(/\s+/g, " ")}` : label;
   const videoUrl = assetUrl(unit.footerHoverVideo);
   const poster = assetUrl(unit.backgroundImage) || (videoUrl ? cloudinaryPosterUrl(videoUrl, { maxWidth: 640 }) : undefined);
   const play = active && inView && !reducedMotion;
@@ -61,17 +74,21 @@ function UnitCard({ unit, language, reducedMotion }: {
       {logo ? <Image src={logo} alt="" width={240} height={120} unoptimized className={styles.unitLogo} />
         : <span className={styles.unitName}>{label}</span>}
     </span>
-    {unit.tagline && <span className={styles.unitText}>{unit.tagline}</span>}
+    {/* The label shows at rest; the tagline takes its place on hover/focus. */}
+    {(discipline || unit.tagline) && <span className={styles.unitText}>
+      {discipline && <span className={styles.unitLabel}>{discipline}</span>}
+      {unit.tagline && <span className={styles.unitTagline}>{unit.tagline}</span>}
+    </span>}
   </>;
+  const cardData = { "aria-label": accessibleName, "data-label": Boolean(discipline), "data-details": Boolean(unit.tagline) };
 
   return <li ref={cardRef} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
     onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}>
-    {href && href !== "#" ? <Link href={localizeHref(href, language)} className={styles.unit}
-      aria-label={label} data-details={Boolean(unit.tagline)}
+    {href && href !== "#" ? <Link href={localizeHref(href, language)} className={styles.unit} {...cardData}
       target={unit.cta?.link?.linkType === "external" ? "_blank" : undefined}
       rel={unit.cta?.link?.linkType === "external" ? "noopener noreferrer" : undefined}>
       {content}
-    </Link> : <div className={styles.unit} aria-label={label} data-details={Boolean(unit.tagline)}>{content}</div>}
+    </Link> : <div className={styles.unit} {...cardData}>{content}</div>}
   </li>;
 }
 
@@ -121,7 +138,7 @@ export default function FooterExternalBanner({ data, units = [], language = "en"
           </div>}
         </div>
         {units.length > 0 && <ul className={styles.units}>
-          {units.map((unit) => <UnitCard key={unit._id} unit={unit} language={language} reducedMotion={reducedMotion} />)}
+          {orderUnits(units, data.unitOrder).map((unit) => <UnitCard key={unit._id} unit={unit} language={language} reducedMotion={reducedMotion} />)}
         </ul>}
         {cta && <div className={styles.action}>
           <Link href={localizeHref(cta.href, language)} className={styles.cta}
