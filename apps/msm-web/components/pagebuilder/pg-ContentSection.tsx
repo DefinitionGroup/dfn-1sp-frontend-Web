@@ -2,7 +2,7 @@ import {PortableText, type PortableTextComponents} from '@portabletext/react';
 import type {PortableTextBlock} from '@portabletext/types';
 import type {CSSProperties} from 'react';
 import {hasVisibleText} from '@1sp/utils/text-content';
-import {shouldLoadProductionTracking} from '@1sp/utils/deployment-tier';
+import {shouldLoadMsmCookiebot} from '@msm/lib/cookiebot-deployment';
 import CookieDeclaration from '@msm/components/CookieDeclaration';
 import EditorialReveal from '@msm/components/ui/EditorialReveal';
 import styles from '@msm/components/ui/EditorialBlocks.module.css';
@@ -25,7 +25,7 @@ const copySizes: Record<string, string> = {sm: '0.9375rem', base: '1rem', lg: 'c
 
 export default function ContentSection({data, language = 'en'}: {data: ContentSectionData; language?: string}) {
   const {title, introHeading, introSubheading, content, contentSize = 'lg', navPointName, hideFromNav} = data || {};
-  const showDeclaration = data?.showCookieDeclaration === true && shouldLoadProductionTracking();
+  const showDeclaration = data?.showCookieDeclaration === true && shouldLoadMsmCookiebot();
   if (!content?.length && !showDeclaration) return null;
   const sectionId = title || introHeading
     ? (title || introHeading!.substring(0, 30)).replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '-').toLowerCase()

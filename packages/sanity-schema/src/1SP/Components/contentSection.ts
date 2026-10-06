@@ -57,7 +57,7 @@ export default defineType({
             name: "showCookieDeclaration",
             title: "Show Cookiebot declaration",
             type: "boolean",
-            description: "MSM only: display the current cookie report and consent controls. Use once per privacy page. This section can contain only the declaration, without rich text. Hidden on test/beta deployments.",
+            description: "MSM only: display the current cookie report and consent controls. Use once per privacy page. This section can contain only the declaration, without rich text. Available on production and beta; hidden in the dedicated test lane.",
             initialValue: false,
             group: "content",
             hidden: ({document}) => document?.channel !== "msmWeb",

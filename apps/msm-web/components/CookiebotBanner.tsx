@@ -1,8 +1,8 @@
-import { shouldLoadProductionTracking } from "@1sp/utils/deployment-tier";
+import { shouldLoadMsmCookiebot } from "@msm/lib/cookiebot-deployment";
 import { COOKIEBOT_BANNER_SRC, COOKIEBOT_CID } from "@msm/lib/cookiebot";
 
 export default function CookiebotBanner({ language }: { language: string }) {
-  if (!shouldLoadProductionTracking()) return null;
+  if (!shouldLoadMsmCookiebot()) return null;
 
   // Cookiebot's automatic blocker must execute before hydration and tracking.
   // next/script defers execution; a synchronous head script preserves that order.

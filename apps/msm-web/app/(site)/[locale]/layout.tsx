@@ -77,7 +77,7 @@ export default async function SiteLayout({
 
   return (
     <html lang={locale || "en"} className={`dark ${aspekta.variable}`} suppressHydrationWarning>
-      <head>{LOAD_PRODUCTION_TRACKING ? <CookiebotBanner language={locale || "en"} /> : null}</head>
+      <head><CookiebotBanner language={locale || "en"} /></head>
       <body className="antialiased" suppressHydrationWarning>
       {diagnostics}
       {children}

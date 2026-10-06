@@ -20,7 +20,7 @@ Run the root Sanity doctor with `--channel msmWeb --language en`, then compare i
 
 ## Cookiebot
 
-MSM owns its Cookiebot domain-group ID in `lib/cookiebot.ts`: `2c30619b-98e9-4d03-945d-095454bad8e5`. Its locale-root layout loads the synchronous automatic blocker before hydration. The existing deployment-tier guard suppresses both the banner and declaration on test/beta deployments. Google Analytics keeps the shared statistics-consent gate and requires `NEXT_PUBLIC_MSM_GOOGLE_MEASUREMENT_ID`.
+MSM owns its Cookiebot domain-group ID in `lib/cookiebot.ts`: `2c30619b-98e9-4d03-945d-095454bad8e5`. Its locale-root layout loads the synchronous automatic blocker before hydration. Cookiebot runs on production and beta so consent can be smoke-tested; the dedicated test lane suppresses it. Beta retains noindex and disables production Google Analytics, which keeps the shared statistics-consent gate and requires `NEXT_PUBLIC_MSM_GOOGLE_MEASUREMENT_ID`.
 
 In Studio, open **MSM → English/German → Pages → Privacy Policy → Content**. The **Cookie declaration / Cookie-Erklärung** Content Section has **Show Cookiebot declaration** enabled. Editors can change its title, reorder or remove the section, or disable the toggle. Use one declaration per page. The frontend executes the declaration script inside this section again after client-side navigation.
 
