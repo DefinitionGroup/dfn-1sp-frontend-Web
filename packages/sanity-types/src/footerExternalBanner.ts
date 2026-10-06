@@ -10,6 +10,8 @@ export interface FooterExternalBannerData {
   text?: string;
   video?: CloudinaryAsset;
   poster?: CloudinaryAsset;
+  /** Unit references in editor order; queries spread them raw, so only `_ref` is set. */
+  unitOrder?: Array<{ _key?: string; _ref?: string }> | null;
   cta?: CTA;
   copyright?: string;
 }
@@ -18,6 +20,7 @@ export interface FooterExternalBannerUnit {
   _id: string;
   name?: string;
   tagline?: string;
+  footerBannerLabel?: string;
   backgroundImage?: CloudinaryAsset;
   footerHoverVideo?: CloudinaryAsset;
   footerBannerLogo?: CloudinaryAsset;

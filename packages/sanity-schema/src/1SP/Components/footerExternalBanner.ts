@@ -5,7 +5,7 @@ export default defineType({
   name: "footerExternalBanner",
   title: "Footer External Banner",
   type: "object",
-  description: "Full-width video, 1SP branding and links to all active units. Uses each unit's logo and CTA; manage these in Units.",
+  description: "Full-width video, 1SP branding and links to all active units. Uses each unit's logo, label and CTA; manage these in Units.",
   fields: [
     defineField({ name: "eyebrow", title: "Eyebrow", type: "string", hidden: true, description: "No longer displayed." }),
     defineField({ name: "logo", title: "Logo", type: "cloudinary.asset", description: "Optional. Defaults to the white and lime 1SP Agency logo." }),
@@ -14,6 +14,23 @@ export default defineType({
     defineField({ name: "text", title: "Text block 2", type: "text", rows: 3, description: "Second paragraph, below text block 1.", initialValue: "Built to accelerate growth at every stage of your customer journey, the One Shared Passion that glues us together is Gaming, Technology and Consumer Electronics." }),
     defineField({ name: "video", title: "Background video", type: "cloudinary.asset", validation: (rule) => rule.custom((value) => !value || (value as { resource_type?: string }).resource_type === "video" ? true : "Choose a Cloudinary video.") }),
     defineField({ name: "poster", title: "Background poster", type: "cloudinary.asset", description: "Shown while loading, when motion is reduced, or if the video cannot play. Otherwise derived from the video." }),
+    defineField({
+      name: "unitOrder",
+      title: "Unit order",
+      type: "array",
+      description: "Drag to sort the unit cards. Units not listed follow A–Z, so new units still appear.",
+      of: [{
+        type: "reference",
+        to: [{ type: "unit" }],
+        options: {
+          filter: ({ document }: { document?: { language?: string } }) => ({
+            filter: 'isActive == true && coalesce(slug.current, "") != "1sp-agency"' + (document?.language ? " && language == $language" : ""),
+            params: document?.language ? { language: document.language } : {},
+          }),
+        },
+      }],
+      validation: (rule) => rule.unique(),
+    }),
     defineField({ name: "cta", title: "Button link", type: "cta", validation: (rule) => rule.custom((value) => validateOptionalCta(value)) }),
     defineField({ name: "copyright", title: "Copyright", type: "string", description: "Optional small line below the button." }),
   ],
