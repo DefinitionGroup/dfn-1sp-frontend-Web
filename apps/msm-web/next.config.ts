@@ -2,9 +2,23 @@ import type { NextConfig } from "next";
 import path from "node:path";
 import { getDeploymentHeaders } from "@1sp/utils/deployment-tier";
 import contentRedirects from './data/content-redirects.json';
+import germanToEnglishRedirects from './data/de-to-en-redirects.json';
+
+// Temporary while the German pages are unfinished: MSM_REDIRECT_DE_TO_EN=true
+// (set on the production project only) sends every /de URL to its English
+// page with a 307. Exact page pairs come first; legacy /de/project/* redirects
+// then chain into them; anything left just drops the /de prefix.
+const redirectGermanToEnglish = process.env.MSM_REDIRECT_DE_TO_EN === "true";
 
 const nextConfig: NextConfig = {
-  redirects: async () => contentRedirects,
+  redirects: async () =>
+    redirectGermanToEnglish
+      ? [
+          ...germanToEnglishRedirects,
+          ...contentRedirects,
+          { source: "/de/:path*", destination: "/:path*", permanent: false },
+        ]
+      : contentRedirects,
   // Keep development file watching inside this monorepo. An unrelated
   // lockfile above it otherwise makes Turbopack scan the entire home folder.
   turbopack: { root: path.resolve(__dirname, "../..") },

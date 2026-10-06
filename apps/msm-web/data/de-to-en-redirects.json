@@ -1,0 +1,412 @@
+[
+  {
+    "source": "/de",
+    "destination": "/",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases",
+    "destination": "/cases",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/acer-social-media",
+    "destination": "/cases/acer-social-media",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/aeg-electrolux-dishwasher-virtual-reality",
+    "destination": "/cases/aeg-electrolux-dishwasher-virtual-reality",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/aeg-electrolux-one2five-review-plattform",
+    "destination": "/cases/aeg-electrolux-one2five-review-platform",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/anker-lollapalooza-truck-promotion",
+    "destination": "/cases/anker-lollapalooza-truck-promotion",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/anker-und-soundcore-retail-space-experience",
+    "destination": "/cases/anker-and-soundcore-retail-space-experience",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/ar-showrooms",
+    "destination": "/cases/ar-showrooms",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/avm-pos-optimierung",
+    "destination": "/cases/avm-shelf-system-optimization",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/bandai-namco-pr",
+    "destination": "/cases/bandai-namco-pr",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/bigben-consumer-electronics-activation",
+    "destination": "/cases/bigben-consumer-electronics-activation",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/brother-augmented-reality",
+    "destination": "/cases/brother-augmented-reality",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/daikin-b2c-b2b-energie-bonus",
+    "destination": "/cases/daikin-energy-bonus",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/ea-die-sims-tiktok-influencer-marketing",
+    "destination": "/cases/ea-the-sims-tiktok-influencer-marketing",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/ea-need-for-speed-influencer-kampagne",
+    "destination": "/cases/ea-need-for-speed-influencer-campaign",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/ea-sims4-influencer-marketing",
+    "destination": "/cases/ea-sims4-influencer-marketing",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/ea-star-wars-battlefront-influencer-marketing",
+    "destination": "/cases/ea-star-wars-battlefront-influencer-marketing",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/electrolux-showkuechen-rollout",
+    "destination": "/cases/aeg-electrolux-showkitchen-rollout",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/epic-games-fortnite-pr",
+    "destination": "/cases/epic-games-fortnite-pr",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/erfal-eq3-influencer-kooperationen",
+    "destination": "/cases/erfal-eq3-influencer-cooperations",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/ernst-klett-verlag-content-enrichment-fuer-printprodukte",
+    "destination": "/cases",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/expert-augmented-reality-produkterlebnis",
+    "destination": "/cases/expert-augmented-reality-product-experience",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/garmin-esports-kooperation",
+    "destination": "/cases/garmin-esports-cooperation",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/hatch-angrybirdsgo-turboedition-landingpage",
+    "destination": "/cases/hatch-angrybirdsgo-turboedition-landingpage",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/hisense-uefa-cashback-kampagne",
+    "destination": "/cases/hisense-uefa-cashback",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/jakks-pacifik-harry-potter-zauberstab-activation",
+    "destination": "/cases/jakks-pacifik-harry-potter-magic-wand-activation",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/merlin-entertainments-digital-signage-terminals",
+    "destination": "/cases/merlin-entertainments-sea-life-digital-queue-entertainment",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/merlin-skreeens-digital-signage",
+    "destination": "/cases/merlin-skreeens-digital-signage",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/microsoft-digital-eatery",
+    "destination": "/cases/microsoft-digital-eatery",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/microsoft-ecommerce",
+    "destination": "/cases/microsoft-ecommerce",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/microsoft-expertzone-social-media",
+    "destination": "/cases/microsoft-expertzone-social-media",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/microsoft-misx-moebel-rollout",
+    "destination": "/cases/microsoft-misx-furniture-rollout",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/microsoft-trainings",
+    "destination": "/cases/microsoft-trainings",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/microsoft-xbox-cassette-player-fotoshooting",
+    "destination": "/cases/microsoft-xbox-cassette-player-photo-shoot",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/migros-digitale-ar-loyalty-kampagne",
+    "destination": "/cases/migros-ar-digital-loyalty-campaign",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/obi-micro-influencer-kampagne",
+    "destination": "/cases/obi-influencer-campaign",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/oculus-produkt-launch-europa",
+    "destination": "/cases/oculus-european-product-launch",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/parrot-retail-marketing",
+    "destination": "/cases/parrot-retail-marketing",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/recaro-gaming-social-media-und-pr",
+    "destination": "/cases/recaro-gaming-social-media-and-pr",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/ring-retail-marketing",
+    "destination": "/cases/ring-retail-marketing",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/riot-games-social-media-aktivierung",
+    "destination": "/cases/riot-games-social-media-activation",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/riot-games-valorant-gen-z-adventskalender",
+    "destination": "/cases/riot-games-valorant-gen-z-advent-calendar",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/samsung-sales-training",
+    "destination": "/cases/samsung-sales-training",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/schleich-digitale-instore-activation",
+    "destination": "/cases/schleich-digital-instore-activation",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/snakebyte-pebble-gear-social-media",
+    "destination": "/cases/snakebyte-pebble-gear-social-media",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/tiktok-influencer-kampagne",
+    "destination": "/cases/tiktok-influencer-campaign",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/turtle-beach-digitale-produkt-kommunikation",
+    "destination": "/cases/turtle-beach-digital-product-communications",
+    "permanent": false
+  },
+  {
+    "source": "/de/cases/warner-pr-experiential-events",
+    "destination": "/cases/warner-pr-experiential-events",
+    "permanent": false
+  },
+  {
+    "source": "/de/contact",
+    "destination": "/contact",
+    "permanent": false
+  },
+  {
+    "source": "/de/disclaimer",
+    "destination": "/disclaimer",
+    "permanent": false
+  },
+  {
+    "source": "/de/people/kirsten-huecker",
+    "destination": "/people/kirsten-huecker",
+    "permanent": false
+  },
+  {
+    "source": "/de/people/lennart-scheel",
+    "destination": "/people/lennart-scheel",
+    "permanent": false
+  },
+  {
+    "source": "/de/people/maic-ungermann",
+    "destination": "/people/maic-ungermann",
+    "permanent": false
+  },
+  {
+    "source": "/de/people/markus-oeller",
+    "destination": "/people/markus-oeller",
+    "permanent": false
+  },
+  {
+    "source": "/de/people/nikolas-angerstein",
+    "destination": "/people/nikolas-angerstein",
+    "permanent": false
+  },
+  {
+    "source": "/de/people/nils-kedeinis",
+    "destination": "/people/nils-kedeinis",
+    "permanent": false
+  },
+  {
+    "source": "/de/people/sven-weber",
+    "destination": "/people/sven-weber",
+    "permanent": false
+  },
+  {
+    "source": "/de/people/timo-studt",
+    "destination": "/people/timo-studt",
+    "permanent": false
+  },
+  {
+    "source": "/de/people/torsten-oppermann",
+    "destination": "/people/torsten-oppermann",
+    "permanent": false
+  },
+  {
+    "source": "/de/privacy-policy",
+    "destination": "/privacy-policy",
+    "permanent": false
+  },
+  {
+    "source": "/de/services",
+    "destination": "/services",
+    "permanent": false
+  },
+  {
+    "source": "/de/services/ar-link",
+    "destination": "/services/ar-link",
+    "permanent": false
+  },
+  {
+    "source": "/de/services/augmented-and-virtual-reality",
+    "destination": "/services/augmented-and-virtual-reality",
+    "permanent": false
+  },
+  {
+    "source": "/de/services/cashback-services",
+    "destination": "/services/cashback-solutions",
+    "permanent": false
+  },
+  {
+    "source": "/de/services/content-kreation",
+    "destination": "/services/content-creation",
+    "permanent": false
+  },
+  {
+    "source": "/de/services/couplar",
+    "destination": "/services/couplar",
+    "permanent": false
+  },
+  {
+    "source": "/de/services/development",
+    "destination": "/services/development",
+    "permanent": false
+  },
+  {
+    "source": "/de/services/digital-signage",
+    "destination": "/services/digital-signage",
+    "permanent": false
+  },
+  {
+    "source": "/de/services/experiential-marketing",
+    "destination": "/services/experiential-marketing",
+    "permanent": false
+  },
+  {
+    "source": "/de/services/hashtaglove",
+    "destination": "/services/hashtaglove",
+    "permanent": false
+  },
+  {
+    "source": "/de/services/influencer-marketing",
+    "destination": "/services/influencer-marketing",
+    "permanent": false
+  },
+  {
+    "source": "/de/services/pos-marketing",
+    "destination": "/services/pos-marketing",
+    "permanent": false
+  },
+  {
+    "source": "/de/services/pr",
+    "destination": "/services/pr",
+    "permanent": false
+  },
+  {
+    "source": "/de/services/review-plattform",
+    "destination": "/services/review-platform",
+    "permanent": false
+  },
+  {
+    "source": "/de/services/social-media",
+    "destination": "/services/social-media",
+    "permanent": false
+  },
+  {
+    "source": "/de/services/strategy",
+    "destination": "/services/strategy",
+    "permanent": false
+  },
+  {
+    "source": "/de/services/training",
+    "destination": "/services/training",
+    "permanent": false
+  },
+  {
+    "source": "/de/units",
+    "destination": "/units",
+    "permanent": false
+  },
+  {
+    "source": "/de/units/channel-marketing",
+    "destination": "/units/channel-marketing",
+    "permanent": false
+  },
+  {
+    "source": "/de/units/communications",
+    "destination": "/units/communications",
+    "permanent": false
+  },
+  {
+    "source": "/de/units/technology-systems",
+    "destination": "/units/technology-systems",
+    "permanent": false
+  },
+  {
+    "source": "/de/units/xr-labs",
+    "destination": "/units/xr-labs",
+    "permanent": false
+  }
+]

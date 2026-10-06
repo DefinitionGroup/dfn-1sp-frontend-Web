@@ -182,6 +182,7 @@ export default {
             title: "Footer Columns",
             type: "array",
             group: 'footer',
+            description: "MSM: once at least one column exists, these columns replace the automatic Explore / Cases / Capabilities / Connect grid, in this order.",
             of: [
                 {
                     type: "object",
@@ -194,9 +195,36 @@ export default {
                             validation: (Rule: any) => Rule.required(),
                         },
                         {
+                            name: "source",
+                            title: "Column Content",
+                            type: "string",
+                            description: "Pick links by hand, or let the column fill itself from published content.",
+                            options: {
+                                list: [
+                                    { title: "Hand-picked links", value: "manual" },
+                                    { title: "Latest cases (automatic)", value: "cases" },
+                                    { title: "Services (automatic)", value: "services" },
+                                    { title: "Site pages (automatic)", value: "pages" },
+                                ],
+                                layout: "radio",
+                            },
+                            initialValue: "manual",
+                            hidden: ({ document }: { document?: { channel?: string } }) => document?.channel !== 'msmWeb',
+                        },
+                        {
+                            name: "limit",
+                            title: "Maximum Links",
+                            type: "number",
+                            description: "Leave empty for the default (10 cases, 12 services or pages).",
+                            validation: (Rule: any) => Rule.integer().min(1).max(30),
+                            hidden: ({ document, parent }: { document?: { channel?: string }; parent?: { source?: string } }) =>
+                                document?.channel !== 'msmWeb' || (parent?.source ?? "manual") === "manual",
+                        },
+                        {
                             name: "links",
                             title: "Links",
                             type: "array",
+                            hidden: ({ parent }: { parent?: { source?: string } }) => (parent?.source ?? "manual") !== "manual",
                             of: [
                                 {
                                     type: "object",
@@ -334,12 +362,18 @@ export default {
                         select: {
                             title: "title",
                             links: "links",
+                            source: "source",
                         },
-                        prepare({ title, links }: { title?: string; links?: any[] }) {
+                        prepare({ title, links, source }: { title?: string; links?: any[]; source?: string }) {
+                            const automaticLabels: Record<string, string> = {
+                                cases: "Automatic: latest cases",
+                                services: "Automatic: services",
+                                pages: "Automatic: site pages",
+                            };
                             const linkCount = links?.length || 0;
                             return {
                                 title: title || "Untitled Column",
-                                subtitle: `${linkCount} link${linkCount !== 1 ? 's' : ''}`,
+                                subtitle: (source && automaticLabels[source]) || `${linkCount} link${linkCount !== 1 ? 's' : ''}`,
                             };
                         },
                     },
