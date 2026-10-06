@@ -36,8 +36,7 @@ export default async function RenaissanceFooterExternalBanner({
   return (
     <div style={{ "--font-aspekta": networkFont.style.fontFamily } as CSSProperties}>
     <OneSpScope fullWidth>
-      <FooterExternalBanner data={data} units={linkedUnits} language={language}
-        hostLogo={{ src: "/units/RENAISSANCE/renaissance-horz_logo.svg", alt: "Renaissance" }} />
+      <FooterExternalBanner data={data} units={linkedUnits} language={language} />
     </OneSpScope>
     </div>
   );

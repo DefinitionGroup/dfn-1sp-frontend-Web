@@ -31,8 +31,7 @@ export default async function MsmFooterExternalBanner({
   });
   return (
     <OneSpScope fullWidth>
-      <FooterExternalBanner data={data} units={linkedUnits} language={language}
-        hostLogo={{ src: "/units/MSM/msm_logo.svg", alt: "MSM" }} />
+      <FooterExternalBanner data={data} units={linkedUnits} language={language} />
     </OneSpScope>
   );
 }
