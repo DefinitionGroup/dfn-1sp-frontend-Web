@@ -1627,7 +1627,7 @@ export const FOOTER_EXTERNAL_BANNER_UNITS_QUERY = defineQuery(`
   coalesce(slug.current, "") != "1sp-agency" &&
   ($channel in channel || ($channel == "1spWeb" && !defined(channel)))
 ] | order(name asc) {
-  _id, name, tagline,
+  _id, name, tagline, footerBannerLabel,
   backgroundImage${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
   footerHoverVideo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},
   footerBannerLogo${MINIMAL_CLOUDINARY_ASSET_PROJECTION},

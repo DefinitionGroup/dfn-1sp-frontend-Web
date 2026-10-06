@@ -28,16 +28,30 @@
 .ctaArrow { flex-shrink: 0; transition: transform 180ms ease; }
 .cta:hover .ctaArrow { transform: translate(2px, -2px); }
 .units { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(10px, 0.8vw, 17px); padding: 0; margin: clamp(40px, 3.8vw, 80px) 0 0; list-style: none; }
-.unit { position: relative; isolation: isolate; display: grid; grid-template-rows: repeat(2, minmax(0, 1fr)); width: 100%; min-width: 0; min-height: 0; aspect-ratio: 3 / 2; overflow: hidden; border: 1px solid var(--banner-border); border-radius: 10px; background: rgb(20 28 30 / 38%); backdrop-filter: blur(18px); transition: border-color 220ms ease; }
+.unit { position: relative; isolation: isolate; container-type: inline-size; display: grid; grid-template-rows: repeat(2, minmax(0, 1fr)); width: 100%; min-width: 0; min-height: 0; aspect-ratio: 3 / 2; overflow: hidden; border: 1px solid var(--banner-border); border-radius: 10px; background: rgb(20 28 30 / 38%); backdrop-filter: blur(18px); transition: border-color 220ms ease; }
 .unit:is(:hover, :focus-visible) { border-color: #fff; }
 .unitMedia { position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity 240ms ease; }
 .unitMedia::after { content: ""; position: absolute; inset: 0; background: rgb(0 0 0 / 58%); }
 .unitImage, .unitVideo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .unitBrand { grid-row: 1; display: flex; align-items: center; justify-content: center; width: 64%; height: 100%; min-height: 0; margin: auto; transform: translateY(50%); transition: transform 240ms ease; }
-.unitText { grid-row: 2; display: flex; justify-content: center; align-items: center; padding: 0 10px 12px; text-align: center; font-size: clamp(10px, 0.66vw, 14px); line-height: 1.375; text-wrap: pretty; opacity: 0; transform: translateY(8px); transition: opacity 240ms ease, transform 240ms ease; }
-.unit:is(:hover, :focus-visible) .unitMedia, .unit:is(:hover, :focus-visible) .unitText { opacity: 1; }
-.unit[data-details="true"]:is(:hover, :focus-visible) .unitBrand { transform: translateY(0) scale(0.8); }
-.unit:is(:hover, :focus-visible) .unitText { transform: translateY(0); }
+.unitText { position: relative; grid-row: 2; display: grid; place-items: center; padding: 0 10px 12px; text-align: center; text-wrap: pretty; }
+.unitText > * { grid-area: 1 / 1; transition: opacity 240ms ease, transform 240ms ease; }
+.unitTagline { font-size: clamp(10px, 0.66vw, 14px); line-height: 1.375; opacity: 0; transform: translateY(8px); }
+.unit:is(:hover, :focus-visible) .unitMedia, .unit:is(:hover, :focus-visible) .unitTagline { opacity: 1; }
+.unit[data-details="true"][data-label="false"]:is(:hover, :focus-visible) .unitBrand { transform: translateY(0) scale(0.8); }
+.unit:is(:hover, :focus-visible) .unitTagline { transform: translateY(0); }
+/* Label cards follow Figma 343:1884 at rest: logo over a 22px medium label on a 340px card, sized in card units. */
+.unit[data-label="true"] { grid-template-rows: minmax(0, 1fr) auto; }
+.unit[data-label="true"] .unitBrand { width: 86%; height: 45cqi; align-self: unsafe center; margin: 0 auto; transform: none; }
+/* The two-line label slot is fixed so logos stay aligned whatever the label wraps to. */
+.unit[data-label="true"] .unitText { box-sizing: content-box; height: 2lh; padding: 0 6% 8.3cqi; align-items: unsafe center; font-size: clamp(10px, 6.4cqi, 22px); line-height: 1.36; }
+.unitLabel { font-weight: 500; white-space: pre-line; }
+/* On hover the tagline replaces the label in its slot; a long one grows upward while the logo steps back. */
+.unit[data-label="true"] .unitTagline { position: absolute; inset: auto 6% 8.3cqi; min-height: calc(100% - 8.3cqi); display: flex; align-items: center; justify-content: center; }
+@media (hover: hover) and (min-width: 640px) {
+  .unit[data-label="true"][data-details="true"]:is(:hover, :focus-visible) .unitBrand { transform: translateY(-14%) scale(0.8); }
+  .unit[data-label="true"][data-details="true"]:is(:hover, :focus-visible) .unitLabel { opacity: 0; transform: translateY(-8px); }
+}
 .unitLogo { width: 100%; height: 100%; object-fit: contain; }
 .unitName { text-align: center; font-size: clamp(12px, 1.1vw, 22px); overflow-wrap: anywhere; }
 .cta:focus-visible, .unit:focus-visible { outline: 3px solid var(--banner-accent); outline-offset: 5px; }
@@ -49,7 +63,7 @@
 @media (max-width: 1023px) {
   .content { width: auto; padding: 64px 40px 24px; }
   .unit { min-height: 160px; }
-  .unitText { font-size: 12px; }
+  .unitTagline { font-size: 12px; }
   .intro { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); column-gap: 32px; }
   .logo { width: 75%; }
   .units { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
@@ -60,11 +74,16 @@
   .logo { width: min(44%, 173px); }
   .units { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
   .unit { border-radius: 8px; min-height: 190px; }
+  /* Label cards keep Figma's 3:2 card; 7.2cqi still fits the widest label line. */
+  .unit[data-label="true"] { min-height: 0; }
+  .unit[data-label="true"] .unitText { font-size: clamp(11px, 7.2cqi, 13px); }
 }
 @media (hover: none), (max-width: 639px) {
-  .unitMedia, .unitText { opacity: 1; }
-  .unitText { transform: none; }
-  .unit[data-details="true"] .unitBrand { transform: scale(0.8); }
+  .unitMedia { opacity: 1; }
+  .unitTagline { opacity: 1; transform: none; }
+  .unit[data-details="true"][data-label="false"] .unitBrand { transform: scale(0.8); }
+  /* Touch keeps the resting label card; the tagline only stands in when there is no label. */
+  .unit[data-label="true"] .unitTagline { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .banner *, .banner[data-visible="true"] :is(.intro, .units, .action) { animation: none; transition: none; }
