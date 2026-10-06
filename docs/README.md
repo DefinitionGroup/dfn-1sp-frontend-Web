@@ -6,6 +6,8 @@ The subsequent [MSM fixes, SEO and legal-copy review](records/msm/msm-fixes-seo-
 
 The [MSM metadata implementation and verification](records/msm/msm-metadata-implementation-2026-10-06.md) records metadata populated for all 176 public routes and the verified MSM beta and shared staging Studio release. The source changes are committed with that record.
 
+For the latest MSM beta deployment, assets, Cookiebot consent results and remaining scan/localization checks, read the [Claude handoff](records/msm/msm-smoke-test-and-claude-handoff-2026-10-06.md).
+
 ## Orientation
 
 | Need | Read |
