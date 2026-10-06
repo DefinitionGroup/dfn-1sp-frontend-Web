@@ -8,6 +8,7 @@ import { assetUrl, cloudinaryPosterUrl, optimizedVideoUrl } from "@1sp/utils/clo
 import { getRenderableCta, resolveCtaLink } from "@1sp/utils/cta";
 import type { FooterExternalBannerData, FooterExternalBannerUnit } from "@1sp/sanity-types";
 import styles from "./footerExternalBanner.module.css";
+import arrow from "./footerExternalBannerArrow.svg";
 
 const motionQuery = "(prefers-reduced-motion: reduce)";
 function subscribeToMotionPreference(onChange: () => void) {
@@ -25,15 +26,10 @@ function localizeHref(href: string, language: string) {
   return href.startsWith(`${prefix}/`) ? href.slice(prefix.length) : href;
 }
 
-function Arrow() {
-  return <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14" /></svg>;
-}
-
-function UnitCard({ unit, language, reducedMotion, paused }: {
+function UnitCard({ unit, language, reducedMotion }: {
   unit: FooterExternalBannerUnit;
   language: string;
   reducedMotion: boolean;
-  paused: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -46,7 +42,7 @@ function UnitCard({ unit, language, reducedMotion, paused }: {
   const label = unit.name || "1SP unit";
   const videoUrl = assetUrl(unit.footerHoverVideo);
   const poster = assetUrl(unit.backgroundImage) || (videoUrl ? cloudinaryPosterUrl(videoUrl, { maxWidth: 640 }) : undefined);
-  const play = active && inView && !reducedMotion && !paused;
+  const play = active && inView && !reducedMotion;
 
   useEffect(() => {
     const video = videoRef.current;
@@ -79,18 +75,16 @@ function UnitCard({ unit, language, reducedMotion, paused }: {
   </li>;
 }
 
-export default function FooterExternalBanner({ data, units = [], language = "en", hostLogo }: {
+export default function FooterExternalBanner({ data, units = [], language = "en" }: {
   data: FooterExternalBannerData;
   units?: FooterExternalBannerUnit[];
   language?: string;
-  hostLogo?: { src: string; alt: string };
 }) {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const seen = useInView(sectionRef, { once: true, margin: "200px" });
   const inView = useInView(sectionRef, { amount: 0.01 });
   const reducedMotion = useSyncExternalStore(subscribeToMotionPreference, getMotionPreference, getServerMotionPreference);
-  const [paused, setPaused] = useState(false);
   const [playing, setPlaying] = useState(false);
   const videoUrl = assetUrl(data.video);
   const posterUrl = assetUrl(data.poster) || (videoUrl ? cloudinaryPosterUrl(videoUrl, { maxWidth: 1920 }) : undefined);
@@ -99,12 +93,12 @@ export default function FooterExternalBanner({ data, units = [], language = "en"
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    if (inView && !paused && !reducedMotion) {
+    if (inView && !reducedMotion) {
       void video.play().catch(() => {});
     } else {
       video.pause();
     }
-  }, [inView, paused, reducedMotion, seen, videoUrl]);
+  }, [inView, reducedMotion, seen, videoUrl]);
 
   return (
     <section ref={sectionRef} className={styles.banner} aria-label={data.logoAlt || "1SP Agency"} data-nav-hidden="true" data-visible={seen}>
@@ -118,36 +112,25 @@ export default function FooterExternalBanner({ data, units = [], language = "en"
       </div>
       <div className={styles.shade} />
       <div className={styles.content}>
-        {hostLogo && <div className={styles.hostHeader}>
-          <Image src={hostLogo.src} alt={hostLogo.alt} width={134} height={32} unoptimized className={styles.hostLogo} />
-          {data.eyebrow && <p className={styles.eyebrow}>{data.eyebrow}</p>}
-        </div>}
         <div className={styles.intro}>
-          <div className={styles.brand}>
-            {!hostLogo && data.eyebrow && <p className={styles.eyebrow}>{data.eyebrow}</p>}
-            <Image src={assetUrl(data.logo) || "/ci/1sp-fulllogotype.svg"} alt={data.logoAlt || "1SP Agency"} width={440} height={238} unoptimized className={styles.logo} />
-          </div>
-          <div className={styles.message}>
-            {(data.headline || data.text) && <div className={styles.copy}>
-              {data.headline && <h2 className={styles.headline}>{data.headline}</h2>}
-              {data.text && <p className={styles.text}>{data.text}</p>}
-            </div>}
-            {cta && <Link href={localizeHref(cta.href, language)} className={styles.cta}
-              target={data.cta?.link?.linkType === "external" ? "_blank" : undefined}
-              rel={data.cta?.link?.linkType === "external" ? "noopener noreferrer" : undefined}>
-              {cta.text}<Arrow />
-            </Link>}
-          </div>
+          <Image src={assetUrl(data.logo) || "/ci/1sp-fulllogotype.svg"} alt={data.logoAlt || "1SP Agency"} width={440} height={238} unoptimized className={styles.logo} />
+          {/* `headline` and `text` are two equal paragraphs, not a heading and body. */}
+          {(data.headline || data.text) && <div className={styles.copy}>
+            {data.headline && <p>{data.headline}</p>}
+            {data.text && <p>{data.text}</p>}
+          </div>}
         </div>
         {units.length > 0 && <ul className={styles.units}>
-          {units.map((unit) => <UnitCard key={unit._id} unit={unit} language={language} reducedMotion={reducedMotion} paused={paused} />)}
+          {units.map((unit) => <UnitCard key={unit._id} unit={unit} language={language} reducedMotion={reducedMotion} />)}
         </ul>}
-        {(data.copyright || videoUrl) && <div className={styles.bottom}>
-          {data.copyright && <p>{data.copyright}</p>}
-          {videoUrl && !reducedMotion && <button type="button" className={styles.pause} onClick={() => setPaused(!paused)} aria-pressed={paused}>
-            {paused ? "Play background video" : "Pause background video"}
-          </button>}
+        {cta && <div className={styles.action}>
+          <Link href={localizeHref(cta.href, language)} className={styles.cta}
+            target={data.cta?.link?.linkType === "external" ? "_blank" : undefined}
+            rel={data.cta?.link?.linkType === "external" ? "noopener noreferrer" : undefined}>
+            {cta.text}<Image src={arrow} alt="" unoptimized className={styles.ctaArrow} />
+          </Link>
         </div>}
+        {data.copyright && <p className={styles.copyright}>{data.copyright}</p>}
       </div>
     </section>
   );
