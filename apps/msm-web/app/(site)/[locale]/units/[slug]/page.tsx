@@ -1,5 +1,5 @@
 import {JsonLdScript, CANONICAL_URL} from '@msm/lib/structured-data';
-import {buildMsmMetadata} from '@msm/lib/metadata';
+import {buildMsmMetadata, buildMsmRouteMetadata} from '@msm/lib/metadata';
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllMsmUnitSlugs, getMsmUnitBySlug, getMsmUnits } from "@1sp/sanity-queries";
@@ -22,9 +22,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params;
   const unit = await getMsmUnitBySlug(slug, locale || "en");
-  if (!unit) return { title: "Unit not found" };
+  if (!unit) return buildMsmMetadata({title: 'Unit not found', metadata: {noIndex: true}});
 
-  return buildMsmMetadata({locale, path: `units/${slug}`, title: unit.name, description: unit.claim, metadata: unit.metadata, fallbackImage: unit.heroImageUrl});
+  return buildMsmRouteMetadata({locale, path: `units/${slug}`, documentId: unit._id, title: unit.name, description: unit.claim, metadata: unit.metadata, fallbackImage: unit.heroImageUrl, fallbackImageAlt: unit.heroAlt});
 }
 
 export default async function UnitDetailPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
@@ -33,6 +33,8 @@ export default async function UnitDetailPage({ params }: { params: Promise<{ loc
   const [unit, units] = await Promise.all([getMsmUnitBySlug(slug, language), getMsmUnits(language)]);
   if (!unit) notFound();
 
+  const resolvedMetadata = buildMsmMetadata({locale: language, path: `units/${slug}`, title: unit.name, description: unit.claim, metadata: unit.metadata, fallbackImage: unit.heroImageUrl, fallbackImageAlt: unit.heroAlt});
+
   return (
     <MsmSiteWrapper language={language} navColor="light">
       <JsonLdScript locale={language}
@@ -40,7 +42,8 @@ export default async function UnitDetailPage({ params }: { params: Promise<{ loc
           "@context": "https://schema.org",
           "@type": "Organization",
           name: unit.name,
-          description: unit.claim,
+          description: resolvedMetadata.description,
+          image: (resolvedMetadata.openGraph as {images: {url: string}[]}).images[0].url,
           url: `${CANONICAL_URL}/units/${slug}`,
           parentOrganization: { "@type": "Organization", name: "MSM.digital", url: CANONICAL_URL },
         }}

@@ -1,5 +1,5 @@
 import {JsonLdScript, CANONICAL_URL} from '@msm/lib/structured-data';
-import {buildMsmMetadata} from '@msm/lib/metadata';
+import {buildMsmMetadata, buildMsmRouteMetadata} from '@msm/lib/metadata';
 import {msmPath} from "@msm/lib/editorial";
 /**
  * Home Page
@@ -67,12 +67,10 @@ export async function generateMetadata({
   const page = await getHomePage(DEFAULT_CHANNEL, language);
 
   if (!page) {
-    return {
-      title: "Page not found",
-    };
+    return buildMsmMetadata({title: 'Page not found', metadata: {noIndex: true}});
   }
 
-  return buildMsmMetadata({locale: language, path: '', title: page.title || 'Home', metadata: page.metadata});
+  return buildMsmRouteMetadata({locale: language, path: '', documentId: page._id, title: page.title || 'Home', metadata: page.metadata});
 }
 
 export default async function Home({
@@ -87,6 +85,8 @@ export default async function Home({
   const page = await getHomePage(DEFAULT_CHANNEL, language);
 
   const navbarVariant = page?.navbarVariant || "light";
+
+  const resolvedMetadata = buildMsmMetadata({locale: language, title: page?.title, metadata: page?.metadata});
 
   // Structured data: get social links & logo (cached — deduped with SiteWrapper)
   const globalData = await getGlobalData(DEFAULT_CHANNEL, language);
@@ -108,14 +108,14 @@ export default async function Home({
   return (
     <MsmSiteWrapper language={language} navColor={navbarVariant}>
       {/* Structured Data (JSON-LD) */}
-      <JsonLdScript locale={language}
+      <JsonLdScript locale={language} metadata={resolvedMetadata}
         data={generateHomepageJsonLd({
           locale: language,
           logoUrl: globalData.nav?.logoUrl,
           socialLinks: globalData.footer?.socialLinks,
         })}
       />
-      <JsonLdScript locale={language}
+      <JsonLdScript locale={language} metadata={resolvedMetadata}
         data={generateBreadcrumbJsonLd([
           {
             name: getBreadcrumbLabel(language, "home"),
@@ -125,7 +125,7 @@ export default async function Home({
       />
       {/* ItemList for case carousels / galleries on the homepage */}
       {caseItems.length > 0 && (
-        <JsonLdScript locale={language}
+        <JsonLdScript locale={language} metadata={resolvedMetadata}
           data={generateItemListJsonLd({
             items: caseItems,
             locale: language,
@@ -134,7 +134,7 @@ export default async function Home({
         />
       )}
       {services.length > 0 && (
-        <JsonLdScript locale={language}
+        <JsonLdScript locale={language} metadata={resolvedMetadata}
           data={generateServiceCatalogJsonLd({
             services,
             locale: language,
@@ -148,11 +148,11 @@ export default async function Home({
       {/* Person & Unit structured data from page builder content */}
       {(() => {
         const people = extractPeopleFromContent(contentBlocks);
-        return people.length > 0 ? <JsonLdScript locale={language} data={generatePeopleListJsonLd({ people })} /> : null;
+        return people.length > 0 ? <JsonLdScript locale={language} metadata={resolvedMetadata} data={generatePeopleListJsonLd({ people })} /> : null;
       })()}
       {(() => {
         const units = extractUnitsFromContent(contentBlocks);
-        return units.length > 0 ? <JsonLdScript locale={language} data={generateUnitsListJsonLd({ units })} /> : null;
+        return units.length > 0 ? <JsonLdScript locale={language} metadata={resolvedMetadata} data={generateUnitsListJsonLd({ units })} /> : null;
       })()}
 
       {/* Preload the hero poster for fast LCP */}

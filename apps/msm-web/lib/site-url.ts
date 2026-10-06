@@ -8,3 +8,7 @@ export const MSM_CANONICAL_URL =
 
 export const msmPath = (language: string, path: string) =>
   `${language === 'en' ? '' : `/${language}`}/${path.replace(/^\//, '')}`;
+
+/** Public canonicals use no trailing slash, including locale home routes. */
+export const msmCanonicalUrl = (language: string, path: string) =>
+  `${MSM_CANONICAL_URL}${msmPath(language, path.replace(/^\/+|\/+$/g, ''))}`.replace(/\/$/, '');

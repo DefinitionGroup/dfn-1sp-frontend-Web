@@ -9,6 +9,7 @@ These documents preserve approved mappings, implementation decisions and verific
 
 ## MSM
 
+- [MSM metadata implementation and verification — 6 October 2026](msm/msm-metadata-implementation-2026-10-06.md) — populated metadata for 176 routes, shared editor controls, verified staging deployments and recovery evidence; source committed with the record.
 - [MSM Contact social links — 5 October 2026](msm/msm-contact-social-links-2026-10-05.md) — editable icon links, English/German drafts, desktop/mobile and Studio checks; deployment and publication pending.
 - [MSM beta and shared Studio release — 5 October 2026](msm/msm-beta-and-studio-release-2026-10-05.md) — committed source, verified beta deployments, stored schema and hosted desktop/mobile/Studio checks.
 - [MSM fixes, SEO and supplied legal-copy review — 4 October 2026](msm/msm-fixes-seo-and-legal-review-2026-10-04.md) — verified local fixes, revision-guarded staging CMS changes and legal/privacy differences; committed and pushed in `cc0b37a4c`, with a subsequent detached-navigation update.

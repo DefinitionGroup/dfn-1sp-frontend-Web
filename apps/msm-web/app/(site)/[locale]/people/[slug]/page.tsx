@@ -1,4 +1,5 @@
-import {buildMsmMetadata} from '@msm/lib/metadata';
+import {JsonLdScript} from '@msm/lib/structured-data';
+import {buildMsmMetadata, buildMsmRouteMetadata} from '@msm/lib/metadata';
 import type {Metadata} from 'next';
 import {notFound} from 'next/navigation';
 import Image from 'next/image';
@@ -12,17 +13,20 @@ export const revalidate = 60;
 export async function generateMetadata({params}: Props): Promise<Metadata> {
   const {locale, slug} = await params;
   const person = await getMsmPerson(slug, locale);
-  if (!person) return {};
-  return buildMsmMetadata({locale, path: `people/${slug}`, title: person.fullname || person.name, description: person.position, metadata: person.edition.seo, fallbackImage: person.image, type: 'profile'});
+  if (!person) return buildMsmMetadata({title: 'Profile not found', metadata: {noIndex: true}});
+  return buildMsmRouteMetadata({locale, path: `people/${slug}`, documentId: person._id, title: person.fullname || person.name, description: person.position, metadata: person.edition.seo, fallbackImage: person.image, type: 'profile', fallbackImageAlt: person.altText});
 }
 export default async function PersonPage({params}: Props) {
   const {locale, slug} = await params;
   const person = await getMsmPerson(slug, locale);
   if (!person) notFound();
+  const resolvedMetadata = buildMsmMetadata({locale, path: `people/${slug}`, title: person.fullname || person.name, description: person.position, metadata: person.edition.seo, fallbackImage: person.image, fallbackImageAlt: person.altText, type: 'profile'});
   const edition = person.edition;
   const image = person.image?.secure_url || person.image?.url;
   const de = locale === 'de';
-  return <MsmSiteWrapper language={locale} navColor="light"><article className="container mx-auto px-[var(--container-padding)] pt-36">
+  return <MsmSiteWrapper language={locale} navColor="light">
+    <JsonLdScript locale={locale} metadata={resolvedMetadata} data={{'@context': 'https://schema.org', '@type': 'ProfilePage', mainEntity: {'@type': 'Person', name: person.fullname || person.name, jobTitle: person.position, url: resolvedMetadata.alternates?.canonical, image: (resolvedMetadata.openGraph as {images: {url: string}[]}).images[0].url}}} />
+    <article className="container mx-auto px-[var(--container-padding)] pt-36">
     <header className="grid gap-12 md:grid-cols-2 items-end pb-16">
       <div><p className="msm-label text-msm-cyan mb-6">MSM.digital</p><h1 className="headline-display">{person.fullname || person.name}</h1><p className="msm-copy mt-6">{person.position}</p>
       {edition.quote && <blockquote className="text-2xl leading-relaxed mt-12">{edition.quote}</blockquote>}

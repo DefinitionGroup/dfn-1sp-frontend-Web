@@ -1,5 +1,5 @@
 import {JsonLdScript, CANONICAL_URL} from '@msm/lib/structured-data';
-import {buildMsmMetadata} from '@msm/lib/metadata';
+import {buildMsmMetadata, buildMsmRouteMetadata} from '@msm/lib/metadata';
 import {msmPath} from "@msm/lib/editorial";
 /**
  * Case Study Detail Page
@@ -81,12 +81,10 @@ export async function generateMetadata({
   const caseStudy = await getCaseBySlug(slug, channel, language);
 
   if (!caseStudy) {
-    return {
-      title: "Case Study not found",
-    };
+    return buildMsmMetadata({title: 'Case Study not found', metadata: {noIndex: true}});
   }
 
-  return buildMsmMetadata({locale: language, path: `cases/${slug}`, title: caseStudy.title, description: caseStudy.description, metadata: caseStudy.seo, fallbackImage: caseStudy.mainImageUrl, type: 'article', publishedAt: caseStudy.publishedAt});
+  return buildMsmRouteMetadata({locale: language, path: `cases/${slug}`, documentId: caseStudy._id, title: caseStudy.title, description: caseStudy.description, metadata: caseStudy.seo, fallbackImage: caseStudy.mainImageUrl || caseStudy.mainVideoUrl, type: 'article', publishedAt: caseStudy.publishedAt});
 }
 
 export default async function CaseStudyPage({
@@ -105,10 +103,12 @@ export default async function CaseStudyPage({
     notFound();
   }
 
+  const resolvedMetadata = buildMsmMetadata({locale: language, path: `cases/${slug}`, title: caseStudy.title, description: caseStudy.description, metadata: caseStudy.seo, fallbackImage: caseStudy.mainImageUrl || caseStudy.mainVideoUrl, type: 'article', publishedAt: caseStudy.publishedAt});
+
   return (
     <MsmSiteWrapper language={language} navColor="light">
       {/* Structured Data (JSON-LD) */}
-      <JsonLdScript locale={language}
+      <JsonLdScript locale={language} metadata={resolvedMetadata}
         data={generateCaseStudyJsonLd({
           title: caseStudy.title,
           slug,
@@ -120,7 +120,7 @@ export default async function CaseStudyPage({
           services: caseStudy.services,
         })}
       />
-      <JsonLdScript locale={language}
+      <JsonLdScript locale={language} metadata={resolvedMetadata}
         data={generateBreadcrumbJsonLd([
           {
             name: getBreadcrumbLabel(language, "home"),

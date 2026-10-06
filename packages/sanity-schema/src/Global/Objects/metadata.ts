@@ -1,10 +1,9 @@
 import { defineType, defineField } from 'sanity';
+import {hideMsmMetadata as hideMsmFields} from './metadata-context';
+import MsmMetadataInput from './MsmMetadataInput';
 
 // Social overrides are currently rendered by MSM. Keep other Studio channels
 // on their existing contract until their renderers support these fields.
-const hideMsmFields = ({ document }: { document?: { _type?: string; channel?: unknown } }) =>
-    document?._type !== 'msmUnit' && document?.channel !== 'msmWeb' &&
-    !(Array.isArray(document?.channel) && document.channel.includes('msmWeb'));
 
 export const msmMetadataFields = [
         defineField({
@@ -24,7 +23,7 @@ export const msmMetadataFields = [
         }),
         defineField({
             name: 'noIndex', title: 'Hide From Search Engines', type: 'boolean',
-            description: 'MSM pages only: emits noindex and excludes the page from the sitemap. Preview deployment guards still take precedence.',
+            description: 'Emits noindex and excludes this MSM route from the sitemap. Preview deployment guards still take precedence.',
             hidden: hideMsmFields,
         }),
 ];
@@ -33,6 +32,7 @@ export default defineType({
     name: 'metadata',
     title: 'Metadata',
     type: 'object',
+    components: {input: MsmMetadataInput},
     fields: [
         defineField({ name: 'title', title: 'Meta Title', type: 'string' }),
         defineField({ name: 'description', title: 'Meta Description', type: 'text' }),

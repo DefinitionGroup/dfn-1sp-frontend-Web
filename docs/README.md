@@ -4,6 +4,8 @@ Start with the [whole-project handoff](HANDOFF.md). It covers all four webapps, 
 
 The subsequent [MSM fixes, SEO and legal-copy review](records/msm/msm-fixes-seo-and-legal-review-2026-10-04.md) records the implementation and staging CMS patch committed and pushed in `cc0b37a4c`, followed by the detached navigation update. Live 1SP reads `dev-dataset`; `production` is currently the staging ground.
 
+The [MSM metadata implementation and verification](records/msm/msm-metadata-implementation-2026-10-06.md) records metadata populated for all 176 public routes and the verified MSM beta and shared staging Studio release. The source changes are committed with that record.
+
 ## Orientation
 
 | Need | Read |

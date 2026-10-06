@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
   // lockfile above it otherwise makes Turbopack scan the entire home folder.
   turbopack: { root: path.resolve(__dirname, "../..") },
   experimental: {
+    globalNotFound: true,
     externalDir: true,
   },
   transpilePackages: [

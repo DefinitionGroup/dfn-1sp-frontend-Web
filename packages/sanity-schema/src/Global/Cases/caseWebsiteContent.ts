@@ -3,6 +3,8 @@ import { defineField, defineType } from 'sanity';
 import { SITE_CONFIGS, WEBSITE_CHANNELS } from '@1sp/site-config';
 import CaseEditionInput from './CaseEditionInput';
 import {msmMetadataFields} from '../Objects/metadata';
+import {hideMsmMetadata} from '../Objects/metadata-context';
+import MsmMetadataInput from '../Objects/MsmMetadataInput';
 
 export const caseSeoFields = [
   defineField({ name: 'title', title: 'SEO title', type: 'string' }),
@@ -22,8 +24,10 @@ export default defineType({
     defineField({ name: 'description', title: 'Summary override', type: 'text', rows: 4, description: 'Unset inherits the shared summary.', hidden: ({ parent }) => parent?.hideDescription === true }),
     defineField({ name: 'hideSubtitle', title: 'Hide subtitle on this website', type: 'boolean' }),
     defineField({ name: 'subtitle', title: 'Subtitle override', type: 'string', hidden: ({ parent }) => parent?.hideSubtitle === true }),
-    defineField({ name: 'seo', title: 'SEO overrides', type: 'object', fields: [
+    defineField({ name: 'seo', title: 'SEO overrides', type: 'object', components: {input: MsmMetadataInput}, fields: [
       ...caseSeoFields,
+      defineField({name: 'image', title: 'Meta Image', type: 'cloudinaryImage', hidden: hideMsmMetadata}),
+      defineField({name: 'excludeFromSitemap', title: 'Exclude From Sitemap', type: 'boolean', hidden: hideMsmMetadata}),
       ...msmMetadataFields.map(field => ({...field, hidden: ({document, path}: any) => {
         const key = path.find((segment: any) => segment?._key)?._key;
         return document?.siteContent?.find((edition: any) => edition._key === key)?.channel !== 'msmWeb';

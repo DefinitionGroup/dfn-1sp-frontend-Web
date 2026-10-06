@@ -530,10 +530,10 @@ export interface PageBuilderBlock {
 export interface PageMetadata {
     title?: string;
     description?: string;
-    image?: CloudinaryAsset;
+    image?: CloudinaryAsset | CloudinaryImage;
     openGraphTitle?: string;
     openGraphDescription?: string;
-    openGraphImage?: CloudinaryAsset;
+    openGraphImage?: CloudinaryAsset | CloudinaryImage;
     keywords?: string[];
     noIndex?: boolean;
     excludeFromSitemap?: boolean;

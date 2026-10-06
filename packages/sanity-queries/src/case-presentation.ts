@@ -21,6 +21,8 @@ export function casePresentationFields(channel = '$channel') {
         "openGraphTitle": ${edition}.seo.openGraphTitle,
         "openGraphDescription": ${edition}.seo.openGraphDescription,
         "openGraphImage": ${edition}.seo.openGraphImage,
+        "image": ${edition}.seo.image,
+        "excludeFromSitemap": ${edition}.seo.excludeFromSitemap,
         "noIndex": ${edition}.seo.noIndex
       }
     }

@@ -293,6 +293,12 @@ async function handleRevalidation(body: SanityWebhookBody) {
             pushPath("/", "layout");
     }
 
+    if (["page", "caseStudy", "person", "msmUnit", "translation.metadata"].includes(_type)) {
+        revalidateTag("msm-seo", "max");
+        revalidatedTags.push("msm-seo");
+        pushPath("/sitemap.xml");
+    }
+
     // Log what was revalidated for debugging
     console.log(`[Revalidate] Tags: [${revalidatedTags.join(", ")}]`);
     if (revalidatedPaths.length > 0) {

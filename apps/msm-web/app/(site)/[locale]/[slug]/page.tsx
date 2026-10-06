@@ -1,5 +1,5 @@
 import {JsonLdScript, CANONICAL_URL} from '@msm/lib/structured-data';
-import {buildMsmMetadata} from '@msm/lib/metadata';
+import {buildMsmMetadata, buildMsmRouteMetadata} from '@msm/lib/metadata';
 /**
  * Dynamic Page
  * ============
@@ -30,7 +30,6 @@ import MsmPageBuilder from "@msm/components/MsmPageBuilder";
 import { getAllCases, getAllPageSlugs, getAllServicesForChannel, getPageBySlug } from "@1sp/sanity-queries";
 import NotFound from "@msm/components/ui/not-found";
 import MsmSiteWrapper from "@msm/components/MsmSiteWrapper";
-import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
@@ -81,12 +80,10 @@ export async function generateMetadata({
   const page = await getPageBySlug(slug, channel, language);
 
   if (!page) {
-    return {
-      title: "Page not found",
-    };
+    return buildMsmMetadata({title: 'Page not found', metadata: {noIndex: true}});
   }
 
-  return buildMsmMetadata({locale: language, path: slug, title: page.title, metadata: page.metadata});
+  return buildMsmRouteMetadata({locale: language, path: slug, documentId: page._id, title: page.title, metadata: page.metadata});
 }
 
 export default async function Page({
@@ -119,28 +116,29 @@ export default async function Page({
   const caseItems = extractCaseItemsFromContent(contentBlocks, mapCasesToItemList(allCasesRaw));
   const services = mapServicesToCatalogItems(allServicesRaw);
   const pageUrl = `${CANONICAL_URL}/${slug}`;
-  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
+  const resolvedMetadata = buildMsmMetadata({locale: language, path: slug, title: page?.title, metadata: page?.metadata});
+  const ogImageUrl = (resolvedMetadata.openGraph as {images: {url: string}[]}).images[0].url;
 
   return (
     <MsmSiteWrapper language={language} navColor={navbarVariant}>
       {/* Structured Data (JSON-LD) */}
       {page && (
         <>
-          <JsonLdScript locale={language}
+          <JsonLdScript locale={language} metadata={resolvedMetadata}
             data={slug === 'contact' ? generateContactPageJsonLd({
               locale: language,
-              title: page.metadata?.title || page.title || slug,
-              description: page.metadata?.description,
+              title: String(resolvedMetadata.title),
+              description: resolvedMetadata.description || undefined,
             }) : generateWebPageJsonLd({
-              title: page.metadata?.title || page.title || slug,
+              title: String(resolvedMetadata.title),
               slug,
-              description: page.metadata?.description,
+              description: resolvedMetadata.description || undefined,
               locale: language,
               imageUrl: ogImageUrl,
               canonicalUrl: CANONICAL_URL,
             })}
           />
-          <JsonLdScript locale={language}
+          <JsonLdScript locale={language} metadata={resolvedMetadata}
             data={generateBreadcrumbJsonLd([
               {
                 name: getBreadcrumbLabel(language, "home"),
@@ -154,7 +152,7 @@ export default async function Page({
           />
           {/* ItemList for case carousels / galleries on this page */}
           {caseItems.length > 0 && (
-            <JsonLdScript locale={language}
+            <JsonLdScript locale={language} metadata={resolvedMetadata}
               data={generateItemListJsonLd({
                 items: caseItems,
                 locale: language,
@@ -163,7 +161,7 @@ export default async function Page({
             />
           )}
           {services.length > 0 && (
-            <JsonLdScript locale={language}
+            <JsonLdScript locale={language} metadata={resolvedMetadata}
               data={generateServiceCatalogJsonLd({
                 services,
                 locale: language,
@@ -176,11 +174,11 @@ export default async function Page({
           {/* Person & Unit structured data from page builder content */}
           {(() => {
             const people = extractPeopleFromContent(contentBlocks);
-            return people.length > 0 ? <JsonLdScript locale={language} data={generatePeopleListJsonLd({ people })} /> : null;
+            return people.length > 0 ? <JsonLdScript locale={language} metadata={resolvedMetadata} data={generatePeopleListJsonLd({ people })} /> : null;
           })()}
           {(() => {
             const units = extractUnitsFromContent(contentBlocks);
-            return units.length > 0 ? <JsonLdScript locale={language} data={generateUnitsListJsonLd({ units })} /> : null;
+            return units.length > 0 ? <JsonLdScript locale={language} metadata={resolvedMetadata} data={generateUnitsListJsonLd({ units })} /> : null;
           })()}
         </>
       )}

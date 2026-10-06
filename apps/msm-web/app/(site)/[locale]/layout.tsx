@@ -1,18 +1,39 @@
-import { draftMode } from "next/headers";
-import HtmlLangSetter from "@/components/HtmlLangSetter";
+import { draftMode } from 'next/headers';
+import {buildMsmMetadata} from '@msm/lib/metadata';
+import localFont from "next/font/local";
+import type { Metadata } from "next";
+import "../../globals.css";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
+import CookiebotBanner from "@/components/CookiebotBanner";
+import GoogleAnalyticsConsent from "@/components/GoogleAnalyticsConsent";
+import {
+  shouldLoadProductionTracking,
+} from "@1sp/utils/deployment-tier";
+import { MSM_CANONICAL_URL } from "@msm/lib/site-url";
 
-/**
- * Locale-aware layout
- *
- * Sets the `lang` attribute on the `<html>` element dynamically based on the
- * URL locale parameter. This is critical for:
- * - SEO: Search engines use `lang` to determine page language
- * - Accessibility: Screen readers use `lang` for pronunciation
- * - i18n: Browsers use `lang` for spell-checking and font selection
- *
- * Note: We override the `<html>` lang attribute via HtmlLangSetter because the
- * root layout renders the `<html>` tag and nested layouts cannot re-render it.
- */
+const GOOGLE_MEASUREMENT_ID = process.env.NEXT_PUBLIC_MSM_GOOGLE_MEASUREMENT_ID;
+const LOAD_PRODUCTION_TRACKING = shouldLoadProductionTracking();
+
+// Back to AspektaVF (variable font, shared identity with 1SP) — Cooper
+// Hewitt was trialed July 2026 and reverted per Martin's font decision.
+const aspekta = localFont({
+  src: [
+    { path: "../../fonts/AspektaVF.woff2", style: "normal" },
+    { path: "../../fonts/AspektaVF.ttf", style: "normal" },
+  ],
+  variable: "--font-aspekta-vf",
+  display: "swap",
+  weight: "50 1000",
+});
+
+export const metadata: Metadata = {
+  metadataBase: new URL(MSM_CANONICAL_URL),
+  ...buildMsmMetadata({title: 'MSM.digital'}),
+};
+
+
+/** Locale-root layout emits the correct HTML language while preserving static generation. */
 export default async function SiteLayout({
   children,
   params,
@@ -55,12 +76,16 @@ export default async function SiteLayout({
   }
 
   return (
-    <>
-      {/* Dynamically set lang attribute based on current locale */}
-      <HtmlLangSetter locale={locale || "en"} />
+    <html lang={locale || "en"} className={`dark ${aspekta.variable}`} suppressHydrationWarning>
+      <head>{LOAD_PRODUCTION_TRACKING ? <CookiebotBanner /> : null}</head>
+      <body className="antialiased" suppressHydrationWarning>
       {diagnostics}
       {children}
       {previewTools}
-    </>
+      {LOAD_PRODUCTION_TRACKING && GOOGLE_MEASUREMENT_ID ? <GoogleAnalyticsConsent measurementId={GOOGLE_MEASUREMENT_ID} /> : null}
+      <Analytics />
+      <SpeedInsights />
+      </body>
+    </html>
   );
 }
