@@ -151,6 +151,8 @@ const GLOBAL_DATA_QUERY = defineQuery(/* groq */ `{
         linkType,
         isCaseLink,
         "slug": page->slug.current,
+        "isHomepage": page->isHomepage,
+        "pageChannel": page->channel,
         "case": case->{ "slug": slug },
         externalUrl,
         displayName
@@ -293,6 +295,8 @@ export interface GlobalData {
         linkType: string;
         isCaseLink: boolean;
         slug: string | null;
+        isHomepage: boolean | null;
+        pageChannel: string | null;
         case: { slug: { current: string } } | null;
         externalUrl: string | null;
         displayName: string;

@@ -1039,6 +1039,8 @@ export const FOOTER_QUERY = defineQuery(`
       linkType,
       isCaseLink,
       "slug": page->slug.current,
+      "isHomepage": page->isHomepage,
+      "pageChannel": page->channel,
       "case": case->{ "slug": slug },
       externalUrl,
       displayName
