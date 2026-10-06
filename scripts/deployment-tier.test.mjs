@@ -45,7 +45,7 @@ const validTestEnvironment = {
   MONOREPO_TEST_PROJECT: "true",
   MONOREPO_TEST_SITE: "1sp",
   NEXT_PUBLIC_CHANNEL: "1spWeb",
-  NEXT_PUBLIC_SANITY_DATASET: "dev-dataset",
+  NEXT_PUBLIC_SANITY_DATASET: "production",
   NEXT_PUBLIC_SANITY_PROJECT_ID: "wu6i3y0h",
   NEXT_PUBLIC_SANITY_STUDIO_URL: "https://1sp-monorepo-test.vercel.app/studio",
   NEXT_PUBLIC_SITE_URL: "https://1sp-monorepo-test.vercel.app",
@@ -80,7 +80,7 @@ test("a valid dedicated test project disables indexing and production tracking",
 
 test("dedicated test projects fail closed on dataset and site identity", () => {
   for (const [key, value, message] of [
-    ["NEXT_PUBLIC_SANITY_DATASET", "production", /dev-dataset/],
+    ["NEXT_PUBLIC_SANITY_DATASET", "dev-dataset", /NEXT_PUBLIC_SANITY_DATASET=production/],
     ["NEXT_PUBLIC_SANITY_PROJECT_ID", "wrong-project", /wu6i3y0h/],
     ["MONOREPO_TEST_SITE", "msm", /msmWeb/],
     ["NEXT_PUBLIC_CHANNEL", "msmWeb", /1spWeb/],

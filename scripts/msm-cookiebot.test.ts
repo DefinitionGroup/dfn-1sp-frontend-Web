@@ -24,7 +24,7 @@ test('MSM beta enables Cookiebot while keeping analytics and indexing disabled',
   assert.equal(shouldAllowIndexing(), false);
 }));
 
-test('the dedicated MSM test lane keeps Cookiebot disabled', () => environment({DEPLOYMENT_TIER: 'test', MONOREPO_TEST_PROJECT: 'true', MONOREPO_TEST_SITE: 'msm', NEXT_PUBLIC_SITE_URL: 'https://msm-monorepo-test.vercel.app', NEXT_PUBLIC_SANITY_PROJECT_ID: 'wu6i3y0h', NEXT_PUBLIC_SANITY_DATASET: 'dev-dataset', NEXT_PUBLIC_CHANNEL: 'msmWeb', SANITY_VIEWER_TOKEN: 'fixture', NEXT_PUBLIC_SANITY_STUDIO_URL: 'https://1sp-monorepo-test.vercel.app/studio'}, () => {
+test('the dedicated MSM test lane keeps Cookiebot disabled', () => environment({DEPLOYMENT_TIER: 'test', MONOREPO_TEST_PROJECT: 'true', MONOREPO_TEST_SITE: 'msm', NEXT_PUBLIC_SITE_URL: 'https://msm-monorepo-test.vercel.app', NEXT_PUBLIC_SANITY_PROJECT_ID: 'wu6i3y0h', NEXT_PUBLIC_SANITY_DATASET: 'production', NEXT_PUBLIC_CHANNEL: 'msmWeb', SANITY_VIEWER_TOKEN: 'fixture', NEXT_PUBLIC_SANITY_STUDIO_URL: 'https://1sp-monorepo-test.vercel.app/studio'}, () => {
   assert.equal(shouldLoadMsmCookiebot(), false);
 }));
 

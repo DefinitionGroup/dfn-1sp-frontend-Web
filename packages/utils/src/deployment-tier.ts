@@ -1,11 +1,11 @@
 const TEST_DEPLOYMENT_TIER = "test";
 // Beta projects render the production dataset on a generated *.vercel.app
 // URL. They share the test tier's noindex/no-tracking behaviour but skip the
-// dev-dataset identity checks, which only apply to the monorepo test lane.
+// dataset and site identity checks, which only apply to the monorepo test lane.
 const BETA_DEPLOYMENT_TIER = "beta";
 const TEST_ROBOTS_HEADER_VALUE = "noindex, nofollow, noarchive, nosnippet";
 const TEST_SANITY_PROJECT_ID = "wu6i3y0h";
-const TEST_SANITY_DATASET = "dev-dataset";
+const TEST_SANITY_DATASET = "production";
 const TEST_SANITY_STUDIO_URL = "https://1sp-monorepo-test.vercel.app/studio";
 const TEST_SITE_CHANNELS = {
   "1sp": "1spWeb",
@@ -127,7 +127,7 @@ function assertSafeTestConfiguration(
 
   if (environmentValue("NEXT_PUBLIC_SANITY_DATASET") !== TEST_SANITY_DATASET) {
     throw new Error(
-      `MONOREPO_TEST_PROJECT=true requires NEXT_PUBLIC_SANITY_DATASET=${TEST_SANITY_DATASET}; production is prohibited.`,
+      `MONOREPO_TEST_PROJECT=true requires NEXT_PUBLIC_SANITY_DATASET=${TEST_SANITY_DATASET}.`,
     );
   }
 
