@@ -54,13 +54,22 @@ export default defineType({
             group: "content",
         }),
         defineField({
+            name: "showCookieDeclaration",
+            title: "Show Cookiebot declaration",
+            type: "boolean",
+            description: "MSM only: display the current cookie report and consent controls. Use once per privacy page. This section can contain only the declaration, without rich text. Hidden on test/beta deployments.",
+            initialValue: false,
+            group: "content",
+            hidden: ({document}) => document?.channel !== "msmWeb",
+        }),
+        defineField({
             name: "content",
             hidden: ({parent}) => !!parent?.service?._ref,
             title: "Content",
             type: "array",
             description: "Rich text content - paste your text and apply formatting as needed",
             group: "content",
-            validation: (Rule) => Rule.custom((value, context) => (context.parent as any)?.service?._ref || (value && value.length) ? true : "Content or a global service is required"),
+            validation: (Rule) => Rule.custom((value, context) => (context.parent as any)?.service?._ref || (context.document?.channel === "msmWeb" && (context.parent as any)?.showCookieDeclaration === true) || (value && value.length) ? true : "Content, a global service or an MSM Cookiebot declaration is required"),
             of: [
                 {
                     type: "block",
@@ -186,8 +195,9 @@ export default defineType({
             title: "title",
             introHeading: "introHeading",
             content: "content",
+            showCookieDeclaration: "showCookieDeclaration",
         },
-        prepare({ title, introHeading, content, serviceName }) {
+        prepare({ title, introHeading, content, serviceName, showCookieDeclaration }) {
             const displayTitle =
                 title || serviceName ||
                 (introHeading ? introHeading.substring(0, 50) : null) ||
@@ -202,7 +212,7 @@ export default defineType({
 
             return {
                 title: displayTitle,
-                subtitle: preview || "No content",
+                subtitle: showCookieDeclaration ? "Cookiebot declaration" : preview || "No content",
                 media: List,
             };
         },

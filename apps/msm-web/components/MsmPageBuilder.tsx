@@ -332,7 +332,7 @@ export function PageBuilder({
           case "contentSection":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <ContentSection key={key} data={block} />
+                <ContentSection key={key} data={block} language={language} />
               </ErrorBoundary>
             );
           case "twoColContentSection":
@@ -591,7 +591,12 @@ export function PageBuilder({
     }
   };
 
-  const eagerCount = renderMode === "deferred"
+  // Consent controls must remain available when navigating or jumping past
+  // a long privacy policy, without depending on an observer placeholder.
+  const hasCookieDeclaration = content.some(block =>
+    block._type === "contentSection" && "showCookieDeclaration" in block && block.showCookieDeclaration === true
+  );
+  const eagerCount = renderMode === "deferred" || hasCookieDeclaration
     ? content.length
     : Number.isFinite(deferAfter)
     ? Math.max(0, Math.min(content.length, deferAfter))

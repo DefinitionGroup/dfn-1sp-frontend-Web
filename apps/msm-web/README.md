@@ -18,6 +18,18 @@ Use this app's `.env.example` as a starting point. Confirm `NEXT_PUBLIC_SANITY_P
 
 Run the root Sanity doctor with `--channel msmWeb --language en`, then compare its root environment with the app's loaded environment. See [local debugging](../../docs/local-sanity-debugging.md).
 
+## Cookiebot
+
+MSM owns its Cookiebot domain-group ID in `lib/cookiebot.ts`: `2c30619b-98e9-4d03-945d-095454bad8e5`. Its locale-root layout loads the synchronous automatic blocker before hydration. The existing deployment-tier guard suppresses both the banner and declaration on test/beta deployments. Google Analytics keeps the shared statistics-consent gate and requires `NEXT_PUBLIC_MSM_GOOGLE_MEASUREMENT_ID`.
+
+In Studio, open **MSM → English/German → Pages → Privacy Policy → Content**. The **Cookie declaration / Cookie-Erklärung** Content Section has **Show Cookiebot declaration** enabled. Editors can change its title, reorder or remove the section, or disable the toggle. Use one declaration per page. The frontend executes the declaration script inside this section again after client-side navigation.
+
+Deploy the MSM frontend and shared Studio together so the toggle is available to editors. The Cookiebot account must authorize the public MSM domains for this domain group; the declaration endpoint rejected both `msm.digital` and `www.msm.digital` during the 6 October 2026 check.
+
+The declaration sections were appended to the two existing published privacy pages in `wu6i3y0h/production` (staging), preserving all prior sections and legal text. `scripts/msm-cookiebot-content.mjs` provides the idempotent dry-run/apply workflow. The revision-guarded transaction was `9xwYgO7OlTajAgagjwiSPN`; backups and the receipt are ignored under `EXPORT/msm-cookiebot-2026-10-06/`. Live 1SP's `dev-dataset` was not changed.
+
+Verification on 6 October 2026: MSM and 1SP builds, focused ESLint, schema validation (no errors/warnings), deployment-tier tests (11/11), and diff checks passed. Browser checks confirmed one declaration script on each EN/DE privacy page, no declaration on the disclaimer, and a fresh declaration on client-side return. Desktop/mobile layout checks used a mocked report; real Cookiebot responses rejected localhost and both public MSM hostnames. Full acceptance/rejection/withdrawal and the live cookie report remain unverified until domain authorization. The existing Studio showed the section and Edit/Remove controls but still used the older schema, so the toggle needs the shared Studio release. No hosted deployment was performed.
+
 ## Ownership and references
 
 For service editing and page relationships, use the shared [service content guide](../../docs/SERVICE_CONTENT.md) and [consolidation handoff](../../docs/SERVICE_CONTENT_HANDOFF.md). These separate current behavior from proposed migrations.

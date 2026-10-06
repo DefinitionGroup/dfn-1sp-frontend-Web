@@ -1,0 +1,18 @@
+.declaration {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  /* The vendor's cookie tables have fixed columns. Keep narrow screens usable. */
+  overflow-x: auto;
+}
+
+.declaration :global(.CookieDeclaration) {
+  font: inherit;
+  color: inherit;
+}
+
+.declaration :global(a) {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+}

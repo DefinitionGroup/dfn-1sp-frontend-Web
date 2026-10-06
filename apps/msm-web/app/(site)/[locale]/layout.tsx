@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import "../../globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
-import CookiebotBanner from "@/components/CookiebotBanner";
+import CookiebotBanner from "@msm/components/CookiebotBanner";
 import GoogleAnalyticsConsent from "@/components/GoogleAnalyticsConsent";
 import {
   shouldLoadProductionTracking,
@@ -77,7 +77,7 @@ export default async function SiteLayout({
 
   return (
     <html lang={locale || "en"} className={`dark ${aspekta.variable}`} suppressHydrationWarning>
-      <head>{LOAD_PRODUCTION_TRACKING ? <CookiebotBanner /> : null}</head>
+      <head>{LOAD_PRODUCTION_TRACKING ? <CookiebotBanner language={locale || "en"} /> : null}</head>
       <body className="antialiased" suppressHydrationWarning>
       {diagnostics}
       {children}
