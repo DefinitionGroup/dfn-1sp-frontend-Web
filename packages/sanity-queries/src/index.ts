@@ -144,6 +144,8 @@ const GLOBAL_DATA_QUERY = defineQuery(/* groq */ `{
     footerColumns[]{
       _key,
       title,
+      source,
+      limit,
       links[]{
         _key,
         linkType,
@@ -284,6 +286,8 @@ export interface GlobalData {
     footerColumns: Array<{
       _key: string;
       title: string;
+      source: "manual" | "cases" | "services" | "pages" | null;
+      limit: number | null;
       links: Array<{
         _key: string;
         linkType: string;

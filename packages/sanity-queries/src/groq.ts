@@ -1032,6 +1032,8 @@ export const FOOTER_QUERY = defineQuery(`
   footerColumns[]{
     _key,
     title,
+    source,
+    limit,
     links[]{
       _key,
       linkType,

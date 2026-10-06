@@ -35,9 +35,14 @@ export interface FooterLink {
     displayName?: string;
 }
 
+/** Where a footer column gets its links from. Unset means "manual". */
+export type FooterColumnSource = "manual" | "cases" | "services" | "pages";
+
 export interface FooterColumn {
     _key?: string;
     title?: string;
+    source?: FooterColumnSource | null;
+    limit?: number | null;
     links?: FooterLink[];
 }
 
