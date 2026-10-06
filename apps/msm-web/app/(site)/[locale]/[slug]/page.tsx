@@ -24,7 +24,7 @@ import {buildMsmMetadata, buildMsmRouteMetadata} from '@msm/lib/metadata';
  * - Canonical URLs prevent duplicate content across locales
  * - Full OpenGraph + Twitter card metadata for social sharing
  */
-import {notFound} from "next/navigation";
+import {notFound, permanentRedirect} from "next/navigation";
 import MsmPageBuilder from "@msm/components/MsmPageBuilder";
 // import CookieDeclaration from "@/components/CookieDeclaration";
 import { getAllCases, getAllPageSlugs, getAllServicesForChannel, getPageBySlug } from "@1sp/sanity-queries";
@@ -100,6 +100,8 @@ export default async function Page({
   const page = await getPageBySlug(slug, channel, language);
 
   if (!page) notFound();
+  // The homepage document also has a slug (e.g. /homepage); keep a single indexable URL at the locale root.
+  if (page.isHomepage) permanentRedirect(language === "en" ? "/" : `/${language}`);
 
   const navbarVariant = page?.navbarVariant || "light";
   const contentBlocks = page?.content as any[] | undefined;

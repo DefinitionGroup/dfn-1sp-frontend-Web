@@ -51,6 +51,8 @@ type MsmSiteWrapperProps = {
 };
 
 const CHANNEL = "msmWeb";
+// Footer links can point at pages of other network sites, which use locale-free URLs on their own domain.
+const NETWORK_SITE_ORIGINS: Record<string, string> = { "1spWeb": "https://www.1sp.agency" };
 
 type FooterCase = {
   _id?: string;
@@ -278,29 +280,24 @@ async function MsmFooter({
   );
 
   const getManualLinks = (column: FooterColumn): FooterLink[] =>
-    (column.links ?? []).flatMap((link) => {
-      const isExternal = stegaClean(link.linkType) === "external";
+    (column.links ?? []).flatMap((link): FooterLink[] => {
+      if (stegaClean(link.linkType) === "external") {
+        return link.externalUrl
+          ? [{ label: link.displayName || link.externalUrl, href: link.externalUrl, external: true }]
+          : [];
+      }
       const caseSlug = link.case?.slug?.current;
-      const internalSlug = link.isCaseLink
-        ? caseSlug && `cases/${caseSlug}`
-        : link.slug;
-      const href = isExternal
-        ? link.externalUrl
-        : internalSlug
-          ? getLocalePath(language, internalSlug)
-          : undefined;
-
-      return href
-        ? [
-            {
-              label:
-                link.displayName ||
-                (internalSlug ? humanizeSlug(internalSlug) : href),
-              href,
-              external: isExternal,
-            },
-          ]
-        : [];
+      // A homepage's slug is not a public path; the page lives at the site root.
+      const path = link.isCaseLink
+        ? caseSlug ? `cases/${caseSlug}` : undefined
+        : link.isHomepage ? "" : link.slug;
+      if (path == null) return [];
+      const label = link.displayName || (path ? humanizeSlug(path) : "Home");
+      const pageChannel = link.isCaseLink ? CHANNEL : stegaClean(link.pageChannel) || CHANNEL;
+      if (pageChannel === CHANNEL) return [{ label, href: getLocalePath(language, path) }];
+      // Pages of other network sites keep their own domain; skip sites without a known one.
+      const origin = NETWORK_SITE_ORIGINS[pageChannel];
+      return origin ? [{ label, href: path ? `${origin}/${path}` : origin, external: true }] : [];
     });
 
   const columns: FooterColumnData[] = usesConfiguredColumns
