@@ -25,6 +25,10 @@ export interface FooterLink {
     linkType: "internal" | "external";
     isCaseLink?: boolean;
     slug?: string;
+    /** The linked page is its site's homepage; its slug is not a public path. */
+    isHomepage?: boolean | null;
+    /** Channel of the linked page; pages of other sites need their own origin. */
+    pageChannel?: string | null;
     pageTitle?: string;
     case?: {
         slug?: {
