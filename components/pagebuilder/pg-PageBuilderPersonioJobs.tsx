@@ -71,6 +71,9 @@ type JobFilterMetadata = {
 };
 
 const DEFAULT_JOB_LOGO_URL = "/ci/1sp-fulllogotype-blk.svg";
+// Fetch every open position so the filters see the full list; the block's
+// maxItems only sets how many cards each "Load more" step reveals.
+const ALL_JOBS_LIMIT = 500;
 
 const tagToneClasses: Record<TagTone, string> = {
   location: " bg-lime-400 font-bold text-black",
@@ -267,6 +270,16 @@ function PageBuilderPersonioJobs({
   const [timeFilter, setTimeFilter] = React.useState<JobTimeFilter>("all");
   const [contractFilter, setContractFilter] =
     React.useState<JobContractFilter>("all");
+  const pageSize = Math.max(1, maxItems);
+  // Pagination belongs to one filter combination; changing a filter starts
+  // again from the first page.
+  const filterKey = `${selectedUnitId}|${timeFilter}|${contractFilter}`;
+  const [pagination, setPagination] = React.useState({
+    filterKey,
+    count: pageSize,
+  });
+  const visibleCount =
+    pagination.filterKey === filterKey ? pagination.count : pageSize;
 
   React.useEffect(() => {
     const controller = new AbortController();
@@ -277,7 +290,7 @@ function PageBuilderPersonioJobs({
         setError(null);
 
         const query = new URLSearchParams({
-          maxItems: String(Math.max(1, maxItems)),
+          maxItems: String(ALL_JOBS_LIMIT),
           onlyPublished: String(onlyPublished),
           language,
         });
@@ -326,7 +339,7 @@ function PageBuilderPersonioJobs({
     loadUnits();
 
     return () => controller.abort();
-  }, [maxItems, onlyPublished, language]);
+  }, [onlyPublished, language]);
 
   const sectionId = (headline || "open-positions")
     .replace(/[^a-zA-Z0-9\s]/g, "")
@@ -514,6 +527,9 @@ function PageBuilderPersonioJobs({
     });
   }, [jobs, jobFilterMetadataByJobId, selectedUnitId, timeFilter, contractFilter]);
 
+  const visibleJobs = filteredJobs.slice(0, visibleCount);
+  const remainingJobCount = filteredJobs.length - visibleJobs.length;
+
   const hasActiveFilters =
     selectedUnitId !== "all" || timeFilter !== "all" || contractFilter !== "all";
 
@@ -634,7 +650,7 @@ function PageBuilderPersonioJobs({
               ) : null}
 
               <ul className="mx-auto grid md:grid-cols-2 lg:grid-cols-3">
-                {filteredJobs.map((job) => {
+                {visibleJobs.map((job) => {
                   const updatedAtLabel = formatDate(job.updatedAt);
                   const descriptionSnippet = createSnippet(job.description);
                   const matchedUnit = jobFilterMetadataByJobId[job.id]?.matchedUnit;
@@ -720,6 +736,23 @@ function PageBuilderPersonioJobs({
                   );
                 })}
               </ul>
+
+              {remainingJobCount > 0 ? (
+                <div className="flex flex-col items-center gap-2 pt-6">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setPagination({ filterKey, count: visibleCount + pageSize })
+                    }
+                    className="px-6 py-2.5 rounded-full bg-lime-500 text-xs font-medium uppercase tracking-wide text-black transition-colors hover:bg-neutral-900 hover:text-neutral-100"
+                  >
+                    Load more
+                  </button>
+                  <p className="text-[10px] tracking-wide text-neutral-400">
+                    Showing {visibleJobs.length} of {filteredJobs.length}
+                  </p>
+                </div>
+              ) : null}
             </div>
           )}
         </div>

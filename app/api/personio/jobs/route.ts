@@ -5,6 +5,8 @@ export const runtime = "nodejs";
 const PERSONIO_AUTH_URL = "https://api.personio.de/v2/auth/token";
 const PERSONIO_JOBS_URL = "https://api.personio.de/v2/recruiting/jobs";
 const DEFAULT_CACHE_SECONDS = 300;
+// Personio lists ~180 open positions; the cap only guards against abuse.
+const MAX_ITEMS_LIMIT = 500;
 
 type JsonRecord = Record<string, unknown>;
 
@@ -807,7 +809,7 @@ export async function GET(request: NextRequest) {
   }
 
   const { searchParams } = new URL(request.url);
-  const maxItems = clampInt(searchParams.get("maxItems"), 20, 1, 100);
+  const maxItems = clampInt(searchParams.get("maxItems"), 20, 1, MAX_ITEMS_LIMIT);
   const onlyPublished = parseBoolean(searchParams.get("onlyPublished"), true);
   const refresh = parseBoolean(searchParams.get("refresh"), false);
   const language = normalizeLanguageCode(searchParams.get("language") || "en");

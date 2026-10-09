@@ -30,7 +30,9 @@ export default defineType({
     }),
     defineField({
       name: "maxItems",
-      title: "Maximum Items",
+      title: "Jobs per page",
+      description:
+        "How many positions show at first and per \"Load more\" click. All open positions stay reachable.",
       type: "number",
       initialValue: 20,
       validation: (Rule) => Rule.min(1).max(100),
@@ -145,7 +147,7 @@ export default defineType({
     prepare({ headline, maxItems, onlyPublished }) {
       return {
         title: headline || "PageBuilder Personio Jobs",
-        subtitle: `Personio API • Max ${maxItems || 20}${onlyPublished ? " • Published only" : ""}`,
+        subtitle: `Personio API • ${maxItems || 20} per page${onlyPublished ? " • Published only" : ""}`,
         media: Briefcase,
       };
     },
