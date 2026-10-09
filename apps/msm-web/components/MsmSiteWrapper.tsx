@@ -23,6 +23,7 @@ import PageWithMapVertical from "./ui/PageWithMapVertical";
 import ScrollToTop from "./ui/ScrollToTop";
 import CornerMarkers from "./ui/CornerMarkers";
 import MsmLogoAnimated from "./ui/MsmLogoAnimated";
+import MosaicButton from "./ui/MosaicButton";
 import MsmFooterExternalBanner from "./MsmFooterExternalBanner";
 
 type OverlayCaseStudy = {
@@ -90,18 +91,36 @@ function dedupeLinks(links: FooterLink[]): FooterLink[] {
   return Array.from(new Map(links.map((link) => [link.href, link])).values());
 }
 
+function formatFooterIndex(index: number): string {
+  return String(index + 1).padStart(2, "0");
+}
+
 function FooterColumnHeading({
   index,
+  mobileIndex = index,
   title,
   href,
 }: {
-  index: string;
+  index: number;
+  /** Position in the reordered two-column mobile grid. */
+  mobileIndex?: number;
   title: string;
   href?: string;
 }) {
   const content = (
     <>
-      <span className="font-aspekta text-white/30">{index}</span>
+      {mobileIndex === index ? (
+        <span className="font-aspekta text-white/30">{formatFooterIndex(index)}</span>
+      ) : (
+        <>
+          <span className="font-aspekta text-white/30 md:hidden">
+            {formatFooterIndex(mobileIndex)}
+          </span>
+          <span className="hidden font-aspekta text-white/30 md:inline">
+            {formatFooterIndex(index)}
+          </span>
+        </>
+      )}
       <span>{title}</span>
       {href ? (
         <span
@@ -163,6 +182,16 @@ type FooterColumnData = {
   href?: string;
   links: FooterLink[];
 };
+
+// Mobile grid order classes, indexed by mobile position.
+const footerMobileOrderClassName = ["order-1", "order-2", "order-3", "order-4"];
+
+// The mobile footer is a two-column grid. With four columns the short last one
+// (Connect) moves up beside the first so both rows end at a similar height.
+function getFooterMobileOrder(columnCount: number): number[] {
+  const order = Array.from({ length: columnCount }, (_, index) => index);
+  return columnCount === 4 ? [0, 3, 1, 2] : order;
+}
 
 const footerGridColumnClassName: Record<number, string> = {
   1: "md:grid-cols-1",
@@ -351,6 +380,7 @@ async function MsmFooter({
         },
       ];
   const visibleColumns = columns.filter((column) => column.links.length > 0);
+  const mobileOrder = getFooterMobileOrder(visibleColumns.length);
   const locations = footer?.locations ?? [];
 
   const statement =
@@ -409,35 +439,42 @@ async function MsmFooter({
               footerGridColumnClassName[visibleColumns.length] ?? "md:grid-cols-4"
             }`}
           >
-            {visibleColumns.map((column, columnIndex) => (
-              <div key={column.key}>
-                <FooterColumnHeading
-                  index={String(columnIndex + 1).padStart(2, "0")}
-                  title={column.title}
-                  href={column.href}
-                />
-                <ul className="space-y-3">
-                  {column.links.map((link, linkIndex) => (
-                    <li key={`${link.href}-${linkIndex}`}>
-                      <FooterLinkItem link={link} />
-                    </li>
-                  ))}
-                </ul>
-
-                {columnIndex === visibleColumns.length - 1 && locations.length ? (
-                  <div className="mt-8 space-y-4 border-t border-white/15 pt-5 text-xs leading-5 text-white/45">
-                    {locations.map((location) => (
-                      <address key={location._key} className="not-italic">
-                        <span className="block font-semibold text-white/80">
-                          {location.name}
-                        </span>
-                        {location.address}
-                      </address>
+            {visibleColumns.map((column, columnIndex) => {
+              const mobileIndex = mobileOrder.indexOf(columnIndex);
+              return (
+                <div
+                  key={column.key}
+                  className={`${footerMobileOrderClassName[mobileIndex] ?? ""} md:order-none`}
+                >
+                  <FooterColumnHeading
+                    index={columnIndex}
+                    mobileIndex={mobileIndex}
+                    title={column.title}
+                    href={column.href}
+                  />
+                  <ul className="space-y-3">
+                    {column.links.map((link, linkIndex) => (
+                      <li key={`${link.href}-${linkIndex}`}>
+                        <FooterLinkItem link={link} />
+                      </li>
                     ))}
-                  </div>
-                ) : null}
-              </div>
-            ))}
+                  </ul>
+
+                  {columnIndex === visibleColumns.length - 1 && locations.length ? (
+                    <div className="mt-8 space-y-4 border-t border-white/15 pt-5 text-xs leading-5 text-white/45">
+                      {locations.map((location) => (
+                        <address key={location._key} className="not-italic">
+                          <span className="block font-semibold text-white/80">
+                            {location.name}
+                          </span>
+                          {location.address}
+                        </address>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
           </div>
         ) : null}
 
@@ -456,12 +493,11 @@ async function MsmFooter({
               `© ${new Date().getFullYear()} MSM.DIGITAL`}
           </p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-4">
-            <Link
+            <MosaicButton
               href={getLocalePath(language, "contact")}
-              className="transition-colors duration-300 hover:text-white"
-            >
-              Contact
-            </Link>
+              size="sm"
+              text="Contact"
+            />
             {socialLinks
               .filter((link) => Boolean(link.url))
               .map((link) => (
@@ -476,7 +512,7 @@ async function MsmFooter({
                 </a>
               ))}
             <div className="normal-case">
-              <AiContentDisclosure />
+              <AiContentDisclosure tone="dark" />
             </div>
           </div>
         </div>
