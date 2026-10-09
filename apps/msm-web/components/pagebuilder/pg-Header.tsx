@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import HeroVideoComp from "@msm/components/pagebuilder/Fragments/HeroVideoComp";
 import SelectionFrame from "@msm/components/ui/SelectionFrame";
 import { assetUrl, resolveLink } from "@1sp/utils/cloudinary";
@@ -195,11 +196,21 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           dismissFramesAfterMs={Math.max(480, eyebrowDelayMs + decryptRevealMs(eyebrow) + 300 - FRAME_DELAY_MS)}
         >
             <div className="pb-3 md:pb-4 flex items-center gap-4">
-              <MsmLogoAnimated
-                size={44}
-                className="h-11 w-11"
-              />
-              {editorialHeadline && <span className="text-4xl md:text-6xl tracking-tight">MSM.digital</span>}
+              {editorialHeadline ? (
+                <Image
+                  src="/ci/msm-logo-1sp-agency-white.svg"
+                  alt="MSM.digital — a 1SP Agency"
+                  width={372}
+                  height={87}
+                  priority
+                  className="h-14 w-auto md:h-20"
+                />
+              ) : (
+                <MsmLogoAnimated
+                  size={44}
+                  className="h-11 w-11"
+                />
+              )}
             </div>
 
             {/* The eyebrow decrypts only once the headline has finished flickering. */}
