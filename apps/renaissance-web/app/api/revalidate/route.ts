@@ -172,6 +172,14 @@ async function handleRevalidation(body: SanityWebhookBody) {
             pushPath("/", "layout");
             break;
 
+        case "renaissanceXPost":
+            // The newest post is embedded in the homepage news banner query.
+            revalidateTag("xPosts", "max");
+            revalidateTag("pages", "max");
+            revalidatedTags.push("xPosts", "pages");
+            pushPath("/", "layout");
+            break;
+
         case "page":
             // Invalidate page-specific cache
             revalidateTag("pages", "max");

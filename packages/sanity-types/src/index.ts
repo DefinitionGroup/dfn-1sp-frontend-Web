@@ -489,12 +489,35 @@ export interface RegisterCard extends CTA {
 export interface NewsCTABlock {
     _type: "newsCTABlock";
     _key?: string;
+    source?: "manual" | "latestXPost" | null;
     headline?: string;
     text?: string;
     media?: CloudinaryAsset;
     mediaAlt?: string;
     poster?: CloudinaryAsset;
     link?: Link;
+    archiveLabel?: string | null;
+    /** Resolved by the page query when `source` is "latestXPost". */
+    latestXPost?: RenaissanceXPost | null;
+}
+
+/** A Renaissance post copied by hand from x.com/RenaissancePRUK. */
+export interface RenaissanceXPost {
+    _id: string;
+    postUrl: string;
+    publishedAt: string;
+    text: string;
+    authorName: string;
+    authorHandle: string;
+    imageUrl?: string | null;
+    imageAlt?: string | null;
+    quotedPost?: {
+        authorName?: string | null;
+        authorHandle?: string | null;
+        text?: string | null;
+        postUrl?: string | null;
+        imageUrl?: string | null;
+    } | null;
 }
 
 export interface RegisterBlock {

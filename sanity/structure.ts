@@ -181,6 +181,7 @@ const createChannelStructure = (
                           ['renaissanceSharedPortraits', 'Portrait grids'],
                           ['renaissanceSharedAwards', 'Award logo walls'],
                           ['renaissanceClientCollection', 'Client logo collections'],
+                          ['renaissanceXPost', 'X posts'],
                         ].map(([type, title]) => S.listItem().title(title).icon(SquaresFour).child(
                           S.documentTypeList(type).title(title)
                             .filter('_type == $type && channel == "renaissanceWeb" && language == $language')
@@ -409,6 +410,7 @@ export const structure: StructureResolver = (S) =>
             "renaissanceSharedPortraits",
             "renaissanceSharedAwards",
             "renaissanceClientCollection",
+            "renaissanceXPost",
             "caseStudy",
             "unit",
             "msmUnit",

@@ -107,11 +107,85 @@ function NewsMedia({ data, src }: { data: NewsCTABlock; src: string }) {
   );
 }
 
+const X_DATE = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+  timeZone: "Europe/London",
+});
+
+/** Maps the newest X post onto the banner fields; falls back to the block media. */
+function xPostBanner(data: NewsCTABlock) {
+  const post = data.latestXPost;
+  if (!post?.postUrl) return null;
+  const quotedImage = post.quotedPost?.imageUrl;
+  const media = post.imageUrl
+    ? { src: post.imageUrl, alt: post.imageAlt || "" }
+    : quotedImage
+      ? { src: quotedImage, alt: `Image from the post by @${post.quotedPost?.authorHandle}` }
+      : null;
+  const fallbackSrc = assetUrl(data.media);
+  return {
+    post,
+    src: media?.src ?? fallbackSrc,
+    mediaData: media
+      ? { ...data, media: { secure_url: media.src }, mediaAlt: media.alt, poster: undefined }
+      : data,
+  };
+}
+
+function ArrowIcon() {
+  return (
+    <svg className={styles.arrow} viewBox="0 0 22 14" fill="none" aria-hidden="true">
+      <path d="M0 13.5H8L20.5 1" stroke="currentColor" />
+      <path d="M10 0.5H21V12" stroke="currentColor" />
+    </svg>
+  );
+}
+
+function XPostNewsBanner({ data }: { data: NewsCTABlock }) {
+  const banner = xPostBanner(data);
+  if (!banner) return null;
+  const { post, src, mediaData } = banner;
+  const label = data.headline?.trim() || "Latest on X";
+
+  return (
+    <div className="px-5 py-6 sm:px-8 lg:px-12" data-component="news-cta-block" data-source="x">
+      <article className={`${styles.banner} ${src ? "" : styles.textOnly}`}>
+        {src && <NewsMedia key={src} data={mediaData} src={src} />}
+        <div className={styles.copy}>
+          <div>
+            <h2 className={styles.headline}>
+              <a href={post.postUrl} target="_blank" rel="noopener noreferrer">
+                {label}
+                <span className="sr-only"> (opens the post on x.com)</span>
+              </a>
+            </h2>
+            <p className={styles.meta}>
+              @{post.authorHandle} ·{" "}
+              <time dateTime={post.publishedAt}>{X_DATE.format(new Date(post.publishedAt))}</time>
+            </p>
+            <p className={`${styles.text} ${styles.postText}`}>{post.text}</p>
+            <Link href="/news" className={styles.archive}>
+              {data.archiveLabel?.trim() || "All news"}
+            </Link>
+          </div>
+          <ArrowIcon />
+        </div>
+      </article>
+    </div>
+  );
+}
+
 export default function RenaissanceNewsCTABlock({
   data,
 }: {
   data: NewsCTABlock;
 }) {
+  if (data.source === "latestXPost" && data.latestXPost) {
+    return <XPostNewsBanner data={data} />;
+  }
+
   const src = assetUrl(data.media);
   const action = getRenderableCta({ text: data.headline, link: data.link });
   if (!src || !action) return null;
@@ -127,15 +201,7 @@ export default function RenaissanceNewsCTABlock({
             </h2>
             {data.text && <p className={styles.text}>{data.text}</p>}
           </div>
-          <svg
-            className={styles.arrow}
-            viewBox="0 0 22 14"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path d="M0 13.5H8L20.5 1" stroke="currentColor" />
-            <path d="M10 0.5H21V12" stroke="currentColor" />
-          </svg>
+          <ArrowIcon />
         </div>
       </article>
     </div>

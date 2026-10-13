@@ -39,7 +39,8 @@ import renaissanceSharedContentReference from './RENAISSANCE/Components/renaissa
 import renaissanceClientCollection from './RENAISSANCE/Documents/clientCollection'
 import renaissanceCaseCarousel from './RENAISSANCE/Components/renaissanceCaseCarousel'
 import newsCTABlock from './RENAISSANCE/Components/newsCTABlock'
+import renaissanceXPost from './RENAISSANCE/Documents/xPost'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [personWebsiteContent, renaissanceCaseCarousel, renaissanceClientCollection, renaissanceSharedPortraits, renaissanceSharedAwards, renaissanceSharedContentReference, page, menu, siteSettings, oneSpComponentGroup, translationGuidelines, caseStudy, caseWebsiteContent, unitCase, client, person, contactSubmission, ...OneSPschemaTypes, ...FLZRschemaTypes, ...CaseStudySchemaTypes, ...MSMschemaTypes, renaissanceSectionBand, renaissancePortraitGrid, renaissanceAwardLogoWall, registerBlock, newsCTABlock, link, cta, paragraph, size, services, serviceWebsiteContent, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata, contactForm, oneSpComponentGroupReference],
+  types: [personWebsiteContent, renaissanceCaseCarousel, renaissanceClientCollection, renaissanceXPost, renaissanceSharedPortraits, renaissanceSharedAwards, renaissanceSharedContentReference, page, menu, siteSettings, oneSpComponentGroup, translationGuidelines, caseStudy, caseWebsiteContent, unitCase, client, person, contactSubmission, ...OneSPschemaTypes, ...FLZRschemaTypes, ...CaseStudySchemaTypes, ...MSMschemaTypes, renaissanceSectionBand, renaissancePortraitGrid, renaissanceAwardLogoWall, registerBlock, newsCTABlock, link, cta, paragraph, size, services, serviceWebsiteContent, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata, contactForm, oneSpComponentGroupReference],
 }

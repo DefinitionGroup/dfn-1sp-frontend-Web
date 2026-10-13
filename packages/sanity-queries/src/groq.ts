@@ -62,11 +62,17 @@ const ADDITIONAL_CONTENT_PROJECTION = `additionalContent[]{
   }
 }`;
 
+const X_POST_PROJECTION = `_id, postUrl, publishedAt, text, authorName, authorHandle, imageUrl, imageAlt, quotedPost`;
+const VISIBLE_X_POSTS_FILTER = `_type == "renaissanceXPost" && channel == "renaissanceWeb" && hidden != true && defined(publishedAt)`;
+
 const NEWS_CTA_BLOCK_PROJECTION = `_type == 'newsCTABlock' => {
   ...,
   link{
     ...,
     page->{_id, slug}
+  },
+  source == "latestXPost" => {
+    "latestXPost": *[${VISIBLE_X_POSTS_FILTER}] | order(publishedAt desc)[0]{${X_POST_PROJECTION}}
   }
 }`;
 
@@ -1354,6 +1360,11 @@ export const MSM_UNIT_SLUGS_QUERY = defineQuery(`
   _updatedAt
 }
 `);
+
+export const X_POSTS_PAGE_QUERY = defineQuery(`{
+  "posts": *[${VISIBLE_X_POSTS_FILTER}] | order(publishedAt desc)[$start...$end]{${X_POST_PROJECTION}},
+  "total": count(*[${VISIBLE_X_POSTS_FILTER}])
+}`);
 
 export const HAS_CASE_STUDIES_QUERY = defineQuery(`
 count(*[_type == "caseStudy" && $channel in channel && language == $language && isPublished == true]) > 0

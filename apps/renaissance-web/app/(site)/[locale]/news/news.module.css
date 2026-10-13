@@ -1,0 +1,68 @@
+.follow,
+.step,
+.pageLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  border-radius: var(--radius-action);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.15;
+  transition: background-color 200ms, color 200ms;
+}
+.follow {
+  padding: 0 1.25rem;
+  background: var(--color-renaissance-button);
+  color: var(--color-renaissance-white);
+}
+.follow:hover {
+  background: var(--color-renaissance-teal);
+  color: var(--color-renaissance-accent);
+}
+.pagination {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  margin-top: clamp(2rem, 5vw, 3rem);
+}
+.step {
+  padding: 0 1.25rem;
+  border: 1px solid var(--color-renaissance-button);
+  color: var(--color-renaissance-accent);
+}
+.step[rel="prev"],
+.pagination > .step:first-child {
+  justify-self: start;
+}
+.step[rel="next"],
+.pagination > .step:last-child {
+  justify-self: end;
+}
+.step[data-disabled] {
+  visibility: hidden;
+}
+.step:hover {
+  background: var(--color-renaissance-mist);
+}
+.pages {
+  display: flex;
+  gap: 6px;
+}
+.pageLink {
+  min-width: 2.75rem;
+  color: var(--color-renaissance-accent);
+}
+.pageLink:hover {
+  background: var(--color-renaissance-mist);
+}
+.pageLink[aria-current="page"] {
+  background: var(--color-renaissance-accent);
+  color: var(--color-renaissance-white);
+}
+.pagination a:focus-visible,
+.follow:focus-visible {
+  outline: 3px solid var(--color-renaissance-ink);
+  outline-offset: 3px;
+}
