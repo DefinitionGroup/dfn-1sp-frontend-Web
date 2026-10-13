@@ -568,6 +568,18 @@ export const getAllCases = cache(async (channel: string, language: string) => {
   return data || [];
 });
 
+/** One page of Renaissance X posts, newest first. `page` is 1-based. */
+export const getRenaissanceXPosts = cache(async (page: number, pageSize: number) => {
+  const { X_POSTS_PAGE_QUERY } = await import("./groq");
+  const start = (page - 1) * pageSize;
+  const { data } = await sanityFetch({
+    query: X_POSTS_PAGE_QUERY,
+    params: { start, end: start + pageSize },
+    tags: ["xPosts"],
+  });
+  return { posts: data?.posts ?? [], total: data?.total ?? 0 };
+});
+
 /** Fetch all active MSM Units in editorial order. */
 export const getMsmUnits = cache(async (language: string) => {
   const { MSM_UNITS_QUERY } = await import("./groq");

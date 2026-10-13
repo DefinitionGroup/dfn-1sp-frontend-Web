@@ -31,6 +31,13 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "**",
       },
+      // Images of hand-copied X posts (renaissanceXPost).
+      {
+        protocol: "https",
+        hostname: "pbs.twimg.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
