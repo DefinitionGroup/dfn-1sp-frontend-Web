@@ -39,8 +39,8 @@ The root 1SP app is the established production baseline. Preserve its routing, S
 | --- | --- | --- |
 | `main` | Live 1SP site. Also serves the embedded `/studio` with **main's schema** | Studio opened from the live site lacks every schema added on stage (see [open issues](#side-effects-and-open-issues-found-4-october)) |
 | `multiseite/stage` | Integration branch for all four apps; all September work lives here | Git-connected FLZR, MSM and Renaissance projects deploy previews only; nothing beyond 1SP has been promoted |
-| Beta tier | `DEPLOYMENT_TIER=beta` added in `ff62c213a`. The 22 September setup notes describe CLI-deployed `1sp-beta`, `flzr-beta`, `msm-beta` and `renaissance-beta` projects on the production dataset | Noindex, robots disallow, `X-Robots-Tag`, no Cookiebot. Provider state was not re-verified in this update |
-| Live dataset | Live 1SP currently reads `wu6i3y0h/dev-dataset`; the deployment was switched back | Publishing content in `dev-dataset` can affect live 1SP through its normal cache/revalidation paths |
+| Beta tier | `DEPLOYMENT_TIER=beta` added in `ff62c213a`. The CLI-deployed `1sp-beta`, `flzr-beta`, `msm-beta` and `renaissance-beta` projects of 22 September no longer exist (checked 15 October; their URLs return 404) | The tier code remains. `dfn-msm2026-prod` still links its Studio to `1sp-beta`; see the [dataset switch checklist](DEPLOYMENT.md#switching-live-1sp-to-production) |
+| Live dataset | Live 1SP reads `wu6i3y0h/dev-dataset`, also for every `dfn-1sp-frontend-web` preview (rechecked 15 October). Live MSM reads `production` | Publishing in `dev-dataset` changes live 1SP; publishing in `production` changes live MSM. 1SP moves to `production` with the stage merge ([checklist](DEPLOYMENT.md#switching-live-1sp-to-production), [audit](records/project/1sp-production-dataset-switch-2026-10-15.md)) |
 | Staging dataset | Every local app loads `wu6i3y0h/production`. Despite its name, `production` is currently the staging ground and is intended to become the live dataset later | Publishing here affects apps configured to read `production`, not the current live 1SP deployment. The future dataset switch is a separate release step |
 | Hosted Studio | One Studio application registered (2026-07-13). No schema deployed to the Content Lake | Schema state is whatever Studio bundle the editor opens |
 
@@ -221,7 +221,7 @@ The subsequent implementation ran root/MSM/Renaissance production builds, target
 | --- | --- |
 | “Production” means the live site | Dataset name, Vercel environment name and actual public release are separate states |
 | Publishing to a dataset named `production` changes live 1SP | Live 1SP currently reads `dev-dataset`; `production` is staging. Publication affects deployments reading the same dataset. Reconfirm these roles at the future cutover |
-| Test previews can use any dataset | The `test` tier validates `dev-dataset` and remains strict; it is not a staging-data isolation boundary while live 1SP also reads that dataset. The `beta` tier permits `production` staging previews, accepts only `*.vercel.app`, and skips dataset/channel checks. See [operations](PROJECT_OPERATIONS.md) |
+| Test previews can use any dataset | Since 6 October the `test` tier requires `production` and remains strict; it is not a staging-data isolation boundary because live MSM also reads that dataset. The `beta` tier accepts only `*.vercel.app` and skips dataset/channel checks. See [operations](PROJECT_OPERATIONS.md) |
 | Studio looks current, so the frontend is current | Source schema, stored schema, Studio bundle (main vs stage), dataset, app deployment and caches are separate |
 | Preview query string means draft session is active | Draft Mode must be enabled on the correct app origin; verify cookie/perspective and viewer-token setup |
 | Publishing one website edition is isolated | Editions live in a shared document and publish together |
@@ -239,7 +239,7 @@ See [operations](PROJECT_OPERATIONS.md) for Draft Mode, revalidation, integratio
 | Status | Workstream | Next step |
 | --- | --- | --- |
 | Committed, needs browser verification before promotion | September MSM, FLZR and Renaissance changes (above) | Work through [open issues](#side-effects-and-open-issues-found-4-october); verify motion, reduced motion, no-JS/slow hydration and desktop/mobile per app |
-| Decision needed | Promotion path | Decide when stage merges to `main` (live 1SP and its Studio), when live 1SP switches from `dev-dataset` to the prepared `production` dataset, and when FLZR/MSM/Renaissance get production projects. These are separate release decisions |
+| Decided 15 October, release pending | Promotion path | Live 1SP switches to `production` in the same release that merges stage into `main` ([checklist](DEPLOYMENT.md#switching-live-1sp-to-production)). MSM is live on `dfn-msm2026-prod`; FLZR and Renaissance production projects are still open |
 | Audited, proposed | Service ownership consolidation | Resolve ownership and pilot MSM; preserve Renaissance references and FLZR modal/page behavior. [Scoped queue](SERVICE_CONTENT_HANDOFF.md) |
 | Content follow-up | MSM DE parity; FLZR case-media `RETIRE_OWN_VIDEO`; units without `footerBannerLogo`; FLZR DE/PL footer banner; open drafts | Confirm intent per item; record script runs under `records/` |
 | Committed and pushed, `cc0b37a4c` | Person-image coverage, MSM preview spacing, carousel recovery, import runner, MSM SEO and homepage globe removal | Builds and scoped checks pass; [implementation record](records/msm/msm-fixes-seo-and-legal-review-2026-10-04.md) |

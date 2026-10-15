@@ -28,3 +28,8 @@ EXPORT/
 
 # git worktrees managed by Claude Code (never commit as gitlinks)
 .claude/worktrees/
+
+# Sanity Blueprints stack link (created by `sanity blueprints init`)
+.sanity/
+# Sanity Functions build output (created by `sanity functions test`/deploy)
+functions/**/.build/
