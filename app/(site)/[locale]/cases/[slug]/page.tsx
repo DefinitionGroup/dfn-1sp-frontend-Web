@@ -30,6 +30,7 @@ import CaseStudyPageClient from "./CaseStudyPageClient";
 import SiteWrapper from "@/components/SiteWrapper";
 import type { Metadata } from "next";
 import { getChannel } from "@1sp/site-config/server";
+import { openGraphIdentity } from "@/lib/open-graph";
 import { sharingImages } from "@/lib/sharing-image";
 import {
   JsonLdScript,
@@ -96,14 +97,16 @@ export async function generateMetadata({
 
   // Main image (Cloudinary secure_url) cropped to 1200×630 for OG
   const ogImages = sharingImages(caseStudy.mainImageUrl, title);
+  const canonical = `/cases/${slug}`;
 
   return {
     title,
     description,
     alternates: {
-      canonical: `/cases/${slug}`,
+      canonical,
     },
     openGraph: {
+      ...openGraphIdentity(canonical),
       title,
       description,
       locale: language,

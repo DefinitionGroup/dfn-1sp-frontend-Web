@@ -17,6 +17,7 @@ import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
+import { openGraphIdentity } from "@/lib/open-graph";
 import { sharingImages, sharingImageUrl } from "@/lib/sharing-image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
@@ -63,15 +64,17 @@ export async function generateMetadata({
   const title = page.metadata?.title || page.title || "Services";
   const description = page.metadata?.description;
   const ogImages = sharingImages(page.metadata?.image, title);
+  const canonical = "/services";
 
   return {
     title,
     description,
     keywords: page.metadata?.keywords ?? undefined,
     alternates: {
-      canonical: "/services",
+      canonical,
     },
     openGraph: {
+      ...openGraphIdentity(canonical),
       title,
       description: description || undefined,
       locale: language,
