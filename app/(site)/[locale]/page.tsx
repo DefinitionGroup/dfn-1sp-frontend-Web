@@ -23,6 +23,7 @@ import { getAllCases, getAllServicesForChannel, getHomePage, getGlobalData } fro
 import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
+import { openGraphIdentity } from "@/lib/open-graph";
 import { sharingImages } from "@/lib/sharing-image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
@@ -76,15 +77,17 @@ export async function generateMetadata({
   const description =
     page.metadata?.description || SITE_BRAND.seo.defaultDescription;
   const ogImages = sharingImages(page.metadata?.image, title);
+  const canonical = "/";
 
   return {
     title,
     description,
     keywords: page.metadata?.keywords ?? undefined,
     alternates: {
-      canonical: "/",
+      canonical,
     },
     openGraph: {
+      ...openGraphIdentity(canonical),
       title,
       description,
       locale: language,

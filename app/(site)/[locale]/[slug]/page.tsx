@@ -29,6 +29,7 @@ import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
 import { getChannel } from "@1sp/site-config/server";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
+import { openGraphIdentity } from "@/lib/open-graph";
 import { sharingImages, sharingImageUrl } from "@/lib/sharing-image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -88,6 +89,7 @@ export async function generateMetadata({
   const title = page.metadata?.title || page.title;
   const description = page.metadata?.description;
   const ogImages = sharingImages(page.metadata?.image, title);
+  const canonical = `/${slug}`;
   const isReservedNonPublicPage = slug === "test";
 
   return {
@@ -95,9 +97,10 @@ export async function generateMetadata({
     description,
     keywords: page.metadata?.keywords ?? undefined,
     alternates: {
-      canonical: `/${slug}`,
+      canonical,
     },
     openGraph: {
+      ...openGraphIdentity(canonical),
       title,
       description: description || undefined,
       locale: language,
