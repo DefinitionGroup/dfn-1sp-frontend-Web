@@ -1,7 +1,9 @@
 import { defineType, defineField, defineArrayMember } from 'sanity'
 import { GlobeHemisphereWest } from '@phosphor-icons/react'
+import { validateOptionalCta } from '../../shared/ctaValidation'
 
 const isFlzrChannel = (channel: unknown) => channel === 'flizrWeb'
+const isMsmChannel = (channel: unknown) => channel === 'msmWeb'
 
 export default defineType({
     name: 'globeComponent',
@@ -11,6 +13,8 @@ export default defineType({
     description: 'Display custom locations on an interactive globe',
     groups: [
         { name: 'content', title: 'Content' },
+        { name: 'layout', title: 'Layout & Interaction' },
+        { name: 'cta', title: 'Call to action' },
         { name: 'navigation', title: 'Navigation' }
     ],
     fields: [
@@ -43,6 +47,22 @@ export default defineType({
             rows: 2,
             description: 'Optional supporting line displayed below the section title.',
             group: 'content',
+        }),
+        defineField({
+            name: 'viewMode',
+            title: 'FLZR Globe View',
+            type: 'string',
+            description: 'The static Central Europe view hides the globe copy, zooms in and disables drag rotation.',
+            initialValue: 'default',
+            hidden: ({ document }) => !isFlzrChannel(document?.channel),
+            group: 'layout',
+            options: {
+                list: [
+                    { title: 'Default interactive view', value: 'default' },
+                    { title: 'Static Central Europe', value: 'centralEuropeStatic' },
+                ],
+                layout: 'radio',
+            },
         }),
         defineField({
             name: 'locations',
@@ -109,6 +129,23 @@ export default defineType({
                     }
                 })
             ]
+        }),
+        defineField({
+            name: 'ctaLabel',
+            title: 'CTA label',
+            type: 'string',
+            description: 'Small line above the button text, e.g. "Let’s talk". MSM only.',
+            hidden: ({ document }) => !isMsmChannel(document?.channel),
+            group: 'cta',
+        }),
+        defineField({
+            name: 'cta',
+            title: 'Call to action',
+            type: 'cta',
+            description: 'Button below the location list, e.g. a link to the contact page. MSM only.',
+            hidden: ({ document }) => !isMsmChannel(document?.channel),
+            validation: (Rule) => Rule.custom((value) => validateOptionalCta(value)),
+            group: 'cta',
         })
     ],
     preview: {

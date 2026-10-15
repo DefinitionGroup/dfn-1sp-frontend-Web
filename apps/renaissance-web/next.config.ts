@@ -1,10 +1,13 @@
 import type { NextConfig } from "next";
 import path from "node:path";
-import { getDeploymentHeaders } from "@1sp/utils/deployment-tier";
+import legacyRedirects from "./data/legacyRedirects.json";
+import { renaissanceDeploymentHeaders } from "./lib/deployment";
 
 const nextConfig: NextConfig = {
   experimental: {
     externalDir: true,
+    // Local Studio and Renaissance share localhost and separate preview sessions.
+    multiZoneDraftMode: process.env.NODE_ENV === "development",
   },
   // Pin Turbopack to this pnpm workspace so it can resolve the RENAISSANCE app and
   // linked workspace packages. Without this, an unrelated
@@ -28,6 +31,13 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "**",
       },
+      // Images of hand-copied X posts (renaissanceXPost).
+      {
+        protocol: "https",
+        hostname: "pbs.twimg.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
@@ -40,7 +50,8 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
-  headers: () => getDeploymentHeaders("renaissance"),
+  headers: () => renaissanceDeploymentHeaders(),
+  redirects: async () => legacyRedirects.map(route => ({...route, permanent: true})),
 
 };
 

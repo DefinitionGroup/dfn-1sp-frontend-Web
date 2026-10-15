@@ -90,9 +90,7 @@ export default function HamburgerGradientMenu({
         return false;
       }
 
-      if (isServicesPage && !navbarMenu?.hasServices) {
-        return false;
-      }
+      // Renaissance Services is an editorial page, independent of global service records.
 
       return Boolean(item.displayName || item.title);
     })

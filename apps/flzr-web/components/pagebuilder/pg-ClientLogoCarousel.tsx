@@ -19,7 +19,13 @@ const SPEED_SECONDS_PER_LOGO: Record<string, number> = {
  * `.logo-carousel-mask` utilities from globals.css; the track is
  * duplicated once so the -50% keyframe loops seamlessly.
  */
-function ClientLogoCarousel({ data }: { data: ClientLogoCarouselType }) {
+function ClientLogoCarousel({
+  data,
+  inheritSectionSurface = false,
+}: {
+  data: ClientLogoCarouselType;
+  inheritSectionSurface?: boolean;
+}) {
   const {
     eyebrow,
     headline,
@@ -65,7 +71,7 @@ function ClientLogoCarousel({ data }: { data: ClientLogoCarouselType }) {
 
   // Each half of the -50% loop must be wider than any viewport, otherwise
   // the loop point exposes whitespace. Repeat the set until a half holds
-  // at least 12 logos (~12 * 136px > 1600px).
+  // at least 12 logos (~12 * 189px > 1600px).
   const repeats = Math.max(1, Math.ceil(12 / withLogos.length));
   const logosPerHalf = repeats * withLogos.length;
   const secondsPerLogo =
@@ -81,7 +87,7 @@ function ClientLogoCarousel({ data }: { data: ClientLogoCarouselType }) {
         withLogos.map((client, idx) => (
           <div
             key={`${client._id || client.name || "client"}-${rep}-${idx}${ariaHidden ? "-dup" : ""}`}
-            className={`relative h-6 w-24 shrink-0 md:h-8 md:w-28 ${
+            className={`relative h-8 w-32 shrink-0 md:h-[42.667px] md:w-[149.333px] ${
               grayscale
                 ? "grayscale opacity-60 transition-all duration-300 hover:grayscale-0 hover:opacity-100"
                 : ""
@@ -91,7 +97,7 @@ function ClientLogoCarousel({ data }: { data: ClientLogoCarouselType }) {
               src={assetUrl(client.logo as any) || ""}
               alt={ariaHidden || rep > 0 ? "" : client.name || "Client logo"}
               fill
-              sizes="112px"
+              sizes="(min-width: 768px) 149.333px, 128px"
               className="object-contain"
             />
           </div>
@@ -104,12 +110,12 @@ function ClientLogoCarousel({ data }: { data: ClientLogoCarouselType }) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="w-full py-16 md:py-24"
+      className={`w-full ${inheritSectionSurface ? "pb-2 pt-8 md:pt-10" : "py-16 md:py-24"}`}
       data-component="client-logo-carousel"
     >
-      <div className="container mx-auto w-full">
+      <div className={`${inheritSectionSurface ? "w-full" : "container mx-auto"}`}>
         {(hasVisibleText(eyebrow) || hasVisibleText(headline)) && (
-          <div className="mb-8 flex flex-col items-center gap-3 text-center md:mb-12">
+          <div className={`${inheritSectionSurface ? "mb-5 md:mb-6" : "mb-8 md:mb-12"} flex flex-col items-center gap-3 text-center`}>
             {hasVisibleText(eyebrow) && <Eyebrow>{eyebrow}</Eyebrow>}
             {hasVisibleText(headline) && (
               <h2 className="text-title">{headline}</h2>
@@ -117,7 +123,7 @@ function ClientLogoCarousel({ data }: { data: ClientLogoCarouselType }) {
           </div>
         )}
 
-        <div className="logo-marquee-pausable py-6 md:py-8">
+        <div className={`logo-marquee-pausable ${inheritSectionSurface ? "py-3 md:py-4" : "py-6 md:py-8"}`}>
           <div className="logo-carousel-mask overflow-hidden">
             <div
               className="logo-marquee-track flex"

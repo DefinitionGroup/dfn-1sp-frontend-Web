@@ -1,3 +1,4 @@
+import GlobalsBrowser, {GLOBAL_BROWSER_TYPES} from "@1sp/sanity-schema/studio";
 import type {
   StructureResolver,
   ListItemBuilder,
@@ -65,8 +66,19 @@ const createAssignedGlobalListItem = (
   channel: string,
   language: string,
   icon: React.ComponentType
-): ListItemBuilder =>
-  S.listItem()
+): ListItemBuilder => {
+  // Assigned shortcuts share Globals' search, draft handling and pagination.
+  // Units retain their existing list because they are not a GlobalsBrowser type.
+  if (GLOBAL_BROWSER_TYPES.some(type => type === schemaType)) {
+    return S.listItem().title(title).icon(icon).child(
+      S.component().title(`${title} (${language.toUpperCase()})`)
+        .component(GlobalsBrowser)
+        .options({schemaType, fixedScope: {channel, language}})
+        .child((documentId: string) => S.document().documentId(documentId).schemaType(schemaType))
+    );
+  }
+
+  return S.listItem()
     .title(title)
     .icon(icon)
     .child(
@@ -78,6 +90,7 @@ const createAssignedGlobalListItem = (
           createGlobalDocWithChannel(S, schemaType, channel, language),
         ])
     );
+};
 
 // --------- Channel Structure ---------
 
@@ -162,6 +175,20 @@ const createChannelStructure = (
                             ),
                           ])
                       ),
+                    ...(channelValue === 'renaissanceWeb' ? [
+                      S.listItem().title('Shared content').icon(SquaresFour).child(
+                        S.list().title('Renaissance shared content').items([
+                          ['renaissanceSharedPortraits', 'Portrait grids'],
+                          ['renaissanceSharedAwards', 'Award logo walls'],
+                          ['renaissanceClientCollection', 'Client logo collections'],
+                          ['renaissanceXPost', 'X posts'],
+                        ].map(([type, title]) => S.listItem().title(title).icon(SquaresFour).child(
+                          S.documentTypeList(type).title(title)
+                            .filter('_type == $type && channel == "renaissanceWeb" && language == $language')
+                            .params({ type, language: lang.id })
+                        )))
+                      ),
+                    ] : []),
                     S.divider(),
                     createAssignedGlobalListItem(
                       S,
@@ -195,14 +222,28 @@ const createChannelStructure = (
                       lang.id,
                       Users
                     ),
-                    createAssignedGlobalListItem(
-                      S,
-                      "Assigned Units",
-                      "unit",
-                      channelValue,
-                      lang.id,
-                      SquaresFour
-                    ),
+                    channelValue === "msmWeb"
+                      ? S.listItem()
+                          .title("MSM Units")
+                          .icon(SquaresFour)
+                          .child(
+                            S.documentTypeList("msmUnit")
+                              .title(`MSM Units (${lang.title})`)
+                              .filter('_type == "msmUnit" && language == $language')
+                              .params({ language: lang.id })
+                              .defaultOrdering([{ field: "sortOrder", direction: "asc" }])
+                              .initialValueTemplates([
+                                S.initialValueTemplateItem(`msmUnit-${lang.id}`, { language: lang.id }),
+                              ])
+                          )
+                      : createAssignedGlobalListItem(
+                          S,
+                          "Assigned Units",
+                          "unit",
+                          channelValue,
+                          lang.id,
+                          SquaresFour
+                        ),
                   ])
               )
           )
@@ -240,6 +281,21 @@ const createTranslationGuidelinesStructure = (S: any): ListItemBuilder =>
         ])
     );
 
+const createGlobalBrowser = (S: any, title: string, type: string, icon: React.ComponentType, id: string) =>
+  S.listItem().id(id).title(title).icon(icon).child(
+    S.component().id(id).title(title).component(GlobalsBrowser).options({schemaType:type})
+      .canHandleIntent((intent: string, params: {type?:string}) => intent === 'edit' && params.type === type)
+      .child((documentId: string) => {
+        // Preserve saved links from the former language-pane structure.
+        const legacyLanguage = ({englishEn:'en',germanDe:'de',polishPl:'pl'} as Record<string,string>)[documentId];
+        return legacyLanguage
+          ? S.documentTypeList(type).title(`${title} (${legacyLanguage.toUpperCase()})`)
+              .filter('_type == $type && language == $language').params({type,language:legacyLanguage})
+              .initialValueTemplates([S.initialValueTemplateItem(`${type}-global-browser`, {language:legacyLanguage,channel:''})])
+          : S.document().documentId(documentId).schemaType(type);
+      })
+  );
+
 // --------- Main Structure Export ---------
 
 export const structure: StructureResolver = (S) =>
@@ -256,34 +312,7 @@ export const structure: StructureResolver = (S) =>
           S.list()
             .title("Global Content")
             .items([
-              S.listItem()
-                .title("Case Studies")
-                .icon(Briefcase)
-                .child(
-                  S.list()
-                    .title("Case Studies by Language")
-                    .items(
-                      GLOBAL_LANGUAGES.map((language) =>
-                        S.listItem()
-                          .title(`${language.title} (${language.id.toUpperCase()})`)
-                          .icon(Translate)
-                          .child(
-                            S.documentTypeList("caseStudy")
-                              .title(`${language.title} Case Studies`)
-                              .filter(
-                                '_type == "caseStudy" && language == $language',
-                              )
-                              .params({ language: language.id })
-                              .initialValueTemplates([
-                                S.initialValueTemplateItem(
-                                  `caseStudy-${language.id}`,
-                                  { language: language.id },
-                                ),
-                              ])
-                          ),
-                      ),
-                    )
-                ),
+              createGlobalBrowser(S, "Case Studies", "caseStudy", Briefcase, "caseStudies"),
               S.listItem()
                 .title("Units")
                 .icon(SquaresFour)
@@ -319,111 +348,9 @@ export const structure: StructureResolver = (S) =>
                         ),
                     ])
                 ),
-              S.listItem()
-                .title("Clients")
-                .icon(Users)
-                .child(
-                  S.list()
-                    .title("Clients by Language")
-                    .items([
-                      S.listItem()
-                        .title("English (EN)")
-                        .icon(Translate)
-                        .child(
-                          S.documentTypeList("client")
-                            .title("English Clients")
-                            .filter('_type == "client" && language == "en"')
-                            .initialValueTemplates([
-                              S.initialValueTemplateItem("client-en", {
-                                language: "en",
-                              }),
-                            ])
-                        ),
-                      S.listItem()
-                        .title("German (DE)")
-                        .icon(Translate)
-                        .child(
-                          S.documentTypeList("client")
-                            .title("German Clients")
-                            .filter('_type == "client" && language == "de"')
-                            .initialValueTemplates([
-                              S.initialValueTemplateItem("client-de", {
-                                language: "de",
-                              }),
-                            ])
-                        ),
-                    ])
-                ),
-              S.listItem()
-                .title("People")
-                .icon(UserCircle)
-                .child(
-                  S.list()
-                    .title("People by Language")
-                    .items([
-                      S.listItem()
-                        .title("English (EN)")
-                        .icon(Translate)
-                        .child(
-                          S.documentTypeList("person")
-                            .title("English People")
-                            .filter('_type == "person" && language == "en"')
-                            .initialValueTemplates([
-                              S.initialValueTemplateItem("person-en", {
-                                language: "en",
-                              }),
-                            ])
-                        ),
-                      S.listItem()
-                        .title("German (DE)")
-                        .icon(Translate)
-                        .child(
-                          S.documentTypeList("person")
-                            .title("German People")
-                            .filter('_type == "person" && language == "de"')
-                            .initialValueTemplates([
-                              S.initialValueTemplateItem("person-de", {
-                                language: "de",
-                              }),
-                            ])
-                        ),
-                    ])
-                ),
-              S.listItem()
-                .title("Services")
-                .icon(SquaresFour)
-                .child(
-                  S.list()
-                    .title("Services by Language")
-                    .items([
-                      S.listItem()
-                        .title("English (EN)")
-                        .icon(Translate)
-                        .child(
-                          S.documentTypeList("services")
-                            .title("English Services")
-                            .filter('_type == "services" && language == "en"')
-                            .initialValueTemplates([
-                              S.initialValueTemplateItem("services-en", {
-                                language: "en",
-                              }),
-                            ])
-                        ),
-                      S.listItem()
-                        .title("German (DE)")
-                        .icon(Translate)
-                        .child(
-                          S.documentTypeList("services")
-                            .title("German Services")
-                            .filter('_type == "services" && language == "de"')
-                            .initialValueTemplates([
-                              S.initialValueTemplateItem("services-de", {
-                                language: "de",
-                              }),
-                            ])
-                        ),
-                    ])
-                ),
+              createGlobalBrowser(S, "Clients", "client", Users, "clients"),
+              createGlobalBrowser(S, "People", "person", UserCircle, "people"),
+              createGlobalBrowser(S, "Services", "services", SquaresFour, "services"),
               S.listItem()
                 .title("Service Groups")
                 .icon(Tag)
@@ -480,8 +407,13 @@ export const structure: StructureResolver = (S) =>
             "page",
             "menu",
             "siteSettings",
+            "renaissanceSharedPortraits",
+            "renaissanceSharedAwards",
+            "renaissanceClientCollection",
+            "renaissanceXPost",
             "caseStudy",
             "unit",
+            "msmUnit",
             "client",
             "person",
             "services",

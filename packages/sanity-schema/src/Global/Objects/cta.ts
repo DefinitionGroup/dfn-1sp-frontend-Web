@@ -28,6 +28,9 @@ export default defineType({
       initialValue: 'glass',
       options: {
         list: [
+          { title: 'Ghost - light surface', value: 'ghostLight' },
+          { title: 'Ghost - dark surface', value: 'ghostDark' },
+          { title: 'Ghost - bright brand surface', value: 'ghostBright' },
           { title: 'Glass', value: 'glass' },
           { title: 'Violet', value: 'violet' },
           { title: 'Violet (Small)', value: 'violetsmall' },

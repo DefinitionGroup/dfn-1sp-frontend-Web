@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./studio": "./src/Studio/GlobalsBrowser.tsx"
   },
   "types": "./src/index.ts",
   "files": [
@@ -14,7 +15,8 @@
     "@phosphor-icons/react": "^2.1.10",
     "@sanity/icons": "^4.1.0",
     "@sanity/ui": "^3.3.1",
-    "sanity": "^6.3.0"
+    "sanity": "^6.3.0",
+    "@1sp/site-config": "workspace:*"
   },
   "peerDependencies": {
     "react": "^18 || ^19"

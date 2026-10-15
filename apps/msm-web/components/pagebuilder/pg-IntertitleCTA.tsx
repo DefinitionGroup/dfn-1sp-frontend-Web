@@ -1,12 +1,36 @@
 "use client";
-import React from "react";
-import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
+import React, { useLayoutEffect, useState, type CSSProperties } from "react";
 import Button2 from "@msm/components/ui/Button2";
-import Link from "next/link";
+import CaseSection from "./cases/CaseSection";
+import caseStyles from "./cases/CaseDetail.module.css";
+import EditorialReveal from "@msm/components/ui/EditorialReveal";
+import styles from "@msm/components/ui/EditorialBlocks.module.css";
 import { resolveLink } from "@1sp/utils/cloudinary";
 import { useParams } from "next/navigation";
 import type { CTA } from "@1sp/sanity-types";
 import { hasVisibleText } from "@1sp/utils/text-content";
+
+/* Brand accents that clear 3:1 on the MSM paper. Purple (2.55:1) and maroon
+   (2.07:1) are deliberately left out — they read as dimmed, not accented. */
+const CTA_ACCENTS = [
+  "--color-msm-magenta",
+  "--color-msm-cyan",
+  "--color-msm-teal",
+  "--color-msm-teal-deep",
+  "--color-msm-orange",
+  "--color-msm-amber",
+  "--color-msm-red",
+] as const;
+
+/** A different accent each time the CTA mounts; magenta until hydration, so
+    server and client markup agree. */
+function useRandomAccent() {
+  const [accent, setAccent] = useState<string>(CTA_ACCENTS[0]);
+  useLayoutEffect(() => {
+    setAccent(CTA_ACCENTS[Math.floor(Math.random() * CTA_ACCENTS.length)]);
+  }, []);
+  return `var(${accent})`;
+}
 
 interface StaggeredSlideUpProps {
   className?: string;
@@ -19,6 +43,7 @@ interface StaggeredSlideUpProps {
 }
 
 interface IntertitleCTAProps {
+  caseLayout?: boolean;
   title: string;
   subtitle: string;
   cta?: CTA;
@@ -26,71 +51,28 @@ interface IntertitleCTAProps {
   containerClassName?: string;
   alignment?: "center" | "left";
   paddingTop?: "0" | "12" | "24" | "48";
+  paddingBottom?: "0" | "12" | "24" | "48";
   navPointName?: string;
   hideFromNav?: boolean;
 }
 
-// MSM brand accents readable on the dark paper background (purple/maroon
-// excluded for contrast). The pick is hashed from the content so it feels
-// random across the site but stays stable between server and client render.
-const BRAND_ACCENTS = [
-  "var(--color-msm-cyan)",
-  "var(--color-msm-magenta)",
-  "var(--color-msm-amber)",
-  "var(--color-msm-red)",
-  "var(--color-msm-teal)",
-];
-
-function pickAccent(seed: string): string {
-  let h = 7;
-  for (const ch of seed) h = (h * 31 + ch.charCodeAt(0)) | 0;
-  return BRAND_ACCENTS[Math.abs(h) % BRAND_ACCENTS.length];
-}
-
 const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   title,
+  caseLayout = false,
   subtitle,
   cta,
-  staggeredProps = {},
-  containerClassName = "flex-col w-full  md:min-w-64 justify-center mx-auto ",
-  alignment = "center",
-  paddingTop = "0",
   navPointName,
   hideFromNav = false,
+  paddingTop = "0",
+  paddingBottom = "0",
 }) => {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
-  const isLeftAligned = alignment === "left";
-
-  // Padding top classes
-  const paddingTopMap: Record<string, string> = {
-    "0": "",
-    "12": "pt-12",
-    "24": "pt-24",
-    "48": "pt-48",
-  };
-  const paddingTopClass = paddingTopMap[paddingTop] || "";
-
-  const defaultStaggeredProps: StaggeredSlideUpProps = {
-    className: `flex flex-col ${isLeftAligned ? "items-start" : "items-center"} font-normal justify-center  w-full min-w-full `,
-    delay: 0.0,
-    debug: false,
-    easing: "smooth",
-    staggerDelay: 0.1,
-    duration: 0.5,
-    distance: 20,
-    ...staggeredProps,
-  };
-
-  const titleClass = `headline-display text-neutral-50 text-balance ${isLeftAligned ? "text-left" : "text-center"}`;
-  const subtitleClass = `mt-5 text-2xl md:text-4xl font-semibold leading-snug ${isLeftAligned ? "text-left" : "text-center"}`;
-  const buttonContainerClass = `w-fit min-w-40 ${isLeftAligned ? "self-start" : "mx-auto"} mt-10 block`;
-
   // Resolve CTA link and props
   let buttonHref = cta?.link ? resolveLink(cta.link) : undefined;
   // Fix URL to include locale if it's an internal link
   if (
-    buttonHref &&
+    locale !== "en" && buttonHref &&
     buttonHref.startsWith("/") &&
     !buttonHref.startsWith(`/${locale}`)
   ) {
@@ -108,35 +90,47 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
       .toLowerCase()
     : "intertitle-section";
 
+  const ctaAccent = useRandomAccent();
+
+  // Editor-controlled extra space, added to the block's own section padding.
+  const extraSpace: Record<string, string> = { "12": "3rem", "24": "6rem", "48": "12rem" };
+  const spacingStyle: CSSProperties = {
+    ...(extraSpace[paddingTop] ? { paddingTop: `calc(var(--cta-pad, 0px) + ${extraSpace[paddingTop]})` } : {}),
+    ...(extraSpace[paddingBottom] ? { paddingBottom: `calc(var(--cta-pad, 0px) + ${extraSpace[paddingBottom]})` } : {}),
+    "--msm-cta-accent": ctaAccent,
+  } as CSSProperties;
+
   // Store nav-related data attributes
   const navPointDataAttr = {
     ...(navPointName ? { "data-navpoint-name": navPointName } : {}),
     ...(hideFromNav ? { "data-nav-hidden": "true" } : {}),
   };
 
-  return (
-    <div id={sectionId} {...navPointDataAttr} className={`${containerClassName} `}>
-      <div className="grid z-1 mx-auto container relative font-aspekta">
-        {/* Background grid (optional visual helper) */}
-        <div className={`z-1 py-20 md:py-28 col-span-12 px-[var(--container-padding)] container mx-auto row-start-1 grid-cols-12 ${paddingTopClass}`}>
-          <StaggeredSlideUp {...defaultStaggeredProps}>
-            {hasVisibleText(title) ? <h3 className={titleClass}>{title}</h3> : null}
-            <p className={subtitleClass} style={{ color: pickAccent(subtitle || title || "") }}>
-              {subtitle}
-            </p>
-          </StaggeredSlideUp>
-          {buttonHref && buttonText && (
-            <div className={buttonContainerClass}>
-              <Button2
-                text={buttonText}
-                variant={buttonVariant}
-                href={buttonHref}
-              />
-            </div>
-          )}
-        </div>
+  if (caseLayout) return (
+    <section id={sectionId} {...navPointDataAttr} className={caseStyles.darkSection} style={spacingStyle}>
+      <div className={caseStyles.container}>
+        <CaseSection title={title}>
+          {hasVisibleText(subtitle) && <p className={caseStyles.copy}>{subtitle}</p>}
+          {buttonHref && buttonText && <div data-case-reveal-target><Button2 text={buttonText} variant={buttonVariant} href={buttonHref} /></div>}
+        </CaseSection>
       </div>
-    </div>
+    </section>
+  );
+
+  return (
+    <section id={sectionId} {...navPointDataAttr} className={styles.cta} style={spacingStyle}>
+      <div className={styles.inner}>
+        <EditorialReveal className={styles.ctaInner}>
+          <div className={styles.ctaCopy}>
+            {hasVisibleText(title) && <h3 className={styles.heading}>{title}</h3>}
+            {hasVisibleText(subtitle) && <p>{subtitle}</p>}
+          </div>
+          {buttonHref && buttonText && <div className={styles.ctaAction}>
+            <Button2 text={buttonText} variant={buttonVariant} href={buttonHref} />
+          </div>}
+        </EditorialReveal>
+      </div>
+    </section>
   );
 };
 

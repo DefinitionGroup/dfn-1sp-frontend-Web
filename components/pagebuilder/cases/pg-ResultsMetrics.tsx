@@ -1,4 +1,8 @@
 "use client";
+import { stegaClean } from "@sanity/client/stega";
+import type { ResultMetric } from "@1sp/sanity-types";
+import { MetricNumber } from "@1sp/utils/components/MetricNumber";
+import { hasMetricFormatting } from "@1sp/utils/result-metrics";
 
 import { useEffect } from "react";
 import { motion } from "motion/react";
@@ -21,16 +25,12 @@ interface CloudinaryAsset {
   secure_url?: string;
 }
 
-interface Metric {
-  type: "vertical" | "horizontal" | "posNeg" | "animatedNumber";
-  label: string;
-  value: number;
-  suffix?: string;
-}
+type Metric = ResultMetric;
 
 interface ResultsMetricsProps {
   title: string;
   description?: string;
+  context?: string;
   badgeText?: string;
   badgeSubtitle?: string;
   badgeNumber?: string;
@@ -44,6 +44,7 @@ interface ResultsMetricsProps {
 
 export default function ResultsMetrics({
   title,
+  context,
   description,
   badgeText,
   badgeSubtitle,
@@ -148,6 +149,7 @@ export default function ResultsMetrics({
                     {title}
                   </h2>
                 ) : null}
+                {context && <p className="text-sm text-gray-200">{context}</p>}
                 {description && (
                   <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-xl leading-relaxed">
                     {description}
@@ -166,20 +168,20 @@ export default function ResultsMetrics({
                         key={index}
                         className="flex flex-col items-start pb-6 border-b border-white/15 last:border-b-0 sm:last:border-b sm:border-b"
                       >
-                        {metric.type === "animatedNumber" ? (
+                        {stegaClean(metric.type) === "animatedNumber" ? (
                           <div className="mt-6 sm:mt-8 md:mt-12 mb-3 md:mb-4">
-                            <AnimateNumberinView
+                            {hasMetricFormatting(metric) ? <MetricNumber metric={metric} locale={locale} className="text-[40px] text-gray-100 md:text-[80px]" /> : <AnimateNumberinView
                               number={metric.value}
                               format={{ minimumIntegerDigits: 1 }}
                               suffix={metric.suffix || ""}
                               className="number text-gray-100"
                               delay={300}
-                            />
+                            />}
                           </div>
                         ) : (
                           <>
                             {getDiagramComponent(
-                              metric.type as any,
+                              stegaClean(metric.type) as any,
                               metric.value,
                               0.3 + index * 0.1,
                               index
@@ -217,6 +219,8 @@ export default function ResultsMetrics({
                               {metric.label}
                             </h3>
                           ) : null}
+                          {metric.description && <p className="mt-3 text-base leading-relaxed text-gray-200">{metric.description}</p>}
+                          {metric.context && <p className="mt-2 text-sm text-gray-200">{metric.context}</p>}
                         </StaggeredSlideUp>
                       </div>
                     ))}

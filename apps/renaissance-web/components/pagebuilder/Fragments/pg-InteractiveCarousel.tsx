@@ -1,5 +1,7 @@
 "use client";
 
+import {CarouselTextOverlay} from "./CarouselTextOverlay";
+
 import {
   AnimatePresence,
   motion,
@@ -15,7 +17,12 @@ import {
   getCarouselPosterUrl,
   getCarouselVideoSources,
 } from "@1sp/utils/carousel-media";
-import type { CarouselItem as SanityCarouselItem, CTA } from "@1sp/sanity-types";
+import type {
+  CarouselItem as SanityCarouselItem,
+  CTA,
+  RenaissanceCarouselBackgroundTone,
+} from "@1sp/sanity-types";
+import { localizedPath } from "@renaissance/lib/routes";
 import { assetUrl, ctaToButtonProps } from "@1sp/utils/cloudinary";
 
 interface UIItem {
@@ -31,7 +38,14 @@ interface UIItem {
   linkHref?: string;
 }
 
-function InteractiveCarousel({ items }: { items?: SanityCarouselItem[] }) {
+
+function InteractiveCarousel({
+  items,
+  backgroundTone = "darkGreen",
+}: {
+  items?: SanityCarouselItem[];
+  backgroundTone?: RenaissanceCarouselBackgroundTone;
+}) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
@@ -42,18 +56,18 @@ function InteractiveCarousel({ items }: { items?: SanityCarouselItem[] }) {
 
   const carouselItems: UIItem[] = useMemo(() => {
     const list = (items ?? []).map((item, index) => ({
-      id: String((item as any)?.id ?? index),
+      id: String(item.id ?? index),
       title: item.title || "",
-      subtitle: item.subtitle || (item as any)?.category || "",
-      image: getCarouselImageUrl(assetUrl((item as any)?.image)) || "",
-      video: assetUrl((item as any)?.video) || undefined,
-      description: (item as any)?.description || "",
-      category: (item as any)?.category || undefined,
+      subtitle: item.subtitle || item.category || "",
+      image: getCarouselImageUrl(assetUrl(item.image)) || "",
+      video: assetUrl(item.video) || undefined,
+      description: item.description || "",
+      category: item.category || undefined,
       logosrc: getCarouselLogoUrl(
-        assetUrl((item as any)?.logoSrc || (item as any)?.logo),
+        assetUrl(item.logoSrc || item.logo),
       ),
-      cta: (item as any)?.cta,
-      linkHref: (item as any)?.linkHref || undefined,
+      cta: item.cta,
+      linkHref: item.linkHref || undefined,
     }));
 
     return list.filter((item) => Boolean(item.image || item.video));
@@ -109,8 +123,10 @@ function InteractiveCarousel({ items }: { items?: SanityCarouselItem[] }) {
   const active = carouselItems[currentIndex];
   const activeButton = ctaToButtonProps(active.cta);
   const activeVideoSources = getCarouselVideoSources(active.video);
-  const activePosterUrl = getCarouselPosterUrl(active.video);
+  const activePosterUrl = active.image || getCarouselPosterUrl(active.video);
   const duration = reduceMotion ? 0.01 : 0.72;
+  const backgroundClass =
+    backgroundTone === "light" ? "bg-renaissance-paper" : "bg-renaissance-ink";
   const slideVariants = {
     enter: (slideDirection: number) => ({
       clipPath:
@@ -130,14 +146,15 @@ function InteractiveCarousel({ items }: { items?: SanityCarouselItem[] }) {
       ref={sectionRef}
       aria-roledescription="carousel"
       aria-label="Renaissance stories"
-      className="relative bg-renaissance-ink py-3 text-white sm:py-5"
+      className={`relative py-3 text-white sm:py-5 ${backgroundClass}`}
+      data-carousel-background={backgroundTone}
       onMouseEnter={() => setIsAutoPlaying(false)}
       onMouseLeave={() => setIsAutoPlaying(true)}
       onFocusCapture={() => setIsAutoPlaying(false)}
       onBlurCapture={() => setIsAutoPlaying(true)}
     >
-      <div className="container relative mx-auto">
-        <div className="relative min-h-[34rem] overflow-hidden rounded-media sm:min-h-[42rem] lg:min-h-[48rem]">
+      <div className="relative mx-auto w-full max-w-[1680px]">
+        <div className="relative min-h-[34rem] overflow-hidden rounded-media border-b-[3px] border-renaissance-signal sm:min-h-[42rem] lg:min-h-[48rem]">
           <AnimatePresence initial={false} custom={direction} mode="popLayout">
             <motion.article
               key={active.id}
@@ -153,7 +170,7 @@ function InteractiveCarousel({ items }: { items?: SanityCarouselItem[] }) {
               onDragEnd={handleDragEnd}
               className="absolute inset-0 cursor-grab bg-renaissance-mist active:cursor-grabbing"
             >
-              {active.video && shouldLoadVideo(currentIndex) ? (
+              {active.video && !reduceMotion && shouldLoadVideo(currentIndex) ? (
                 <motion.video
                   poster={activePosterUrl}
                   className="absolute inset-0 h-full w-full object-cover"
@@ -186,53 +203,83 @@ function InteractiveCarousel({ items }: { items?: SanityCarouselItem[] }) {
                 />
               )}
 
-              <div className="pointer-events-none absolute -left-[8%] top-[16%] h-8 w-[62%] -rotate-[14deg] bg-renaissance-teal/75 blur-[1px] sm:h-12" />
+              <CarouselTextOverlay />
 
-              <div className="absolute inset-x-0 bottom-0 grid gap-5 p-6 sm:p-9 lg:grid-cols-[minmax(0,1.25fr)_minmax(18rem,0.75fr)] lg:items-end lg:p-12">
-                <motion.div
-                  initial={{ opacity: 0, y: reduceMotion ? 0 : 22 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: reduceMotion ? 0 : 0.24, duration: 0.5 }}
-                >
-                  <p className="eyebrow-mono mb-3 tracking-[0.04em] text-white">
-                    Story {String(currentIndex + 1).padStart(2, "0")} · {active.subtitle || "Campaign"}
-                  </p>
-                  <h3 className="max-w-5xl text-[clamp(2.75rem,8vw,7.5rem)] font-semibold leading-[0.84] tracking-[-0.055em] text-white">
-                    {active.title}
-                  </h3>
-                </motion.div>
 
-                <motion.div
-                  className="border-t border-white/35 pt-5"
-                  initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: reduceMotion ? 0 : 0.38, duration: 0.45 }}
-                >
-                  {active.description ? (
-                    <p className="max-w-xl text-sm leading-relaxed text-white/84 sm:text-base">
-                      {active.description}
+              <div className="absolute inset-x-0 bottom-0 z-10 p-6 pb-16 sm:p-9 sm:pb-16 lg:p-12 lg:pb-16">
+                <div className="max-w-[42rem]">
+                  <motion.div
+                    initial={{ opacity: 0, y: reduceMotion ? 0 : 22 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: reduceMotion ? 0 : 0.24, duration: 0.5 }}
+                  >
+                    <p className="eyebrow-mono mb-3 tracking-[0.04em] text-white">
+                      Story {String(currentIndex + 1).padStart(2, "0")} ·{" "}
+                      {active.subtitle || "Campaign"}
                     </p>
-                  ) : null}
-                  {activeButton ? (
-                    <div className="mt-5">
-                      <Button2 {...activeButton} />
-                    </div>
-                  ) : active.linkHref ? (
-                    <div className="mt-5">
-                      <Button2
-                        variant="violetsmall"
-                        href={active.linkHref}
-                        text="View case study"
-                      />
-                    </div>
-                  ) : null}
-                </motion.div>
+                    <h3 className="max-w-5xl text-[clamp(2.75rem,8vw,7.5rem)] font-semibold leading-[0.84] tracking-[-0.055em] text-white">
+                      {active.title}
+                    </h3>
+                  </motion.div>
+
+                  <motion.div
+                    className="mt-5 max-w-lg border-t border-white/35 pt-5"
+                    initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: reduceMotion ? 0 : 0.38, duration: 0.45 }}
+                  >
+                    {active.description ? (
+                      <p className="max-w-xl text-sm leading-relaxed text-white/84 sm:text-base">
+                        {active.description}
+                      </p>
+                    ) : null}
+                    {activeButton ? (
+                      <div className="mt-5">
+                        <Button2 {...activeButton} href={localizedPath(activeButton.href)} />
+                      </div>
+                    ) : active.linkHref ? (
+                      <div className="mt-5">
+                        <Button2
+                          variant="violetsmall"
+                          href={active.linkHref}
+                          text="View case study"
+                        />
+                      </div>
+                    ) : null}
+                  </motion.div>
+
+                  <div className="mt-4 inline-flex absolute bottom-0 left-12 items-center gap-2 px-4 py-2 rounded-t-[12px] overflow-hidden bg-renaissance-signal">
+                    <span className="mr-2 font-mono text-xxs font-semibold -tracking-[0.04em] text-renaissance-ink">
+                      {String(currentIndex + 1).padStart(2, "0")} / {String(carouselItems.length).padStart(2, "0")}
+                    </span>
+                    {carouselItems.length > 1 ? (
+                      <>
+                        <button
+                          type="button"
+                          aria-label="Previous story"
+                          className="grid h-6 w-6 place-items-center hover:cursor-pointer  justify-center rounded-control border border-renaissance-ink text-renaissance-ink transition-colors hover:text-white hover:bg-renaissance-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                          onClick={() => paginate(-1)}
+                        >
+                          <span className="-mt-0.5" aria-hidden="true">←</span>
+                        </button>
+                        <button
+                          type="button"
+                          aria-label="Next story"
+                          className="grid h-6 w-6 place-items-center hover:cursor-pointer rounded-control border border-renaissance-ink text-renaissance-ink transition-colors hover:text-white hover:bg-renaissance-ink  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                          onClick={() => paginate(1)}
+                        >
+                          <span className="-mt-0.5"  aria-hidden="true">→</span>
+                        </button>
+                      </>
+                    ) : null}
+                  </div>
+                </div>
               </div>
             </motion.article>
           </AnimatePresence>
 
           {carouselItems.map((item, index) =>
-            item.video && preloadedVideos.has(index) && index !== currentIndex ? (
+            item.video && !reduceMotion && preloadedVideos.has(index) && index !== currentIndex ? (
               <video
                 key={`preload-${index}`}
                 preload="metadata"
@@ -252,31 +299,6 @@ function InteractiveCarousel({ items }: { items?: SanityCarouselItem[] }) {
             ) : null,
           )}
 
-          <div className="absolute right-5 top-5 z-20 flex items-center gap-2 sm:right-8 sm:top-8">
-            <span className="mr-2 font-mono text-xs font-semibold tracking-[0.14em] text-white">
-              {String(currentIndex + 1).padStart(2, "0")} / {String(carouselItems.length).padStart(2, "0")}
-            </span>
-            {carouselItems.length > 1 ? (
-              <>
-                <button
-                  type="button"
-                  aria-label="Previous story"
-                  className="grid h-11 w-11 place-items-center rounded-control border border-white/55 bg-renaissance-ink/40 text-white transition-colors hover:bg-white hover:text-renaissance-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                  onClick={() => paginate(-1)}
-                >
-                  <span aria-hidden="true">←</span>
-                </button>
-                <button
-                  type="button"
-                  aria-label="Next story"
-                  className="grid h-11 w-11 place-items-center rounded-control border border-white/55 bg-renaissance-ink/40 text-white transition-colors hover:bg-white hover:text-renaissance-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                  onClick={() => paginate(1)}
-                >
-                  <span aria-hidden="true">→</span>
-                </button>
-              </>
-            ) : null}
-          </div>
         </div>
       </div>
     </section>

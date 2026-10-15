@@ -55,8 +55,8 @@ const StaggeredFadeIn: React.FC<StaggeredFadeInProps> = ({
     hidden: {},
     visible: {
       transition: {
-        staggerChildren: staggerDelay,
-        delayChildren: delay,
+        staggerChildren: prefersReducedMotion ? 0 : staggerDelay,
+        delayChildren: prefersReducedMotion ? 0 : delay,
       },
     },
   };

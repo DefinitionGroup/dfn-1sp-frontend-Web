@@ -29,6 +29,7 @@
  * | `cases` | All case study content |
  * | `case:${slug}` | Specific case study |
  * | `services` | All services |
+ * | `msmUnits` | MSM Unit overview, detail pages, and reverse Case attribution |
  *
  * ## Performance Optimization (January 2026)
  *
@@ -261,6 +262,23 @@ async function handleRevalidation(body: SanityWebhookBody) {
             revalidatedTags.push("units");
             break;
 
+        case "msmUnit":
+            // MSM Units own Case and Person relationships, so one edit affects
+            // Unit pages, the overview, and reverse attribution on Case views.
+            revalidateTag("msmUnits", "max");
+            revalidateTag("cases", "max");
+            revalidateTag("pages", "max");
+            revalidatedTags.push("msmUnits", "cases", "pages");
+
+            pushPath("/units");
+            pushPath("/cases");
+            if (slug?.current) {
+                revalidateTag(`msmUnit:${slug.current}`, "max");
+                revalidatedTags.push(`msmUnit:${slug.current}`);
+                pushPath(`/units/${slug.current}`);
+            }
+            break;
+
         case "client":
             // Clients are referenced in case studies
             revalidateTag("cases", "max");
@@ -273,6 +291,22 @@ async function handleRevalidation(body: SanityWebhookBody) {
             revalidatedTags.push("pages");
 
             pushPath("/", "layout");
+    }
+
+    if (["page", "caseStudy", "person", "msmUnit", "translation.metadata"].includes(_type)) {
+        revalidateTag("msm-seo", "max");
+        revalidatedTags.push("msm-seo");
+        pushPath("/sitemap.xml");
+    }
+
+    // Published reads stay cached until this webhook runs (the timer in
+    // `cache-policy.ts` is only a fallback), so every publish expires the
+    // whole site through the root layout's implicit tag. That also covers
+    // references and fetch tags the switch above does not know. Pages
+    // rebuild on their next visit, so a burst of publishes costs at most one
+    // rebuild per visited page.
+    if (!revalidatedPaths.includes("/ (layout)")) {
+        pushPath("/", "layout");
     }
 
     // Log what was revalidated for debugging

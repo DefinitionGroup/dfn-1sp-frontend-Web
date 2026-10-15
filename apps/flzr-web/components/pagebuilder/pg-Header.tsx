@@ -45,7 +45,7 @@ function highlightInline(text: string, highlight?: string): React.ReactNode {
   return (
     <>
       {before}
-      <span className="bg-gradient-to-r from-violet-300 to-violet-500 bg-clip-text text-transparent font-bold">
+      <span className="font-bold text-white">
         {matched}
       </span>
       {after}
@@ -65,20 +65,21 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     ctaHref = `/${locale}${ctaHref}`;
   }
   const ctaText = step.cta?.text;
+  const ctaVariant = step.cta?.variant || "ghostDark";
   const mediaUrl = assetUrl(step.media as CloudinaryAsset | undefined);
   const useVideo = isVideoUrl(mediaUrl);
 
-  const eyebrow = step.eyebrow ?? "Welcome at 1SP";
+  const copyBottomLeft = step.copyBottomLeft === true;
+  const showEyebrow = step.showEyebrow === true;
+  const eyebrow = step.eyebrow?.trim() ?? "";
   const seoTitle = step.seoTitle?.trim();
   const headline = step.headline?.trim() ?? "";
+  const hasLongCopy = headline.length > 90;
   const headlineMode = step.headlineMode ?? "typewriter";
   const useHeadlineReveal =
     headlineMode === "headlineReveal" && hasVisibleText(headline);
   const words = Array.isArray(step.rotatingText) ? step.rotatingText : [];
   const paragraphs = (step.paragraphs ?? []) as PortableTextBlock[];
-  const mobileParagraphs = (step.mobileParagraphs ?? []) as PortableTextBlock[];
-  const mobileParagraphsToRender =
-    mobileParagraphs.length > 0 ? mobileParagraphs : paragraphs;
   const highlight = step.highlight;
   const navPointName = step.navPointName;
   const hideFromNav = (step as any).hideFromNav ?? false;
@@ -101,14 +102,16 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   };
   const paragraphSizeClass = isIphoneLandscape
     ? "text-xs"
+    : hasLongCopy
+      ? "text-base sm:text-lg lg:text-xl"
     : useHeadlineReveal
-      ? "text-2xl"
+      ? "text-base md:text-2xl"
       : "text-base";
 
   const portableTextComponents = {
     block: {
       normal: ({ children }: { children?: React.ReactNode }) => (
-        <p className={`text-balance text-neutral-50 ${paragraphSizeClass} max-w-[38em]`}>
+        <p className={`text-balance text-neutral-50 ${paragraphSizeClass} max-w-[48ch]`}>
           {children}
         </p>
       ),
@@ -135,13 +138,13 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           // If highlight matched, render the highlighted version
           if (highlighted !== plainText) {
             return (
-              <p className={`text-balance text-neutral-500 ${paragraphSizeClass} max-w-[38em]`}>
+              <p className={`text-balance text-neutral-500 ${paragraphSizeClass} max-w-[48ch]`}>
                 {highlighted}
               </p>
             );
           }
           return (
-            <p className={`text-balance text-neutral-500 ${paragraphSizeClass} max-w-[38em]`}>
+            <p className={`text-balance text-neutral-500 ${paragraphSizeClass} max-w-[48ch]`}>
               {children}
             </p>
           );
@@ -150,8 +153,8 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     }
     : portableTextComponents;
 
-  const eyebrowContent = hasVisibleText(eyebrow) ? (
-    <h3 className="text-xs font-book flex items-center justify-center gap-2 text-neutral-50 pb-2">
+  const eyebrowContent = showEyebrow && hasVisibleText(eyebrow) ? (
+    <h3 className={`text-xs font-book flex items-center gap-2 text-neutral-50 pb-2 ${copyBottomLeft ? "justify-start" : "justify-center"}`}>
       <span className="status-dot self-start mt-1.5" aria-hidden="true" />
       {eyebrow}
     </h3>
@@ -160,7 +163,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
   const supportingContent = (
     <>
       {paragraphs.length > 0 && (
-        <div className="hidden md:flex iphone-landscape:!hidden flex-col items-center space-y-4 text-neutral-50 pt-8">
+        <div className={`flex flex-col space-y-4 text-neutral-50 ${copyBottomLeft ? "items-start" : "items-center"}`}>
           <PortableText
             value={paragraphs}
             components={portableTextComponentsWithHighlight}
@@ -168,18 +171,13 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
         </div>
       )}
 
-      {mobileParagraphsToRender.length > 0 && (
-        <div className="flex md:hidden iphone-landscape:!flex flex-col items-center space-y-4 text-neutral-50 pt-8">
-          <PortableText
-            value={mobileParagraphsToRender}
-            components={portableTextComponentsWithHighlight}
-          />
-        </div>
-      )}
-
       {ctaHref && ctaText && (
         <div className="pt-6">
-          <Button2 text={ctaText} href={ctaHref} className="min-w-[140px]" />
+          <Button2
+            text={ctaText}
+            href={ctaHref}
+            variant={ctaVariant as any}
+          />
         </div>
       )}
     </>
@@ -189,27 +187,28 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="relative min-h-[80vh] h-[95vh] iphone-landscape:!h-dvh  overflow-hidden z-1"
+      className={`flzr-home-hero ${hasLongCopy ? "flzr-home-hero--long" : "iphone-landscape:!h-dvh"} relative z-1 mx-auto w-full max-w-[1680px] overflow-hidden`}
     >
       {!useHeadlineReveal && seoTitle && <h1 className="sr-only">{seoTitle}</h1>}
 
       {/* Background media */}
       {mediaUrl && (
         <HeroVideoComp
+          showColorOverlay={step.showColorOverlay !== false}
+          mediaDarkening={step.mediaDarkening}
           useVideo={useVideo}
           videoSrc={useVideo ? mediaUrl : undefined}
           imageSrc={!useVideo ? mediaUrl : undefined}
         />
       )}
 
-      {/* Foreground content — matches the wider media frame
-          so the type never escapes the rounded video, centered like the frame */}
-      <div className="absolute inset-x-0 bottom-24 z-10 mx-auto w-[calc(100%-2rem)] max-w-[1680px] iphone-landscape:bottom-8 iphone-landscape:mt-[50vh] sm:w-[calc(100%-3rem)] md:relative md:mt-[45vh] lg:w-[calc(100%-4rem)]">
+      {/* Keep the copy within the media frame in either placement. */}
+      <div className={`${hasLongCopy ? "relative min-h-[inherit] pt-28" : "absolute inset-0 pt-12"} z-10 flex w-full ${copyBottomLeft ? "items-end justify-start pb-6 md:pb-8" : "items-center justify-center"}`}>
         {useHeadlineReveal ? (
-          <div className="px-8 md:px-16 flex flex-col items-center text-center">
+          <div className={`flex flex-col ${copyBottomLeft ? "w-full max-w-[64rem] px-6 md:px-8 items-start text-left" : "px-8 md:px-16 items-center text-center"}`}>
             {eyebrowContent && (
               <StaggeredSlideUp
-                className="flex flex-col items-center"
+                className={`flex flex-col ${copyBottomLeft ? "items-start" : "items-center"}`}
                 delay={0.2}
                 duration={0.45}
                 distance={14}
@@ -221,10 +220,17 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
               </StaggeredSlideUp>
             )}
 
-            <AnimatedEditorialHeadline text={headline} delay={0.35} />
+            <AnimatedEditorialHeadline
+              text={headline}
+              compact={hasLongCopy}
+              delay={0.35}
+              tone="white"
+              highlighted={step.headlineBackground !== false}
+              align={copyBottomLeft ? "left" : "center"}
+            />
 
             <StaggeredSlideUp
-              className="flex flex-col items-center"
+              className={`flex flex-col ${copyBottomLeft ? "items-start" : "items-center"}`}
               delay={0.65}
               staggerDelay={0.08}
               duration={0.5}
@@ -238,7 +244,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           </div>
         ) : (
           <StaggeredSlideUp
-            className="px-8 md:px-16 space-y-1 flex flex-col items-center text-center"
+            className={`space-y-1 flex flex-col ${copyBottomLeft ? "w-full max-w-[64rem] px-6 md:px-8 items-start text-left" : "px-8 md:px-16 items-center text-center"}`}
             delay={1}
             staggerDelay={0.08}
             duration={0.5}
@@ -250,7 +256,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           >
             {eyebrowContent}
             {words.length > 0 && (
-              <TypewriterRotator text={words} align="center" />
+              <TypewriterRotator text={words} align={copyBottomLeft ? "left" : "center"} />
             )}
             {supportingContent}
           </StaggeredSlideUp>

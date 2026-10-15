@@ -1,0 +1,25 @@
+previous_path,current_path,reason
+MEMORY.md,docs/archived/platform/project-memory-2026-07.md,July operational snapshot superseded by whole-project handoff
+deploymentplan.md,docs/archived/platform/test-deployment-plan-2026-07.md,Historical July test rollout and evidence; provider state must be refreshed
+docs/HANDOFF.md,docs/SERVICE_CONTENT_HANDOFF.md,Preserve service-only handoff separately from whole-project entry point
+docs/VERCEL_DEPLOYMENT.md,docs/archived/guides/VERCEL_DEPLOYMENT.md,Redundant compatibility pointer to maintained DEPLOYMENT.md
+docs/VERCEL_DEPLOYMENTS.md,docs/archived/guides/VERCEL_DEPLOYMENTS.md,Redundant compatibility pointer to maintained DEPLOYMENT.md
+docs/archive/README.md,docs/archived/README.md,Existing historical archive relocated to requested docs/archived folder
+docs/archive/audits/AUDIT-2026-07-channel-cache-mode.md,docs/archived/audits/AUDIT-2026-07-channel-cache-mode.md,Existing historical archive relocated to requested docs/archived folder
+docs/archive/audits/CLEANUP-COMPONENTS.md,docs/archived/audits/CLEANUP-COMPONENTS.md,Existing historical archive relocated to requested docs/archived folder
+docs/archive/audits/MSM_NAV_GLASS.md,docs/archived/audits/MSM_NAV_GLASS.md,Existing historical archive relocated to requested docs/archived folder
+docs/archive/audits/PERFORMANCE_PLAN.md,docs/archived/audits/PERFORMANCE_PLAN.md,Existing historical archive relocated to requested docs/archived folder
+docs/archive/audits/REFACTOR.MD,docs/archived/audits/REFACTOR.MD,Existing historical archive relocated to requested docs/archived folder
+docs/archive/audits/UNUSED.md,docs/archived/audits/UNUSED.md,Existing historical archive relocated to requested docs/archived folder
+docs/archive/audits/UpdatedStaggerAnimation.md,docs/archived/audits/UpdatedStaggerAnimation.md,Existing historical archive relocated to requested docs/archived folder
+docs/archive/audits/renaissance-design-audit-2026-08-11.md,docs/archived/audits/renaissance-design-audit-2026-08-11.md,Existing historical archive relocated to requested docs/archived folder
+docs/archive/guides/Components.MD,docs/archived/guides/Components.MD,Existing historical archive relocated to requested docs/archived folder
+docs/archive/guides/pagebuilder-guide-original.md,docs/archived/guides/pagebuilder-guide-original.md,Existing historical archive relocated to requested docs/archived folder
+docs/archive/guides/worktree-guide-original.md,docs/archived/guides/worktree-guide-original.md,Existing historical archive relocated to requested docs/archived folder
+docs/archive/platform/HANDOFF.md,docs/archived/platform/HANDOFF.md,Existing historical archive relocated to requested docs/archived folder
+docs/archive/platform/MSM_LAUNCH.md,docs/archived/platform/MSM_LAUNCH.md,Existing historical archive relocated to requested docs/archived folder
+docs/archive/platform/MULTI_SITE.md,docs/archived/platform/MULTI_SITE.md,Existing historical archive relocated to requested docs/archived folder
+docs/archive/platform/TODO.MD,docs/archived/platform/TODO.MD,Existing historical archive relocated to requested docs/archived folder
+docs/archive/platform/multisite-platform-plan.md,docs/archived/platform/multisite-platform-plan.md,Existing historical archive relocated to requested docs/archived folder
+docs/templates/new-multisite-project-sanity-v5.md,docs/archived/templates/new-multisite-project-sanity-v5.md,Obsolete version-specific template; repository declares Sanity 6
+migrations/unify-page-content/RUNBOOK.md,docs/archived/migrations/unify-page-content-runbook.md,Completed page storage migration; preserve recovery history

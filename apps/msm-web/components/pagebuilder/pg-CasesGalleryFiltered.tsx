@@ -91,6 +91,8 @@ function CasesGalleryFiltered({
       ? filterAllText
       : serviceMap.get(activeFilter)?.name || activeFilter;
 
+  // pb-0 on the grid wins over this py-* shorthand: top padding stays, the
+  // grid closes flush at the bottom.
   const paddingClass = `py-${paddingY}`;
   const marginClass = `mb-${marginBottom}`;
 
@@ -101,7 +103,7 @@ function CasesGalleryFiltered({
       className={`grid grid-cols-12 z-1 mx-auto  container ${marginClass} relative font-aspekta`}
     >
       <div
-        className={`z-1 grid gap-responsive col-span-12 ${paddingClass} col-start-1 container row-start-1 grid-cols-12`}
+        className={`z-1 grid gap-responsive col-span-12 ${paddingClass} pb-0 col-start-1 container row-start-1 grid-cols-12`}
       >
         <div className="z-1 col-span-12 col-start-1 px-4 md:px-0">
           {/* Filter Buttons */}

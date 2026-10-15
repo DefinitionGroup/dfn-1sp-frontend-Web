@@ -7,7 +7,25 @@ import { motion, useInView, useReducedMotion } from "motion/react";
 const DISCLOSURE_TEXT = "This website includes AI-generated content.";
 const STAGE_DURATION = 0.2;
 
-export default function AiContentDisclosure() {
+type AiContentDisclosureProps = {
+  /** "dark" sits on dark surfaces such as the MSM footer. */
+  tone?: "light" | "dark";
+};
+
+const toneClassNames = {
+  light: {
+    root: "text-neutral-950",
+    surface: "bg-white/80 shadow-[0_1px_12px_rgba(0,0,0,0.08)]",
+  },
+  dark: {
+    root: "text-white/70",
+    surface: "border border-white/10 bg-white/[0.04]",
+  },
+} as const;
+
+export default function AiContentDisclosure({
+  tone = "light",
+}: AiContentDisclosureProps) {
   const disclosureRef = useRef<HTMLElement>(null);
   const isInView = useInView(disclosureRef, { amount: 0.5, once: true });
   const shouldReduceMotion = useReducedMotion();
@@ -26,7 +44,7 @@ export default function AiContentDisclosure() {
       ref={disclosureRef}
       role="note"
       aria-hidden={!isInView}
-      className="pointer-events-none relative flex max-w-[11rem] shrink-0 items-center gap-2 px-2 py-1.5 font-aspekta text-neutral-950"
+      className={`pointer-events-none relative flex max-w-[11rem] shrink-0 items-center gap-2 px-2 py-1.5 font-aspekta ${toneClassNames[tone].root}`}
     >
       <motion.div
         aria-hidden="true"
@@ -37,7 +55,7 @@ export default function AiContentDisclosure() {
             : { opacity: 0, transform: "scaleX(0)" }
         }
         transition={transitionFor(0)}
-        className="absolute inset-0 rounded-full bg-white/80 shadow-[0_1px_12px_rgba(0,0,0,0.08)] backdrop-blur-md"
+        className={`absolute inset-0 rounded-full backdrop-blur-md ${toneClassNames[tone].surface}`}
         style={{ transformOrigin: "center" }}
       />
 

@@ -30,10 +30,12 @@
  */
 
 import { cache } from "react";
+import { stegaClean } from "@sanity/client/stega";
 import { sanityFetch } from "./fetch";
 import { defineQuery } from "next-sanity";
 import { getChannelFromEnv } from "@1sp/site-config";
 import type { NavbarMenu } from "@1sp/sanity-types/menu";
+import type { FooterExternalBannerData, FooterExternalBannerUnit } from "@1sp/sanity-types";
 
 const INTERACTIVE_CAROUSEL_FIELD_MAP = {
   "1spWeb": "connectedDataCarouselPromo1SP",
@@ -123,13 +125,14 @@ const GLOBAL_DATA_QUERY = defineQuery(/* groq */ `{
     ),
     menuItems[]{
       _key,
-      "slug": page->slug.current,
-      "title": page->title,
+      "slug": coalesce(route, page->slug.current),
+      "title": coalesce(page->title, displayName),
       displayName
     }
   },
   "footer": *[_type == "menu" && menuType == "Footer" && channel == $channel && language == $language][0]{
     _id,
+    footerExternalBanner{..., cta{..., link{..., page->{slug}}}},
     menuType,
     imageCloud,
     addressTitle,
@@ -141,11 +144,15 @@ const GLOBAL_DATA_QUERY = defineQuery(/* groq */ `{
     footerColumns[]{
       _key,
       title,
+      source,
+      limit,
       links[]{
         _key,
         linkType,
         isCaseLink,
         "slug": page->slug.current,
+        "isHomepage": page->isHomepage,
+        "pageChannel": page->channel,
         "case": case->{ "slug": slug },
         externalUrl,
         displayName
@@ -157,7 +164,8 @@ const GLOBAL_DATA_QUERY = defineQuery(/* groq */ `{
       name,
       url
     },
-    copyright
+    copyright,
+    renaissanceLegalText
   },
   "hasCaseStudies": count(*[_type == "caseStudy" && $channel in channel && language == $language && isPublished == true]) > 0,
   "hasServices": count(*[_type == "services" && language == $language]) > 0
@@ -181,6 +189,7 @@ const LOCALIZED_NAVIGATION_QUERY = defineQuery(/* groq */ `{
     ),
     menuItems[]{
       _key,
+      route,
       displayName,
       "page": page->{
         _id,
@@ -209,6 +218,7 @@ const LOCALIZED_NAVIGATION_QUERY = defineQuery(/* groq */ `{
     ),
     menuItems[]{
       _key,
+      route,
       displayName,
       "page": page->{
         _id,
@@ -265,6 +275,7 @@ export interface GlobalData {
     }>;
   } | null;
   footer: {
+    footerExternalBanner?: FooterExternalBannerData | null;
     _id: string;
     menuType: string;
     imageCloud: unknown;
@@ -277,11 +288,15 @@ export interface GlobalData {
     footerColumns: Array<{
       _key: string;
       title: string;
+      source: "manual" | "cases" | "services" | "pages" | null;
+      limit: number | null;
       links: Array<{
         _key: string;
         linkType: string;
         isCaseLink: boolean;
         slug: string | null;
+        isHomepage: boolean | null;
+        pageChannel: string | null;
         case: { slug: { current: string } } | null;
         externalUrl: string | null;
         displayName: string;
@@ -311,6 +326,7 @@ type NavigationMenu = Omit<NavbarMenu, "menuItems"> & {
   menuItems?: Array<{
     _key: string;
     displayName?: string | null;
+    route?: string | null;
     page?: NavigationPage | null;
   }>;
 };
@@ -396,7 +412,7 @@ export const getLocalizedNavigation = cache(
 
     const resolvePage = (page?: NavigationPage | null) => {
       if (!page?._id) return null;
-      if (page.language === language && page.channel === channel) return page;
+      if (stegaClean(page.language) === language && stegaClean(page.channel) === channel) return page;
 
       const family = families.find((candidate) =>
         candidate.translations?.some(
@@ -409,7 +425,7 @@ export const getLocalizedNavigation = cache(
           ?.map((translation) => translation.value)
           .find(
             (candidate) =>
-              candidate?.language === language && candidate.channel === channel,
+              stegaClean(candidate?.language) === language && stegaClean(candidate?.channel) === channel,
           ) ?? null
       );
     };
@@ -423,8 +439,20 @@ export const getLocalizedNavigation = cache(
           logoUrl: baseMenu.logoUrl,
           oneSpMembershipLabel: baseMenu.oneSpMembershipLabel,
           menuItems: (baseMenu.menuItems ?? []).flatMap((item) => {
+            const route = stegaClean(item.route)?.replace(/^\/+|\/+$/g, "");
+            if (route) {
+              return [
+                {
+                  _key: item._key,
+                  slug: route,
+                  title: item.displayName ?? route,
+                  displayName: item.displayName ?? undefined,
+                },
+              ];
+            }
+
             const page = resolvePage(item.page);
-            const slug = page?.slug?.current;
+            const slug = stegaClean(page?.slug?.current);
             if (!page || !slug) return [];
 
             return [
@@ -433,7 +461,7 @@ export const getLocalizedNavigation = cache(
                 slug,
                 title: page.title ?? undefined,
                 displayName:
-                  usesSourceMenu || item.page?.language !== language
+                  usesSourceMenu || stegaClean(item.page?.language) !== language
                     ? undefined
                     : (item.displayName ?? undefined),
               },
@@ -446,7 +474,7 @@ export const getLocalizedNavigation = cache(
       menu,
       availableLocales: Array.from(
         new Set(
-          (result.availableLocales ?? []).filter((locale): locale is string =>
+          stegaClean(result.availableLocales ?? []).filter((locale): locale is string =>
             Boolean(locale),
           ),
         ),
@@ -540,6 +568,64 @@ export const getAllCases = cache(async (channel: string, language: string) => {
   return data || [];
 });
 
+/** One page of Renaissance X posts, newest first. `page` is 1-based. */
+export const getRenaissanceXPosts = cache(async (page: number, pageSize: number) => {
+  const { X_POSTS_PAGE_QUERY } = await import("./groq");
+  const start = (page - 1) * pageSize;
+  const { data } = await sanityFetch({
+    query: X_POSTS_PAGE_QUERY,
+    params: { start, end: start + pageSize },
+    tags: ["xPosts"],
+  });
+  return { posts: data?.posts ?? [], total: data?.total ?? 0 };
+});
+
+/** Fetch all active MSM Units in editorial order. */
+export const getMsmUnits = cache(async (language: string) => {
+  const { MSM_UNITS_QUERY } = await import("./groq");
+  const { data } = await sanityFetch({
+    query: MSM_UNITS_QUERY,
+    params: { language },
+    tags: ["msmUnits"],
+  });
+  return data || [];
+});
+
+/** Fetch an ordered manual subset of MSM Units. */
+export const getMsmUnitsByIds = cache(async (ids: string[], language: string) => {
+  if (ids.length === 0) return [];
+  const { MSM_UNITS_BY_IDS_QUERY } = await import("./groq");
+  const { data } = await sanityFetch({
+    query: MSM_UNITS_BY_IDS_QUERY,
+    params: { ids, language },
+    tags: ["msmUnits"],
+  });
+  const units = data || [];
+  return ids.map((id) => units.find((unit: { _id: string }) => unit._id === id)).filter(Boolean);
+});
+
+/** Fetch one active MSM Unit with its Unit-owned relationships. */
+export const getMsmUnitBySlug = cache(async (slug: string, language: string) => {
+  const { MSM_UNIT_BY_SLUG_QUERY } = await import("./groq");
+  const { data } = await sanityFetch({
+    query: MSM_UNIT_BY_SLUG_QUERY,
+    params: { slug, language },
+    tags: ["msmUnits", `msmUnit:${slug}`],
+  });
+  return data;
+});
+
+/** Fetch Unit route params and sitemap dates across locales. */
+export const getAllMsmUnitSlugs = cache(async () => {
+  const { MSM_UNIT_SLUGS_QUERY } = await import("./groq");
+  const { data } = await sanityFetch({
+    query: MSM_UNIT_SLUGS_QUERY,
+    params: {},
+    tags: ["msmUnits"],
+  });
+  return data || [];
+});
+
 /**
  * Fetch all services.
  *
@@ -606,13 +692,14 @@ export const getServicesForChannel = cache(
 );
 
 export const getSmartPeople = cache(
-  async (channel: string, maxItems: number) => {
+  async (channel: string, maxItems: number, language = "en") => {
     const { SMART_PEOPLE_QUERY } = await import("./groq");
 
     const { data } = await sanityFetch({
       query: SMART_PEOPLE_QUERY,
       params: {
         channel,
+        language,
         // GROQ [0...$maxItems] is exclusive, so pass the count as-is —
         // subtracting 1 here returned one fewer person than requested.
         maxItems: Math.max(0, maxItems),
@@ -667,6 +754,20 @@ export const getUnitLogoGridUnits = cache(
       tags: ["units"],
     });
 
+    return data || [];
+  },
+);
+
+// Legacy unassigned units belong to the original 1SP catalog only.
+// Explicit assignments and language always take precedence; no item limit.
+export const getFooterExternalBannerUnits = cache(
+  async (channel: string, language: string): Promise<FooterExternalBannerUnit[]> => {
+    const { FOOTER_EXTERNAL_BANNER_UNITS_QUERY } = await import("./groq");
+    const { data } = await sanityFetch({
+      query: FOOTER_EXTERNAL_BANNER_UNITS_QUERY,
+      params: { channel, language },
+      tags: ["units"],
+    });
     return data || [];
   },
 );
@@ -898,3 +999,8 @@ export const getAllPageSitemapSlugs = cache(
     );
   },
 );
+
+export const getRenaissanceEnquiryEmail = cache(async (language = "en"): Promise<string | null> => {
+  const {data} = await sanityFetch({query: defineQuery(`*[_type == "siteSettings" && channel == "renaissanceWeb" && language == $language][0].renaissanceEnquiryEmail`), params: {language}});
+  return typeof data === "string" ? data : null;
+});

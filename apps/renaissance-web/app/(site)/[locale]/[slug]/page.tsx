@@ -25,6 +25,7 @@
 import RenaissancePageBuilder from "@renaissance/components/RenaissancePageBuilder";
 // import CookieDeclaration from "@/components/CookieDeclaration";
 import { getAllCases, getAllPageSlugs, getAllServicesForChannel, getPageBySlug } from "@1sp/sanity-queries";
+import { notFound } from "next/navigation";
 import NotFound from "@renaissance/components/ui/not-found";
 import RenaissanceSiteWrapper from "@renaissance/components/RenaissanceSiteWrapper";
 import { resolveImageUrl } from "@1sp/sanity-queries/image";
@@ -85,9 +86,7 @@ export async function generateMetadata({
   const page = await getPageBySlug(slug, channel, language);
 
   if (!page) {
-    return {
-      title: "Page not found",
-    };
+    notFound();
   }
 
   const title = page.metadata?.title || page.title;
@@ -142,11 +141,7 @@ export default async function Page({
   const page = await getPageBySlug(slug, channel, language);
 
   if (!page) {
-    return (
-      <RenaissanceSiteWrapper language={language} navColor="dark">
-        <NotFound />
-      </RenaissanceSiteWrapper>
-    );
+    notFound();
   }
 
   const navbarVariant = page?.navbarVariant || "light";

@@ -1,3 +1,4 @@
+import {sanityFetch} from "@1sp/sanity-queries/fetch";
 import Link from "next/link";
 import {
   getAllCases,
@@ -6,7 +7,14 @@ import {
   getGlobalData,
 } from "@1sp/sanity-queries";
 import { getSiteConfig } from "@1sp/site-config";
-import type { FooterMenu, NavbarMenu } from "@1sp/sanity-types/menu";
+import { stegaClean } from "next-sanity";
+import type {
+  FooterColumn,
+  FooterColumnSource,
+  FooterMenu,
+  NavbarMenu,
+} from "@1sp/sanity-types/menu";
+import AiContentDisclosure from "@/components/AiContentDisclosure";
 import FrontNavOverlay from "./menu/FrontNavOverlay";
 import { FooterMenuProvider } from "./menu/FooterMenuContext";
 import { NavbarMenuProvider } from "./menu/NavbarMenuContext";
@@ -15,6 +23,8 @@ import PageWithMapVertical from "./ui/PageWithMapVertical";
 import ScrollToTop from "./ui/ScrollToTop";
 import CornerMarkers from "./ui/CornerMarkers";
 import MsmLogoAnimated from "./ui/MsmLogoAnimated";
+import MosaicButton from "./ui/MosaicButton";
+import MsmFooterExternalBanner from "./MsmFooterExternalBanner";
 
 type OverlayCaseStudy = {
   _id: string;
@@ -42,6 +52,8 @@ type MsmSiteWrapperProps = {
 };
 
 const CHANNEL = "msmWeb";
+// Footer links can point at pages of other network sites, which use locale-free URLs on their own domain.
+const NETWORK_SITE_ORIGINS: Record<string, string> = { "1spWeb": "https://www.1sp.agency" };
 
 type FooterCase = {
   _id?: string;
@@ -79,18 +91,36 @@ function dedupeLinks(links: FooterLink[]): FooterLink[] {
   return Array.from(new Map(links.map((link) => [link.href, link])).values());
 }
 
+function formatFooterIndex(index: number): string {
+  return String(index + 1).padStart(2, "0");
+}
+
 function FooterColumnHeading({
   index,
+  mobileIndex = index,
   title,
   href,
 }: {
-  index: string;
+  index: number;
+  /** Position in the reordered two-column mobile grid. */
+  mobileIndex?: number;
   title: string;
   href?: string;
 }) {
   const content = (
     <>
-      <span className="font-mono text-white/30">{index}</span>
+      {mobileIndex === index ? (
+        <span className="font-aspekta text-white/30">{formatFooterIndex(index)}</span>
+      ) : (
+        <>
+          <span className="font-aspekta text-white/30 md:hidden">
+            {formatFooterIndex(mobileIndex)}
+          </span>
+          <span className="hidden font-aspekta text-white/30 md:inline">
+            {formatFooterIndex(index)}
+          </span>
+        </>
+      )}
       <span>{title}</span>
       {href ? (
         <span
@@ -122,7 +152,7 @@ function FooterLinkItem({ link }: { link: FooterLink }) {
     <>
       <span
         aria-hidden="true"
-        className="mt-px shrink-0 font-mono text-msm-cyan/45 transition-colors duration-300 group-hover:text-msm-cyan"
+        className="mt-px shrink-0 font-aspekta text-msm-cyan/45 transition-colors duration-300 group-hover:text-msm-cyan"
       >
         +
       </span>
@@ -146,6 +176,43 @@ function FooterLinkItem({ link }: { link: FooterLink }) {
   );
 }
 
+type FooterColumnData = {
+  key: string;
+  title: string;
+  href?: string;
+  links: FooterLink[];
+};
+
+// Mobile grid order classes, indexed by mobile position.
+const footerMobileOrderClassName = ["order-1", "order-2", "order-3", "order-4"];
+
+// The mobile footer is a two-column grid. With four columns the short last one
+// (Connect) moves up beside the first so both rows end at a similar height.
+function getFooterMobileOrder(columnCount: number): number[] {
+  const order = Array.from({ length: columnCount }, (_, index) => index);
+  return columnCount === 4 ? [0, 3, 1, 2] : order;
+}
+
+const footerGridColumnClassName: Record<number, string> = {
+  1: "md:grid-cols-1",
+  2: "md:grid-cols-2",
+  3: "md:grid-cols-3",
+};
+
+function getFooterColumnSource(column: FooterColumn): FooterColumnSource {
+  const source = stegaClean(column.source);
+  return source === "cases" || source === "services" || source === "pages"
+    ? source
+    : "manual";
+}
+
+function getFooterColumnLimit(column: FooterColumn, fallback: number): number {
+  const limit = column.limit;
+  return typeof limit === "number" && Number.isInteger(limit) && limit > 0
+    ? limit
+    : fallback;
+}
+
 async function MsmFooter({
   footer,
   nav,
@@ -161,12 +228,29 @@ async function MsmFooter({
 }) {
   const site = getSiteConfig(CHANNEL);
   const socialLinks = footer?.socialLinks ?? [];
-  const [casesRaw, servicesRaw, pagesRaw] = await Promise.all([
-    hasCaseStudies ? getAllCases(CHANNEL, language) : Promise.resolve([]),
-    hasServices
+  // Editor-defined columns replace the automatic grid as soon as one exists.
+  const configuredColumns = (footer?.footerColumns ?? []).filter((column) =>
+    Boolean(column?.title),
+  );
+  const usesConfiguredColumns = configuredColumns.length > 0;
+  const sources = new Set<FooterColumnSource>(
+    usesConfiguredColumns
+      ? configuredColumns.map(getFooterColumnSource)
+      : ["pages", "cases", "services"],
+  );
+  const needsCases = hasCaseStudies && sources.has("cases");
+  const needsServices = hasServices && sources.has("services");
+  const needsPages = sources.has("pages");
+
+  const [casesRaw, servicesRaw, pagesRaw, servicePages] = await Promise.all([
+    needsCases ? getAllCases(CHANNEL, language) : Promise.resolve([]),
+    needsServices
       ? getAllServicesForChannel(CHANNEL, language)
       : Promise.resolve([]),
-    getAllPageSitemapSlugs(CHANNEL),
+    needsPages ? getAllPageSitemapSlugs(CHANNEL) : Promise.resolve([]),
+    needsServices
+      ? sanityFetch<{slug:{current:string}; services:{_ref:string}[]}[]>({query: '*[_type == "page" && channel == "msmWeb" && language == $language && msmPageKind == "service"]{slug, services}', params:{language}})
+      : Promise.resolve({ data: [] }),
   ]);
 
   const cases = (casesRaw as FooterCase[])
@@ -182,16 +266,14 @@ async function MsmFooter({
           }
         : null;
     })
-    .filter((link): link is FooterLink => Boolean(link))
-    .slice(0, 10);
+    .filter((link): link is FooterLink => Boolean(link));
 
   const services = (servicesRaw as FooterService[])
     .filter((service) => Boolean(service.name))
     .map((service) => ({
       label: service.name!,
-      href: `${getLocalePath(language, "services")}#services`,
-    }))
-    .slice(0, 12);
+      href: getLocalePath(language, servicePages.data.find(page=>page.services?.some(ref=>ref._ref===service._id))?.slug?.current || "services"),
+    }));
 
   const navLinks = (nav?.menuItems ?? [])
     .filter((item) => Boolean(item.slug))
@@ -218,44 +300,88 @@ async function MsmFooter({
       ? [{ label: "All services", href: getLocalePath(language, "services") }]
       : []),
     { label: "Contact", href: getLocalePath(language, "contact") },
-  ]).slice(0, 12);
+  ]);
 
-  const configuredLinks = (footer?.footerColumns ?? []).flatMap((column) =>
-    (column.links ?? []).flatMap((link) => {
-      const caseSlug = link.case?.slug?.current;
-      const internalSlug = link.isCaseLink
-        ? caseSlug && `cases/${caseSlug}`
-        : link.slug;
-      const href =
-        link.linkType === "external"
-          ? link.externalUrl
-          : internalSlug
-            ? getLocalePath(language, internalSlug)
-            : undefined;
-
-      return href
-        ? [
-            {
-              label:
-                link.displayName ||
-                (internalSlug ? humanizeSlug(internalSlug) : href),
-              href,
-              external: link.linkType === "external",
-            },
-          ]
-        : [];
-    }),
+  const socialFooterLinks = socialLinks.flatMap((link) =>
+    link.url
+      ? [{ label: link.name || "Social", href: link.url, external: true }]
+      : [],
   );
 
-  const connectLinks = dedupeLinks([
-    { label: "Start a project", href: getLocalePath(language, "contact") },
-    ...configuredLinks,
-    ...socialLinks.flatMap((link) =>
-      link.url
-        ? [{ label: link.name || "Social", href: link.url, external: true }]
-        : [],
-    ),
-  ]).slice(0, 12);
+  const getManualLinks = (column: FooterColumn): FooterLink[] =>
+    (column.links ?? []).flatMap((link): FooterLink[] => {
+      if (stegaClean(link.linkType) === "external") {
+        return link.externalUrl
+          ? [{ label: link.displayName || link.externalUrl, href: link.externalUrl, external: true }]
+          : [];
+      }
+      const caseSlug = link.case?.slug?.current;
+      // A homepage's slug is not a public path; the page lives at the site root.
+      const path = link.isCaseLink
+        ? caseSlug ? `cases/${caseSlug}` : undefined
+        : link.isHomepage ? "" : link.slug;
+      if (path == null) return [];
+      const label = link.displayName || (path ? humanizeSlug(path) : "Home");
+      const pageChannel = link.isCaseLink ? CHANNEL : stegaClean(link.pageChannel) || CHANNEL;
+      if (pageChannel === CHANNEL) return [{ label, href: getLocalePath(language, path) }];
+      // Pages of other network sites keep their own domain; skip sites without a known one.
+      const origin = NETWORK_SITE_ORIGINS[pageChannel];
+      return origin ? [{ label, href: path ? `${origin}/${path}` : origin, external: true }] : [];
+    });
+
+  const columns: FooterColumnData[] = usesConfiguredColumns
+    ? configuredColumns.map((column, index) => {
+        const source = getFooterColumnSource(column);
+        const base = { key: column._key ?? String(index), title: column.title! };
+
+        switch (source) {
+          case "cases":
+            return {
+              ...base,
+              href: hasCaseStudies ? getLocalePath(language, "cases") : undefined,
+              links: cases.slice(0, getFooterColumnLimit(column, 10)),
+            };
+          case "services":
+            return {
+              ...base,
+              href: hasServices ? getLocalePath(language, "services") : undefined,
+              links: services.slice(0, getFooterColumnLimit(column, 12)),
+            };
+          case "pages":
+            return {
+              ...base,
+              links: exploreLinks.slice(0, getFooterColumnLimit(column, 12)),
+            };
+          default:
+            return { ...base, links: getManualLinks(column) };
+        }
+      })
+    : [
+        { key: "explore", title: "Explore", links: exploreLinks.slice(0, 12) },
+        {
+          key: "cases",
+          title: "Cases",
+          href: getLocalePath(language, "cases"),
+          links: cases.slice(0, 10),
+        },
+        {
+          key: "capabilities",
+          title: "Capabilities",
+          href: getLocalePath(language, "services"),
+          links: services.slice(0, 12),
+        },
+        {
+          key: "connect",
+          title: "Connect",
+          links: dedupeLinks([
+            { label: "Start a project", href: getLocalePath(language, "contact") },
+            ...socialFooterLinks,
+          ]).slice(0, 12),
+        },
+      ];
+  const visibleColumns = columns.filter((column) => column.links.length > 0);
+  const mobileOrder = getFooterMobileOrder(visibleColumns.length);
+  const locations = footer?.locations ?? [];
 
   const statement =
     site.seo.defaultDescription !== "MSM website."
@@ -282,11 +408,11 @@ async function MsmFooter({
                 size={56}
                 className="h-12 w-12 md:h-14 md:w-14"
               />
-              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-white/45">
+              <span className="font-aspekta text-[10px] font-bold uppercase tracking-[0.16em] text-white/45">
                 Digital growth partner
               </span>
             </div>
-            <p className="mt-7 max-w-2xl text-[clamp(1.75rem,1.2rem+2vw,3.25rem)] font-semibold leading-[0.98] tracking-[-0.04em] text-white">
+            <p className="msm-headline mt-7 max-w-2xl text-[clamp(1.75rem,1.2rem+2vw,3.25rem)] leading-[0.98] tracking-[-0.04em] text-white">
               {statement}
             </p>
           </div>
@@ -299,7 +425,7 @@ async function MsmFooter({
               <span>Start a project</span>
               <span
                 aria-hidden="true"
-                className="font-mono text-xl text-msm-cyan transition-transform duration-300 group-hover:translate-x-1"
+                className="font-aspekta text-xl text-msm-cyan transition-transform duration-300 group-hover:translate-x-1"
               >
                 ↗
               </span>
@@ -307,72 +433,50 @@ async function MsmFooter({
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-x-6 gap-y-12 border-t border-white/15 py-10 md:grid-cols-4 md:gap-x-10 md:py-12">
-          <div>
-            <FooterColumnHeading index="01" title="Explore" />
-            <ul className="space-y-3">
-              {exploreLinks.map((link) => (
-                <li key={link.href}>
-                  <FooterLinkItem link={link} />
-                </li>
-              ))}
-            </ul>
-          </div>
+        {visibleColumns.length ? (
+          <div
+            className={`grid grid-cols-2 gap-x-6 gap-y-12 border-t border-white/15 py-10 md:gap-x-10 md:py-12 ${
+              footerGridColumnClassName[visibleColumns.length] ?? "md:grid-cols-4"
+            }`}
+          >
+            {visibleColumns.map((column, columnIndex) => {
+              const mobileIndex = mobileOrder.indexOf(columnIndex);
+              return (
+                <div
+                  key={column.key}
+                  className={`${footerMobileOrderClassName[mobileIndex] ?? ""} md:order-none`}
+                >
+                  <FooterColumnHeading
+                    index={columnIndex}
+                    mobileIndex={mobileIndex}
+                    title={column.title}
+                    href={column.href}
+                  />
+                  <ul className="space-y-3">
+                    {column.links.map((link, linkIndex) => (
+                      <li key={`${link.href}-${linkIndex}`}>
+                        <FooterLinkItem link={link} />
+                      </li>
+                    ))}
+                  </ul>
 
-          <div>
-            <FooterColumnHeading
-              index="02"
-              title="Cases"
-              href={getLocalePath(language, "cases")}
-            />
-            <ul className="space-y-3">
-              {cases.map((link) => (
-                <li key={link.href}>
-                  <FooterLinkItem link={link} />
-                </li>
-              ))}
-            </ul>
+                  {columnIndex === visibleColumns.length - 1 && locations.length ? (
+                    <div className="mt-8 space-y-4 border-t border-white/15 pt-5 text-xs leading-5 text-white/45">
+                      {locations.map((location) => (
+                        <address key={location._key} className="not-italic">
+                          <span className="block font-semibold text-white/80">
+                            {location.name}
+                          </span>
+                          {location.address}
+                        </address>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
           </div>
-
-          <div>
-            <FooterColumnHeading
-              index="03"
-              title="Capabilities"
-              href={getLocalePath(language, "services")}
-            />
-            <ul className="space-y-3">
-              {services.map((link) => (
-                <li key={`${link.label}-${link.href}`}>
-                  <FooterLinkItem link={link} />
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <FooterColumnHeading index="04" title="Connect" />
-            <ul className="space-y-3">
-              {connectLinks.map((link) => (
-                <li key={`${link.label}-${link.href}`}>
-                  <FooterLinkItem link={link} />
-                </li>
-              ))}
-            </ul>
-
-            {(footer?.locations ?? []).length ? (
-              <div className="mt-8 space-y-4 border-t border-white/15 pt-5 text-xs leading-5 text-white/45">
-                {footer?.locations?.map((location) => (
-                  <address key={location._key} className="not-italic">
-                    <span className="block font-semibold text-white/80">
-                      {location.name}
-                    </span>
-                    {location.address}
-                  </address>
-                ))}
-              </div>
-            ) : null}
-          </div>
-        </div>
+        ) : null}
 
         <div className="overflow-hidden border-t border-white/15 pt-8">
           <p
@@ -383,18 +487,17 @@ async function MsmFooter({
           </p>
         </div>
 
-        <div className="flex flex-col gap-4 border-t border-white/15 py-6 font-mono text-[10px] uppercase tracking-[0.1em] text-white/40 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 border-t border-white/15 py-6 font-aspekta text-[10px] uppercase tracking-[0.1em] text-white/40 sm:flex-row sm:items-center sm:justify-between">
           <p>
             {footer?.copyright ||
               `© ${new Date().getFullYear()} MSM.DIGITAL`}
           </p>
-          <div className="flex flex-wrap gap-x-5 gap-y-2">
-            <Link
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-4">
+            <MosaicButton
               href={getLocalePath(language, "contact")}
-              className="transition-colors duration-300 hover:text-white"
-            >
-              Contact
-            </Link>
+              size="sm"
+              text="Contact"
+            />
             {socialLinks
               .filter((link) => Boolean(link.url))
               .map((link) => (
@@ -408,6 +511,9 @@ async function MsmFooter({
                   {link.name}
                 </a>
               ))}
+            <div className="normal-case">
+              <AiContentDisclosure tone="dark" />
+            </div>
           </div>
         </div>
       </div>
@@ -435,7 +541,7 @@ export default async function MsmSiteWrapper({
       >
         <NavColorProvider color={navColor}>
           {/* <PageWithMapVertical> */}
-            <div className="min-h-screen bg-msm-paper text-msm-ink">
+            <div className="msm-site min-h-screen bg-msm-paper text-msm-ink">
               <FrontNavOverlay
                 menuData={nav as NavbarMenu}
                 color={navColor}
@@ -453,6 +559,9 @@ export default async function MsmSiteWrapper({
                 hasCaseStudies={hasCaseStudies}
                 hasServices={hasServices}
               />
+              {footer?.footerExternalBanner && (
+                <MsmFooterExternalBanner data={footer.footerExternalBanner} language={language} />
+              )}
               <ScrollToTop />
             </div>
           {/* </PageWithMapVertical> */}

@@ -66,6 +66,9 @@ const IGNORED_EVERYWHERE = [
   "EXPORT/",
   "tmp/",
   ".gitignore",
+  // Sanity Functions deploy with `sanity blueprints deploy`, not with a site.
+  "functions/",
+  "sanity.blueprint.ts",
 ];
 const isEnvironmentTemplate = (file) => {
   const basename = file.slice(file.lastIndexOf("/") + 1);

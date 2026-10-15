@@ -21,7 +21,9 @@
     "./hooks/use-robust-in-view": "./src/hooks/use-robust-in-view.ts",
     "./hooks/use-optimized-transition-router": "./src/hooks/use-optimized-transition-router.ts",
     "./hooks/use-outside-click": "./src/hooks/use-outside-click.ts",
-    "./hooks/use-client-safe": "./src/hooks/use-client-safe.ts"
+    "./hooks/use-client-safe": "./src/hooks/use-client-safe.ts",
+    "./result-metrics": "./src/result-metrics.ts",
+    "./components/MetricNumber": "./src/components/MetricNumber.tsx"
   },
   "types": "./src/index.ts",
   "files": [
@@ -33,6 +35,7 @@
     "tailwind-merge": "^3.3.1"
   },
   "peerDependencies": {
-    "react": "^18 || ^19"
+    "react": "^18 || ^19",
+    "motion": "^12"
   }
 }

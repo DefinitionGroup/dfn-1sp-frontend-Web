@@ -425,7 +425,7 @@ export default function SmartCarousel({
           </motion.button>
         </div>
 
-        {/* Dots Indicator — bare strip, each dot is its own marked field */}
+        {/* Dots Indicator */}
         <div className="absolute w-full bottom-2 sm:bottom-4 z-30">
           <div className="flex justify-center mt-4 sm:mt-8 mx-auto space-x-1.5 sm:space-x-2 items-center w-fit">
             {carouselItems.map((_, index) => (
@@ -440,10 +440,6 @@ export default function SmartCarousel({
                   resetAutoPlayTimer();
                 }}
               >
-                <CornerMarkers
-                  className={`text-[8px] transition-colors duration-300 ${index === currentIndex ? "text-white" : "text-msm-magenta/50"}`}
-                  inset="0px"
-                />
                 <span
                   className={`block h-1.5 sm:h-2 transition-all group-hover:bg-msm-magenta duration-300 ${index === currentIndex ? "bg-msm-magenta min-w-8 sm:min-w-16" : "bg-white/25 min-w-1.5 sm:min-w-2"}`}
                 />

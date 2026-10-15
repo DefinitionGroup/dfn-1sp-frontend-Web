@@ -1,0 +1,14 @@
+.units {
+  padding: 9rem 0 var(--msm-section-space);
+  color: var(--color-msm-ink);
+  background: var(--color-msm-paper);
+  scroll-margin-top: 5rem;
+}
+.units[data-embedded="true"] { padding-top: var(--msm-section-space); }
+.header { margin-bottom: clamp(3rem, 5vw, 5rem); }
+.brand { display: flex; align-items: center; gap: 1rem; font-size: clamp(1.75rem, 3vw, 3rem); line-height: 1; letter-spacing: -0.025em; }
+.header h1, .header h2 { max-width: 14ch; }
+@media (max-width: 767px) {
+  .units { padding-top: 7rem; }
+  .header { grid-template-columns: 1fr; gap: 2rem; }
+}

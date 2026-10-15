@@ -3,13 +3,14 @@
 import React, { startTransition, useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useOutsideClick } from "@1sp/utils/hooks/use-outside-click";
-import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
 import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
 import Button2 from "@msm/components/ui/Button2";
 import Image from "next/image";
-import StaggeredFadeIn from "@msm/components/ui/StaggeredFadeIn";
+import {SelectionSequence} from "@msm/components/ui/SelectionFrame";
+import styles from "./CaseGalleryCard.module.css";
 import CaseGalleryCard from "./CaseGalleryCard";
 import DeferredVideo from "@msm/components/ui/DeferredVideo";
+import { ArrowLeft, ArrowRight } from "@phosphor-icons/react";
 
 interface CaseStudy {
   _id: string;
@@ -27,6 +28,11 @@ interface CaseStudy {
   };
   websiteUrl?: string;
   websiteUrlText?: string;
+  msmUnits?: Array<{
+    _id: string;
+    name: string;
+    slug?: { current?: string };
+  }>;
 }
 
 interface CaseGalleryComponentProps {
@@ -35,6 +41,25 @@ interface CaseGalleryComponentProps {
   locale?: string;
   variant?: "light";
   filterAllText?: string;
+  /** Rows shown per page; the column count follows the grid's breakpoints. */
+  rowsPerPage?: number;
+  /** Set false when the parent already slices the list. */
+  paginate?: boolean;
+}
+
+const MIN_PAGE_SIZE = 6;
+
+/** Mirrors the .grid breakpoints in CaseGalleryCard.module.css. */
+function useGridColumns() {
+  const [columns, setColumns] = useState(4);
+  useEffect(() => {
+    const queries = [window.matchMedia("(min-width: 1280px)"), window.matchMedia("(min-width: 1024px)"), window.matchMedia("(min-width: 768px)")];
+    const update = () => setColumns(queries[0].matches ? 4 : queries[1].matches ? 3 : queries[2].matches ? 2 : 1);
+    update();
+    queries.forEach((query) => query.addEventListener("change", update));
+    return () => queries.forEach((query) => query.removeEventListener("change", update));
+  }, []);
+  return columns;
 }
 
 export default function CaseGalleryComponent({
@@ -43,6 +68,8 @@ export default function CaseGalleryComponent({
   locale = "en",
   variant,
   filterAllText = "All",
+  rowsPerPage = 3,
+  paginate = true,
 }: CaseGalleryComponentProps) {
   const router = useOptimizedTransitionRouter();
   const [active, setActive] = useState<CaseStudy | null>(null);
@@ -66,6 +93,30 @@ export default function CaseGalleryComponent({
         item.services?.some((service) => service.name === activeFilter)
       );
 
+  const columns = useGridColumns();
+  const pageSize = paginate ? Math.max(rowsPerPage * columns, MIN_PAGE_SIZE) : Math.max(filteredItems.length, 1);
+  const pages = Math.max(1, Math.ceil(filteredItems.length / pageSize));
+  const [page, setPage] = useState(0);
+  const currentPage = Math.min(page, pages - 1);
+  const pageItems = filteredItems.slice(currentPage * pageSize, (currentPage + 1) * pageSize);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const de = locale === "de";
+
+  // A new filter starts again from the first page.
+  useEffect(() => {
+    setPage(0);
+  }, [activeFilter]);
+
+  const goTo = (next: number) => {
+    const target = Math.min(Math.max(next, 0), pages - 1);
+    if (target === currentPage) return;
+    startTransition(() => {
+      setPage(target);
+    });
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    gridRef.current?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+  };
+
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") closeCase();
@@ -86,7 +137,7 @@ export default function CaseGalleryComponent({
     document.body.style.overflow = "auto";
     closeCase();
     setTimeout(() => {
-      router.push(`/cases/${slug}`);
+      router.push(`${locale === "en" ? "" : `/${locale}`}/cases/${slug}`);
     }, 50);
   };
 
@@ -205,28 +256,37 @@ export default function CaseGalleryComponent({
         ) : null}
       </>
 
-      <ul className="w-full ">
-        <StaggeredFadeIn
-          key={activeFilter}
-          staggerDelay={0.2}
-          distance={10}
-          duration={1}
-          once={true}
-          className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1 mx-auto w-full min-h-full"
-        >
-          {filteredItems.map((item) => (
-            <CaseGalleryCard
-              key={`card-${item.title}-${id}`}
-              item={item}
-              id={id}
-              variant={variant}
-              activeFilter={activeFilter}
-              locale={locale}
-              onClick={() => openCase(item)}
-            />
-          ))}
-        </StaggeredFadeIn>
-      </ul>
+      <div ref={gridRef} className={styles.gridAnchor} />
+      <SelectionSequence key={`${activeFilter}-${pageItems.map(item => item._id).join('-')}`} className={styles.grid}>
+        {pageItems.map((item, index) => (
+          <CaseGalleryCard
+            key={item._id}
+            item={item}
+            id={id}
+            variant={variant}
+            sequenceIndex={index + 1}
+            locale={locale}
+            onClick={() => openCase(item)}
+          />
+        ))}
+      </SelectionSequence>
+      {pages > 1 && (
+        <nav className={styles.pager} aria-label={de ? "Seiten der Cases" : "Case pages"}>
+          <p className={styles.pagerCount} aria-live="polite">
+            {String(currentPage + 1).padStart(2, "0")} / {String(pages).padStart(2, "0")}
+          </p>
+          <div className={styles.pagerControls}>
+            <button type="button" onClick={() => goTo(currentPage - 1)} disabled={currentPage === 0}
+              aria-label={de ? "Vorherige Cases" : "Previous cases"}>
+              <ArrowLeft size={24} aria-hidden="true" />
+            </button>
+            <button type="button" onClick={() => goTo(currentPage + 1)} disabled={currentPage >= pages - 1}
+              aria-label={de ? "Nächste Cases" : "Next cases"}>
+              <ArrowRight size={24} aria-hidden="true" />
+            </button>
+          </div>
+        </nav>
+      )}
     </>
   );
 }

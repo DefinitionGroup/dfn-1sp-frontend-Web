@@ -1,12 +1,14 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import HeroVideoComp from "@msm/components/pagebuilder/Fragments/HeroVideoComp";
-import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
+import SelectionFrame from "@msm/components/ui/SelectionFrame";
 import { assetUrl, resolveLink } from "@1sp/utils/cloudinary";
 import { useParams } from "next/navigation";
 import Button2 from "@msm/components/ui/Button2";
-import DecryptRotator from "@msm/components/ui/DecryptRotator";
+import DecryptRotator, { decryptRevealMs } from "@msm/components/ui/DecryptRotator";
+import FlickerWords, { flickerWordsMs } from "@msm/components/ui/FlickerWords";
 import CornerMarkers from "@msm/components/ui/CornerMarkers";
 import MsmLogoAnimated from "@msm/components/ui/MsmLogoAnimated";
 import { PortableText } from "@portabletext/react";
@@ -46,7 +48,7 @@ function highlightInline(text: string, highlight?: string): React.ReactNode {
   return (
     <>
       {before}
-      <span className="bg-gradient-to-r from-violet-300 to-violet-500 bg-clip-text text-transparent font-bold">
+      <span className="text-msm-cyan">
         {matched}
       </span>
       {after}
@@ -62,14 +64,19 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
   // Optional CTA below the hero copy (schema: oneSPHeader.cta)
   let ctaHref = step.cta?.link ? resolveLink(step.cta.link) : undefined;
-  if (ctaHref && ctaHref.startsWith("/") && !ctaHref.startsWith(`/${locale}`)) {
+  if (locale !== "en" && ctaHref && ctaHref.startsWith("/") && !ctaHref.startsWith(`/${locale}`)) {
     ctaHref = `/${locale}${ctaHref}`;
   }
   const ctaText = step.cta?.text;
+  // Older imported homepage content points this project CTA to a legal page.
+  if (ctaText?.trim().toLowerCase() === "start a project" && /\/legal\/?$/.test(ctaHref || "")) {
+    ctaHref = locale === "en" ? "/contact" : `/${locale}/contact`;
+  }
   const mediaUrl = assetUrl(step.media as CloudinaryAsset | undefined);
   const useVideo = isVideoUrl(mediaUrl);
 
   const eyebrow = step.eyebrow ?? "Welcome at 1SP";
+  const editorialHeadline = step.headlineMode === "headlineReveal" ? step.headline : undefined;
   const seoTitle = step.seoTitle?.trim();
   const words = Array.isArray(step.rotatingText) ? step.rotatingText : [];
   const paragraphs = (step.paragraphs ?? []) as PortableTextBlock[];
@@ -82,6 +89,15 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
   const leftMark = step.cornerLeftText ?? "SUPER*";
   const rightMark = step.cornerRightText ?? "/ 1SP";
+
+  // Hero intro timeline: the headline flickers in word by word, then the
+  // eyebrow decrypts, then the selection frame's crosses flicker away.
+  const FRAME_DELAY_MS = 250;
+  const EYEBROW_GAP_MS = 200;
+  const headlineMs = editorialHeadline
+    ? flickerWordsMs(editorialHeadline)
+    : decryptRevealMs(words[0] ?? "");
+  const eyebrowDelayMs = headlineMs + EYEBROW_GAP_MS;
 
   // Generate section ID from eyebrow or default
   const sectionId = eyebrow
@@ -97,11 +113,12 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     ...(hideFromNav ? { "data-nav-hidden": "true" } : {}),
   };
   const paragraphSizeClass = isIphoneLandscape ? "text-xs" : "text-base";
+  const paragraphWidthClass = editorialHeadline ? "max-w-[68ch]" : "max-w-[48ch]";
 
   const portableTextComponents = {
     block: {
       normal: ({ children }: { children?: React.ReactNode }) => (
-        <p className={`text-neutral-50 ${paragraphSizeClass} iphone-landscape:max-w-[66.6667%] lg:max-w-[50%]`}>
+        <p className={`text-neutral-50 ${paragraphSizeClass} ${paragraphWidthClass}`}>
           {children}
         </p>
       ),
@@ -128,13 +145,13 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
           // If highlight matched, render the highlighted version
           if (highlighted !== plainText) {
             return (
-              <p className={`text-neutral-500 ${paragraphSizeClass} iphone-landscape:max-w-1/2  lg:max-w-1/2`}>
+              <p className={`text-neutral-500 ${paragraphSizeClass} ${paragraphWidthClass}`}>
                 {highlighted}
               </p>
             );
           }
           return (
-            <p className={`text-neutral-500 ${paragraphSizeClass} iphone-landscape:max-w-1/2  lg:max-w-1/2`}>
+            <p className={`text-neutral-500 ${paragraphSizeClass} ${paragraphWidthClass}`}>
               {children}
             </p>
           );
@@ -147,9 +164,9 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="relative min-h-[80vh] h-[95vh] iphone-landscape:!h-dvh  overflow-hidden z-1"
+      className={editorialHeadline ? "relative min-h-[95svh] overflow-hidden z-1" : "relative min-h-[80vh] h-[95vh] iphone-landscape:!h-dvh overflow-hidden z-1"}
     >
-      {seoTitle && <h1 className="sr-only">{seoTitle}</h1>}
+      {!editorialHeadline && <h1 className="sr-only">{seoTitle || "MSM.digital — Gaming, tech and consumer electronics marketing"}</h1>}
 
       {/* Blueprint corner markers (Vast grammar) */}
       <CornerMarkers
@@ -170,43 +187,51 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
 
       {/* Foreground content — white corner markers frame the
           eyebrow/headline/copy/CTA group. */}
-      <div className="absolute bottom-24 md:bottom-24 iphone-landscape:bottom-0 md:relative z-10  max-w-9xl container md:mt-[50vh] iphone-landscape:mt-[50vh] mx-auto py-5">
-        <div className="relative inline-block max-w-full md:pr-16">
-          <CornerMarkers
-            className="text-white text-xs"
-            inset="0.125rem"
-            animateOnView
-            animationDelay={0.65}
-            stagger={0.18}
-            flickerDuration={0.24}
-            pronounced
-          />
-          <StaggeredSlideUp
-            className="px-4 md:px-4 space-y-1"
-            delay={1}
-            staggerDelay={0.08}
-            duration={0.5}
-            distance={20}
-            easing="spring"
-            rootMargin="0px 0px -20px 0px"
-            once={true}
-            animateImmediately={true}
-          >
-            <div className="pb-3 md:pb-4">
-              <MsmLogoAnimated
-                size={44}
-                className="h-11 w-11"
-              />
+      <div className={editorialHeadline ? "relative z-10 container mx-auto flex min-h-[95svh] items-center px-6 md:px-10 py-28 md:py-24" : "absolute inset-x-0 bottom-20 md:bottom-12 iphone-landscape:bottom-0 z-10 max-w-9xl container mx-auto px-6 md:px-10 py-5"}>
+        <SelectionFrame
+          className={editorialHeadline ? "w-full max-w-6xl" : "inline-block max-w-full"}
+          contentClassName="p-6 md:p-8 space-y-1"
+          delay={FRAME_DELAY_MS}
+          /* Once the copy has landed the borders flicker away; the crosses stay. */
+          dismissFramesAfterMs={Math.max(480, eyebrowDelayMs + decryptRevealMs(eyebrow) + 300 - FRAME_DELAY_MS)}
+        >
+            <div className="pb-3 md:pb-4 flex items-center gap-4">
+              {editorialHeadline ? (
+                <Image
+                  src="/ci/msm-logo-1sp-agency-white.svg"
+                  alt="MSM.digital — a 1SP Agency"
+                  width={372}
+                  height={87}
+                  priority
+                  className="h-14 w-auto md:h-20"
+                />
+              ) : (
+                <MsmLogoAnimated
+                  size={44}
+                  className="h-11 w-11"
+                />
+              )}
             </div>
 
+            {/* The eyebrow decrypts only once the headline has finished flickering. */}
             {hasVisibleText(eyebrow) && (
-              <h3 className="eyebrow text-msm-cyan pb-1 max-w-1/4">
-                {eyebrow}
-              </h3>
+              <DecryptRotator
+                text={[eyebrow]}
+                variant="headline"
+                as="p"
+                delayMs={eyebrowDelayMs}
+                className="msm-headline text-msm-cyan text-xl md:text-2xl tracking-tight pb-3"
+              />
             )}
 
-            {/* Decrypt-style rotating words */}
-            {words.length > 0 && <DecryptRotator text={words} />}
+            {/* Authored headlines flicker in word by word; the rotating words
+                keep the signature decrypt effect. */}
+            {editorialHeadline ? (
+              <FlickerWords
+                text={editorialHeadline}
+                className="relative max-w-[40ch] whitespace-pre-line text-3xl md:text-5xl leading-tight pb-6"
+              />
+            ) : words.length > 0 && <DecryptRotator text={words} />}
 
             {/* Desktop paragraphs (rich text) */}
             {paragraphs.length > 0 && (
@@ -234,8 +259,7 @@ function OneSPHeaderStep({ step }: { step: OneSPHeader }) {
                 <Button2 text={ctaText} href={ctaHref} />
               </div>
             )}
-          </StaggeredSlideUp>
-        </div>
+        </SelectionFrame>
       </div>
 
     </section>

@@ -667,6 +667,13 @@ export function extractCaseItemsFromContent(
     if (!block?._type) continue;
 
     switch (block._type) {
+      case "renaissanceCaseCarousel": {
+        for (const cs of block.caseStudies || []) {
+          if (!cs?.title || !cs?.slug?.current || !(cs.mainImageUrl || cs.mainVideoUrl || cs.mainImage?.secure_url || cs.mainVideo?.secure_url)) continue;
+          addItem({title: cs.title, slug: cs.slug.current, description: cs.description || null, imageUrl: cs.mainImageUrl || cs.mainImage?.secure_url || null});
+        }
+        break;
+      }
       // SmartCarousel: selectedCases are fully dereferenced in GROQ
       case "smartCarousel": {
         if (
@@ -739,6 +746,7 @@ export function hasCaseListingBlocks(
   return Boolean(
     contentBlocks?.some((block) =>
       [
+        "renaissanceCaseCarousel",
         "smartCarousel",
         "casesGalleryFiltered",
         "casesGalleryFilteredWithPagination",

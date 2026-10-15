@@ -143,7 +143,7 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
   });
 
   // Only animate when *actually* in the viewport (or explicitly told to)
-  const shouldAnimate = animateImmediately || isInView;
+  const shouldAnimate = prefersReducedMotion || animateImmediately || isInView;
 
   // Reduced-motion: skip to final state instantly
   const effectiveDuration = prefersReducedMotion ? 0.01 : duration;
@@ -157,7 +157,7 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
     <div ref={ref} className={className} data-stagger-id={id}>
       {debug && (
         <div
-          className={`fixed top-4 right-4 z-50 px-3 py-1 text-xs font-mono ${shouldAnimate ? "bg-green-500" : "bg-red-500"
+          className={`fixed top-4 right-4 z-50 px-3 py-1 text-xs font-aspekta ${shouldAnimate ? "bg-green-500" : "bg-red-500"
             } text-white`}
         >
           {shouldAnimate ? "IN VIEW" : "OUT OF VIEW"}
@@ -169,8 +169,8 @@ const StaggeredSlideUp: React.FC<StaggeredSlideUpProps> = ({
           key={`${id}-${index}`}
           index={index}
           isVisible={shouldAnimate}
-          delay={delay}
-          staggerDelay={staggerDelay}
+          delay={prefersReducedMotion ? 0 : delay}
+          staggerDelay={prefersReducedMotion ? 0 : staggerDelay}
           duration={effectiveDuration}
           distance={effectiveDistance}
           easing={easingCurve}

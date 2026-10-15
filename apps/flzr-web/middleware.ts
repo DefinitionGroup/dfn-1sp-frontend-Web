@@ -30,6 +30,18 @@ export default function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  const englishAliases: Record<string, string> = {
+    "/about-us": "/agency", "/jobs": "/careers",
+    "/career": "/careers", "/references": "/cases",
+  };
+  const englishPath = pathname.replace(/^\/en(?=\/)/, "");
+  const alias = englishAliases[englishPath];
+  if (alias) {
+    const url = req.nextUrl.clone();
+    url.pathname = `/en${alias}`;
+    return NextResponse.redirect(url, 308);
+  }
+
   const legacyV2Redirect = getLegacyV2Redirect(pathname);
   if (legacyV2Redirect) {
     const url = req.nextUrl.clone();

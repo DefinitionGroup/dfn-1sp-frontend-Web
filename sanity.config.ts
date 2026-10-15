@@ -27,6 +27,7 @@ import {
 } from '@1sp/site-config'
 import { structure } from './sanity/structure'
 import { createPresentationResolvers } from './sanity/presentation/resolve'
+import { CloudinaryStorageInput } from './sanity/components/CloudinaryStorageInput'
 
 const RELATIONSHIP_SYNC_ENABLED =
   process.env.NEXT_PUBLIC_ENABLE_RELATIONSHIP_SYNC === 'true';
@@ -203,6 +204,16 @@ const generateTemplates = (excludeBase = false) => {
           }),
         });
       });
+
+      if (channel.id === 'msmWeb') {
+        templates.push({
+          id: `msmUnit-${lang}`,
+          title: `MSM Unit (${lang.toUpperCase()})`,
+          schemaType: 'msmUnit',
+          parameters: [{ name: 'language', type: 'string' }],
+          value: (params: any) => ({ language: params.language || lang, isActive: true, sortOrder: 10 }),
+        });
+      }
     });
 
     templates.push({
@@ -276,6 +287,12 @@ const generateTemplates = (excludeBase = false) => {
     });
   }
 
+  for (const schemaType of ['caseStudy', 'person', 'client', 'services']) {
+    templates.push({id: `${schemaType}-global-browser`, title: 'Global document with selected scope', schemaType,
+      parameters: [{name:'language',type:'string'},{name:'channel',type:'string'}],
+      value: (params: {language?:string;channel?:string}) => ({language:params.language || 'en',channel:params.channel ? [params.channel] : []}),
+    });
+  }
   return templates;
 };
 
@@ -283,6 +300,7 @@ export default defineConfig({
   basePath: '/studio',
   projectId,
   dataset,
+  form: {components: {input: CloudinaryStorageInput}},
   schema: {
     types: schemaTypesWithLanguageOptions,
     // Add all templates to the array
@@ -302,7 +320,7 @@ export default defineConfig({
           : [...prev, revalidateAction]
       }
 
-      if (schemaType === 'page' || schemaType === 'menu' || schemaType === 'siteSettings' || schemaType === 'oneSpComponentGroup') {
+      if (schemaType === 'page' || schemaType === 'menu' || schemaType === 'siteSettings' || schemaType === 'oneSpComponentGroup' || schemaType === 'msmUnit' || schemaType === 'renaissanceSharedPortraits' || schemaType === 'renaissanceSharedAwards' || schemaType === 'renaissanceClientCollection' || schemaType === 'renaissanceXPost') {
         return [...prev, revalidateAction]
       }
 

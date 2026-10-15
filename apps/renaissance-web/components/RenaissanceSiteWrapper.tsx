@@ -1,3 +1,4 @@
+import { stegaClean } from "@sanity/client/stega";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -25,6 +26,7 @@ import {
 } from "@renaissance/lib/structured-data";
 import FrontNavOverlay from "./menu/FrontNavOverlay";
 import { FooterMenuProvider } from "./menu/FooterMenuContext";
+import RenaissanceFooterExternalBanner from "./RenaissanceFooterExternalBanner";
 import { NavbarMenuProvider } from "./menu/NavbarMenuContext";
 import { NavColorProvider } from "./menu/NavColorContext";
 import ScrollToTop from "./ui/ScrollToTop";
@@ -216,7 +218,7 @@ async function RenaissanceFooter({
   ).slice(0, 6);
   const carouselStories = content
     .filter((block) => block._type === "carousel" && Array.isArray(block.items))
-    .flatMap((block) => block.items as Array<{ _key?: string; title?: string }>)
+    .flatMap((block) => block.items as Array<{ _key?: string; title?: string; cta?: {link?: {externalUrl?:string}} }>)
     .filter((item) => Boolean(item?.title))
     .slice(0, 6);
   const cases = extractedCases.length
@@ -228,7 +230,7 @@ async function RenaissanceFooter({
     : carouselStories.map((story) => ({
         key: story._key ?? story.title ?? "story",
         title: story.title ?? "Story",
-        href: localizedPath("/#stories", language),
+        href: localizedPath(story.cta?.link?.externalUrl || "/#stories", language),
       }));
   const services = Array.from(
     new Map(
@@ -267,46 +269,16 @@ async function RenaissanceFooter({
 
   const companyLinks = [
     { label: copy.companyLinks[0], href: localizedPath("/about-us", language) },
-    { label: copy.companyLinks[1], href: localizedPath("/jobs", language) },
-    { label: copy.companyLinks[2], href: localizedPath("/disclaimer", language) },
-    { label: copy.companyLinks[3], href: localizedPath("/data-protection", language) },
+    { label: "Clients", href: localizedPath("/clients", language) },
+    { label: "Additional policies", href: "https://renaissancepr.co.uk/additional-policies" },
+    { label: "Privacy policy", href: "https://renaissancepr.co.uk/privacy" },
   ];
 
   return (
-    <footer className="container mx-auto mb-12 w-[calc(100%-0.5rem)] overflow-hidden rounded-statement bg-renaissance-ink px-4 text-renaissance-paper md:px-7">
-      <div className="mx-auto max-w-[1480px] border-t border-white/15">
-        <div className="grid gap-10 py-10 md:grid-cols-12 md:py-14">
-          <div className="md:col-span-6 lg:col-span-5">
-            <Image
-              src="/units/RENAISSANCE/renaissance-horz_logo.svg"
-              alt="Renaissance"
-              width={286}
-              height={59}
-              className="h-10 w-auto brightness-0 invert md:h-11"
-              style={{ width: "auto" }}
-            />
-            <p className="renaissance-headline mt-7 max-w-xl text-[clamp(1.35rem,1.05rem+1.2vw,2.25rem)] leading-[1.08] text-white">
-              {homepageStatement || site.seo.defaultDescription}
-            </p>
-          </div>
+    <footer className="mx-auto mb-12 w-[calc(100%-0.5rem)] overflow-hidden rounded-b-statement bg-renaissance-ink text-renaissance-paper md:w-[calc(100%-2rem)]">
+      <div className="mx-auto w-full max-w-[1680px] px-5 sm:px-8 md:px-12">
 
-          <div className="flex items-end md:col-span-6 md:justify-end lg:col-span-7">
-            <Link
-              href={localizedPath("/contact", language)}
-              className="group flex w-full items-center justify-between border-b border-white/30 py-4 text-base font-semibold text-white transition-colors duration-300 hover:border-renaissance-accent md:max-w-sm"
-            >
-              <span>{copy.startProject}</span>
-              <span
-                aria-hidden="true"
-                className="text-xl transition-transform duration-300 group-hover:translate-x-1"
-              >
-                ↗
-              </span>
-            </Link>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-x-6 gap-y-12 border-t border-white/15 py-10 md:grid-cols-4 md:gap-x-10 md:py-12">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-12 py-10 md:grid-cols-4 md:gap-x-10 md:py-12">
           <div>
             <FooterColumnHeading
               index="01"
@@ -340,7 +312,7 @@ async function RenaissanceFooter({
               {services.map((service) => (
                 <li key={service._id ?? service.name}>
                   <Link
-                    href={localizedPath("/#services", language)}
+                    href={localizedPath(`/services#${stegaClean(service.name).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}`, language)}
                     className={footerLinkClassName}
                   >
                     <span aria-hidden="true" className="mt-px text-white/30">
@@ -401,7 +373,10 @@ async function RenaissanceFooter({
         </div>
 
         <div className="flex flex-col gap-5 border-t border-white/15 py-7 text-xs text-white/45 sm:flex-row sm:items-center sm:justify-between">
-          <p>{footer?.copyright || `© ${new Date().getFullYear()} Renaissance`}</p>
+          <div>
+            <p>{footer?.copyright || `© ${new Date().getFullYear()} Renaissance`}</p>
+            {footer?.renaissanceLegalText && <p className="mt-2">{footer.renaissanceLegalText}</p>}
+          </div>
           {socialLinks.length ? (
             <div className="flex flex-wrap gap-x-5 gap-y-2">
               {socialLinks
@@ -420,6 +395,7 @@ async function RenaissanceFooter({
             </div>
           ) : null}
         </div>
+
       </div>
     </footer>
   );
@@ -480,6 +456,9 @@ export default async function RenaissanceSiteWrapper({
               language={language}
               homePage={effectiveHomePage}
             />
+            {footer?.footerExternalBanner && (
+              <RenaissanceFooterExternalBanner data={footer.footerExternalBanner} language={language} />
+            )}
             <ScrollToTop />
           </div>
           {/* </PageWithMapVertical> */}

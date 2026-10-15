@@ -1,0 +1,862 @@
+[
+  {
+    "source": "/project/ea-need-for-speed-influencer-campaign",
+    "destination": "/cases/ea-need-for-speed-influencer-campaign",
+    "permanent": true
+  },
+  {
+    "source": "/project/microsoft-retail-training-per-escape-room",
+    "destination": "/cases/microsoft-retail-training-per-escape-room",
+    "permanent": true
+  },
+  {
+    "source": "/project/snakebyte-pebble-gear-social-media",
+    "destination": "/cases/snakebyte-pebble-gear-social-media",
+    "permanent": true
+  },
+  {
+    "source": "/project/turtle-beach-digital-product-communications",
+    "destination": "/cases/turtle-beach-digital-product-communications",
+    "permanent": true
+  },
+  {
+    "source": "/project/coop-queue-management",
+    "destination": "/cases/coop-queue-management",
+    "permanent": true
+  },
+  {
+    "source": "/project/daikin-energy-bonus",
+    "destination": "/cases/daikin-energy-bonus",
+    "permanent": true
+  },
+  {
+    "source": "/project/microsoft-trainings",
+    "destination": "/cases/microsoft-trainings",
+    "permanent": true
+  },
+  {
+    "source": "/project/ar-showrooms",
+    "destination": "/cases/ar-showrooms",
+    "permanent": true
+  },
+  {
+    "source": "/project/ubs-virtual-treasure-hunt",
+    "destination": "/cases/ubs-virtual-treasure-hunt",
+    "permanent": true
+  },
+  {
+    "source": "/project/schleich-digital-instore-activation",
+    "destination": "/cases/schleich-digital-instore-activation",
+    "permanent": true
+  },
+  {
+    "source": "/project/bandai-namco-pr",
+    "destination": "/cases/bandai-namco-pr",
+    "permanent": true
+  },
+  {
+    "source": "/project/brother-augmented-reality",
+    "destination": "/cases/brother-augmented-reality",
+    "permanent": true
+  },
+  {
+    "source": "/project/epic-games-fortnite-pr",
+    "destination": "/cases/epic-games-fortnite-pr",
+    "permanent": true
+  },
+  {
+    "source": "/project/minimax-virtual-reality-experience",
+    "destination": "/cases/minimax-virtual-reality-experience",
+    "permanent": true
+  },
+  {
+    "source": "/project/microsoft-ecommerce",
+    "destination": "/cases/microsoft-ecommerce",
+    "permanent": true
+  },
+  {
+    "source": "/project/hatch-angrybirdsgo-turboedition-landingpage",
+    "destination": "/cases/hatch-angrybirdsgo-turboedition-landingpage",
+    "permanent": true
+  },
+  {
+    "source": "/project/microsoft-misx-furniture-rollout",
+    "destination": "/cases/microsoft-misx-furniture-rollout",
+    "permanent": true
+  },
+  {
+    "source": "/project/aeg-electrolux-showkitchen-rollout",
+    "destination": "/cases/aeg-electrolux-showkitchen-rollout",
+    "permanent": true
+  },
+  {
+    "source": "/project/mr-showroom",
+    "destination": "/cases/mr-showroom",
+    "permanent": true
+  },
+  {
+    "source": "/project/dotnow-retail-experience",
+    "destination": "/cases/dotnow-retail-experience",
+    "permanent": true
+  },
+  {
+    "source": "/project/erfal-eq3-influencer-cooperations",
+    "destination": "/cases/erfal-eq3-influencer-cooperations",
+    "permanent": true
+  },
+  {
+    "source": "/project/ea-star-wars-battlefront-influencer-marketing",
+    "destination": "/cases/ea-star-wars-battlefront-influencer-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/project/oculus-european-product-launch",
+    "destination": "/cases/oculus-european-product-launch",
+    "permanent": true
+  },
+  {
+    "source": "/project/ea-fifa-pr",
+    "destination": "/cases/ea-fifa-pr",
+    "permanent": true
+  },
+  {
+    "source": "/project/recaro-gaming-social-media-and-pr",
+    "destination": "/cases/recaro-gaming-social-media-and-pr",
+    "permanent": true
+  },
+  {
+    "source": "/project/aeg-electrolux-dishwasher-virtual-reality",
+    "destination": "/cases/aeg-electrolux-dishwasher-virtual-reality",
+    "permanent": true
+  },
+  {
+    "source": "/project/anker-lollapalooza-truck-promotion",
+    "destination": "/cases/anker-lollapalooza-truck-promotion",
+    "permanent": true
+  },
+  {
+    "source": "/project/microsoft-digital-eatery",
+    "destination": "/cases/microsoft-digital-eatery",
+    "permanent": true
+  },
+  {
+    "source": "/project/microsoft-xbox-cassette-player-photo-shoot",
+    "destination": "/cases/microsoft-xbox-cassette-player-photo-shoot",
+    "permanent": true
+  },
+  {
+    "source": "/project/coca-cola-metarcube",
+    "destination": "/cases/coca-cola-metarcube",
+    "permanent": true
+  },
+  {
+    "source": "/project/garmin-esports-cooperation",
+    "destination": "/cases/garmin-esports-cooperation",
+    "permanent": true
+  },
+  {
+    "source": "/project/aeg-electrolux-one2five-review-platform",
+    "destination": "/cases/aeg-electrolux-one2five-review-platform",
+    "permanent": true
+  },
+  {
+    "source": "/project/priokoll-ux-ui-and-branding",
+    "destination": "/cases/priokoll-ux-ui-and-branding",
+    "permanent": true
+  },
+  {
+    "source": "/project/microsoft-expertzone-social-media",
+    "destination": "/cases/microsoft-expertzone-social-media",
+    "permanent": true
+  },
+  {
+    "source": "/project/eppendorf-e-learning-concept",
+    "destination": "/cases/eppendorf-e-learning-concept",
+    "permanent": true
+  },
+  {
+    "source": "/project/migros-ar-digital-loyalty-campaign",
+    "destination": "/cases/migros-ar-digital-loyalty-campaign",
+    "permanent": true
+  },
+  {
+    "source": "/project/jakks-pacifik-harry-potter-magic-wand-activation",
+    "destination": "/cases/jakks-pacifik-harry-potter-magic-wand-activation",
+    "permanent": true
+  },
+  {
+    "source": "/project/samsung-sales-training",
+    "destination": "/cases/samsung-sales-training",
+    "permanent": true
+  },
+  {
+    "source": "/project/ea-the-sims-tiktok-influencer-marketing",
+    "destination": "/cases/ea-the-sims-tiktok-influencer-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/project/bigben-consumer-electronics-activation",
+    "destination": "/cases/bigben-consumer-electronics-activation",
+    "permanent": true
+  },
+  {
+    "source": "/project/warner-bros-lego-games-brand-communication",
+    "destination": "/cases/warner-bros-lego-games-brand-communication",
+    "permanent": true
+  },
+  {
+    "source": "/project/obi-influencer-campaign",
+    "destination": "/cases/obi-influencer-campaign",
+    "permanent": true
+  },
+  {
+    "source": "/project/ernst-klett-verlag-printed-content-enrichment",
+    "destination": "/cases/ernst-klett-verlag-printed-content-enrichment",
+    "permanent": true
+  },
+  {
+    "source": "/project/ea-sims4-influencer-marketing",
+    "destination": "/cases/ea-sims4-influencer-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/project/sparkasse-reviews-and-ratings-strategy",
+    "destination": "/cases/sparkasse-reviews-and-ratings-strategy",
+    "permanent": true
+  },
+  {
+    "source": "/project/hisense-uefa-cashback",
+    "destination": "/cases/hisense-uefa-cashback",
+    "permanent": true
+  },
+  {
+    "source": "/project/ring-retail-marketing",
+    "destination": "/cases/ring-retail-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/project/parrot-retail-marketing",
+    "destination": "/cases/parrot-retail-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/project/reifen-helm-digital-marketing",
+    "destination": "/cases/reifen-helm-digital-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/project/merlin-entertainments-sea-life-digital-queue-entertainment",
+    "destination": "/cases/merlin-entertainments-sea-life-digital-queue-entertainment",
+    "permanent": true
+  },
+  {
+    "source": "/project/anker-and-soundcore-retail-space-experience",
+    "destination": "/cases/anker-and-soundcore-retail-space-experience",
+    "permanent": true
+  },
+  {
+    "source": "/project/expert-augmented-reality-product-experience",
+    "destination": "/cases/expert-augmented-reality-product-experience",
+    "permanent": true
+  },
+  {
+    "source": "/project/tiktok-influencer-campaign",
+    "destination": "/cases/tiktok-influencer-campaign",
+    "permanent": true
+  },
+  {
+    "source": "/project/hermes-arzneimittel-employer-branding",
+    "destination": "/cases/hermes-arzneimittel-employer-branding",
+    "permanent": true
+  },
+  {
+    "source": "/project/avm-shelf-system-optimization",
+    "destination": "/cases/avm-shelf-system-optimization",
+    "permanent": true
+  },
+  {
+    "source": "/project/nespresso-okr-vizualization",
+    "destination": "/cases/nespresso-okr-vizualization",
+    "permanent": true
+  },
+  {
+    "source": "/project/riot-games-valorant-gen-z-advent-calendar",
+    "destination": "/cases/riot-games-valorant-gen-z-advent-calendar",
+    "permanent": true
+  },
+  {
+    "source": "/project/warner-pr-experiential-events",
+    "destination": "/cases/warner-pr-experiential-events",
+    "permanent": true
+  },
+  {
+    "source": "/project/edeka-influencer-marketing",
+    "destination": "/cases/edeka-influencer-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/project/merlin-skreeens-digital-signage",
+    "destination": "/cases/merlin-skreeens-digital-signage",
+    "permanent": true
+  },
+  {
+    "source": "/project/riot-games-social-media-activation",
+    "destination": "/cases/riot-games-social-media-activation",
+    "permanent": true
+  },
+  {
+    "source": "/project/ubs-global-employer-branding",
+    "destination": "/cases/ubs-global-employer-branding",
+    "permanent": true
+  },
+  {
+    "source": "/project/can-do-marketing-strategy",
+    "destination": "/cases/can-do-marketing-strategy",
+    "permanent": true
+  },
+  {
+    "source": "/project/acer-social-media",
+    "destination": "/cases/acer-social-media",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/turtle-beach-digitale-produkt-kommunikation",
+    "destination": "/de/cases/turtle-beach-digitale-produkt-kommunikation",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/microsoft-expertzone-social-media",
+    "destination": "/de/cases/microsoft-expertzone-social-media",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/anker-und-soundcore-retail-space-experience",
+    "destination": "/de/cases/anker-und-soundcore-retail-space-experience",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/ea-star-wars-battlefront-influencer-marketing",
+    "destination": "/de/cases/ea-star-wars-battlefront-influencer-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/eppendorf-e-learning",
+    "destination": "/de/cases/eppendorf-e-learning",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/microsoft-xbox-cassette-player-fotoshooting",
+    "destination": "/de/cases/microsoft-xbox-cassette-player-fotoshooting",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/riot-games-valorant-gen-z-adventskalender",
+    "destination": "/de/cases/riot-games-valorant-gen-z-adventskalender",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/expert-augmented-reality-produkterlebnis",
+    "destination": "/de/cases/expert-augmented-reality-produkterlebnis",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/brother-augmented-reality",
+    "destination": "/de/cases/brother-augmented-reality",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/retail-training-per-escape-room",
+    "destination": "/de/cases/retail-training-per-escape-room",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/ea-need-for-speed-influencer-kampagne",
+    "destination": "/de/cases/ea-need-for-speed-influencer-kampagne",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/hatch-angrybirdsgo-turboedition-landingpage",
+    "destination": "/de/cases/hatch-angrybirdsgo-turboedition-landingpage",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/ubs-virtuelle-treasure-hunt",
+    "destination": "/de/cases/ubs-virtuelle-treasure-hunt",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/anker-lollapalooza-truck-promotion",
+    "destination": "/de/cases/anker-lollapalooza-truck-promotion",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/dotnow-retail-experience",
+    "destination": "/de/cases/dotnow-retail-experience",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/hisense-uefa-cashback-kampagne",
+    "destination": "/de/cases/hisense-uefa-cashback-kampagne",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/hermes-arzneimittel-employer-branding",
+    "destination": "/de/cases/hermes-arzneimittel-employer-branding",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/minimax-virtual-reality-videoerlebnis",
+    "destination": "/de/cases/minimax-virtual-reality-videoerlebnis",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/garmin-esports-kooperation",
+    "destination": "/de/cases/garmin-esports-kooperation",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/microsoft-ecommerce",
+    "destination": "/de/cases/microsoft-ecommerce",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/recaro-gaming-social-media-und-pr",
+    "destination": "/de/cases/recaro-gaming-social-media-und-pr",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/aeg-electrolux-one2five-review-plattform",
+    "destination": "/de/cases/aeg-electrolux-one2five-review-plattform",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/merlin-entertainments-digital-signage-terminals",
+    "destination": "/de/cases/merlin-entertainments-digital-signage-terminals",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/ubs-global-employer-branding",
+    "destination": "/de/cases/ubs-global-employer-branding",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/samsung-sales-training",
+    "destination": "/de/cases/samsung-sales-training",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/microsoft-misx-moebel-rollout",
+    "destination": "/de/cases/microsoft-misx-moebel-rollout",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/edeka-influencer-marketing",
+    "destination": "/de/cases/edeka-influencer-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/merlin-skreeens-digital-signage",
+    "destination": "/de/cases/merlin-skreeens-digital-signage",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/schleich-digitale-instore-activation",
+    "destination": "/de/cases/schleich-digitale-instore-activation",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/coca-cola-metarcube",
+    "destination": "/de/cases/coca-cola-metarcube",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/ernst-klett-verlag-content-enrichment-fuer-printprodukte",
+    "destination": "/de/cases/ernst-klett-verlag-content-enrichment-fuer-printprodukte",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/erfal-eq3-influencer-kooperationen",
+    "destination": "/de/cases/erfal-eq3-influencer-kooperationen",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/parrot-retail-marketing",
+    "destination": "/de/cases/parrot-retail-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/bigben-consumer-electronics-activation",
+    "destination": "/de/cases/bigben-consumer-electronics-activation",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/riot-games-social-media-aktivierung",
+    "destination": "/de/cases/riot-games-social-media-aktivierung",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/aeg-electrolux-dishwasher-virtual-reality",
+    "destination": "/de/cases/aeg-electrolux-dishwasher-virtual-reality",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/tiktok-influencer-kampagne",
+    "destination": "/de/cases/tiktok-influencer-kampagne",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/microsoft-digital-eatery",
+    "destination": "/de/cases/microsoft-digital-eatery",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/microsoft-trainings",
+    "destination": "/de/cases/microsoft-trainings",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/migros-digitale-ar-loyalty-kampagne",
+    "destination": "/de/cases/migros-digitale-ar-loyalty-kampagne",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/ar-showrooms",
+    "destination": "/de/cases/ar-showrooms",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/bandai-namco-pr",
+    "destination": "/de/cases/bandai-namco-pr",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/ring-retail-marketing",
+    "destination": "/de/cases/ring-retail-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/foerde-sparkasse-reviews-und-ratings-strategie",
+    "destination": "/de/cases/foerde-sparkasse-reviews-und-ratings-strategie",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/acer-social-media",
+    "destination": "/de/cases/acer-social-media",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/epic-games-fortnite-pr",
+    "destination": "/de/cases/epic-games-fortnite-pr",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/jakks-pacifik-harry-potter-zauberstab-activation",
+    "destination": "/de/cases/jakks-pacifik-harry-potter-zauberstab-activation",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/reifen-helm-digital-marketing",
+    "destination": "/de/cases/reifen-helm-digital-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/coop-kvicki-q-warteschlangen-management",
+    "destination": "/de/cases/coop-kvicki-q-warteschlangen-management",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/decivisual-ux-ui-und-branding",
+    "destination": "/de/cases/decivisual-ux-ui-und-branding",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/ea-fifa-pr",
+    "destination": "/de/cases/ea-fifa-pr",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/daikin-b2c-b2b-energie-bonus",
+    "destination": "/de/cases/daikin-b2c-b2b-energie-bonus",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/warner-bros-lego-games-brand-communication",
+    "destination": "/de/cases/warner-bros-lego-games-brand-communication",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/obi-micro-influencer-kampagne",
+    "destination": "/de/cases/obi-micro-influencer-kampagne",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/snakebyte-pebble-gear-social-media",
+    "destination": "/de/cases/snakebyte-pebble-gear-social-media",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/nespresso-okr-visualisierung",
+    "destination": "/de/cases/nespresso-okr-visualisierung",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/can-do-marketingstrategie",
+    "destination": "/de/cases/can-do-marketingstrategie",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/avm-pos-optimierung",
+    "destination": "/de/cases/avm-pos-optimierung",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/electrolux-showkuechen-rollout",
+    "destination": "/de/cases/electrolux-showkuechen-rollout",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/warner-pr-experiential-events",
+    "destination": "/de/cases/warner-pr-experiential-events",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/ea-die-sims-tiktok-influencer-marketing",
+    "destination": "/de/cases/ea-die-sims-tiktok-influencer-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/oculus-produkt-launch-europa",
+    "destination": "/de/cases/oculus-produkt-launch-europa",
+    "permanent": true
+  },
+  {
+    "source": "/de/project/ea-sims4-influencer-marketing",
+    "destination": "/de/cases/ea-sims4-influencer-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/service/social-media",
+    "destination": "/services/social-media",
+    "permanent": true
+  },
+  {
+    "source": "/service/pr",
+    "destination": "/services/pr",
+    "permanent": true
+  },
+  {
+    "source": "/service/influencer-marketing",
+    "destination": "/services/influencer-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/service/pos-marketing",
+    "destination": "/services/pos-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/service/review-platform",
+    "destination": "/services/review-platform",
+    "permanent": true
+  },
+  {
+    "source": "/service/augmented-and-virtual-reality",
+    "destination": "/services/augmented-and-virtual-reality",
+    "permanent": true
+  },
+  {
+    "source": "/service/couplar",
+    "destination": "/services/couplar",
+    "permanent": true
+  },
+  {
+    "source": "/service/ar-link",
+    "destination": "/services/ar-link",
+    "permanent": true
+  },
+  {
+    "source": "/service/digital-signage",
+    "destination": "/services/digital-signage",
+    "permanent": true
+  },
+  {
+    "source": "/service/training",
+    "destination": "/services/training",
+    "permanent": true
+  },
+  {
+    "source": "/service/development",
+    "destination": "/services/development",
+    "permanent": true
+  },
+  {
+    "source": "/service/experiential-marketing",
+    "destination": "/services/experiential-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/service/strategy",
+    "destination": "/services/strategy",
+    "permanent": true
+  },
+  {
+    "source": "/service/content-creation",
+    "destination": "/services/content-creation",
+    "permanent": true
+  },
+  {
+    "source": "/service/cashback-solutions",
+    "destination": "/services/cashback-solutions",
+    "permanent": true
+  },
+  {
+    "source": "/service/mixed-reality-in-manufacturing",
+    "destination": "/services/mixed-reality-in-manufacturing",
+    "permanent": true
+  },
+  {
+    "source": "/service/hashtaglove",
+    "destination": "/services/hashtaglove",
+    "permanent": true
+  },
+  {
+    "source": "/de/service/hashtaglove",
+    "destination": "/de/services/hashtaglove",
+    "permanent": true
+  },
+  {
+    "source": "/de/service/social-media",
+    "destination": "/de/services/social-media",
+    "permanent": true
+  },
+  {
+    "source": "/de/service/pr",
+    "destination": "/de/services/pr",
+    "permanent": true
+  },
+  {
+    "source": "/de/service/influencer-marketing",
+    "destination": "/de/services/influencer-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/de/service/pos-marketing",
+    "destination": "/de/services/pos-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/de/service/review-plattform",
+    "destination": "/de/services/review-plattform",
+    "permanent": true
+  },
+  {
+    "source": "/de/service/augmented-and-virtual-reality",
+    "destination": "/de/services/augmented-and-virtual-reality",
+    "permanent": true
+  },
+  {
+    "source": "/de/service/couplar",
+    "destination": "/de/services/couplar",
+    "permanent": true
+  },
+  {
+    "source": "/de/service/ar-link",
+    "destination": "/de/services/ar-link",
+    "permanent": true
+  },
+  {
+    "source": "/de/service/digital-signage",
+    "destination": "/de/services/digital-signage",
+    "permanent": true
+  },
+  {
+    "source": "/de/service/training",
+    "destination": "/de/services/training",
+    "permanent": true
+  },
+  {
+    "source": "/de/service/development",
+    "destination": "/de/services/development",
+    "permanent": true
+  },
+  {
+    "source": "/de/service/experiential-marketing",
+    "destination": "/de/services/experiential-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/de/service/strategy",
+    "destination": "/de/services/strategy",
+    "permanent": true
+  },
+  {
+    "source": "/de/service/content-kreation",
+    "destination": "/de/services/content-kreation",
+    "permanent": true
+  },
+  {
+    "source": "/de/service/cashback-services",
+    "destination": "/de/services/cashback-services",
+    "permanent": true
+  },
+  {
+    "source": "/business-units/communications",
+    "destination": "/units/communications",
+    "permanent": true
+  },
+  {
+    "source": "/business-units/channel-marketing",
+    "destination": "/units/channel-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/business-units/ar-vr-labs",
+    "destination": "/units/xr-labs",
+    "permanent": true
+  },
+  {
+    "source": "/business-units/technology-systems",
+    "destination": "/units/technology-systems",
+    "permanent": true
+  },
+  {
+    "source": "/de/business-units/communications",
+    "destination": "/de/units/communications",
+    "permanent": true
+  },
+  {
+    "source": "/de/business-units/channel-marketing",
+    "destination": "/de/units/channel-marketing",
+    "permanent": true
+  },
+  {
+    "source": "/de/business-units/ar-vr-labs",
+    "destination": "/de/units/xr-labs",
+    "permanent": true
+  },
+  {
+    "source": "/de/business-units/technologysystems",
+    "destination": "/de/units/technology-systems",
+    "permanent": true
+  },
+  {
+    "source": "/business-units",
+    "destination": "/units",
+    "permanent": true
+  },
+  {
+    "source": "/services-products",
+    "destination": "/services",
+    "permanent": true
+  },
+  {
+    "source": "/de/business-units",
+    "destination": "/de/units",
+    "permanent": true
+  },
+  {
+    "source": "/de/services-products",
+    "destination": "/de/services",
+    "permanent": true
+  }
+]

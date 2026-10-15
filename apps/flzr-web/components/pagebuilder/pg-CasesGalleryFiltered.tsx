@@ -39,6 +39,7 @@ interface CasesGalleryFilteredProps {
   navPointName?: string;
   selectionMode?: "auto" | "manual";
   selectedCases?: SelectedCaseReference[];
+  inheritSectionSurface?: boolean;
 }
 
 function CasesGalleryFiltered({
@@ -48,6 +49,7 @@ function CasesGalleryFiltered({
   paddingY = "16",
   marginBottom = "16",
   navPointName,
+  inheritSectionSurface = false,
 }: CasesGalleryFilteredProps) {
   const t = getTranslations(locale);
 
@@ -90,19 +92,19 @@ function CasesGalleryFiltered({
       ? filterAllText
       : serviceMap.get(activeFilter)?.name || activeFilter;
 
-  const paddingClass = `py-${paddingY}`;
-  const marginClass = `mb-${marginBottom}`;
+  const paddingClass = inheritSectionSurface ? "py-4 md:py-6" : `py-${paddingY}`;
+  const marginClass = inheritSectionSurface ? "" : `mb-${marginBottom}`;
 
   return (
     <div
       id={sectionId}
       data-navpoint-name={navPointName}
-      className={`grid grid-cols-12 z-1 mx-auto  container ${marginClass} relative font-flzr`}
+      className={`grid grid-cols-12 z-1 mx-auto ${inheritSectionSurface ? "w-full" : "container"} ${marginClass} relative font-flzr`}
     >
       <div
-        className={`z-1 grid gap-responsive col-span-12 ${paddingClass} col-start-1 container row-start-1 grid-cols-12`}
+        className={`z-1 grid gap-responsive col-span-12 ${paddingClass} col-start-1 ${inheritSectionSurface ? "w-full" : "container"} row-start-1 grid-cols-12`}
       >
-        <div className="z-1 col-span-12 col-start-1 px-4 md:px-0">
+        <div className={`z-1 col-span-12 col-start-1 ${inheritSectionSurface ? "" : "px-4 md:px-0"}`}>
           {/* Filter Buttons */}
           {showFilters && filters.length > 1 && (
             <div className="flex flex-wrap gap-4 mb-8 justify-center  md:justify-start">

@@ -4,7 +4,6 @@ import HeaderImageVideoComp from "@renaissance/components/data/Fragments/data-He
 import StaggeredSlideUp from "@renaissance/components/ui/StaggeredSlideUp";
 import LineMinimap, { NavPoint } from "@renaissance/components/ui/MapVertical";
 import { CasePageBuilder } from "@renaissance/components/CasePageBuilder";
-import CasePoweredByContact from "@renaissance/components/pagebuilder/cases/pg-CasePoweredByContact";
 import { getTranslations } from "@1sp/utils/translations";
 import type { CaseStudyData } from "@1sp/sanity-types";
 import { hasVisibleText } from "@1sp/utils/text-content";
@@ -73,11 +72,11 @@ export default function CaseStudyPageClient({
     (caseStudy.mainImage &&
       (caseStudy.mainImage.secure_url || caseStudy.mainImage.url)) ||
     (caseStudy.mainImageUrl as string | undefined) ||
-    "/placeholder.jpg";
+    null;
 
   return (
     <>
-      <section className="relative h-[95vh] w-full overflow-hidden  mx-auto">
+      <section className="relative min-h-[95svh] w-full overflow-hidden bg-renaissance-ink mx-auto">
         <LineMinimap navPoints={navPoints} />
 
         {/* Background Image with Overlay */}
@@ -89,19 +88,19 @@ export default function CaseStudyPageClient({
             opacity="opacity-70"
             enableVertical={caseStudy.isVerticalVideo}
           />
-        ) : (
+        ) : mainImageUrl ? (
           <HeaderImageVideoComp
             useVideo={false}
             imageSrc={mainImageUrl}
             enableParallax={true}
             opacity="opacity-50"
           />
-        )}
+        ) : null}
 
 
         {/* Hero Content */}
         <div id={t.ids.top} className="" />
-        <div className="relative container flex flex-col justify-end  h-full z-20  mx-auto px-4 sm:px-6 md:px-8 lg:px-0">
+        <div className="relative container flex flex-col justify-end min-h-[95svh] z-20 mx-auto px-6 py-16 sm:px-8 lg:px-12">
           <StaggeredSlideUp
             delay={0.4}
             className="max-w-full flex flex-col gap-3 sm:gap-4 lg:max-w-2/3 "
@@ -116,9 +115,9 @@ export default function CaseStudyPageClient({
             </h1>
 
             {hasVisibleText(caseStudy.description) && (
-              <h3 className="text-neutral-50 w-full sm:w-3/4 md:w-1/2 pb-2 text-base sm:text-lg md:text-xl leading-relaxed">
+              <p className="text-neutral-50 w-full sm:w-3/4 md:w-1/2 pb-2 text-base sm:text-lg md:text-xl leading-relaxed">
                 {caseStudy.description}
-              </h3>
+              </p>
             )}
             {/* Display Unit Logos if available */}
             {caseStudy.units && caseStudy.units.length > 0 && (
@@ -153,7 +152,6 @@ export default function CaseStudyPageClient({
           <CasePageBuilder content={caseStudy.casesPageBuilder} />
         )}
 
-      <CasePoweredByContact caseStudy={caseStudy} locale={locale} />
     </>
   );
 }

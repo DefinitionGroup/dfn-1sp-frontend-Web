@@ -1,3 +1,5 @@
+import {JsonLdScript, CANONICAL_URL} from '@msm/lib/structured-data';
+import {buildMsmMetadata, buildMsmRouteMetadata} from '@msm/lib/metadata';
 /**
  * Dynamic Page
  * ============
@@ -22,17 +24,17 @@
  * - Canonical URLs prevent duplicate content across locales
  * - Full OpenGraph + Twitter card metadata for social sharing
  */
+import {notFound, permanentRedirect} from "next/navigation";
 import MsmPageBuilder from "@msm/components/MsmPageBuilder";
 // import CookieDeclaration from "@/components/CookieDeclaration";
 import { getAllCases, getAllPageSlugs, getAllServicesForChannel, getPageBySlug } from "@1sp/sanity-queries";
 import NotFound from "@msm/components/ui/not-found";
 import MsmSiteWrapper from "@msm/components/MsmSiteWrapper";
-import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
-  JsonLdScript,
   generateWebPageJsonLd,
+  generateContactPageJsonLd,
   generateBreadcrumbJsonLd,
   generateItemListJsonLd,
   generateServiceCatalogJsonLd,
@@ -46,7 +48,6 @@ import {
   extractUnitsFromContent,
   generateUnitsListJsonLd,
   getBreadcrumbLabel,
-  CANONICAL_URL,
 } from "@/lib/structured-data";
 
 // Allow new pages to be rendered on-demand (ISR)
@@ -59,7 +60,7 @@ export async function generateStaticParams() {
   const pages = await getAllPageSlugs();
 
   return pages
-    .filter((page) => page.channel === "msmWeb")
+    .filter((page) => page.channel === "msmWeb" && !page.slug.includes("/"))
     .map((page) => ({
       locale: page.language || "en",
       slug: page.slug,
@@ -79,47 +80,10 @@ export async function generateMetadata({
   const page = await getPageBySlug(slug, channel, language);
 
   if (!page) {
-    return {
-      title: "Page not found",
-    };
+    return buildMsmMetadata({title: 'Page not found', metadata: {noIndex: true}});
   }
 
-  const title = page.metadata?.title || page.title;
-  const description = page.metadata?.description;
-  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
-
-  const ogImages = ogImageUrl
-    ? [
-      {
-        url: ogImageUrl,
-        width: 1200,
-        height: 630,
-        alt: title,
-      },
-    ]
-    : [];
-
-  return {
-    title,
-    description,
-    keywords: page.metadata?.keywords ?? undefined,
-    alternates: {
-      canonical: `/${slug}`,
-    },
-    openGraph: {
-      title,
-      description: description || undefined,
-      locale: language,
-      type: "website",
-      images: ogImages,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description: description || undefined,
-      images: ogImages.map((img) => img.url),
-    },
-  };
+  return buildMsmRouteMetadata({locale: language, path: slug, documentId: page._id, title: page.title, metadata: page.metadata});
 }
 
 export default async function Page({
@@ -135,13 +99,9 @@ export default async function Page({
   // Uses cached fetch - deduped with generateMetadata call
   const page = await getPageBySlug(slug, channel, language);
 
-  if (!page) {
-    return (
-      <MsmSiteWrapper language={language} navColor="dark">
-        <NotFound />
-      </MsmSiteWrapper>
-    );
-  }
+  if (!page) notFound();
+  // The homepage document also has a slug (e.g. /homepage); keep a single indexable URL at the locale root.
+  if (page.isHomepage) permanentRedirect(language === "en" ? "/" : `/${language}`);
 
   const navbarVariant = page?.navbarVariant || "light";
   const contentBlocks = page?.content as any[] | undefined;
@@ -158,23 +118,29 @@ export default async function Page({
   const caseItems = extractCaseItemsFromContent(contentBlocks, mapCasesToItemList(allCasesRaw));
   const services = mapServicesToCatalogItems(allServicesRaw);
   const pageUrl = `${CANONICAL_URL}/${slug}`;
-  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
+  const resolvedMetadata = buildMsmMetadata({locale: language, path: slug, title: page?.title, metadata: page?.metadata});
+  const ogImageUrl = (resolvedMetadata.openGraph as {images: {url: string}[]}).images[0].url;
 
   return (
     <MsmSiteWrapper language={language} navColor={navbarVariant}>
       {/* Structured Data (JSON-LD) */}
       {page && (
         <>
-          <JsonLdScript
-            data={generateWebPageJsonLd({
-              title: page.metadata?.title || page.title || slug,
+          <JsonLdScript locale={language} metadata={resolvedMetadata}
+            data={slug === 'contact' ? generateContactPageJsonLd({
+              locale: language,
+              title: String(resolvedMetadata.title),
+              description: resolvedMetadata.description || undefined,
+            }) : generateWebPageJsonLd({
+              title: String(resolvedMetadata.title),
               slug,
-              description: page.metadata?.description,
+              description: resolvedMetadata.description || undefined,
               locale: language,
               imageUrl: ogImageUrl,
+              canonicalUrl: CANONICAL_URL,
             })}
           />
-          <JsonLdScript
+          <JsonLdScript locale={language} metadata={resolvedMetadata}
             data={generateBreadcrumbJsonLd([
               {
                 name: getBreadcrumbLabel(language, "home"),
@@ -188,7 +154,7 @@ export default async function Page({
           />
           {/* ItemList for case carousels / galleries on this page */}
           {caseItems.length > 0 && (
-            <JsonLdScript
+            <JsonLdScript locale={language} metadata={resolvedMetadata}
               data={generateItemListJsonLd({
                 items: caseItems,
                 locale: language,
@@ -197,7 +163,7 @@ export default async function Page({
             />
           )}
           {services.length > 0 && (
-            <JsonLdScript
+            <JsonLdScript locale={language} metadata={resolvedMetadata}
               data={generateServiceCatalogJsonLd({
                 services,
                 locale: language,
@@ -210,11 +176,11 @@ export default async function Page({
           {/* Person & Unit structured data from page builder content */}
           {(() => {
             const people = extractPeopleFromContent(contentBlocks);
-            return people.length > 0 ? <JsonLdScript data={generatePeopleListJsonLd({ people })} /> : null;
+            return people.length > 0 ? <JsonLdScript locale={language} metadata={resolvedMetadata} data={generatePeopleListJsonLd({ people })} /> : null;
           })()}
           {(() => {
             const units = extractUnitsFromContent(contentBlocks);
-            return units.length > 0 ? <JsonLdScript data={generateUnitsListJsonLd({ units })} /> : null;
+            return units.length > 0 ? <JsonLdScript locale={language} metadata={resolvedMetadata} data={generateUnitsListJsonLd({ units })} /> : null;
           })()}
         </>
       )}

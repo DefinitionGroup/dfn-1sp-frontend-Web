@@ -162,10 +162,21 @@ async function handleRevalidation(body: SanityWebhookBody) {
     // were tagged with that specific tag, regardless of which page they're on.
 
     switch (_type) {
+        case "renaissanceSharedPortraits":
+        case "renaissanceSharedAwards":
+        case "renaissanceClientCollection":
         case "oneSpComponentGroup":
             // A reusable group can be referenced by pages in every frontend.
             revalidateTag("pages", "max");
             revalidatedTags.push("pages");
+            pushPath("/", "layout");
+            break;
+
+        case "renaissanceXPost":
+            // The newest post is embedded in the homepage news banner query.
+            revalidateTag("xPosts", "max");
+            revalidateTag("pages", "max");
+            revalidatedTags.push("xPosts", "pages");
             pushPath("/", "layout");
             break;
 
@@ -273,6 +284,16 @@ async function handleRevalidation(body: SanityWebhookBody) {
             revalidatedTags.push("pages");
 
             pushPath("/", "layout");
+    }
+
+    // Published reads stay cached until this webhook runs (the timer in
+    // `cache-policy.ts` is only a fallback), so every publish expires the
+    // whole site through the root layout's implicit tag. That also covers
+    // references and fetch tags the switch above does not know. Pages
+    // rebuild on their next visit, so a burst of publishes costs at most one
+    // rebuild per visited page.
+    if (!revalidatedPaths.includes("/ (layout)")) {
+        pushPath("/", "layout");
     }
 
     // Log what was revalidated for debugging

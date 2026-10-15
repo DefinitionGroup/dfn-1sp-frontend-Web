@@ -1,3 +1,7 @@
+import InteractiveServiceCarouselBlock from "./pagebuilder/server/InteractiveServiceCarouselBlock";
+import {cleanMsmPreviewControls} from "@msm/lib/preview-controls";
+import MsmServiceDirectory from "./pagebuilder/server/MsmServiceDirectory";
+import ResultsMetrics from "./pagebuilder/cases/pg-ResultsMetrics";
 import React, { Suspense } from "react";
 import dynamic from "next/dynamic";
 import type {
@@ -19,6 +23,10 @@ import HeadlineChallenge from "./pagebuilder/cases/pg-HeadlineChallenge";
 import ComponentLoader from "@msm/components/ui/ComponentLoader";
 import DeferredSection from "@msm/components/ui/DeferredSection";
 import OneSpScope from "@/components/onesp-group/OneSpScope";
+import MsmFooterExternalBanner from "./MsmFooterExternalBanner";
+import MsmMediaFeature from "./pagebuilder/pg-MsmMediaFeature";
+import MsmSocialLinks from "./pagebuilder/pg-MsmSocialLinks";
+import type {MsmSocialLinksComponent} from "@1sp/sanity-types";
 
 const CanonicalOneSpPageBuilder = dynamic(
   () => import("@/components/PageBuilder").then((module) => module.PageBuilder),
@@ -248,7 +256,15 @@ const UnitLogoGrid = dynamic(
   }
 );
 const PageBuilderPersonioJobs = dynamic(
-  () => import("./pagebuilder/pg-PageBuilderPersonioJobs"),
+  () => import("./pagebuilder/server/PersonioJobsBlock"),
+  {
+    loading: () => <ComponentLoader />,
+    ssr: true,
+  }
+);
+
+const MsmUnitsGridBlock = dynamic(
+  () => import("./units/MsmUnitsGridBlock"),
   {
     loading: () => <ComponentLoader />,
     ssr: true,
@@ -272,7 +288,8 @@ export function PageBuilder({
 }: PageBuilderProps) {
   if (!Array.isArray(content) || content.length === 0) return null;
 
-  const renderBlock = (block: any, i: number, isDeferred = false) => {
+  const renderBlock = (rawBlock: any, i: number, isDeferred = false) => {
+    const block = cleanMsmPreviewControls(rawBlock);
     if (!block?._type) return null;
 
     const key = block._key ?? `${block._type}-${i}`;
@@ -315,7 +332,7 @@ export function PageBuilder({
           case "contentSection":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <ContentSection key={key} data={block} />
+                <ContentSection key={key} data={block} language={language} />
               </ErrorBoundary>
             );
           case "twoColContentSection":
@@ -418,7 +435,7 @@ export function PageBuilder({
           case "smartPeople":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <SmartPeople key={key} {...(block as any)} channel={channel} />
+                <SmartPeople key={key} {...(block as any)} channel={channel} language={language} />
               </ErrorBoundary>
             );
           case "smartUnitsGallery":
@@ -442,7 +459,7 @@ export function PageBuilder({
           case "globeComponent":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <GlobeComponent key={key} data={block as any} />
+                <GlobeComponent key={key} data={block as any} language={language} />
               </ErrorBoundary>
             );
           case "casesIntro":
@@ -503,15 +520,13 @@ export function PageBuilder({
               return null;
             }
 
-            const dataChannel = block.dataScope === "1spWeb" ? "1spWeb" : channel;
-
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <OneSpScope groupId={group._id}>
                   <CanonicalOneSpPageBuilder
                     content={group.content}
                     language={language}
-                    channel={dataChannel}
+                    channel="1spWeb"
                     groupDepth={1}
                   />
                 </OneSpScope>
@@ -522,6 +537,12 @@ export function PageBuilder({
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <UnitLogoGrid key={key} {...(block as any)} language={language} />
+              </ErrorBoundary>
+            );
+          case "footerExternalBanner":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <MsmFooterExternalBanner data={block} language={language} />
               </ErrorBoundary>
             );
           case "pageBuilderLogoFloat":
@@ -544,13 +565,38 @@ export function PageBuilder({
                 />
               </ErrorBoundary>
             );
+          case "msmUnitsGrid":
+            return channel === "msmWeb" ? (
+              <ErrorBoundary key={`error-${key}`}>
+                <MsmUnitsGridBlock key={key} {...block} language={language} channel={channel} />
+              </ErrorBoundary>
+            ) : null;
 
+          case "interactiveServiceCarousel":
+            return <InteractiveServiceCarouselBlock key={key} {...block} language={language} channel={channel} />;
+          case "msmMediaFeature":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <MsmMediaFeature key={key} {...(block as any)} language={language} />
+              </ErrorBoundary>
+            );
+          case "msmServiceDirectory":
+            return <MsmServiceDirectory key={key} {...block} language={language} />;
+          case "msmSocialLinks":
+            return <MsmSocialLinks key={key} data={block as MsmSocialLinksComponent} language={language} />;
+          case "resultsMetrics":
+            return <ResultsMetrics key={key} {...block} />;
           default:
             return null;
     }
   };
 
-  const eagerCount = renderMode === "deferred"
+  // Consent controls must remain available when navigating or jumping past
+  // a long privacy policy, without depending on an observer placeholder.
+  const hasCookieDeclaration = content.some(block =>
+    block._type === "contentSection" && "showCookieDeclaration" in block && block.showCookieDeclaration === true
+  );
+  const eagerCount = renderMode === "deferred" || hasCookieDeclaration
     ? content.length
     : Number.isFinite(deferAfter)
     ? Math.max(0, Math.min(content.length, deferAfter))

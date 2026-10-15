@@ -1,0 +1,42 @@
+{
+  "completedAt": "2026-09-20T11:16:48.917Z",
+  "projectId": "wu6i3y0h",
+  "dataset": "production",
+  "channel": "msmWeb",
+  "documentsPublished": 430,
+  "types": {
+    "person": 24,
+    "client": 94,
+    "services": 33,
+    "caseStudy": 127,
+    "page": 47,
+    "msmUnit": 8,
+    "translation.metadata": 97
+  },
+  "remainingMsmDrafts": 0,
+  "unrelatedDocumentsUnchanged": true,
+  "otherChannelEditionsUnchanged": true,
+  "sharedPortraitsAdded": 10,
+  "remainingUnrelatedDrafts": 10,
+  "attributes": {
+    "value": 1567,
+    "limit": 2000,
+    "unit": "number"
+  },
+  "summaries": [
+    {
+      "language": "en",
+      "cases": 69,
+      "homepageBlocks": 11,
+      "units": 4,
+      "serviceAndLegalRoutes": true
+    },
+    {
+      "language": "de",
+      "cases": 63,
+      "homepageBlocks": 8,
+      "units": 4,
+      "serviceAndLegalRoutes": true
+    }
+  ]
+}

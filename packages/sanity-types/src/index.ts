@@ -1,4 +1,5 @@
 export type SanityID = string;
+export type { FooterExternalBannerData, FooterExternalBannerUnit } from "./footerExternalBanner";
 
 export type Reference<T = any> = { _ref: SanityID; _type?: string };
 
@@ -17,6 +18,12 @@ export interface CloudinaryImage {
     focusMode?: "auto" | "manual";
     focusX?: number;
     focusY?: number;
+}
+
+export interface SanityImage {
+    _type?: "image";
+    asset?: Reference;
+    alt?: string;
 }
 
 /* Global / Shared objects */
@@ -69,9 +76,16 @@ export interface CardItem {
 }
 
 export interface CarouselItem {
+    id?: string | number;
     title?: string;
     subtitle?: string;
     image?: CloudinaryAsset;
+    video?: CloudinaryAsset;
+    description?: string;
+    category?: string;
+    logoSrc?: CloudinaryAsset;
+    logo?: CloudinaryAsset;
+    linkHref?: string;
     cta?: CTA;
 }
 
@@ -82,6 +96,27 @@ export interface Cards {
 
 export interface Carousel {
     items?: CarouselItem[];
+}
+
+export interface RenaissanceCarouselCase {
+    _id: string;
+    title?: string;
+    subtitle?: string;
+    description?: string;
+    slug?: {current?: string};
+    mainImage?: CloudinaryAsset;
+    mainVideo?: CloudinaryAsset;
+    mainImageUrl?: string;
+    mainVideoUrl?: string;
+}
+
+export interface RenaissanceCaseCarousel {
+    _type?: "renaissanceCaseCarousel";
+    _key?: string;
+    caseStudies?: RenaissanceCarouselCase[];
+    autoAdvance?: boolean;
+    navPointName?: string;
+    hideFromNav?: boolean;
 }
 
 /* Gallery step types (union of specific step objects) */
@@ -226,6 +261,7 @@ export interface GalleryPeopleStep extends GalleryBase {
 }
 
 export interface IntroBlockTypoSophisticated {
+    renaissanceHeadingTag?: "h1" | "h2";
     _type?: "introBlockTypoSophisticated";
     header?: {
         superText?: string;
@@ -234,11 +270,15 @@ export interface IntroBlockTypoSophisticated {
         uniquePeopleText?: string;
     };
     description?: string;
+    renaissanceLayout?: "editorial" | "compact";
     navPointName?: string;
     hideFromNav?: boolean;
 }
 
 export interface CardInsideComponent {
+    mediaPosition?: string;
+    serviceConfigured?: boolean;
+    service?: Service | null;
     _key?: string;
     _type?: "cardInsideComponent";
     media?: CloudinaryAsset;
@@ -294,6 +334,7 @@ export interface ShowtimeGallery {
 export interface HeroShowtime {
     heading?: string;
     headingTag?: "h1" | "h2";
+    logoImage?: SanityImage;
     subheading?: string;
     initialValue?: string;
     paragraphs?: string[];
@@ -325,6 +366,7 @@ export interface ContentSection {
     showGridBackground?: boolean;
     paddingY?: string;
     navPointName?: string;
+    presentation?: "default" | "globeOverlay";
 }
 
 export interface OneSpComponentGroup {
@@ -340,7 +382,165 @@ export interface OneSpComponentGroupReference {
     _type: "oneSpComponentGroupReference";
     _key?: string;
     group?: OneSpComponentGroup | null;
+    /** @deprecated Reusable 1SP groups always use canonical 1SP data. */
     dataScope?: "hostChannel" | "1spWeb";
+}
+
+export type FlzrSectionSurfaceTone = "paper" | "soft" | "fade";
+
+export interface FlzrSectionBand {
+    _type: "flzrSectionBand";
+    _key?: string;
+    mode?: "section" | "reset";
+    surfaceTone?: FlzrSectionSurfaceTone;
+    showBadge?: boolean;
+    badgeNumber?: string;
+    badgeLabel?: string;
+}
+
+/* FLZR cinematic 3 cards reveal — pinned scroll scene, first card opens full-bleed. */
+export interface CinematicRevealCard {
+    _key?: string;
+    title?: string;
+    text?: string;
+    image?: CloudinaryAsset;
+    imageAlt?: string;
+    video?: CloudinaryAsset;
+    link?: Link;
+    linkLabel?: string;
+}
+
+export interface CinematicBlock3CardsRevealComponent {
+    _type: "cinematicBlock3CardsReveal";
+    _key?: string;
+    brand?: string;
+    title?: string;
+    text?: string;
+    cta?: CTA;
+    revealTitle?: string;
+    outro?: string;
+    outroCta?: CTA;
+    cards?: CinematicRevealCard[];
+    autoComplete?: boolean;
+    navPointName?: string;
+    hideFromNav?: boolean;
+}
+
+export type RenaissanceSectionRole =
+    | "stories"
+    | "services"
+    | "people"
+    | "origins"
+    | "reach"
+    | "joinUs"
+    | "contact";
+
+export type RenaissanceDesktopTopMargin = "none" | "8" | "16" | "24";
+export type RenaissanceBadgeAnimationMode = "once" | "loop";
+export type RenaissanceCarouselBackgroundTone = "darkGreen" | "light";
+
+export interface RenaissanceSectionBand {
+    _type: "renaissanceSectionBand";
+    _key?: string;
+    mode?: "section" | "reset";
+    sectionRole?: RenaissanceSectionRole;
+    badgeLabel?: string;
+    desktopTopMargin?: RenaissanceDesktopTopMargin;
+    topBorder?: boolean;
+    badgeAnimationMode?: RenaissanceBadgeAnimationMode;
+    carouselBackgroundTone?: RenaissanceCarouselBackgroundTone;
+    sharedDefaults?: {
+        portraitsConfigured?: boolean;
+        awardsConfigured?: boolean;
+        portraits?: { content?: RenaissancePortraitGrid } | null;
+        awards?: { content?: RenaissanceAwardLogoWall } | null;
+    } | null;
+}
+
+export interface RenaissanceMediaItem {
+    person?: { _ref?: string; _id?: string };
+    position?: string;
+    _key?: string;
+    name?: string;
+    image?: CloudinaryAsset;
+    imageUrl?: string;
+}
+
+export interface RenaissancePortraitGrid {
+    displayMode?: "selection" | "directory";
+    _type: "renaissancePortraitGrid";
+    _key?: string;
+    portraits?: RenaissanceMediaItem[];
+}
+
+export interface RenaissanceAwardLogoWall {
+    _type: "renaissanceAwardLogoWall";
+    _key?: string;
+    headline?: string;
+    description?: string;
+    logos?: RenaissanceMediaItem[];
+}
+
+export interface RegisterCard extends CTA {
+    _key?: string;
+    _type?: "cta";
+}
+
+export interface NewsCTABlock {
+    _type: "newsCTABlock";
+    _key?: string;
+    source?: "manual" | "latestXPost" | null;
+    headline?: string;
+    text?: string;
+    media?: CloudinaryAsset;
+    mediaAlt?: string;
+    poster?: CloudinaryAsset;
+    link?: Link;
+    archiveLabel?: string | null;
+    /** Resolved by the page query when `source` is "latestXPost". */
+    latestXPost?: RenaissanceXPost | null;
+}
+
+/** A Renaissance post copied by hand from x.com/RenaissancePRUK. */
+export interface RenaissanceXPost {
+    _id: string;
+    postUrl: string;
+    publishedAt: string;
+    text: string;
+    authorName: string;
+    authorHandle: string;
+    imageUrl?: string | null;
+    imageAlt?: string | null;
+    quotedPost?: {
+        authorName?: string | null;
+        authorHandle?: string | null;
+        text?: string | null;
+        postUrl?: string | null;
+        imageUrl?: string | null;
+    } | null;
+}
+
+export interface RegisterBlock {
+    _type: "registerBlock";
+    _key?: string;
+    headline?: string;
+    description?: string;
+    cards?: RegisterCard[];
+    navPointName?: string;
+    hideFromNav?: boolean;
+}
+
+export interface FlzrTwoThirdsContentSection {
+    _type: "flzrTwoThirdsContentSection";
+    _key?: string;
+    headline?: string;
+    subheadline?: string;
+    body?: any[];
+    image?: CloudinaryAsset;
+    imageAlt?: string;
+    cta?: CTA;
+    navPointName?: string;
+    hideFromNav?: boolean;
 }
 
 export interface PageBuilderBlock {
@@ -350,6 +550,18 @@ export interface PageBuilderBlock {
 }
 
 /* Documents */
+export interface PageMetadata {
+    title?: string;
+    description?: string;
+    image?: CloudinaryAsset | CloudinaryImage;
+    openGraphTitle?: string;
+    openGraphDescription?: string;
+    openGraphImage?: CloudinaryAsset | CloudinaryImage;
+    keywords?: string[];
+    noIndex?: boolean;
+    excludeFromSitemap?: boolean;
+}
+
 export interface Page {
     _id?: SanityID;
     _createdAt?: string;
@@ -357,13 +569,7 @@ export interface Page {
     language?: string;
     title?: string;
     slug?: { current?: string };
-    metadata?: {
-        title?: string;
-        description?: string;
-        image?: CloudinaryAsset;
-        keywords?: string[];
-        excludeFromSitemap?: boolean;
-    };
+    metadata?: PageMetadata;
     channel?: "1spWeb" | "msmWeb" | "studioco2Web" | "flizrWeb" | "renaissanceWeb" | string;
     navbarVariant?: "light" | "dark";
     contactForm?: ContactFormSettings;
@@ -402,7 +608,10 @@ export interface Menu {
     copyright?: string;
 }
 
+export interface CaseDiscovery { regions?: string[]; genres?: string[]; platforms?: string[]; }
+
 export interface CaseStudy {
+    discovery?: CaseDiscovery;
     _id?: SanityID;
     language?: string;
     title?: string;
@@ -461,12 +670,18 @@ export interface OneSPHeader {
     _type?: "oneSPHeader";
     media?: CloudinaryAsset;
     enableParallax?: boolean;
+    showColorOverlay?: boolean;
+    mediaDarkening?: number;
+    copyBottomLeft?: boolean;
 
     // content
+    showEyebrow?: boolean;
     eyebrow?: string;
     seoTitle?: string;
     headlineMode?: "typewriter" | "headlineReveal";
     headline?: string;
+    /** FLZR only: violet background behind each headline line. Defaults to on. */
+    headlineBackground?: boolean;
     rotatingText?: string[];
     paragraphs?: any[];
     mobileParagraphs?: any[];
@@ -483,18 +698,21 @@ export interface OneSPHeader {
 
 /** Client reference resolved inside a clientLogoCarousel block */
 export interface ClientLogoItem {
+    altText?: string;
     _id?: SanityID;
     name?: string;
     slug?: { current?: string };
     logo?: CloudinaryAsset;
 }
 
-/** Infinite client-logo marquee (schema: clientLogoCarousel) */
+/** Animated client-logo display (schema: clientLogoCarousel) */
 export interface ClientLogoCarousel {
+    collectionClients?: ClientLogoItem[];
+    displayMode?: "swap" | "grid";
     _type?: "clientLogoCarousel";
     eyebrow?: string;
     headline?: string;
-    selectionMode?: "auto" | "manual";
+    selectionMode?: "auto" | "manual" | "collection";
     selectedClients?: ClientLogoItem[];
     /** Populated by GROQ when selectionMode is "auto" */
     autoClients?: ClientLogoItem[];
@@ -512,7 +730,23 @@ export interface ServiceDeliverable {
     description: string;
 }
 
+export interface ServiceWebsiteContent {
+    _type?: "serviceWebsiteContent";
+    _key?: string;
+    channel: string;
+    name?: string;
+    taglabel?: string;
+    introText?: string;
+    serviceDescription?: string;
+    deliverables?: ServiceDeliverable[];
+    sortOrder?: number;
+    mediaMode?: "inherit" | "custom";
+    serviceicon?: CloudinaryImage;
+    serviceBackground?: CloudinaryImage;
+}
+
 export interface Services {
+    siteContent?: ServiceWebsiteContent[];
     _id?: SanityID;
     _type?: "services";
     language?: string;
@@ -539,7 +773,29 @@ export interface ServiceGroup {
     services?: Reference<Services>[];
 }
 
+export interface CaseWebsiteContent {
+    discovery?: CaseDiscovery;
+    _type: 'caseWebsiteContent';
+    _key: string;
+    channel: string;
+    title?: string;
+    description?: string;
+    subtitle?: string;
+    hideDescription?: boolean;
+    hideSubtitle?: boolean;
+    seo?: PageMetadata;
+    mediaMode?: 'inherit' | 'custom';
+    mainImage?: CloudinaryAsset;
+    mainVideo?: CloudinaryAsset;
+    isVerticalVideo?: boolean;
+    bodyMode?: 'inherit' | 'custom';
+    casesPageBuilder?: CaseStudyData['casesPageBuilder'];
+}
+
 export interface CaseStudyData {
+    discovery?: CaseDiscovery;
+    siteContent?: CaseWebsiteContent[];
+    seo?: PageMetadata;
     _id: string;
     title: string;
     subtitle?: string;
@@ -593,8 +849,23 @@ export interface CaseStudyData {
         | ChallengeAndSolutionComponent
         | ApproachSectionComponent
         | ResultsMetricsComponent
+        | IntertitleCTAComponent
     >;
     publishedAt?: string;
+}
+
+export interface IntertitleCTAComponent {
+    _type: "intertitleCTA";
+    _key: string;
+    title: string;
+    subline?: string;
+    subtitle: string;
+    cta?: CTA;
+    alignment?: "center" | "left";
+    paddingTop?: "0" | "12" | "24" | "48";
+    paddingBottom?: "0" | "12" | "24" | "48";
+    navPointName?: string;
+    hideFromNav?: boolean;
 }
 
 export interface HeadlineChallengeComponent {
@@ -647,19 +918,32 @@ export interface ApproachSectionComponent {
     paddingY?: string;
 }
 
+export interface ResultMetric {
+    _key?: string;
+    type: "vertical" | "horizontal" | "posNeg" | "animatedNumber";
+    label: string;
+    value: number;
+    suffix?: string;
+    prefix?: string;
+    description?: string;
+    context?: string;
+    displayScale?: "none" | "thousand" | "million" | "billion";
+    decimalPlaces?: number;
+    qualifier?: "exact" | "plus" | "moreThan" | "approximately" | "nearly" | "lessThan";
+    animationMode?: "countUp" | "static";
+}
+
 export interface ResultsMetricsComponent {
+    quote?: { text: string; attribution: string };
     _type: "resultsMetrics";
     _key: string;
     title: string;
     description?: string;
+    context?: string;
     badgeText?: string;
     badgeSubtitle?: string;
     badgeNumber?: string;
-    metrics?: Array<{
-        type: "vertical" | "horizontal" | "posNeg";
-        label: string;
-        value: number;
-    }>;
+    metrics?: ResultMetric[];
     backgroundImage?: CloudinaryAsset;
     backgroundOpacity?: number;
     enableParallax?: boolean;
@@ -683,6 +967,12 @@ export interface GlobeComponent {
     sectionTitle?: string;
     sectionSubtitle?: string;
     locations?: GlobeLocation[];
+    viewMode?: "default" | "centralEuropeStatic";
+    hideFromNav?: boolean;
+    /** MSM only: small line above the button text. */
+    ctaLabel?: string;
+    /** MSM only: one MosaicButton below the location list. */
+    cta?: CTA;
 }
 
 export interface Service {
@@ -700,4 +990,39 @@ export interface Service {
     serviceDescription?: string;
     servicegrouprel?: { _id: string; name: string; taglabel?: string }[];
     unitsrel?: { _id: string; name: string; slug: { current: string } }[];
+}
+
+export type MsmSocialPlatform = 'messenger' | 'whatsapp' | 'facebook' | 'instagram' | 'linkedin';
+export interface MsmSocialLinksComponent {
+    _type: 'msmSocialLinks';
+    _key?: string;
+    title?: string;
+    color?: 'white' | 'cyan' | 'teal' | 'teal-deep' | 'magenta' | 'purple' | 'maroon' | 'red' | 'orange' | 'amber';
+    links?: Array<{
+        _type?: 'msmSocialLink';
+        _key: string;
+        platform: MsmSocialPlatform;
+        label?: string;
+        url: string;
+        openInNewTab?: boolean;
+    }>;
+    navPointName?: string;
+    hideFromNav?: boolean;
+}
+
+/* MSM Media Feature — framed passage with a darkened background video, headline, copy and one CTA. */
+export interface MsmMediaFeatureComponent {
+    _type: "msmMediaFeature";
+    _key?: string;
+    eyebrow?: string;
+    headline?: string;
+    text?: string;
+    video?: CloudinaryAsset;
+    poster?: CloudinaryAsset;
+    /** 10–100. 100 shows the video untouched; lower values darken it behind the text. */
+    brightness?: number;
+    ctaLabel?: string;
+    cta?: CTA;
+    navPointName?: string;
+    hideFromNav?: boolean;
 }

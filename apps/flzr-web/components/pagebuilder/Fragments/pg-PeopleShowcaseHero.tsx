@@ -14,21 +14,26 @@ const EASE_FLZR = [0.62, 0.05, 0.01, 0.99] as const;
 
 const gridVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.07 } },
+  visible: {},
 };
 
 const cardVariants = {
   hidden: { opacity: 0, y: 32 },
-  visible: {
+  visible: (index = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.65, ease: EASE_FLZR },
-  },
+    transition: {
+      duration: 0.65,
+      ease: EASE_FLZR,
+      delay: index * 0.07,
+      when: "beforeChildren" as const,
+    },
+  }),
 };
 
-/* Frosted panel: slow fade after its card lands, then the contents
-   cascade — name, position, then the contact icons. `beforeChildren`
-   holds the children until the glass itself has fully faded in. */
+/* Frosted panel: fade after its card lands while the contents cascade —
+   name, position, then the contact icons. The children run with the glass
+   fade so every card continues its own sequence immediately. */
 const panelVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -37,7 +42,6 @@ const panelVariants = {
       duration: 0.8,
       delay: 0.25,
       ease: EASE_FLZR,
-      when: "beforeChildren",
       staggerChildren: 0.14,
     },
   },
@@ -146,9 +150,13 @@ function LazyVideo({
 function PeopleShowcaseHero({
   members,
   initialVisibleCount = Number.POSITIVE_INFINITY,
+  presentation = "default",
+  showUnitLogo = true,
 }: {
   members?: MemberItem[];
   initialVisibleCount?: number;
+  presentation?: "default" | "dense";
+  showUnitLogo?: boolean;
 }) {
   const sectionRef = useRef<HTMLElement>(null);
   const reducedMotion = useReducedMotion();
@@ -205,7 +213,11 @@ function PeopleShowcaseHero({
     >
       <div className="flex items-center justify-start w-full">
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 w-full"
+          className={
+            presentation === "dense"
+              ? "grid w-full grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+              : "grid w-full grid-cols-2 gap-3 md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4"
+          }
           variants={gridVariants}
           initial={reducedMotion ? false : "hidden"}
           whileInView="visible"
@@ -226,11 +238,14 @@ function PeopleShowcaseHero({
             const key = (member.name || member.fullname || "member") + index;
             const label =
               member.altText || member.fullname || member.name || "";
+            const email = member.email?.trim();
+            const profileUrl = member.profileUrl?.trim();
             return (
               <motion.div
                 key={key}
+                custom={index}
                 variants={cardVariants}
-                className="group relative overflow-hidden rounded-[2rem] flex-shrink-0 aspect-square bg-neutral-100"
+                className={`group relative aspect-square flex-shrink-0 overflow-hidden bg-neutral-100 ${presentation === "dense" ? "rounded-[1.6rem]" : "rounded-[2rem]"}`}
                 data-member={(
                   member.name ||
                   member.fullname ||
@@ -250,7 +265,7 @@ function PeopleShowcaseHero({
                   />
                 )}
                 {/* Unit Logo Signet */}
-                {member.unit?.logoSignet && (
+                {showUnitLogo && member.unit?.logoSignet && (
                   <div className="absolute top-4 left-4 w-10 h-10 z-10">
                     <Image
                       src={assetUrl(member.unit.logoSignet as any) || ""}
@@ -268,8 +283,9 @@ function PeopleShowcaseHero({
                     its card via panelVariants. */}
                 <motion.div
                   variants={panelVariants}
-                  className="absolute bottom-3 left-3 z-10 flex w-fit max-w-[calc(100%-1.5rem)] flex-col gap-0.5 rounded-[1.5rem] bg-[rgba(111,111,111,0.4)] backdrop-blur-md px-4 py-3 sm:px-5 sm:py-4"
+                  className={`absolute z-10 flex min-h-[80px] items-center justify-between gap-3 bg-[rgba(111,111,111,0.4)] backdrop-blur-md ${presentation === "dense" ? "inset-x-2 bottom-2 rounded-[1.1rem] px-3 py-2.5" : "bottom-3 left-3 w-fit max-w-[calc(100%-1.5rem)] rounded-[1.5rem] px-4 py-3 sm:px-5 sm:py-4"}`}
                 >
+                  <div className="min-w-0 flex-1 flex flex-col gap-0.5">
                   {hasVisibleText(member.fullname || member.name) && (
                     <motion.h3
                       variants={panelItemVariants}
@@ -286,16 +302,17 @@ function PeopleShowcaseHero({
                       {member.position}
                     </motion.p>
                   )}
-                  {(member.email || member.profileUrl) && (
+                  </div>
+                  {(email || profileUrl) && (
                     <motion.div
                       variants={panelItemVariants}
-                      className="mt-2 flex items-center gap-2"
+                      className="ml-auto flex shrink-0 flex-col items-center gap-1"
                     >
-                      {member.email && (
+                      {email && (
                         <a
-                          href={`mailto:${member.email}`}
+                          href={`mailto:${email}`}
                           aria-label={`Email ${member.fullname || member.name || ""}`}
-                          className="flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[#7c5cff] backdrop-blur-sm transition-colors hover:bg-[#7c5cff] hover:text-white"
+                          className="flex h-7 w-7 items-center justify-center rounded-full bg-white/90 text-[#7c5cff] backdrop-blur-sm transition-colors hover:bg-[#7c5cff] hover:text-white"
                         >
                           <svg
                             className="h-4 w-4"
@@ -308,13 +325,13 @@ function PeopleShowcaseHero({
                           </svg>
                         </a>
                       )}
-                      {member.profileUrl && (
+                      {profileUrl && (
                         <Link
-                          href={member.profileUrl}
+                          href={profileUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label={`LinkedIn profile of ${member.fullname || member.name || ""}`}
-                          className="flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[#7c5cff] backdrop-blur-sm transition-colors hover:bg-[#7c5cff] hover:text-white"
+                          className="flex h-7 w-7 items-center justify-center rounded-full bg-white/90 text-[#7c5cff] backdrop-blur-sm transition-colors hover:bg-[#7c5cff] hover:text-white"
                         >
                           {/* Inline so the glyph follows currentColor (the
                               public SVG has lime hardcoded) */}

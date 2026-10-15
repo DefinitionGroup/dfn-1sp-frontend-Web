@@ -2,6 +2,7 @@
 import React from "react";
 import StaggeredFadeIn from "@flzr/components/ui/StaggeredFadeIn";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
+import Button2 from "@flzr/components/ui/Button2";
 import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import Link from "next/link";
@@ -16,6 +17,7 @@ type ContentSectionData = {
   paddingY?: string;
   navPointName?: string;
   hideFromNav?: boolean;
+  presentation?: "default" | "globeOverlay";
 };
 
 const contentSpanClasses: Record<string, string> = {
@@ -32,7 +34,15 @@ const paddingClasses: Record<string, string> = {
   "32": "py-32",
 };
 
-function ContentSection({ data }: { data: ContentSectionData }) {
+function ContentSection({
+  data,
+  language = "en",
+  inheritSectionSurface = false,
+}: {
+  data: ContentSectionData;
+  language?: string;
+  inheritSectionSurface?: boolean;
+}) {
   const {
     title,
     introHeading,
@@ -43,10 +53,12 @@ function ContentSection({ data }: { data: ContentSectionData }) {
     paddingY = "16",
     navPointName,
     hideFromNav = false,
+    presentation = "default",
   } = data || {};
 
   const contentSpanClass = contentSpanClasses[columnSpan] ?? contentSpanClasses["8"];
   const paddingClass = paddingClasses[paddingY] ?? paddingClasses["16"];
+  const isGlobeOverlay = presentation === "globeOverlay";
 
   if (!content || content.length === 0) return null;
 
@@ -77,11 +89,11 @@ function ContentSection({ data }: { data: ContentSectionData }) {
       case "base":
         return "text-base";
       case "lg":
-        return "text-lg";
+        return "text-section-body";
       case "xl":
-        return "text-xl";
+        return "text-section-lead";
       default:
-        return "text-lg";
+        return "text-section-body";
     }
   };
 
@@ -95,7 +107,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
       ),
       h3: ({ children }: any) => (
         hasVisibleNode(children) ? (
-          <h3 className="text-5xl font-semibold text-neutral-800 mt-8 mb-4">
+          <h3 className="text-title font-semibold text-neutral-800 mt-8 mb-4">
             {children}
           </h3>
         ) : null
@@ -111,7 +123,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
         </h5>
       ),
       blockquote: ({ children }: any) => (
-        <blockquote className="border-l-4 border-neutral-300 pl-4 italic text-neutral-600 my-4">
+        <blockquote className="border-l border-flzr-hairline pl-4 italic text-neutral-600 my-4">
           {children}
         </blockquote>
       ),
@@ -167,8 +179,8 @@ function ContentSection({ data }: { data: ContentSectionData }) {
     <>
       {/* Introduction Section (if provided) */}
       {(hasVisibleText(introHeading) || hasVisibleText(introSubheading)) && (
-        <div className="grid grid-cols-12 z-1 mx-auto container relative font-flzr">
-          <div className="z-1 grid gap-8 col-span-12 pt-12 mt-24 col-start-1 container mx-auto row-start-1 grid-cols-12">
+        <div className={`grid grid-cols-12 z-1 mx-auto relative font-flzr ${inheritSectionSurface ? "" : "container"}`}>
+          <div className={`z-1 grid gap-8 col-span-12 pt-12 col-start-1 mx-auto row-start-1 grid-cols-12 ${inheritSectionSurface ? "" : "container mt-24"}`}>
             <div className="z-1 col-span-12 col-start-1">
               <div className="flex flex-col items-start gap-2  justify-center w-full">
                 {hasVisibleText(introHeading) && (
@@ -178,7 +190,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
                     distance={100}
                     className="max-w-full md:max-w-2/4"
                   >
-                    <h2 className="text-3xl leading-normal text-neutral-700 font-flzr">
+                    <h2 className="text-section-lead text-neutral-700 font-flzr">
                       {introHeading}
                     </h2>
                   </StaggeredSlideUp>
@@ -190,7 +202,7 @@ function ContentSection({ data }: { data: ContentSectionData }) {
                     distance={100}
                     className="max-w-full md:max-w-2/4 "
                   >
-                    <h2 className="text-3xl leading-normal text-neutral-400 font-flzr">
+                    <h2 className="text-section-lead text-neutral-400 font-flzr">
                       {introSubheading}
                     </h2>
                   </StaggeredSlideUp>
@@ -205,28 +217,53 @@ function ContentSection({ data }: { data: ContentSectionData }) {
       <section
         id={sectionId}
         {...navPointDataAttr}
-        className="grid grid-cols-12 z-1 mx-auto container relative font-flzr"
+        className={`grid grid-cols-12 font-flzr ${
+          isGlobeOverlay
+            ? inheritSectionSurface
+              ? "flzr-content-section--reach-copy relative z-20"
+              : "flzr-content-section--globe-overlay absolute inset-x-0 top-0 z-20"
+            : "relative z-1"
+        } ${inheritSectionSurface ? "" : "container mx-auto"}`}
       >
         <div
-          className={`z-1 grid gap-8 col-span-12 ${paddingClass} col-start-1 container mx-auto row-start-1 grid-cols-12`}
+          className={`z-1 grid gap-8 col-span-12 col-start-1 row-start-1 grid-cols-12 ${
+            inheritSectionSurface ? "" : `${paddingClass} container mx-auto`
+          } ${
+            isGlobeOverlay && !inheritSectionSurface ? "px-4 sm:px-6 lg:px-8" : ""
+          } ${isGlobeOverlay ? "h-full" : ""}`}
         >
-          <div className={`z-1 ${contentSpanClass} col-start-1 pt-8 border-t`}>
+          <div
+            className={`z-1 ${contentSpanClass} col-start-1 ${
+              inheritSectionSurface ? "" : "pt-8"
+            } ${isGlobeOverlay ? "flex h-full flex-col" : ""}`}
+          >
             {/* Optional section title */}
             {hasVisibleText(title) && (
               <StaggeredFadeIn viewThreshold={0.01}>
-                <h2 className="text-4xl md:text-5xl font-light mb-12 text-flzr-violet">{title}</h2>
+                <h2 className="text-section-title mb-6 text-flzr-violet md:mb-8">{title}</h2>
               </StaggeredFadeIn>
             )}
 
             {/* Content */}
             <StaggeredFadeIn viewThreshold={0.01}>
-              <div className="w-full md:w-3/4">
+              <div className="w-full max-w-[120ch]">
                 <PortableText
                   value={content}
                   components={portableTextComponents}
                 />
               </div>
             </StaggeredFadeIn>
+
+            {isGlobeOverlay && (
+              <div className="mt-auto pt-8">
+                <Button2
+                  text="About Us"
+                  href={`/${language}/about-us`}
+                  variant="ghostLight"
+                  className="mb-16"
+                />
+              </div>
+            )}
           </div>
         </div>
       </section>

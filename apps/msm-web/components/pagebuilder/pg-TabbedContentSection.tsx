@@ -135,7 +135,7 @@ function TabbedContentSection({ data }: { data: TabbedContentSectionData }) {
       ),
       em: ({ children }: any) => <em className="italic">{children}</em>,
       code: ({ children }: any) => (
-        <code className="bg-neutral-100 px-2 py-1  text-sm font-mono text-neutral-800">
+        <code className="bg-neutral-100 px-2 py-1  text-sm font-aspekta text-neutral-800">
           {children}
         </code>
       ),

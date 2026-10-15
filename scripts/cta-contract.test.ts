@@ -16,6 +16,29 @@ const compiledSchema = createSchema({
   ],
 });
 
+test("News CTA is visible to Sanity's Portable Text insert menu", () => {
+  const page = compiledSchema.get("page") as any;
+  const content = page.fields.find((field: any) => field.name === "content");
+  const news = content.type.of.find((type: any) => type.name === "newsCTABlock");
+  assert.ok(news, "News CTA must be registered in page content");
+  // Sanity's getInsertMenuItems checks truthiness; it never calls hidden functions.
+  assert.ok(!news.hidden, "A conditional hidden function hides the block in every channel");
+});
+
+test("News CTA remains restricted to Renaissance by document validation", async () => {
+  const news = {
+    _type: "newsCTABlock",
+    headline: "Renaissance news",
+    text: "A news update from the Renaissance team.",
+    media: { _type: "cloudinary.asset", public_id: "news-test" },
+    mediaAlt: "Games industry event",
+    link: { linkType: "external", externalUrl: "https://example.com/news" },
+  };
+  assert.deepEqual(await validateFixture(pageWithBlock(news, "renaissanceWeb")), []);
+  const markers = await validateFixture(pageWithBlock(news, "1spWeb"));
+  assert.ok(markers.some((marker) => marker.message.includes("only be used on renaissanceWeb")));
+});
+
 const client = { fetch: async () => null };
 const i18n = {
   loadNamespaces: async () => undefined,

@@ -1,0 +1,735 @@
+[
+  {
+    "_createdAt": "2026-08-12T09:47:16Z",
+    "_id": "page-renaissance-home-en",
+    "_rev": "RlcXM0sy9h22JV2QKLiUrq",
+    "_system": {
+      "base": {
+        "id": "page-renaissance-home-en",
+        "rev": "mI7Kkz8EIlLYaSh1Ux4eYX"
+      }
+    },
+    "_type": "page",
+    "_updatedAt": "2026-09-02T11:40:28Z",
+    "channel": "renaissanceWeb",
+    "content": [
+      {
+        "_key": "renaissance-home-hero",
+        "_type": "heroShowTime",
+        "additionalContent": [
+          {
+            "_key": "hero-contact",
+            "_type": "cta",
+            "link": {
+              "_type": "link",
+              "externalUrl": "/contact",
+              "linkType": "external",
+              "page": {
+                "_ref": "page-renaissance-home-en",
+                "_type": "reference"
+              }
+            },
+            "text": "Start a conversation",
+            "variant": "violet"
+          },
+          {
+            "_key": "hero-stories",
+            "_type": "cta",
+            "link": {
+              "_type": "link",
+              "externalUrl": "#stories",
+              "linkType": "external",
+              "page": {
+                "_ref": "page-renaissance-home-en",
+                "_type": "reference"
+              }
+            },
+            "text": "See our stories",
+            "variant": "glass"
+          }
+        ],
+        "backgroundImage": {
+          "_key": "renaissance-home-hero-asset",
+          "_type": "cloudinary.asset",
+          "_version": 1,
+          "access_control": [],
+          "access_mode": "public",
+          "asset_folder": "1sp/Logos/RENAISSANCE",
+          "bytes": 884200,
+          "created_at": "2025-11-18T07:18:24Z",
+          "created_by": {
+            "id": "24bba5085cc9b3f795c06596ac66b9",
+            "type": "user"
+          },
+          "display_name": "renaissance_cover-image_vnphy2",
+          "folder_id": "cd4aea1587891c9b9735490e7e252847d6",
+          "format": "jpg",
+          "height": 946,
+          "id": "04aa3b089bc4b7c09db81ab208efa1c5",
+          "metadata": {},
+          "public_id": "renaissance_cover-image_vnphy2",
+          "resource_type": "image",
+          "secure_url": "https://res.cloudinary.com/dsu07dnes/image/upload/v1763450304/renaissance_cover-image_vnphy2.jpg",
+          "tags": [],
+          "type": "upload",
+          "uploaded_by": {
+            "id": "24bba5085cc9b3f795c06596ac66b9",
+            "type": "user"
+          },
+          "url": "http://res.cloudinary.com/dsu07dnes/image/upload/v1763450304/renaissance_cover-image_vnphy2.jpg",
+          "version": 1763450304,
+          "width": 1583
+        },
+        "backgroundVideo": {
+          "_key": "KBDlw5qM1f8Pe0npIlmBN",
+          "_type": "cloudinary.asset",
+          "_version": 1,
+          "access_control": [],
+          "access_mode": "public",
+          "asset_folder": "",
+          "bytes": 60301472,
+          "created_at": "2026-08-21T11:38:18Z",
+          "created_by": {
+            "id": "24bba5085cc9b3f795c06596ac66b9",
+            "type": "user"
+          },
+          "display_name": "1SP_RENAISSANCE_EDIT_0826_02_da4squ",
+          "folder_id": "0000000000000000000000000000000001",
+          "format": "mp4",
+          "height": 1080,
+          "id": "fdd6b31a589a92b24c24dabbad021db9",
+          "metadata": {},
+          "public_id": "1SP_RENAISSANCE_EDIT_0826_02_da4squ",
+          "resource_type": "video",
+          "secure_url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1787312298/1SP_RENAISSANCE_EDIT_0826_02_da4squ.mp4",
+          "tags": [],
+          "type": "upload",
+          "uploaded_by": {
+            "id": "24bba5085cc9b3f795c06596ac66b9",
+            "type": "user"
+          },
+          "url": "http://res.cloudinary.com/dsu07dnes/video/upload/v1787312298/1SP_RENAISSANCE_EDIT_0826_02_da4squ.mp4",
+          "version": 1787312298,
+          "width": 1920
+        },
+        "fullWidth": true,
+        "heading": "GAME CHANGERS.\nHEADLINE *MAKERS.*\nREPUTATIONS MADE HERE.",
+        "headingTag": "h1",
+        "navPointName": "Home",
+        "paragraphs": [
+          "Award-winning PR and communications for indie titles, AAA blockbusters and everything in between."
+        ],
+        "subheading": "Where games find their audience.",
+        "useVideo": true
+      },
+      {
+        "_key": "renaissance-stories-section",
+        "_type": "renaissanceSectionBand",
+        "badgeAnimationMode": "loop",
+        "badgeLabel": "STORIES",
+        "carouselBackgroundTone": "light",
+        "desktopTopMargin": "8",
+        "mode": "section",
+        "sectionRole": "stories"
+      },
+      {
+        "_key": "renaissance-stories-intro",
+        "_type": "introBlockTypoSophisticated",
+        "description": "Renaissance builds smart, creative campaigns that connect a title with the media, creators and players who matter most.",
+        "header": {
+          "_type": "peopleStepHeader",
+          "mainHeadline": "Great games deserve more than noise."
+        },
+        "navPointName": "Stories"
+      },
+      {
+        "_key": "renaissance-stories",
+        "_type": "carousel",
+        "items": [
+          {
+            "_key": "romeo-is-a-dead-man",
+            "_type": "carouselItem",
+            "description": "Editorial coverage, creator partnerships and high-impact media moments for Grasshopper Manufacture's newest IP.",
+            "id": 1,
+            "image": {
+              "_key": "renaissance-story-1-asset",
+              "_type": "cloudinary.asset",
+              "_version": 1,
+              "asset_folder": "1sp/Logos/RENAISSANCE/Homepage",
+              "asset_id": "403eb2d65a8b4365f4486b154619d02d",
+              "bytes": 221830,
+              "created_at": "2026-08-12T09:47:06Z",
+              "display_name": "Renaissance Homepage - Romeo Is A Dead Man",
+              "format": "jpg",
+              "height": 1024,
+              "id": "403eb2d65a8b4365f4486b154619d02d",
+              "original_filename": "romeo-is-a-dead-man",
+              "public_id": "renaissance_homepage_romeo_is_a_dead_man_2026",
+              "resource_type": "image",
+              "secure_url": "https://res.cloudinary.com/dsu07dnes/image/upload/v1786528026/renaissance_homepage_romeo_is_a_dead_man_2026.jpg",
+              "tags": [],
+              "type": "upload",
+              "url": "http://res.cloudinary.com/dsu07dnes/image/upload/v1786528026/renaissance_homepage_romeo_is_a_dead_man_2026.jpg",
+              "version": 1786528026,
+              "width": 1024
+            },
+            "subtitle": "Global launch campaign · 2025",
+            "title": "Romeo Is A Dead Man."
+          },
+          {
+            "_key": "yooka-re-playlee",
+            "_type": "carouselItem",
+            "description": "Media impact, creator activity and overall reach brought together in one coordinated release programme.",
+            "id": 2,
+            "image": {
+              "_key": "renaissance-story-2-asset",
+              "_type": "cloudinary.asset",
+              "_version": 1,
+              "asset_folder": "1sp/Logos/RENAISSANCE/Homepage",
+              "asset_id": "f0bf482520f7b1e3311d2b1734661d5e",
+              "bytes": 1603426,
+              "created_at": "2026-08-12T09:47:07Z",
+              "display_name": "Renaissance Homepage - Yooka-Re-Playlee",
+              "format": "png",
+              "height": 1080,
+              "id": "f0bf482520f7b1e3311d2b1734661d5e",
+              "original_filename": "yooka-re-playlee",
+              "public_id": "renaissance_homepage_yooka_replaylee_2026",
+              "resource_type": "image",
+              "secure_url": "https://res.cloudinary.com/dsu07dnes/image/upload/v1786528027/renaissance_homepage_yooka_replaylee_2026.png",
+              "tags": [],
+              "type": "upload",
+              "url": "http://res.cloudinary.com/dsu07dnes/image/upload/v1786528027/renaissance_homepage_yooka_replaylee_2026.png",
+              "version": 1786528027,
+              "width": 1920
+            },
+            "subtitle": "Launch campaign",
+            "title": "Yooka-Re-Playlee."
+          }
+        ]
+      },
+      {
+        "_key": "renaissance-services-section",
+        "_type": "renaissanceSectionBand",
+        "badgeAnimationMode": "loop",
+        "badgeLabel": "SERVICES",
+        "carouselBackgroundTone": "darkGreen",
+        "desktopTopMargin": "24",
+        "mode": "section",
+        "sectionRole": "services"
+      },
+      {
+        "_key": "renaissance-services-intro",
+        "_type": "introBlockTypoSophisticated",
+        "description": "Every brief is scoped from one integrated communication plan, shaped around the game, its audience and the moment it needs to own.",
+        "header": {
+          "_type": "peopleStepHeader",
+          "mainHeadline": "Six services. One mission."
+        },
+        "navPointName": "Services"
+      },
+      {
+        "_key": "renaissance-services",
+        "_type": "cardContainerComponent",
+        "cards": [
+          {
+            "_key": "traditional-pr",
+            "_type": "cardInsideComponent",
+            "headline": "Traditional PR",
+            "media": {
+              "_key": "g9wcQyMMNusrMz0rLUkKH",
+              "_type": "cloudinary.asset",
+              "_version": 1,
+              "access_control": [],
+              "access_mode": "public",
+              "asset_folder": "",
+              "bytes": 16920311,
+              "created_at": "2026-08-17T16:41:49Z",
+              "created_by": {
+                "id": "24bba5085cc9b3f795c06596ac66b9",
+                "type": "user"
+              },
+              "display_name": "01_trad-pr-sequence_ludpaf",
+              "duration": 9.041667,
+              "folder_id": "0000000000000000000000000000000001",
+              "format": "mp4",
+              "height": 1076,
+              "id": "3ae3018f8b733b914cf9e9da1472230f",
+              "metadata": {},
+              "public_id": "01_trad-pr-sequence_ludpaf",
+              "resource_type": "video",
+              "secure_url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1786984909/01_trad-pr-sequence_ludpaf.mp4",
+              "tags": [],
+              "type": "upload",
+              "uploaded_by": {
+                "id": "24bba5085cc9b3f795c06596ac66b9",
+                "type": "user"
+              },
+              "url": "http://res.cloudinary.com/dsu07dnes/video/upload/v1786984909/01_trad-pr-sequence_ludpaf.mp4",
+              "version": 1786984909,
+              "width": 1924
+            },
+            "text": "Launches, reviews, previews, demos and editorial planning across gaming and consumer media."
+          },
+          {
+            "_key": "content-creators",
+            "_type": "cardInsideComponent",
+            "headline": "Content Creators",
+            "media": {
+              "_key": "dWrbz9vwBkfhnEduvDcjX",
+              "_type": "cloudinary.asset",
+              "_version": 1,
+              "access_control": [],
+              "access_mode": "public",
+              "asset_folder": "renaissance/videos",
+              "bytes": 4837647,
+              "created_at": "2026-08-17T16:15:25Z",
+              "created_by": {
+                "id": "24bba5085cc9b3f795c06596ac66b9",
+                "type": "user"
+              },
+              "display_name": "02_creators_hodpdt",
+              "duration": 3.041667,
+              "folder_id": "cffac4dc548944ff59fb4487311285d3e1",
+              "format": "mp4",
+              "height": 1076,
+              "id": "8697a89bfa939f856db5842c02a86720",
+              "metadata": {},
+              "public_id": "02_creators_hodpdt",
+              "resource_type": "video",
+              "secure_url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1786983325/02_creators_hodpdt.mp4",
+              "tags": [],
+              "type": "upload",
+              "uploaded_by": {
+                "id": "24bba5085cc9b3f795c06596ac66b9",
+                "type": "user"
+              },
+              "url": "http://res.cloudinary.com/dsu07dnes/video/upload/v1786983325/02_creators_hodpdt.mp4",
+              "version": 1786983325,
+              "width": 1924
+            },
+            "text": "Organic, curated outreach across YouTube, Twitch and TikTok, with ambassador programmes built for retention."
+          },
+          {
+            "_key": "corporate-comms",
+            "_type": "cardInsideComponent",
+            "headline": "Corporate Comms",
+            "media": {
+              "_key": "pZuzkgoK0cUmJynfPvrqA",
+              "_type": "cloudinary.asset",
+              "_version": 1,
+              "access_control": [],
+              "access_mode": "public",
+              "asset_folder": "renaissance/videos",
+              "bytes": 5044850,
+              "created_at": "2026-08-17T16:15:25Z",
+              "created_by": {
+                "id": "24bba5085cc9b3f795c06596ac66b9",
+                "type": "user"
+              },
+              "display_name": "03_corp_qkdyys",
+              "duration": 3.041667,
+              "folder_id": "cffac4dc548944ff59fb4487311285d3e1",
+              "format": "mp4",
+              "height": 1076,
+              "id": "9761fa28ab04e6e802ab11eae9bbed3c",
+              "metadata": {},
+              "public_id": "03_corp_qkdyys",
+              "resource_type": "video",
+              "secure_url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1786983325/03_corp_qkdyys.mp4",
+              "tags": [],
+              "type": "upload",
+              "uploaded_by": {
+                "id": "24bba5085cc9b3f795c06596ac66b9",
+                "type": "user"
+              },
+              "url": "http://res.cloudinary.com/dsu07dnes/video/upload/v1786983325/03_corp_qkdyys.mp4",
+              "version": 1786983325,
+              "width": 1924
+            },
+            "text": "Founder profiling, business press, awards, investor narratives and issues management."
+          },
+          {
+            "_key": "943a34affa2e",
+            "_type": "cardInsideComponent",
+            "headline": "Events & Trade Shows",
+            "media": {
+              "_key": "u5c8_bhe76iPzhDmGnbrm",
+              "_type": "cloudinary.asset",
+              "_version": 1,
+              "access_control": [],
+              "access_mode": "public",
+              "asset_folder": "renaissance/videos",
+              "bytes": 12301418,
+              "created_at": "2026-08-17T16:15:26Z",
+              "created_by": {
+                "id": "24bba5085cc9b3f795c06596ac66b9",
+                "type": "user"
+              },
+              "display_name": "04_events_ovgk1z",
+              "duration": 3.041667,
+              "folder_id": "cffac4dc548944ff59fb4487311285d3e1",
+              "format": "mp4",
+              "height": 1076,
+              "id": "81b545cd063b867ff33b0a40f7a76a1a",
+              "metadata": {},
+              "public_id": "04_events_ovgk1z",
+              "resource_type": "video",
+              "secure_url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1786983326/04_events_ovgk1z.mp4",
+              "tags": [],
+              "type": "upload",
+              "uploaded_by": {
+                "id": "24bba5085cc9b3f795c06596ac66b9",
+                "type": "user"
+              },
+              "url": "http://res.cloudinary.com/dsu07dnes/video/upload/v1786983326/04_events_ovgk1z.mp4",
+              "version": 1786983326,
+              "width": 1924
+            },
+            "text": "Planning, press tours and on-the-ground delivery at the\nindustry's defining global moments."
+          },
+          {
+            "_key": "paid-amplification",
+            "_type": "cardInsideComponent",
+            "headline": "Paid Amplification",
+            "media": {
+              "_key": "Ij6PBVo-PJYQVBpYiIxT9",
+              "_type": "cloudinary.asset",
+              "_version": 1,
+              "access_control": [],
+              "access_mode": "public",
+              "asset_folder": "renaissance/videos",
+              "bytes": 7314159,
+              "created_at": "2026-08-17T16:15:26Z",
+              "created_by": {
+                "id": "24bba5085cc9b3f795c06596ac66b9",
+                "type": "user"
+              },
+              "display_name": "05_amplify_ut3q9r",
+              "duration": 3.041667,
+              "folder_id": "cffac4dc548944ff59fb4487311285d3e1",
+              "format": "mp4",
+              "height": 1076,
+              "id": "ce6a94f30ef76ee59e782a4dc563c9e7",
+              "metadata": {},
+              "public_id": "05_amplify_ut3q9r",
+              "resource_type": "video",
+              "secure_url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1786983326/05_amplify_ut3q9r.mp4",
+              "tags": [],
+              "type": "upload",
+              "uploaded_by": {
+                "id": "24bba5085cc9b3f795c06596ac66b9",
+                "type": "user"
+              },
+              "url": "http://res.cloudinary.com/dsu07dnes/video/upload/v1786983326/05_amplify_ut3q9r.mp4",
+              "version": 1786983326,
+              "width": 1924
+            },
+            "text": "Targeted paid layers that extend earned wins without replacing organic reach."
+          },
+          {
+            "_key": "measurement-ai",
+            "_type": "cardInsideComponent",
+            "headline": "Measurement & AI",
+            "media": {
+              "_key": "XTEwwQkyNBe0XwVOWAuk-",
+              "_type": "cloudinary.asset",
+              "_version": 1,
+              "access_control": [],
+              "access_mode": "public",
+              "asset_folder": "",
+              "bytes": 5795362,
+              "created_at": "2026-08-17T16:17:53Z",
+              "created_by": {
+                "id": "24bba5085cc9b3f795c06596ac66b9",
+                "type": "user"
+              },
+              "display_name": "06_measure_ja0ias",
+              "folder_id": "0000000000000000000000000000000001",
+              "format": "mp4",
+              "height": 1076,
+              "id": "ec428e966ebf26ec30620939d15f3ec6",
+              "metadata": {},
+              "public_id": "06_measure_ja0ias",
+              "resource_type": "video",
+              "secure_url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1786983473/06_measure_ja0ias.mp4",
+              "tags": [],
+              "type": "upload",
+              "uploaded_by": {
+                "id": "24bba5085cc9b3f795c06596ac66b9",
+                "type": "user"
+              },
+              "url": "http://res.cloudinary.com/dsu07dnes/video/upload/v1786983473/06_measure_ja0ias.mp4",
+              "version": 1786983473,
+              "width": 1924
+            },
+            "text": "Real-time dashboards, weekly snapshots and AI-assisted analysis of sentiment and reach, always signed off by people."
+          }
+        ],
+        "columns": 3
+      },
+      {
+        "_key": "renaissance-client-logos",
+        "_type": "clientLogoCarousel",
+        "grayscale": true,
+        "headline": "You’re in great company.",
+        "hideFromNav": true,
+        "selectedClients": [
+          {
+            "_key": "renaissance-client-ref-1",
+            "_ref": "f7404793-fab8-4293-a6aa-8d05434963fe",
+            "_type": "reference"
+          },
+          {
+            "_key": "renaissance-client-ref-2",
+            "_ref": "client-renaissance-xbox-en",
+            "_type": "reference"
+          },
+          {
+            "_key": "renaissance-client-ref-3",
+            "_ref": "client-renaissance-epic-games-en",
+            "_type": "reference"
+          },
+          {
+            "_key": "renaissance-client-ref-4",
+            "_ref": "client-renaissance-warner-bros-en",
+            "_type": "reference"
+          },
+          {
+            "_key": "renaissance-client-ref-5",
+            "_ref": "client-renaissance-riot-games-en",
+            "_type": "reference"
+          }
+        ],
+        "selectionMode": "manual",
+        "speed": "slow"
+      },
+      {
+        "_key": "renaissance-people-section",
+        "_type": "renaissanceSectionBand",
+        "badgeLabel": "PEOPLE POWERED",
+        "mode": "section",
+        "sectionRole": "people"
+      },
+      {
+        "_key": "renaissance-people-intro",
+        "_type": "introBlockTypoSophisticated",
+        "description": "Every plan starts with the human story inside the game: the developer's ambition, the audience's expectation and the cultural moment we can plug into.",
+        "header": {
+          "_type": "peopleStepHeader",
+          "mainHeadline": "We work with people, not brands."
+        },
+        "navPointName": "People"
+      },
+      {
+        "_key": "renaissance-origins-section",
+        "_type": "renaissanceSectionBand",
+        "badgeLabel": "ORIGINS",
+        "mode": "section",
+        "sectionRole": "origins"
+      },
+      {
+        "_key": "renaissance-origin",
+        "_type": "twoColContentSection",
+        "backgroundColor": "neutral-100",
+        "content": [
+          {
+            "_key": "renaissance-origins-copy",
+            "_type": "block",
+            "children": [
+              {
+                "_key": "renaissance-origins-copy-span",
+                "_type": "span",
+                "marks": [],
+                "text": "Since our inception in 2015 we’ve been fortunate to work with a wide array of different clients, from Indie to AAA we can service your needs."
+              }
+            ],
+            "markDefs": [],
+            "style": "normal"
+          }
+        ],
+        "contentSize": "lg",
+        "image": {
+          "_key": "renaissance-stefano-asset",
+          "_type": "cloudinary.asset",
+          "_version": 1,
+          "asset_folder": "1sp/Logos/RENAISSANCE/Homepage",
+          "asset_id": "d36865b70bed32ae0042bfcfbefe3d2c",
+          "bytes": 100604,
+          "created_at": "2026-08-12T09:47:06Z",
+          "display_name": "Renaissance Homepage - Stefano Petrullo",
+          "format": "jpg",
+          "height": 1600,
+          "id": "d36865b70bed32ae0042bfcfbefe3d2c",
+          "original_filename": "stefano-petrullo",
+          "public_id": "renaissance_homepage_stefano_petrullo_2026",
+          "resource_type": "image",
+          "secure_url": "https://res.cloudinary.com/dsu07dnes/image/upload/v1786528026/renaissance_homepage_stefano_petrullo_2026.jpg",
+          "tags": [],
+          "type": "upload",
+          "url": "http://res.cloudinary.com/dsu07dnes/image/upload/v1786528026/renaissance_homepage_stefano_petrullo_2026.jpg",
+          "version": 1786528026,
+          "width": 1489
+        },
+        "mediaAlt": "Stefano Petrullo, Founder and CEO of Renaissance",
+        "navPointName": "Origins",
+        "paddingY": "24",
+        "showTitle": true,
+        "title": "21 years in the making",
+        "titleColor": "neutral-700"
+      },
+      {
+        "_key": "renaissance-reach-section",
+        "_type": "renaissanceSectionBand",
+        "badgeLabel": "REACH",
+        "mode": "section",
+        "sectionRole": "reach"
+      },
+      {
+        "_key": "renaissance-global-reach",
+        "_type": "globeComponent",
+        "locations": [
+          {
+            "_key": "warwick",
+            "_type": "location",
+            "coordinateLat": 52.2823,
+            "coordinateLon": -1.5849,
+            "name": "United Kingdom"
+          },
+          {
+            "_key": "los-angeles",
+            "_type": "location",
+            "coordinateLat": 34.0522,
+            "coordinateLon": -118.2437,
+            "name": "Los Angeles"
+          },
+          {
+            "_key": "china",
+            "_type": "location",
+            "coordinateLat": 35.8617,
+            "coordinateLon": 104.1954,
+            "name": "China"
+          }
+        ],
+        "navPointName": "Global reach",
+        "sectionSubtitle": "Campaigns across three continents, connecting the United Kingdom, Los Angeles and China through one senior team.",
+        "sectionTitle": "Global reach. Local intelligence."
+      },
+      {
+        "_key": "renaissance-join-section",
+        "_type": "renaissanceSectionBand",
+        "badgeLabel": "JOIN US",
+        "mode": "section",
+        "sectionRole": "joinUs"
+      },
+      {
+        "_key": "renaissance-join-intro",
+        "_type": "introBlockTypoSophisticated",
+        "header": {
+          "_type": "peopleStepHeader",
+          "mainHeadline": "Register with us"
+        },
+        "hideFromNav": true
+      },
+      {
+        "_key": "renaissance-join-subline",
+        "_type": "sublineComponent",
+        "additionalContent": [
+          {
+            "_key": "join-content-creators",
+            "_type": "cta",
+            "link": {
+              "_type": "link",
+              "externalUrl": "/contact",
+              "linkType": "external"
+            },
+            "text": "Content creators",
+            "variant": "black"
+          },
+          {
+            "_key": "join-media",
+            "_type": "cta",
+            "link": {
+              "_type": "link",
+              "externalUrl": "/contact",
+              "linkType": "external"
+            },
+            "text": "Media",
+            "variant": "black"
+          }
+        ],
+        "description": "If you are a content creator/journalist or influencer register with us now to get all the latest news from our clients!"
+      },
+      {
+        "_key": "renaissance-sections-end",
+        "_type": "renaissanceSectionBand",
+        "mode": "reset"
+      },
+      {
+        "_key": "193b45cc9015",
+        "_type": "oneSpComponentGroupReference",
+        "dataScope": "1spWeb",
+        "group": {
+          "_ref": "fb085911-b277-43aa-9894-e056345913f3",
+          "_type": "reference"
+        }
+      }
+    ],
+    "isHomepage": true,
+    "language": "en",
+    "metadata": {
+      "_type": "metadata",
+      "description": "Award-winning PR and communications for indie titles, AAA blockbusters and everything in between.",
+      "excludeFromSitemap": false,
+      "image": {
+        "_type": "cloudinaryImage",
+        "alt": "Renaissance games communications",
+        "asset": {
+          "_key": "renaissance-home-og-asset",
+          "_type": "cloudinary.asset",
+          "_version": 1,
+          "access_control": [],
+          "access_mode": "public",
+          "asset_folder": "1sp/Logos/RENAISSANCE",
+          "bytes": 884200,
+          "created_at": "2025-11-18T07:18:24Z",
+          "created_by": {
+            "id": "24bba5085cc9b3f795c06596ac66b9",
+            "type": "user"
+          },
+          "display_name": "renaissance_cover-image_vnphy2",
+          "folder_id": "cd4aea1587891c9b9735490e7e252847d6",
+          "format": "jpg",
+          "height": 946,
+          "id": "04aa3b089bc4b7c09db81ab208efa1c5",
+          "metadata": {},
+          "public_id": "renaissance_cover-image_vnphy2",
+          "resource_type": "image",
+          "secure_url": "https://res.cloudinary.com/dsu07dnes/image/upload/v1763450304/renaissance_cover-image_vnphy2.jpg",
+          "tags": [],
+          "type": "upload",
+          "uploaded_by": {
+            "id": "24bba5085cc9b3f795c06596ac66b9",
+            "type": "user"
+          },
+          "url": "http://res.cloudinary.com/dsu07dnes/image/upload/v1763450304/renaissance_cover-image_vnphy2.jpg",
+          "version": 1763450304,
+          "width": 1583
+        }
+      },
+      "keywords": [
+        "games PR",
+        "video game communications",
+        "games industry PR",
+        "creator campaigns"
+      ],
+      "title": "Renaissance | Great communications for the games industry"
+    },
+    "navbarVariant": "light",
+    "slug": {
+      "_type": "slug",
+      "current": "home"
+    },
+    "title": "Renaissance"
+  }
+]

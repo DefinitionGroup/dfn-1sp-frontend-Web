@@ -1,0 +1,24 @@
+.section { --rail-gap: clamp(1.25rem, 2vw, 2rem); padding: clamp(3rem, 6vw, 6rem) 0; color: var(--color-msm-ink); background: var(--color-msm-paper); }
+.header { max-width: 88rem; margin: 0 auto 2.5rem; padding: 0 clamp(1.5rem, 4vw, 4rem); display: flex; align-items: end; justify-content: space-between; gap: 2rem; }
+.header h2 { font-size: clamp(2rem, 3.5vw, 3.5rem); line-height: 1.12; letter-spacing: -0.025em; max-width: 20ch; text-wrap: balance; }
+.controls { display: flex; flex-shrink: 0; gap: 0.5rem; }
+.controls button { width: 48px; height: 48px; display: grid; place-items: center; border: 1px solid rgb(244 244 244 / 30%); background: transparent; color: inherit; cursor: pointer; transition: color 180ms, border-color 180ms; }
+.controls button:disabled { opacity: 0.25; cursor: default; }
+.rail { overflow: clip; padding: 0.5rem clamp(1.5rem, 4vw, 4rem) 2rem; touch-action: pan-y; }
+.track { position: relative; display: flex; gap: var(--rail-gap); cursor: grab; touch-action: pan-y; user-select: none; }
+.track[data-dragging] { cursor: grabbing; }
+.slide { flex: 0 0 calc((100% - 2 * var(--rail-gap)) / 3); min-width: 0; }
+.frame { height: 100%; }
+.card { height: 100%; display: flex; flex-direction: column; padding: 1rem; }
+.media { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--color-msm-surface); }
+.image, .video { width: 100%; height: 100%; object-fit: cover; }
+.video { position: absolute; inset: 0; transition: opacity 300ms ease-out; }
+.copy { display: flex; flex: 1; flex-direction: column; padding: 1.5rem 0.5rem 0.5rem; }
+.copy h3 { font-size: clamp(1.5rem, 2vw, 2rem); line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; }
+.copy p { font-size: 1rem; line-height: 1.65; margin-top: 1rem; color: rgb(244 244 244 / 76%); }
+.action { margin-top: auto; padding-top: 2rem; }
+.controls button:focus-visible, .copy a:focus-visible, .rail:focus-visible { outline: 2px solid var(--color-msm-cyan); outline-offset: 4px; }
+@media (hover: hover) and (pointer: fine) { .controls button:not(:disabled):hover, .copy h3 a:hover { color: var(--color-msm-cyan); border-color: var(--color-msm-cyan); } }
+@media (max-width: 1099px) { .slide { flex-basis: calc((100% - var(--rail-gap)) / 2); } }
+@media (max-width: 699px) { .header { align-items: start; flex-direction: column; gap: 1.5rem; } .slide { flex-basis: 88%; } .card { padding: 0.75rem; } }
+@media (prefers-reduced-motion: reduce) { .video, .controls button { transition: none; } }

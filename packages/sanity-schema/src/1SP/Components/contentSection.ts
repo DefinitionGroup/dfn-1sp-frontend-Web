@@ -1,4 +1,5 @@
 import { defineType, defineField, defineArrayMember } from "sanity";
+import {serviceReferenceField} from "../../shared/serviceReference";
 import { List } from "@phosphor-icons/react";
 
 export default defineType({
@@ -12,6 +13,8 @@ export default defineType({
         { name: "navigation", title: "Navigation" },
     ],
     fields: [
+        {...serviceReferenceField(), group: "content"},
+        defineField({ name: "anchorId", title: "Section anchor", type: "string", group: "navigation", hidden: ({document}) => document?.channel !== "renaissanceWeb", validation: r => r.regex(/^[a-z][a-z0-9-]*$/) }),
         defineField({
             name: "navPointName",
             title: "Navigation Point Name",
@@ -31,7 +34,7 @@ export default defineType({
             name: "title",
             title: "Section Title",
             type: "string",
-            description: "Optional title for the entire section",
+            description: "Optional heading override. A selected global service supplies its name when this is empty.",
             group: "content",
         }),
         defineField({
@@ -51,12 +54,22 @@ export default defineType({
             group: "content",
         }),
         defineField({
+            name: "showCookieDeclaration",
+            title: "Show Cookiebot declaration",
+            type: "boolean",
+            description: "MSM only: display the current cookie report and consent controls. Use once per privacy page. This section can contain only the declaration, without rich text. Available on production and beta; hidden in the dedicated test lane.",
+            initialValue: false,
+            group: "content",
+            hidden: ({document}) => document?.channel !== "msmWeb",
+        }),
+        defineField({
             name: "content",
+            hidden: ({parent}) => !!parent?.service?._ref,
             title: "Content",
             type: "array",
             description: "Rich text content - paste your text and apply formatting as needed",
             group: "content",
-            validation: (Rule) => Rule.required(),
+            validation: (Rule) => Rule.custom((value, context) => (context.parent as any)?.service?._ref || (context.document?.channel === "msmWeb" && (context.parent as any)?.showCookieDeclaration === true) || (value && value.length) ? true : "Content, a global service or an MSM Cookiebot declaration is required"),
             of: [
                 {
                     type: "block",
@@ -87,6 +100,7 @@ export default defineType({
                                         name: "href",
                                         type: "url",
                                         title: "URL",
+                                        validation: (Rule) => Rule.uri({allowRelative: true, scheme: ["http", "https", "mailto", "tel"]}),
                                     },
                                     {
                                         name: "blank",
@@ -158,16 +172,34 @@ export default defineType({
                 layout: "radio",
             },
         }),
+        defineField({
+            name: "presentation",
+            title: "FLZR Presentation",
+            type: "string",
+            description: "Use the globe overlay only when this content block immediately precedes a Globe Component inside the same FLZR Section Band.",
+            initialValue: "default",
+            group: "layout",
+            hidden: ({ document }) => document?.channel !== "flizrWeb",
+            options: {
+                list: [
+                    { title: "Default", value: "default" },
+                    { title: "Overlay on following globe", value: "globeOverlay" },
+                ],
+                layout: "radio",
+            },
+        }),
     ],
     preview: {
         select: {
+            serviceName: "service.name",
             title: "title",
             introHeading: "introHeading",
             content: "content",
+            showCookieDeclaration: "showCookieDeclaration",
         },
-        prepare({ title, introHeading, content }) {
+        prepare({ title, introHeading, content, serviceName, showCookieDeclaration }) {
             const displayTitle =
-                title ||
+                title || serviceName ||
                 (introHeading ? introHeading.substring(0, 50) : null) ||
                 "Content Section";
 
@@ -180,7 +212,7 @@ export default defineType({
 
             return {
                 title: displayTitle,
-                subtitle: preview || "No content",
+                subtitle: showCookieDeclaration ? "Cookiebot declaration" : preview || "No content",
                 media: List,
             };
         },

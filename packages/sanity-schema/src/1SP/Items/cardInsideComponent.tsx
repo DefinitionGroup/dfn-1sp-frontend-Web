@@ -1,4 +1,5 @@
 import React from "react";
+import {serviceReferenceField} from "../../shared/serviceReference";
 import Image from "next/image";
 import { defineField, defineType } from "sanity";
 
@@ -31,8 +32,10 @@ export default defineType({
   title: "Media Card",
   type: "object",
   fields: [
+    serviceReferenceField(),
     defineField({
       name: "media",
+      hidden: ({parent}) => !!parent?.service?._ref,
       title: "Image or video",
       type: "cloudinary.asset",
       validation: (Rule) =>
@@ -46,34 +49,38 @@ export default defineType({
     }),
     defineField({
       name: "altText",
+      hidden: ({parent}) => !!parent?.service?._ref,
       title: "Alternative text",
       type: "string",
       description: "Describe the image for accessibility. Leave empty only for decorative media.",
     }),
     defineField({
       name: "headline",
+      hidden: ({parent}) => !!parent?.service?._ref,
       title: "Headline",
       type: "string",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.custom((value, context) => (context.parent as any)?.service?._ref || value ? true : "Required without a global service"),
     }),
     defineField({
       name: "text",
+      hidden: ({parent}) => !!parent?.service?._ref,
       title: "Paragraph",
       type: "text",
       rows: 4,
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.custom((value, context) => (context.parent as any)?.service?._ref || value ? true : "Required without a global service"),
     }),
   ],
   preview: {
     select: {
+      serviceName: "service.name",
       title: "headline",
       subtitle: "text",
       mediaUrl: "media.secure_url",
       resourceType: "media.resource_type",
     },
-    prepare({ title, subtitle, mediaUrl, resourceType }) {
+    prepare({ title, subtitle, mediaUrl, resourceType, serviceName }) {
       return {
-        title: title || "Untitled media card",
+        title: serviceName || title || "Untitled media card",
         subtitle: subtitle || "No paragraph",
         media: mediaUrl ? (
           <PreviewMedia src={mediaUrl} title={title} resourceType={resourceType} />

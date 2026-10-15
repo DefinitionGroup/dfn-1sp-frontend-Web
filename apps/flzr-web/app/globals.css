@@ -59,7 +59,12 @@
   --color-flzr-ink: #131019;
   /* Dark passages — violet-tinted, never #000 */
   --color-flzr-paper: #ffffff;
-  /* Light page background — pure white (user call: no light-gray tints) */
+  /* White is reserved for the raised section bands. */
+  --color-flzr-canvas: #f7f7f8;
+  /* Quiet page field from the revised FLZR composition. */
+  --color-flzr-copy: #302a3d;
+  --color-flzr-surface-soft: #f3f4f6;
+  /* Section-band gray — distinct from the intentionally white neutral-100 */
   --color-flzr-hairline: #e6e1f0;
   /* 1px dividers on light */
   --color-flzr-hairline-dark: rgb(255 255 255 / 0.15);
@@ -72,7 +77,7 @@
   --color-violet-600: #6a48f0;
 
   /* Fluid type scale (16px root, 375px → 1440px interpolation) */
-  --text-display: clamp(2.75rem, 2.05rem + 3vw, 4.75rem);
+  --text-display: clamp(2.75rem, 2rem + 3.2vw, 5rem);
   --text-display--line-height: 0.9;
   --text-display--font-weight: 700;
   --text-title: clamp(2rem, 1.65rem + 1.5vw, 3rem);
@@ -80,6 +85,15 @@
   --text-title--font-weight: 700;
   --text-body-fluid: clamp(1rem, 0.97rem + 0.25vw, 1.125rem);
   --text-body-fluid--line-height: 1.33;
+  --text-section-title: clamp(2.35rem, 1.85rem + 2.15vw, 3.875rem);
+  --text-section-title--line-height: 1.096;
+  --text-section-title--font-weight: 700;
+  --text-section-lead: clamp(1.5rem, 1.25rem + 1.1vw, 2.25rem);
+  --text-section-lead--line-height: 1.15;
+  --text-section-body: clamp(1rem, 0.94rem + 0.3vw, 1.25rem);
+  --text-section-body--line-height: 1.54;
+  --text-section-label: 0.8125rem;
+  --text-section-label--line-height: 1;
 
   /* Motion constants — one entrance system per page */
   --ease-flzr: cubic-bezier(0.62, 0.05, 0.01, 0.99);
@@ -93,6 +107,14 @@
   --radius-2xl: 2.5rem;
   --radius-3xl: 3rem;
   --radius-4xl: 3.5rem;
+
+  /* Revised FLZR composition geometry. */
+  --flzr-shell-max: 97.75rem;
+  --flzr-section-gutter: clamp(1.25rem, 0.65rem + 3vw, 4.5rem);
+  --flzr-section-radius: clamp(1.75rem, 1.4rem + 1vw, 2.8125rem);
+  --flzr-section-shadow:
+    0 1px 0 rgb(19 16 25 / 0.02),
+    0 12px 34px rgb(33 25 49 / 0.07);
 
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   /* Brand Colors - Extended Palette */
@@ -208,7 +230,7 @@
 
 :root {
   --radius: 1.5rem;
-  --background: #ffffff;
+  --background: #f7f7f8;
   --foreground: #131019;
   --card: oklch(1 0 0);
   --card-foreground: #131019;
@@ -523,6 +545,200 @@
   text-transform: uppercase;
 }
 
+/* The revised Figma treats every content chapter as a raised section band.
+   Its marker is an internal label, not the external tab used previously. */
+.flzr-section-band {
+  position: relative;
+  isolation: isolate;
+  width: min(calc(100% - 1rem), var(--flzr-shell-max));
+  margin: clamp(1.25rem, 1rem + 1.4vw, 3rem) auto;
+}
+
+.flzr-section-label {
+  position: absolute;
+  z-index: 20;
+  top: clamp(1.5rem, 1rem + 1.8vw, 3.875rem);
+  left: var(--flzr-section-gutter);
+  width: 7.863rem;
+  height: 2.117rem;
+  color: var(--color-flzr-paper);
+  font-family: var(--font-pt-sans), sans-serif;
+  font-size: var(--text-section-label);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.flzr-section-label__copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0 0.8rem;
+  white-space: nowrap;
+}
+
+.flzr-section-label__number {
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.flzr-section-surface {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--flzr-section-radius);
+  box-shadow: var(--flzr-section-shadow);
+}
+
+.flzr-section-content {
+  padding: clamp(6.25rem, 5rem + 3vw, 8rem) var(--flzr-section-gutter)
+    clamp(3.25rem, 2.5rem + 2.4vw, 5.5rem);
+}
+
+/* A hero owns its internal spacing; its band supplies the outer frame. */
+.flzr-section-content:has(> .flzr-home-hero) {
+  padding: 0;
+}
+
+.flzr-section-surface--paper {
+  background: var(--color-flzr-paper);
+}
+
+.flzr-section-surface--soft {
+  background: var(--color-flzr-paper);
+}
+
+.flzr-section-surface--fade {
+  background: var(--color-flzr-paper);
+}
+
+.flzr-section-band[data-section="careers"] .flzr-section-surface,
+.flzr-section-band[data-layout="two-thirds"] .flzr-section-surface {
+  background: var(--color-flzr-violet);
+}
+
+.flzr-section-band[data-section="careers"] .flzr-section-content,
+.flzr-section-band[data-layout="two-thirds"] .flzr-section-content {
+  padding: 0;
+}
+
+.flzr-home-hero {
+  height: clamp(42rem, calc((100vw - 4rem) / 1.885), 55.7rem);
+  min-height: 42rem;
+}
+
+.flzr-hero-tint {
+  background:
+    linear-gradient(100deg, rgb(123 52 234 / 0.56), rgb(124 92 255 / 0.38)),
+    rgb(19 16 25 / 0.18);
+}
+
+.flzr-section-band[data-section="reach"] .flzr-section-content {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.flzr-section-band[data-section="reach"]
+  .flzr-content-section--reach-copy {
+  width: 100%;
+  padding: clamp(5.5rem, 4.5rem + 3vw, 7rem) var(--flzr-section-gutter) 1rem;
+  background: none;
+}
+
+.flzr-section-band[data-section="reach"]
+  .flzr-content-section--reach-copy
+  > div
+  > div {
+  grid-column: 1 / -1;
+}
+
+.flzr-reach-map-shell {
+  min-width: 0;
+  width: 100%;
+}
+
+.flzr-reach-map {
+  position: relative;
+  aspect-ratio: 2832 / 1728;
+  width: 100%;
+}
+
+.flzr-reach-map__label {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: var(--color-flzr-violet);
+  padding: 0.35rem 0.7rem;
+  color: var(--color-flzr-paper);
+  font-size: clamp(0.55rem, 0.46rem + 0.25vw, 0.75rem);
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  box-shadow: 0 0 0 4px rgb(124 92 255 / 0.13);
+}
+
+@media (min-width: 48rem) {
+  .flzr-reach-map-shell {
+    width: 100%;
+    max-width: 60%;
+    margin-inline-start: auto;
+  }
+
+  .flzr-section-band[data-section="reach"] .flzr-section-content {
+    display: grid;
+  }
+
+  .flzr-section-band[data-section="reach"]
+    .flzr-content-section--reach-copy,
+  .flzr-section-band[data-section="reach"] .flzr-reach-map-shell {
+    grid-area: 1 / 1;
+  }
+
+  .flzr-section-band[data-section="reach"]
+    .flzr-content-section--reach-copy {
+    z-index: 2;
+    width: 100%;
+    max-width: 40%;
+    align-self: stretch;
+    justify-self: start;
+    margin-inline: 0;
+  }
+
+  .flzr-section-band[data-section="reach"] .flzr-reach-map-shell {
+    z-index: 1;
+    justify-self: end;
+  }
+}
+
+@media (max-width: 47.999rem) {
+  .flzr-home-hero {
+    height: calc(100svh - 5rem);
+    min-height: 40rem;
+  }
+
+  .flzr-reach-map {
+    margin-top: 0;
+  }
+}
+
+.flzr-home-hero.flzr-home-hero--long {
+  height: auto;
+}
+
+.flzr-content-section--globe-overlay {
+  background: linear-gradient(
+    180deg,
+    var(--color-flzr-surface-soft) 0%,
+    color-mix(in srgb, var(--color-flzr-surface-soft) 82%, transparent) 58%,
+    transparent 100%
+  );
+}
+
 @keyframes vt-slide-in {
   0% {
     opacity: 1;
@@ -745,4 +961,12 @@ video {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+}
+
+/* Embedded 1SP component groups keep the 1SP face: remap the host's sans and
+   legacy aspekta tokens so font-sans / font-aspekta utilities inside the
+   group resolve to Aspekta instead of the host family. */
+[data-onesp-component-group] {
+  --font-sans: var(--font-aspekta-source), system-ui, sans-serif;
+  --font-aspekta: var(--font-aspekta-source), system-ui, sans-serif;
 }

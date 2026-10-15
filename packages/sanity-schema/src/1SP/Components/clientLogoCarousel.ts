@@ -1,4 +1,5 @@
 import { defineType, defineField } from "sanity";
+import { validateClientScope } from "../../shared/validateClientScope";
 import { Slideshow } from "@phosphor-icons/react";
 
 export default defineType({
@@ -7,7 +8,7 @@ export default defineType({
     type: "object",
     icon: Slideshow,
     description:
-        "Infinite marquee of client logos. Auto mode shows all channel clients with a logo; manual mode uses a drag-and-drop selection.",
+        "Animated client-logo display. Auto mode shows all channel clients with a logo; manual mode uses a drag-and-drop selection.",
     groups: [
         { name: "content", title: "Content", default: true },
         { name: "selection", title: "Selection" },
@@ -39,6 +40,7 @@ export default defineType({
                 list: [
                     { title: "Auto (all channel clients with a logo)", value: "auto" },
                     { title: "Manual selection (Drag & Drop order)", value: "manual" },
+                    { title: "Renaissance collection", value: "collection" },
                 ],
                 layout: "radio",
             },
@@ -56,7 +58,10 @@ export default defineType({
                     type: "reference",
                     to: [{ type: "client" }],
                     options: {
-                        filter: "defined(logo)",
+                        filter: ({ document }) => ({
+                            filter: 'defined(logo) && language == $language && $channel in channel',
+                            params: { language: document?.language || 'en', channel: typeof document?.channel === 'string' ? document.channel : '1spWeb' },
+                        }),
                     },
                 },
             ],
@@ -69,12 +74,24 @@ export default defineType({
                     ) {
                         return "Please select at least one client when using manual selection mode";
                     }
-                    return true;
+                    if (parent?.selectionMode !== 'manual') return true;
+                    return validateClientScope(value as Array<{ _ref?: string }> | undefined, context);
                 }),
         }),
+        defineField({ name: 'collection', title: 'Renaissance client collection', type: 'reference', to: [{ type: 'renaissanceClientCollection' }], group: 'selection',
+            hidden: ({ parent }) => parent?.selectionMode !== 'collection',
+            options: { filter: 'channel == "renaissanceWeb" && language == "en"' },
+            validation: r => r.custom((value, context) => {
+                if ((context.parent as { selectionMode?: string })?.selectionMode !== 'collection') return true;
+                if (context.document?.channel !== 'renaissanceWeb') return 'Collections are available on Renaissance pages only.';
+                return Boolean(value?._ref) || 'Select a client collection.';
+            }) }),
+        defineField({ name: 'displayMode', title: 'Renaissance display', type: 'string', group: 'layout', initialValue: 'swap',
+            hidden: ({ document }) => document?.channel !== 'renaissanceWeb',
+            options: { list: [{ title: 'Animated selection', value: 'swap' }, { title: 'Full logo grid', value: 'grid' }] } }),
         defineField({
             name: "speed",
-            title: "Scroll Speed",
+            title: "Motion Speed",
             type: "string",
             group: "layout",
             initialValue: "normal",
@@ -116,7 +133,7 @@ export default defineType({
         prepare({ headline, mode }) {
             return {
                 title: headline || "Client Logo Carousel",
-                subtitle: `Clients: ${mode === "manual" ? "manual selection" : "auto"}`,
+                subtitle: `Clients: ${mode === "collection" ? "Renaissance collection" : mode === "manual" ? "manual selection" : "auto"}`,
             };
         },
     },

@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "apps/flzr-web/app/globals.css"
+        ],
+        "createdAt": "2026-09-16T21:21:51.944Z",
+        "reason": "Codex review: existing FLZR gradient utilities predate this change; user requested preservation of the current homepage visual language. New long-copy hero uses solid white text."
+      }
+    ]
+  }
+}

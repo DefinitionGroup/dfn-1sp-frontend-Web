@@ -10,11 +10,11 @@
  * - ContactPage JSON-LD + BreadcrumbList structured data
  * - Hero video poster preload for LCP optimization
  */
+import { stegaClean } from "@sanity/client/stega";
 import RenaissancePageBuilder from "@renaissance/components/RenaissancePageBuilder";
 import RenaissanceSiteWrapper from "@renaissance/components/RenaissanceSiteWrapper";
-import NotFound from "@renaissance/components/ui/not-found";
 import ContactForm from "@renaissance/components/ui/ContactForm";
-import { getAllCases, getAllServicesForChannel, getPageBySlug } from "@1sp/sanity-queries";
+import { getAllCases, getAllServicesForChannel, getPageBySlug, getRenaissanceEnquiryEmail } from "@1sp/sanity-queries";
 import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@renaissance/lib/hero-utils";
@@ -36,8 +36,12 @@ import {
   getBreadcrumbLabel,
   CANONICAL_URL,
 } from "@renaissance/lib/structured-data";
+import {
+  RENAISSANCE_CONTACT_DESCRIPTION,
+  RENAISSANCE_CONTACT_FALLBACK,
+  RENAISSANCE_CONTACT_TITLE,
+} from "@renaissance/data/contactPageFallback";
 
-export const revalidate = 60;
 const CHANNEL = "renaissanceWeb";
 const SUPPORTED_LOCALES = ["en"];
 
@@ -56,7 +60,17 @@ export async function generateMetadata({
   const page = await getPageBySlug("contact", CHANNEL, language);
 
   if (!page) {
-    return { title: "Contact" };
+    return {
+      title: RENAISSANCE_CONTACT_TITLE,
+      description: RENAISSANCE_CONTACT_DESCRIPTION,
+      alternates: { canonical: "/contact" },
+      openGraph: {
+        title: RENAISSANCE_CONTACT_TITLE,
+        description: RENAISSANCE_CONTACT_DESCRIPTION,
+        locale: language,
+        type: "website",
+      },
+    };
   }
 
   const title = page.metadata?.title || page.title || "Contact";
@@ -106,18 +120,15 @@ export default async function ContactPage({
   const language = locale || "en";
 
   // Uses cached fetch from centralized data layer
-  const page = await getPageBySlug("contact", CHANNEL, language);
-
-  if (!page) {
-    return (
-      <RenaissanceSiteWrapper language={language} navColor="light">
-        <NotFound />
-      </RenaissanceSiteWrapper>
-    );
-  }
+  const sanityPage = await getPageBySlug("contact", CHANNEL, language);
+  const page = sanityPage || RENAISSANCE_CONTACT_FALLBACK;
+  const enquiryEmail = await getRenaissanceEnquiryEmail(language) || "hello@renaissancepr.biz";
 
   const navbarVariant = page?.navbarVariant || "light";
   const contentBlocks = page.content as any[] | undefined;
+  const registrationIndex = contentBlocks?.findIndex(block => stegaClean(block.anchorId) === "registration") ?? -1;
+  const beforeForm = registrationIndex >= 0 ? contentBlocks?.slice(0, registrationIndex) : contentBlocks;
+  const afterForm = registrationIndex >= 0 ? contentBlocks?.slice(registrationIndex) : [];
   const needsAllCases = hasCaseListingBlocks(contentBlocks);
   const hasServicesGallery = hasServicesGalleryBlock(contentBlocks);
 
@@ -191,17 +202,18 @@ export default async function ContactPage({
         <div className="min-h-screen px-1 md:px-2">
           {contentBlocks?.length ? (
             <RenaissancePageBuilder
-              content={contentBlocks}
+              content={beforeForm || []}
               language={language}
               channel={CHANNEL}
-              deferAfter={2}
             />
           ) : null}
           <ContactForm
             language={language}
             channel={CHANNEL}
             settings={page.contactForm}
+            enquiryEmail={enquiryEmail}
           />
+          {afterForm?.length ? <RenaissancePageBuilder content={afterForm} language={language} channel={CHANNEL} /> : null}
         </div>
       </div>
     </RenaissanceSiteWrapper>

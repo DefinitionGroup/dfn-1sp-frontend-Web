@@ -1,10 +1,12 @@
 "use client";
 
+import { stegaClean } from "@sanity/client/stega";
 import { useState, type FormEvent, type ChangeEvent } from "react";
 import type { ContactFormSettings } from "@1sp/sanity-types";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
 type ContactFormProps = {
+  enquiryEmail?: string | null;
   language?: string;
   channel?: string;
   settings?: ContactFormSettings | null;
@@ -30,6 +32,7 @@ export default function ContactForm({
   language = "en",
   channel = "1spWeb",
   settings,
+  enquiryEmail,
 }: ContactFormProps) {
   const [formState, setFormState] = useState<FormState>(defaultFormState);
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
@@ -44,6 +47,12 @@ export default function ContactForm({
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (enquiryEmail) {
+      const subject = `Project enquiry: ${formState.company || formState.name}`;
+      const body = `${formState.message}\n\nName: ${formState.name}\nEmail: ${formState.email}\nCompany: ${formState.company}`;
+      window.location.href = `mailto:${stegaClean(enquiryEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      return;
+    }
     setStatus("submitting");
     setError("");
 
@@ -77,46 +86,38 @@ export default function ContactForm({
   const subheadline =
     settings?.subheadline || "Tell us a little bit about what you’re building and we’ll reach out.";
   const description = settings?.description;
-  const consentText =
+  const consentText = enquiryEmail ? "This opens your email app with your enquiry filled in. Review it and send it there." :
     settings?.consentText ||
     "By submitting this form, you agree that we may store your information to contact you about your request.";
-  const submitLabel = settings?.submitLabel || "Send message";
+  const submitLabel = enquiryEmail ? "Open email app" : settings?.submitLabel || "Send message";
   const successMessage =
     settings?.successMessage || "Thanks! We’ve received your message and will get back to you soon.";
   const errorMessage =
     settings?.errorMessage || "Sorry, something went wrong. Please try again in a moment.";
 
   return (
-    <section className="relative overflow-hidden bg-neutral-50 py-20 text-neutral-900">
-      <div
-        className="pointer-events-none absolute inset-0 opacity-40"
-        aria-hidden="true"
-
-      />
-      <div className="pointer-events-none absolute inset-0 " aria-hidden="true" />
-
-      <div className="container relative mx-auto px-4">
-        <div className="grid items-start gap-12 lg:grid-cols-[1.1fr_1fr]">
-          <div className="space-y-3 max-w-2xl">
-            <span className="inline-flex items-center gap-2 px-3 py-1 text-[11px] font-semibold uppercase text-neutral-700 ring-1 ring-neutral-200">
-              <span className="h-1.5 w-1.5 bg-violet-500 shadow-[0_0_0_4px_rgba(0,141,167,0.14)]" aria-hidden />
-              Contact
+    <section className="relative overflow-hidden bg-renaissance-paper pb-24 pt-4 font-renaissance text-renaissance-ink md:pb-32">
+      <div className="relative mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12">
+        <div className="grid items-start gap-12 border-t border-renaissance-ink/20 pt-10 md:grid-cols-12 md:gap-x-10 md:pt-14">
+          <div className="max-w-2xl md:col-span-4">
+            <span className="font-mono text-[0.72rem] font-semibold uppercase tracking-[0.13em] text-renaissance-ink/60">
+              Project enquiry
             </span>
             {hasVisibleText(headline) ? (
-              <h2 className="text-3xl font-semibold leading-tight text-neutral-900 md:text-4xl">{headline}</h2>
+              <h2 className="renaissance-display mt-5 text-[clamp(2.5rem,4.2vw,5.5rem)] font-bold leading-[0.88] text-renaissance-ink">{headline}</h2>
             ) : null}
-            <p className="text-lg text-neutral-600">{subheadline}</p>
-            {description ? <p className="text-neutral-500">{description}</p> : null}
+            <p className="mt-6 max-w-[32rem] text-lg leading-[1.35] text-renaissance-ink/75">{subheadline}</p>
+            {description ? <p className="mt-4 text-renaissance-ink/65">{description}</p> : null}
           </div>
 
-          <div className="relative rounded-card border border-neutral-200 p-6 transition duration-300 ease-out">
+          <div className="relative md:col-span-7 md:col-start-6">
             {status === "success" ? (
-              <div className="space-y-3 text-violet-700">
-                <p className="text-lg font-semibold">Thank you!</p>
-                <p>{successMessage}</p>
+              <div className="border-y border-renaissance-ink/20 py-10 text-renaissance-ink">
+                <p className="renaissance-display text-4xl font-bold">Thank you.</p>
+                <p className="mt-4 max-w-xl text-lg">{successMessage}</p>
               </div>
             ) : (
-              <form className="space-y-12" onSubmit={onSubmit}>
+              <form className="space-y-9" onSubmit={onSubmit}>
                 <label className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
                   <span>Website</span>
                   <input
@@ -126,64 +127,66 @@ export default function ContactForm({
                     autoComplete="off"
                   />
                 </label>
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-                  <label className="space-y-2 text-sm text-neutral-700">
-                    <span>Name</span>
+                <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+                  <label className="space-y-3 text-sm font-semibold uppercase tracking-[0.08em] text-renaissance-ink">
+                    <span>Name *</span>
                     <input
                       required
                       value={formState.name}
                       onChange={handleChange("name")}
-                      className="w-full border border-neutral-300 bg-neutral-50 px-3 py-3 text-sm text-neutral-900 outline-none transition duration-200 placeholder:text-neutral-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
-                      placeholder="Jane Doe"
+                      className="w-full border-0 border-b border-renaissance-ink/35 bg-transparent px-0 py-3 text-base font-normal normal-case tracking-normal text-renaissance-ink outline-none transition-colors placeholder:text-renaissance-ink/55 focus:border-renaissance-signal"
+                      placeholder="Your name"
                       autoComplete="name"
                     />
                   </label>
-                  <label className="space-y-2 text-sm text-neutral-700">
-                    <span>Email</span>
+                  <label className="space-y-3 text-sm font-semibold uppercase tracking-[0.08em] text-renaissance-ink">
+                    <span>Email *</span>
                     <input
                       required
                       type="email"
                       value={formState.email}
                       onChange={handleChange("email")}
-                      className="w-full border border-neutral-300 bg-neutral-50 px-3 py-3 text-sm text-neutral-900 outline-none transition duration-200 placeholder:text-neutral-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
-                      placeholder="you@example.com"
+                      className="w-full border-0 border-b border-renaissance-ink/35 bg-transparent px-0 py-3 text-base font-normal normal-case tracking-normal text-renaissance-ink outline-none transition-colors placeholder:text-renaissance-ink/55 focus:border-renaissance-signal"
+                      placeholder="you@company.com"
                       autoComplete="email"
                     />
                   </label>
                 </div>
-                <label className="space-y-12 text-sm text-neutral-700">
+                <label className="block space-y-3 text-sm font-semibold uppercase tracking-[0.08em] text-renaissance-ink">
                   <span>Company (optional)</span>
                   <input
                     value={formState.company}
                     onChange={handleChange("company")}
-                    className="w-full border border-neutral-300 bg-neutral-50 px-3 py-3 text-sm text-neutral-900 outline-none transition duration-200 placeholder:text-neutral-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
-                    placeholder="Company Inc."
+                    className="w-full border-0 border-b border-renaissance-ink/35 bg-transparent px-0 py-3 text-base font-normal normal-case tracking-normal text-renaissance-ink outline-none transition-colors placeholder:text-renaissance-ink/55 focus:border-renaissance-signal"
+                    placeholder="Studio or organisation"
                     autoComplete="organization"
                   />
                 </label>
-                <label className="space-y-2 text-sm text-neutral-700">
-                  <span>How can we help?</span>
+                <label className="block space-y-3 text-sm font-semibold uppercase tracking-[0.08em] text-renaissance-ink">
+                  <span>How can we help? *</span>
                   <textarea
                     required
                     value={formState.message}
                     onChange={handleChange("message")}
-                    className="min-h-[140px] w-full border border-neutral-300 bg-neutral-50 px-3 py-3 text-sm text-neutral-900 outline-none transition duration-200 placeholder:text-neutral-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
-                    placeholder="Tell us about your goals, timeline, and budget."
+                    className="min-h-[160px] w-full resize-y border border-renaissance-ink/35 bg-transparent p-4 text-base font-normal normal-case tracking-normal text-renaissance-ink outline-none transition-colors placeholder:text-renaissance-ink/55 focus:border-renaissance-signal"
+                    placeholder="Game, audience, timing and what you need from us."
                   />
                 </label>
-                <p className="text-xs text-neutral-500">{consentText}</p>
-                <div className="flex items-center justify-between gap-4">
+                <p className="max-w-2xl text-xs leading-relaxed text-renaissance-ink/55">{consentText}</p>
+                {enquiryEmail && <p className="text-sm">Or email <a className="underline underline-offset-4" href={`mailto:${stegaClean(enquiryEmail)}`}>{enquiryEmail}</a>.</p>}
+                <div className="flex flex-wrap items-center justify-between gap-4 border-t border-renaissance-ink/20 pt-6">
                   {status === "error" ? (
-                    <p className="text-sm text-rose-600">{error || errorMessage}</p>
+                    <p role="alert" className="text-sm text-red-700">{error || errorMessage}</p>
                   ) : (
                     <div />
                   )}
                   <button
                     type="submit"
                     disabled={status === "submitting"}
-                    className="inline-flex items-center justify-center  bg-neutral-900 px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition duration-200 ease-out hover:-translate-y-[1px] hover:bg-neutral-800 hover:shadow-[0_14px_40px_rgba(0,0,0,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500 disabled:cursor-not-allowed disabled:opacity-70"
+                    className="inline-flex min-w-44 items-center justify-between gap-8 border-b border-renaissance-ink bg-transparent py-3 text-sm font-semibold uppercase tracking-[0.08em] text-renaissance-ink transition-colors hover:border-renaissance-signal hover:text-renaissance-signal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-renaissance-signal disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    {status === "submitting" ? "Sending..." : submitLabel}
+                    {status === "submitting" ? "Sending…" : submitLabel}
+                    <span aria-hidden="true">↗</span>
                   </button>
                 </div>
               </form>

@@ -96,7 +96,7 @@ function CtaMiniComponent({
               href={finalUrl}
               className={cn(
                 "inline-flex w-full md:w-fit items-center justify-between gap-3 border font-medium transition-colors duration-200",
-                "text-[10px] sm:text-xxs md:text-xxs",
+                "text-xs",
                 buttonVariant === "violetsmall"
                   ? "px-3 py-2 md:px-4 md:py-2"
                   : "px-3 py-2.5 md:px-4 md:py-3",

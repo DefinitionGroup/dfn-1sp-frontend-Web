@@ -89,6 +89,14 @@ export default defineType({
             description: 'e.g., "Together. One Superagency"',
             group: 'general',
         },
+        defineField({
+            name: 'footerBannerLabel',
+            title: 'Footer Banner Label',
+            type: 'text',
+            rows: 2,
+            group: 'general',
+            description: 'Short discipline shown under the logo in the 1SP network footer banner, e.g. "Full Service" + line break + "Creative Studio". Line breaks are kept. The Tagline/Motto replaces it on hover.',
+        }),
         {
             name: "logo",
             title: "Unit Logo",
@@ -117,6 +125,23 @@ export default defineType({
             description: "Upload the unit's background image",
             group: 'media',
         },
+        defineField({
+            name: 'footerBannerLogo',
+            title: 'Footer Banner Logo',
+            type: 'cloudinary.asset',
+            group: 'media',
+            description: 'White logo on a 200×105 artboard, used only in the 1SP network footer banner so all units line up. Falls back to Unit Logo.',
+        }),
+        defineField({
+            name: 'footerHoverVideo',
+            title: 'Footer Banner Hover Video',
+            type: 'cloudinary.asset',
+            group: 'media',
+            description: 'Optional video shown on hover or keyboard focus in the footer banner. Unit Background Image is the poster; Tagline/Motto supplies the hover text.',
+            validation: (Rule) => Rule.custom((value) =>
+                !value || (value as { resource_type?: string }).resource_type === 'video'
+                    ? true : 'Choose a Cloudinary video.'),
+        }),
         {
             name: 'cta',
             title: 'Call to Action (CTA)',

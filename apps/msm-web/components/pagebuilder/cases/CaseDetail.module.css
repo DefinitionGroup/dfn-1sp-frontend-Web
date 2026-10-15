@@ -1,0 +1,67 @@
+.container {
+  width: 100%;
+  max-width: 88rem;
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: end;
+  min-height: 95svh;
+  overflow: hidden;
+  color: var(--color-msm-ink);
+}
+.heroInner { position: relative; z-index: 20; padding-block: 9rem clamp(3.5rem, 6vw, 6rem); }
+.heroGrid { display: grid; align-items: end; gap: 2rem; }
+.heroCopy { min-width: 0; }
+.heroTitle { max-width: 21ch; font-size: clamp(2.5rem, 4.5vw, 4.5rem); line-height: 1.08; letter-spacing: -0.03em; text-wrap: balance; overflow-wrap: anywhere; }
+.heroSubtitle { max-width: 50ch; margin-bottom: 1.25rem; font-size: clamp(1rem, 1.3vw, 1.125rem); line-height: 1.5; color: rgb(244 244 244 / 86%); }
+.heroDescription { max-width: 48ch; margin-top: 1.5rem; font-size: clamp(1.125rem, 1.6vw, 1.375rem); line-height: 1.55; }
+.badges { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: end; }
+.badges .unitBadge { width: 7rem; }
+
+/* MSM owns the presentation; shared CMS blocks keep their content contracts. */
+.darkSection { position: relative; isolation: isolate; overflow: hidden; background: var(--color-msm-paper); color: var(--color-msm-ink); scroll-margin-top: 6rem; }
+.narrativeRow { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; padding-block: clamp(3rem, 6vw, 6rem); border-top: 1px solid rgb(244 244 244 / 18%); }
+.badgeRail { min-width: 0; }
+.badgeRail .sectionBadge { width: 8rem; }
+.narrativeBody { min-width: 0; display: flex; flex-direction: column; align-items: start; gap: 1.5rem; }
+.narrativeBody > * { max-width: 100%; }
+.narrativeBody .copy { color: rgb(244 244 244 / 82%); max-width: 65ch; }
+.narrativeBody .copy :is(h2,h3,h4,strong) { color: var(--color-msm-ink); }
+.narrativeBody .copy ul { list-style: disc; }
+.narrativeBody .copy ol { list-style: decimal; }
+.narrativeBody .copy li::marker { color: var(--color-msm-cyan); }
+.narrativeBody .copy a { color: inherit; text-decoration-color: var(--color-msm-cyan); }
+.detailList { width: 100%; display: grid; gap: 0; }
+.detailList li { padding-block: 1rem; border-bottom: 1px solid rgb(244 244 244 / 18%); font-size: 1.0625rem; line-height: 1.6; }
+.detailCta { display: grid; gap: 1rem; margin-top: 1rem; }
+.metricPanel { width: 100%; padding-top: 1.5rem; border-top: 1px solid rgb(244 244 244 / 18%); }
+.heading { max-width: 24ch; font-size: clamp(2rem, 3.25vw, 3.5rem); line-height: 1.12; letter-spacing: -0.025em; margin: 0; }
+.subheading { max-width: 36ch; font-size: clamp(1.5rem, 2vw, 2rem); line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 1.25rem; }
+.copy { max-width: 65ch; font-size: clamp(1.0625rem, 1.3vw, 1.25rem); line-height: 1.7; overflow-wrap: anywhere; }
+.copy > :first-child { margin-top: 0; }
+.copy > :last-child { margin-bottom: 0; }
+.copy p + p { margin-top: 1.25em; }
+.copy :is(ul, ol) { padding-left: 1.2em; }
+.copy li + li { margin-top: 0.65em; }
+.copy a { text-decoration: underline; text-underline-offset: 0.2em; }
+.results { position: relative; }
+.results[data-media="true"] { min-height: 80svh; }
+.quote { max-width: 52ch; margin-top: 1rem; padding-top: 1.5rem; border-top: 1px solid rgb(244 244 244 / 25%); font-size: clamp(1.25rem, 2vw, 1.75rem); line-height: 1.5; letter-spacing: -0.015em; }
+.quote footer { margin-top: 1.25rem; max-width: 55ch; font-size: 0.875rem; line-height: 1.6; letter-spacing: 0; color: rgb(244 244 244 / 72%); }
+
+@media (min-width: 768px) {
+  .narrativeRow { grid-template-columns: minmax(10rem, 3fr) minmax(0, 9fr); gap: clamp(3rem, 6vw, 6rem); }
+  .badgeRail .sectionBadge { width: clamp(10rem, 14vw, 12rem); }
+  .heroGrid { grid-template-columns: minmax(0, 1fr) 10rem; gap: clamp(3rem, 6vw, 6rem); }
+  .badges { justify-content: end; }
+  .badges .unitBadge { width: 10rem; }
+}
+
+@media (min-width: 1024px) {
+  .results[data-media="true"] { min-height: 90svh; }
+}

@@ -1,3 +1,5 @@
+import {buildMsmMetadata} from '@msm/lib/metadata';
+export const metadata = buildMsmMetadata({title: 'Mosaic button test', metadata: {noIndex: true}});
 // Temporary visual test page for MosaicButton — safe to delete.
 import MosaicButton from "@msm/components/ui/MosaicButton";
 

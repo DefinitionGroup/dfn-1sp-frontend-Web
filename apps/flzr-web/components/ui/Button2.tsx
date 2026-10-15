@@ -16,8 +16,8 @@ import { hasVisibleText } from "@1sp/utils/text-content";
 const Strands = dynamic(() => import("./Strands"), { ssr: false });
 
 /**
- * FLZR pill button — violet aurora WebGL shader that follows the pointer,
- * spring hover/press physics, mono telemetry label, pronounced radius.
+ * FLZR pill button — surface-aware ghost controls plus the retained expressive
+ * violet, dark, and strands treatments.
  *
  * The legacy two-element roll variants (violetsmall, limesmall, …) are
  * accepted and normalised onto the new { variant, size } system so existing
@@ -34,11 +34,20 @@ type LegacyVariant =
   | "violetsmallrounded"
   | "limesmall"
   | "ghost"
+  | "ghostLight"
+  | "ghostDark"
+  | "ghostBright"
   | "outline"
   | "strands"
   | "compact";
 
-type Variant = "violet" | "dark" | "glass" | "ghost" | "strands";
+type Variant =
+  | "violet"
+  | "dark"
+  | "ghostLight"
+  | "ghostDark"
+  | "ghostBright"
+  | "strands";
 type Size = "sm" | "md" | "lg";
 
 interface Button2Props {
@@ -65,17 +74,21 @@ function normalize(variant: LegacyVariant): { variant: Variant; size: Size } {
     case "black":
       return { variant: "dark", size: "md" };
     case "glass":
-      return { variant: "glass", size: "md" };
+    case "ghostDark":
+      return { variant: "ghostDark", size: "md" };
+    case "ghostBright":
+      return { variant: "ghostBright", size: "md" };
     case "strands":
       return { variant: "strands", size: "md" };
     case "ghost":
+    case "ghostLight":
     case "outline":
-      return { variant: "ghost", size: "md" };
+      return { variant: "ghostLight", size: "md" };
     case "compact":
-      return { variant: "ghost", size: "sm" };
+      return { variant: "ghostLight", size: "sm" };
     case "default":
     default:
-      return { variant: "glass", size: "md" };
+      return { variant: "ghostDark", size: "md" };
   }
 }
 
@@ -357,14 +370,19 @@ const variantStyles: Record<
     label: "text-neutral-50",
     restBg: "bg-neutral-900",
   },
-  glass: {
-    pill: "backdrop-blur-md transition-colors duration-300",
+  ghostLight: {
+    pill: "border border-[var(--color-flzr-violet)] transition-[background-color,border-color] duration-300",
+    label: "text-flzr-violet",
+    restBg: "bg-transparent",
+  },
+  ghostDark: {
+    pill: "backdrop-blur-[6px] transition-colors duration-300",
     label: "text-white",
     restBg: "bg-white/10",
   },
-  ghost: {
-    pill: "",
-    label: "text-neutral-900",
+  ghostBright: {
+    pill: "border border-[#fefefe] transition-[background-color,border-color] duration-300",
+    label: "text-white",
     restBg: "bg-transparent",
   },
   strands: {
@@ -426,14 +444,16 @@ function Button2({
   if (!hasVisibleText(text)) return null;
 
   const eyebrowText = eyebrow?.trim();
-  const shaderActive = hovered && !reducedMotion;
+  const shaderActive = hovered && !reducedMotion && v === "dark";
+  const isGhost =
+    v === "ghostLight" || v === "ghostDark" || v === "ghostBright";
 
   const content = (
     <motion.div
       ref={pillRef}
       onHoverStart={() => {
         setHovered(true);
-        if (v === "strands" || v === "violet" || v === "glass") {
+        if (v === "strands" || v === "violet") {
           setHasActivatedStrands(true);
         }
       }}
@@ -446,23 +466,23 @@ function Button2({
       onPointerMove={onPointerMove}
       onPointerDown={() => setPressed(true)}
       onPointerUp={() => setPressed(false)}
-      whileHover={reducedMotion ? undefined : { scale: 1.04 }}
-      whileTap={reducedMotion ? undefined : { scale: 0.94 }}
+      whileHover={reducedMotion ? undefined : { scale: isGhost ? 1.02 : 1.04 }}
+      whileTap={reducedMotion ? undefined : { scale: isGhost ? 0.98 : 0.94 }}
       transition={{ type: "spring", stiffness: 550, damping: 26, mass: 0.7 }}
       className={cn(
         "group/flzrbtn relative inline-flex w-full items-center justify-between overflow-hidden rounded-full cursor-pointer select-none",
         sizeStyles[s].pill,
+        isGhost && s === "md" && "min-w-[11.375rem] justify-center",
         variantStyles[v].pill,
         variantStyles[v].restBg,
-        hovered && v === "glass" && "bg-violet-500",
+        hovered && v === "ghostLight" && "border-violet-500 bg-violet-500",
+        hovered && v === "ghostDark" && "bg-white/20",
+        hovered && v === "ghostBright" && "bg-white",
       )}
       style={{ willChange: reducedMotion ? undefined : "transform" }}
     >
       {/* pointer-reactive violet aurora */}
-      {!reducedMotion &&
-        v !== "strands" &&
-        v !== "violet" &&
-        v !== "glass" && (
+      {!reducedMotion && v === "dark" && (
         <AuroraCanvas
           dark={v === "dark"}
           active={shaderActive}
@@ -471,7 +491,7 @@ function Button2({
         />
       )}
 
-      {(v === "strands" || v === "violet" || v === "glass") && (
+      {(v === "strands" || v === "violet") && (
         <motion.div
           className={cn(
             "pointer-events-none absolute -inset-x-3 -inset-y-2 z-0 overflow-hidden rounded-[inherit]",
@@ -533,8 +553,10 @@ function Button2({
         className={cn(
           "font-flzr relative z-10 flex flex-col items-start justify-center whitespace-nowrap leading-none transition-colors duration-200",
           variantStyles[v].label,
-          hovered && v === "ghost" && "text-white",
-          hovered && (v === "strands" || v === "violet" || v === "glass") &&
+          "font-bold",
+          hovered && v === "ghostLight" && "text-white",
+          hovered && v === "ghostBright" && "text-violet-500",
+          hovered && (v === "strands" || v === "violet") &&
             "text-violet-500",
         )}
       >
@@ -552,8 +574,9 @@ function Button2({
           "relative z-10 transition-[rotate,translate] duration-300",
           hovered ? "rotate-0 translate-x-0.5" : "-rotate-45",
           variantStyles[v].label,
-          hovered && v === "ghost" && "text-white",
-          hovered && (v === "strands" || v === "violet" || v === "glass") &&
+          hovered && v === "ghostLight" && "text-white",
+          hovered && v === "ghostBright" && "text-violet-500",
+          hovered && (v === "strands" || v === "violet") &&
             "text-violet-500",
         )}
         style={{ transitionTimingFunction: "var(--ease-flzr-overshoot)" }}
@@ -569,7 +592,12 @@ function Button2({
     <div className={cn("inline-block w-fit", className)}>
       <Link
         href={href || "#"}
-        className="block rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-flzr-violet)] focus-visible:ring-offset-2"
+        className={cn(
+          "block rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+          v === "ghostBright"
+            ? "focus-visible:ring-white"
+            : "focus-visible:ring-[var(--color-flzr-violet)]",
+        )}
         {...linkProps}
         onClick={
           isExternal

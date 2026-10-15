@@ -117,7 +117,13 @@ function AnimatedSectionTitle({ title }: { title: string }) {
   );
 }
 
-function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
+function TwoColContentSection({
+  data,
+  inheritSectionSurface = false,
+}: {
+  data: TwoColContentSectionData;
+  inheritSectionSurface?: boolean;
+}) {
   const {
     title,
     showTitle = false,
@@ -193,7 +199,9 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
     "32": "py-32",
   };
 
-  const bgClass = bgColorMap[backgroundColor] || "bg-white";
+  const bgClass = inheritSectionSurface
+    ? "bg-transparent"
+    : bgColorMap[backgroundColor] || "bg-white";
   const textColors = textColorMap[backgroundColor] || textColorMap.white;
   const paddingClass = paddingYMap[paddingY] || "py-16";
 
@@ -204,18 +212,22 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
       case "base":
         return "text-base";
       case "lg":
-        return "text-lg";
+        return "text-section-body";
       case "xl":
-        return "text-xl";
+        return "text-section-lead";
       default:
-        return "text-lg";
+        return "text-section-body";
     }
   };
 
   const contentContainerVariants = {
-    hidden: {},
+    hidden: prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 22 },
     visible: {
+      opacity: 1,
+      y: 0,
       transition: {
+        duration: prefersReducedMotion ? 0 : TYPE_REVEAL_DURATION,
+        ease: EASE_FLZR,
         delayChildren: prefersReducedMotion ? 0 : BODY_START_DELAY,
         staggerChildren: prefersReducedMotion ? 0 : BODY_STAGGER,
       },
@@ -253,17 +265,16 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
   const portableTextComponents = {
     block: {
       normal: ({ children }: any) => (
-        <motion.p
+        <p
           className={`${getContentClass(contentSize)} ${textColors.secondary} mb-5 leading-[1.55] last:mb-0`}
-          variants={contentItemVariants}
         >
           {children}
-        </motion.p>
+        </p>
       ),
       h2: ({ children }: any) => (
         hasVisibleNode(children) ? (
           <motion.h2
-            className="mb-4 mt-10 text-4xl font-semibold leading-[0.98] text-flzr-violet md:text-5xl"
+            className="mb-4 mt-10 text-section-title text-flzr-violet"
             variants={contentItemVariants}
           >
             {children}
@@ -273,7 +284,7 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
       h3: ({ children }: any) => (
         hasVisibleNode(children) ? (
           <motion.h3
-            className="mb-4 mt-10 text-3xl font-semibold leading-none text-flzr-violet md:text-4xl"
+            className="mb-4 mt-10 text-title text-flzr-violet"
             variants={contentItemVariants}
           >
             {children}
@@ -282,7 +293,7 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
       ),
       h4: ({ children }: any) => (
         <motion.h4
-          className="mb-3 mt-8 text-2xl font-semibold leading-none text-flzr-violet md:text-3xl"
+          className="mb-3 mt-8 text-section-lead text-flzr-violet"
           variants={contentItemVariants}
         >
           {children}
@@ -371,7 +382,7 @@ function TwoColContentSection({ data }: { data: TwoColContentSectionData }) {
         className={`relative mx-auto w-full max-w-[1480px] px-4 sm:px-6 lg:px-8 ${paddingClass}`}
       >
         <motion.div
-          className="grid grid-cols-1 items-center gap-10 border-t border-flzr-hairline pt-10 md:gap-14 md:pt-14 lg:grid-cols-12 lg:gap-8 xl:gap-10"
+          className="grid grid-cols-1 items-center gap-10 pt-10 md:gap-14 md:pt-14 lg:grid-cols-12 lg:gap-8 xl:gap-10"
           initial={prefersReducedMotion ? "visible" : "hidden"}
           whileInView="visible"
           viewport={{ once: true, amount: 0.12 }}

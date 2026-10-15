@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
-import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
-import ListContainerComponent from "@msm/components/ui/ListContainerComponent";
-import ListItemComponent from "@msm/components/ui/ListItemComponent";
+import CaseSection from "./CaseSection";
+import styles from "./CaseDetail.module.css";
 import HeaderImageVideoComp2 from "@msm/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
 import { getTranslations } from "@1sp/utils/translations";
 import { useParams } from "next/navigation";
@@ -19,6 +17,8 @@ interface CloudinaryAsset {
 
 interface ApproachSectionProps {
   mainHeadline: string;
+  badgeText?: string;
+  badgeSubtitle?: string;
   subHeadline?: string;
   description?: string;
   approachDetails?: string[];
@@ -32,6 +32,8 @@ interface ApproachSectionProps {
 
 export default function ApproachSection({
   mainHeadline,
+  badgeText,
+  badgeSubtitle,
   subHeadline,
   description,
   approachDetails,
@@ -39,17 +41,11 @@ export default function ApproachSection({
   backgroundImage,
   backgroundVideo,
   enableParallax = false,
-  paddingY = "32",
   navPointName,
 }: ApproachSectionProps) {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
   const t = getTranslations(locale);
-
-  // Ensure body overflow is reset when component mounts
-  useEffect(() => {
-    document.body.style.overflow = "auto";
-  }, []);
 
   const sectionId = t.ids.approach;
 
@@ -58,67 +54,20 @@ export default function ApproachSection({
   const videoUrl = backgroundVideo ? assetUrl(backgroundVideo) : "";
 
   return (
-    <section className="relative overflow-hidden">
-      <div
-        id={sectionId}
-        data-navpoint-name={navPointName}
-        className="grid grid-cols-12 z-1 mx-auto min-h-[90vh] relative font-aspekta"
-      >
-        {mediaType === "video" && videoUrl ? (
-          <HeaderImageVideoComp2
-            useVideo={true}
-            videoSrc={videoUrl}
-            enableParallax={enableParallax}
-          />
-        ) : (
-          <HeaderImageVideoComp2
-            useVideo={false}
-            imageSrc={imageUrl}
-            enableParallax={enableParallax}
-          />
-        )}
-
-        <div
-          className={`z-1 grid col-span-12 py-${paddingY} gap-8 col-start-1  container mx-auto row-start-1 grid-cols-12`}
-        >
-          <div className="col-span-12 col-start-1 iphone-landscape:!col-span-12 px-4 md-px0 iphone-landscape:!col-start-1 mt-12 md:mt-0">
-            <StaggeredSlideUp
-              className="flex flex-col items-start gap-4 justify-start"
-              delay={0.0}
-              staggerDelay={0.1}
-              duration={0.5}
-              distance={80}
-            >
-              {hasVisibleText(mainHeadline) ? (
-                <h2 className="text-5xl md:text-7xl mb-2 pb-2  text-gray-100 max-w-2xl   tracking-tight leading-none">
-                  {mainHeadline}
-                </h2>
-              ) : null}
-              {hasVisibleText(subHeadline) && (
-                <h2 className="text-3xl md:text-5xl text-gray-100 max-w-2xl tracking-tight leading-none mb-2 pb-2">
-                  {subHeadline}
-                </h2>
-              )}
-              {description && (
-                <p className="text-xl text-gray-100 max-w-2xl mx-auto">
-                  {description}
-                </p>
-              )}
-            </StaggeredSlideUp>
-          </div>
-
-          {approachDetails && approachDetails.length > 0 && (
-            <div className="col-span-12 col-start-1 iphone-landscape:!col-span-12 px-4 md:px-0 iphone-landscape:!col-start-1 md:col-span-8 mt-8 border-t border-white pt-4">
-              <ListContainerComponent>
-                {approachDetails.map((detail, idx) => (
-                  <ListItemComponent key={idx} size="small" fontWeight="normal">
-                    {detail}
-                  </ListItemComponent>
-                ))}
-              </ListContainerComponent>
-            </div>
-          )}
-        </div>
+    <section id={sectionId} data-navpoint-name={navPointName || sectionId} className={styles.darkSection}>
+      {mediaType === "video" && videoUrl ? (
+        <HeaderImageVideoComp2 useVideo videoSrc={videoUrl} enableParallax={enableParallax} />
+      ) : imageUrl ? (
+        <HeaderImageVideoComp2 useVideo={false} imageSrc={imageUrl} enableParallax={enableParallax} />
+      ) : null}
+      <div className={styles.container}>
+        <CaseSection title={mainHeadline} badgeText={badgeText} badgeSubtitle={badgeSubtitle}>
+          {hasVisibleText(subHeadline) && <h3 className={styles.subheading}>{subHeadline}</h3>}
+          {hasVisibleText(description) && <p className={styles.copy}>{description}</p>}
+          {approachDetails && approachDetails.length > 0 && <ul className={styles.detailList}>
+            {approachDetails.map((detail, index) => <li key={index}>{detail}</li>)}
+          </ul>}
+        </CaseSection>
       </div>
     </section>
   );

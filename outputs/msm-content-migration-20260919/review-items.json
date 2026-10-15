@@ -1,0 +1,43 @@
+[
+  {
+    "url": "https://www.msm.digital/de/project/ubs-global-employer-branding/",
+    "row": 1639,
+    "reason": "Social-wall embed retained in source inventory; no unsupported third-party script injected."
+  },
+  {
+    "url": "https://www.msm.digital/de/project/edeka-influencer-marketing/",
+    "row": 1667,
+    "reason": "Social-wall embed retained in source inventory; no unsupported third-party script injected."
+  },
+  {
+    "url": "https://www.msm.digital/service/mixed-reality-in-manufacturing/",
+    "row": 292,
+    "reason": "The legacy report uses its own gated download form. Retaining a link to that form; no report delivery is promised by the MSM contact form."
+  },
+  {
+    "url": "https://www.msm.digital/service/mixed-reality-in-manufacturing/",
+    "row": 293,
+    "reason": "The legacy report uses its own gated download form. Retaining a link to that form; no report delivery is promised by the MSM contact form."
+  },
+  {
+    "url": "https://www.msm.digital/",
+    "row": 13,
+    "reason": "Legacy #godigitalnow destination retained for review: https://www.msm.digital/go-digital/"
+  },
+  {
+    "url": "https://www.msm.digital/disclaimer/",
+    "reason": "Legal body preserved from original in draft; workbook legal review comments still require client review before publication."
+  },
+  {
+    "url": "https://www.msm.digital/privacy-policy/",
+    "reason": "Legal body preserved from original in draft; workbook legal review comments still require client review before publication."
+  },
+  {
+    "url": "https://www.msm.digital/de/disclaimer/",
+    "reason": "Legal body preserved from original in draft; workbook legal review comments still require client review before publication."
+  },
+  {
+    "url": "https://www.msm.digital/de/privacy-policy/",
+    "reason": "Legal body preserved from original in draft; workbook legal review comments still require client review before publication."
+  }
+]

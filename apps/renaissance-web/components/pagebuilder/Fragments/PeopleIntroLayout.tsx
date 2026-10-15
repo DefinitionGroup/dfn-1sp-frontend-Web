@@ -8,11 +8,13 @@ export type SophisticatedIntroHeader = {
 };
 
 type PeopleIntroLayoutProps = {
+  headingTag?: "h1" | "h2";
   header?: SophisticatedIntroHeader;
   description?: string;
 };
 
 export default function PeopleIntroLayout({
+  headingTag: Heading = "h2",
   header = {},
   description,
 }: PeopleIntroLayoutProps) {
@@ -27,9 +29,9 @@ export default function PeopleIntroLayout({
               </h2>
             )}
             {hasVisibleText(header.mainHeadline) && (
-              <h3 className="text-4xl leading-[1.1] sm:text-4xl md:text-4xl lg:text-5xl">
+              <Heading className="text-4xl leading-[1.1] sm:text-4xl md:text-4xl lg:text-5xl">
                 {header.mainHeadline}
-              </h3>
+              </Heading>
             )}
 
             {(hasVisibleText(header.creativityTitle) ||

@@ -19,6 +19,7 @@ import HeadlineChallenge from "./pagebuilder/cases/pg-HeadlineChallenge";
 import ComponentLoader from "./ui/ComponentLoader";
 import DeferredSection from "./ui/DeferredSection";
 import OneSpScope from "./onesp-group/OneSpScope";
+import FooterExternalBannerBlock from "./pagebuilder/server/FooterExternalBannerBlock";
 
 // Dynamically import heavy components to reduce initial bundle size
 const ShowtimeGallery = dynamic(
@@ -232,7 +233,7 @@ const UnitLogoGrid = dynamic(
   }
 );
 const PageBuilderPersonioJobs = dynamic(
-  () => import("./pagebuilder/pg-PageBuilderPersonioJobs"),
+  () => import("./pagebuilder/server/PersonioJobsBlock"),
   {
     loading: () => <ComponentLoader />,
     ssr: true,
@@ -404,7 +405,7 @@ export function PageBuilder({
           case "smartPeople":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <SmartPeople key={key} {...(block as any)} channel={channel} />
+                <SmartPeople key={key} {...(block as any)} channel={channel} language={language} />
               </ErrorBoundary>
             );
           case "smartUnitsGallery":
@@ -484,15 +485,13 @@ export function PageBuilder({
               return null;
             }
 
-            const dataChannel = block.dataScope === "1spWeb" ? "1spWeb" : channel;
-
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <OneSpScope groupId={group._id}>
                   <PageBuilder
                     content={group.content}
                     language={language}
-                    channel={dataChannel}
+                    channel="1spWeb"
                     renderMode={renderMode}
                     groupDepth={groupDepth + 1}
                   />
@@ -504,6 +503,12 @@ export function PageBuilder({
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <UnitLogoGrid key={key} {...(block as any)} language={language} />
+              </ErrorBoundary>
+            );
+          case "footerExternalBanner":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <FooterExternalBannerBlock {...block} language={language} />
               </ErrorBoundary>
             );
           case "pageBuilderLogoFloat":

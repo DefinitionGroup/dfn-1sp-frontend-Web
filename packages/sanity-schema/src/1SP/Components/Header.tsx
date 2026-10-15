@@ -2,11 +2,16 @@ import React from "react";
 import { defineType, defineField, defineArrayMember } from "sanity";
 import { TextT } from "@phosphor-icons/react";
 import { isFlzrStyleChannel } from "../../shared/flzrVisibility";
+import HeroDarkeningInput from "../../components/HeroDarkeningInput";
 import { validateOptionalCta } from "../../shared/ctaValidation";
 
 type HeaderParent = {
   headlineMode?: "typewriter" | "headlineReveal";
+  headlineBackground?: boolean;
+  showEyebrow?: boolean;
 };
+
+const isEditorialPage = (document?: unknown) => (document as {channel?: string})?.channel === "msmWeb" || isFlzrPage(document);
 
 const isFlzrPage = (document?: unknown) =>
   isFlzrStyleChannel(
@@ -60,13 +65,57 @@ export default defineType({
       group: "media",
     }),
 
+    defineField({
+      name: "showColorOverlay",
+      title: "Show Color Overlay",
+      type: "boolean",
+      description: "Apply the FLZR color tint over the hero image or video. Turn off to show the original media colors.",
+      initialValue: true,
+      hidden: ({ document }) => (document as { channel?: string } | undefined)?.channel !== "flizrWeb",
+      group: "media",
+    }),
+
+    defineField({
+      name: "mediaDarkening",
+      title: "Media Darkening",
+      type: "number",
+      description: "Darken the hero image or video independently of the color overlay. 0% keeps the original brightness; 100% is black.",
+      initialValue: 0,
+      validation: (rule) => rule.min(0).max(100).integer(),
+      components: { input: HeroDarkeningInput },
+      hidden: ({ document }) => (document as { channel?: string } | undefined)?.channel !== "flizrWeb",
+      group: "media",
+    }),
+
     // CONTENT
+    defineField({
+      name: "copyBottomLeft",
+      title: "Place Copy Bottom Left",
+      type: "boolean",
+      description: "Position the copy group at the bottom left with left-aligned text and elements. Turn off to center the group in the hero.",
+      initialValue: false,
+      hidden: ({ document }) => (document as { channel?: string } | undefined)?.channel !== "flizrWeb",
+      group: "content",
+    }),
+    defineField({
+      name: "showEyebrow",
+      title: "Show Eyebrow",
+      type: "boolean",
+      description:
+        "Show the small label above the hero headline. Hidden by default.",
+      initialValue: false,
+      hidden: ({ document }) => !isEditorialPage(document),
+      group: "content",
+    }),
     defineField({
       name: "eyebrow",
       title: "Eyebrow",
       type: "string",
       group: "content",
       initialValue: "Welcome at 1SP",
+      hidden: ({ document, parent }) =>
+        isFlzrPage(document) &&
+        (parent as HeaderParent | undefined)?.showEyebrow !== true,
     }),
     defineField({
       name: "seoTitle",
@@ -90,7 +139,7 @@ export default defineType({
         ],
         layout: "radio",
       },
-      hidden: ({ document }) => !isFlzrPage(document),
+      hidden: ({ document }) => !isEditorialPage(document),
       group: "content",
     }),
     defineField({
@@ -101,13 +150,13 @@ export default defineType({
       description:
         "One visible H1. Line breaks are preserved and revealed as separate lines. Maximum 140 characters.",
       hidden: ({ document, parent }) =>
-        !isFlzrPage(document) ||
+        !isEditorialPage(document) ||
         (parent as HeaderParent | undefined)?.headlineMode !== "headlineReveal",
       validation: (Rule) =>
         Rule.max(140).custom((value, context) => {
           const parent = context.parent as HeaderParent | undefined;
           if (
-            isFlzrPage(context.document) &&
+            isEditorialPage(context.document) &&
             parent?.headlineMode === "headlineReveal" &&
             !value?.trim()
           ) {
@@ -115,6 +164,18 @@ export default defineType({
           }
           return true;
         }),
+      group: "content",
+    }),
+    defineField({
+      name: "headlineBackground",
+      title: "Violet Headline Background",
+      type: "boolean",
+      description:
+        "Set the editorial headline on a violet background that follows each line. On by default.",
+      initialValue: true,
+      hidden: ({ document, parent }) =>
+        (document as { channel?: string } | undefined)?.channel !== "flizrWeb" ||
+        (parent as HeaderParent | undefined)?.headlineMode !== "headlineReveal",
       group: "content",
     }),
     defineField({
@@ -130,7 +191,7 @@ export default defineType({
         Rule.custom((value, context) => {
           const parent = context.parent as HeaderParent | undefined;
           const mode = parent?.headlineMode ?? "typewriter";
-          if (!isFlzrPage(context.document) || mode !== "typewriter") return true;
+          if (!isEditorialPage(context.document) || mode !== "typewriter") return true;
 
           const hasText = Array.isArray(value)
             ? value.some((item) => typeof item === "string" && item.trim())

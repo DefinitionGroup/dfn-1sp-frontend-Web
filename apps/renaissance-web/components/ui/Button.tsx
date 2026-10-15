@@ -25,7 +25,7 @@ interface ButtonProps
 
 const buttonVariants = {
   default:
-    "bg-[#121212] text-[#f4f4f4] border-[#f4f4f4] border-b hover:bg-neutral-800 active:bg-neutral-900",
+    "bg-renaissance-button text-white border-white/20 border-b hover:bg-renaissance-teal hover:text-renaissance-accent active:bg-renaissance-accent active:text-white",
   violet: "bg-[#99bbba] text-[#163f45] hover:bg-[#dbe5e5] active:bg-[#245e66] active:text-white",
   outline:
     "border-2 border-[#f4f4f4] text-[#f4f4f4] bg-transparent hover:bg-[#f4f4f4] hover:text-[#121212]",

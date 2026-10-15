@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAllCases } from "@1sp/sanity-queries";
-import { getChannelFromEnv } from "@1sp/site-config";
+import { getChannelFromEnv, getSiteConfig, isKnownChannel } from "@1sp/site-config";
 
 const sanitize = (value: string | null, fallback: string) => {
   const trimmed = value?.trim();
@@ -11,6 +11,11 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const channel = sanitize(searchParams.get("channel"), getChannelFromEnv());
   const language = sanitize(searchParams.get("language"), "en");
+  // Only known channels and their locales reach Sanity; arbitrary values would
+  // each add an uncached query.
+  if (!isKnownChannel(channel) || !(getSiteConfig(channel).locales as string[]).includes(language)) {
+    return NextResponse.json({ error: "Unknown channel or language." }, { status: 400 });
+  }
 
   try {
     const caseStudies = await getAllCases(channel, language);

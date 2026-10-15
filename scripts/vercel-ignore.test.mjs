@@ -123,6 +123,18 @@ test("documentation, env templates, and deployment tests build no project", () =
   );
 });
 
+test("Sanity Functions and their blueprint build no project", () => {
+  assert.deepEqual(
+    decisions(["functions/revalidate-sites/index.ts", "sanity.blueprint.ts"]),
+    {
+      "1sp": false,
+      msm: false,
+      flzr: false,
+      renaissance: false,
+    }
+  );
+});
+
 test("a move between app directories builds both owning projects", () => {
   assert.deepEqual(
     decisions([

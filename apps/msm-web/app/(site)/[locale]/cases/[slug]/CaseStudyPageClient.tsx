@@ -1,16 +1,24 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import HeaderImageVideoComp from "@msm/components/data/Fragments/data-HeaderImageVideoComp";
-import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
-import LineMinimap, { NavPoint } from "@msm/components/ui/MapVertical";
+import CaseReveal from "@msm/components/pagebuilder/cases/CaseReveal";
+import DecryptRotator from "@msm/components/ui/DecryptRotator";
+import Badgemodule from "@msm/components/ui/Badgemodule";
+import styles from "@msm/components/pagebuilder/cases/CaseDetail.module.css";
 import { CasePageBuilder } from "@msm/components/CasePageBuilder";
 import CasePoweredByContact from "@msm/components/pagebuilder/cases/pg-CasePoweredByContact";
 import { getTranslations } from "@1sp/utils/translations";
 import type { CaseStudyData } from "@1sp/sanity-types";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
+type MsmAttributedUnit = {
+  _id: string;
+  name: string;
+  slug?: { current?: string };
+};
+
 interface CaseStudyPageClientProps {
-  caseStudy: CaseStudyData;
+  caseStudy: CaseStudyData & { msmUnits?: MsmAttributedUnit[] };
   locale: string;
 }
 
@@ -19,47 +27,11 @@ export default function CaseStudyPageClient({
   locale,
 }: CaseStudyPageClientProps) {
   const t = getTranslations(locale);
-  const [navPoints, setNavPoints] = useState<NavPoint[]>([]);
+  const pageRef = useRef<HTMLDivElement>(null);
 
   // Ensure body overflow is reset when component mounts
   useEffect(() => {
     document.body.style.overflow = "auto";
-  }, []);
-
-  // Collect navigation points for minimap
-  useEffect(() => {
-    const collectPageIds = () => {
-      setTimeout(() => {
-        const all = document.querySelectorAll<HTMLElement>("[id]");
-        const points: NavPoint[] = [];
-        all.forEach((el) => {
-          const id = el.id;
-          const isInFooter = el.closest("footer") !== null;
-
-          if (
-            id &&
-            !id.startsWith("headlessui-") &&
-            !id.startsWith("radix-") &&
-            !id.startsWith("__") &&
-            !id.startsWith("_") &&
-            id !== "_R_" &&
-            id.length > 2 &&
-            !/^\d+$/.test(id) &&
-            !/^\d+-\d+$/.test(id) &&
-            id !== "root" &&
-            !isInFooter
-          ) {
-            const customName = el.getAttribute("data-navpoint-name");
-            points.push({
-              id: id,
-              name: customName || id,
-            });
-          }
-        });
-        setNavPoints(points);
-      }, 500);
-    };
-    collectPageIds();
   }, []);
 
   // Normalize main image / video URLs
@@ -76,16 +48,15 @@ export default function CaseStudyPageClient({
     "/placeholder.jpg";
 
   return (
-    <>
-      <section className="relative h-[95vh] w-full overflow-hidden  mx-auto">
-        <LineMinimap navPoints={navPoints} />
+    <div ref={pageRef}>
+      <section id={t.ids.top} data-navpoint-name={t.ids.top} className={styles.hero}>
 
         {/* Background Image with Overlay */}
         {mainVideoUrl ? (
           <HeaderImageVideoComp
             useVideo={true} className="z-1  overflow-hidden "
             videoSrc={mainVideoUrl}
-            enableParallax={true}
+            imageSrc={mainImageUrl}
             opacity="opacity-70"
             enableVertical={caseStudy.isVerticalVideo}
           />
@@ -93,48 +64,30 @@ export default function CaseStudyPageClient({
           <HeaderImageVideoComp
             useVideo={false}
             imageSrc={mainImageUrl}
-            enableParallax={true}
             opacity="opacity-50"
           />
         )}
 
 
-        {/* Hero Content */}
-        <div id={t.ids.top} className="" />
-        <div className="relative container flex flex-col justify-end  h-full z-20  mx-auto px-4 sm:px-6 md:px-8 lg:px-0">
-          <StaggeredSlideUp
-            delay={0.4}
-            className="max-w-full flex flex-col gap-3 sm:gap-4 lg:max-w-2/3 "
-          >
-            {hasVisibleText(caseStudy.subtitle) && (
-              <h2 className="text-violet-500 text-[10px] sm:text-xs   leading-compress  inline-block w-fit py-1  ">
-                {caseStudy.subtitle}
-              </h2>
-            )}
-            <h1 className="text-neutral-50 w-full md:w-2/3 pb-2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-6xl tracking-tight leading-none">
-              {caseStudy.title}
-            </h1>
-
-            {hasVisibleText(caseStudy.description) && (
-              <h3 className="text-neutral-50 w-full sm:w-3/4 md:w-1/2 pb-2 text-base sm:text-lg md:text-xl leading-relaxed">
-                {caseStudy.description}
-              </h3>
-            )}
-            {/* Display Unit Logos if available */}
-            {caseStudy.units && caseStudy.units.length > 0 && (
-              <div className="flex flex-wrap gap-1 sm:gap-4 mb-4 w-fit  border-white/50">
-                {caseStudy.units.map((unit) =>
-                  hasVisibleText(unit.name) ? (
-
-
-                    <h2 key={unit._id} className="text-neutral-200 tracking-wider text-[10px] sm:text-xxs font-regular bg-gray-700  inline-block w-fit py-1 px-3 sm:px-4">
-                      {unit.name}
-                    </h2>
-                  ) : null
-                )}
+        <div className={`${styles.container} ${styles.heroInner}`}>
+          <div className={styles.heroGrid}>
+            <CaseReveal className={styles.heroCopy}>
+              {hasVisibleText(caseStudy.subtitle) && (
+                <p className={styles.heroSubtitle}>{caseStudy.subtitle}</p>
+              )}
+              <DecryptRotator text={[caseStudy.title]} variant="headline" className={styles.heroTitle} revealDurationMs={700} delayMs={60} />
+              {hasVisibleText(caseStudy.description) && (
+                <p className={styles.heroDescription}>{caseStudy.description}</p>
+              )}
+            </CaseReveal>
+            {(caseStudy.msmUnits || []).some((unit) => hasVisibleText(unit.name)) && (
+              <div className={styles.badges}>
+                {(caseStudy.msmUnits || []).map((unit) => hasVisibleText(unit.name) ? (
+                  <Badgemodule key={unit._id} text={unit.name} subtitle="" size="sm" className={styles.unitBadge} />
+                ) : null)}
               </div>
             )}
-          </StaggeredSlideUp>
+          </div>
         </div>
 
         {/* Corner Text */}
@@ -150,10 +103,10 @@ export default function CaseStudyPageClient({
       {caseStudy.casesPageBuilder &&
         Array.isArray(caseStudy.casesPageBuilder) &&
         caseStudy.casesPageBuilder.length > 0 && (
-          <CasePageBuilder content={caseStudy.casesPageBuilder} />
+          <CasePageBuilder content={caseStudy.casesPageBuilder} hasConnectedPerson={caseStudy.people?.some((entry) => Boolean(entry?.person))} />
         )}
 
       <CasePoweredByContact caseStudy={caseStudy} locale={locale} />
-    </>
+    </div>
   );
 }

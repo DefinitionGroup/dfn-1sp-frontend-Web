@@ -1,8 +1,12 @@
 "use client";
+import { stegaClean } from "@sanity/client/stega";
+import type { ResultMetric } from "@1sp/sanity-types";
+import { MetricNumber } from "@1sp/utils/components/MetricNumber";
+import { hasMetricFormatting } from "@1sp/utils/result-metrics";
 
-import { useEffect } from "react";
 import { motion } from "motion/react";
-import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
+import CaseSection from "./CaseSection";
+import styles from "./CaseDetail.module.css";
 import HeaderImageVideoComp2 from "@msm/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
 import AnimateNumberinView from "@msm/components/ui/AnimateNumberinView";
 import PercentageDiagramVertical from "@msm/components/ui/percentageDiagramVertical";
@@ -20,16 +24,15 @@ interface CloudinaryAsset {
   secure_url?: string;
 }
 
-interface Metric {
-  type: "vertical" | "horizontal" | "posNeg" | "animatedNumber";
-  label: string;
-  value: number;
-  suffix?: string;
-}
+type Metric = ResultMetric;
 
 interface ResultsMetricsProps {
   title: string;
+  badgeText?: string;
+  badgeSubtitle?: string;
+  quote?: {text: string; attribution: string};
   description?: string;
+  context?: string;
   metrics?: Metric[];
   backgroundImage?: CloudinaryAsset;
   backgroundOpacity?: number;
@@ -40,22 +43,20 @@ interface ResultsMetricsProps {
 
 export default function ResultsMetrics({
   title,
+  badgeText,
+  badgeSubtitle,
+  quote,
+  context,
   description,
   metrics = [],
   backgroundImage,
   backgroundOpacity = 0.7,
   enableParallax = false,
-  paddingY = "32",
   navPointName,
 }: ResultsMetricsProps) {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
   const t = getTranslations(locale);
-
-  // Ensure body overflow is reset when component mounts
-  useEffect(() => {
-    document.body.style.overflow = "auto";
-  }, []);
 
   const sectionId = t.ids.results;
 
@@ -100,67 +101,55 @@ export default function ResultsMetrics({
   };
 
   return (
-    <section className="relative overflow-hidden">
+    <section className={styles.darkSection}>
       <div
         id={sectionId}
-        data-navpoint-name={navPointName}
-        className="min-h-[80vh] md:min-h-[90vh] relative font-aspekta"
+        data-navpoint-name={navPointName || sectionId}
+        className={styles.results}
+        data-media={Boolean(backgroundMediaUrl)}
       >
-        <HeaderImageVideoComp2
+        {backgroundMediaUrl && <HeaderImageVideoComp2
           useVideo={useVideo}
           opacity={backgroundOpacity}
           imageSrc={!useVideo ? backgroundMediaUrl : undefined}
           videoSrc={useVideo ? backgroundMediaUrl : undefined}
           enableParallax={enableParallax}
-        />
+        />}
 
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`grid grid-cols-4 sm:grid-cols-6 md:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 py-16 sm:py-24 lg:py-${paddingY}`}>
-            <div className="col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-12">
-              <StaggeredSlideUp
-                className="flex flex-col items-start justify-start gap-3"
-                delay={0.0}
-                staggerDelay={0.1}
-                duration={0.5}
-                distance={80}
-              >
-                {hasVisibleText(title) ? (
-                  <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-2 text-gray-100 max-w-xl tracking-tight leading-[1.1]">
-                    {title}
-                  </h2>
-                ) : null}
+        <div className={`relative z-10 ${styles.container}`}>
+          <CaseSection title={title} badgeText={badgeText} badgeSubtitle={badgeSubtitle}>
+                {context && <p className="text-sm text-gray-200">{context}</p>}
                 {description && (
-                  <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-xl leading-relaxed">
+                  <p className={`${styles.copy} text-gray-200`}>
                     {description}
                   </p>
                 )}
-              </StaggeredSlideUp>
-            </div>
+                {quote?.text && <blockquote className={styles.quote}><p>{quote.text}</p><footer>{quote.attribution}</footer></blockquote>}
 
             {/* Metrics grid - Responsive layout */}
             {metrics && metrics.length > 0 && (
-              <div className="col-span-4 sm:col-span-6 md:col-span-12 mt-8 md:mt-12">
-                <div className="bg-neutral-900/60 backdrop-blur-lg   p-6 sm:p-8 md:p-10 lg:p-12">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
+              <div className={styles.metricPanel}>
+                <div className="w-full">
+                  <div className={`grid grid-cols-1 ${metrics.length > 1 ? 'sm:grid-cols-2' : ''} ${metrics.length > 2 ? 'xl:grid-cols-3' : ''} gap-6 sm:gap-8`}>
                     {metrics.map((metric, index) => (
                       <div
                         key={index}
-                        className="flex flex-col items-start pb-6 border-b border-white/15 last:border-b-0 sm:last:border-b sm:border-b"
+                        className="flex min-w-0 flex-col items-start pb-6 border-b border-white/15 last:border-b-0 sm:last:border-b sm:border-b"
                       >
-                        {metric.type === "animatedNumber" ? (
-                          <div className="mt-6 sm:mt-8 md:mt-12 mb-3 md:mb-4">
-                            <AnimateNumberinView
+                        {stegaClean(metric.type) === "animatedNumber" ? (
+                          <div className="mt-6 sm:mt-8 md:mt-12 mb-3 md:mb-4 w-full" style={{containerType: 'inline-size'}}>
+                            {hasMetricFormatting(metric) ? <MetricNumber metric={metric} locale={locale} className="text-[clamp(1.25rem,9cqw,5rem)] text-gray-100" /> : <AnimateNumberinView
                               number={metric.value}
                               format={{ minimumIntegerDigits: 1 }}
                               suffix={metric.suffix || ""}
                               className="number text-gray-100"
                               delay={300}
-                            />
+                            />}
                           </div>
                         ) : (
                           <>
                             {getDiagramComponent(
-                              metric.type as any,
+                              stegaClean(metric.type) as any,
                               metric.value,
                               0.3 + index * 0.1,
                               index
@@ -186,26 +175,22 @@ export default function ResultsMetrics({
                             </motion.div>
                           </>
                         )}
-                        <StaggeredSlideUp
-                          className="mt-2"
-                          delay={0.0}
-                          staggerDelay={0.1}
-                          duration={0.5}
-                          distance={80}
-                        >
+                        <div className="mt-2">
                           {hasVisibleText(metric.label) ? (
                             <h3 className="text-sm sm:text-base md:text-lg text-gray-200 tracking-tight leading-snug">
                               {metric.label}
                             </h3>
                           ) : null}
-                        </StaggeredSlideUp>
+                          {metric.description && <p className="mt-3 text-base leading-relaxed text-gray-200">{metric.description}</p>}
+                          {metric.context && <p className="mt-2 text-sm text-gray-200">{metric.context}</p>}
+                        </div>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
             )}
-          </div>
+          </CaseSection>
         </div>
       </div>
     </section>

@@ -1,3 +1,4 @@
+import { stegaClean } from "@sanity/client/stega";
 import { getAllCases, getCaseStudiesByIds } from "@1sp/sanity-queries";
 import CasesGalleryFilteredWithPaginationClient from "../pg-CasesGalleryFilteredWithPagination";
 
@@ -35,7 +36,7 @@ export default async function CasesGalleryFilteredWithPaginationBlock({
 
   // Branch on the editor's chosen mode alone. An empty manual selection yields
   // an empty grid rather than silently falling back to the full auto list.
-  const isManual = selectionMode === "manual";
+  const isManual = stegaClean(selectionMode) === "manual";
 
   const rawCaseStudies = isManual
     ? await getCaseStudiesByIds(selectedIds, channel, language)

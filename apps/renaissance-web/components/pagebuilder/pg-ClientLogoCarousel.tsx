@@ -1,42 +1,332 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
-import type { ClientLogoCarousel as ClientLogoCarouselType, ClientLogoItem } from "@1sp/sanity-types";
+import { stegaClean } from "next-sanity";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  type Variants,
+} from "motion/react";
+import type {
+  ClientLogoCarousel as ClientLogoCarouselType,
+  ClientLogoItem,
+  RenaissanceSectionRole,
+} from "@1sp/sanity-types";
 import { assetUrl } from "@1sp/utils/cloudinary";
 import Eyebrow from "@renaissance/components/ui/Eyebrow";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
-/* Seconds per logo, so perceived speed stays constant no matter how many
-   logos (or set repeats) the track holds. Editable per block in Studio
-   via the "Scroll Speed" field. */
-const SPEED_SECONDS_PER_LOGO: Record<string, number> = {
-  slow: 10,
-  normal: 7,
-  fast: 4,
+const GRID_ROWS = 3;
+const MAX_GRID_COLUMNS = 6;
+const MOBILE_GRID_COLUMNS = 3;
+// Slots never repeat a logo, so rotation needs logos held back in a pool.
+// The pool is at least this large so a logo that just faded out has fully
+// left its cell before it can be picked again elsewhere.
+const MIN_ROTATION_POOL = 1;
+
+const SWAP_INTERVAL_MS: Record<string, number> = {
+  slow: 2600,
+  normal: 1800,
+  fast: 1500,
+};
+
+const GRID_REVEAL_VARIANTS: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      delayChildren: 0.06,
+      staggerChildren: 0.055,
+    },
+  },
+};
+
+const LOGO_CELL_REVEAL_VARIANTS: Variants = {
+  hidden: {
+    opacity: 0,
+    filter: "blur(12px)",
+    transform: "translateY(8px)",
+  },
+  visible: {
+    opacity: 1,
+    filter: "blur(0px)",
+    transform: "translateY(0px)",
+    transition: {
+      duration: 1.5,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+};
+
+type LogoEntry = {
+  id: string;
+  name: string;
+  src: string;
+  alt?: string;
+};
+
+type LogoSlot = {
+  entry: LogoEntry;
+  position: number;
+  revision: number;
+};
+
+type GridLayout = {
+  columns: number;
+  slotCount: number;
 };
 
 /**
- * Infinite client-logo marquee. Uses the `.logo-marquee-track` /
- * `.logo-carousel-mask` utilities from globals.css; the track is
- * duplicated once so the -50% keyframe loops seamlessly.
+ * Three full rows, as wide as the logo count allows while keeping at least
+ * MIN_ROTATION_POOL logos off-grid for the swap animation. Too few logos for
+ * that: show every logo once, statically.
  */
-function ClientLogoCarousel({ data }: { data: ClientLogoCarouselType }) {
+function getGridLayout(logoCount: number): GridLayout {
+  const rotatingColumns = Math.floor(
+    (logoCount - MIN_ROTATION_POOL) / GRID_ROWS,
+  );
+
+  if (rotatingColumns >= 2) {
+    const columns = Math.min(MAX_GRID_COLUMNS, rotatingColumns);
+    return { columns, slotCount: columns * GRID_ROWS };
+  }
+
+  return {
+    columns: Math.max(1, Math.ceil(logoCount / GRID_ROWS)),
+    slotCount: logoCount,
+  };
+}
+
+function createInitialSlots(logos: LogoEntry[], slotCount: number): LogoSlot[] {
+  return logos.slice(0, slotCount).map((entry, position) => ({
+    entry,
+    position,
+    revision: 0,
+  }));
+}
+
+function LogoSwapGrid({
+  logos,
+  speed,
+  grayscale,
+}: {
+  logos: LogoEntry[];
+  speed: string;
+  grayscale: boolean;
+}) {
+  const gridRef = React.useRef<HTMLDivElement>(null);
+  const shouldReduceMotion = useReducedMotion();
+  const [isInView, setIsInView] = React.useState(false);
+  const [hasEnteredView, setHasEnteredView] = React.useState(false);
+  const [isDocumentVisible, setIsDocumentVisible] = React.useState(
+    () => typeof document === "undefined" || document.visibilityState === "visible",
+  );
+  const [isPaused, setIsPaused] = React.useState(false);
+  const { columns, slotCount } = getGridLayout(logos.length);
+  const [slots, setSlots] = React.useState<LogoSlot[]>(() =>
+    createInitialSlots(logos, slotCount),
+  );
+  // Off-grid logos in first-in, first-out order: the logo that faded out
+  // longest ago comes back first, and one that just left waits its turn.
+  const poolRef = React.useRef<LogoEntry[]>(logos.slice(slotCount));
+  const lastPositionsRef = React.useRef<number[]>([]);
+  // Rotation state lives in refs and is advanced outside the state updater,
+  // which React may run twice; the pool must be mutated exactly once a tick.
+  const slotsRef = React.useRef(slots);
+
+  React.useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          setHasEnteredView(true);
+        }
+      },
+      { threshold: 0.2 },
+    );
+
+    observer.observe(grid);
+    return () => observer.disconnect();
+  }, []);
+
+  React.useEffect(() => {
+    const handleVisibilityChange = () => {
+      setIsDocumentVisible(document.visibilityState === "visible");
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () =>
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, []);
+
+  React.useEffect(() => {
+    if (
+      shouldReduceMotion ||
+      isPaused ||
+      !isInView ||
+      !isDocumentVisible ||
+      poolRef.current.length === 0
+    ) {
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      const pool = poolRef.current;
+      const currentSlots = slotsRef.current;
+      const nextEntry = pool.shift();
+      if (!nextEntry) return;
+
+      // Skip the cells swapped in the last two ticks so no cell is
+      // interrupted mid-transition.
+      const recent = lastPositionsRef.current;
+      const allPositions = currentSlots.map((slot) => slot.position);
+      const candidates = allPositions.filter((position) => !recent.includes(position));
+      const choices = candidates.length > 0 ? candidates : allPositions;
+      const position = choices[Math.floor(Math.random() * choices.length)];
+      const nextSlots = [...currentSlots];
+
+      pool.push(currentSlots[position].entry);
+      lastPositionsRef.current = [position, ...recent].slice(0, 2);
+      nextSlots[position] = {
+        entry: nextEntry,
+        position,
+        revision: currentSlots[position].revision + 1,
+      };
+
+      slotsRef.current = nextSlots;
+      setSlots(nextSlots);
+    }, SWAP_INTERVAL_MS[speed] ?? SWAP_INTERVAL_MS.normal);
+
+    return () => window.clearInterval(interval);
+  }, [isDocumentVisible, isInView, isPaused, shouldReduceMotion, speed]);
+
+  return (
+    <motion.div
+      ref={gridRef}
+      className="grid grid-cols-[repeat(var(--logo-cols-mobile),minmax(0,1fr))] gap-x-2 gap-y-2 sm:gap-x-3 md:grid-cols-[repeat(var(--logo-cols),minmax(0,1fr))] md:gap-x-5 md:gap-y-4"
+      style={{
+        "--logo-cols": columns,
+        "--logo-cols-mobile": Math.min(MOBILE_GRID_COLUMNS, columns),
+      } as React.CSSProperties}
+      aria-label="Client logo grid"
+      variants={GRID_REVEAL_VARIANTS}
+      initial={shouldReduceMotion ? false : "hidden"}
+      animate={hasEnteredView || shouldReduceMotion ? "visible" : "hidden"}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onFocusCapture={() => setIsPaused(true)}
+      onBlurCapture={() => setIsPaused(false)}
+    >
+      {slots.map(({ entry, position, revision }) => {
+        return (
+          <motion.div
+            key={position}
+            className="group/logo relative grid h-20 place-items-center overflow-hidden px-1 sm:h-24 md:h-28 md:px-3"
+            data-logo-slot={position}
+            variants={LOGO_CELL_REVEAL_VARIANTS}
+          >
+            <div className="relative h-9 w-full md:h-17">
+              <AnimatePresence initial={false} mode="wait">
+                <motion.div
+                  key={`${entry.id}-${revision}`}
+                  className="absolute inset-0 bg-white"
+                  data-logo-id={entry.id}
+                  initial={
+                    shouldReduceMotion
+                      ? { opacity: 1 }
+                      : {
+                          opacity: 0,
+                          filter: "blur(8px)",
+                          transform: "translateY(18px)",
+                        }
+                  }
+                  animate={{
+                    opacity: 1,
+                    filter: "blur(0px)",
+                    transform: "translateY(0px)",
+                  }}
+                  exit={
+                    shouldReduceMotion
+                      ? { opacity: 1 }
+                      : {
+                          opacity: 0,
+                          filter: "blur(6px)",
+                          transform: "translateY(-18px)",
+                          transition: {
+                            duration: 0.75,
+                            ease: [0.4, 0, 1, 1],
+                          },
+                        }
+                  }
+                  transition={{
+                    duration: shouldReduceMotion ? 0 : 0.75,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                >
+                  <Image
+                    src={entry.src}
+                    alt={entry.alt || entry.name}
+                    fill
+                    sizes={`(min-width: 768px) ${Math.round(100 / columns)}vw, ${Math.round(100 / Math.min(MOBILE_GRID_COLUMNS, columns))}vw`}
+                    className={`object-contain p-1 transition-[filter,opacity] duration-300 ${
+                      grayscale
+                        ? "grayscale opacity-70 group-hover/logo:grayscale-0 group-hover/logo:opacity-100"
+                        : ""
+                    }`}
+                  />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </motion.div>
+        );
+      })}
+    </motion.div>
+  );
+}
+
+function ClientLogoCarousel({
+  data,
+  presentationRole,
+}: {
+  data: ClientLogoCarouselType;
+  presentationRole?: RenaissanceSectionRole;
+}) {
   const {
     eyebrow,
     headline,
     selectionMode = "auto",
     selectedClients,
     autoClients,
+    collectionClients,
+    displayMode = "swap",
     speed = "normal",
     grayscale = true,
     navPointName,
     hideFromNav = true,
   } = data || {};
 
+  const mode = stegaClean(selectionMode);
+  const layout = stegaClean(displayMode);
+  const motionSpeed = stegaClean(speed);
   const clients: ClientLogoItem[] =
-    (selectionMode === "manual" ? selectedClients : autoClients) ?? [];
-  const withLogos = clients.filter((c) => assetUrl(c.logo));
+    (mode === "collection" ? collectionClients : mode === "manual" ? selectedClients : autoClients) ?? [];
+  const logos = clients.flatMap((client, index) => {
+    const src = assetUrl(client.logo);
+    if (!src) return [];
 
-  if (withLogos.length === 0) {
+    return [{
+      id: client._id || `${client.name || "client"}-${index}`,
+      name: client.name || "Client logo",
+      src,
+      alt: client.altText,
+    }];
+  });
+
+  if (logos.length === 0) {
     // Visible hint instead of a silent null so editors can see why the
     // block is empty (same pattern as SmartPeople / SmartUnitsGlobe).
     return (
@@ -63,70 +353,49 @@ function ClientLogoCarousel({ data }: { data: ClientLogoCarouselType }) {
     ...(hideFromNav ? { "data-nav-hidden": "true" } : {}),
   };
 
-  // Each half of the -50% loop must be wider than any viewport, otherwise
-  // the loop point exposes whitespace. Repeat the set until a half holds
-  // at least 12 logos (~12 * 136px > 1600px).
-  const repeats = Math.max(1, Math.ceil(12 / withLogos.length));
-  const logosPerHalf = repeats * withLogos.length;
-  const secondsPerLogo =
-    SPEED_SECONDS_PER_LOGO[speed] ?? SPEED_SECONDS_PER_LOGO.normal;
-  const marqueeDuration = `${logosPerHalf * secondsPerLogo}s`;
-
-  const renderHalf = (ariaHidden: boolean) => (
-    <div
-      className="flex items-center gap-10 pr-10"
-      aria-hidden={ariaHidden || undefined}
-    >
-      {Array.from({ length: repeats }).flatMap((_, rep) =>
-        withLogos.map((client, idx) => (
-          <div
-            key={`${client._id || client.name || "client"}-${rep}-${idx}${ariaHidden ? "-dup" : ""}`}
-            className={`relative h-6 w-24 shrink-0 md:h-8 md:w-28 ${
-              grayscale
-                ? "grayscale opacity-60 transition-all duration-300 hover:grayscale-0 hover:opacity-100"
-                : ""
-            }`}
-          >
-            <Image
-              src={assetUrl(client.logo as any) || ""}
-              alt={ariaHidden || rep > 0 ? "" : client.name || "Client logo"}
-              fill
-              sizes="112px"
-              className="object-contain"
-            />
-          </div>
-        ))
-      )}
-    </div>
-  );
+  const isServicesProof = presentationRole === "services";
+  const gridKey = logos.map((logo) => logo.id).join("|");
 
   return (
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="w-full py-16 md:py-24"
+      className={
+        isServicesProof
+          ? "w-full bg-white py-12 md:py-16"
+          : "w-full bg-white py-16 md:py-24"
+      }
       data-component="client-logo-carousel"
     >
-      <div className="container mx-auto w-full">
+      <div className="mx-auto w-full max-w-[1680px] px-5 sm:px-8 lg:px-12">
         {(hasVisibleText(eyebrow) || hasVisibleText(headline)) && (
           <div className="mb-8 flex flex-col items-center gap-3 text-center md:mb-12">
-            {hasVisibleText(eyebrow) && <Eyebrow>{eyebrow}</Eyebrow>}
+            {hasVisibleText(eyebrow) && !isServicesProof && <Eyebrow>{eyebrow}</Eyebrow>}
             {hasVisibleText(headline) && (
-              <h2 className="text-title">{headline}</h2>
+              <h2
+                className={
+                  isServicesProof
+                    ? "renaissance-display text-[clamp(2.7rem,3.5vw,3.75rem)] font-bold leading-[0.9] tracking-[-0.025em] text-renaissance-signal"
+                    : "text-title"
+                }
+              >
+                {headline}
+              </h2>
             )}
           </div>
         )}
 
-        <div className="logo-marquee-pausable py-6 md:py-8">
-          <div className="logo-carousel-mask overflow-hidden">
-            <div
-              className="logo-marquee-track flex"
-              style={{ "--marquee-duration": marqueeDuration } as React.CSSProperties}
-            >
-              {renderHalf(false)}
-              {renderHalf(true)}
-            </div>
-          </div>
+        <div className="py-6 md:py-8">
+          {layout === 'grid' ? (
+            <ul className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-5" aria-label="Renaissance clients">
+              {logos.map(logo => <li key={logo.id} className="flex flex-col items-center gap-3">
+                <div className="flex h-28 w-full items-center justify-center bg-white p-3">
+                  <Image src={logo.src} alt={logo.alt || logo.name} width={160} height={88} sizes="160px" className="h-auto max-h-[88px] w-auto max-w-full object-contain" />
+                </div>
+                <span className="text-center text-sm text-renaissance-ink">{logo.name}</span>
+              </li>)}
+            </ul>
+          ) : <LogoSwapGrid key={gridKey} logos={logos} speed={motionSpeed} grayscale={grayscale} />}
         </div>
       </div>
     </section>

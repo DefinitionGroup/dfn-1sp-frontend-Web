@@ -1,3 +1,6 @@
+import {JsonLdScript, CANONICAL_URL} from '@msm/lib/structured-data';
+import {buildMsmMetadata, buildMsmRouteMetadata} from '@msm/lib/metadata';
+import {msmPath} from "@msm/lib/editorial";
 /**
  * Case Study Detail Page
  * ======================
@@ -24,19 +27,16 @@
  * - Twitter card metadata for social sharing
  */
 import { getCaseBySlug, getAllCaseSlugs } from "@1sp/sanity-queries";
+import { stegaClean } from "next-sanity";
 import { notFound } from "next/navigation";
 import CaseStudyPageClient from "./CaseStudyPageClient";
 import MsmSiteWrapper from "@msm/components/MsmSiteWrapper";
 import type { Metadata } from "next";
 import {
-  JsonLdScript,
   generateCaseStudyJsonLd,
   generateBreadcrumbJsonLd,
   getBreadcrumbLabel,
-  CANONICAL_URL,
 } from "@/lib/structured-data";
-
-export const revalidate = 60;
 
 // Allow new case studies to be rendered on-demand (ISR)
 export const dynamicParams = true;
@@ -79,51 +79,10 @@ export async function generateMetadata({
   const caseStudy = await getCaseBySlug(slug, channel, language);
 
   if (!caseStudy) {
-    return {
-      title: "Case Study not found",
-    };
+    return buildMsmMetadata({title: 'Case Study not found', metadata: {noIndex: true}});
   }
 
-  const title = caseStudy.title;
-  const description =
-    caseStudy.description ||
-    `${caseStudy.title}${caseStudy.client?.name ? ` — ${caseStudy.client.name}` : ""} | Case Study`;
-
-  // Use mainImageUrl (Cloudinary secure_url) for OG image
-  const ogImages = caseStudy.mainImageUrl
-    ? [
-        {
-          url: caseStudy.mainImageUrl,
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ]
-    : [];
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: `/cases/${slug}`,
-    },
-    openGraph: {
-      title,
-      description,
-      locale: language,
-      type: "article",
-      images: ogImages,
-      ...(caseStudy.publishedAt && {
-        publishedTime: caseStudy.publishedAt,
-      }),
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: ogImages.map((img) => img.url),
-    },
-  };
+  return buildMsmRouteMetadata({locale: language, path: `cases/${slug}`, documentId: caseStudy._id, title: caseStudy.title, description: caseStudy.description, metadata: caseStudy.seo, fallbackImage: caseStudy.mainImageUrl || caseStudy.mainVideoUrl, type: 'article', publishedAt: caseStudy.publishedAt});
 }
 
 export default async function CaseStudyPage({
@@ -142,10 +101,12 @@ export default async function CaseStudyPage({
     notFound();
   }
 
+  const resolvedMetadata = buildMsmMetadata({locale: language, path: `cases/${slug}`, title: caseStudy.title, description: caseStudy.description, metadata: caseStudy.seo, fallbackImage: caseStudy.mainImageUrl || caseStudy.mainVideoUrl, type: 'article', publishedAt: caseStudy.publishedAt});
+
   return (
     <MsmSiteWrapper language={language} navColor="light">
       {/* Structured Data (JSON-LD) */}
-      <JsonLdScript
+      <JsonLdScript locale={language} metadata={resolvedMetadata}
         data={generateCaseStudyJsonLd({
           title: caseStudy.title,
           slug,
@@ -155,10 +116,9 @@ export default async function CaseStudyPage({
           publishedAt: caseStudy.publishedAt,
           clientName: caseStudy.client?.name,
           services: caseStudy.services,
-          units: caseStudy.units,
         })}
       />
-      <JsonLdScript
+      <JsonLdScript locale={language} metadata={resolvedMetadata}
         data={generateBreadcrumbJsonLd([
           {
             name: getBreadcrumbLabel(language, "home"),
@@ -170,7 +130,7 @@ export default async function CaseStudyPage({
           },
           {
             name: caseStudy.title,
-            url: `${CANONICAL_URL}/cases/${slug}`,
+            url: `${CANONICAL_URL}${msmPath(language, `cases/${slug}`)}`,
           },
         ])}
       />

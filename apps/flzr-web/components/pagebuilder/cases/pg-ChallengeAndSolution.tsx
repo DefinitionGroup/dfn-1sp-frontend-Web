@@ -154,12 +154,12 @@ export default function ChallengeAndSolution({
                 distance={80}
               >
                 {hasVisibleText(title) ? (
-                  <h2 className="text-3xl sm:text-4xl md:text-5xl text-gray-900 max-w-xl leading-[1.1] mb-4 md:mb-8">
+                  <h2 className="text-title text-gray-900 max-w-xl mb-4 md:mb-8">
                     {title}
                   </h2>
                 ) : null}
                 {description && (
-                  <p className="text-base sm:text-lg text-gray-800 max-w-lg leading-relaxed">
+                  <p className="text-section-body text-gray-800 max-w-[72ch]">
                     {description}
                   </p>
                 )}

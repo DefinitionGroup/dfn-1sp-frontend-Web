@@ -1,21 +1,28 @@
+import {withChannelLabels} from "../../shared/channelPreview";
+import { caseDiscoveryField } from './caseDiscovery';
 import { defineType, defineField } from 'sanity'
 import { ChartBarHorizontal } from '@phosphor-icons/react'
 import { ChartBar } from '@phosphor-icons/react'
 import { Equalizer } from '@phosphor-icons/react'
 import { websiteChannelOptions } from '../../shared/channelOptions'
+import { caseSeoFields } from './caseWebsiteContent'
+import MsmUnitAssignmentsInput from './MsmUnitAssignmentsInput'
 
 export default defineType({
     name: 'caseStudy',
     title: 'Case Study',
     type: 'document',
+    components: {input: MsmUnitAssignmentsInput},
     groups: [
-        { name: 'content', title: 'Content' },
+        { name: 'content', title: 'Shared content' },
         { name: 'media', title: 'Media' },
-        { name: 'relations', title: 'Relations' },
+        { name: 'relations', title: 'Campaign & relationships' },
         { name: 'pageBuilder', title: 'Page Builder' },
-        { name: 'settings', title: 'Settings' },
+        { name: 'settings', title: 'Publication' },
+        { name: 'websiteContent', title: 'Website content' },
     ],
     fields: [
+    caseDiscoveryField('relations'),
         defineField({
             name: 'language',
             title: 'Language',
@@ -294,6 +301,15 @@ export default defineType({
             description: 'Services related to this case study. Use "Save & Sync Relationships" to automatically update the services with this case study reference.',
             group: 'relations'
         }),
+        defineField({ name: 'seo', title: 'Shared SEO', type: 'object', group: 'content', fields: caseSeoFields }),
+        defineField({ name: 'siteContent', title: 'Website editions', type: 'array', group: 'websiteContent',
+            description: 'One edition per assigned website. Unset fields inherit shared content. Publishing includes every edition.',
+            of: [{ type: 'caseWebsiteContent' }],
+            validation: Rule => Rule.custom((editions: Array<{ channel?: string }> | undefined) => {
+                const channels = (editions || []).map(edition => edition.channel).filter(Boolean);
+                return new Set(channels).size === channels.length || 'Only one edition per website is allowed.';
+            })
+        }),
         defineField({
             name: 'casesPageBuilder',
             title: 'Cases Page Builder',
@@ -303,6 +319,7 @@ export default defineType({
                 { type: 'challengeAndSolution' },
                 { type: 'approachSection' },
                 { type: 'resultsMetrics' },
+                { type: 'intertitleCTA' },
             ],
             description: 'Build your case study page using modular components',
             group: 'pageBuilder'
@@ -314,6 +331,7 @@ export default defineType({
     ],
     preview: {
         select: {
+            channels: "channel",
             title: 'title',
             subtitle: 'subtitle',
             media: 'mainImage',
@@ -324,7 +342,7 @@ export default defineType({
             const { title, subtitle, media, clientLogo, isPublished } = selection
             return {
                 title,
-                subtitle: subtitle || (isPublished ? 'Published' : 'Draft'),
+                subtitle: withChannelLabels(subtitle, selection.channels),
                 media: clientLogo || media,
                 badges: isPublished ? [] : [{ label: 'Unpublished', color: 'red' }]
             }

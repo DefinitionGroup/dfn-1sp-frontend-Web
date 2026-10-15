@@ -1,3 +1,6 @@
+import {JsonLdScript, CANONICAL_URL} from '@msm/lib/structured-data';
+import {buildMsmMetadata, buildMsmRouteMetadata} from '@msm/lib/metadata';
+import {msmPath} from "@msm/lib/editorial";
 /**
  * Services Page
  * =============
@@ -15,12 +18,10 @@ import { getAllCases, getAllServicesForChannel, getPageBySlug } from "@1sp/sanit
 import MsmPageBuilder from "@msm/components/MsmPageBuilder";
 import NotFound from "@msm/components/ui/not-found";
 import MsmSiteWrapper from "@msm/components/MsmSiteWrapper";
-import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import { getChannelFromEnv, getSiteConfig } from "@1sp/site-config";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
-  JsonLdScript,
   generateCollectionPageJsonLd,
   generateBreadcrumbJsonLd,
   generateItemListJsonLd,
@@ -35,10 +36,8 @@ import {
   extractUnitsFromContent,
   generateUnitsListJsonLd,
   getBreadcrumbLabel,
-  CANONICAL_URL,
 } from "@/lib/structured-data";
 
-export const revalidate = 60;
 const CHANNEL = "msmWeb";
 const SUPPORTED_LOCALES = getSiteConfig(getChannelFromEnv()).locales;
 
@@ -60,42 +59,7 @@ export async function generateMetadata({
     return { title: "Services" };
   }
 
-  const title = page.metadata?.title || page.title || "Services";
-  const description = page.metadata?.description;
-  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
-
-  const ogImages = ogImageUrl
-    ? [
-      {
-        url: ogImageUrl,
-        width: 1200,
-        height: 630,
-        alt: title,
-      },
-    ]
-    : [];
-
-  return {
-    title,
-    description,
-    keywords: page.metadata?.keywords ?? undefined,
-    alternates: {
-      canonical: "/services",
-    },
-    openGraph: {
-      title,
-      description: description || undefined,
-      locale: language,
-      type: "website",
-      images: ogImages,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description: description || undefined,
-      images: ogImages.map((img) => img.url),
-    },
-  };
+  return buildMsmRouteMetadata({locale: language, path: 'services', documentId: page._id, title: page.title || 'Services', metadata: page.metadata});
 }
 
 export default async function ServicesPage({
@@ -135,7 +99,8 @@ export default async function ServicesPage({
     contentBlocks,
     mapCasesToItemList(allCasesRaw),
   );
-  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
+  const resolvedMetadata = buildMsmMetadata({locale: language, path: 'services', title: page?.title, metadata: page?.metadata});
+  const ogImageUrl = (resolvedMetadata.openGraph as {images: {url: string}[]}).images[0].url;
   const services = mapServicesToCatalogItems(allServicesRaw);
   const people = extractPeopleFromContent(contentBlocks);
   const units = extractUnitsFromContent(contentBlocks);
@@ -145,11 +110,11 @@ export default async function ServicesPage({
   return (
     <MsmSiteWrapper language={language} navColor={navbarVariant}>
       {/* Structured Data (JSON-LD) */}
-      <JsonLdScript
+      <JsonLdScript locale={language} metadata={resolvedMetadata}
         data={generateCollectionPageJsonLd({
           title: page.metadata?.title || page.title || "Services",
           slug: "services",
-          description: page.metadata?.description,
+          description: resolvedMetadata.description || undefined,
           locale: language,
           imageUrl: ogImageUrl,
           mainEntityId:
@@ -160,7 +125,7 @@ export default async function ServicesPage({
                 : undefined,
         })}
       />
-      <JsonLdScript
+      <JsonLdScript locale={language} metadata={resolvedMetadata}
         data={generateBreadcrumbJsonLd([
           {
             name: getBreadcrumbLabel(language, "home"),
@@ -168,12 +133,12 @@ export default async function ServicesPage({
           },
           {
             name: getBreadcrumbLabel(language, "services"),
-            url: `${CANONICAL_URL}/services`,
+            url: `${CANONICAL_URL}${msmPath(language, "services")}`,
           },
         ])}
       />
       {caseItems.length > 0 && (
-        <JsonLdScript
+        <JsonLdScript locale={language} metadata={resolvedMetadata}
           data={generateItemListJsonLd({
             items: caseItems,
             locale: language,
@@ -183,7 +148,7 @@ export default async function ServicesPage({
         />
       )}
       {services.length > 0 && (
-        <JsonLdScript
+        <JsonLdScript locale={language} metadata={resolvedMetadata}
           data={generateServiceCatalogJsonLd({
             services,
             locale: language,
@@ -193,10 +158,10 @@ export default async function ServicesPage({
         />
       )}
       {people.length > 0 && (
-        <JsonLdScript data={generatePeopleListJsonLd({ people })} />
+        <JsonLdScript locale={language} metadata={resolvedMetadata} data={generatePeopleListJsonLd({ people })} />
       )}
       {units.length > 0 && (
-        <JsonLdScript data={generateUnitsListJsonLd({ units })} />
+        <JsonLdScript locale={language} metadata={resolvedMetadata} data={generateUnitsListJsonLd({ units })} />
       )}
 
       {/* Preload the hero poster for fast LCP */}

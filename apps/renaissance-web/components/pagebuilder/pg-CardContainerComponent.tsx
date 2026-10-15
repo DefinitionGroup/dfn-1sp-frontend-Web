@@ -1,6 +1,10 @@
 "use client";
 
-import type { CardContainerComponent as CardContainerComponentType } from "@1sp/sanity-types";
+import type {
+  CardContainerComponent as CardContainerComponentType,
+  RenaissanceSectionRole,
+} from "@1sp/sanity-types";
+import {resolveServiceCard} from "@renaissance/lib/serviceContent";
 import StaggeredFadeIn from "@renaissance/components/ui/StaggeredFadeIn";
 import CardInsideComponent from "./Fragments/CardInsideComponent";
 
@@ -13,10 +17,13 @@ const columnClasses: Record<2 | 3 | 5 | 6, string> = {
 
 export default function CardContainerComponent({
   data,
+  presentationRole,
 }: {
   data: CardContainerComponentType;
+  presentationRole?: RenaissanceSectionRole;
 }) {
-  if (!data?.cards?.length) return null;
+  const cards = (data?.cards || []).map(resolveServiceCard).filter((card): card is NonNullable<typeof card> => !!card);
+  if (!cards.length) return null;
 
   const columns = [2, 3, 5, 6].includes(data.columns || 0)
     ? (data.columns as 2 | 3 | 5 | 6)
@@ -27,6 +34,22 @@ export default function CardContainerComponent({
         .replace(/\s+/g, "-")
         .toLowerCase()
     : undefined;
+
+  if (presentationRole === "services") {
+    return (
+      <div className="mx-auto max-w-[1680px] px-5 pb-16 sm:px-8 md:pb-24 lg:px-12">
+        <div className={`grid grid-cols-1 gap-x-2 gap-y-2 sm:grid-cols-2 ${columnClasses[columns]}`}>
+          {cards.map((card, index) => (
+            <CardInsideComponent
+              key={card._key || `${card.headline || "card"}-${index}`}
+              card={card}
+              index={index}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <section
@@ -43,7 +66,7 @@ export default function CardContainerComponent({
         distance={28}
         viewThreshold={0.08}
       >
-        {data.cards.map((card, index) => (
+        {cards.map((card, index) => (
           <CardInsideComponent
             key={card._key || `${card.headline || "card"}-${index}`}
             card={card}

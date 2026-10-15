@@ -1,0 +1,10 @@
+[mcp_servers.sanity]
+enabled = false
+
+[mcp_servers.sanity_1sp]
+command = "npx"
+args = ["-y", "mcp-remote", "https://mcp.sanity.io"]
+startup_timeout_sec = 120
+
+[mcp_servers.sanity_1sp.env]
+MCP_REMOTE_CONFIG_DIR = "/Users/martin/.mcp-auth-1sp"

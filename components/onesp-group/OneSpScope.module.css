@@ -10,7 +10,7 @@
   max-width: 1400px;
   margin-block: 4rem;
   margin-inline: auto;
-  border-radius: var(--onesp-group-radius);
+   /* border-radius: var(--onesp-group-radius);  */
   overflow: clip;
   color-scheme: only light;
 
@@ -74,6 +74,15 @@
 .root :global(select) {
   color: inherit;
   font: inherit;
+}
+
+/* Every headline inside a 1SP group is white in the 1SP face, whichever host
+   renders it. Host bases color headings (FLZR violet, Renaissance teal) and
+   set their own family; this unlayered rule outranks those and any layered
+   utility color on the heading element itself. */
+.root :global(:is(h1, h2, h3, h4, h5, h6)) {
+  color: #ffffff;
+  font-family: var(--font-aspekta), sans-serif;
 }
 
 /* The host apps define their own display-scale typewriter variables. Restore

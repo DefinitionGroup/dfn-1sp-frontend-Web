@@ -39,7 +39,6 @@ import {
   CANONICAL_URL,
 } from "@/lib/structured-data";
 
-export const revalidate = 60;
 const SUPPORTED_LOCALES = ["en"];
 
 export function generateStaticParams() {

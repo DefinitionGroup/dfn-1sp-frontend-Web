@@ -7,12 +7,12 @@ import {
   AnimatePresence,
   motion,
   useMotionValueEvent,
+  useReducedMotion,
   useScroll,
 } from "motion/react";
 import { useOptimizedTransitionRouter } from "@1sp/utils/hooks/use-optimized-transition-router";
 import { usePathname } from "next/navigation";
 import CaseGalleryMenu from "../data/data-CaseGalleryMenu";
-import Button2 from "../ui/Button2";
 import { NavbarMenu } from "@1sp/sanity-types/menu";
 import LanguageSelector, { type LanguageOption } from "./LanguageSelector";
 import { localizedPath } from "@renaissance/lib/routes";
@@ -91,6 +91,78 @@ const NAV_IDLE_HIDE_MS = 3000;
 
 type NavState = "expanded" | "compact" | "hidden";
 
+/** Full lockup (tagline, wordmark, "A 1SP Agency") in its supplied colours. */
+function RenaissanceLogoLockup({
+  className,
+  alt,
+}: {
+  className: string;
+  alt: string;
+}) {
+  return (
+    <Image
+      src="/logos/renaissance-lockup.svg"
+      alt={alt}
+      width={379}
+      height={81}
+      priority
+      className={`h-auto ${className}`}
+    />
+  );
+}
+
+const ONESP_AGENCY_URL = "https://1sp.agency";
+// Trails the main nav so the pair reads as a staggered sequence.
+const AGENCY_PILL_STAGGER_S = 0.09;
+
+/** Detached 1SP agency link; stays pinned at the top even when the nav hides. */
+function OneSpAgencyPill({
+  compact = false,
+  reduceMotion = false,
+  className = "",
+}: {
+  compact?: boolean;
+  reduceMotion?: boolean;
+  className?: string;
+}) {
+  const delay = reduceMotion ? 0 : AGENCY_PILL_STAGGER_S;
+  return (
+    <motion.a
+      href={ONESP_AGENCY_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="1SP Agency website (opens in a new tab)"
+      layout="position"
+      initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+      transition={{
+        // A layout delay would show the new position first, so the pill trails
+        // the nav with a slightly slower spring instead.
+        layout: {
+          type: "spring",
+          bounce: 0.08,
+          visualDuration: reduceMotion ? 0.45 : 0.45 + AGENCY_PILL_STAGGER_S * 2,
+        },
+        opacity: { duration: 0.32, ease: "easeOut", delay: 0.2 + delay },
+        y: { duration: 0.42, ease: [0.22, 1, 0.36, 1], delay: 0.2 + delay },
+      }}
+      className={`pointer-events-auto flex shrink-0 items-center justify-center rounded-control bg-black text-white shadow-lg shadow-renaissance-ink/10 transition-colors duration-200 hover:bg-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-renaissance-button ${
+        compact ? "w-[3.75rem]" : "w-[7.5rem]"
+      } ${className}`}
+    >
+      <Image
+        src="/ci/1sp-fulllogotype-blk.svg"
+        alt=""
+        width={compact ? 34 : 58}
+        height={compact ? 19 : 31}
+        className="h-auto brightness-0 invert"
+        style={{ width: compact ? 34 : 58 }}
+      />
+    </motion.a>
+  );
+}
+
 const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
   className = "",
   color = "light",
@@ -116,6 +188,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
     null,
   );
   const navRef = React.useRef<HTMLElement>(null);
+  const reduceMotion = useReducedMotion() ?? false;
   const copy = NAV_COPY[locale] ?? NAV_COPY.en;
   const isRenaissanceChannel = channel === "renaissanceWeb";
 
@@ -387,7 +460,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           const isServicesPage = item.slug?.includes("services");
           return !(
             (isCasesPage && !hasCaseStudies) ||
-            (isServicesPage && !hasServices)
+            (isServicesPage && !hasServices && !isRenaissanceChannel)
           );
         })
         .map((item) => ({
@@ -401,11 +474,18 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
   return (
     <>
-      <div className="container relative z-[99998] mx-auto h-20 px-3 pt-3 md:h-28 md:px-4 md:pt-6">
+      <div className="relative z-[99998] mx-auto w-full max-w-[1680px] h-20 px-3 pt-3 md:h-28 md:px-4 md:pt-6">
+        <div
+          className={`pointer-events-none hidden items-stretch gap-3 xl:flex ${
+            isExpanded
+              ? "relative w-full"
+              : "fixed left-0 right-0 top-6 mx-auto w-fit iphone-landscape:top-2 iphone-landscape:scale-70"
+          }`}
+        >
         <motion.nav
           ref={navRef}
           layout
-          initial={{ opacity: 0, y: 16 }}
+          initial={false}
           animate={{
             opacity: isNavVisible ? 1 : 0,
             y: isNavVisible ? 0 : -96,
@@ -423,15 +503,13 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           inert={!isNavVisible}
           data-nav-state={navState}
           data-nav-surface={isRenaissanceScrolled ? "frosted" : "transparent"}
-          className={`floating-nav z-99999 hidden items-center grid-cols-12 py-2 transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 md:grid ${
-            isExpanded
-              ? "relative mx-auto h-16 w-full rounded-control px-6"
-              : "fixed left-0 right-0 top-6 mx-auto h-14 w-fit rounded-control px-5 iphone-landscape:top-2 iphone-landscape:scale-70"
-          } ${isNavVisible ? "" : "pointer-events-none"} ${desktopSurfaceClass} ${navTextColor} ${className}`}
+          className={`floating-nav z-99999 grid items-center grid-cols-[auto_1fr_auto] gap-8 rounded-control py-2 transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 ${
+            isExpanded ? "h-16 min-w-0 flex-1 px-6" : "h-14 px-5"
+          } ${isNavVisible ? "pointer-events-auto" : "pointer-events-none"} ${desktopSurfaceClass} ${navTextColor} ${className}`}
         >
-          <div className="col-span-2 flex items-center pr-16  justify-start">
+          <div className="flex items-center justify-start">
             <motion.div
-              initial={{ opacity: 0, y: 8 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 0.32,
@@ -449,19 +527,26 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 aria-label="Home"
                 className="flex items-center justify-center"
               >
-                <Image
-                  src={logoUrl}
-                  alt={logoAlt}
-                  width={isRenaissanceChannel ? 198 : 64}
-                  height={isRenaissanceChannel ? 42 : 64}
-                  className={logoClassName}
-                  style={{ height: "auto" }}
-                />
+                {isRenaissanceChannel ? (
+                  <RenaissanceLogoLockup
+                    alt={logoAlt}
+                    className={`${logoClassName} w-[12.875rem]`}
+                  />
+                ) : (
+                  <Image
+                    src={logoUrl}
+                    alt={logoAlt}
+                    width={64}
+                    height={64}
+                    className={logoClassName}
+                    style={{ height: "auto" }}
+                  />
+                )}
               </Link>
             </motion.div>
           </div>
 
-          <motion.div className="col-span-7   flex items-center ">
+          <motion.div className="flex items-center justify-center">
             {menuData ? (
               <StaggeredSlideUp
                 className="flex items-center "
@@ -481,7 +566,7 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                     if (isCasesPage && !hasCaseStudies) {
                       return false;
                     }
-                    if (isServicesPage && !hasServices) {
+                    if (isServicesPage && !hasServices && !isRenaissanceChannel) {
                       return false;
                     }
                     return true;
@@ -525,14 +610,14 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 8 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.32,
               delay: 0.62,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="col-span-3 flex relative justify-end items-center align-start gap-1"
+            className="flex relative justify-end items-center align-start gap-1"
           >
             {/* All Cases button only on case detail pages */}
             {isCaseDetailRoute && (
@@ -551,17 +636,18 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 frosted={isRenaissanceScrolled}
               />
             ) : null}
-            <Button2
-              variant="limesmall"
-              href="https://1sp.agency"
-              eyebrow={menuData?.oneSpMembershipLabel || "proud member of"}
-              text="1sp.agency"
-            />
           </motion.div>
         </motion.nav>
+        <OneSpAgencyPill reduceMotion={reduceMotion} />
+        </div>
+        <div
+          className={`pointer-events-none flex items-stretch gap-1.5 xl:hidden ${
+            isExpanded ? "relative w-full" : "fixed left-3 right-3 top-3"
+          }`}
+        >
         <motion.nav
           layout
-          initial={{ opacity: 0, y: 14 }}
+          initial={false}
           animate={{
             opacity: isNavVisible ? 1 : 0,
             y: isNavVisible ? 0 : -80,
@@ -579,14 +665,12 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           inert={!isNavVisible}
           data-nav-state={navState}
           data-nav-surface={isRenaissanceScrolled ? "frosted" : "transparent"}
-          className={`z-99999 flex items-center justify-between rounded-control transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 md:hidden ${
-            isExpanded
-              ? "relative mx-auto h-14 w-full px-4"
-              : "fixed left-3 right-3 top-3 h-12 px-3"
-          } ${isNavVisible ? "" : "pointer-events-none"} ${mobileSurfaceClass} ${navTextColor}`}
+          className={`z-99999 flex min-w-0 flex-1 items-center justify-between rounded-control transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 ${
+            isExpanded ? "h-14 px-4" : "h-12 px-3"
+          } ${isNavVisible ? "pointer-events-auto" : "pointer-events-none"} ${mobileSurfaceClass} ${navTextColor}`}
         >
           <motion.div
-            initial={{ opacity: 0, y: 7 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.3,
@@ -603,18 +687,25 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
                 router.push(localizedPath("/", locale));
               }}
             >
-              <Image
-                src={logoUrl}
-                alt={logoAlt}
-                width={isRenaissanceChannel ? 174 : 54}
-                height={isRenaissanceChannel ? 36 : 24}
-                className={logoClassName}
-                style={{ height: "auto" }}
-              />
+              {isRenaissanceChannel ? (
+                <RenaissanceLogoLockup
+                  alt={logoAlt}
+                  className={`${logoClassName} w-[9.2rem]`}
+                />
+              ) : (
+                <Image
+                  src={logoUrl}
+                  alt={logoAlt}
+                  width={54}
+                  height={24}
+                  className={logoClassName}
+                  style={{ height: "auto" }}
+                />
+              )}
             </Link>
           </motion.div>
           <motion.div
-            initial={{ opacity: 0, y: 7 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.3,
@@ -646,6 +737,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             </button>
           </motion.div>
         </motion.nav>
+        <OneSpAgencyPill compact reduceMotion={reduceMotion} />
+        </div>
       </div>
       <AnimatePresence>
         {showMobileMenu ? (
@@ -654,15 +747,25 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             animate={{ clipPath: "inset(0 0 0 0)" }}
             exit={{ clipPath: "inset(0 0 100% 0)" }}
             transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[100000] flex flex-col bg-renaissance-ink px-6 pb-8 pt-5 text-white md:hidden"
+            className="fixed inset-0 z-[100000] flex flex-col bg-renaissance-ink px-6 pb-8 pt-5 text-white xl:hidden"
           >
             <div className="flex items-center justify-between border-b border-white/20 pb-5">
-              <Image
-                src="/units/RENAISSANCE/renaissance-horz_logo.svg"
-                alt="Renaissance"
-                width={140}
-                height={30}
-                className="h-auto w-[8.75rem]"
+              <span
+                role="img"
+                aria-label="Renaissance"
+                className="block h-[1.875rem] w-[8.75rem] bg-renaissance-button"
+                style={{
+                  WebkitMaskImage:
+                    "url('/units/RENAISSANCE/renaissance-horz_logo.svg')",
+                  maskImage:
+                    "url('/units/RENAISSANCE/renaissance-horz_logo.svg')",
+                  WebkitMaskPosition: "center",
+                  maskPosition: "center",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskRepeat: "no-repeat",
+                  WebkitMaskSize: "contain",
+                  maskSize: "contain",
+                }}
               />
               <button
                 type="button"
@@ -699,13 +802,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
               </ol>
             </nav>
 
-            <a
-              href="https://1sp.agency"
-              className="flex items-center justify-between border-t border-white/20 pt-5 text-sm text-white/70"
-            >
-              <span>Part of the 1SP Agency family</span>
-              <span aria-hidden="true">↗</span>
-            </a>
+            <OneSpAgencyPill
+              reduceMotion={reduceMotion}
+              className="h-14 self-start ring-1 ring-white/25"
+            />
           </motion.div>
         ) : null}
       </AnimatePresence>

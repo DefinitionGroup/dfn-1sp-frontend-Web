@@ -37,6 +37,12 @@ type Position = {
 
 export type GlobeConfig = {
   pointSize?: number;
+  /** Location dot radius in degrees (default 2). */
+  pointRadius?: number;
+  /** Land cell gap, 0–1; higher draws smaller land marks (default 0.3). */
+  hexMargin?: number;
+  /** Draw land as round dots instead of hexagons (default false). */
+  hexUseDots?: boolean;
   globeColor?: string;
   showAtmosphere?: boolean;
   atmosphereColor?: string;
@@ -64,12 +70,21 @@ export type GlobeConfig = {
 interface WorldProps {
   globeConfig: GlobeConfig;
   data: Position[];
+  /** OrbitControls auto-rotate speed (default 1.1). */
+  rotateSpeed?: number;
+  /** Stop the render loop, e.g. while the globe is offscreen. */
+  paused?: boolean;
+  /** Static arcs, no rings and no auto-rotation. */
+  reducedMotion?: boolean;
+  /** Camera distance multiplier; above 1 shows more of the globe (default 1). */
+  distance?: number;
 }
 
 const numbersOfRings = [0];
+const Y_AXIS = new Vector3(0, 1, 0);
 const GLOBE_RADIUS = 100;
 
-export function Globe({ globeConfig, data }: WorldProps) {
+export function Globe({ globeConfig, data, reducedMotion = false }: WorldProps) {
   const globeRef = useRef<ThreeGlobe | null>(null);
   const groupRef = useRef<Group | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -160,7 +175,8 @@ export function Globe({ globeConfig, data }: WorldProps) {
     globeRef.current
       .hexPolygonsData(countries.features)
       .hexPolygonResolution(4)
-      .hexPolygonMargin(0.3)
+      .hexPolygonMargin(globeConfig.hexMargin ?? 0.3)
+      .hexPolygonUseDots(globeConfig.hexUseDots ?? false)
       .showAtmosphere(defaultProps.showAtmosphere)
       .atmosphereColor(defaultProps.atmosphereColor)
       .atmosphereAltitude(defaultProps.atmosphereAltitude)
@@ -175,17 +191,17 @@ export function Globe({ globeConfig, data }: WorldProps) {
       .arcColor((e: any) => (e as { color: string }).color)
       .arcAltitude((e) => (e as { arcAlt: number }).arcAlt * 1)
       .arcStroke(() => [0.32, 0.28, 0.3][Math.round(Math.random() * 2)])
-      .arcDashLength(defaultProps.arcLength)
-      .arcDashInitialGap((e) => (e as { order: number }).order * 1)
-      .arcDashGap(15)
-      .arcDashAnimateTime(() => defaultProps.arcTime);
+      .arcDashLength(reducedMotion ? 1 : defaultProps.arcLength)
+      .arcDashInitialGap((e) => (reducedMotion ? 0 : (e as { order: number }).order * 1))
+      .arcDashGap(reducedMotion ? 0 : 15)
+      .arcDashAnimateTime(() => (reducedMotion ? 0 : defaultProps.arcTime));
 
     globeRef.current
       .pointsData(filteredPoints)
       .pointColor((e) => (e as { color: string }).color)
       .pointsMerge(true)
       .pointAltitude(0.0)
-      .pointRadius(2);
+      .pointRadius(globeConfig.pointRadius ?? 2);
 
     globeRef.current
       .ringsData([])
@@ -207,11 +223,15 @@ export function Globe({ globeConfig, data }: WorldProps) {
     defaultProps.arcTime,
     defaultProps.rings,
     defaultProps.maxRings,
+    globeConfig.pointRadius,
+    globeConfig.hexMargin,
+    globeConfig.hexUseDots,
+    reducedMotion,
   ]);
 
   // Handle rings animation with cleanup
   useEffect(() => {
-    if (!globeRef.current || !isInitialized || !data) return;
+    if (!globeRef.current || !isInitialized || !data || reducedMotion) return;
 
     const interval = setInterval(() => {
       if (!globeRef.current) return;
@@ -236,7 +256,7 @@ export function Globe({ globeConfig, data }: WorldProps) {
     return () => {
       clearInterval(interval);
     };
-  }, [isInitialized, data]);
+  }, [isInitialized, data, reducedMotion]);
 
   return <group ref={groupRef} />;
 }
@@ -254,13 +274,13 @@ function latLngToVector3(lat: number, lng: number, altitude = 0.05) {
   );
 }
 
-function ArcLabels({ data }: Pick<WorldProps, "data">) {
+function ArcLabels({ data, rotationY = 0 }: Pick<WorldProps, "data"> & { rotationY?: number }) {
   const { camera } = useThree();
   const labelRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const labelPoints = useMemo(
     () =>
       data.map((arc, idx) => {
-        const vector = latLngToVector3(arc.endLat, arc.endLng, 0.08);
+        const vector = latLngToVector3(arc.endLat, arc.endLng, 0.08).applyAxisAngle(Y_AXIS, rotationY);
         return {
           key: `${arc.label}-${idx}`,
           vector,
@@ -270,7 +290,7 @@ function ArcLabels({ data }: Pick<WorldProps, "data">) {
           text: arc.label,
         };
       }),
-    [data]
+    [data, rotationY]
   );
 
   const labelPointsRef = useRef(labelPoints);
@@ -312,11 +332,12 @@ function ArcLabels({ data }: Pick<WorldProps, "data">) {
           distanceFactor={120}
           style={{
             color: point.color,
-            fontWeight: 400,
+            fontWeight: "inherit",
             fontSize: "0.5rem",
-            backgroundColor: "rgba(0,0,0,0.5)",
-            padding: "0.13rem 0.25rem",
-            borderRadius: "100px",
+            letterSpacing: "0.12em",
+            backgroundColor: "rgba(10,12,13,0.72)",
+            padding: "0.13rem 0.3rem",
+            borderRadius: 0,
             textTransform: "uppercase",
             whiteSpace: "nowrap",
           }}
@@ -332,7 +353,7 @@ export function WebGLRendererConfig() {
   const { gl, size } = useThree();
 
   useEffect(() => {
-    gl.setPixelRatio(window.devicePixelRatio);
+    gl.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     gl.setSize(size.width, size.height);
     gl.setClearColor(0xffaaff, 0);
   }, [gl, size]);
@@ -352,38 +373,45 @@ function CameraAspectController() {
   return null;
 }
 
-function CameraTopHalfFocus() {
+function CameraTopHalfFocus({ distance = 1 }: { distance?: number }) {
   const { camera } = useThree();
 
   useEffect(() => {
-    camera.position.set(0, CAMERA_HEIGHT, CAMERA_FORWARD);
+    camera.position.set(0, CAMERA_HEIGHT, CAMERA_FORWARD).sub(CAMERA_TARGET).multiplyScalar(distance).add(CAMERA_TARGET);
     camera.lookAt(CAMERA_TARGET);
-  }, [camera]);
+  }, [camera, distance]);
 
   return null;
 }
 
 export function World(props: WorldProps) {
-  const { globeConfig, data } = props;
-  const scene = new Scene();
+  const { globeConfig, data, rotateSpeed = 1.1, paused = false, reducedMotion = false, distance = 1 } = props;
+  // Keep the orbit radius consistent with the camera's offset from the target.
+  const orbitRadius = new Vector3(0, CAMERA_HEIGHT, CAMERA_FORWARD).sub(CAMERA_TARGET).length() * distance;
+  const scene = useMemo(() => new Scene(), []);
+  const camera = useMemo(() => new PerspectiveCamera(50, aspect, 0.1, 2000), []);
+  // Face the configured longitude: lng 0 sits on +z, towards the camera.
+  const rotationY = (-(globeConfig.initialPosition?.lng ?? 0) * Math.PI) / 180;
 
   return (
-    <Canvas scene={scene} camera={new PerspectiveCamera(50, aspect, 0.1, 2000)}>
+    <Canvas scene={scene} camera={camera} frameloop={paused ? "never" : "always"}>
       <WebGLRendererConfig />
       <CameraAspectController />
-      <CameraTopHalfFocus />
+      <CameraTopHalfFocus distance={distance} />
       <ambientLight color={globeConfig.ambientLight} intensity={1.8} />
 
-      <Globe {...props} />
-      <ArcLabels data={data} />
+      <group rotation={[0, rotationY, 0]}>
+        <Globe {...props} />
+      </group>
+      <ArcLabels data={data} rotationY={rotationY} />
       <OrbitControls
         enablePan={false}
         enableZoom={true}
-        minDistance={CAMERA_RADIUS}
-        maxDistance={CAMERA_RADIUS}
+        minDistance={distance === 1 ? CAMERA_RADIUS : orbitRadius}
+        maxDistance={distance === 1 ? CAMERA_RADIUS : orbitRadius}
         target={[CAMERA_TARGET.x, CAMERA_TARGET.y, CAMERA_TARGET.z]}
-        autoRotateSpeed={1.1}
-        autoRotate={true}
+        autoRotateSpeed={rotateSpeed}
+        autoRotate={!reducedMotion}
         minPolarAngle={Math.PI / 3.2}
         maxPolarAngle={Math.PI / 2}
       />

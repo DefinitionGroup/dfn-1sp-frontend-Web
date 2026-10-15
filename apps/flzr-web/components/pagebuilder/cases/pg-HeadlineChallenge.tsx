@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
 interface HeadlineChallengeProps {
+  _key?: string;
   title: string;
   headline?: string;
   description?: string;
@@ -15,6 +16,7 @@ interface HeadlineChallengeProps {
 }
 
 export default function HeadlineChallenge({
+  _key,
   title,
   headline,
   description,
@@ -29,10 +31,11 @@ export default function HeadlineChallenge({
     document.body.style.overflow = "auto";
   }, []);
 
-  const sectionId = t.ids.intro;
+  const sectionId = _key ? `${t.ids.intro}-${_key}` : t.ids.intro;
+  const isBodyOnly = !hasVisibleText(title) && !hasVisibleText(headline);
 
   return (
-    <section className="relative overflow-hidden">
+    <section className={`relative overflow-hidden ${isBodyOnly ? "py-8 md:py-12" : ""}`}>
       <div
         id={sectionId}
         data-navpoint-name={navPointName}
@@ -47,7 +50,7 @@ export default function HeadlineChallenge({
                 delay={0.59}
                 staggerDelay={0.03}
                 distance={12}
-                className="max-w-full md:max-w-2/3 lg:max-w-3/4"
+                className={isBodyOnly ? "max-w-[65ch]" : "max-w-full md:max-w-2/3 lg:max-w-3/4"}
               >
                 {hasVisibleText(headline) ? (
                   <h2 className="text-sm sm:text-base lg:text-lg leading-tighter text-neutral-400 font-medium font-flzr">
@@ -60,9 +63,9 @@ export default function HeadlineChallenge({
                   </h3>
                 ) : null}
                 {hasVisibleText(description) && (
-                  <h2 className="text-2xl leading-[1.05] text-neutral-400 pb-2 font-flzr sm:text-3xl sm:pb-3 lg:text-4xl">
+                  <p className={isBodyOnly ? "text-lg leading-relaxed text-neutral-700 font-flzr sm:text-xl" : "text-2xl leading-[1.05] text-neutral-400 pb-2 font-flzr sm:text-3xl sm:pb-3 lg:text-4xl"}>
                     {description}
-                  </h2>
+                  </p>
                 )}
               </StaggeredSlideUp>
             </div>

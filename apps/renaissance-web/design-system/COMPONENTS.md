@@ -12,16 +12,24 @@ Registration in `RenaissancePageBuilder.tsx` means the renderer understands a bl
 
 | Block type | User job | Required content | Layout contract | Critical states |
 | --- | --- | --- | --- | --- |
-| `heroShowTime` | Orient and convert | wordmark/brand context, one headline, short support, 1 primary + optional secondary CTA, real media, alt text | full-bleed dominant media; no cards, chips, stats or promos; one hero per page | image/video fallback, reduced motion, short landscape, contrast-safe nav |
-| `introBlockTypoSophisticated` | Frame the next section | one main statement, up to two short supporting phrases, one paragraph | asymmetric editorial grid; no CTA or card cluster | semantic heading level, long-copy wrap, muted-token contrast |
+| `heroShowTime` | Orient and convert | CMS-selectable logo with Renaissance wordmark fallback, one headline, short support, 1 primary + optional secondary CTA, real media, alt text | logo sits above the headline hairline at no less than one-third width; full-bleed dominant media; no cards, chips, stats or promos; one hero per page | logo/image/video fallback, reduced motion, short landscape, contrast-safe nav |
+| `introBlockTypoSophisticated` | Frame the next section | one main statement, up to two short supporting phrases, one paragraph | Sanity-selectable editorial split or compact stack; no CTA or card cluster | semantic heading level, long-copy wrap, muted-token contrast |
+| `renaissanceCaseCarousel` | Browse selected global cases | 1–12 ordered case references; Renaissance copy/media; valid case slug | reuses the interactive carousel’s media stage and shared teal overlay; copy-driven height; 44px controls | previous/next, arrow keys, swipe, persistent pause, optional seven-second advance, reduced motion, visibility-aware video, poster fallback |
 | `carousel` | Present selected campaign stories | 1–5 stories, title, image/video, short description, optional verified CTA | immersive single-stage media, never a tiled card row | pause/play, previous/next, active state, swipe, keyboard, reduced motion, optimized media |
-| `clientLogoCarousel` | Add client trust | verified logos and names | quiet monochrome rail between proof and offer; decorative duplicates hidden | static reduced-motion state, supported formats, missing-logo omission |
+| `clientLogoCarousel` | Add client trust | verified logos and names | borderless fixed 6-column × 2-row signal grid; slots blur/fade in with a stagger on first view, then one random slot overlaps and softly crossfades into its next logo without shifting layout; decorative duplicates hidden | pauses offscreen/hidden/hover/focus, static reduced-motion state, small logo pools, supported formats, missing-logo omission |
+| `renaissancePortraitGrid` | Show the people behind the work | 2–8 named portraits with usable images | two columns on mobile, four on desktop; only the first four remain in the compact mobile composition; fixed Figma people-bolt stays decorative | missing images omitted, meaningful alt text, one-time reduced-motion-safe reveal |
+| `renaissanceAwardLogoWall` | Prove recognition | one short statement and 1–12 named award marks | centered compressed statement, 1px Signal Orange divider, 3/4/8-column white logo wall | empty marks omitted, repeated logos announced once, reduced-motion-safe line/logo reveal |
 | `cardContainerComponent` | Scan a concise service set | 2–6 items, short title, max 140-character description | desktop grid; compact ruled list on mobile; no shadow | long title, 2/3/5/6 counts, empty item omission, contrast |
 | `twoColContentSection` | Pair a human/place/media anchor with narrative | meaningful media and alt text, 1–4 text blocks | 6/6 desktop split, stacked mobile; media not smaller than supporting copy | missing media, reverse layout, reduced parallax, optimized image/video |
 | `globeComponent` | Explain location coverage | one title, one short description, 1–6 verified locations | immersive desktop map; capped mobile map followed by scannable text list | canvas failure, reduced data/motion, keyboard-independent labels, small viewport |
+| `registerBlock` | Route creators and media contacts into registration | one headline, one short description, exactly two valid CTAs | Action Teal section; editorial copy on the left and two square image-backed actions on the right; cards stack below copy on mobile | invalid CTA omission, keyboard focus, external-link behavior, long labels |
 | `intertitleCTA` | Close a section or page with one action | one headline, optional subline, one short paragraph, one valid CTA | open editorial field with hairline; no surrounding card | missing/invalid link renders no CTA, internal/external/email intent, heading level |
 | `contentSection` | Render general editorial content | structured portable text | single-purpose section; readable measure ≤68ch | all heading levels, lists, quotes, links, empty content |
 | `tabbedContentSection` | Compare related views where switching matters | 2–5 labelled panels | tabs only when the user benefits from choosing a view | keyboard roving, selected state, no-JS/readable fallback |
+
+### News CTA
+
+`newsCTABlock` is a Renaissance-only Core news action, approved against the supplied banner reference. It requires a headline, short text, Cloudinary image/video with alt text, and one valid destination. The 1680px sand banner has a 3px Action Teal outline, the carousel's stepped bolt adapted as a shallow media mask, and the existing diagonal arrow enlarged to 44–72px. Media sits left on desktop and above the copy on mobile. Body text uses Petrol for contrast. The headline link covers the banner; video pause is a separate keyboard-accessible control. Video pauses offscreen/when hidden, respects reduced motion, and retains a poster on failure. Incomplete media/destinations omit the block. Schema registration is separate from deployed Studio/schema availability; adding this block does not alter published page content.
 
 ## Conditional components
 
@@ -35,7 +43,7 @@ Registration in `RenaissancePageBuilder.tsx` means the renderer understands a bl
 | `smartUnitsGallery`, `smartUnitsGlobe`, `unitLogoGrid` | multi-unit or network pages | confirm Renaissance is still the primary brand; do not replace the approved local reach pattern by default |
 | `resultsMetrics`, `headlineChallenge` | case-study evidence | every number and claim approved; never use placeholder metrics |
 | `pageBuilderPersonioJobs` | jobs page | external service behavior, filters, error/empty states and privacy review |
-| `sublineComponent`, `oneSPHeader`, `pageBuilderLogoFloat` | transitional or specialist compositions | verify duplicate-brand risk and semantic heading order |
+| `sublineComponent`, `oneSPHeader`, `pageBuilderLogoFloat` | transitional or specialist compositions | verify duplicate-brand risk and semantic heading order; do not compose the Renaissance homepage registration section from separate intro/subline blocks |
 
 ## Compatibility only
 
@@ -46,6 +54,15 @@ Registration in `RenaissancePageBuilder.tsx` means the renderer understands a bl
 Compatibility blocks require explicit design review and a channel/data-scope check. They are not standard Renaissance authoring options.
 
 ## Component behavior rules
+
+### Case Results
+
+- Use ordered `resultsMetrics` blocks for distinct outcomes or measurement periods. Each group has its own heading, optional context, supported metrics, explanatory copy and optional attributed quote. Narrative-only groups are valid; never fabricate counters for rankings or absent data.
+- Numbers sit directly on the Ink section surface, with explicit white headings/labels and hairline separators. Sections follow content height. Mobile uses one column; desktop uses two columns for two or four metrics and three otherwise. Preserve exact large values without horizontal overflow.
+- Store underlying numeric amounts; explicit scale, precision, qualifier and prefix/suffix control display. Keep reach, UVPM, views, scores and growth distinct. Legacy values without new formatting fields retain their existing interpretation.
+- Count up once at 25% visibility over 1.4 seconds with ease `[0.23, 1, 0.32, 1]`. Reserve final width and use tabular numerals. Server output, assistive text and reduced-motion output show the final value. CMS edits settle immediately after the initial animation.
+- The first Results group keeps `#results`; later groups use stable block-key anchors in both Renaissance builders. The unit/person Powered by block is omitted from the Renaissance case template; global relationships remain available.
+- Shared schema and renderer support is backward-compatible. The 19 September migration changes Renaissance English drafts only; the [mapping ledger](../../../docs/renaissance-results-metrics-mapping.md) records source claims and field destinations.
 
 ### Navigation
 
@@ -66,17 +83,26 @@ Compatibility blocks require explicit design review and a channel/data-scope che
 - Internal links stay in the current tab. HTTP(S) links may open externally only when user expectation is clear. `mailto:` and `tel:` never use `target="_blank"`.
 - Incomplete CMS actions render nothing; never fall back to `href="#"`.
 - Minimum action height: 44px for primary controls and all touch controls.
+- Brand, glass, and strands hover fills with flush squares that scale up from top-left to bottom-right. Reduced motion uses an immediate static mist surface.
 
 ### Story carousel
 
+- The media frame is full-width up to 1680px, independent of the general site container.
+- The frame closes with a 3px `accent.signal` bottom border; the slide index and previous/next controls sit together at the lower-left.
 - Maximum five curated stories on a landing page.
 - The first story is editorially selected, not random.
+- Each slide accepts a CMS video and image. Video wins when both are supplied; the image is its poster and reduced-motion fallback. Video-only slides derive their poster from Cloudinary.
+- An optional CMS CTA appears below the supporting text. Internal page references are resolved by the page query; missing labels or destinations render no button.
+- The containing `renaissanceSectionBand` may select a dark-green or light carousel surround without changing the carousel content contract.
 - Autoplay requires a visible pause control and stops for reduced motion, focus, hover and document invisibility.
 - Announce manual changes politely; do not announce every automatic change.
 - Media uses an optimized responsive source and a stable aspect/min-height to prevent layout shift.
 
 ### Service set
 
+- Renaissance service cards and `contentSection` blocks may reference an assigned global `services` document. Cards resolve its website-specific name, short copy, background image/video, alt text and focus; content sections resolve the full service description with an optional page-owned section heading. The page retains layout, order and anchors. Inline authoring remains supported when no reference is selected.
+- Service website editions inherit shared fields unless overridden. Custom media may deliberately be empty; do not substitute another channel's artwork. Wrong-channel, wrong-language or missing targets omit the referenced item. See the [published service mapping](../../../docs/renaissance-global-services-and-studio.md).
+- Client-grid logos remain contained within their fixed cells, using 32px image height on mobile and 48px from 768px with matching responsive image sizes.
 - Cards are permitted on desktop because the repeated planes materially group the six services.
 - On mobile, use a compact editorial list unless a service card is itself clickable.
 - Descriptions are one or two sentences and should stay below 140 characters where possible.
@@ -84,18 +110,31 @@ Compatibility blocks require explicit design review and a channel/data-scope che
 
 ### Two-column narrative
 
+- The Origins content honors the two-column block’s `paddingY` setting (32/64/96/128px), title visibility/color, body size and column order. Its badge supplies separate section separation: 48px on mobile/tablet and a default 96px on desktop, with explicit desktop CMS overrides respected. The legacy adapter must preserve saved title/body copy. Origins uses the saved `renaissanceMediaLayout`: `logos` renders the ordered `renaissanceLogos` array; `media` uses the existing image/video and alt text. The optional shared `cta` supplies the standard Button2. Empty logos or a removed/incomplete CTA stay empty; approved defaults live only in the fallback content. Studio exposes these fields only for Renaissance and hides image/video controls in logo-grid mode.
 - Image alt describes the person/place/context, not the visual styling.
 - Never show a “No media” production placeholder. If optional media is absent, render the text as a complete editorial section.
 - Parallax is progressive enhancement and must stop for reduced motion.
 
 ### Global reach
 
+- The globe block places its CMS title and description on the left and an enlarged upper-hemisphere crop on the right from 768px; mobile stacks text above the globe. In the Reach band, the badge overlays the section instead of reserving a separate row, so the desktop WebGL viewport physically spans the full parent section and the badge shares the globe's vertical plane. A 9:4 grid slot keeps the section one third shorter than the previous 3:2 composition. Inside that full-height viewport, the square globe canvas is shifted upward by 35% and uses a 260-unit camera distance to fit the silhouette width with side clearance. Mobile retains the bounded stacked viewport without the desktop translation. Location labels retain a readable screen size independent of camera distance.
+- The three CMS location anchors expand into five deterministic network layers across Europe, America, and China. The layers weave through every region as one loop, producing exactly five times the original animated arcs and pulse points. Synthetic locations are visual-only and never receive labels; only the original CMS anchors retain their names and label connectors.
 - Locations are always available as text, independent of canvas/WebGL.
 - Mobile map height is capped at 55–65svh.
 - If WebGL or motion is unavailable, render a static map image/pattern with the same location list.
 
+### Registration block
+
+- `registerBlock` owns the complete Join Us composition: headline, description and exactly two CTA records.
+- The full section uses `surface.action` / Action Teal, matching the default primary-button background. On desktop, copy occupies the left five columns and both interactive cards occupy the right seven; on mobile, the cards stack below the copy.
+- On desktop the section has no top margin. Its Action Teal shell begins with 32px top padding and 6px rounded top corners; mobile/tablet retain the established 48px separation.
+- Cards are square, image-backed interaction containers with 4px corners. Content Creators uses `service-02.jpg`; Media uses `service-01.jpg`. Images rest at 80% brightness and transition to 100% on hover or keyboard focus.
+- A fixed Ink gradient preserves white-label contrast without changing the requested image-brightness transition. Focus remains clearly visible against the Action Teal section.
+- Invalid or incomplete CTA records are omitted. The homepage defaults remain “Content creators” and “Media”, both resolving to `/contact`.
+
 ### Footer
 
+- The footer's Ink background follows the full page-band width and gutters used by the other homepage sections. Its inner content and the homepage 1SP group share a 1680px maximum width and aligned content edges. The group has 6px upper corners; the footer has square upper corners and 6px lower corners, with no gap at their join.
 - Footer content is derived from actual page/site data where possible.
 - Legal/company links remain readable and valid even when no Sanity page exists; use a deliberate empty/setup state rather than a false content page.
 - Footer is a destination, not a second homepage. Limit to four clear columns and one primary contact action.
@@ -115,3 +154,20 @@ Compatibility blocks require explicit design review and a channel/data-scope che
 | CTA label | 2–4 words, starts with a verb |
 
 Limits are guardrails, not truncation rules. If approved content exceeds them, adjust composition deliberately rather than clipping text.
+
+
+## Case editions and client collections (September 2026)
+
+Global cases can supply `siteContent` editions by channel. The shared query layer resolves title, summary, hero, SEO and a complete case body before Renaissance renders it. Shared identity and slug remain stable. Optional media must not render an empty image. Long case introductions are paragraphs under a semantic H2.
+
+`clientLogoCarousel` retains manual/auto selections and adds a Renaissance collection reference. Collection items resolve global clients with optional local artwork/display-name overrides and channel/language checks. `displayMode: grid` renders the complete roster; the default swap display remains for curated homepage selections. Supplied opaque JPEGs use a light surface with their original colours and aspect ratios. Preview option comparisons strip Sanity editing metadata while visible text retains editing overlays.
+
+The v4 workbook takes precedence for Renaissance copy. See `docs/records/renaissance/renaissance-rewrite-v4-implementation.md` for the implemented milestone and pending page migration.
+
+### Renaissance case carousel
+
+Add **Renaissance Case Carousel** to a Renaissance page’s Content array, select cases and drag to reorder. It resolves the current Renaissance website edition of each global case. It does not duplicate case copy, media or identities. Only published-flagged cases assigned to `renaissanceWeb` and the page language are included. Deleted/unassigned references, missing title/slug, and cases without resolved media are omitted. An explicitly empty custom-media edition never falls back to another channel’s media.
+
+The Stories and Case carousels share `CarouselTextOverlay`. The new case block keeps the existing directional wipe and staged text entrance while allowing long case copy to determine the media stage’s height. Its controls stay outside the animated slide so keyboard focus survives transitions. Slide advancement defaults to manual; optional automatic advancement pauses on hover/focus. Video and advancement stop offscreen, in hidden documents, on explicit Pause, and for reduced motion. Single-case blocks omit previous/next; empty blocks render nothing. An optional unique navigation point creates a server-rendered anchor. Section-band background tone is inherited.
+
+The local-only `/dev/case-carousel` route demonstrates five real global cases through the actual PageBuilder and reference projection. It has standard, reduced-motion and automatic-slide modes, writes no CMS data, stays outside the sitemap, and returns 404 outside development. The published homepage is unchanged by adding this component.

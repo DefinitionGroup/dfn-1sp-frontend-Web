@@ -1,3 +1,5 @@
+import { resultSectionId } from "@1sp/utils/result-metrics";
+import { resolvePeopleProof } from "../lib/renaissancePeopleProof";
 import React, { Suspense } from "react";
 import dynamic from "next/dynamic";
 import type {
@@ -11,9 +13,16 @@ import type {
   GalleryRevealStep as GalleryRevealStepType,
   GalleryOverview as GalleryOverviewType,
   Carousel as CarouselType,
+  RenaissanceCaseCarousel as RenaissanceCaseCarouselType,
   IntroBlockTypoSophisticated as IntroBlockTypoSophisticatedType,
   CardContainerComponent as CardContainerComponentType,
   ResultsMetricsComponent as ResultsMetricsComponentType,
+  RenaissanceAwardLogoWall as RenaissanceAwardLogoWallType,
+  RenaissanceCarouselBackgroundTone,
+  RenaissancePortraitGrid as RenaissancePortraitGridType,
+  RenaissanceSectionRole,
+  RegisterBlock as RegisterBlockType,
+  NewsCTABlock as NewsCTABlockType,
 } from "@1sp/sanity-types";
 import type { Page } from "@1sp/sanity-types";
 import { HeroShowtime as HeroShowtimeType } from "@1sp/sanity-types";
@@ -22,6 +31,17 @@ import HeadlineChallenge from "./pagebuilder/cases/pg-HeadlineChallenge";
 import ComponentLoader from "@renaissance/components/ui/ComponentLoader";
 import DeferredSection from "@renaissance/components/ui/DeferredSection";
 import OneSpScope from "@root/components/onesp-group/OneSpScope";
+import RenaissanceSectionFrame from "./RenaissanceSectionFrame";
+import RenaissanceOrigins from "./RenaissanceOrigins";
+import RenaissanceNetwork from "./RenaissanceNetwork";
+import RenaissanceRegisterBlock from "./RenaissanceRegisterBlock";
+import RenaissanceNewsCTABlock from "./RenaissanceNewsCTABlock";
+import { partitionRenaissanceSections } from "@renaissance/lib/renaissanceSections";
+
+const RenaissanceCaseCarousel = dynamic(() => import("./pagebuilder/pg-RenaissanceCaseCarousel"), {
+  loading: () => <ComponentLoader />,
+  ssr: true,
+});
 
 const CanonicalOneSpPageBuilder = dynamic(
   () => import("@root/components/PageBuilder").then((module) => module.PageBuilder),
@@ -267,6 +287,20 @@ const ClientLogoCarousel = dynamic(
     ssr: true,
   }
 );
+const RenaissancePortraitGrid = dynamic(
+  () => import("./pagebuilder/pg-RenaissancePortraitGrid"),
+  {
+    loading: () => <ComponentLoader />,
+    ssr: true,
+  },
+);
+const RenaissanceAwardLogoWall = dynamic(
+  () => import("./pagebuilder/pg-RenaissanceAwardLogoWall"),
+  {
+    loading: () => <ComponentLoader />,
+    ssr: true,
+  },
+);
 const UnitLogoGrid = dynamic(
   () => import("./pagebuilder/server/UnitLogoGridBlock"),
   {
@@ -275,7 +309,7 @@ const UnitLogoGrid = dynamic(
   }
 );
 const PageBuilderPersonioJobs = dynamic(
-  () => import("./pagebuilder/pg-PageBuilderPersonioJobs"),
+  () => import("./pagebuilder/server/PersonioJobsBlock"),
   {
     loading: () => <ComponentLoader />,
     ssr: true,
@@ -299,8 +333,18 @@ export function PageBuilder({
 }: PageBuilderProps) {
   if (!Array.isArray(content) || content.length === 0) return null;
 
-  const renderBlock = (block: any, i: number, isDeferred = false) => {
+  const renderBlock = (
+    block: any,
+    i: number,
+    isDeferred = false,
+    presentationRole?: RenaissanceSectionRole,
+    carouselBackgroundTone?: RenaissanceCarouselBackgroundTone,
+  ) => {
     if (!block?._type) return null;
+
+    // The Figma-approved network treatment replaces this legacy bridge copy.
+    // Keep the stored block untouched until the explicit marker draft is published.
+    if (block._key === "renaissance-family") return null;
 
     const key = block._key ?? `${block._type}-${i}`;
 
@@ -330,7 +374,7 @@ export function PageBuilder({
           case "sublineComponent":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <SublineComponent key={key} data={block} />
+                <SublineComponent key={key} data={block} presentationRole={presentationRole} />
               </ErrorBoundary>
             );
           case "oneSPHeader":
@@ -346,6 +390,13 @@ export function PageBuilder({
               </ErrorBoundary>
             );
           case "twoColContentSection":
+            if (presentationRole === "origins") {
+              return (
+                <ErrorBoundary key={`error-${key}`}>
+                  <RenaissanceOrigins key={key} data={block} />
+                </ErrorBoundary>
+              );
+            }
             return (
               <ErrorBoundary key={`error-${key}`}>
                 <TwoColContentSection key={key} data={block} />
@@ -363,6 +414,22 @@ export function PageBuilder({
                 <IntroBlockTypoSophisticated
                   key={key}
                   data={block as IntroBlockTypoSophisticatedType}
+                  presentationRole={presentationRole}
+                />
+              </ErrorBoundary>
+            );
+          case "newsCTABlock":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <RenaissanceNewsCTABlock data={block as NewsCTABlockType} />
+              </ErrorBoundary>
+            );
+          case "registerBlock":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <RenaissanceRegisterBlock
+                  key={key}
+                  data={block as RegisterBlockType}
                 />
               </ErrorBoundary>
             );
@@ -372,6 +439,7 @@ export function PageBuilder({
                 <CardContainerComponent
                   key={key}
                   data={block as CardContainerComponentType}
+                  presentationRole={presentationRole}
                 />
               </ErrorBoundary>
             );
@@ -445,9 +513,19 @@ export function PageBuilder({
           case "carousel":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <InteractiveCarousel key={key} data={block as CarouselType} />
+                <InteractiveCarousel
+                  key={key}
+                  data={block as CarouselType}
+                  backgroundTone={carouselBackgroundTone}
+                />
               </ErrorBoundary>
             );
+          case "renaissanceCaseCarousel":
+            return channel === "renaissanceWeb" ? (
+              <ErrorBoundary key={`error-${key}`}>
+                <RenaissanceCaseCarousel data={block as RenaissanceCaseCarouselType} backgroundTone={carouselBackgroundTone} />
+              </ErrorBoundary>
+            ) : null;
           case "smartCarousel":
             return (
               <ErrorBoundary key={`error-${key}`}>
@@ -457,7 +535,7 @@ export function PageBuilder({
           case "smartPeople":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <SmartPeople key={key} {...(block as any)} channel={channel} />
+                <SmartPeople key={key} {...(block as any)} channel={channel} language={language} />
               </ErrorBoundary>
             );
           case "smartUnitsGallery":
@@ -485,6 +563,7 @@ export function PageBuilder({
                   key={key}
                   data={block as any}
                   language={language}
+                  presentationRole={presentationRole}
                 />
               </ErrorBoundary>
             );
@@ -546,6 +625,7 @@ export function PageBuilder({
                 <ResultsMetrics
                   key={key}
                   {...(block as ResultsMetricsComponentType)}
+                  sectionId={resultSectionId(content, block, i)}
                 />
               </ErrorBoundary>
             );
@@ -555,11 +635,19 @@ export function PageBuilder({
               return null;
             }
 
+            if (block._key === "193b45cc9015") {
+              return (
+                <ErrorBoundary key={`error-${key}`}>
+                  <RenaissanceNetwork />
+                </ErrorBoundary>
+              );
+            }
+
             const dataChannel = block.dataScope === "1spWeb" ? "1spWeb" : channel;
 
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <div className="container mx-auto">
+                <div className="mx-auto w-full max-w-[1680px] overflow-hidden rounded-t-statement">
                   <OneSpScope groupId={group._id} fullWidth>
                     <CanonicalOneSpPageBuilder
                       content={group.content}
@@ -581,7 +669,35 @@ export function PageBuilder({
           case "clientLogoCarousel":
             return (
               <ErrorBoundary key={`error-${key}`}>
-                <ClientLogoCarousel key={key} data={block as any} />
+                <ClientLogoCarousel
+                  key={key}
+                  data={block as any}
+                  presentationRole={presentationRole}
+                />
+              </ErrorBoundary>
+            );
+          case "renaissanceSharedContentReference": {
+            const shared = block.sharedContent;
+            if (shared?.channel !== channel || shared?.language !== language ||
+                !["renaissancePortraitGrid", "renaissanceAwardLogoWall"].includes(shared?.content?._type)) return null;
+            return renderBlock({ ...shared.content, _key: block._key }, i, isDeferred, presentationRole, carouselBackgroundTone);
+          }
+          case "renaissancePortraitGrid":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <RenaissancePortraitGrid
+                  key={key}
+                  data={block as RenaissancePortraitGridType}
+                />
+              </ErrorBoundary>
+            );
+          case "renaissanceAwardLogoWall":
+            return (
+              <ErrorBoundary key={`error-${key}`}>
+                <RenaissanceAwardLogoWall
+                  key={key}
+                  data={block as RenaissanceAwardLogoWallType}
+                />
               </ErrorBoundary>
             );
           case "pageBuilderLogoFloat":
@@ -615,26 +731,104 @@ export function PageBuilder({
     : Number.isFinite(deferAfter)
     ? Math.max(0, Math.min(content.length, deferAfter))
     : content.length;
-  const eagerBlocks = content.slice(0, eagerCount);
-  const deferredBlocks = content.slice(eagerCount);
-  const deferredMinHeight = `${Math.max(deferredBlocks.length * 32, 140)}vh`;
+  const units = partitionRenaissanceSections(content);
+  const eagerUnits = units.filter((unit) => {
+    const sourceIndex =
+      unit.kind === "block" ? unit.sourceIndex : unit.blocks[0]?.sourceIndex ?? 0;
+    return sourceIndex < eagerCount;
+  });
+  const deferredUnits = units.filter((unit) => !eagerUnits.includes(unit));
+  const deferredBlockCount = deferredUnits.reduce(
+    (count, unit) => count + (unit.kind === "block" ? 1 : unit.blocks.length),
+    0,
+  );
+  const deferredMinHeight = `${Math.max(deferredBlockCount * 32, 140)}vh`;
+
+  const renderUnit = (
+    unit: (typeof units)[number],
+    isDeferred: boolean,
+  ) => {
+    if (unit.kind === "block") {
+      return renderBlock(unit.block, unit.sourceIndex, isDeferred);
+    }
+
+    const role = unit.marker.sectionRole;
+    const isLegacy = unit.marker._key?.startsWith("legacy-");
+    const intro = unit.blocks.find(
+      ({ block }) => block._type === "introBlockTypoSophisticated",
+    )?.block as any;
+    const subline = unit.blocks.find(
+      ({ block }) => block._type === "sublineComponent",
+    )?.block as any;
+    const register = unit.blocks.find(
+      ({ block }) => block._type === "registerBlock",
+    )?.block as RegisterBlockType | undefined;
+
+    const legacyBlock = (block: any) => {
+      if (!isLegacy) return block;
+
+      if (
+        role === "services" &&
+        block._type === "introBlockTypoSophisticated"
+      ) {
+        return {
+          ...block,
+          header: {
+            ...block.header,
+            mainHeadline: "Six services. One mission.",
+            creativityTitle: undefined,
+            uniquePeopleText: undefined,
+          },
+        };
+      }
+
+
+      return block;
+    };
+
+    return (
+      <RenaissanceSectionFrame
+        key={unit.key}
+        marker={unit.marker}
+        peopleProof={role === 'people' ? resolvePeopleProof(unit.marker, unit.blocks.map(({ block }) => block)) : undefined}
+      >
+        {role === "joinUs" ? (
+          <RenaissanceRegisterBlock
+            data={register ?? {
+              _type: "registerBlock",
+              headline: isLegacy ? undefined : intro?.header?.mainHeadline,
+              description: isLegacy
+                ? undefined
+                : subline?.description || intro?.description,
+              cards: isLegacy ? undefined : subline?.additionalContent,
+            }}
+          />
+        ) : (
+          unit.blocks.map(({ block, sourceIndex }) =>
+            renderBlock(
+              legacyBlock(block),
+              sourceIndex,
+              isDeferred,
+              role,
+              unit.marker.carouselBackgroundTone,
+            ),
+          )
+        )}
+      </RenaissanceSectionFrame>
+    );
+  };
 
   return (
     <>
-      {eagerBlocks.map((block, index) =>
-        renderBlock(block, index, renderMode === "deferred")
+      {eagerUnits.map((unit) =>
+        renderUnit(unit, renderMode === "deferred")
       )}
-      {deferredBlocks.length > 0 && (
+      {deferredUnits.length > 0 && (
         <DeferredSection
           rootMargin="0px 0px 0px 0px"
           minHeight={deferredMinHeight}
         >
-          <PageBuilder
-            content={deferredBlocks}
-            language={language}
-            channel={channel}
-            renderMode="deferred"
-          />
+          {deferredUnits.map((unit) => renderUnit(unit, true))}
         </DeferredSection>
       )}
     </>

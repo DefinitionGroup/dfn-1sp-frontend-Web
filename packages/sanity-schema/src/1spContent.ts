@@ -29,6 +29,7 @@ import smartUnitsGallery from "./1SP/Components/smartUnitsGallery";
 import smartUnitsGlobe from "./1SP/Components/smartUnitsGlobe";
 import globeComponent from "./1SP/Components/globeComponent";
 import unitLogoGrid from "./1SP/Components/unitLogoGrid";
+import footerExternalBanner from "./1SP/Components/footerExternalBanner";
 import pageBuilderLogoFloat from "./1SP/Components/pageBuilderLogoFloat";
 import clientLogoCarousel from "./1SP/Components/clientLogoCarousel";
 import pageBuilderPersonioJobs from "./1SP/Components/pageBuilderPersonioJobs";
@@ -87,6 +88,7 @@ const oneSPComponents = [
     smartUnitsGlobe,
     globeComponent,
     unitLogoGrid,
+    footerExternalBanner,
     pageBuilderLogoFloat,
     clientLogoCarousel,
     pageBuilderPersonioJobs

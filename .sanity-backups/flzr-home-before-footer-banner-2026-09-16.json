@@ -1,0 +1,604 @@
+{
+  "_createdAt": "2026-08-19T09:17:03Z",
+  "_id": "page-flizr-home-v3-preview-en",
+  "_rev": "oia2XQz85UJCgEneWpkpBS",
+  "_system": {
+    "base": {
+      "id": "page-flizr-home-v3-preview-en",
+      "rev": "Cmyb347RbpQTv0GK5nabsn"
+    }
+  },
+  "_type": "page",
+  "_updatedAt": "2026-09-11T07:53:53Z",
+  "channel": "flizrWeb",
+  "content": [
+    {
+      "_key": "home-v3-hero",
+      "_type": "oneSPHeader",
+      "copyBottomLeft": true,
+      "cornerLeftText": "FLZR",
+      "cornerRightText": "/ FLZR",
+      "cta": {
+        "_type": "cta",
+        "link": {
+          "_type": "link",
+          "linkType": "internal",
+          "page": {
+            "_key": "explore-our-services-page",
+            "_ref": "page-flizr-services-v2-en",
+            "_type": "reference"
+          }
+        },
+        "text": "Explore our services",
+        "variant": "glass"
+      },
+      "enableParallax": true,
+      "eyebrow": "WE ARE FLZR",
+      "headline": "Europe's specialist retail marketing agency.",
+      "headlineMode": "headlineReveal",
+      "hideFromNav": false,
+      "media": {
+        "_key": "UL3lPLKALMxLGgISiZ4L3",
+        "_type": "cloudinary.asset",
+        "_version": 1,
+        "access_control": [],
+        "access_mode": "public",
+        "asset_folder": "",
+        "bytes": 38720388,
+        "created_at": "2026-07-21T10:58:37Z",
+        "created_by": {
+          "id": "24bba5085cc9b3f795c06596ac66b9",
+          "type": "user"
+        },
+        "display_name": "01_FLZR_WIP_V2_ub8n2n",
+        "duration": 19.84,
+        "folder_id": "0000000000000000000000000000000001",
+        "format": "mp4",
+        "height": 1080,
+        "id": "961fcf48baa6dccc9fb33dcff3564920",
+        "metadata": {},
+        "public_id": "01_FLZR_WIP_V2_ub8n2n",
+        "resource_type": "video",
+        "secure_url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1784631517/01_FLZR_WIP_V2_ub8n2n.mp4",
+        "tags": [],
+        "type": "upload",
+        "uploaded_by": {
+          "id": "24bba5085cc9b3f795c06596ac66b9",
+          "type": "user"
+        },
+        "url": "http://res.cloudinary.com/dsu07dnes/video/upload/v1784631517/01_FLZR_WIP_V2_ub8n2n.mp4",
+        "version": 1784631517,
+        "width": 1920
+      },
+      "navPointName": "FLZR",
+      "paragraphs": [
+        {
+          "_key": "home-v2-hero-support-1-1",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "home-v2-hero-support-1-1-span",
+              "_type": "span",
+              "marks": [],
+              "text": "Smarter field marketing. Stronger brand experiences. Measurable results."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        }
+      ],
+      "seoTitle": "FLZR — Europe's specialist retail marketing agency",
+      "showColorOverlay": false
+    },
+    {
+      "_key": "home-v3-band-services",
+      "_type": "flzrSectionBand",
+      "badgeLabel": "SERVICES",
+      "badgeNumber": "01",
+      "mode": "section",
+      "showBadge": true,
+      "surfaceTone": "fade"
+    },
+    {
+      "_key": "home-v3-services-intro",
+      "_type": "contentSection",
+      "columnSpan": "10",
+      "content": [
+        {
+          "_key": "home-v3-services-copy",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "home-v3-services-copy-span",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "That's not just experience "
+            },
+            {
+              "_key": "68d0ff0391ce",
+              "_type": "span",
+              "marks": [],
+              "text": "— it's a blueprint for how retail marketing actually works, built case by case, campaign by campaign, across every major European market."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        }
+      ],
+      "contentSize": "lg",
+      "hideFromNav": false,
+      "navPointName": "Services",
+      "paddingY": "8",
+      "showGridBackground": false,
+      "title": "At the point of sale since 2004."
+    },
+    {
+      "_key": "home-v3-services-grid",
+      "_type": "flzrServicesGrid",
+      "backgroundColor": "transparent",
+      "hideFromNav": true,
+      "navPointName": "Services Grid",
+      "paddingY": "8",
+      "showFilters": false
+    },
+    {
+      "_key": "home-v3-services-bridge",
+      "_type": "intertitleCTA",
+      "alignment": "center",
+      "cta": {
+        "_type": "cta",
+        "link": {
+          "_type": "link",
+          "linkType": "internal",
+          "page": {
+            "_ref": "page-flizr-services-v2-en",
+            "_type": "reference"
+          }
+        },
+        "text": "Our Services",
+        "variant": "violet"
+      },
+      "hideFromNav": true,
+      "navPointName": "Integrated delivery",
+      "paddingTop": "0",
+      "subtitle": " ",
+      "title": "Built to work as one."
+    },
+    {
+      "_key": "home-v3-reset-after-services",
+      "_type": "flzrSectionBand",
+      "mode": "reset"
+    },
+    {
+      "_key": "home-v3-band-cases",
+      "_type": "flzrSectionBand",
+      "badgeLabel": "CASES",
+      "badgeNumber": "02",
+      "mode": "section",
+      "showBadge": true,
+      "surfaceTone": "fade"
+    },
+    {
+      "_key": "home-v3-cases-intro",
+      "_type": "contentSection",
+      "columnSpan": "10",
+      "content": [
+        {
+          "_key": "home-v3-cases-copy-1",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "home-v3-cases-copy-1-span",
+              "_type": "span",
+              "marks": [
+                "strong"
+              ],
+              "text": "Intel. Microsoft. Telefónica. Bose. PlayStation. OBI. Müller. And 20+ years of campaigns that moved the needle."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "home-v3-cases-copy-2",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "home-v3-cases-copy-2-span",
+              "_type": "span",
+              "marks": [],
+              "text": "From consumer electronics and DIY to food, beauty and gaming — our retail marketing campaigns cover every category. The common thread: measurable outcomes, premium execution, and a brand presence that outlasts the campaign."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        }
+      ],
+      "contentSize": "lg",
+      "hideFromNav": false,
+      "navPointName": "Selected work",
+      "paddingY": "8",
+      "showGridBackground": false,
+      "title": "Work that earns its place in a case study."
+    },
+    {
+      "_key": "home-v3-cases-gallery",
+      "_type": "casesGalleryFiltered",
+      "hideFromNav": true,
+      "marginBottom": "16",
+      "navPointName": "Selected work",
+      "paddingY": "16",
+      "selectedCases": [
+        {
+          "_key": "home-v2-cases-sony",
+          "_ref": "7dbf1a02-91d6-4e57-93d5-d378c7ec02f8",
+          "_type": "reference"
+        },
+        {
+          "_key": "home-v2-cases-o2",
+          "_ref": "case-flizr-o2-studio-en",
+          "_type": "reference"
+        },
+        {
+          "_key": "home-v2-cases-bose",
+          "_ref": "case-flizr-bose-q4-en",
+          "_type": "reference"
+        },
+        {
+          "_key": "7a79f34f8c1b",
+          "_ref": "7dbf1a02-91d6-4e57-93d5-d378c7ec02f8",
+          "_type": "reference"
+        },
+        {
+          "_key": "3891425ba6dd",
+          "_ref": "case-flizr-o2-studio-en",
+          "_type": "reference"
+        },
+        {
+          "_key": "32ac9c568f39",
+          "_ref": "case-flizr-bose-q4-en",
+          "_type": "reference"
+        }
+      ],
+      "selectionMode": "manual",
+      "showFilters": false,
+      "showGridBackground": false
+    },
+    {
+      "_key": "home-v3-client-logos",
+      "_type": "clientLogoCarousel",
+      "grayscale": true,
+      "headline": "Trusted where retail happens.",
+      "hideFromNav": true,
+      "navPointName": "Clients",
+      "selectionMode": "auto",
+      "speed": "normal"
+    },
+    {
+      "_key": "home-v3-band-reach",
+      "_type": "flzrSectionBand",
+      "badgeLabel": "REACH",
+      "badgeNumber": "03",
+      "mode": "section",
+      "showBadge": true,
+      "surfaceTone": "fade"
+    },
+    {
+      "_key": "home-v3-reach-intro",
+      "_type": "contentSection",
+      "columnSpan": "10",
+      "content": [
+        {
+          "_key": "8fa069f98b2f",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "ec80931d84c9",
+              "_type": "span",
+              "marks": [],
+              "text": "With Strategic offices across Europe and field staff deployed in all major retailers, we ensure one point of contact gets you the reach your brand needs for success."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        }
+      ],
+      "contentSize": "lg",
+      "hideFromNav": false,
+      "navPointName": "Europe",
+      "paddingY": "8",
+      "presentation": "globeOverlay",
+      "showGridBackground": false,
+      "title": "Active across Europe."
+    },
+    {
+      "_key": "home-v3-reach-globe",
+      "_type": "globeComponent",
+      "hideFromNav": true,
+      "locations": [
+        {
+          "_key": "4ad47052943c",
+          "_type": "location",
+          "coordinateLat": 50,
+          "coordinateLon": 10,
+          "name": "Berlin",
+          "subtitle": "HQ"
+        },
+        {
+          "_key": "c4b0d07a4cb6",
+          "_type": "location",
+          "coordinateLat": 45,
+          "coordinateLon": 8,
+          "name": "Wesel"
+        },
+        {
+          "_key": "119ca14b5086",
+          "_type": "location",
+          "coordinateLat": 45,
+          "coordinateLon": 12,
+          "name": "Ingolstadt",
+          "subtitle": "Office"
+        }
+      ],
+      "navPointName": "Europe",
+      "viewMode": "centralEuropeStatic"
+    },
+    {
+      "_key": "home-v3-band-team",
+      "_type": "flzrSectionBand",
+      "badgeLabel": "TEAM",
+      "badgeNumber": "04",
+      "mode": "section",
+      "showBadge": true,
+      "surfaceTone": "soft"
+    },
+    {
+      "_key": "home-v3-team",
+      "_type": "galleryPeopleStep",
+      "description": "420 people. 370 of them deployed at the point of sale — where the work actually matters. The remaining 50 keep everything running: account management, business intelligence, data analysis, digital marketing, HR and finance.\n\nDifferent backgrounds. Shared standards. All of them committed to one thing: making your brand perform better in retail.",
+      "header": {
+        "_type": "peopleStepHeader",
+        "creativityTitle": "Different backgrounds.",
+        "mainHeadline": "Built for the Front Line.",
+        "superText": "Team FLZR",
+        "uniquePeopleText": "Shared standards."
+      },
+      "hideFromNav": false,
+      "navPointName": "Team",
+      "teamMembers": [
+        {
+          "_key": "b6d92c5696e8",
+          "_ref": "10ee2482-9362-4bc8-bb22-cbf2759b3466",
+          "_type": "reference"
+        },
+        {
+          "_key": "01014fcf0762",
+          "_ref": "447a1d34-fa13-4a8f-9793-367c32a4207e",
+          "_type": "reference"
+        },
+        {
+          "_key": "a3e656232c2f",
+          "_ref": "5c0219e5-6369-409e-b51a-dc26783a6b4d",
+          "_type": "reference"
+        },
+        {
+          "_key": "agency-person-1",
+          "_ref": "20a1c966-be76-4df8-b4b7-0b8667ee3cc5",
+          "_type": "reference"
+        },
+        {
+          "_key": "3cc7d662a1e6",
+          "_ref": "6daec29c-0406-4deb-bb97-e799483c3a8b",
+          "_type": "reference"
+        },
+        {
+          "_key": "1cda27b31ba7",
+          "_ref": "d0535e92-eaed-4a94-912b-4aaa15068ac5",
+          "_type": "reference"
+        },
+        {
+          "_key": "a8ffa2535b56",
+          "_ref": "1b668e43-7862-4fc4-83fb-169f417aa4b6",
+          "_type": "reference"
+        },
+        {
+          "_key": "591dd92c72b3",
+          "_ref": "a45e813f-aefc-478b-a6ad-4bb54084b00e",
+          "_type": "reference"
+        },
+        {
+          "_key": "c938c7d6bac1",
+          "_ref": "0ea6b285-fdca-4d81-8d6e-3fdb6369acfc",
+          "_type": "reference"
+        },
+        {
+          "_key": "94fd36de4285",
+          "_ref": "98986256-8e96-4481-83f5-69e296b7136e",
+          "_type": "reference"
+        },
+        {
+          "_key": "6afaed3631ca",
+          "_ref": "81a01c01-293b-40e9-a58f-aea36f266d29",
+          "_type": "reference"
+        },
+        {
+          "_key": "2f2ad5e6d573",
+          "_ref": "4a3a17b4-a82e-4998-b651-9e88c7d768de",
+          "_type": "reference"
+        },
+        {
+          "_key": "7275fd9a5400",
+          "_ref": "c6a0408b-34aa-4dc8-ae31-08aa13047449",
+          "_type": "reference"
+        },
+        {
+          "_key": "f1eced76fe2a",
+          "_ref": "5fb57c5f-9b58-4af7-9174-d276bc76497d",
+          "_type": "reference"
+        },
+        {
+          "_key": "2940b7d8a608",
+          "_ref": "b8746541-93a0-410d-87b6-389211572fdb",
+          "_type": "reference"
+        },
+        {
+          "_key": "cebb109675bf",
+          "_ref": "2386dbe3-3695-43ef-9281-7e103015130d",
+          "_type": "reference"
+        },
+        {
+          "_key": "8f335a637077",
+          "_ref": "e6f1cd6d-2aae-4441-ba8f-60ac1384e23c",
+          "_type": "reference"
+        },
+        {
+          "_key": "2564c47749f1",
+          "_ref": "3f9f6896-ce76-479d-92c9-85bc867fa359",
+          "_type": "reference"
+        },
+        {
+          "_key": "e0daa2ad58a9",
+          "_ref": "ff404e6f-1b1b-4a72-bf66-58f4ca434e84",
+          "_type": "reference"
+        },
+        {
+          "_key": "150be61fda38",
+          "_ref": "f000ab91-fd43-435f-aef2-fa4ad0ad3723",
+          "_type": "reference"
+        },
+        {
+          "_key": "450f0efa0fcc",
+          "_ref": "45104b65-8e99-44ab-b597-3db95b3aceef",
+          "_type": "reference"
+        },
+        {
+          "_key": "0a893add9f8d",
+          "_ref": "d6fd4cd2-6f8e-4309-8541-d54f62e3a937",
+          "_type": "reference"
+        },
+        {
+          "_key": "60b4da987444",
+          "_ref": "33361756-45f5-49d0-9b4d-7b029c39bf8d",
+          "_type": "reference"
+        }
+      ]
+    },
+    {
+      "_key": "home-v3-band-careers",
+      "_type": "flzrSectionBand",
+      "badgeLabel": "CAREERS",
+      "badgeNumber": "05",
+      "mode": "section",
+      "showBadge": true,
+      "surfaceTone": "soft"
+    },
+    {
+      "_key": "home-v3-careers-two-thirds",
+      "_type": "flzrTwoThirdsContentSection",
+      "body": [
+        {
+          "_key": "home-v3-careers-copy-1",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "home-v3-careers-copy-1-span",
+              "_type": "span",
+              "marks": [],
+              "text": "The FLZR job portal has opportunities across every discipline — field and office, junior and senior."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        },
+        {
+          "_key": "home-v3-careers-copy-2",
+          "_type": "block",
+          "children": [
+            {
+              "_key": "home-v3-careers-copy-2-span",
+              "_type": "span",
+              "marks": [],
+              "text": "If you want to work on campaigns that actually ship, for brands people genuinely care about, with a team that takes quality seriously — FLZR is hiring."
+            }
+          ],
+          "markDefs": [],
+          "style": "normal"
+        }
+      ],
+      "cta": {
+        "_key": "home-v3-careers-cta-button",
+        "_type": "cta",
+        "link": {
+          "_type": "link",
+          "externalUrl": "https://1sp-agency.jobs.personio.de/",
+          "linkType": "external"
+        },
+        "text": "View open positions",
+        "variant": "violet"
+      },
+      "headline": "Come and do the work that moves product.",
+      "hideFromNav": false,
+      "image": {
+        "_type": "cloudinary.asset",
+        "_version": 1,
+        "access_mode": "public",
+        "bytes": 2977259,
+        "created_at": "2026-08-06T07:07:41Z",
+        "display_name": "sony-headphones-pos",
+        "format": "mp4",
+        "height": 1080,
+        "public_id": "flzr/content-2026/sony-headphones-pos",
+        "resource_type": "video",
+        "secure_url": "https://res.cloudinary.com/dsu07dnes/video/upload/v1786000061/flzr/content-2026/sony-headphones-pos.mp4",
+        "type": "upload",
+        "url": "http://res.cloudinary.com/dsu07dnes/video/upload/v1786000061/flzr/content-2026/sony-headphones-pos.mp4",
+        "version": 1786000061,
+        "width": 1920
+      },
+      "imageAlt": "FLZR field marketing specialists working at the point of sale.",
+      "navPointName": "Careers",
+      "subheadline": "Field promoter. Brand merchandiser. Sales trainer.\nOmnichannel manager. Live video consultant."
+    },
+    {
+      "_key": "home-v3-reset-after-careers",
+      "_type": "flzrSectionBand",
+      "mode": "reset"
+    },
+    {
+      "_key": "2c503599b947",
+      "_type": "block",
+      "children": [
+        {
+          "_key": "b812645b6003",
+          "_type": "span",
+          "marks": [],
+          "text": ""
+        }
+      ],
+      "markDefs": [],
+      "style": "normal"
+    }
+  ],
+  "isHomepage": true,
+  "language": "en",
+  "metadata": {
+    "_type": "metadata",
+    "description": "FLZR connects retail strategy, field teams, brand activation, live video consulting and retail intelligence across Europe.",
+    "excludeFromSitemap": false,
+    "keywords": [
+      "retail marketing agency",
+      "field marketing",
+      "point of sale",
+      "brand activation"
+    ],
+    "title": "FLZR | European Retail Marketing & Field Marketing Agency"
+  },
+  "navbarVariant": "light",
+  "slug": {
+    "_type": "slug",
+    "current": "home"
+  },
+  "title": "FLZR"
+}

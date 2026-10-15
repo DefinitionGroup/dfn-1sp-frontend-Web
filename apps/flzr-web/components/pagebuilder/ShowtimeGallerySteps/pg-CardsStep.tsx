@@ -86,7 +86,7 @@ export default function CardsStep({ step }: CardsStepProps) {
 
       <div className="z-1 grid gap-8  col-span-12 py-8 col-start-1 container mx-auto row-start-1 grid-cols-12">
         {(title || description) && (
-          <div className="col-span-12 col-start-1 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 border">
+          <div className="col-span-12 col-start-1 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1">
             <StaggeredSlideUp
               className="flex flex-col items-start justify-start"
               delay={0.1}
@@ -95,12 +95,12 @@ export default function CardsStep({ step }: CardsStepProps) {
               distance={80}
             >
               {hasVisibleText(title) && (
-                <h2 className="text-7xl leading-compress text-neutral-900 max-w-lg font-semibold leading-tighter mb-8">
+                <h2 className="text-section-title text-neutral-900 max-w-lg mb-8">
                   {title}
                 </h2>
               )}
               {description && (
-                <p className="text text-neutral-700 font-medium max-w-2xs mx-auto">
+                <p className="text-section-body text-neutral-700 max-w-[72ch]">
                   {description}
                 </p>
               )}

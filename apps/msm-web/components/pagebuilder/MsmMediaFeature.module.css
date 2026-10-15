@@ -1,0 +1,21 @@
+/* MSM Media Feature: one framed passage. The frame draws itself with the case
+   tile selection signature, the background video fades in behind a darkening
+   scrim, then the copy rises in sequence. Hairline eyebrow rule and the
+   MosaicButton are the only accents. */
+.section { padding: var(--msm-section-space) var(--container-padding); color: var(--color-msm-ink); }
+.inner { width: 100%; max-width: 80rem; margin-inline: auto; }
+.frame { width: 100%; }
+.panel { position: relative; isolation: isolate; display: flex; align-items: flex-end; min-height: clamp(26rem, 62vh, 40rem); overflow: hidden; background: var(--color-msm-paper); }
+.media { position: absolute; inset: 0; z-index: 0; }
+.media > * { height: 100%; }
+.scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: rgb(10 12 13 / var(--msm-feature-shade, 0.45)); }
+/* Bottom-left legibility ramp; sits under the copy only. */
+.scrim::after { content: ""; position: absolute; inset: auto 0 0 0; height: 70%; background: linear-gradient(to top, rgb(10 12 13 / 0.6), rgb(10 12 13 / 0)); }
+.copy { position: relative; z-index: 2; display: grid; gap: 1rem; width: 100%; max-width: 36rem; padding: clamp(1.5rem, 4vw, 3.5rem); }
+.eyebrow { font-size: 0.6875rem; line-height: 1.45; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(244 244 244 / 66%); }
+.headline { font-size: clamp(1.5rem, 1rem + 1.8vw, 2.5rem); line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; }
+.text { max-width: 46ch; font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem); line-height: 1.55; color: rgb(244 244 244 / 80%); }
+.action { margin-top: 0.75rem; }
+@media (max-width: 767px) {
+  .panel { min-height: 30rem; }
+}

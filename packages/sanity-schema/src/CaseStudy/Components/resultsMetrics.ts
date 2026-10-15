@@ -16,6 +16,13 @@ export default defineType({
         { name: "navigation", title: "Navigation" },
     ],
     fields: [
+        defineField({ name: "context", title: "Measurement context", type: "string", group: "content", description: "Campaign phase, period or territory shared by this group. Leave empty when figures have different scopes." }),
+        defineField({ name: "quote", title: "Attributed quote", type: "object", group: "content",
+            fields: [
+                defineField({ name: "text", title: "Quote", type: "text", validation: r => r.required() }),
+                defineField({ name: "attribution", title: "Attribution", type: "string", validation: r => r.required() }),
+            ],
+        }),
         defineField({
             name: "navPointName",
             title: "Navigation Point Name",
@@ -112,6 +119,13 @@ export default defineType({
                             validation: (Rule) => Rule.required(),
                             description: "Choose the visualization type for this metric",
                         },
+                        {name: "description", title: "Explanation", type: "text", rows: 2},
+                        {name: "context", title: "Measurement context", type: "string", description: "Period, territory or comparison basis for this number."},
+                        {name: "displayScale", title: "Display scale", type: "string", options: {list: ["none", "thousand", "million", "billion"]}, description: "Store the full numeric amount. Million displays 4900000 as 4.9m. Leave unset for existing suffix-based metrics.", hidden: ({parent}: any) => parent?.type !== "animatedNumber"},
+                        {name: "decimalPlaces", title: "Decimal places", type: "number", validation: (r: any) => r.integer().min(0).max(6), hidden: ({parent}: any) => parent?.type !== "animatedNumber"},
+                        {name: "qualifier", title: "Qualifier", type: "string", options: {list: [{title: "Exact", value: "exact"}, {title: "Plus (+)", value: "plus"}, {title: "More than", value: "moreThan"}, {title: "Approximately", value: "approximately"}, {title: "Nearly", value: "nearly"}, {title: "Less than", value: "lessThan"}]}, hidden: ({parent}: any) => parent?.type !== "animatedNumber"},
+                        {name: "prefix", title: "Prefix", type: "string", hidden: ({parent}: any) => parent?.type !== "animatedNumber"},
+                        {name: "animationMode", title: "Number animation", type: "string", options: {list: [{title: "Count up once", value: "countUp"}, {title: "Static (rankings, positions)", value: "static"}]}, hidden: ({parent}: any) => parent?.type !== "animatedNumber"},
                         {
                             name: "suffix",
                             title: "Suffix",
@@ -154,8 +168,13 @@ export default defineType({
                             type: "type",
                             label: "label",
                             value: "value",
+                            suffix: "suffix",
+                            prefix: "prefix",
+                            displayScale: "displayScale",
+                            decimalPlaces: "decimalPlaces",
+                            qualifier: "qualifier",
                         },
-                        prepare({ type, label, value }) {
+                        prepare({ type, label, value, suffix, prefix, displayScale, decimalPlaces, qualifier }) {
                             let icon;
                             let typeLabel;
 
@@ -182,7 +201,12 @@ export default defineType({
                             }
 
                             return {
-                                title: `${label}: ${value}%`,
+                                title: `${label}: ${type === "animatedNumber" ? (() => {
+                                    const scale = ({thousand: 1e3, million: 1e6, billion: 1e9} as Record<string, number>)[displayScale] || 1;
+                                    const unit = ({thousand: "k", million: "m", billion: "bn"} as Record<string, string>)[displayScale] || "";
+                                    const qualifierText = ({moreThan: "Over ", approximately: "~", nearly: "Nearly ", lessThan: "Under "} as Record<string, string>)[qualifier] || "";
+                                    return `${qualifierText}${prefix || ""}${new Intl.NumberFormat("en", {minimumFractionDigits: decimalPlaces ?? 0, maximumFractionDigits: decimalPlaces ?? 3}).format(value / scale)}${unit}${suffix || ""}${qualifier === "plus" ? "+" : ""}`;
+                                })() : `${value}%`}`,
                                 subtitle: typeLabel,
                                 media: icon,
                             };

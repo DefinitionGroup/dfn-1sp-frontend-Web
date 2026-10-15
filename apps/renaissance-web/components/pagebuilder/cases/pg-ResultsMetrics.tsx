@@ -1,229 +1,58 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { motion } from "motion/react";
-import StaggeredSlideUp from "@renaissance/components/ui/StaggeredSlideUp";
-import HeaderImageVideoComp2 from "@renaissance/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2";
-import AnimateNumberinView from "@renaissance/components/ui/AnimateNumberinView";
-import PercentageDiagramVertical from "@renaissance/components/ui/percentageDiagramVertical";
-import PercentageDiagramHorizontal from "@renaissance/components/ui/percentageDiagramHorizontal";
-import PercentagePosNegDiagram from "@renaissance/components/ui/percentagePosNegDiagram";
-import { getTranslations } from "@1sp/utils/translations";
-import { useParams } from "next/navigation";
-import { assetUrl, isVideoAsset } from "@1sp/utils/cloudinary";
-import { hasVisibleText } from "@1sp/utils/text-content";
-
-interface CloudinaryAsset {
-  public_id?: string;
-  resource_type?: string;
-  format?: string;
-  secure_url?: string;
-  url?: string;
-  metadata?: {
-    resource_type?: string;
-    format?: string;
-  };
-}
-
-interface Metric {
-  type: "vertical" | "horizontal" | "posNeg" | "animatedNumber";
-  label: string;
-  value: number;
-  suffix?: string;
-}
-
-interface ResultsMetricsProps {
-  title: string;
-  description?: string;
-  metrics?: Metric[];
-  backgroundImage?: CloudinaryAsset;
-  backgroundOpacity?: number;
-  enableParallax?: boolean;
-  fullWidth?: boolean;
-  paddingY?: string;
-  navPointName?: string;
-}
+import { stegaClean } from '@sanity/client/stega';
+import { useParams } from 'next/navigation';
+import type { ResultsMetricsComponent } from '@1sp/sanity-types';
+import { MetricNumber } from '@1sp/utils/components/MetricNumber';
+import { assetUrl, isVideoAsset } from '@1sp/utils/cloudinary';
+import HeaderImageVideoComp2 from '@renaissance/components/pagebuilder/Fragments/pg-HeaderImageVideoComp2';
+import PercentageDiagramVertical from '@renaissance/components/ui/percentageDiagramVertical';
+import PercentageDiagramHorizontal from '@renaissance/components/ui/percentageDiagramHorizontal';
+import PercentagePosNegDiagram from '@renaissance/components/ui/percentagePosNegDiagram';
 
 export default function ResultsMetrics({
-  title,
-  description,
-  metrics = [],
-  backgroundImage,
-  backgroundOpacity = 0.7,
-  enableParallax = false,
-  fullWidth = false,
-  paddingY = "32",
-  navPointName,
-}: ResultsMetricsProps) {
+  title, context, description, metrics = [], quote, backgroundImage,
+  backgroundOpacity = 0.7, enableParallax = false, fullWidth = false,
+  paddingY = '24', navPointName, sectionId = 'results',
+}: ResultsMetricsComponent & { sectionId?: string }) {
   const params = useParams();
-  const locale = (params?.locale as string) || "en";
-  const t = getTranslations(locale);
-
-  // Ensure body overflow is reset when component mounts
-  useEffect(() => {
-    document.body.style.overflow = "auto";
-  }, []);
-
-  const sectionId = t.ids.results;
-
-  // Keep the existing field name for published content, but treat it as a
-  // single media asset and infer image/video from its Cloudinary metadata.
-  const backgroundMediaUrl = backgroundImage ? assetUrl(backgroundImage) : "";
-  const useVideo = isVideoAsset(backgroundImage, backgroundMediaUrl);
-  const effectiveBackgroundOpacity = Math.max(
-    0,
-    Math.min(1, backgroundOpacity * 0.5),
-  );
-
-  // Get the diagram component based on the metric type
-  const getDiagramComponent = (
-    type: "vertical" | "horizontal" | "posNeg",
-    value: number,
-    delay: number,
-    index: number
-  ) => {
-    switch (type) {
-      case "vertical":
-        return (
-          <PercentageDiagramVertical
-            key={index}
-            percent={Math.max(0, value)}
-            delay={delay}
-          />
-        );
-      case "horizontal":
-        return (
-          <PercentageDiagramHorizontal
-            key={index}
-            percent={Math.max(0, value)}
-            delay={delay}
-          />
-        );
-      case "posNeg":
-        return <PercentagePosNegDiagram key={index} value={value} />;
-      default:
-        return (
-          <PercentageDiagramVertical
-            key={index}
-            percent={Math.max(0, value)}
-            delay={delay}
-          />
-        );
-    }
-  };
+  const locale = typeof params?.locale === 'string' ? params.locale : 'en';
+  const media = backgroundImage ? assetUrl(backgroundImage) : '';
+  const video = isVideoAsset(backgroundImage, media);
+  const items = metrics.filter(metric => Number.isFinite(metric.value));
+  const columns = items.length === 1 ? 'md:grid-cols-1' : items.length === 2 || items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-3';
+  const spacing = ({'16': 'lg:py-16', '24': 'lg:py-24', '32': 'lg:py-32'} as Record<string, string>)[stegaClean(paddingY)] || 'lg:py-24';
 
   return (
-    <section
-      className={`${
-        fullWidth ? "w-full max-w-none" : "container mx-auto"
-      } relative overflow-hidden`}
-    >
-      <div
-        id={sectionId}
-        data-navpoint-name={navPointName}
-        className="min-h-[80vh] md:min-h-[90vh] relative font-renaissance"
-      >
-        <HeaderImageVideoComp2
-          useVideo={useVideo}
-          opacity={effectiveBackgroundOpacity}
-          imageSrc={!useVideo ? backgroundMediaUrl : undefined}
-          videoSrc={useVideo ? backgroundMediaUrl : undefined}
-          enableParallax={enableParallax}
-        />
-
-        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`grid min-h-[80vh] grid-cols-4 content-between gap-4 py-16 sm:grid-cols-6 sm:gap-6 sm:py-24 md:min-h-[90vh] md:grid-cols-12 lg:gap-8 lg:py-${paddingY}`}>
-            <div className="col-span-4 sm:col-span-6 iphone-landscape:!col-span-12 iphone-landscape:!col-start-1 md:col-span-12">
-              <StaggeredSlideUp
-                className="flex flex-col items-start justify-start gap-3"
-                delay={0.0}
-                staggerDelay={0.1}
-                duration={0.5}
-                distance={80}
-              >
-                {hasVisibleText(title) ? (
-                  <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-2 text-gray-100 max-w-xl leading-[1.1]">
-                    {title}
-                  </h2>
-                ) : null}
-                {description && (
-                  <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-xl leading-relaxed">
-                    {description}
-                  </p>
-                )}
-              </StaggeredSlideUp>
-            </div>
-
-            {/* Metrics grid - Responsive layout */}
-            {metrics && metrics.length > 0 && (
-              <div className="col-span-4 mt-8 self-end sm:col-span-6 md:col-span-12 md:mt-12">
-                <div className="rounded-card bg-[rgba(111,111,111,0.4)] p-6 backdrop-blur-md sm:p-8 md:p-10 lg:p-12">
-                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8">
-                    {metrics.map((metric, index) => (
-                      <div
-                        key={index}
-                        className="flex flex-col items-start pb-6 border-b border-white/15 last:border-b-0 sm:last:border-b sm:border-b"
-                      >
-                        {metric.type === "animatedNumber" ? (
-                          <div className="mt-6 sm:mt-8 md:mt-12 mb-3 md:mb-4">
-                            <AnimateNumberinView
-                              number={metric.value}
-                              format={{ minimumIntegerDigits: 1 }}
-                              suffix={metric.suffix || ""}
-                              className="number !text-[40px] text-gray-100 sm:!text-[44px] md:!text-[80px]"
-                              delay={300}
-                            />
-                          </div>
-                        ) : (
-                          <>
-                            {getDiagramComponent(
-                              metric.type as any,
-                              metric.value,
-                              0.3 + index * 0.1,
-                              index
-                            )}
-                            <motion.div
-                              className="text-[8px] sm:text-[9px] font-bold mt-6 sm:mt-8 md:mt-12 text-gray-100"
-                              variants={{
-                                hidden: { opacity: 0, y: 20 },
-                                visible: {
-                                  opacity: 1,
-                                  y: -10,
-                                  transition: { duration: 0.6, ease: "easeOut" },
-                                },
-                              }}
-                            >
-                              <AnimateNumberinView
-                                number={Math.abs(metric.value)}
-                                format={{ minimumIntegerDigits: 2 }}
-                                suffix="%"
-                                className="text-2xl font-light sm:text-3xl md:text-[80px]"
-                                delay={300}
-                              />
-                            </motion.div>
-                          </>
-                        )}
-                        <StaggeredSlideUp
-                          className="mt-2"
-                          delay={0.0}
-                          staggerDelay={0.1}
-                          duration={0.5}
-                          distance={80}
-                        >
-                          {hasVisibleText(metric.label) ? (
-                            <h3 className="text-sm sm:text-base md:text-lg text-gray-200 leading-snug">
-                              {metric.label}
-                            </h3>
-                          ) : null}
-                        </StaggeredSlideUp>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
+    <section id={sectionId} data-component="results-metrics" data-navpoint-name={stegaClean(navPointName || title)}
+      className={`relative overflow-hidden border-t border-white/20 bg-renaissance-ink font-renaissance text-white ${fullWidth ? 'w-full' : 'container mx-auto'}`}>
+      {media && <HeaderImageVideoComp2 useVideo={video} opacity={Math.max(0, Math.min(1, backgroundOpacity * 0.5))}
+        imageSrc={!video ? media : undefined} videoSrc={video ? media : undefined} enableParallax={enableParallax} />}
+      <div className={`relative z-10 mx-auto max-w-[1680px] px-5 py-14 sm:px-8 md:py-20 lg:px-12 ${spacing}`}>
+        {context && <p className="mb-5 max-w-3xl text-sm font-semibold leading-relaxed text-white/80">{context}</p>}
+        {title && <h2 className="renaissance-display text-white max-w-4xl text-[clamp(2.5rem,5vw,5rem)] font-bold leading-[0.95]">{title}</h2>}
+        {items.length > 0 && <div className={`mt-10 grid grid-cols-1 gap-x-10 gap-y-10 md:mt-14 ${columns}`}>
+          {items.map((metric, index) => {
+            const type = stegaClean(metric.type);
+            const isNumber = type === 'animatedNumber';
+            return <div key={metric._key || index} className="min-w-0 border-t border-white/30 pt-6" data-metric={metric._key || index}>
+              {!isNumber && (type === 'horizontal' ? <PercentageDiagramHorizontal percent={Math.max(0, metric.value)} delay={0.3} /> :
+                type === 'posNeg' ? <PercentagePosNegDiagram value={metric.value} /> : <PercentageDiagramVertical percent={Math.max(0, metric.value)} delay={0.3} />)}
+              <MetricNumber metric={isNumber ? metric : {...metric, suffix: '%'}} locale={locale}
+                className="renaissance-display break-words text-[clamp(2.3rem,4.6vw,5rem)] font-bold leading-none tracking-tight" />
+              <h3 className="mt-5 text-white max-w-[32ch] text-lg font-semibold leading-snug md:text-xl">{metric.label}</h3>
+              {metric.description && <p className="mt-3 max-w-[45ch] text-base leading-relaxed text-white/85">{metric.description}</p>}
+              {metric.context && <p className="mt-3 max-w-[45ch] text-sm leading-relaxed text-white/75">{metric.context}</p>}
+            </div>;
+          })}
+        </div>}
+        {description && <div className="mt-9 max-w-[72ch] space-y-5 text-base leading-relaxed text-white/90 md:mt-12 md:text-lg">
+          {description.split(/\n\s*\n/).filter(Boolean).map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+        </div>}
+        {quote?.text && quote.attribution && <figure className="mt-10 max-w-3xl border-l-2 border-white/40 pl-6">
+          <blockquote className="text-xl leading-relaxed">“{quote.text}”</blockquote>
+          <figcaption className="mt-4 text-sm text-white/80">{quote.attribution}</figcaption>
+        </figure>}
       </div>
     </section>
   );

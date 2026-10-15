@@ -6,12 +6,14 @@ import Image from "next/image";
 import Link from "next/link";
 import StaggeredSlideUp from "@flzr/components/ui/StaggeredSlideUp";
 import DeferredVideo from "@flzr/components/ui/DeferredVideo";
+import { REFERENCE_CATEGORIES } from "@flzr/lib/reference-categories";
 
 interface CaseStudy {
   _id: string;
   title: string;
   slug: { current: string };
   description?: string;
+  subtitle?: string;
   services?: { name: string }[];
   mainImageUrl?: string;
   mainVideoUrl?: string;
@@ -23,6 +25,7 @@ interface CaseStudy {
 interface CaseGalleryCardProps {
   item: CaseStudy;
   id: string;
+  instanceId: number;
   variant?: "light";
   activeFilter?: string;
   locale?: string;
@@ -32,12 +35,15 @@ interface CaseGalleryCardProps {
 export default function CaseGalleryCard({
   item,
   id,
+  instanceId,
   variant,
   activeFilter,
   locale = "en",
   onClick,
 }: CaseGalleryCardProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const caption = REFERENCE_CATEGORIES[item._id] ? item.subtitle : item.services?.map((service) => service.name).join(", ");
+  const layoutKey = `${item._id}-${instanceId}-${id}`;
 
   // Parallax Logic
   const { scrollYProgress } = useScroll({
@@ -53,15 +59,15 @@ export default function CaseGalleryCard({
   return (
 
     <motion.div
-      layoutId={`card-${item.title}-${id}`}
-      key={`card-${item.title}-${id}`}
+      layoutId={`card-${layoutKey}`}
+      key={`card-${layoutKey}`}
       onClick={onClick}
       ref={ref}
       className="group/card col-span-1 grid h-full cursor-pointer grid-cols-1 grid-rows-[auto_1fr] overflow-hidden card-hover"
     >
       <motion.div
-        layoutId={`image-${item.title}-${id}`}
-        className="col-start-1 col-span-1 row-start-1 bg-neutral-900 min-h-[260px] md:h-[300px] md:min-h-full rounded-[2rem] overflow-hidden relative"
+        layoutId={`image-${layoutKey}`}
+        className="col-start-1 col-span-1 row-start-1 aspect-[1.42/1] bg-neutral-900 rounded-[1.6rem] overflow-hidden relative"
       >
         <motion.div style={{ y: springY }} className="w-full h-[120%]   relative -top-[10%]">
           {item.mainVideoUrl ? (
@@ -84,7 +90,7 @@ export default function CaseGalleryCard({
 
              {item.client?.logoUrl ? (
             <motion.img
-              layoutId={`logo-${item.title}-${id}`}
+              layoutId={`logo-${layoutKey}`}
               src={item.client?.logoUrl}
               alt={item.title}
               className={` min-w-[144px] max-w-full max-h-7 object-contain absolute left-4 top-12 object-left invert`}
@@ -99,7 +105,7 @@ export default function CaseGalleryCard({
         distance={10}
         delay={0.4}
         duration={1}
-        className="z-1 col-span-1 col-start-1 row-start-2 grid min-h-36 grid-rows-[1fr_auto] px-2 pb-8 pt-4 opacity-100 md:min-h-40 md:pb-12"
+        className="z-1 col-span-1 col-start-1 row-start-2 flex flex-col justify-start gap-2 px-2 pb-4 pt-4 opacity-100 md:pb-6"
       >
         <div className="flex flex-col justify-start">
           <Link
@@ -107,7 +113,7 @@ export default function CaseGalleryCard({
             className="block w-full"
           >
             <motion.h3
-              layoutId={`title-${item.title}-${id}`}
+              layoutId={`title-${layoutKey}`}
               className={`flzr-card-title w-full text-left text-base leading-[1.15] text-neutral-700 transition-colors hover:text-flzr-violet md:text-lg dark:text-neutral-200 ${variant === "light" ? "invert" : ""}`}
             >
               {item.title}
@@ -115,13 +121,13 @@ export default function CaseGalleryCard({
           </Link>
         </div>
 
-        {item.services && item.services.length > 0 && (
-          <div className="flex justify-end pt-4">
+        {caption && (
+          <div className="flex justify-start">
             <motion.p
-              layoutId={`description-${item.description}-${id}`}
+              layoutId={`description-${layoutKey}`}
               className="max-w-[80%] text-right text-xxs font-regular leading-snug text-neutral-500 md:text-xs dark:text-neutral-400"
             >
-              {item.services.map((s) => s.name).join(", ")}
+              {caption}
             </motion.p>
           </div>
         )}

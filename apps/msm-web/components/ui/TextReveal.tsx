@@ -180,7 +180,7 @@ const item = {
 const text = {
   color: "#666",
   fontSize: 48,
-  fontWeight: "bold",
+  fontWeight: 500,
   textTransform: "uppercase",
   display: "flex",
   alignItems: "center",
@@ -190,7 +190,7 @@ const text = {
 
 const numberLabel = {
   fontSize: 48,
-  fontWeight: "bold",
+  fontWeight: 500,
   textTransform: "uppercase",
   opacity: 0.5,
   fontVariantNumeric: "tabular-nums",

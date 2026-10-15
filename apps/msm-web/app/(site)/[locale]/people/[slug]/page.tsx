@@ -1,0 +1,51 @@
+import {JsonLdScript} from '@msm/lib/structured-data';
+import {buildMsmMetadata, buildMsmRouteMetadata} from '@msm/lib/metadata';
+import type {Metadata} from 'next';
+import {notFound} from 'next/navigation';
+import Image from 'next/image';
+import {getMsmPerson, msmPath} from '@msm/lib/editorial';
+import {getMsmSeoInventory} from '@msm/lib/seo-inventory';
+import MsmSiteWrapper from '@msm/components/MsmSiteWrapper';
+import CaseGallery from '@msm/components/data/data-CaseGallery';
+import Button2 from '@msm/components/ui/Button2';
+
+type Props = {params: Promise<{locale: string; slug: string}>};
+// Prerender every MSM profile; new ones render on first visit and stay cached.
+export const dynamicParams = true;
+export async function generateStaticParams() {
+  const routes = await getMsmSeoInventory();
+  return routes.filter(route => route._type === 'person' && route.slug)
+    .map(route => ({locale: route.language || 'en', slug: route.slug!}));
+}
+export async function generateMetadata({params}: Props): Promise<Metadata> {
+  const {locale, slug} = await params;
+  const person = await getMsmPerson(slug, locale);
+  if (!person) return buildMsmMetadata({title: 'Profile not found', metadata: {noIndex: true}});
+  return buildMsmRouteMetadata({locale, path: `people/${slug}`, documentId: person._id, title: person.fullname || person.name, description: person.position, metadata: person.edition.seo, fallbackImage: person.image, type: 'profile', fallbackImageAlt: person.altText});
+}
+export default async function PersonPage({params}: Props) {
+  const {locale, slug} = await params;
+  const person = await getMsmPerson(slug, locale);
+  if (!person) notFound();
+  const resolvedMetadata = buildMsmMetadata({locale, path: `people/${slug}`, title: person.fullname || person.name, description: person.position, metadata: person.edition.seo, fallbackImage: person.image, fallbackImageAlt: person.altText, type: 'profile'});
+  const edition = person.edition;
+  const image = person.image?.secure_url || person.image?.url;
+  const de = locale === 'de';
+  return <MsmSiteWrapper language={locale} navColor="light">
+    <JsonLdScript locale={locale} metadata={resolvedMetadata} data={{'@context': 'https://schema.org', '@type': 'ProfilePage', mainEntity: {'@type': 'Person', name: person.fullname || person.name, jobTitle: person.position, url: resolvedMetadata.alternates?.canonical, image: (resolvedMetadata.openGraph as {images: {url: string}[]}).images[0].url}}} />
+    <article className="container mx-auto px-[var(--container-padding)] pt-36">
+    <header className="grid gap-12 md:grid-cols-2 items-end pb-16">
+      <div><p className="msm-label text-msm-cyan mb-6">MSM.digital</p><h1 className="headline-display">{person.fullname || person.name}</h1><p className="msm-copy mt-6">{person.position}</p>
+      {edition.quote && <blockquote className="text-2xl leading-relaxed mt-12">{edition.quote}</blockquote>}
+      {edition.phone && <a className="block mt-6 underline underline-offset-4" href={edition.phone}>{edition.phone.replace(/^tel:/, "")}</a>}
+      {person.email && <div className="mt-8"><Button2 text={de ? 'E-Mail schreiben' : 'Get in touch'} href={`mailto:${person.email}`} /></div>}</div>
+      {image && <div className="relative aspect-[4/5]"><Image src={image} alt={person.altText || person.name} fill priority sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" /></div>}
+    </header>
+    <div className="grid gap-12 md:grid-cols-2 border-t border-white/20 py-16">
+      {edition.iDo && <section><h2 className="msm-title mb-6">{de ? 'Das mache ich' : 'I do'}</h2><p className="msm-copy whitespace-pre-line">{edition.iDo}</p></section>}
+      {edition.askMe && <section><h2 className="msm-title mb-6">{de ? 'Frag mich' : 'Ask me'}</h2><p className="msm-copy whitespace-pre-line">{edition.askMe}</p></section>}
+    </div>
+    {edition.biography?.length > 0 && <section className="max-w-4xl py-16 space-y-6 msm-copy whitespace-pre-line">{edition.biography}</section>}
+    {person.cases.length > 0 && <section className="py-16"><h2 className="msm-title mb-12">{edition.selectedCasesHeading || (de ? 'Ausgewählte Projekte' : 'Selected cases')}</h2><CaseGallery caseStudies={person.cases} locale={locale} /></section>}
+  </article></MsmSiteWrapper>;
+}

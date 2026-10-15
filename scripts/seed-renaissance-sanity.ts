@@ -6,6 +6,7 @@ import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { basename, extname, resolve } from "node:path";
 import { getCliClient } from "sanity/cli";
+import { compactCloudinaryStorage } from '../packages/utils/src/cloudinary-storage';
 import { RENAISSANCE_HOMEPAGE_FALLBACK } from "../apps/renaissance-web/data/homepageFallback";
 
 const APPLY = process.argv.includes("--apply");
@@ -117,13 +118,12 @@ function verifyBackup(path?: string) {
 }
 
 function cloneAsset(asset: Record<string, unknown>, key: string) {
-  return { ...structuredClone(asset), _type: "cloudinary.asset", _key: key };
+  return compactCloudinaryStorage({ ...structuredClone(asset), _type: "cloudinary.asset", _key: key });
 }
 
 function cloudinaryAsset(resource: CloudinaryResource, key: string) {
   const allowedFields = [
     "access_mode",
-    "asset_folder",
     "asset_id",
     "bytes",
     "created_at",
@@ -150,7 +150,7 @@ function cloudinaryAsset(resource: CloudinaryResource, key: string) {
     if (resource[field] !== undefined) result[field] = resource[field];
   }
   if (resource.asset_id) result.id = resource.asset_id;
-  return result;
+  return compactCloudinaryStorage(result);
 }
 
 function mimeType(path: string) {

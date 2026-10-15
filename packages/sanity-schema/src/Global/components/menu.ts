@@ -19,6 +19,7 @@ export default {
         languages: [
             { id: "en", title: "English" },
             { id: "de", title: "German" },
+            { id: "pl", title: "Polish" },
         ],
         referenceBehavior: "weak",
     },
@@ -88,13 +89,17 @@ export default {
                 {
                     type: "object",
                     icon: SquaresFour,
+                    validation: (Rule: any) => Rule.custom((value: any) =>
+                        value?.page || value?.route
+                            ? true
+                            : "Choose a page or enter a route slug",
+                    ),
                     fields: [
                         {
                             name: "page",
                             title: "Page",
                             type: "reference",
                             to: [{ type: "page" }],
-                            validation: (Rule: any) => Rule.required(),
                             options: {
                                 // dynamically filter referenced pages by menu's language
                                 filter: ({ document }: { document?: { language?: string } }) => {
@@ -109,6 +114,20 @@ export default {
                             },
                         },
                         {
+                            name: "route",
+                            title: "Route Slug (Optional)",
+                            type: "string",
+                            description:
+                                "Use for frontend-owned routes without a localized page document, for example cases or jobs. Do not include the locale or leading slash.",
+                            validation: (Rule: any) => Rule.custom((value: unknown) => {
+                                if (value == null || value === "") return true;
+                                if (typeof value !== "string") return "Enter a route slug";
+                                return /^[-a-z0-9/]+$/.test(value)
+                                    ? true
+                                    : "Use lowercase URL segments without a leading slash";
+                            }),
+                        },
+                        {
                             name: "displayName",
                             title: "Display Name (Optional)",
                             type: "string",
@@ -120,11 +139,12 @@ export default {
                             pageTitle: "page.title",
                             displayName: "displayName",
                             slug: "page.slug.current",
+                            route: "route",
                         },
-                        prepare({ pageTitle, displayName, slug }: { pageTitle?: string; displayName?: string; slug?: string }) {
+                        prepare({ pageTitle, displayName, slug, route }: { pageTitle?: string; displayName?: string; slug?: string; route?: string }) {
                             return {
-                                title: displayName || pageTitle || "Untitled",
-                                subtitle: slug ? `/${slug}` : "No page selected",
+                                title: displayName || pageTitle || route || "Untitled",
+                                subtitle: route ? `/${route}` : slug ? `/${slug}` : "No destination selected",
                             };
                         },
                     },
@@ -144,10 +164,25 @@ export default {
 
         /* Footer Fields */
         {
+            name: 'renaissanceLegalText', title: 'Renaissance legal text', type: 'text',
+            group: 'footer', rows: 2,
+            hidden: ({ document }: { document?: { channel?: string } }) => document?.channel !== 'renaissanceWeb',
+        },
+        {
+            name: 'footerExternalBanner',
+            title: 'Footer External Banner',
+            type: 'footerExternalBanner',
+            group: 'footer',
+            description: 'Optional 1SP network banner, shown after the FLZR, Renaissance or MSM footer or above the 1SP footer on every page in this language. Add media and text here to enable it.',
+            hidden: ({ document }: { document?: { menuType?: string; channel?: string } }) =>
+                document?.menuType !== 'Footer' || !['1spWeb', 'flizrWeb', 'renaissanceWeb', 'msmWeb'].includes(document?.channel || ''),
+        },
+        {
             name: "footerColumns",
             title: "Footer Columns",
             type: "array",
             group: 'footer',
+            description: "MSM: once at least one column exists, these columns replace the automatic Explore / Cases / Capabilities / Connect grid, in this order.",
             of: [
                 {
                     type: "object",
@@ -160,9 +195,36 @@ export default {
                             validation: (Rule: any) => Rule.required(),
                         },
                         {
+                            name: "source",
+                            title: "Column Content",
+                            type: "string",
+                            description: "Pick links by hand, or let the column fill itself from published content.",
+                            options: {
+                                list: [
+                                    { title: "Hand-picked links", value: "manual" },
+                                    { title: "Latest cases (automatic)", value: "cases" },
+                                    { title: "Services (automatic)", value: "services" },
+                                    { title: "Site pages (automatic)", value: "pages" },
+                                ],
+                                layout: "radio",
+                            },
+                            initialValue: "manual",
+                            hidden: ({ document }: { document?: { channel?: string } }) => document?.channel !== 'msmWeb',
+                        },
+                        {
+                            name: "limit",
+                            title: "Maximum Links",
+                            type: "number",
+                            description: "Leave empty for the default (10 cases, 12 services or pages).",
+                            validation: (Rule: any) => Rule.integer().min(1).max(30),
+                            hidden: ({ document, parent }: { document?: { channel?: string }; parent?: { source?: string } }) =>
+                                document?.channel !== 'msmWeb' || (parent?.source ?? "manual") === "manual",
+                        },
+                        {
                             name: "links",
                             title: "Links",
                             type: "array",
+                            hidden: ({ parent }: { parent?: { source?: string } }) => (parent?.source ?? "manual") !== "manual",
                             of: [
                                 {
                                     type: "object",
@@ -300,12 +362,18 @@ export default {
                         select: {
                             title: "title",
                             links: "links",
+                            source: "source",
                         },
-                        prepare({ title, links }: { title?: string; links?: any[] }) {
+                        prepare({ title, links, source }: { title?: string; links?: any[]; source?: string }) {
+                            const automaticLabels: Record<string, string> = {
+                                cases: "Automatic: latest cases",
+                                services: "Automatic: services",
+                                pages: "Automatic: site pages",
+                            };
                             const linkCount = links?.length || 0;
                             return {
                                 title: title || "Untitled Column",
-                                subtitle: `${linkCount} link${linkCount !== 1 ? 's' : ''}`,
+                                subtitle: (source && automaticLabels[source]) || `${linkCount} link${linkCount !== 1 ? 's' : ''}`,
                             };
                         },
                     },

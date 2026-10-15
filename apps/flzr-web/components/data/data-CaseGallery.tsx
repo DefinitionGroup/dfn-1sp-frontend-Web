@@ -45,12 +45,15 @@ export default function CaseGalleryComponent({
   filterAllText = "All",
 }: CaseGalleryComponentProps) {
   const router = useOptimizedTransitionRouter();
-  const [active, setActive] = useState<CaseStudy | null>(null);
+  const [active, setActive] = useState<{
+    item: CaseStudy;
+    instanceId: number;
+  } | null>(null);
   const ref = useRef<HTMLDivElement>(null);
   const id = useId();
-  const openCase = (item: CaseStudy) => {
+  const openCase = (item: CaseStudy, instanceId: number) => {
     startTransition(() => {
-      setActive(item);
+      setActive({ item, instanceId });
     });
   };
   const closeCase = () => {
@@ -65,6 +68,10 @@ export default function CaseGalleryComponent({
       : caseStudies.filter((item) =>
         item.services?.some((service) => service.name === activeFilter)
       );
+  const activeItem = active?.item;
+  const activeLayoutKey = active
+    ? `${active.item._id}-${active.instanceId}-${id}`
+    : "";
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -93,7 +100,7 @@ export default function CaseGalleryComponent({
   return (
     <>
       <AnimatePresence>
-        {active && (
+        {activeItem && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{
@@ -107,12 +114,12 @@ export default function CaseGalleryComponent({
       </AnimatePresence>
 
       <>
-        {active ? (
+        {activeItem ? (
           <div className="fixed inset-0  grid place-items-center  w-full  z-[100]">
 
 
             <motion.div
-              layoutId={`card-${active.title}-${id}`}
+              layoutId={`card-${activeLayoutKey}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0, transition: { duration: 0.05 } }}
@@ -122,11 +129,11 @@ export default function CaseGalleryComponent({
             >
               <motion.div
                 className="[grid-area:1/1] w-full  opacity-80  min-h-[70vh] max-h-[100vh] mediabackground"
-                layoutId={`image-${active.title}-${id}`}
+                layoutId={`image-${activeLayoutKey}`}
               >
-                {active.mainVideoUrl ? (
+                {activeItem.mainVideoUrl ? (
                   <DeferredVideo
-                    src={active.mainVideoUrl}
+                    src={activeItem.mainVideoUrl}
                     maxWidth={900}
                     className="w-full h-full  opacity-50 object-cover object-top"
                     mountDelay={100}
@@ -136,8 +143,8 @@ export default function CaseGalleryComponent({
                   <Image
                     width={1000}
                     height={1000}
-                    src={active.mainImageUrl || "/placeholder.png"}
-                    alt={active.title}
+                    src={activeItem.mainImageUrl || "/placeholder.png"}
+                    alt={activeItem.title}
                     className="w-full h-full min-h-full    opacity-50 object-cover object-top"
                   />
                 )}
@@ -147,7 +154,7 @@ export default function CaseGalleryComponent({
               <div className="[grid-area:1/1] flex flex-col  justify-end w-full relative items-start p-8 z-10 popoupcontent">
 
                 <motion.button
-                  key={`button-${active.title}-${id}`}
+                  key={`button-${activeLayoutKey}`}
                   layout
                   initial={{ opacity: 1 }}
                   animate={{ opacity: 1 }}
@@ -159,11 +166,11 @@ export default function CaseGalleryComponent({
                   <CloseIcon />
                 </motion.button>
                 <div className="flex justify-end  top-0 flex-col items-start gap-4 landscape:gap-2  z-10 left-0">
-                  {active.client?.logoUrl && (
+                  {activeItem.client?.logoUrl && (
                     <motion.img
-                      layoutId={`logo-${active.title}-${id}`}
-                      src={active.client.logoUrl}
-                      alt={active.title}
+                      layoutId={`logo-${activeLayoutKey}`}
+                      src={activeItem.client.logoUrl}
+                      alt={activeItem.title}
                       className={`w-32 h-20 landscape:h-10 object-contain invert ${variant === "light" ? "invert" : ""}`}
                     />
                   )}
@@ -171,10 +178,10 @@ export default function CaseGalleryComponent({
                   <div>
 
                     <motion.h3
-                      layoutId={`title-${active.title}-${id}`}
+                      layoutId={`title-${activeLayoutKey}`}
                       className="text-white  text-3xl md:text-4xl md:max-w-3/4 dark:text-neutral-200 landscape-small:text-2xl"
                     >
-                      {active.title}
+                      {activeItem.title}
                     </motion.h3>
                   </div>
 
@@ -185,7 +192,7 @@ export default function CaseGalleryComponent({
                     exit={{ opacity: 0 }}
                     className="text-white text-sm landscape-small:max-w-3/4 landscape-small:text-xs  md:text-sm lg:text-base  md:max-w-1/2 md:h-fit pb-8 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400  [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
                   >
-                    {active.description}
+                    {activeItem.description}
                   </motion.div>
 
                   <motion.div
@@ -194,7 +201,7 @@ export default function CaseGalleryComponent({
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     className="min-w-[150px]"
-                    onClick={() => handleViewCaseStudy(active.slug.current)}
+                    onClick={() => handleViewCaseStudy(activeItem.slug.current)}
                   >
                     <Button2 variant="violetsmall" text="View Case Study" />
                   </motion.div>
@@ -212,17 +219,18 @@ export default function CaseGalleryComponent({
           distance={10}
           duration={1}
           once={true}
-          className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1 mx-auto w-full min-h-full"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-2 gap-y-5 mx-auto w-full min-h-full"
         >
-          {filteredItems.map((item) => (
+          {filteredItems.map((item, index) => (
             <CaseGalleryCard
-              key={`card-${item.title}-${id}`}
+              key={`card-${item._id}-${index}-${id}`}
               item={item}
               id={id}
+              instanceId={index}
               variant={variant}
               activeFilter={activeFilter}
               locale={locale}
-              onClick={() => openCase(item)}
+              onClick={() => openCase(item, index)}
             />
           ))}
         </StaggeredFadeIn>

@@ -1,3 +1,5 @@
+import {withChannelLabels} from "../../shared/channelPreview";
+import { SquaresFour } from '@phosphor-icons/react'
 import { defineArrayMember, defineType, defineField } from 'sanity'
 import { ServiceBackgroundFocusInput } from '../../serviceBackgroundFocusInput'
 import { websiteChannelOptions } from '../../shared/channelOptions'
@@ -14,11 +16,13 @@ export default defineType({
     name: 'services',
     title: 'Services',
     type: 'document',
+    icon: SquaresFour,
     // Define groups and assign fields to them below
     groups: [
         { name: 'meta', title: 'Metadata' },
         { name: 'content', title: 'Content' },
         { name: 'media', title: 'Media' },
+        { name: 'websiteContent', title: 'Website content' },
         { name: 'relations', title: 'Relations' },
         { name: 'settings', title: 'Settings' },
     ],
@@ -133,6 +137,14 @@ export default defineType({
             description: 'Websites where this service can be used.',
             group: 'settings',
         }),
+        defineField({name: 'siteContent', title: 'Website editions', type: 'array', group: 'websiteContent',
+            description: 'Unset fields inherit shared content. Custom media replaces the shared selection. Publishing includes every edition.',
+            of: [{type: 'serviceWebsiteContent'}],
+            validation: r => r.custom((editions: Array<{channel?: string}> | undefined) => {
+                const channels = (editions || []).map(e => e.channel).filter(Boolean);
+                return new Set(channels).size === channels.length || 'Only one edition per website is allowed.';
+            }),
+        }),
         defineField({
             name: 'unitsrel',
             title: 'Related Units',
@@ -187,9 +199,10 @@ export default defineType({
     ],
     preview: {
         select: {
+            channels: "channel",
             title: 'name',
             subtitle: 'taglabel',
-            media: 'serviceicon.asset',
         },
+        prepare({title, subtitle, channels}) { return {title, subtitle: withChannelLabels(subtitle, channels), media: SquaresFour}; },
     },
 })

@@ -45,7 +45,9 @@ export default async function CasesGalleryFilteredWithPaginationBlock({
     <CasesGalleryFilteredWithPaginationClient
       {...props}
       locale={language}
-      caseStudies={rawCaseStudies}
+      caseStudies={isManual
+        ? selectedIds.flatMap((id) => rawCaseStudies.filter((study: { _id: string }) => study._id === id))
+        : rawCaseStudies}
     />
   );
 }

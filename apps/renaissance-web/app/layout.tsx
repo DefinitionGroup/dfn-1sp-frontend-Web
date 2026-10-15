@@ -1,3 +1,4 @@
+import localFont from "next/font/local";
 import { Geist_Mono, IBM_Plex_Sans } from "next/font/google";
 import type { Metadata } from "next";
 import "./globals.css";
@@ -6,15 +7,15 @@ import { Analytics } from "@vercel/analytics/next";
 import CookiebotBanner from "@renaissance/components/CookiebotBanner";
 import GoogleAnalyticsConsent from "@renaissance/components/GoogleAnalyticsConsent";
 import {
-  getRobotsMetadata,
   shouldLoadProductionTracking,
 } from "@1sp/utils/deployment-tier";
+import { isRenaissancePublic, renaissanceRobotsMetadata } from "@renaissance/lib/deployment";
 import { getMetadataBaseUrl } from "@1sp/utils/site-url";
 import { getSiteConfig } from "@1sp/site-config";
 
 const RENAISSANCE_SITE = getSiteConfig("renaissanceWeb");
 const GOOGLE_MEASUREMENT_ID = process.env.NEXT_PUBLIC_RENAISSANCE_GOOGLE_MEASUREMENT_ID;
-const LOAD_PRODUCTION_TRACKING = shouldLoadProductionTracking();
+const LOAD_PRODUCTION_TRACKING = isRenaissancePublic() && shouldLoadProductionTracking();
 
 const geistMono = Geist_Mono({
   subsets: ["latin"],
@@ -30,6 +31,19 @@ const ibmPlexSans = IBM_Plex_Sans({
   weight: "variable",
   style: ["normal", "italic"],
   axes: ["wdth"],
+});
+
+// The 1SP face, used only inside embedded 1SP component groups. Not
+// preloaded: pages without a 1SP group never request the file.
+const aspekta = localFont({
+  src: [
+    { path: "./fonts/AspektaVF.woff2", style: "normal" },
+    { path: "./fonts/AspektaVF.ttf", style: "normal" },
+  ],
+  variable: "--font-aspekta-source",
+  display: "swap",
+  weight: "50 1000",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -50,7 +64,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
   },
-  robots: getRobotsMetadata(),
+  robots: renaissanceRobotsMetadata(),
 };
 
 export default function RootLayout({
@@ -61,7 +75,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${ibmPlexSans.variable} ${geistMono.variable}`}
+      className={`${ibmPlexSans.variable} ${aspekta.variable} ${geistMono.variable}`}
       style={{ colorScheme: "light" }}
       suppressHydrationWarning
     >

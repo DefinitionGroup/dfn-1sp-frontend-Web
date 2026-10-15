@@ -48,7 +48,6 @@ import {
 } from "@/lib/structured-data";
 
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
-export const revalidate = 60;
 const SUPPORTED_LOCALES = ["en"];
 
 export function generateStaticParams() {

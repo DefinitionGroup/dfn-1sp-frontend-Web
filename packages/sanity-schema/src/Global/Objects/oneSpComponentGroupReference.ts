@@ -24,9 +24,10 @@ export default defineType({
     }),
     defineField({
       name: "dataScope",
-      title: "Dynamic content scope",
+      title: "Legacy data scope",
       type: "string",
-      initialValue: "hostChannel",
+      initialValue: "1spWeb",
+      hidden: true,
       options: {
         layout: "radio",
         list: [
@@ -41,7 +42,7 @@ export default defineType({
         ],
       },
       description:
-        "Controls channel-aware data inside the group. The 1SP visual treatment is always preserved.",
+        "Deprecated compatibility field. Reusable 1SP groups always use canonical 1SP data and ignore the host website channel.",
       validation: (Rule) => Rule.required(),
     }),
   ],
@@ -49,12 +50,11 @@ export default defineType({
     select: {
       title: "group.title",
       language: "group.language",
-      dataScope: "dataScope",
     },
-    prepare({ title, language, dataScope }) {
+    prepare({ title, language }) {
       return {
         title: title || "Select a 1SP Component Group",
-        subtitle: `${String(language || "").toUpperCase()} • ${dataScope === "1spWeb" ? "1SP data" : "Host-site data"}`,
+        subtitle: `${String(language || "").toUpperCase()} • Canonical 1SP data`,
         media: SquaresFour,
       };
     },

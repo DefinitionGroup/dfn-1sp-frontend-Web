@@ -10,10 +10,18 @@ import {
 interface GlobeComponentProps {
   data: GlobeComponentType;
   language?: string;
+  inheritSectionSurface?: boolean;
 }
 
-function GlobeComponent({ data, language }: GlobeComponentProps) {
+const REACH_CAMERA_RADIUS = 145 * 1.1;
+
+function GlobeComponent({
+  data,
+  language,
+  inheritSectionSurface = false,
+}: GlobeComponentProps) {
   const { sectionTitle, sectionSubtitle, navPointName } = data || {};
+  const isCentralEuropeStatic = data?.viewMode === "centralEuropeStatic";
   const locations = getFlzrEuropeanLocations(language);
 
   const sectionId = getFlzrGlobeSectionId(sectionTitle);
@@ -72,21 +80,30 @@ function GlobeComponent({ data, language }: GlobeComponentProps) {
     },
     autoRotate: false,
     autoRotateSpeed: 0.15,
-    verticalOffset: 1 / 3,
+    cameraRadius: isCentralEuropeStatic ? REACH_CAMERA_RADIUS : 165,
+    enableRotate: !isCentralEuropeStatic,
+    verticalOffset: isCentralEuropeStatic ? 0.18 : 1 / 3,
   };
 
   return (
     <section
       id={sectionId}
       {...navPointDataAttr}
-      className="container relative mx-auto overflow-hidden rounded-4xl"
+      data-globe-view-mode={data?.viewMode || "default"}
+      className={`relative overflow-hidden ${
+        isCentralEuropeStatic
+          ? "flzr-reach-map-shell"
+          : "container mx-auto"
+      } ${
+        inheritSectionSurface ? "rounded-none" : "rounded-4xl"
+      }`}
     >
       <GlobalDataComponent
         arcs={arcs}
         globeConfig={globeConfig}
-        title={sectionTitle || "Our Locations"}
-        description={sectionSubtitle}
-        backgroundTone="muted"
+        title={isCentralEuropeStatic ? "" : sectionTitle || "Our Locations"}
+        description={isCentralEuropeStatic ? undefined : sectionSubtitle}
+        backgroundTone={inheritSectionSurface ? "inherit" : "muted"}
       />
     </section>
   );

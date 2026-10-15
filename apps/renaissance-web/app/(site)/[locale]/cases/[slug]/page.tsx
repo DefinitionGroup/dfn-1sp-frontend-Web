@@ -24,6 +24,7 @@
  * - Twitter card metadata for social sharing
  */
 import { getCaseBySlug, getAllCaseSlugs } from "@1sp/sanity-queries";
+import { stegaClean } from "next-sanity";
 import { notFound } from "next/navigation";
 import CaseStudyPageClient from "./CaseStudyPageClient";
 import RenaissanceSiteWrapper from "@renaissance/components/RenaissanceSiteWrapper";
@@ -36,8 +37,6 @@ import {
   getBreadcrumbLabel,
   CANONICAL_URL,
 } from "@renaissance/lib/structured-data";
-
-export const revalidate = 60;
 
 // Allow new case studies to be rendered on-demand (ISR)
 export const dynamicParams = true;
@@ -90,10 +89,10 @@ export async function generateMetadata({
     };
   }
 
-  const title = caseStudy.title;
-  const description =
-    caseStudy.description ||
-    `${caseStudy.title}${caseStudy.client?.name ? ` — ${caseStudy.client.name}` : ""} | Case Study`;
+  const title = stegaClean(caseStudy.seo?.title || caseStudy.title);
+  const description = stegaClean(
+    caseStudy.seo?.description ?? caseStudy.description ??
+    `${caseStudy.title}${caseStudy.client?.name ? ` — ${caseStudy.client.name}` : ""} | Case Study`);
 
   // Use mainImageUrl (Cloudinary secure_url) for OG image
   const ogImages = caseStudy.mainImageUrl

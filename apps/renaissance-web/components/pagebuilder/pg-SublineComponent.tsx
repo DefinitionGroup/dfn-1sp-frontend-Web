@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import type { CTA } from "@1sp/sanity-types";
+import type { RenaissanceSectionRole } from "@1sp/sanity-types";
 import { ctaToButtonProps } from "@1sp/utils/cloudinary";
 import Button2 from "@renaissance/components/ui/Button2";
 
@@ -14,8 +15,10 @@ type SublineComponentData = {
 
 function SublineComponent({
   data,
+  presentationRole: _presentationRole,
 }: {
   data: SublineComponentData;
+  presentationRole?: RenaissanceSectionRole;
 }) {
   const {
     description,

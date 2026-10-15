@@ -15,6 +15,7 @@ interface IntertitleCTAProps {
   containerClassName?: string;
   alignment?: "center" | "left";
   paddingTop?: "0" | "12" | "24" | "48";
+  paddingBottom?: "0" | "12" | "24" | "48";
   navPointName?: string;
   hideFromNav?: boolean;
 }
@@ -27,6 +28,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
   containerClassName = "w-full",
   alignment = "center",
   paddingTop = "0",
+  paddingBottom = "0",
   navPointName,
   hideFromNav = false,
 }) => {
@@ -42,6 +44,13 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
     "48": "pt-48",
   };
   const paddingTopClass = paddingTopMap[paddingTop] || "";
+  const paddingBottomMap: Record<string, string> = {
+    "0": "",
+    "12": "pb-12",
+    "24": "pb-24",
+    "48": "pb-48",
+  };
+  const paddingBottomClass = paddingBottomMap[paddingBottom] || "";
   const hasSubline = hasVisibleText(subline);
 
   const titleClass = `max-w-5xl text-balance text-[clamp(2.25rem,3.2vw,4.25rem)] font-semibold leading-[0.98] text-renaissance-accent ${isLeftAligned ? "text-left" : "text-center"}`;
@@ -81,7 +90,7 @@ const IntertitleCTA: React.FC<IntertitleCTAProps> = ({
       className={`relative overflow-hidden ${containerClassName}`}
     >
       <div
-        className={`relative mx-auto w-full max-w-[1480px] px-4 font-renaissance sm:px-6 lg:px-8 ${paddingTopClass}`}
+        className={`relative mx-auto w-full max-w-[1480px] px-4 font-renaissance sm:px-6 lg:px-8 ${paddingTopClass} ${paddingBottomClass}`}
       >
         <div className="relative border-t border-neutral-900/15 py-16 sm:py-20 lg:py-28">
           <span

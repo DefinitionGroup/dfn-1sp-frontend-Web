@@ -1,0 +1,62 @@
+import type { PortableTextBlock } from "@portabletext/types";
+import type { PageMetadata } from "@1sp/sanity-types";
+
+export type MsmUnitSummary = {
+  _id: string;
+  _updatedAt?: string;
+  name: string;
+  slug: { current: string };
+  descriptor?: string;
+  claim: string;
+  linkLabel?: string;
+  body?: PortableTextBlock[];
+  capabilities?: string[];
+  sortOrder?: number;
+  heroImageUrl?: string;
+  heroAlt?: string;
+  unitMarkUrl?: string;
+  caseCount?: number;
+  leadershipCount?: number;
+  metadata?: PageMetadata;
+};
+
+export type MsmUnitCase = {
+  _id: string;
+  title: string;
+  subtitle?: string;
+  slug: { current: string };
+  description?: string;
+  services?: { _id: string; name: string; taglabel?: string }[];
+  mainImageUrl?: string;
+  mainVideoUrl?: string;
+  client?: { _id: string; name: string; logoUrl?: string };
+};
+
+export type MsmUnitPerson = {
+  position?: string;
+  quote?: string;
+  phone?: string;
+  isPrimary?: boolean;
+  person?: {
+    _id: string;
+    name?: string;
+    fullname?: string;
+    altText?: string;
+    position?: string;
+    email?: string;
+    profileUrl?: string;
+    profileSlug?: string;
+    imageUrl?: string;
+    videoUrl?: string;
+  };
+};
+
+export type MsmUnitDetail = MsmUnitSummary & {
+  introductionHeading?: string;
+  leadershipHeading?: string;
+  casesHeading?: string;
+  additionalContent?: any[];
+  contactCta?: any;
+  leadership?: MsmUnitPerson[];
+  cases?: MsmUnitCase[];
+};

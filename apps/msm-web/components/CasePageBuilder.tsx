@@ -1,5 +1,8 @@
+import {cleanMsmPreviewControls} from "@msm/lib/preview-controls";
 import React from "react";
 import dynamic from "next/dynamic";
+import IntertitleCTA from "./pagebuilder/pg-IntertitleCTA";
+import { isCaseContactCta } from "@msm/lib/case-contact";
 import ErrorBoundary from "@msm/components/ErrorBoundary";
 
 // Dynamically import case study page builder components
@@ -47,14 +50,15 @@ const ResultsMetrics = dynamic(
   }
 );
 
-type CasePageBuilderProps = { content: Array<any> };
+type CasePageBuilderProps = { content: Array<any>; hasConnectedPerson?: boolean };
 
-export function CasePageBuilder({ content }: CasePageBuilderProps) {
+export function CasePageBuilder({ content, hasConnectedPerson = false }: CasePageBuilderProps) {
   if (!Array.isArray(content) || content.length === 0) return null;
 
   return (
     <>
-      {content.map((block: any, i: number) => {
+      {content.map((rawBlock: any, i: number) => {
+        const block = cleanMsmPreviewControls(rawBlock);
         if (!block?._type) return null;
 
         const key = block._key ?? `${block._type}-${i}`;
@@ -85,6 +89,10 @@ export function CasePageBuilder({ content }: CasePageBuilderProps) {
               </ErrorBoundary>
             );
 
+          case "intertitleCTA":
+            // The case relationship supplies the contact; keep non-contact CTAs.
+            if (hasConnectedPerson && isCaseContactCta(block)) return null;
+            return <IntertitleCTA key={key} {...block} caseLayout />;
           default:
             return null;
         }

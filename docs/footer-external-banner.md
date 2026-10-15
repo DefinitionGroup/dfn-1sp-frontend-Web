@@ -1,0 +1,29 @@
+# Footer External Banner (1SP, FLZR, Renaissance and MSM)
+
+`footerExternalBanner` renders a full-width background video with a poster, the 1SP logo beside two equal-size text blocks, the unit links, a centered lime CTA below them and an optional copyright line. Since October 2026 it follows the Figma frame `1SP WEBSITE MOCK-UPS` node `343:1884`. It shows no eyebrow, host-site wordmark or divider, and has no video pause button. **Text block 1** and **Text block 2** are stored in the legacy `headline` and `text` fields. The hidden `eyebrow` field is no longer rendered.
+
+## Add it in Sanity
+
+- For every 1SP page: open the **1SP Footer menu → Footer → Footer External Banner** and populate the object.
+- For an individual page: add **Footer External Banner** in the Page Builder. Use either placement to avoid displaying it twice.
+- FLZR supports the same block in its Page Builder and Footer menu. It renders with the canonical 1SP branding and unit catalog. The block can also be added to a shared **1SP Component Group** and referenced by a FLZR page.
+- For every FLZR page: open **FLZR → English → Menus → Footer → Footer → Footer External Banner**. This shared placement renders after the FLZR footer. Remove page-level copies to avoid duplicates. Each language uses its own Footer menu.
+- For every Renaissance page: open **Renaissance → English → Menus → Footer → Footer → Footer External Banner**. The banner appears after the existing footer. Its 1SP typography and colors are scoped to this section. The original setup used `dev-dataset`; verify the active dataset and menu before editing.
+- For every MSM page: open **MSM → [Language] → Menus → Footer → Footer → Footer External Banner**. The banner renders after the MSM footer, scoped to 1SP typography and colors. MSM's global sharp-corners rule also squares the banner's cards and CTA there. MSM ships `en` and `de`, and each language has its own Footer menu (`msm-menu-footer-en`, `msm-menu-footer-de`). The MSM Page Builder also accepts the block for page-level placement; use one placement per page.
+- Select the background video and optional poster through Cloudinary. Without a custom logo, the existing white/lime 1SP Agency logo is used. Configure the CTA text and destination explicitly.
+- Unit buttons use each active unit's existing logo and CTA. There is no item limit. Units without a logo display their name; those without a usable link display as non-interactive entries.
+- **Unit order** on the banner sorts the cards by drag and drop. Units missing from the list follow A–Z, so a new unit still appears. Each placement has its own list; the reference picker offers active units in the menu's language. The MSM, FLZR and Renaissance English footers were set to the Figma order (Studio CO2, MSM, Fijak, FLZR, New Fluence, promoPers, 1SP XR, MeetToMatch, Renaissance, Insight) on 2026-10-06.
+
+Units are filtered by language and channel. For backwards compatibility, unassigned legacy units are included only for `1spWeb`; units explicitly assigned to other channels are excluded. The footer query excludes the parent unit with slug `1sp-agency`, which left ten English agency cards in the original implementation snapshot; current counts depend on the dataset. It does not remove that document or hide it elsewhere.
+
+Edit each card in **Units → English → [Unit]**: **General → Footer Banner Label** supplies the short discipline shown under the logo at rest (Figma: "Full Service / Creative Studio"; line breaks are kept), **General → Tagline/Motto** supplies the hover text, **Media → Footer Banner Logo** supplies the white logo on a 200×105 artboard, **Media → Unit Background Image** supplies the hover image/poster, and **Media → Footer Banner Hover Video** optionally supplies a video. With a label, the card follows the Figma resting state (logo over label); hover and keyboard focus reveal the media and swap the label for the tagline without shifting adjacent cards. Without a label, the logo sits centered and the tagline appears on hover. Touch devices show the media directly and keep the label (or the tagline when no label is set). Videos play only while hovered/focused and visible, and remain disabled for reduced motion.
+
+The component uses five columns on desktop, three on tablet and two on mobile. Video playback is deferred until near the viewport and paused outside the viewport. Reduced-motion preferences show the poster and disable entrance/hover movement, including when the preference changes while the page is open.
+
+## Integration and release
+
+- Client component: `components/menu/footerExternalBanner.tsx`
+- Server data wrapper: `components/pagebuilder/server/FooterExternalBannerBlock.tsx`
+- Schema: `packages/sanity-schema/src/1SP/Components/footerExternalBanner.ts`
+
+The existing footer remains enabled. The original FLZR setup configured the English banner in a shared Footer menu in `dev-dataset` and removed its homepage copy. That is historical setup evidence, not a current production-state claim. Later production content work is recorded under [completed records](records/README.md). Hosted Studio, stored Sanity schema and frontend deployment remain separate release steps.
