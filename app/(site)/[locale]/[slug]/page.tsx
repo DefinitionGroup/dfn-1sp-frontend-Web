@@ -29,7 +29,8 @@ import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
 import { getChannel } from "@1sp/site-config/server";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
-import { resolveImageUrl } from "@1sp/sanity-queries/image";
+import { openGraphIdentity } from "@/lib/open-graph";
+import { sharingImages, sharingImageUrl } from "@/lib/sharing-image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
@@ -54,11 +55,6 @@ import {
 
 // Allow new pages to be rendered on-demand (ISR)
 export const dynamicParams = true;
-
-// Time-based fallback so content self-heals even if a tag-based revalidate
-// webhook is missed. Tag invalidation (`revalidateTag`) remains the primary
-// path; this bounds worst-case staleness to 60s.
-export const revalidate = 60;
 
 /**
  * Generate static params for all pages at build time.
@@ -92,18 +88,8 @@ export async function generateMetadata({
 
   const title = page.metadata?.title || page.title;
   const description = page.metadata?.description;
-  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
-
-  const ogImages = ogImageUrl
-    ? [
-      {
-        url: ogImageUrl,
-        width: 1200,
-        height: 630,
-        alt: title,
-      },
-    ]
-    : [];
+  const ogImages = sharingImages(page.metadata?.image, title);
+  const canonical = `/${slug}`;
   const isReservedNonPublicPage = slug === "test";
 
   return {
@@ -111,9 +97,10 @@ export async function generateMetadata({
     description,
     keywords: page.metadata?.keywords ?? undefined,
     alternates: {
-      canonical: `/${slug}`,
+      canonical,
     },
     openGraph: {
+      ...openGraphIdentity(canonical),
       title,
       description: description || undefined,
       locale: language,
@@ -168,7 +155,7 @@ export default async function Page({
   const caseItems = extractCaseItemsFromContent(contentBlocks, mapCasesToItemList(allCasesRaw));
   const services = mapServicesToCatalogItems(allServicesRaw);
   const pageUrl = `${CANONICAL_URL}/${slug}`;
-  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
+  const ogImageUrl = sharingImageUrl(page.metadata?.image);
 
   return (
     <SiteWrapper channel={channel} language={language} navColor={navbarVariant}>

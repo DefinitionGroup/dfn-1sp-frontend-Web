@@ -6,6 +6,7 @@ These documents preserve approved mappings, implementation decisions and verific
 
 - [Whole-project handoff and consolidation review](project/project-handoff-review-2026-09-21.md) — coverage, corrections, archive decisions and verification limits.
 - [Documentation inventory](project/documentation-inventory-2026-09-21.csv) and [move manifest](project/documentation-moves-2026-09-21.csv).
+- [1SP production dataset switch — 15 October 2026](project/1sp-production-dataset-switch-2026-10-15.md) — lanes and datasets, content and rendered comparison of `dev-dataset` and `production`, the copied live edit and configuration findings; checklist in deployment verification.
 
 ## MSM
 

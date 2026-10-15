@@ -27,7 +27,6 @@ import {
   type CaseItemForList,
 } from "@renaissance/lib/structured-data";
 
-export const revalidate = 60;
 const CHANNEL = "renaissanceWeb";
 const SUPPORTED_LOCALES = ["en"];
 

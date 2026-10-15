@@ -17,7 +17,8 @@ import NotFound from "@/components/ui/not-found";
 import ContactForm from "@/components/ui/ContactForm";
 import { getAllCases, getAllServicesForChannel, getPageBySlug } from "@1sp/sanity-queries";
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
-import { resolveImageUrl } from "@1sp/sanity-queries/image";
+import { openGraphIdentity } from "@/lib/open-graph";
+import { sharingImages } from "@/lib/sharing-image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
@@ -39,7 +40,6 @@ import {
   CANONICAL_URL,
 } from "@/lib/structured-data";
 
-export const revalidate = 60;
 const SUPPORTED_LOCALES = ["en"];
 
 export function generateStaticParams() {
@@ -63,27 +63,18 @@ export async function generateMetadata({
 
   const title = page.metadata?.title || page.title || "Contact";
   const description = page.metadata?.description;
-  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
-
-  const ogImages = ogImageUrl
-    ? [
-      {
-        url: ogImageUrl,
-        width: 1200,
-        height: 630,
-        alt: title,
-      },
-    ]
-    : [];
+  const ogImages = sharingImages(page.metadata?.image, title);
+  const canonical = "/contact";
 
   return {
     title,
     description,
     keywords: page.metadata?.keywords ?? undefined,
     alternates: {
-      canonical: "/contact",
+      canonical,
     },
     openGraph: {
+      ...openGraphIdentity(canonical),
       title,
       description: description || undefined,
       locale: language,

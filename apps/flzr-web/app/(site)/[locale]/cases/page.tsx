@@ -27,7 +27,6 @@ import {
   type CaseItemForList,
 } from "@/lib/structured-data";
 
-export const revalidate = 60;
 const CHANNEL = "flizrWeb";
 const SUPPORTED_LOCALES = ["en", "de", "pl"];
 

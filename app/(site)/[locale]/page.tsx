@@ -23,7 +23,8 @@ import { getAllCases, getAllServicesForChannel, getHomePage, getGlobalData } fro
 import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
-import { resolveImageUrl } from "@1sp/sanity-queries/image";
+import { openGraphIdentity } from "@/lib/open-graph";
+import { sharingImages } from "@/lib/sharing-image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import { getChannel } from "@1sp/site-config/server";
@@ -48,7 +49,6 @@ import {
 } from "@/lib/structured-data";
 
 import HamburgerGradientMenu from "@/components/ui/HamburgerGradientMenu";
-export const revalidate = 60;
 const SUPPORTED_LOCALES = ["en"];
 
 export function generateStaticParams() {
@@ -76,27 +76,18 @@ export async function generateMetadata({
   const title = page.metadata?.title || page.title || "Home";
   const description =
     page.metadata?.description || SITE_BRAND.seo.defaultDescription;
-  const ogImageUrl = resolveImageUrl(page.metadata?.image, { width: 1200, height: 630 });
-
-  const ogImages = ogImageUrl
-    ? [
-      {
-        url: ogImageUrl,
-        width: 1200,
-        height: 630,
-        alt: title,
-      },
-    ]
-    : [];
+  const ogImages = sharingImages(page.metadata?.image, title);
+  const canonical = "/";
 
   return {
     title,
     description,
     keywords: page.metadata?.keywords ?? undefined,
     alternates: {
-      canonical: "/",
+      canonical,
     },
     openGraph: {
+      ...openGraphIdentity(canonical),
       title,
       description,
       locale: language,

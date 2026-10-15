@@ -3,8 +3,6 @@
 import React from "react";
 import { useParams } from "next/navigation";
 import Button2 from "@renaissance/components/ui/Button2";
-import { client } from "@1sp/sanity-queries/client";
-import { UNIT_LOGO_FLOAT_QUERY } from "@1sp/sanity-queries/groq";
 import { assetUrl } from "@1sp/utils/cloudinary";
 import type { CloudinaryAsset } from "@1sp/sanity-types";
 import { hasVisibleText } from "@1sp/utils/text-content";
@@ -228,11 +226,14 @@ interface PageBuilderPersonioJobsProps {
     hideFromNav?: boolean;
   };
   language?: string;
+  /** Unit logos for the cards and the unit filter, loaded on the server. */
+  units?: Unit[];
 }
 
 function PageBuilderPersonioJobs({
   data,
   language: propLanguage,
+  units = [],
 }: PageBuilderPersonioJobsProps) {
   const params = useParams();
   const language = propLanguage || (params?.locale as string) || "en";
@@ -257,7 +258,6 @@ function PageBuilderPersonioJobs({
   } = data || {};
 
   const [jobs, setJobs] = React.useState<PersonioJob[]>([]);
-  const [units, setUnits] = React.useState<Unit[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
   const [selectedUnitId, setSelectedUnitId] = React.useState<string>("all");
@@ -302,25 +302,7 @@ function PageBuilderPersonioJobs({
       }
     }
 
-    // Unit logos only decorate the cards and feed the unit filter, so a
-    // failed Sanity request must not hide the job list.
-    async function loadUnits() {
-      try {
-        const fetchedUnits = await client.fetch<Unit[]>(
-          UNIT_LOGO_FLOAT_QUERY,
-          { language, maxItems: 200 },
-          { next: { revalidate: 300 } }
-        );
-        if (controller.signal.aborted) return;
-        setUnits(Array.isArray(fetchedUnits) ? fetchedUnits : []);
-      } catch {
-        if (controller.signal.aborted) return;
-        setUnits([]);
-      }
-    }
-
     loadJobs();
-    loadUnits();
 
     return () => controller.abort();
   }, [maxItems, onlyPublished, language]);

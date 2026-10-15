@@ -286,6 +286,16 @@ async function handleRevalidation(body: SanityWebhookBody) {
             pushPath("/", "layout");
     }
 
+    // Published reads stay cached until this webhook runs (the timer in
+    // `cache-policy.ts` is only a fallback), so every publish expires the
+    // whole site through the root layout's implicit tag. That also covers
+    // references and fetch tags the switch above does not know. Pages
+    // rebuild on their next visit, so a burst of publishes costs at most one
+    // rebuild per visited page.
+    if (!revalidatedPaths.includes("/ (layout)")) {
+        pushPath("/", "layout");
+    }
+
     // Log what was revalidated for debugging
     console.log(`[Revalidate] Tags: [${revalidatedTags.join(", ")}]`);
     if (revalidatedPaths.length > 0) {

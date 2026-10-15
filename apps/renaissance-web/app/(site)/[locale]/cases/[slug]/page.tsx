@@ -38,8 +38,6 @@ import {
   CANONICAL_URL,
 } from "@renaissance/lib/structured-data";
 
-export const revalidate = 60;
-
 // Allow new case studies to be rendered on-demand (ISR)
 export const dynamicParams = true;
 const SUPPORTED_LOCALES = new Set<string>(getSiteConfig("renaissanceWeb").locales);

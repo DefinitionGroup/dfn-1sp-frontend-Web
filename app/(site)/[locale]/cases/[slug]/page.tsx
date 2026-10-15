@@ -30,6 +30,8 @@ import CaseStudyPageClient from "./CaseStudyPageClient";
 import SiteWrapper from "@/components/SiteWrapper";
 import type { Metadata } from "next";
 import { getChannel } from "@1sp/site-config/server";
+import { openGraphIdentity } from "@/lib/open-graph";
+import { sharingImages } from "@/lib/sharing-image";
 import {
   JsonLdScript,
   generateCaseStudyJsonLd,
@@ -37,8 +39,6 @@ import {
   getBreadcrumbLabel,
   CANONICAL_URL,
 } from "@/lib/structured-data";
-
-export const revalidate = 60;
 
 // Allow new case studies to be rendered on-demand (ISR)
 export const dynamicParams = true;
@@ -95,25 +95,18 @@ export async function generateMetadata({
     caseStudy.seo?.description ?? caseStudy.description ??
     `${caseStudy.title}${caseStudy.client?.name ? ` — ${caseStudy.client.name}` : ""} | Case Study`);
 
-  // Use mainImageUrl (Cloudinary secure_url) for OG image
-  const ogImages = caseStudy.mainImageUrl
-    ? [
-        {
-          url: caseStudy.mainImageUrl,
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ]
-    : [];
+  // Main image (Cloudinary secure_url) cropped to 1200×630 for OG
+  const ogImages = sharingImages(caseStudy.mainImageUrl, title);
+  const canonical = `/cases/${slug}`;
 
   return {
     title,
     description,
     alternates: {
-      canonical: `/cases/${slug}`,
+      canonical,
     },
     openGraph: {
+      ...openGraphIdentity(canonical),
       title,
       description,
       locale: language,

@@ -13,6 +13,7 @@
     "dev:flzr": "pnpm --filter @1sp/flzr-web dev",
     "dev:renaissance": "pnpm --filter @1sp/renaissance-web exec next dev --turbopack -p 3003",
     "doctor:sanity": "node --env-file=.env --env-file=.env.local scripts/sanity-doctor.mjs",
+    "check:1sp-dataset-switch": "node scripts/compare-1sp-datasets.mjs",
     "doctor:sanity-capacity": "sanity exec scripts/sanity-capacity.ts --with-user-token",
     "doctor:translations": "node --experimental-strip-types --env-file=.env --env-file=.env.local scripts/sanity-translation-audit.mjs",
     "seed:msm-units": "node --env-file=.env --env-file=.env.local scripts/seed-msm-units.mjs",
@@ -26,6 +27,9 @@
     "prepare:renaissance-figma-drafts": "sanity exec scripts/prepare-renaissance-figma-drafts.ts --with-user-token",
     "import:renaissance-x-posts": "sanity exec scripts/renaissance-x-posts-import.ts --with-user-token",
     "backup:sanity-documents": "sanity exec scripts/backup-sanity-documents.ts --with-user-token",
+    "test:cache-policy": "tsx --test scripts/sanity-cache-policy.test.ts",
+    "test:revalidate-sites": "tsx --test scripts/revalidate-sites.test.ts",
+    "test:sharing-image": "tsx --test scripts/sharing-image.test.ts",
     "test:presentation": "tsx --test scripts/presentation-resolvers.test.ts scripts/visual-editing-config.test.ts",
     "test:deployment": "node --experimental-strip-types --test scripts/deployment-tier.test.mjs scripts/request-security.test.mjs scripts/vercel-ignore.test.mjs",
     "test:security": "node --experimental-strip-types --test scripts/request-security.test.mjs",
@@ -53,6 +57,7 @@
     "@sanity/client": "^7.26.2",
     "@sanity/document-internationalization": "^6.2.14",
     "@sanity/image-url": "^2.1.1",
+    "@sanity/language-filter": "^5.0.5",
     "@sanity/vision": "^6.3.0",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
@@ -67,15 +72,16 @@
     "react-dom": "19.2.7",
     "sanity": "^6.3.0",
     "sanity-plugin-cloudinary": "^2.0.7",
+    "sanity-plugin-internationalized-array": "^5.1.14",
     "styled-components": "^6.3.9",
     "tailwind-merge": "^3.3.1",
     "three": "^0.181.2",
-    "three-globe": "^2.45.0",
-    "sanity-plugin-internationalized-array": "^5.1.14",
-    "@sanity/language-filter": "^5.0.5"
+    "three-globe": "^2.45.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@sanity/blueprints": "^0.28.0",
+    "@sanity/functions": "^1.9.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -84,8 +90,8 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
     "tailwindcss": "^4",
-    "tw-animate-css": "^1.3.6",
     "tsx": "^4.23.0",
+    "tw-animate-css": "^1.3.6",
     "typescript": "^5"
   }
 }

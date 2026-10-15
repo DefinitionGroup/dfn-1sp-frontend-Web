@@ -8,7 +8,6 @@ import MsmUnitPage from "@msm/components/units/MsmUnitPage";
 import type { MsmUnitDetail, MsmUnitSummary } from "@msm/components/units/types";
 import { generateBreadcrumbJsonLd } from "@/lib/structured-data";
 
-export const revalidate = 60;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {

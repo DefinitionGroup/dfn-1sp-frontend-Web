@@ -4,6 +4,7 @@ import {
   DEFAULT_CHANNEL,
   type Channel,
   getChannelFromEnv,
+  hasHostChannelMapping,
   isKnownChannel,
 } from "./index";
 
@@ -15,6 +16,9 @@ import {
  *  2. `channel` cookie — set by middleware via host mapping, or manually for dev.
  *  3. `DEFAULT_CHANNEL` — preserves current 1sp-only behavior.
  *
+ * Reading the cookie makes every calling page render per request, so it is
+ * only read when a host map can have set it (or in local dev).
+ *
  * Async because Next 15's `cookies()` returns a Promise. Safe to call from
  * server components and route handlers. NOT safe to call from
  * `generateStaticParams` or top-level module code — use `getChannelFromEnv()`
@@ -24,6 +28,10 @@ export async function getChannel(): Promise<Channel> {
   const fromEnv = process.env.NEXT_PUBLIC_CHANNEL?.trim();
   if (isKnownChannel(fromEnv)) {
     return fromEnv;
+  }
+
+  if (!hasHostChannelMapping() && process.env.NODE_ENV !== "development") {
+    return DEFAULT_CHANNEL;
   }
 
   try {
