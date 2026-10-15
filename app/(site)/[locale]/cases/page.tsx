@@ -13,7 +13,7 @@ import { getPageBySlug, getAllCases } from "@1sp/sanity-queries";
 import { PageBuilder } from "@/components/PageBuilder";
 import NotFound from "@/components/ui/not-found";
 import SiteWrapper from "@/components/SiteWrapper";
-import { resolveImageUrl } from "@1sp/sanity-queries/image";
+import { sharingImages, sharingImageUrl } from "@/lib/sharing-image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import { getChannel } from "@1sp/site-config/server";
@@ -46,18 +46,7 @@ export async function generateMetadata({
 
   const title = page?.metadata?.title || "Cases";
   const description = page?.metadata?.description;
-  const ogImageUrl = resolveImageUrl(page?.metadata?.image, { width: 1200, height: 630 });
-
-  const ogImages = ogImageUrl
-    ? [
-      {
-        url: ogImageUrl,
-        width: 1200,
-        height: 630,
-        alt: title,
-      },
-    ]
-    : [];
+  const ogImages = sharingImages(page?.metadata?.image, title);
 
   return {
     title,
@@ -114,7 +103,7 @@ export default async function CasesPage({
     allCaseItems,
   );
   const itemListId = `${CANONICAL_URL}/cases#case-list`;
-  const ogImageUrl = resolveImageUrl(page?.metadata?.image, { width: 1200, height: 630 });
+  const ogImageUrl = sharingImageUrl(page?.metadata?.image);
 
   // LCP optimization: preload hero poster image
   const heroPreload = getHeroPreloadData(page?.content as any[] | undefined);

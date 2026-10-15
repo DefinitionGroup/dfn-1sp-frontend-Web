@@ -29,6 +29,7 @@
     "backup:sanity-documents": "sanity exec scripts/backup-sanity-documents.ts --with-user-token",
     "test:cache-policy": "tsx --test scripts/sanity-cache-policy.test.ts",
     "test:revalidate-sites": "tsx --test scripts/revalidate-sites.test.ts",
+    "test:sharing-image": "tsx --test scripts/sharing-image.test.ts",
     "test:presentation": "tsx --test scripts/presentation-resolvers.test.ts scripts/visual-editing-config.test.ts",
     "test:deployment": "node --experimental-strip-types --test scripts/deployment-tier.test.mjs scripts/request-security.test.mjs scripts/vercel-ignore.test.mjs",
     "test:security": "node --experimental-strip-types --test scripts/request-security.test.mjs",
