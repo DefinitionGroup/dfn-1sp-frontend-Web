@@ -27,7 +27,7 @@ One Sanity Function, `revalidate-sites`, replaces a webhook per site. On every p
 
 Run these from the repository root (they change the Sanity project, so confirm the scope first):
 
-1. Once per project: `pnpm exec sanity blueprints init --stack-name production --project-id wu6i3y0h`. It creates the remote Stack and the git-ignored `.sanity/blueprint.config.json`; keep the existing `sanity.blueprint.ts` if it asks.
+1. The Stack already exists: "production" `ST-3ekcdmns8k`, created and first deployed on 15 October 2026. Link a fresh checkout to it with `pnpm exec sanity blueprints init . --stack-id ST-3ekcdmns8k --project-id wu6i3y0h`, which writes the git-ignored `.sanity/blueprint.config.json` and keeps `sanity.blueprint.ts`. Do not create another Stack; projects are limited to three.
 2. Deploy or update the function: `pnpm exec sanity blueprints plan`, then `pnpm exec sanity blueprints deploy`.
 3. Give the function each site's secret, the value of that Vercel project's `SANITY_REVALIDATE_SECRET`: `pnpm exec sanity functions env add revalidate-sites REVALIDATE_SECRET_MSM <secret>`. A target without its secret is skipped and logged. If the value is unknown, set a new one on the Vercel project and the function, then redeploy the site.
 4. Publish a document and check `pnpm exec sanity functions logs revalidate-sites`.
