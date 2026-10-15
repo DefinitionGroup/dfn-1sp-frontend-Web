@@ -90,20 +90,22 @@ export default function ChallengeAndSolution({
   badgeSubtitle,
   badgeNumber = "001",
   contentType = "challenges",
-  showContent = true,
+  // The case query spreads each block, so an unset toggle arrives missing
+  // rather than null. Unset has always meant off on 1SP; no `= true` here.
+  showContent,
   challengeDescription,
   challengeTitle,
   challenges = [],
   services = [],
-  showCta = true,
+  showCta,
   ctaHeading,
   ctaParagraph,
   ctaButton,
-  showButton = true,
-  showSolution = true,
+  showButton,
+  showSolution,
   solutionHeadline,
   solution,
-  showGridBackground = true,
+  showGridBackground,
   backgroundColor = "bg-neutral-50",
   paddingY = "32",
   navPointName,
@@ -213,7 +215,7 @@ export default function ChallengeAndSolution({
                       url={
                         ctaButton?.link ? resolveLink(ctaButton.link) : undefined
                       }
-                      showButton={showButton}
+                      showButton={showButton ?? false}
                       align="left"
                     />
                   </div>
