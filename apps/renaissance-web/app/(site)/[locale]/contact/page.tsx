@@ -42,7 +42,6 @@ import {
   RENAISSANCE_CONTACT_TITLE,
 } from "@renaissance/data/contactPageFallback";
 
-export const revalidate = 60;
 const CHANNEL = "renaissanceWeb";
 const SUPPORTED_LOCALES = ["en"];
 

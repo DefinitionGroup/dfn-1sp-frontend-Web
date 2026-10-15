@@ -38,7 +38,6 @@ import {
   getBreadcrumbLabel,
 } from "@/lib/structured-data";
 
-export const revalidate = 60;
 const CHANNEL = "msmWeb";
 const SUPPORTED_LOCALES = getSiteConfig(getChannelFromEnv()).locales;
 

@@ -38,8 +38,6 @@ import {
   getBreadcrumbLabel,
 } from "@/lib/structured-data";
 
-export const revalidate = 60;
-
 // Allow new case studies to be rendered on-demand (ISR)
 export const dynamicParams = true;
 

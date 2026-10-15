@@ -26,6 +26,7 @@
     "prepare:renaissance-figma-drafts": "sanity exec scripts/prepare-renaissance-figma-drafts.ts --with-user-token",
     "import:renaissance-x-posts": "sanity exec scripts/renaissance-x-posts-import.ts --with-user-token",
     "backup:sanity-documents": "sanity exec scripts/backup-sanity-documents.ts --with-user-token",
+    "test:cache-policy": "tsx --test scripts/sanity-cache-policy.test.ts",
     "test:presentation": "tsx --test scripts/presentation-resolvers.test.ts scripts/visual-editing-config.test.ts",
     "test:deployment": "node --experimental-strip-types --test scripts/deployment-tier.test.mjs scripts/request-security.test.mjs scripts/vercel-ignore.test.mjs",
     "test:security": "node --experimental-strip-types --test scripts/request-security.test.mjs",

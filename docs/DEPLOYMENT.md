@@ -16,9 +16,10 @@ Use this guide to establish the target and evidence for a release. It does not d
 2. Compare actual provider settings with repository configuration. Check the app root, source access outside that root, build/install commands, branch filters and environment values without exposing tokens.
 3. Verify compatible schema/query/runtime behavior for the intended data. Run the app build and relevant checks; shared changes also need existing 1SP verification.
 4. If content migration is involved, use its own reviewed backup, dry-run, revision guards, compatibility sequence and rollback plan. A Git push does not publish CMS drafts, and CMS publication does not deploy frontend code.
-5. Deploy within the requested scope. Verify the provider's resulting commit and deployment status independently of the local build and remote Git ref.
-6. Check real routes, media, draft preview where applicable, sitemap, robots, canonical URLs, locale routing and tracking. Preserve preview non-indexing and production release boundaries.
-7. Record the checked project, commit, dataset, time, verification and unresolved limitations in a dated record.
+5. Production sites cache published Sanity content for up to a day ([cache policy](../packages/sanity-queries/src/cache-policy.ts)) and rely on a Sanity webhook to refresh it. Before a production release, confirm a webhook posts to that site's `https://<domain>/api/revalidate` with the project's `SANITY_REVALIDATE_SECRET` as its secret, and that `sanity hook logs` shows 200 responses. Beta, test and preview deployments fall back to a one-hour timer; `SANITY_REVALIDATE_SECONDS` overrides either.
+6. Deploy within the requested scope. Verify the provider's resulting commit and deployment status independently of the local build and remote Git ref.
+7. Check real routes, media, draft preview where applicable, sitemap, robots, canonical URLs, locale routing and tracking. Preserve preview non-indexing and production release boundaries.
+8. Record the checked project, commit, dataset, time, verification and unresolved limitations in a dated record.
 
 ## Current documentation boundaries
 

@@ -1,4 +1,4 @@
-import { client } from "@1sp/sanity-queries/client";
+import { sanityFetch } from "@1sp/sanity-queries/fetch";
 import { SMART_UNITS_GLOBE_QUERY } from "@1sp/sanity-queries/groq";
 import GlobalDataComponent from "@renaissance/components/pagebuilder/pg-GlobalDataComponent";
 
@@ -58,13 +58,11 @@ export default async function SmartUnitsGlobe({
   autoRotate = true,
   autoRotateSpeed = 0.15,
 }: SmartUnitsGlobeProps) {
-  const units = await client.fetch<Unit[]>(
-    SMART_UNITS_GLOBE_QUERY,
-    { language },
-    {
-      next: { revalidate: 60 },
-    }
-  );
+  const { data: units } = await sanityFetch<Unit[]>({
+    query: SMART_UNITS_GLOBE_QUERY,
+    params: { language },
+    tags: ["units"],
+  });
 
   if (units.length === 0) {
     return (

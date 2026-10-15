@@ -4,12 +4,19 @@ import type {Metadata} from 'next';
 import {notFound} from 'next/navigation';
 import Image from 'next/image';
 import {getMsmPerson, msmPath} from '@msm/lib/editorial';
+import {getMsmSeoInventory} from '@msm/lib/seo-inventory';
 import MsmSiteWrapper from '@msm/components/MsmSiteWrapper';
 import CaseGallery from '@msm/components/data/data-CaseGallery';
 import Button2 from '@msm/components/ui/Button2';
 
 type Props = {params: Promise<{locale: string; slug: string}>};
-export const revalidate = 60;
+// Prerender every MSM profile; new ones render on first visit and stay cached.
+export const dynamicParams = true;
+export async function generateStaticParams() {
+  const routes = await getMsmSeoInventory();
+  return routes.filter(route => route._type === 'person' && route.slug)
+    .map(route => ({locale: route.language || 'en', slug: route.slug!}));
+}
 export async function generateMetadata({params}: Props): Promise<Metadata> {
   const {locale, slug} = await params;
   const person = await getMsmPerson(slug, locale);

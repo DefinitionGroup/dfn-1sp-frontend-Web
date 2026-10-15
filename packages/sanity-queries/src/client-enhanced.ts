@@ -26,6 +26,7 @@
  * ```
  */
 
+import { resolveRevalidateSeconds } from "./cache-policy";
 import { client } from "./client";
 import { studioUrl } from "./env";
 import type { QueryParams } from "next-sanity";
@@ -39,7 +40,7 @@ import type { QueryParams } from "next-sanity";
  * @param query - GROQ query string
  * @param params - Query parameters
  * @param tags - Array of cache tags
- * @param revalidate - Revalidation time in seconds (default: 60)
+ * @param revalidate - Revalidation time in seconds (default: cache-policy fallback)
  *
  * @example
  * ```typescript
@@ -54,7 +55,7 @@ export async function taggedFetch<T>(
   query: string,
   params: QueryParams = {},
   tags: string[],
-  revalidate: number | false = 60
+  revalidate: number | false = resolveRevalidateSeconds()
 ): Promise<T> {
   return client.fetch<T>(query, params, {
     next: {
@@ -125,7 +126,7 @@ export async function customFetch<T>(
   const {
     useCdn = true,
     perspective = "published",
-    revalidate = 60,
+    revalidate = resolveRevalidateSeconds(),
     tags = [],
     stega = true,
   } = options;

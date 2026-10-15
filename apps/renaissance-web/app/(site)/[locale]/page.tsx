@@ -50,7 +50,6 @@ import {
   CANONICAL_URL,
 } from "@renaissance/lib/structured-data";
 
-export const revalidate = 60;
 const DEFAULT_CHANNEL = "renaissanceWeb";
 const SITE = getSiteConfig(DEFAULT_CHANNEL);
 const SUPPORTED_LOCALES = SITE.locales;

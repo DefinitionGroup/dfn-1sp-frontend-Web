@@ -2,10 +2,13 @@ import "server-only";
 
 import { draftMode } from "next/headers";
 import type { QueryParams } from "next-sanity";
+import { resolveRevalidateSeconds, toRequestTag } from "./cache-policy";
 import { client } from "./client";
 import { studioUrl } from "./env";
 import { resolveSanityFetchClientConfig } from "./fetch-config";
 import { viewerToken } from "./token";
+
+const DEFAULT_REVALIDATE = resolveRevalidateSeconds();
 
 type SanityFetchOptions = {
   query: string;
@@ -29,7 +32,7 @@ export async function sanityFetch<TData = any>({
   query,
   params = {},
   tags = [],
-  revalidate = 60,
+  revalidate = DEFAULT_REVALIDATE,
   perspective,
   stega,
 }: SanityFetchOptions): Promise<{ data: TData }> {
@@ -46,6 +49,7 @@ export async function sanityFetch<TData = any>({
   );
 
   const data = await configuredClient.fetch<TData>(query, params, {
+    tag: toRequestTag(tags[0]) ?? "query",
     next: {
       revalidate,
       tags,

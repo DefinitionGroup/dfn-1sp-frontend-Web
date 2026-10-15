@@ -299,7 +299,7 @@ const UnitLogoGrid = dynamic(
   }
 );
 const PageBuilderPersonioJobs = dynamic(
-  () => import("./pagebuilder/pg-PageBuilderPersonioJobs"),
+  () => import("./pagebuilder/server/PersonioJobsBlock"),
   {
     loading: () => <ComponentLoader />,
     ssr: true,
