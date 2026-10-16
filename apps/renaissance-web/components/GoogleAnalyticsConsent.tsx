@@ -29,10 +29,13 @@ export default function GoogleAnalyticsConsent({
       if (document.getElementById(GTAG_SCRIPT_ID)) return;
 
       window.dataLayer = window.dataLayer || [];
+      // gtag.js only processes Arguments objects. A rest-parameter array is
+      // silently ignored, so `config` never runs and no _ga cookie is set.
       window.gtag =
         window.gtag ||
-        function gtag(...args: unknown[]) {
-          window.dataLayer?.push(args);
+        function gtag() {
+          // eslint-disable-next-line prefer-rest-params
+          window.dataLayer?.push(arguments);
         };
 
       window.gtag("js", new Date());
