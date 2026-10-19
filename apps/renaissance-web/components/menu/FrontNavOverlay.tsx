@@ -203,12 +203,14 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
 
   // The nav starts in page flow, compacts into the floating treatment after
   // 64px, stays visible while scrolling, then hides after three idle seconds.
+  // The Renaissance desktop bar ignores the idle hide and stays pinned.
   const { scrollY } = useScroll();
   const [navState, setNavState] = React.useState<NavState>("expanded");
   const lastScrollY = React.useRef(0);
   const navIdleTimer = React.useRef<number | null>(null);
   const isExpanded = navState === "expanded";
   const isNavVisible = navState !== "hidden";
+  const isDesktopNavVisible = isRenaissanceChannel || isNavVisible;
 
   function clearNavIdleTimer() {
     if (navIdleTimer.current !== null) {
@@ -496,8 +498,8 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
           layout
           initial={false}
           animate={{
-            opacity: isNavVisible ? 1 : 0,
-            y: isNavVisible ? 0 : -96,
+            opacity: isDesktopNavVisible ? 1 : 0,
+            y: isDesktopNavVisible ? 0 : -96,
           }}
           transition={{
             layout: {
@@ -508,13 +510,13 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             opacity: { duration: 0.32, ease: "easeOut" },
             y: { duration: 0.42, ease: [0.22, 1, 0.36, 1] },
           }}
-          aria-hidden={!isNavVisible}
-          inert={!isNavVisible}
-          data-nav-state={navState}
+          aria-hidden={!isDesktopNavVisible}
+          inert={!isDesktopNavVisible}
+          data-nav-state={isDesktopNavVisible && !isExpanded ? "compact" : navState}
           data-nav-surface={isRenaissanceScrolled ? "frosted" : "transparent"}
           className={`floating-nav z-99999 grid items-center grid-cols-[auto_1fr_auto] gap-8 rounded-control py-2 transition-[height,background-color,border-color,box-shadow,backdrop-filter,color] duration-300 ${
             isExpanded ? "h-16 min-w-0 flex-1 px-6" : "h-14 px-5"
-          } ${isNavVisible ? "pointer-events-auto" : "pointer-events-none"} ${desktopSurfaceClass} ${navTextColor} ${className}`}
+          } ${isDesktopNavVisible ? "pointer-events-auto" : "pointer-events-none"} ${desktopSurfaceClass} ${navTextColor} ${className}`}
         >
           <div className="flex items-center justify-start">
             <motion.div
