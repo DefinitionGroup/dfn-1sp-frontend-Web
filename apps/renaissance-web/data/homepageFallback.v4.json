@@ -1243,25 +1243,25 @@
     "cards": [
       {
         "_key": "join-content-creators",
-        "_type": "cta",
+        "_type": "registerCard",
+        "buttonText": "Click here to register as a content creator",
         "link": {
           "_type": "link",
           "externalUrl": "/contact#registration",
           "linkType": "external"
         },
-        "text": "Content creators",
-        "variant": "black"
+        "text": "Content creators"
       },
       {
         "_key": "join-media",
-        "_type": "cta",
+        "_type": "registerCard",
+        "buttonText": "Click here to register as media",
         "link": {
           "_type": "link",
           "externalUrl": "/contact#registration",
           "linkType": "external"
         },
-        "text": "Media",
-        "variant": "black"
+        "text": "Media"
       }
     ],
     "description": "If you're a content creator, register to get early access and review codes for our clients' upcoming titles.",

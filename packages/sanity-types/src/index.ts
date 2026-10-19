@@ -483,7 +483,9 @@ export interface RenaissanceAwardLogoWall {
 
 export interface RegisterCard extends CTA {
     _key?: string;
-    _type?: "cta";
+    /** "cta" for cards saved before registerCard existed. */
+    _type?: "registerCard" | "cta";
+    buttonText?: string;
 }
 
 export interface NewsCTABlock {
