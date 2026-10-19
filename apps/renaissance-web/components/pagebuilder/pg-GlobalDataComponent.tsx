@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "motion/react";
 import dynamic from "next/dynamic";
 import { hasVisibleText } from "@1sp/utils/text-content";
+import type { GlobeConfig } from "@renaissance/components/ui/globe";
 
 const World = dynamic(
   () => import("@renaissance/components/ui/globe").then((m) => m.World),
@@ -29,33 +30,6 @@ interface Arc {
   labelOffsetY?: number;
 }
 
-interface GlobeConfig {
-  pointSize: number;
-  globeColor: string;
-  showAtmosphere: boolean;
-  atmosphereColor: string;
-  atmosphereAltitude: number;
-  emissive: string;
-  emissiveIntensity: number;
-  shininess: number;
-  polygonColor: string;
-  ambientLight: string;
-  directionalLeftLight: string;
-  directionalTopLight: string;
-  pointLight: string;
-  arcStroke?: number;
-  arcTime: number;
-  arcLength: number;
-  rings: number;
-  maxRings: number;
-  initialPosition: { lat: number; lng: number };
-  autoRotate: boolean;
-  autoRotateSpeed: number;
-  verticalOffset?: number;
-  cameraRadius?: number;
-  fixedLabelSize?: boolean;
-}
-
 interface GlobalDataComponentProps {
   arcs: Arc[];
   globeConfig: GlobeConfig;
@@ -63,6 +37,8 @@ interface GlobalDataComponentProps {
   description?: string;
   backgroundTone?: "default" | "muted";
   layout?: "centered" | "split";
+  /** The section badge overlays the block from tablet up; start the text below it. */
+  clearSectionBadge?: boolean;
 }
 
 export default function GlobalDataComponent({
@@ -72,6 +48,7 @@ export default function GlobalDataComponent({
   description,
   backgroundTone = "default",
   layout = "centered",
+  clearSectionBadge = false,
 }: GlobalDataComponentProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [shouldLoadGlobe, setShouldLoadGlobe] = useState(false);
@@ -93,54 +70,52 @@ export default function GlobalDataComponent({
   }, [isInView]);
 
   if (layout === "split") {
+    const muted = backgroundTone === "muted";
     return (
       <div
         ref={containerRef}
         data-globe-layout="split"
-        className={`relative grid w-full items-center gap-8 px-5 py-12 sm:px-8 md:grid-cols-12 md:gap-10 md:py-16 lg:px-12 ${
-          backgroundTone === "muted" ? "bg-renaissance-mist" : "bg-renaissance-paper"
-        }`}
+        className={`relative w-full overflow-hidden ${muted ? "bg-renaissance-mist" : "bg-renaissance-paper"}`}
       >
-        <div className="relative z-10 min-w-0 md:col-span-5 md:col-start-1 md:row-start-1">
-          {hasVisibleText(title) ? (
-            <h2 className="renaissance-display max-w-[16ch] text-[clamp(2.7rem,3.5vw,3.75rem)] font-bold leading-[0.95] tracking-[-0.025em] text-renaissance-ink">
-              {title}
-            </h2>
-          ) : null}
-          {hasVisibleText(description) ? (
-            <p className="mt-6 max-w-[38ch] text-[clamp(1.05rem,1.3vw,1.375rem)] leading-[1.4] text-renaissance-ink/75">
-              {description}
-            </p>
-          ) : null}
-        </div>
+        {/* The globe fills the whole block behind the copy. z-0 keeps its
+            city labels in this layer, under the text. */}
         <div
-          className="relative aspect-[9/4] min-w-0 md:col-span-7 md:col-start-6 md:row-start-1"
+          data-globe-viewport
+          data-globe-arc-count={arcs.length}
+          data-globe-label-count={
+            arcs.filter((arc) => arc.label.trim().length > 0).length
+          }
+          className="absolute inset-0 z-0"
         >
-          <div
-            data-globe-viewport
-            data-globe-arc-count={arcs.length}
-            data-globe-label-count={
-              arcs.filter((arc) => arc.label.trim().length > 0).length
-            }
-            className="absolute inset-0 overflow-hidden md:-bottom-16 md:-top-16"
-          >
-            <div className="absolute inset-x-0 top-0 aspect-square md:translate-y-[5%]">
-              {shouldLoadGlobe ? (
-                <World data={arcs} globeConfig={globeConfig} />
-              ) : (
-                <div className="absolute inset-0 grid place-items-center" aria-hidden="true">
-                  <div className="h-64 w-64 rounded-full bg-renaissance-accent/10" />
-                </div>
-              )}
+          {shouldLoadGlobe ? (
+            <World data={arcs} globeConfig={globeConfig} />
+          ) : (
+            <div className="absolute inset-0 grid place-items-center md:pl-[40%]" aria-hidden="true">
+              <div className="h-64 w-64 rounded-full bg-renaissance-accent/10" />
             </div>
-            <div
-              aria-hidden="true"
-              className={`pointer-events-none absolute inset-0 z-10 bg-gradient-to-b from-transparent from-[68%] ${
-                backgroundTone === "muted"
-                  ? "to-renaissance-mist"
-                  : "to-renaissance-paper"
-              }`}
-            />
+          )}
+          {/* Keeps the copy legible where the zoomed globe passes under it. */}
+          <div
+            aria-hidden="true"
+            className={`pointer-events-none absolute inset-0 bg-gradient-to-b from-25% via-45% to-65% md:bg-gradient-to-r md:from-20% md:via-35% md:to-55% ${
+              muted
+                ? "from-renaissance-mist via-renaissance-mist/70 to-transparent"
+                : "from-renaissance-paper via-renaissance-paper/70 to-transparent"
+            }`}
+          />
+        </div>
+        <div className="pointer-events-none relative z-10 grid min-h-[40rem] content-start px-5 py-12 sm:px-8 md:grid-cols-12 md:py-16 lg:px-12">
+          <div className={`pointer-events-auto min-w-0 md:col-span-5 ${clearSectionBadge ? "md:pt-24" : ""}`}>
+            {hasVisibleText(title) ? (
+              <h2 className="renaissance-display max-w-[16ch] text-[clamp(2.7rem,3.5vw,3.75rem)] font-bold leading-[0.95] tracking-[-0.025em] text-renaissance-ink">
+                {title}
+              </h2>
+            ) : null}
+            {hasVisibleText(description) ? (
+              <p className="mt-6 max-w-[38ch] text-[clamp(1.05rem,1.3vw,1.375rem)] leading-[1.4] text-renaissance-ink/75">
+                {description}
+              </p>
+            ) : null}
           </div>
         </div>
       </div>

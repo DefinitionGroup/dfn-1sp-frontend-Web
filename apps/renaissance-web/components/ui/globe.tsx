@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type MutableRefObject } from "react";
 import {
   BufferAttribute,
   BufferGeometry,
@@ -14,6 +14,7 @@ import ThreeGlobe from "three-globe";
 import { useThree, Canvas, extend, useFrame } from "@react-three/fiber";
 import { Html, Line, OrbitControls } from "@react-three/drei";
 import { cellToLatLng, polygonToCells } from "h3-js";
+import { useReducedMotion } from "motion/react";
 import countries from "@/data/globe.json";
 declare module "@react-three/fiber" {
   interface ThreeElements {
@@ -39,6 +40,11 @@ const LABEL_CONNECTOR_START_ALTITUDE = 0.012;
 const LABEL_ALTITUDE = 0.08;
 const LABEL_HORIZONTAL_OFFSET = 5;
 const LABEL_VERTICAL_OFFSET = 4;
+const LABEL_COLOR = "#245e66";
+const ACTIVE_LABEL_COLOR = "#f49a24";
+const ACTIVE_LABEL_TEXT = "#163f45";
+// Below this zoom level (0 = far, 1 = focused) only the focused city keeps its label.
+const LABEL_ZOOM_THRESHOLD = 0.6;
 
 /** Camera position facing a lat/lng point using ThreeGlobe's coordinate
  *  orientation, so the configured location lands in the opening view. */
@@ -91,9 +97,32 @@ export type GlobeConfig = {
   autoRotate?: boolean;
   autoRotateSpeed?: number;
   verticalOffset?: number;
+  /** Where the globe centre sits, as a fraction of the canvas size from its
+   *  middle (x to the right, y down). Overrides verticalOffset. */
+  framing?: GlobeFraming;
+  /** Framing for canvases narrower than 768 px. */
+  mobileFraming?: GlobeFraming;
   cameraRadius?: number;
   fixedLabelSize?: boolean;
+  tour?: GlobeTour;
 };
+
+export type GlobeFraming = { x: number; y: number };
+
+export type GlobeTourStop = { lat: number; lng: number; label: string };
+
+/** Camera flight that zooms into each stop, then zooms out while spinning to the next. */
+export type GlobeTour = {
+  stops: GlobeTourStop[];
+  /** Camera distance from the centre while a stop is in focus (globe radius 100). */
+  nearRadius?: number;
+  /** Camera distance at the top of each hop; defaults to cameraRadius. */
+  farRadius?: number;
+  dwellMs?: number;
+  travelMs?: number;
+};
+
+type TourState = { activeLabel: string | null; zoom: number };
 
 interface WorldProps {
   globeConfig: GlobeConfig;
@@ -378,7 +407,14 @@ function latLngToVector3(lat: number, lng: number, altitude = 0.05) {
   );
 }
 
-function ArcLabels({ data, fixedLabelSize = false }: Pick<WorldProps, "data"> & { fixedLabelSize?: boolean }) {
+function ArcLabels({
+  data,
+  fixedLabelSize = false,
+  tourState,
+}: Pick<WorldProps, "data"> & {
+  fixedLabelSize?: boolean;
+  tourState?: MutableRefObject<TourState>;
+}) {
   const { camera } = useThree();
   const labelRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const labelPoints = useMemo(
@@ -439,14 +475,26 @@ function ArcLabels({ data, fixedLabelSize = false }: Pick<WorldProps, "data"> & 
   useFrame(() => {
     camera.getWorldPosition(cameraWorldPosition);
     cameraDirection.copy(cameraWorldPosition).normalize();
+    // A point is in front of the horizon when its angle to the camera is
+    // within acos(R / d); a close camera sees much less than a hemisphere.
+    const horizon = Math.min(1, GLOBE_RADIUS / cameraWorldPosition.length());
     const points = labelPointsRef.current;
+    const tour = tourState?.current;
     for (const point of points) {
       const element = labelRefs.current[point.key];
       if (!element) continue;
-      const isVisible = cameraDirection.dot(point.normal) > 0;
+      const isActive = tour?.activeLabel === point.text;
+      const isVisible =
+        cameraDirection.dot(point.normal) > horizon &&
+        (!tour || isActive || tour.zoom >= LABEL_ZOOM_THRESHOLD);
       element.style.opacity = isVisible ? "1" : "0";
       element.style.visibility = isVisible ? "visible" : "hidden";
       element.style.pointerEvents = isVisible ? "auto" : "none";
+      const label = element.firstElementChild as HTMLElement | null;
+      if (label) {
+        label.style.backgroundColor = isActive ? ACTIVE_LABEL_COLOR : LABEL_COLOR;
+        label.style.color = isActive ? ACTIVE_LABEL_TEXT : "#ffffff";
+      }
     }
   });
 
@@ -481,7 +529,7 @@ function ArcLabels({ data, fixedLabelSize = false }: Pick<WorldProps, "data"> & 
                 color: "#ffffff",
                 fontWeight: 600,
                 fontSize: fixedLabelSize ? "0.6875rem" : "1.125rem",
-                backgroundColor: "#245e66",
+                backgroundColor: LABEL_COLOR,
                 padding: "0.195rem 0.45rem",
                 borderRadius: "var(--radius-control)",
                 textTransform: "uppercase",
@@ -511,30 +559,34 @@ export function WebGLRendererConfig() {
 }
 
 function CameraAspectController({
-  verticalOffset,
+  framing,
+  mobileFraming,
 }: {
-  verticalOffset: number;
+  framing: GlobeFraming;
+  mobileFraming?: GlobeFraming;
 }) {
   const { camera, size } = useThree();
+  const frame = size.width < 768 && mobileFraming ? mobileFraming : framing;
 
   useEffect(() => {
     const perspectiveCamera = camera as PerspectiveCamera;
     perspectiveCamera.aspect = size.width / size.height;
     perspectiveCamera.clearViewOffset();
 
-    if (verticalOffset !== 0) {
+    if (frame.x !== 0 || frame.y !== 0) {
+      // An off-axis view window moves the globe without moving the camera.
       perspectiveCamera.setViewOffset(
         size.width,
         size.height,
-        0,
-        -size.height * verticalOffset,
+        -size.width * frame.x,
+        -size.height * frame.y,
         size.width,
         size.height
       );
     } else {
       perspectiveCamera.updateProjectionMatrix();
     }
-  }, [camera, size, verticalOffset]);
+  }, [camera, size, frame.x, frame.y]);
 
   return null;
 }
@@ -559,25 +611,138 @@ function CameraInitialView({
   return null;
 }
 
+function surfaceDirection(lat: number, lng: number) {
+  const [x, y, z] = latLngToCameraPosition(lat, lng, 1);
+  return new Vector3(x, y, z);
+}
+
+function easeInOutCubic(t: number) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+/** Great-circle interpolation between two unit vectors. */
+function slerpDirection(from: Vector3, to: Vector3, t: number, target: Vector3) {
+  const angle = Math.acos(Math.min(1, Math.max(-1, from.dot(to))));
+  if (angle < 1e-4) return target.copy(from).lerp(to, t).normalize();
+  const sin = Math.sin(angle);
+  return target
+    .copy(from)
+    .multiplyScalar(Math.sin((1 - t) * angle) / sin)
+    .addScaledVector(to, Math.sin(t * angle) / sin);
+}
+
+function CameraTour({
+  tour,
+  initialPosition,
+  cameraRadius,
+  onProgress,
+}: {
+  tour: GlobeTour;
+  initialPosition: { lat: number; lng: number };
+  cameraRadius: number;
+  onProgress: (activeLabel: string | null, zoom: number) => void;
+}) {
+  const { camera } = useThree();
+  const elapsed = useRef(0);
+  const scratch = useRef<Vector3 | null>(null);
+  const stops = useMemo(
+    () => tour.stops.map((stop) => ({ ...stop, direction: surfaceDirection(stop.lat, stop.lng) })),
+    [tour.stops],
+  );
+  const start = useMemo(
+    () => surfaceDirection(initialPosition.lat, initialPosition.lng),
+    [initialPosition.lat, initialPosition.lng],
+  );
+  const near = tour.nearRadius ?? 150;
+  const far = tour.farRadius ?? cameraRadius;
+  const dwell = (tour.dwellMs ?? 2600) / 1000;
+  const travel = (tour.travelMs ?? 3400) / 1000;
+
+  useFrame((_, delta) => {
+    if (stops.length === 0) return;
+    const direction = (scratch.current ??= new Vector3());
+    // Clamp long gaps (a background tab) so the flight resumes where it was.
+    elapsed.current += Math.min(delta, 0.1);
+    let radius: number;
+    let zoom: number;
+    let activeLabel: string | null = null;
+
+    if (elapsed.current < travel) {
+      // Opening move: from the wide default view into the first stop.
+      const progress = easeInOutCubic(elapsed.current / travel);
+      slerpDirection(start, stops[0].direction, progress, direction);
+      zoom = progress;
+      radius = far + (near - far) * zoom;
+    } else {
+      const leg = dwell + travel;
+      const time = (elapsed.current - travel) % (leg * stops.length);
+      const index = Math.floor(time / leg);
+      const local = time - index * leg;
+      const current = stops[index];
+      const next = stops[(index + 1) % stops.length];
+      if (local < dwell) {
+        direction.copy(current.direction);
+        zoom = 1;
+        activeLabel = current.label;
+      } else {
+        const progress = easeInOutCubic((local - dwell) / travel);
+        slerpDirection(current.direction, next.direction, progress, direction);
+        // Out over the first half of the hop, back in over the second.
+        zoom = 1 - Math.sin(Math.PI * progress);
+        activeLabel = progress < 0.5 ? current.label : next.label;
+      }
+      radius = far + (near - far) * zoom;
+    }
+
+    camera.position.copy(direction).multiplyScalar(radius);
+    camera.lookAt(CAMERA_TARGET);
+    onProgress(activeLabel, zoom);
+  });
+
+  return null;
+}
+
 export function World(props: WorldProps) {
   const { globeConfig, data } = props;
   const scene = new Scene();
+  const reducedMotion = useReducedMotion();
+  const tour = !reducedMotion && globeConfig.tour?.stops.length ? globeConfig.tour : undefined;
+  const tourState = useRef<TourState>({ activeLabel: null, zoom: 0 });
+  const reportTour = useCallback((activeLabel: string | null, zoom: number) => {
+    tourState.current = { activeLabel, zoom };
+  }, []);
 
   return (
     <Canvas scene={scene} camera={new PerspectiveCamera(50, aspect, 0.1, 2000)}>
       <WebGLRendererConfig />
       <CameraAspectController
-        verticalOffset={globeConfig.verticalOffset ?? 0}
+        framing={globeConfig.framing ?? { x: 0, y: globeConfig.verticalOffset ?? 0 }}
+        mobileFraming={globeConfig.mobileFraming}
       />
       <CameraInitialView initialPosition={globeConfig.initialPosition} cameraRadius={globeConfig.cameraRadius} />
       <ambientLight color={globeConfig.ambientLight} intensity={1.8} />
 
       <Globe {...props} />
       <LandDotPattern color={globeConfig.polygonColor ?? "#245e66"} />
-      <ArcLabels data={data} fixedLabelSize={globeConfig.fixedLabelSize} />
+      {tour ? (
+        <CameraTour
+          tour={tour}
+          initialPosition={globeConfig.initialPosition ?? DEFAULT_VIEW}
+          cameraRadius={globeConfig.cameraRadius ?? CAMERA_RADIUS}
+          onProgress={reportTour}
+        />
+      ) : null}
+      <ArcLabels
+        data={data}
+        fixedLabelSize={globeConfig.fixedLabelSize}
+        tourState={tour ? tourState : undefined}
+      />
       {/* enableZoom=false: distance is pinned anyway (min === max), and a
           wheel listener here would swallow page scrolling over the globe */}
+      {/* The tour drives the camera itself; orbit controls would clamp its
+          distance and latitude every frame. */}
       <OrbitControls
+        enabled={!tour}
         enablePan={false}
         enableZoom={false}
         minDistance={globeConfig.cameraRadius ?? CAMERA_RADIUS}
