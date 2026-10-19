@@ -6,7 +6,11 @@ import { stegaClean } from "next-sanity";
 import {
   AnimatePresence,
   motion,
+  useAnimationFrame,
+  useInView,
+  useMotionValue,
   useReducedMotion,
+  useSpring,
   type Variants,
 } from "motion/react";
 import type {
@@ -14,7 +18,8 @@ import type {
   ClientLogoItem,
   RenaissanceSectionRole,
 } from "@1sp/sanity-types";
-import { assetUrl } from "@1sp/utils/cloudinary";
+import { assetUrl, ctaToButtonProps } from "@1sp/utils/cloudinary";
+import Button2 from "@renaissance/components/ui/Button2";
 import Eyebrow from "@renaissance/components/ui/Eyebrow";
 import { hasVisibleText } from "@1sp/utils/text-content";
 
@@ -31,6 +36,14 @@ const SWAP_INTERVAL_MS: Record<string, number> = {
   normal: 1800,
   fast: 1500,
 };
+
+const TICKER_PX_PER_SECOND: Record<string, number> = {
+  slow: 32,
+  normal: 48,
+  fast: 72,
+};
+// Hovering eases the tape down to this fraction of its speed, not to a stop.
+const TICKER_HOVER_SPEED = 0.2;
 
 const GRID_REVEAL_VARIANTS: Variants = {
   hidden: {},
@@ -288,6 +301,130 @@ function LogoSwapGrid({
   );
 }
 
+function TickerLogo({
+  logo,
+  grayscale,
+  decorative = false,
+}: {
+  logo: LogoEntry;
+  grayscale: boolean;
+  decorative?: boolean;
+}) {
+  return (
+    <li className="group/logo relative h-14 w-36 shrink-0 md:h-20 md:w-44">
+      <Image
+        src={logo.src}
+        alt={decorative ? "" : logo.alt || logo.name}
+        fill
+        sizes="(min-width: 768px) 176px, 144px"
+        className={`object-contain p-1 transition-[filter,opacity] duration-300 ${
+          grayscale
+            ? "grayscale opacity-70 group-hover/logo:grayscale-0 group-hover/logo:opacity-100"
+            : ""
+        }`}
+      />
+    </li>
+  );
+}
+
+/**
+ * Endless tape of every logo. The track holds the set several times and is
+ * moved by one set's width per loop, so the wrap is seamless. Hover eases the
+ * speed down through a spring instead of pausing.
+ */
+function LogoTicker({
+  logos,
+  speed,
+  grayscale,
+}: {
+  logos: LogoEntry[];
+  speed: string;
+  grayscale: boolean;
+}) {
+  const viewportRef = React.useRef<HTMLDivElement>(null);
+  const firstSetRef = React.useRef<HTMLUListElement>(null);
+  const setWidthRef = React.useRef(0);
+  const [copies, setCopies] = React.useState(2);
+  const shouldReduceMotion = useReducedMotion();
+  const isInView = useInView(viewportRef);
+  const x = useMotionValue(0);
+  const speedFactor = useSpring(1, { stiffness: 50, damping: 18 });
+  const pxPerSecond = TICKER_PX_PER_SECOND[speed] ?? TICKER_PX_PER_SECOND.normal;
+
+  // One extra set beyond what fills the viewport keeps the right edge covered
+  // while the track travels a full set width.
+  React.useEffect(() => {
+    const viewport = viewportRef.current;
+    const firstSet = firstSetRef.current;
+    if (!viewport || !firstSet) return;
+
+    const measure = () => {
+      const setWidth = firstSet.getBoundingClientRect().width;
+      setWidthRef.current = setWidth;
+      if (setWidth > 0) {
+        setCopies(Math.max(2, Math.ceil(viewport.clientWidth / setWidth) + 1));
+      }
+    };
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(viewport);
+    observer.observe(firstSet);
+    return () => observer.disconnect();
+  }, [shouldReduceMotion]);
+
+  useAnimationFrame((_, delta) => {
+    const setWidth = setWidthRef.current;
+    if (shouldReduceMotion || !isInView || setWidth === 0) return;
+
+    const next = x.get() - (pxPerSecond * speedFactor.get() * delta) / 1000;
+    x.set(next <= -setWidth ? next + setWidth : next);
+  });
+
+  if (shouldReduceMotion) {
+    return (
+      <ul
+        className="flex flex-wrap justify-center gap-x-6 gap-y-4"
+        aria-label="Renaissance clients"
+      >
+        {logos.map((logo) => (
+          <TickerLogo key={logo.id} logo={logo} grayscale={grayscale} />
+        ))}
+      </ul>
+    );
+  }
+
+  return (
+    <div
+      ref={viewportRef}
+      className="overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
+      onPointerEnter={() => speedFactor.set(TICKER_HOVER_SPEED)}
+      onPointerLeave={() => speedFactor.set(1)}
+    >
+      <motion.div className="flex w-max" style={{ x }}>
+        {Array.from({ length: copies }, (_, copy) => (
+          <ul
+            key={copy}
+            ref={copy === 0 ? firstSetRef : undefined}
+            className="flex shrink-0 gap-x-6 pr-6 md:gap-x-10 md:pr-10"
+            aria-label={copy === 0 ? "Renaissance clients" : undefined}
+            aria-hidden={copy === 0 ? undefined : true}
+          >
+            {logos.map((logo) => (
+              <TickerLogo
+                key={logo.id}
+                logo={logo}
+                grayscale={grayscale}
+                decorative={copy !== 0}
+              />
+            ))}
+          </ul>
+        ))}
+      </motion.div>
+    </div>
+  );
+}
+
 function ClientLogoCarousel({
   data,
   presentationRole,
@@ -298,6 +435,8 @@ function ClientLogoCarousel({
   const {
     eyebrow,
     headline,
+    subheadline,
+    cta,
     selectionMode = "auto",
     selectedClients,
     autoClients,
@@ -355,6 +494,7 @@ function ClientLogoCarousel({
 
   const isServicesProof = presentationRole === "services";
   const gridKey = logos.map((logo) => logo.id).join("|");
+  const button = ctaToButtonProps(cta);
 
   return (
     <section
@@ -368,7 +508,9 @@ function ClientLogoCarousel({
       data-component="client-logo-carousel"
     >
       <div className="mx-auto w-full max-w-[1680px] px-5 sm:px-8 lg:px-12">
-        {(hasVisibleText(eyebrow) || hasVisibleText(headline)) && (
+        {(hasVisibleText(eyebrow) ||
+          hasVisibleText(headline) ||
+          hasVisibleText(subheadline)) && (
           <div className="mb-8 flex flex-col items-center gap-3 text-center md:mb-12">
             {hasVisibleText(eyebrow) && !isServicesProof && <Eyebrow>{eyebrow}</Eyebrow>}
             {hasVisibleText(headline) && (
@@ -382,11 +524,19 @@ function ClientLogoCarousel({
                 {headline}
               </h2>
             )}
+            {/* neutral-* is remapped to petrol here; zinc keeps a true gray. */}
+            {hasVisibleText(subheadline) && (
+              <p className="text-lg text-zinc-700 md:text-xl">
+                {subheadline}
+              </p>
+            )}
           </div>
         )}
 
         <div className="py-6 md:py-8">
-          {layout === 'grid' ? (
+          {layout === "ticker" ? (
+            <LogoTicker logos={logos} speed={motionSpeed} grayscale={grayscale} />
+          ) : layout === 'grid' ? (
             <ul className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-5" aria-label="Renaissance clients">
               {logos.map(logo => <li key={logo.id} className="flex flex-col items-center gap-3">
                 <div className="flex h-28 w-full items-center justify-center bg-white p-3">
@@ -397,6 +547,12 @@ function ClientLogoCarousel({
             </ul>
           ) : <LogoSwapGrid key={gridKey} logos={logos} speed={motionSpeed} grayscale={grayscale} />}
         </div>
+
+        {button ? (
+          <div className="mt-4 flex justify-center md:mt-6">
+            <Button2 {...button} className="min-w-[12.5rem]" />
+          </div>
+        ) : null}
       </div>
     </section>
   );

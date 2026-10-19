@@ -132,6 +132,7 @@ const RENAISSANCE_SHARED_CONTENT_PROJECTION = `
 
 const CLIENT_LOGO_BLOCK_PROJECTION = `_type == 'clientLogoCarousel' => {
   ...,
+  cta{..., link{..., page->{_id, slug}}},
   selectedClients[$channel in @->channel && @->language == $language]->{
     _id, name, slug, logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
   },

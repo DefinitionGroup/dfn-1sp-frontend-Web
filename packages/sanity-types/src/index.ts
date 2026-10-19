@@ -708,10 +708,12 @@ export interface ClientLogoItem {
 /** Animated client-logo display (schema: clientLogoCarousel) */
 export interface ClientLogoCarousel {
     collectionClients?: ClientLogoItem[];
-    displayMode?: "swap" | "grid";
+    displayMode?: "swap" | "ticker" | "grid";
     _type?: "clientLogoCarousel";
     eyebrow?: string;
     headline?: string;
+    subheadline?: string;
+    cta?: CTA;
     selectionMode?: "auto" | "manual" | "collection";
     selectedClients?: ClientLogoItem[];
     /** Populated by GROQ when selectionMode is "auto" */
