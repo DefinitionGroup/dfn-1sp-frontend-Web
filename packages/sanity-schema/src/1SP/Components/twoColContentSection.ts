@@ -38,6 +38,14 @@ export default defineType({
 
     // CONTENT
     defineField({
+      name: "renaissanceHeadline",
+      title: "Origins Headline",
+      type: "string",
+      description: "Optional big orange headline above both columns of the Renaissance Origins section.",
+      group: "content",
+      hidden: ({ document }) => document?.channel !== "renaissanceWeb",
+    }),
+    defineField({
       name: "title",
       title: "Section Title",
       type: "string",

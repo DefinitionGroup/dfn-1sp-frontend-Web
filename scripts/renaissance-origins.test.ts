@@ -32,7 +32,11 @@ test("omits unfinished or invalid logos without broken images", () => {
 
 test("fallback carries the same explicit media and CTA contract as the CMS", () => {
   const origins = RENAISSANCE_HOMEPAGE_FALLBACK.find(block => block._key === "renaissance-origin") as any;
-  assert.equal(origins.renaissanceMediaLayout, "logos");
+  assert.equal(origins.renaissanceHeadline, "Origins");
+  assert.equal(origins.renaissanceMediaLayout, "media");
+  assert.equal(origins.useVideo, true);
+  assert.equal(origins.video?.resource_type, "video");
+  // The logo grid stays saved so editors can switch back to it.
   assert.equal(getOriginsLogos(origins.renaissanceLogos).length, 9);
   assert.deepEqual(getRenderableCta(origins.cta), { text: "Our story", href: "/about-us", variant: "violet" });
   assert.equal(getRenderableCta(undefined), null);
