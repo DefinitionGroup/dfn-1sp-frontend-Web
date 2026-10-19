@@ -91,21 +91,30 @@ const NAV_IDLE_HIDE_MS = 3000;
 
 type NavState = "expanded" | "compact" | "hidden";
 
-/** Full lockup (tagline, wordmark, "A 1SP Agency") in its supplied colours. */
+/**
+ * Full lockup (tagline, wordmark, "A 1SP Agency") in its supplied colours.
+ * `light` swaps the type to white for dark surfaces such as the mobile menu.
+ */
 function RenaissanceLogoLockup({
   className,
   alt,
+  light = false,
 }: {
   className: string;
   alt: string;
+  light?: boolean;
 }) {
   return (
     <Image
-      src="/logos/renaissance-lockup.svg"
+      src={
+        light
+          ? "/logos/renaissance-lockup-light.svg"
+          : "/logos/renaissance-lockup.svg"
+      }
       alt={alt}
       width={379}
       height={81}
-      priority
+      priority={!light}
       className={`h-auto ${className}`}
     />
   );
@@ -750,22 +759,10 @@ const FrontNavOverlay: React.FC<FrontNavOverlayProps> = ({
             className="fixed inset-0 z-[100000] flex flex-col bg-renaissance-ink px-6 pb-8 pt-5 text-white xl:hidden"
           >
             <div className="flex items-center justify-between border-b border-white/20 pb-5">
-              <span
-                role="img"
-                aria-label="Renaissance"
-                className="block h-[1.875rem] w-[8.75rem] bg-renaissance-button"
-                style={{
-                  WebkitMaskImage:
-                    "url('/units/RENAISSANCE/renaissance-horz_logo.svg')",
-                  maskImage:
-                    "url('/units/RENAISSANCE/renaissance-horz_logo.svg')",
-                  WebkitMaskPosition: "center",
-                  maskPosition: "center",
-                  WebkitMaskRepeat: "no-repeat",
-                  maskRepeat: "no-repeat",
-                  WebkitMaskSize: "contain",
-                  maskSize: "contain",
-                }}
+              <RenaissanceLogoLockup
+                alt="Renaissance"
+                light
+                className="w-[9.2rem]"
               />
               <button
                 type="button"

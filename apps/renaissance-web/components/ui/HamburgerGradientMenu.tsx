@@ -135,8 +135,8 @@ export default function HamburgerGradientMenu({
 
   const imageLogo =
     resolvedColor === "dark"
-      ? "/logos/renaissance-horz_logo.svg"
-      : "/units/RENAISSANCE/renaissance-horz_logo.svg";
+      ? "/logos/renaissance-lockup.svg"
+      : "/logos/renaissance-lockup-light.svg";
 
   useEffect(() => {
     if (open) {
@@ -213,7 +213,7 @@ export default function HamburgerGradientMenu({
           src={imageLogo}
           alt="Renaissance Logo"
           width={150}
-          height={31}
+          height={32}
           className="block h-auto w-[150px] object-contain md:hidden"
         />
       </Link>
@@ -228,7 +228,7 @@ export default function HamburgerGradientMenu({
             onNavigate={handleMenuNavigation}
             firstLinkRef={firstLinkRef}
             panelClassName={panelClassName}
-            imageLogo={imageLogo}
+            imageLogo="/logos/renaissance-lockup-light.svg"
             socialLinks={footerMenu?.socialLinks}
           />
         )}
@@ -296,7 +296,7 @@ function OverlayRoot({
             src={imageLogo}
             alt="Renaissance Logo"
             width={190}
-            height={40}
+            height={41}
             className="object-contain "
           />
           <span className="text-xs uppercase text-neutral-200">
@@ -326,7 +326,7 @@ function OverlayRoot({
                   src={imageLogo}
                   alt="Renaissance Logo"
                   width={150}
-                  height={31}
+                  height={32}
                   className="object-contain drop-shadow-[0_0_24px_rgba(0,0,0,0.35)]"
                 />
               </motion.div>
