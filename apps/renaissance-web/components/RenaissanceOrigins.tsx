@@ -36,18 +36,18 @@ export default function RenaissanceOrigins({ data }: { data: OriginsData }) {
   const showsLogos = stegaClean(data.renaissanceMediaLayout) === "logos";
   const mediaSrc = assetUrl(data.useVideo ? data.video : data.image);
   const hasHeadline = hasVisibleText(data.renaissanceHeadline);
-  // With the big headline above, the column title becomes its subheading.
+  // The big headline sits directly above the column title, which becomes its subheading.
   const TitleTag = hasHeadline ? "h3" : "h2";
   return (
     <div className={`mx-auto grid max-w-[1680px] gap-12 px-5 sm:px-8 md:grid-cols-12 md:items-center md:gap-x-10 lg:px-12 ${paddingClasses[stegaClean(data.paddingY) ?? "24"] ?? paddingClasses["24"]}`}>
-      {hasHeadline ? (
-        <h2 className="renaissance-display text-[clamp(3.75rem,6vw,6rem)] font-bold leading-none text-renaissance-signal md:col-span-12">
-          {data.renaissanceHeadline}
-        </h2>
-      ) : null}
       <div className={`md:col-span-5 ${data.reverseColumns ? "md:order-2" : ""}`}>
+        {hasHeadline ? (
+          <h2 className="renaissance-display text-[clamp(3.75rem,6vw,6rem)] font-bold leading-none text-renaissance-signal">
+            {data.renaissanceHeadline}
+          </h2>
+        ) : null}
         {data.showTitle !== false && hasVisibleText(data.title) ? (
-          <TitleTag className={`renaissance-display text-[clamp(2.7rem,3.5vw,3.75rem)] font-bold leading-[0.9] tracking-[-0.025em] ${titleClasses[stegaClean(data.titleColor) ?? "neutral-700"]}`}>
+          <TitleTag className={`renaissance-display text-[clamp(2.7rem,3.5vw,3.75rem)] font-bold leading-[0.9] tracking-[-0.025em] ${hasHeadline ? "mt-3" : ""} ${titleClasses[stegaClean(data.titleColor) ?? "neutral-700"]}`}>
             {data.title}
           </TitleTag>
         ) : null}
