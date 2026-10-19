@@ -10,7 +10,13 @@ export default defineType({
     "Renaissance-only award statement, signal line and ordered award-logo wall.",
   hidden: ({ document }) => document?.channel !== "renaissanceWeb",
   fields: [
-    defineField({ name: "description", title: "Award statement", type: "text", rows: 6 }),
+    defineField({
+      name: "description",
+      title: "Award statement",
+      type: "text",
+      rows: 4,
+      description: "Short intro, centred between the headline and the award logos.",
+    }),
     defineField({
       name: "headline",
       title: "Headline",
@@ -23,7 +29,7 @@ export default defineType({
       title: "Award Logos",
       type: "array",
       description: "Drag to reorder. The signal line is part of this block.",
-      validation: (Rule) => Rule.required().min(1).max(12),
+      validation: (Rule) => Rule.required().min(1).max(24),
       of: [
         defineArrayMember({
           name: "renaissanceAwardLogo",

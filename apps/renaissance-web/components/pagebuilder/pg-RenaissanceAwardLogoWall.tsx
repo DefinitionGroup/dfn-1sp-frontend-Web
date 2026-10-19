@@ -66,9 +66,16 @@ export default function RenaissanceAwardLogoWall({
         </motion.h3>
       ) : null}
 
+      {data.description?.trim() ? (
+        <p className="mx-auto mt-6 max-w-3xl text-center text-base leading-relaxed text-balance md:text-lg">
+          {data.description}
+        </p>
+      ) : null}
+
       {logos.length > 0 ? (
+        // A centred wrap keeps a short last row balanced: 13 logos set 7 + 6.
         <motion.div
-          className="mt-10 grid grid-cols-3 items-center gap-3 sm:grid-cols-4 md:grid-cols-8 md:gap-4"
+          className="mt-10 flex flex-wrap justify-center gap-3 md:mt-12 md:gap-4"
           variants={wallVariants}
           initial={shouldReduceMotion ? false : "hidden"}
           whileInView={shouldReduceMotion ? undefined : "visible"}
@@ -82,13 +89,13 @@ export default function RenaissanceAwardLogoWall({
               <motion.div
                 key={logo.key}
                 variants={shouldReduceMotion ? undefined : logoVariants}
-                className="relative aspect-square overflow-hidden rounded-[3px] bg-white p-3 md:p-5"
+                className="relative aspect-square basis-[calc((100%-1.5rem)/3)] overflow-hidden rounded-[3px] bg-white p-3 sm:basis-[calc((100%-2.25rem)/4)] md:basis-[calc((100%-6rem)/7)] md:p-5"
               >
                 <Image
                   src={logo.src}
                   alt={isDuplicate ? "" : logo.name}
                   fill
-                  sizes="(max-width: 639px) 33vw, (max-width: 767px) 25vw, 160px"
+                  sizes="(max-width: 639px) 33vw, (max-width: 767px) 25vw, 220px"
                   unoptimized={
                     logo.src.startsWith("https://") &&
                     !logo.src.startsWith("https://res.cloudinary.com/")
@@ -99,9 +106,6 @@ export default function RenaissanceAwardLogoWall({
             );
           })}
         </motion.div>
-      ) : null}
-      {data.description ? (
-        <p className="mx-auto mt-10 max-w-3xl text-base leading-relaxed md:text-lg">{data.description}</p>
       ) : null}
     </div>
   );
