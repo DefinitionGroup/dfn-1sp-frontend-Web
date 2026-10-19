@@ -37,8 +37,33 @@ export default defineType({
       group: "content",
       of: [
         defineArrayMember({
-          type: "cta",
+          name: "registerCard",
+          title: "Registration card",
+          type: "object",
+          fields: [
+            defineField({
+              name: "text",
+              title: "Card title",
+              type: "string",
+              description: "Shown at the top of the card, beside its number.",
+            }),
+            defineField({
+              name: "buttonText",
+              title: "Button text",
+              type: "string",
+              description:
+                'Shown on the button at the bottom of the card, e.g. "Click here to register as media".',
+            }),
+            defineField({
+              name: "link",
+              title: "Link",
+              type: "link",
+            }),
+          ],
           validation: (Rule) => Rule.custom((value) => validateOptionalCta(value)),
+          preview: {
+            select: { title: "text", subtitle: "buttonText" },
+          },
         }),
       ],
       validation: (Rule) =>

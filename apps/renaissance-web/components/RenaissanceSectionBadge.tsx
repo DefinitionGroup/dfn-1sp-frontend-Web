@@ -155,7 +155,7 @@ export default function RenaissanceSectionBadge({
   return (
     <div
       ref={ref}
-      className="inline-flex items-center gap-3 font-mono text-[0.72rem] font-semibold tracking-[0.13em] text-renaissance-signal"
+      className="inline-flex items-center gap-3 font-mono text-[1.08rem] font-semibold tracking-[0.13em] text-renaissance-signal"
       aria-label={`Section: ${normalized}`}
       data-badge-animation={animationMode}
       data-badge-phase={phase}

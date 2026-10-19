@@ -23,9 +23,9 @@ export const TARGETS: RevalidateTarget[] = [
   {
     site: "1sp",
     url: "https://www.1sp.agency/api/revalidate",
-    // Live 1SP moves to production together with the stage merge
-    // (docs/DEPLOYMENT.md, "Switching live 1SP to production"). Until then
-    // the "Revalidate Test" webhook (dataset `*`) keeps refreshing it.
+    // Live 1SP reads production since the 15 October 2026 switch
+    // (docs/DEPLOYMENT.md). Until this function is deployed, the
+    // "Revalidate Test" webhook keeps refreshing it.
     dataset: "production",
     secretEnv: "REVALIDATE_SECRET_1SP",
   },

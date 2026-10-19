@@ -42,3 +42,14 @@ Published documents, read without a token (both datasets are public):
 ## Not verified
 
 Sensitive Vercel variables pull as empty strings, so their values (including `SANITY_REVALIDATE_SECRET` and the write token's dataset scope) were not checked. The old `main` code was not run against `production`.
+
+## Release, same day
+
+- 17:25 UTC: content check exit 0; backups `EXPORT/dev-dataset-before-1sp-switch-20261015.tar.gz` (268 documents incl. drafts, sha256 `7d7472e3…`) and `EXPORT/production-before-1sp-switch-20261015.tar.gz` (934, `628d83df…`). Images live on Cloudinary, so the archives hold no asset files.
+- `main` merged into stage (`1cf35d257`). The four Personio job components conflicted textually; stage's version already contains main's hotfixes, and the merged tree equals stage.
+- Local production build of stage with live 1SP's Vercel env and `production`. Two case pages differed from live. Cause: the shared case query now spreads blocks, so unset `showCta`/`showButton` arrived missing and the component's `= true` defaults applied. Fixed in `cdaf0c6b9`; afterwards 21 of 23 pages matched live in full visible text, and the other two differ only by the deliberate contact-person change (kept at the user's decision).
+- 17:36 UTC: `NEXT_PUBLIC_SANITY_DATASET=production` set on `dfn-1sp-frontend-web`, PR #143 merged (`6d13246dd`), deployment `dpl_FCdVpHTssTLHPHrUZQtZvevTyuvU` ready and aliased to www.1sp.agency and 1sp.agency.
+- Verified on www.1sp.agency: all 23 sitemap pages identical to the release build (text, images, canonical, title, robots); *Driving Presales* shows the `production` contact; the `/studio` bundle names `production`; robots, sitemap and the jobs API answer; an unsigned `/api/revalidate` call returns 401.
+- Revalidation gap found: the "Revalidate Test" webhook filtered on `_type in ["page", "case", "person", "service", "serviceGroup", "menu", "siteSettings"]`, so publishes of `caseStudy`, `services`, `client` and `unit` never revalidated (harmless under main's 60 s timer, a day's delay under the new cache). With the user's approval the filter became `!(_type in ["sanity.imageAsset", "sanity.fileAsset", "sanity.previewUrlSecret", "contactSubmission"])` and the URL `https://www.1sp.agency/api/revalidate`; a no-op case-study publish then delivered HTTP 200 at 17:49 UTC.
+- Rollback target: `dpl_CZN95UAH9azGNd6acUJd16cjG8Zu` (`1d6780b37`, `dev-dataset` compiled in).
+- Not tested: a contact-form submission (it emails real recipients), Draft Mode and Presentation, and Studio unknown-field warnings (need a Studio login).

@@ -24,64 +24,15 @@ type GlobeLocation = {
   labelOffsetY?: number;
 };
 
-type NetworkRegion = "europe" | "america" | "china";
-
-const NETWORK_MULTIPLIER = 5;
-const REGIONAL_NETWORK_OFFSETS: Record<
-  NetworkRegion,
-  ReadonlyArray<{ lat: number; lng: number }>
-> = {
-  europe: [
-    { lat: 0, lng: 0 },
-    { lat: 3.4, lng: 11.8 },
-    { lat: -4.3, lng: 5.7 },
-    { lat: 7.1, lng: 20.2 },
-    { lat: -9.8, lng: 9.4 },
-  ],
-  america: [
-    { lat: 0, lng: 0 },
-    { lat: 13, lng: -4 },
-    { lat: 6.7, lng: 44.2 },
-    { lat: -14.6, lng: 19.1 },
-    { lat: 9.6, lng: 38.9 },
-  ],
-  china: [
-    { lat: 0, lng: 0 },
-    { lat: 4, lng: 12.2 },
-    { lat: -4.7, lng: 17.3 },
-    { lat: -12.7, lng: 9.1 },
-    { lat: -5.3, lng: -0.1 },
-  ],
-};
-
-function getNetworkRegion(longitude: number): NetworkRegion {
-  if (longitude < -30) return "america";
-  if (longitude > 60) return "china";
-  return "europe";
-}
-
-function normalizeLongitude(longitude: number) {
-  return ((longitude + 180) % 360 + 360) % 360 - 180;
-}
-
-function buildNetworkLocations(locations: GlobeLocation[]) {
-  return Array.from({ length: NETWORK_MULTIPLIER }, (_, layer) =>
-    locations.map((location) => {
-      const offset =
-        REGIONAL_NETWORK_OFFSETS[getNetworkRegion(location.coordinateLon)][layer];
-
-      return {
-        name: layer === 0 ? location.name : "",
-        coordinateLat: Math.max(
-          -75,
-          Math.min(75, location.coordinateLat + offset.lat),
-        ),
-        coordinateLon: normalizeLongitude(location.coordinateLon + offset.lng),
-        labelOffsetX: layer === 0 ? location.labelOffsetX : undefined,
-        labelOffsetY: layer === 0 ? location.labelOffsetY : undefined,
-      };
-    }),
-  ).flat();
+// Arc height grows with the distance it spans, so long hops clear the globe.
+function arcAltitude(from: GlobeLocation, to: GlobeLocation) {
+  const toRadians = (degrees: number) => (degrees * Math.PI) / 180;
+  const [lat1, lat2] = [toRadians(from.coordinateLat), toRadians(to.coordinateLat)];
+  const deltaLng = toRadians(to.coordinateLon - from.coordinateLon);
+  const angle = Math.acos(
+    Math.min(1, Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(deltaLng)),
+  );
+  return 0.05 + 0.3 * (angle / Math.PI);
 }
 
 function GlobeComponent({ data, language, presentationRole }: GlobeComponentProps) {
@@ -104,28 +55,28 @@ function GlobeComponent({ data, language, presentationRole }: GlobeComponentProp
     ? { "data-navpoint-name": navPointName }
     : {};
 
-  // Transform the shared RENAISSANCE market locations into globe arcs.
   const colors = ["#245e66", "#99bbba", "#dbe5e5"];
-  const networkLocations = buildNetworkLocations(locations as GlobeLocation[]);
+  const destinations = locations as GlobeLocation[];
 
-  // Weave five layers through every region in one continuous animated network.
-  const arcs = networkLocations.map((location, index) => {
-    const prevIndex =
-      (index - 1 + networkLocations.length) % networkLocations.length;
-    const prevLocation = networkLocations[prevIndex];
-
-    return {
-      order: Math.floor(index / locations.length) + 1,
-      startLat: prevLocation.coordinateLat,
-      startLng: prevLocation.coordinateLon,
-      endLat: location.coordinateLat,
-      endLng: location.coordinateLon,
-      arcAlt: 0.07 + (index % NETWORK_MULTIPLIER) * 0.012,
-      color: colors[index % colors.length],
-      label: location.name,
-      labelOffsetX: location.labelOffsetX,
-      labelOffsetY: location.labelOffsetY,
-    };
+  // Each destination is reached from the one before it (labelled, along the
+  // tour route) and from the one two back, so the arcs read as a network.
+  const arcs = destinations.flatMap((location, index) => {
+    const before = (steps: number) =>
+      destinations[(index - steps + destinations.length) % destinations.length];
+    const routes = [{ from: before(1), label: location.name }];
+    if (destinations.length > 2) routes.push({ from: before(2), label: "" });
+    return routes.map(({ from, label }, route) => ({
+        order: index + 1,
+        startLat: from.coordinateLat,
+        startLng: from.coordinateLon,
+        endLat: location.coordinateLat,
+        endLng: location.coordinateLon,
+        arcAlt: arcAltitude(from, location),
+        color: colors[(index + route) % colors.length],
+        label,
+        labelOffsetX: label ? location.labelOffsetX : undefined,
+        labelOffsetY: label ? location.labelOffsetY : undefined,
+      }));
   });
 
   // Globe configuration
@@ -154,10 +105,23 @@ function GlobeComponent({ data, language, presentationRole }: GlobeComponentProp
     },
     autoRotate: false,
     autoRotateSpeed: 0.15,
-    // A square canvas keeps the silhouette inside the column at every breakpoint.
-    cameraRadius: 260,
+    cameraRadius: 250,
     fixedLabelSize: true,
-    verticalOffset: 0,
+    // The globe fills the block behind the copy: right of it on desktop,
+    // below it on phones.
+    framing: { x: 0.2, y: 0 },
+    mobileFraming: { x: 0, y: 0.26 },
+    // Zoom into each destination in the CMS order, then spin on to the next.
+    tour: {
+      stops: destinations.map((location) => ({
+        lat: location.coordinateLat,
+        lng: location.coordinateLon,
+        label: location.name,
+      })),
+      nearRadius: 150,
+      dwellMs: 2600,
+      travelMs: 3400,
+    },
   };
 
   return (
@@ -177,6 +141,7 @@ function GlobeComponent({ data, language, presentationRole }: GlobeComponentProp
         description={sectionSubtitle}
         backgroundTone="muted"
         layout="split"
+        clearSectionBadge={presentationRole === "reach"}
       />
     </section>
   );

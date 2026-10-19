@@ -119,6 +119,25 @@ export interface RenaissanceCaseCarousel {
     hideFromNav?: boolean;
 }
 
+export interface RenaissanceGame {
+    _key?: string;
+    _type?: "renaissanceGame";
+    title?: string;
+    image?: CloudinaryAsset;
+    /** Steam store page or official website. */
+    url?: string;
+}
+
+export interface RenaissanceGamesCarousel {
+    _type?: "renaissanceGamesCarousel";
+    _key?: string;
+    headline?: string;
+    subheadline?: string;
+    games?: RenaissanceGame[];
+    navPointName?: string;
+    hideFromNav?: boolean;
+}
+
 /* Gallery step types (union of specific step objects) */
 export interface GalleryBase {
     badge?: BadgeModule;
@@ -483,7 +502,9 @@ export interface RenaissanceAwardLogoWall {
 
 export interface RegisterCard extends CTA {
     _key?: string;
-    _type?: "cta";
+    /** "cta" for cards saved before registerCard existed. */
+    _type?: "registerCard" | "cta";
+    buttonText?: string;
 }
 
 export interface NewsCTABlock {
@@ -708,10 +729,12 @@ export interface ClientLogoItem {
 /** Animated client-logo display (schema: clientLogoCarousel) */
 export interface ClientLogoCarousel {
     collectionClients?: ClientLogoItem[];
-    displayMode?: "swap" | "grid";
+    displayMode?: "swap" | "ticker" | "grid";
     _type?: "clientLogoCarousel";
     eyebrow?: string;
     headline?: string;
+    subheadline?: string;
+    cta?: CTA;
     selectionMode?: "auto" | "manual" | "collection";
     selectedClients?: ClientLogoItem[];
     /** Populated by GROQ when selectionMode is "auto" */

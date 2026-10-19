@@ -108,8 +108,15 @@ export const RENAISSANCE_CASE_CAROUSEL_PROJECTION = `_type == 'renaissanceCaseCa
   ]->{_id, slug, ${casePresentationFields()}}, [])
 }`;
 
+const RENAISSANCE_GAMES_CAROUSEL_PROJECTION = `_type == 'renaissanceGamesCarousel' => {
+  games[defined(title) && defined(url) && defined(image.secure_url)]{
+    _key, title, url, image${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
+  }
+}`;
+
 const RENAISSANCE_SHARED_CONTENT_PROJECTION = `
   ${RENAISSANCE_CASE_CAROUSEL_PROJECTION},
+  ${RENAISSANCE_GAMES_CAROUSEL_PROJECTION},
   _type == 'contentSection' && $channel == 'renaissanceWeb' => {${SERVICE_REFERENCE_PROJECTION}},
   _type == 'cardContainerComponent' && $channel == 'renaissanceWeb' => {
     cards[]{..., ${SERVICE_REFERENCE_PROJECTION}}
@@ -132,6 +139,7 @@ const RENAISSANCE_SHARED_CONTENT_PROJECTION = `
 
 const CLIENT_LOGO_BLOCK_PROJECTION = `_type == 'clientLogoCarousel' => {
   ...,
+  cta{..., link{..., page->{_id, slug}}},
   selectedClients[$channel in @->channel && @->language == $language]->{
     _id, name, slug, logo${MINIMAL_CLOUDINARY_ASSET_PROJECTION}
   },

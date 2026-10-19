@@ -14,6 +14,7 @@ import type {
   GalleryOverview as GalleryOverviewType,
   Carousel as CarouselType,
   RenaissanceCaseCarousel as RenaissanceCaseCarouselType,
+  RenaissanceGamesCarousel as RenaissanceGamesCarouselType,
   IntroBlockTypoSophisticated as IntroBlockTypoSophisticatedType,
   CardContainerComponent as CardContainerComponentType,
   ResultsMetricsComponent as ResultsMetricsComponentType,
@@ -39,6 +40,11 @@ import RenaissanceNewsCTABlock from "./RenaissanceNewsCTABlock";
 import { partitionRenaissanceSections } from "@renaissance/lib/renaissanceSections";
 
 const RenaissanceCaseCarousel = dynamic(() => import("./pagebuilder/pg-RenaissanceCaseCarousel"), {
+  loading: () => <ComponentLoader />,
+  ssr: true,
+});
+
+const RenaissanceGamesCarousel = dynamic(() => import("./pagebuilder/pg-RenaissanceGamesCarousel"), {
   loading: () => <ComponentLoader />,
   ssr: true,
 });
@@ -524,6 +530,12 @@ export function PageBuilder({
             return channel === "renaissanceWeb" ? (
               <ErrorBoundary key={`error-${key}`}>
                 <RenaissanceCaseCarousel data={block as RenaissanceCaseCarouselType} backgroundTone={carouselBackgroundTone} />
+              </ErrorBoundary>
+            ) : null;
+          case "renaissanceGamesCarousel":
+            return channel === "renaissanceWeb" ? (
+              <ErrorBoundary key={`error-${key}`}>
+                <RenaissanceGamesCarousel data={block as RenaissanceGamesCarouselType} backgroundTone={carouselBackgroundTone} />
               </ErrorBoundary>
             ) : null;
           case "smartCarousel":

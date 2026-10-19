@@ -31,6 +31,22 @@ export default defineType({
             group: "content",
         }),
         defineField({
+            name: "subheadline",
+            title: "Subheadline",
+            type: "string",
+            description: "Short line under the headline (optional)",
+            group: "content",
+            hidden: ({ document }) => document?.channel !== "renaissanceWeb",
+        }),
+        defineField({
+            name: "cta",
+            title: "Button",
+            type: "cta",
+            description: "Optional button under the logos, e.g. a link to the Clients page. Remove it to hide the button.",
+            group: "content",
+            hidden: ({ document }) => document?.channel !== "renaissanceWeb",
+        }),
+        defineField({
             name: "selectionMode",
             title: "Client Selection Mode",
             type: "string",
@@ -88,7 +104,7 @@ export default defineType({
             }) }),
         defineField({ name: 'displayMode', title: 'Renaissance display', type: 'string', group: 'layout', initialValue: 'swap',
             hidden: ({ document }) => document?.channel !== 'renaissanceWeb',
-            options: { list: [{ title: 'Animated selection', value: 'swap' }, { title: 'Full logo grid', value: 'grid' }] } }),
+            options: { list: [{ title: 'Animated selection', value: 'swap' }, { title: 'Ticker tape (slows on hover)', value: 'ticker' }, { title: 'Full logo grid', value: 'grid' }] } }),
         defineField({
             name: "speed",
             title: "Motion Speed",

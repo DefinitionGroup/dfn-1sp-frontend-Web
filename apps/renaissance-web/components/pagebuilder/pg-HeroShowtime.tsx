@@ -118,13 +118,13 @@ function HeroShowtime({ data }: { data: HeroShowtimeType }) {
             <span
               role="img"
               aria-label="Renaissance"
-              className="mb-6 block h-9 w-1/3 min-w-[10.875rem] bg-renaissance-button md:mb-8 md:h-auto md:aspect-[2862.29/593.96]"
+              className="mb-6 block h-9 w-1/3 min-w-[10.875rem] bg-white md:mb-8 md:h-auto md:aspect-[2862.29/593.96]"
               style={FALLBACK_LOGO_MASK_STYLE}
             />
           )}
           <div className="grid items-end gap-7 border-t border-white/35 pt-7 md:grid-cols-12 md:gap-10 md:pt-9">
             {heading ? (
-              <HeadingTag className="renaissance-display whitespace-pre-line text-balance text-[clamp(2.55rem,6.2vw,6rem)] font-bold leading-[0.88] text-white md:col-span-8">
+              <HeadingTag className="renaissance-display whitespace-pre-line text-balance text-[clamp(2.55rem,6.2vw,6rem)] font-bold leading-none text-white md:col-span-8">
                 <MixedType
                   text={heading}
                   serifClassName="font-renaissance italic text-renaissance-teal"

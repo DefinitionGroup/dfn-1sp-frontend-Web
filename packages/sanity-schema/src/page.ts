@@ -178,6 +178,7 @@ export default defineType({
                 { type: 'cinematicBlock3CardsReveal', title: 'Cinematic 3 Cards Reveal' },
                 { type: 'renaissanceSectionBand', title: 'Renaissance Section' },
                 { type: 'renaissanceCaseCarousel', title: 'Renaissance Case Carousel' },
+                { type: 'renaissanceGamesCarousel', title: 'Renaissance Games Carousel' },
                 { type: 'renaissanceSharedContentReference', title: 'Renaissance Shared Content' },
                 { type: 'renaissancePortraitGrid', title: 'Renaissance Portrait Grid' },
                 { type: 'renaissanceAwardLogoWall', title: 'Renaissance Award Logo Wall' },

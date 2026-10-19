@@ -4,7 +4,9 @@ import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import CookiebotBanner from "@/components/CookiebotBanner";
-import GoogleAnalyticsConsent from "@/components/GoogleAnalyticsConsent";
+// Google Analytics is deactivated on 1SP. Restore this import and the
+// <GoogleAnalyticsConsent> block in <body> to turn it back on.
+// import GoogleAnalyticsConsent from "@/components/GoogleAnalyticsConsent";
 import {
   getRobotsMetadata,
   shouldLoadProductionTracking,
@@ -59,11 +61,11 @@ export default function RootLayout({
       <head>{LOAD_PRODUCTION_TRACKING ? <CookiebotBanner /> : null}</head>
       <body className="antialiased" suppressHydrationWarning>
         {children}
-        {LOAD_PRODUCTION_TRACKING && SITE_BRAND.tracking.googleAnalyticsId ? (
+        {/* {LOAD_PRODUCTION_TRACKING && SITE_BRAND.tracking.googleAnalyticsId ? (
           <GoogleAnalyticsConsent
             measurementId={SITE_BRAND.tracking.googleAnalyticsId}
           />
-        ) : null}
+        ) : null} */}
         <Analytics />
         <SpeedInsights />
       </body>
