@@ -119,6 +119,25 @@ export interface RenaissanceCaseCarousel {
     hideFromNav?: boolean;
 }
 
+export interface RenaissanceGame {
+    _key?: string;
+    _type?: "renaissanceGame";
+    title?: string;
+    image?: CloudinaryAsset;
+    /** Steam store page or official website. */
+    url?: string;
+}
+
+export interface RenaissanceGamesCarousel {
+    _type?: "renaissanceGamesCarousel";
+    _key?: string;
+    headline?: string;
+    subheadline?: string;
+    games?: RenaissanceGame[];
+    navPointName?: string;
+    hideFromNav?: boolean;
+}
+
 /* Gallery step types (union of specific step objects) */
 export interface GalleryBase {
     badge?: BadgeModule;
