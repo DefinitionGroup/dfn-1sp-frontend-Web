@@ -112,8 +112,8 @@ function RenaissanceLogoLockup({
           : "/logos/renaissance-lockup.svg"
       }
       alt={alt}
-      width={379}
-      height={81}
+      width={281}
+      height={60}
       priority={!light}
       className={`h-auto ${className}`}
     />
