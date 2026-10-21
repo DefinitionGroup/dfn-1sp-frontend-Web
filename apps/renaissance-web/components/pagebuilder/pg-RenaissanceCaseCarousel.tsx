@@ -125,7 +125,7 @@ export default function RenaissanceCaseCarouselBlock({data, backgroundTone = 'da
                 <motion.div initial={{opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : 20}} animate={{opacity: 1, y: 0}}
                   transition={{delay: reducedMotion ? 0 : 0.24, duration: reducedMotion ? 0 : 0.5}} className="max-w-[48rem]">
                   <p className="eyebrow-mono mb-3 tracking-[0.04em] text-white">Case {String(index + 1).padStart(2, '0')}{active.subtitle ? ` · ${active.subtitle}` : ''}</p>
-                  <h3 className="break-words text-[clamp(2.25rem,5.3vw,5.5rem)] font-semibold leading-[0.96] tracking-[-0.045em] text-balance text-white">{active.title}</h3>
+                  <h3 className="break-words text-[clamp(2.25rem,5.3vw,3rem)] font-semibold leading-[0.96] tracking-[-0.045em] text-balance text-white">{active.title}</h3>
                   <div className="mt-5 max-w-lg border-t border-white/35 pt-5">
                     {active.description ? <p className="text-sm leading-relaxed text-white sm:text-base">{active.description}</p> : null}
                     <div className="mt-5"><Button2 href={active.linkHref!} text="View case study" variant="default" /></div>
