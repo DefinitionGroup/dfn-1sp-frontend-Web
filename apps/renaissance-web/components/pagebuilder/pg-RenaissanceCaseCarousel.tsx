@@ -6,7 +6,7 @@ import {stegaClean} from '@sanity/client/stega';
 import type {RenaissanceCaseCarousel, RenaissanceCarouselBackgroundTone} from '@1sp/sanity-types';
 import {assetUrl} from '@1sp/utils/cloudinary';
 import {getCarouselImageUrl, getCarouselPosterUrl, getCarouselVideoSources} from '@1sp/utils/carousel-media';
-import {caseCarouselItems} from '@renaissance/lib/caseCarousel';
+import {caseCarouselItems, splitHeadline} from '@renaissance/lib/caseCarousel';
 import Button2 from '@renaissance/components/ui/Button2';
 import {CarouselTextOverlay} from './Fragments/CarouselTextOverlay';
 
@@ -81,6 +81,7 @@ export default function RenaissanceCaseCarouselBlock({data, backgroundTone = 'da
     if (info.offset.x < -60 || info.offset.x * info.velocity.x > 10000 && info.offset.x < 0) paginate(1);
     else if (info.offset.x > 60 || info.offset.x * info.velocity.x > 10000 && info.offset.x > 0) paginate(-1);
   };
+  const [headline, headlineRest] = splitHeadline(active.title);
   const duration = reducedMotion ? 0 : 0.72;
   const variants = {
     enter: (step: number) => ({clipPath: reducedMotion ? 'inset(0)' : step > 0 ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)'}),
@@ -125,7 +126,10 @@ export default function RenaissanceCaseCarouselBlock({data, backgroundTone = 'da
                 <motion.div initial={{opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : 20}} animate={{opacity: 1, y: 0}}
                   transition={{delay: reducedMotion ? 0 : 0.24, duration: reducedMotion ? 0 : 0.5}} className="max-w-[48rem]">
                   <p className="eyebrow-mono mb-3 tracking-[0.04em] text-white">Case {String(index + 1).padStart(2, '0')}{active.subtitle ? ` · ${active.subtitle}` : ''}</p>
-                  <h3 className="break-words text-[clamp(2.25rem,5.3vw,3rem)] font-semibold leading-[0.96] tracking-[-0.045em] text-balance text-white">{active.title}</h3>
+                  {/* 12em keeps the widest line clear of the overlay's diagonal edge at every breakpoint. */}
+                  <h3 className="max-w-[12em] break-words text-[clamp(2.25rem,5.3vw,3rem)] font-semibold leading-[0.96] tracking-[-0.045em] text-balance text-white">
+                    {headlineRest ? <><span className="block">{headline}</span> <span className="block">{headlineRest}</span></> : headline}
+                  </h3>
                   <div className="mt-5 max-w-lg border-t border-white/35 pt-5">
                     {active.description ? <p className="text-sm leading-relaxed text-white sm:text-base">{active.description}</p> : null}
                     <div className="mt-5"><Button2 href={active.linkHref!} text="View case study" variant="default" /></div>
