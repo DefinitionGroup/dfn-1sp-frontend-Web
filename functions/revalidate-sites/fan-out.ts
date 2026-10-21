@@ -17,7 +17,8 @@ export type RevalidateTarget = {
  *   sanity functions env add revalidate-sites REVALIDATE_SECRET_MSM <secret>
  *
  * so a target can be listed before its site launches. Beta, test and preview
- * deployments are not listed; they refresh on a one-hour timer instead.
+ * deployments are not listed; they refresh on a one-hour timer instead. The
+ * Renaissance prototype is the exception while it is reviewed with editors.
  */
 export const TARGETS: RevalidateTarget[] = [
   {
@@ -34,6 +35,15 @@ export const TARGETS: RevalidateTarget[] = [
     url: "https://www.msm.digital/api/revalidate",
     dataset: "production",
     secretEnv: "REVALIDATE_SECRET_MSM",
+  },
+  {
+    // Test-tier prototype (Vercel project renaissance-monorepo-test). Editors
+    // review publishes there, so it is refreshed like a live site until a
+    // production domain replaces this URL.
+    site: "renaissance",
+    url: "https://renaissance-1sp-dfn.vercel.app/api/revalidate",
+    dataset: "production",
+    secretEnv: "REVALIDATE_SECRET_RENAISSANCE",
   },
 ];
 

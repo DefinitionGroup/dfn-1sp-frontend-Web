@@ -96,7 +96,7 @@ export default function RenaissanceOrigins({ data }: { data: OriginsData }) {
           ))}
         </div>
       ) : mediaSrc ? (
-        <div data-origins-media="media" className="relative aspect-[4/3] overflow-hidden rounded-media md:col-span-7">
+        <div data-origins-media="media" className="relative aspect-video overflow-hidden rounded-media md:col-span-7">
           {data.useVideo ? (
             // Muted ambient loop like the hero; the poster is the video's own
             // first frame, so a leftover image never flashes before it.
