@@ -485,11 +485,20 @@ export interface RenaissanceMediaItem {
     imageUrl?: string;
 }
 
+export interface RenaissanceTeamPerson {
+    _id: string;
+    name?: string;
+    position?: string;
+    image?: CloudinaryAsset;
+}
+
 export interface RenaissancePortraitGrid {
     displayMode?: "selection" | "directory";
     _type: "renaissancePortraitGrid";
     _key?: string;
     portraits?: RenaissanceMediaItem[];
+    /** Directory mode only: every person assigned to the channel and language. */
+    teamPeople?: RenaissanceTeamPerson[];
 }
 
 export interface RenaissanceAwardLogoWall {

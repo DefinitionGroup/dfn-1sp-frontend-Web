@@ -11,14 +11,14 @@ export default defineType({
   hidden: ({ document }) => document?.channel !== "renaissanceWeb",
   fields: [
     defineField({ name: "displayMode", title: "Display", type: "string", options: { list: [
-      { title: "Selected portraits", value: "selection" }, { title: "Named team directory", value: "directory" },
+      { title: "Selected portraits", value: "selection" }, { title: "Team carousel (every Renaissance person)", value: "directory" },
     ] } }),
     defineField({
       name: "portraits",
       title: "Portraits",
       type: "array",
       description:
-        "Drag to reorder. Use up to 40 portraits for the approved desktop composition.",
+        "Drag to reorder. The team carousel shows these first, then every other person assigned to Renaissance.",
       validation: (Rule) => Rule.required().min(2).max(40),
       of: [
         defineArrayMember({

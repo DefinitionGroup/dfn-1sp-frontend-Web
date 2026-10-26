@@ -4,7 +4,8 @@ import Image from "next/image";
 import { stegaClean } from "@sanity/client/stega";
 import { motion, useReducedMotion, type Variants } from "motion/react";
 import type { RenaissancePortraitGrid as RenaissancePortraitGridData } from "@1sp/sanity-types";
-import { resolveRenaissanceMediaItems } from "@renaissance/lib/renaissanceMediaItems";
+import { resolveRenaissanceMediaItems, resolveRenaissanceTeam } from "@renaissance/lib/renaissanceMediaItems";
+import RenaissanceTeamCarousel from "./pg-RenaissanceTeamCarousel";
 
 const gridVariants: Variants = {
   hidden: {},
@@ -29,8 +30,8 @@ export default function RenaissancePortraitGrid({
   data: RenaissancePortraitGridData;
 }) {
   const isDirectory = stegaClean(data.displayMode) === "directory";
-  const resolved = resolveRenaissanceMediaItems(data.portraits);
-  const portraits = isDirectory ? resolved : resolved.slice(0, 5);
+  // The named directory shows the whole Renaissance team as a carousel.
+  const portraits = isDirectory ? resolveRenaissanceTeam(data) : resolveRenaissanceMediaItems(data.portraits).slice(0, 5);
   const shouldReduceMotion = useReducedMotion();
 
   if (portraits.length === 0) return null;
@@ -51,8 +52,8 @@ export default function RenaissancePortraitGrid({
         className="pointer-events-none absolute -right-[18%] top-[6%] h-auto w-[86%] max-w-none opacity-95"
       />
 
-      <motion.div
-        className={`relative mx-auto grid max-w-[1680px] grid-cols-2 gap-5 px-5 sm:px-8 ${isDirectory ? "md:grid-cols-4" : "md:grid-cols-5"} md:gap-5 lg:px-12`}
+      {isDirectory ? <RenaissanceTeamCarousel people={portraits} /> : <motion.div
+        className="relative mx-auto grid max-w-[1680px] grid-cols-2 gap-5 px-5 sm:px-8 md:grid-cols-5 md:gap-5 lg:px-12"
         variants={gridVariants}
         initial={shouldReduceMotion ? false : "hidden"}
         whileInView={shouldReduceMotion ? undefined : "visible"}
@@ -74,7 +75,7 @@ export default function RenaissancePortraitGrid({
                 src={portrait.src}
                 alt={isDuplicate ? "" : portrait.name}
                 fill
-                sizes={isDirectory ? "(max-width: 767px) 50vw, 25vw" : "(max-width: 767px) 50vw, 20vw"}
+                sizes="(max-width: 767px) 50vw, 20vw"
                 unoptimized={
                   portrait.src.startsWith("https://") &&
                   !portrait.src.startsWith("https://res.cloudinary.com/")
@@ -82,14 +83,10 @@ export default function RenaissancePortraitGrid({
                 className="object-cover transition-transform duration-700 ease-out hover:scale-[1.025] motion-reduce:transition-none"
               />
               </div>
-              {isDirectory && <figcaption className="py-4 text-base font-semibold">
-                {portrait.name}
-                {portrait.position && <span className="mt-1 block text-sm font-normal">{portrait.position}</span>}
-              </figcaption>}
             </motion.figure>
           );
         })}
-      </motion.div>
+      </motion.div>}
     </div>
   );
 }

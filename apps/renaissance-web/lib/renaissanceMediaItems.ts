@@ -1,4 +1,4 @@
-import type { RenaissanceMediaItem } from "@1sp/sanity-types";
+import type { RenaissanceMediaItem, RenaissancePortraitGrid } from "@1sp/sanity-types";
 import { assetUrl } from "@1sp/utils/cloudinary";
 
 export type ResolvedRenaissanceMediaItem = {
@@ -26,4 +26,25 @@ export function resolveRenaissanceMediaItems(
       },
     ];
   });
+}
+
+/**
+ * The listed portraits lead in their editor order (with their image and role
+ * overrides), followed by every other person assigned to the site.
+ */
+export function resolveRenaissanceTeam(
+  grid: RenaissancePortraitGrid,
+): ResolvedRenaissanceMediaItem[] {
+  const portraits = grid.portraits ?? [];
+  const listed = new Set(portraits.map((item) => item?.person?._ref).filter(Boolean));
+  const others = (grid.teamPeople ?? [])
+    .filter((person) => !listed.has(person._id))
+    .map((person) => ({
+      _key: person._id,
+      name: person.name,
+      position: person.position,
+      image: person.image,
+    }));
+
+  return resolveRenaissanceMediaItems([...portraits, ...others]);
 }
