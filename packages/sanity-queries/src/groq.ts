@@ -96,6 +96,12 @@ const RENAISSANCE_PORTRAIT_FIELDS = `
     ..., "name": coalesce(name, person->fullname, person->name),
     "position": coalesce(position, person->position),
     "image": coalesce(image, person->siteContent[channel == $channel][0].image, person->image)
+  },
+  displayMode == "directory" => {
+    "teamPeople": *[_type == "person" && $channel in channel && language == $language] | order(coalesce(fullname, name) asc){
+      _id, "name": coalesce(fullname, name), position,
+      "image": coalesce(siteContent[channel == $channel][0].image, image)
+    }
   }
 `;
 const RENAISSANCE_SHARED_DOCUMENT_FIELDS = `
