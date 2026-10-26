@@ -2,7 +2,7 @@
 /**
  * Vercel "Ignored Build Step" for the multisite monorepo.
  *
- * Usage: node scripts/vercel-ignore.mjs <1sp|msm|flzr|renaissance>
+ * Usage: node scripts/vercel-ignore.mjs <1sp|msm|flzr|renaissance|studioco2>
  *
  * Exit codes (Vercel convention):
  *   1 = changes are relevant, proceed with the build
@@ -26,6 +26,7 @@ const APP_DIRS = {
   msm: "apps/msm-web",
   flzr: "apps/flzr-web",
   renaissance: "apps/renaissance-web",
+  studioco2: "apps/studioco2-web",
 };
 
 // Paths that affect every site. The nested apps currently import/compile

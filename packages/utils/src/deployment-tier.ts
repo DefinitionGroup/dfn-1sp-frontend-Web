@@ -12,6 +12,7 @@ const TEST_SITE_CHANNELS = {
   msm: "msmWeb",
   flzr: "flizrWeb",
   renaissance: "renaissanceWeb",
+  studioco2: "studioco2Web",
 } as const;
 type TestSite = keyof typeof TEST_SITE_CHANNELS;
 
@@ -154,7 +155,7 @@ function assertSafeTestConfiguration(
 
   if (!expectedChannel) {
     throw new Error(
-      "MONOREPO_TEST_PROJECT=true requires MONOREPO_TEST_SITE=1sp, msm, flizr, or renaissance.",
+      "MONOREPO_TEST_PROJECT=true requires MONOREPO_TEST_SITE=1sp, msm, flzr, renaissance, or studioco2.",
     );
   }
 

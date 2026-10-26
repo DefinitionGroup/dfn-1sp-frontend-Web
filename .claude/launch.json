@@ -40,6 +40,15 @@
       ],
       "port": 3003,
       "autoPort": true
+    },
+    {
+      "name": "studioco2-web",
+      "runtimeExecutable": "zsh",
+      "runtimeArgs": [
+        "-c",
+        "export PATH=\"$HOME/.nvm/versions/node/v22.14.0/bin:$PATH\"; pnpm --filter @1sp/studioco2-web exec next dev --turbopack -p 3004"
+      ],
+      "port": 3004
     }
   ]
 }

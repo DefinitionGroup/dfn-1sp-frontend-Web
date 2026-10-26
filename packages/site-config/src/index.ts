@@ -146,19 +146,23 @@ export const SITE_CONFIGS: Record<WebsiteChannel, SiteConfig> = {
     name: "Studio CO2",
     shortName: "Studio CO2",
     defaultLocale: "en",
-    locales: ["en", "de"],
-    domains: {},
+    // English only, with locale-free public URLs (apps/studioco2-web).
+    locales: ["en"],
+    domains: {
+      local: "http://localhost:3004",
+    },
     seo: {
-      defaultTitle: "Studio CO2",
-      defaultDescription: "Studio CO2 website.",
+      defaultTitle: "studioco2 | Independent minds. Digital chemistry.",
+      defaultDescription:
+        "Studioco2. Independent minds. Digital chemistry. A creative studio working across brands, content and experiences.",
     },
     tracking: {
       vercelAnalytics: true,
     },
     logo: {
-      light: "/ci/1sp-fulllogotype.svg",
-      dark: "/ci/1sp-fulllogotype-blk.svg",
-      alt: "Studio CO2 Logo",
+      light: "/media/studioco2-logo-white.svg",
+      dark: "/media/studioco2-logo-black.svg",
+      alt: "StudioCO2",
     },
   },
   renaissanceWeb: {
