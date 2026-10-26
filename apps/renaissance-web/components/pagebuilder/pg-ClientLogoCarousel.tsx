@@ -72,6 +72,25 @@ const LOGO_CELL_REVEAL_VARIANTS: Variants = {
   },
 };
 
+// Same reveal as the swap grid, delayed per logo so a row ripples in.
+const LOGO_GRID_ITEM_VARIANTS: Variants = {
+  hidden: {
+    opacity: 0,
+    filter: "blur(12px)",
+    transform: "translateY(16px)",
+  },
+  visible: (delay: number) => ({
+    opacity: 1,
+    filter: "blur(0px)",
+    transform: "translateY(0px)",
+    transition: {
+      delay,
+      duration: 1.2,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  }),
+};
+
 type LogoEntry = {
   id: string;
   name: string;
@@ -298,6 +317,63 @@ function LogoSwapGrid({
         );
       })}
     </motion.div>
+  );
+}
+
+function LogoGridItem({
+  logo,
+  nextDelay,
+}: {
+  logo: LogoEntry;
+  nextDelay: () => number;
+}) {
+  const shouldReduceMotion = useReducedMotion();
+  const [delay, setDelay] = React.useState<number>();
+
+  return (
+    <motion.li
+      className="flex h-28 items-center justify-center sm:h-32 lg:h-40"
+      variants={shouldReduceMotion ? undefined : LOGO_GRID_ITEM_VARIANTS}
+      custom={delay}
+      initial={shouldReduceMotion ? false : "hidden"}
+      animate={delay === undefined ? undefined : "visible"}
+      viewport={{ once: true, amount: 0.4 }}
+      onViewportEnter={() => setDelay(nextDelay())}
+    >
+      <div className="relative h-full w-full max-w-[15rem]">
+        <Image
+          src={logo.src}
+          alt={logo.alt || logo.name}
+          fill
+          sizes="(min-width: 1024px) 240px, (min-width: 640px) 30vw, 45vw"
+          className="object-contain"
+        />
+      </div>
+    </motion.li>
+  );
+}
+
+/**
+ * Every logo, large and unlabelled. Each one reveals as it scrolls in; logos
+ * that enter together (a row, or the first screen) ripple in reading order.
+ */
+function LogoGrid({ logos }: { logos: LogoEntry[] }) {
+  const batchRef = React.useRef({ at: 0, count: 0 });
+  const nextDelay = React.useCallback(() => {
+    const now = performance.now();
+    if (now - batchRef.current.at > 80) batchRef.current = { at: now, count: 0 };
+    return Math.min(batchRef.current.count++, 12) * 0.07;
+  }, []);
+
+  return (
+    <ul
+      className="grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-3 md:gap-x-10 md:gap-y-10 lg:grid-cols-5"
+      aria-label="Renaissance clients"
+    >
+      {logos.map((logo) => (
+        <LogoGridItem key={logo.id} logo={logo} nextDelay={nextDelay} />
+      ))}
+    </ul>
   );
 }
 
@@ -537,14 +613,7 @@ function ClientLogoCarousel({
           {layout === "ticker" ? (
             <LogoTicker logos={logos} speed={motionSpeed} grayscale={grayscale} />
           ) : layout === 'grid' ? (
-            <ul className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-5" aria-label="Renaissance clients">
-              {logos.map(logo => <li key={logo.id} className="flex flex-col items-center gap-3">
-                <div className="flex h-28 w-full items-center justify-center bg-white p-3">
-                  <Image src={logo.src} alt={logo.alt || logo.name} width={160} height={88} sizes="160px" className="h-auto max-h-[88px] w-auto max-w-full object-contain" />
-                </div>
-                <span className="text-center text-sm text-renaissance-ink">{logo.name}</span>
-              </li>)}
-            </ul>
+            <LogoGrid logos={logos} />
           ) : <LogoSwapGrid key={gridKey} logos={logos} speed={motionSpeed} grayscale={grayscale} />}
         </div>
 
