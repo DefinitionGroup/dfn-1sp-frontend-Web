@@ -1,6 +1,6 @@
 # 1SP multisite frontend
 
-One pnpm workspace powers the root 1SP website and the FLZR, MSM and Renaissance apps, with shared Sanity contracts and site-owned presentation.
+One pnpm workspace powers the root 1SP website and the FLZR, MSM, Renaissance and Studio CO2 apps, with shared Sanity contracts and site-owned presentation.
 
 Start with the [documentation index](docs/README.md). For the whole platform, read the [project handoff](docs/HANDOFF.md). Repository rules live in [AGENTS.md](AGENTS.md).
 
@@ -14,6 +14,7 @@ Use the Node version in `.nvmrc` and pnpm from `package.json`. Install with `pnp
 | FLZR | `pnpm --filter @1sp/flzr-web exec next dev --turbopack -p 3001` | `http://localhost:3001` |
 | MSM | `pnpm --filter @1sp/msm-web exec next dev --turbopack -p 3002` | `http://localhost:3002` |
 | Renaissance | `pnpm dev:renaissance` | `http://localhost:3003` |
+| Studio CO2 | `pnpm dev:studioco2` | `http://localhost:3004` |
 
 Confirm project, dataset, API version, channel and language before diagnosing missing content or making CMS changes. See [local Sanity debugging](docs/local-sanity-debugging.md). A dataset named `production` and a public frontend deployment are separate concerns; verify both explicitly.
 
@@ -23,6 +24,7 @@ Confirm project, dataset, API version, channel and language before diagnosing mi
 - FLZR: `pnpm build:flzr`
 - MSM: `pnpm --filter @1sp/msm-web build`
 - Renaissance: `pnpm build:renaissance`
+- Studio CO2: `pnpm build:studioco2`
 - Dataset capacity: `pnpm doctor:sanity-capacity`
 
 Use the relevant `test:*` scripts in [package.json](package.json) and focused tests under `scripts/`. A shared change needs verification in the affected apps as well as existing 1SP behavior.

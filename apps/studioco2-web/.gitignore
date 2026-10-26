@@ -1,0 +1,2 @@
+# The studio reel stays out of Git; it moves to Cloudinary with the CMS content.
+/public/media/*.mp4

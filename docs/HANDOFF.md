@@ -25,7 +25,7 @@ Orientation is complete when the target environment, current worktree, content o
 | FLZR | `apps/flzr-web` | 3001 | `flizrWeb` | EN, DE, PL |
 | MSM | `apps/msm-web` | 3002 | `msmWeb` | EN, DE |
 | Renaissance | `apps/renaissance-web` | 3003 | `renaissanceWeb` | EN |
-| Studio CO2 | Configuration only; no independent app | — | `studioco2Web` | EN, DE |
+| Studio CO2 | `apps/studioco2-web` (from 26 October: static P5 homepage, no CMS yet) | 3004 | `studioco2Web` | EN |
 
 Configured locales do not establish translated content completeness. Commands are maintained in [the root README](../README.md); versions in [package.json](../package.json), [the lockfile](../pnpm-lock.yaml) and [.nvmrc](../.nvmrc).
 

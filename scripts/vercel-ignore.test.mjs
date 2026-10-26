@@ -15,7 +15,7 @@ import {
   relevantFilesForSite,
 } from "./vercel-ignore.mjs";
 
-const sites = ["1sp", "msm", "flzr", "renaissance"];
+const sites = ["1sp", "msm", "flzr", "renaissance", "studioco2"];
 
 function decisions(files) {
   return Object.fromEntries(
@@ -29,18 +29,28 @@ test("app-only changes build only their owning project", () => {
     msm: false,
     flzr: true,
     renaissance: false,
+    studioco2: false,
   });
   assert.deepEqual(decisions(["apps/msm-web/app/page.tsx"]), {
     "1sp": false,
     msm: true,
     flzr: false,
     renaissance: false,
+    studioco2: false,
   });
   assert.deepEqual(decisions(["apps/renaissance-web/app/page.tsx"]), {
     "1sp": false,
     msm: false,
     flzr: false,
     renaissance: true,
+    studioco2: false,
+  });
+  assert.deepEqual(decisions(["apps/studioco2-web/app/page.tsx"]), {
+    "1sp": false,
+    msm: false,
+    flzr: false,
+    renaissance: false,
+    studioco2: true,
   });
 });
 
@@ -50,6 +60,7 @@ test("1SP-only root app changes do not build nested apps", () => {
     msm: false,
     flzr: false,
     renaissance: false,
+    studioco2: false,
   });
 });
 
@@ -70,6 +81,7 @@ test("hidden root dependencies build every project", () => {
       msm: true,
       flzr: true,
       renaissance: true,
+      studioco2: true,
     });
   }
 });
@@ -80,18 +92,21 @@ test("workspace packages follow the current dependency boundary", () => {
     msm: false,
     flzr: false,
     renaissance: false,
+    studioco2: false,
   });
   assert.deepEqual(decisions(["packages/utils/src/site-url.ts"]), {
     "1sp": true,
     msm: true,
     flzr: true,
     renaissance: true,
+    studioco2: true,
   });
   assert.deepEqual(decisions(["packages/future-shared/src/index.ts"]), {
     "1sp": true,
     msm: true,
     flzr: true,
     renaissance: true,
+    studioco2: true,
   });
 });
 
@@ -101,6 +116,7 @@ test("lockfile changes conservatively build all projects", () => {
     msm: true,
     flzr: true,
     renaissance: true,
+    studioco2: true,
   });
 });
 
@@ -119,6 +135,7 @@ test("documentation, env templates, and deployment tests build no project", () =
       msm: false,
       flzr: false,
       renaissance: false,
+      studioco2: false,
     }
   );
 });
@@ -131,6 +148,7 @@ test("Sanity Functions and their blueprint build no project", () => {
       msm: false,
       flzr: false,
       renaissance: false,
+      studioco2: false,
     }
   );
 });
@@ -146,6 +164,7 @@ test("a move between app directories builds both owning projects", () => {
       msm: true,
       flzr: true,
       renaissance: false,
+      studioco2: false,
     }
   );
 });
@@ -163,6 +182,7 @@ test("a move out of a shared root preserves builds for former consumers", () => 
       msm: true,
       flzr: true,
       renaissance: true,
+      studioco2: true,
     }
   );
 });

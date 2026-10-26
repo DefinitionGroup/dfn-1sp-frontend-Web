@@ -12,6 +12,7 @@
     "dev:seo-diag": "NEXT_PUBLIC_SEO_DIAG=1 next dev --turbopack",
     "dev:flzr": "pnpm --filter @1sp/flzr-web dev",
     "dev:renaissance": "pnpm --filter @1sp/renaissance-web exec next dev --turbopack -p 3003",
+    "dev:studioco2": "pnpm --filter @1sp/studioco2-web exec next dev --turbopack -p 3004",
     "doctor:sanity": "node --env-file=.env --env-file=.env.local scripts/sanity-doctor.mjs",
     "check:1sp-dataset-switch": "node scripts/compare-1sp-datasets.mjs",
     "doctor:sanity-capacity": "sanity exec scripts/sanity-capacity.ts --with-user-token",
@@ -37,9 +38,11 @@
     "build": "next build",
     "build:flzr": "pnpm --filter @1sp/flzr-web build",
     "build:renaissance": "pnpm --filter @1sp/renaissance-web build",
+    "build:studioco2": "pnpm --filter @1sp/studioco2-web build",
     "start": "next start",
     "start:flzr": "pnpm --filter @1sp/flzr-web start",
     "start:renaissance": "pnpm --filter @1sp/renaissance-web exec next start -p 3003",
+    "start:studioco2": "pnpm --filter @1sp/studioco2-web exec next start -p 3004",
     "lint": "eslint ."
   },
   "dependencies": {
