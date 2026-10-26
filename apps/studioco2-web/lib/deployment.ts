@@ -1,5 +1,5 @@
 import { getSiteConfig } from '@1sp/site-config';
-import { getRobotsMetadata, shouldAllowIndexing } from '@1sp/utils/deployment-tier';
+import { getDeploymentHeaders, getRobotsMetadata, shouldAllowIndexing } from '@1sp/utils/deployment-tier';
 
 // Studio CO2 stays out of search until site-config names a production domain.
 export function isStudioco2Public() {
@@ -10,7 +10,9 @@ export function studioco2RobotsMetadata() {
   return isStudioco2Public() ? getRobotsMetadata() : { index: false, follow: false, noarchive: true };
 }
 
+// getDeploymentHeaders also validates the test-lane environment at build time.
 export async function studioco2DeploymentHeaders() {
-  if (isStudioco2Public()) return [];
+  const headers = getDeploymentHeaders('studioco2');
+  if (isStudioco2Public() || headers.length) return headers;
   return [{ source: '/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' }] }];
 }

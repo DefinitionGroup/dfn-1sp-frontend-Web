@@ -141,6 +141,7 @@ test("nested site identities accept only their matching channels", () => {
     ["msm", "msmWeb", "msm-monorepo-test.vercel.app"],
     ["flzr", "flizrWeb", "flzr-monorepo-test.vercel.app"],
     ["renaissance", "renaissanceWeb", "renaissance-1sp-dfn.vercel.app"],
+    ["studioco2", "studioco2Web", "studioco2-monorepo-test.vercel.app"],
   ]) {
     withEnvironment(
       {
