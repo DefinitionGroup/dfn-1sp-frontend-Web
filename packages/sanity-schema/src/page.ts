@@ -212,6 +212,10 @@ export default defineType({
                 { type: 'interactiveServiceCarousel', title: 'InteractiveServiceCarousel' },
                 { type: 'msmMediaFeature', title: 'MSM Media Feature' },
                 { type: 'msmSocialLinks', title: 'MSM Social Links' },
+                { type: 'studioco2Hero', title: 'Studio CO2 Hero' },
+                { type: 'studioco2Specimen', title: 'Studio CO2 Type Specimen' },
+                { type: 'studioco2Capabilities', title: 'Studio CO2 Capabilities' },
+                { type: 'studioco2CasesStack', title: 'Studio CO2 Cases Stack' },
                 // Portable text — covers what contentMSM / contentStudioCO2 used to hold
                 { type: 'block' },
             ],

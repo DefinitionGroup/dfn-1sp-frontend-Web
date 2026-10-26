@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useInView } from 'motion/react'
+import { clean } from '@studioco2/lib/media'
 
 const glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/#_+<>[]'
 
@@ -13,9 +14,11 @@ function noise(index: number, tick: number, seed: number) {
   return (value ^ (value >>> 16)) >>> 0
 }
 
-export default function GlitchText({ children, quiet, play = true, delay = 0, className = '', replayKey = 0, duration = 820 }: {
+export default function GlitchText({ children: text, quiet, play = true, delay = 0, className = '', replayKey = 0, duration = 820 }: {
   children: string; quiet: boolean; play?: boolean; delay?: number; className?: string; replayKey?: number; duration?: number
 }) {
+  // Per-glyph rendering would split draft-preview markers into stray glyphs.
+  const children = clean(text)
   const ref = useRef<HTMLSpanElement>(null)
   const inView = useInView(ref, { once: true, amount: .45 })
   const [tick, setTick] = useState(-1)

@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(process.cwd(), "../.."),
   },
-  transpilePackages: ["@1sp/site-config", "@1sp/utils"],
+  transpilePackages: ["@1sp/site-config", "@1sp/utils", "@1sp/sanity-queries", "@1sp/sanity-types"],
   reactStrictMode: true,
   poweredByHeader: false,
   compiler: {

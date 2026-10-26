@@ -6,7 +6,7 @@ import { X, ArrowUpRight } from '@phosphor-icons/react'
 import EffectControls from './EffectControls'
 import Logo from './Logo'
 import type { Effects } from '@studioco2/lib/effects'
-import type { NavigationItem, Overlay as OverlayValue } from '@studioco2/data/homepageFallback'
+import type { NavigationItem, Overlay as OverlayValue } from '@studioco2/lib/content'
 
 export default function Overlay({ value, close, quiet, effects, changeEffects, shaderFailed, fxEnabled, navigation }: { effects: Effects; changeEffects: (value: Effects) => void; shaderFailed: boolean; fxEnabled: boolean; navigation: NavigationItem[]; value: Exclude<OverlayValue, null>; close: () => void; quiet: boolean }) {
   const ref = useRef<HTMLDialogElement>(null)
@@ -26,13 +26,13 @@ export default function Overlay({ value, close, quiet, effects, changeEffects, s
       <div className="overlay-top"><Logo /><button className="close-button" onClick={close} aria-label="Close dialog" autoFocus><X /> Close</button></div>
       <h2 id="overlay-title">{title}</h2>
       {value.type === 'project' && <>
-        <img className="detail-image" src={value.project.image} alt={value.project.alt} width="800" height="500" />
-        <div className="detail-copy"><p>{value.project.description}</p><span>{value.project.focus}</span></div>
-        <p className="content-note">{value.note}</p>
+        {value.project.image && <img className="detail-image" src={value.project.image} alt={value.project.alt} width="800" height="500" />}
+        <div className="detail-copy"><p>{value.project.description}</p>{value.project.focus && <span>{value.project.focus}</span>}</div>
+        {value.note && <p className="content-note">{value.note}</p>}
       </>}
       {value.type === 'reel' && <><video className="reel-video" controls playsInline preload="auto" autoPlay poster={value.reel.poster} src={value.reel.src} onError={() => setFailed(true)} />
-        {failed && <p role="alert">The reel couldn’t load. <a href={value.reel.fullFilmUrl}>Open the original reel</a>.</p>}
-        <p className="content-note">A short cut from the Studioco2 showreel. <a href={value.reel.fullFilmUrl} target="_blank" rel="noreferrer">Watch the full film <ArrowUpRight /></a></p>
+        {failed && <p role="alert">The reel couldn’t load.{value.reel.fullFilmUrl && <> <a href={value.reel.fullFilmUrl}>Open the full film</a>.</>}</p>}
+        {value.reel.fullFilmUrl && <p className="content-note">A short cut from the Studioco2 showreel. <a href={value.reel.fullFilmUrl} target="_blank" rel="noreferrer">Watch the full film <ArrowUpRight /></a></p>}
       </>}
       {value.type === 'menu' && <><nav className="effects-nav" aria-label="Studio navigation">{navigation.map(({ label, href }) => <a key={href} href={href} onClick={close}>{label}<ArrowUpRight /></a>)}</nav>
         {fxEnabled && <div onClick={event => { if ((event.target as HTMLElement).closest('.water-jump')) close() }}><EffectControls effects={effects} change={changeEffects} quiet={quiet} failed={shaderFailed} /></div>}</>}

@@ -1,5 +1,6 @@
 import {withChannelLabels} from "../../shared/channelPreview";
 import { caseDiscoveryField } from './caseDiscovery';
+import { CASE_SECTORS } from './caseSectors';
 import { defineType, defineField } from 'sanity'
 import { ChartBarHorizontal } from '@phosphor-icons/react'
 import { ChartBar } from '@phosphor-icons/react'
@@ -23,6 +24,14 @@ export default defineType({
     ],
     fields: [
     caseDiscoveryField('relations'),
+        defineField({
+            name: 'sector',
+            title: 'Sector',
+            type: 'string',
+            group: 'relations',
+            description: 'The industry the work belongs to. Shared by every website; Studio CO2 filters its cases by it.',
+            options: { list: CASE_SECTORS.map(sector => ({ title: sector, value: sector })) },
+        }),
         defineField({
             name: 'language',
             title: 'Language',

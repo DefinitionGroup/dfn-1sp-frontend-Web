@@ -82,6 +82,16 @@ const PRESENTATION_SITES: Array<{
         ? 'http://localhost:3003'
         : 'https://renaissance-1sp-dfn.vercel.app'),
   },
+  {
+    channel: 'studioco2Web',
+    name: 'presentation-studioco2',
+    title: 'Studio CO2 Preview',
+    origin:
+      process.env.NEXT_PUBLIC_SANITY_STUDIO_STUDIOCO2_PREVIEW_ORIGIN ||
+      (IS_DEVELOPMENT
+        ? 'http://localhost:3004'
+        : 'https://studioco2-monorepo-test.vercel.app'),
+  },
 ]
 
 const presentationTools = PRESENTATION_SITES.map((site) => {

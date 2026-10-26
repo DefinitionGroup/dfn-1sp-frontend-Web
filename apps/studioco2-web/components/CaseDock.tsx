@@ -4,15 +4,16 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion, useScroll, useTransform } from 'motion/react'
 import { ArrowRight, CaretDown, Check, X } from '@phosphor-icons/react'
-import { allCaseFilters, filterProjects } from '@studioco2/data/homepageFallback'
-import type { CaseFilters, Project } from '@studioco2/data/homepageFallback'
+import { allCaseFilters, filterProjects } from '@studioco2/lib/content'
+import type { CaseFilters, Project } from '@studioco2/lib/content'
 import { useIsClient } from '@studioco2/lib/client'
 
-export default function CaseDock({ projects, filters, onChange, quiet, hidden }: {
-  projects: Project[]; filters: CaseFilters; onChange: (filters: CaseFilters) => void; quiet: boolean; hidden: boolean
+export default function CaseDock({ projects, anchor, filters, onChange, quiet, hidden }: {
+  projects: Project[]; anchor: string; filters: CaseFilters; onChange: (filters: CaseFilters) => void; quiet: boolean; hidden: boolean
 }) {
-  const services = useMemo(() => [...new Set(projects.map(project => project.type))], [projects])
-  const sectors = useMemo(() => [...new Set(projects.map(project => project.sector))], [projects])
+  // Cases without a discipline or sector appear only under Everything / Everyone.
+  const services = useMemo(() => [...new Set(projects.map(project => project.type).filter(Boolean))], [projects])
+  const sectors = useMemo(() => [...new Set(projects.map(project => project.sector).filter(Boolean))], [projects])
   // The body portal exists only in the browser.
   const mounted = useIsClient()
   const [geometry, setGeometry] = useState({ travel: 0, heroHeight: 1, panelSpace: 400 })
@@ -27,15 +28,16 @@ export default function CaseDock({ projects, filters, onChange, quiet, hidden }:
   const panelMaxHeight = useTransform(y, offset => Math.max(120, Math.min(560, geometry.panelSpace + offset)))
 
   useEffect(() => {
-    const hero = document.getElementById('top')
+    // Over a hero the dock starts centred and travels down; without one it stays at the bottom.
+    const hero = document.querySelector<HTMLElement>('.hero')
     const dock = root.current
-    if (!hero || !dock || !visible) return
+    if (!dock || !visible) return
     const measure = () => {
       const bottom = parseFloat(getComputedStyle(dock).bottom)
       const dockHeight = dock.offsetHeight
       setGeometry({
-        travel: Math.max(0, window.innerHeight / 2 - bottom - dockHeight / 2),
-        heroHeight: hero.offsetHeight,
+        travel: hero ? Math.max(0, window.innerHeight / 2 - bottom - dockHeight / 2) : 0,
+        heroHeight: hero?.offsetHeight || 1,
         panelSpace: window.innerHeight - bottom - dockHeight - 24,
       })
     }
@@ -43,7 +45,7 @@ export default function CaseDock({ projects, filters, onChange, quiet, hidden }:
     // Defer until after the dither's layout effect has entered the top layer.
     const frame = requestAnimationFrame(() => { dock.showPopover?.(); measure() })
     const observer = new ResizeObserver(measure)
-    observer.observe(hero)
+    if (hero) observer.observe(hero)
     observer.observe(dock)
     window.addEventListener('resize', measure)
     return () => {
@@ -69,7 +71,7 @@ export default function CaseDock({ projects, filters, onChange, quiet, hidden }:
   const close = () => { setExpanded(null); trigger.current?.focus({ preventScroll: true }) }
   const viewCases = () => {
     setExpanded(null)
-    const work = document.getElementById('work')
+    const work = document.getElementById(anchor)
     work?.scrollIntoView({ behavior: quiet ? 'instant' : 'smooth', block: 'start' })
     document.getElementById('work-title')?.focus({ preventScroll: true })
   }

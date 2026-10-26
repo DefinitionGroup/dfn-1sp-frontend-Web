@@ -8,7 +8,7 @@ import ViewportDither from './ViewportDither'
 import { unchanging, useDocumentDark, useMediaQuery } from '@studioco2/lib/client'
 import { defaultEffects, fxRequested, readEffects, saveEffects } from '@studioco2/lib/effects'
 import type { Effects } from '@studioco2/lib/effects'
-import type { NavigationItem, Overlay as OverlayValue } from '@studioco2/data/homepageFallback'
+import type { NavigationItem, Overlay as OverlayValue } from '@studioco2/lib/content'
 
 type Site = {
   quiet: boolean
