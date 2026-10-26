@@ -16,7 +16,8 @@
     "./safe-fetch": "./src/safe-fetch.ts",
     "./stega-utils": "./src/stega-utils.ts",
     "./service-presentation": "./src/service-presentation.ts",
-    "./service-queries": "./src/service-queries.ts"
+    "./service-queries": "./src/service-queries.ts",
+    "./case-presentation": "./src/case-presentation.ts"
   },
   "types": "./src/index.ts",
   "files": [

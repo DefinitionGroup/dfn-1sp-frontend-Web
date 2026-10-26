@@ -11,6 +11,7 @@ import { OneSPschemaTypes } from './1spContent'
 import { FLZRschemaTypes } from './flzrContent'
 import { CaseStudySchemaTypes } from './caseStudyContent'
 import { MSMschemaTypes } from './msmContent'
+import { STUDIOCO2schemaTypes } from './studioco2Content'
 import link from './Global/Objects/link'
 import cta from './Global/Objects/cta'
 import paragraph from './Global/Objects/paragraph'
@@ -43,5 +44,5 @@ import newsCTABlock from './RENAISSANCE/Components/newsCTABlock'
 import renaissanceXPost from './RENAISSANCE/Documents/xPost'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [personWebsiteContent, renaissanceCaseCarousel, renaissanceGamesCarousel, renaissanceClientCollection, renaissanceXPost, renaissanceSharedPortraits, renaissanceSharedAwards, renaissanceSharedContentReference, page, menu, siteSettings, oneSpComponentGroup, translationGuidelines, caseStudy, caseWebsiteContent, unitCase, client, person, contactSubmission, ...OneSPschemaTypes, ...FLZRschemaTypes, ...CaseStudySchemaTypes, ...MSMschemaTypes, renaissanceSectionBand, renaissancePortraitGrid, renaissanceAwardLogoWall, registerBlock, newsCTABlock, link, cta, paragraph, size, services, serviceWebsiteContent, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata, contactForm, oneSpComponentGroupReference],
+  types: [personWebsiteContent, renaissanceCaseCarousel, renaissanceGamesCarousel, renaissanceClientCollection, renaissanceXPost, renaissanceSharedPortraits, renaissanceSharedAwards, renaissanceSharedContentReference, page, menu, siteSettings, oneSpComponentGroup, translationGuidelines, caseStudy, caseWebsiteContent, unitCase, client, person, contactSubmission, ...OneSPschemaTypes, ...FLZRschemaTypes, ...CaseStudySchemaTypes, ...MSMschemaTypes, ...STUDIOCO2schemaTypes, renaissanceSectionBand, renaissancePortraitGrid, renaissanceAwardLogoWall, registerBlock, newsCTABlock, link, cta, paragraph, size, services, serviceWebsiteContent, serviceGroup, cloudinaryImage, mediaGalleryItem, imageGalleryItem, personReference, clientReference, metadata, contactForm, oneSpComponentGroupReference],
 }

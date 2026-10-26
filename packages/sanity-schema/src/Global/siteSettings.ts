@@ -40,6 +40,22 @@ export default defineType({
       }) },
     })),
     defineField({
+      name: "studioco2Contact",
+      title: "Contact",
+      type: "object",
+      description: "Footer contact details and the “Get in touch” invitation.",
+      hidden: ({ document }) => document?.channel !== "studioco2Web",
+      fields: [
+        defineField({ name: "email", title: "Email", type: "string", validation: (Rule) => Rule.email() }),
+        defineField({ name: "phone", title: "Phone", type: "string", description: "As displayed, e.g. +44 (0) 1483 414 415." }),
+        defineField({ name: "address", title: "Address", type: "text", rows: 2, description: "One line per row." }),
+        defineField({ name: "invitation", title: "Invitation", type: "string", description: "Line above the large contact link.", validation: (Rule) => Rule.max(80) }),
+        defineField({ name: "ctaLabel", title: "Contact link label", type: "string", initialValue: "Get in touch", validation: (Rule) => Rule.max(24) }),
+        defineField({ name: "familyLabel", title: "Group link label", type: "string", initialValue: "Part of the 1SP family" }),
+        defineField({ name: "familyUrl", title: "Group link URL", type: "url", initialValue: "https://www.1sp.agency", validation: (Rule) => Rule.uri({ scheme: ["https"] }) }),
+      ],
+    }),
+    defineField({
       name: "oneSpMembershipLabel",
       title: "1SP Membership Label",
       type: "string",

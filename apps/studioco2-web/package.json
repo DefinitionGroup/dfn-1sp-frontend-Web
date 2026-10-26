@@ -9,11 +9,14 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@1sp/sanity-queries": "workspace:*",
+    "@1sp/sanity-types": "workspace:*",
     "@1sp/site-config": "workspace:*",
     "@1sp/utils": "workspace:*",
     "@phosphor-icons/react": "^2.1.10",
     "motion": "^12.23.12",
     "next": "16.2.10",
+    "next-sanity": "^13.3.1",
     "react": "19.2.7",
     "react-dom": "19.2.7"
   },

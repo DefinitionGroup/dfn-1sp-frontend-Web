@@ -266,3 +266,45 @@ input[type=range]::-webkit-slider-thumb{border-radius:0}input[type=range]::-moz-
 
 /* studioco2-web: without FX tuning, the header trigger is a mobile-only menu. */
 @media(min-width:768px){.effects-trigger[data-role=menu]{display:none}}
+
+/* studioco2-web: pages without the hero reel. The header sits on paper and follows the theme. */
+.page-header{position:relative;z-index:5;background:var(--paper);color:var(--ink)}
+.page-header .site-header{border-bottom-color:var(--line)}
+.page-header .icon-button:hover,.page-header .effects-trigger:hover{background:var(--subtle)}
+.page-header .effects-trigger{border-color:var(--line);background:transparent}
+.draft-exit{position:fixed;left:16px;bottom:16px;z-index:20;padding:10px 14px;background:var(--ink);color:var(--paper);font-family:var(--digital);font-weight:100;font-size:12px}
+
+/* studioco2-web: case pages, built from the work stack's type, rules and stepped cuts. */
+.case-hero{padding-top:32px}
+.case-hero .work-top a{display:inline-flex;align-items:center;gap:10px}
+.case-hero .work-top a:hover{text-decoration:underline;text-underline-offset:5px}
+.case-title{margin-top:64px;max-width:15ch;font-size:clamp(56px,7.6vw,148px);font-weight:350;line-height:.98;letter-spacing:-.06em;text-wrap:balance}
+.case-summary{margin:32px 0 0 50%;max-width:580px;font-size:clamp(18px,1.7vw,25px);line-height:1.45;color:var(--muted)}
+.case-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin:72px 0 0;padding:20px 0 28px;border-top:1px solid var(--line)}
+.case-facts dt,.case-label,.case-metric dt{font-family:var(--digital);font-weight:100;font-size:12px;letter-spacing:.015em;color:var(--muted)}
+.case-facts dd{margin:8px 0 0;font-size:16px;line-height:1.5}
+.case-figure{margin:0;overflow:hidden;background:var(--subtle);clip-path:polygon(0 0,calc(100% - 16px) 0,calc(100% - 16px) 8px,calc(100% - 8px) 8px,calc(100% - 8px) 16px,100% 16px,100% 100%,0 100%)}
+.case-figure-media{display:block;width:100%;aspect-ratio:16 / 9;object-fit:cover}
+.case-section{padding-top:125px}
+.case-section-head{display:grid;grid-template-columns:36% 1fr;align-items:baseline;padding-top:20px;border-top:1px solid var(--line)}
+.case-section-head h2{max-width:18ch;font-size:clamp(40px,4.8vw,92px);font-weight:350;line-height:1;letter-spacing:-.05em;text-wrap:balance}
+.case-subtitle{color:var(--muted)}
+.case-section .case-figure{margin-top:48px}
+.case-columns{display:grid;grid-template-columns:36% 1fr;margin-top:48px}
+.case-lead p,.case-results-intro{max-width:30ch;font-size:clamp(18px,1.7vw,25px);line-height:1.45}
+.case-results-intro{margin:32px 0 0 36%}
+.case-detail{max-width:640px;font-size:17px;line-height:1.6;color:var(--muted)}
+.case-detail h3{margin:0 0 12px;font-family:var(--digital);font-weight:100;font-size:12px;color:var(--ink)}
+.case-detail h3:not(:first-child){margin-top:36px}
+.case-detail p+p,.case-detail p+.case-list{margin-top:14px}
+.case-list{margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.case-list li{padding:12px 0;border-bottom:1px solid var(--line)}
+.case-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;margin:56px 0 0 36%}
+.case-metric{padding-top:20px;border-top:1px solid var(--ink)}
+.case-metric dd{margin:12px 0 0;font-size:clamp(56px,6vw,112px);font-weight:300;line-height:1;letter-spacing:-.05em}
+.case-metric p{margin-top:12px;color:var(--muted)}
+.case-next{padding-top:125px;padding-bottom:40px}
+.case-next-link{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:20px;padding-top:20px;border-top:1px solid var(--line);font-size:clamp(40px,6vw,112px);font-weight:350;line-height:1;letter-spacing:-.05em}
+.case-next-link svg{width:.6em;height:.6em}
+@media(max-width:1023px){.case-section-head,.case-columns{grid-template-columns:30% 1fr}.case-summary{margin-left:30%}.case-results-intro,.case-metrics{margin-left:30%}.case-section,.case-next{padding-top:90px}}
+@media(max-width:767px){.case-title{margin-top:40px;font-size:clamp(44px,12.5vw,72px)}.case-summary{margin-left:0;font-size:18px}.case-facts{grid-template-columns:1fr 1fr;margin-top:48px}.case-section-head,.case-columns{display:block}.case-section-head h2{margin-top:12px}.case-columns{margin-top:28px}.case-detail{margin-top:28px}.case-results-intro,.case-metrics{margin-left:0}.case-section,.case-next{padding-top:65px}.case-figure-media{aspect-ratio:4 / 3}}

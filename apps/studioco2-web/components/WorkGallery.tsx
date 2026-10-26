@@ -2,14 +2,14 @@
 
 import { Fragment, useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
+import Link from 'next/link'
 import { motion, useInView, useScroll, useTransform } from 'motion/react'
 import { ArrowUpRight, ArrowRight, ArrowLeft } from '@phosphor-icons/react'
-import { filterProjects } from '@studioco2/data/homepageFallback'
-import type { CaseFilters, WorkContent } from '@studioco2/data/homepageFallback'
+import { filterProjects, splitLastWord } from '@studioco2/lib/content'
+import type { CaseFilters, Project, WorkContent } from '@studioco2/lib/content'
 import GlitchText from './GlitchText'
 import SignalBurst from './SignalBurst'
 import GlitchArrow from './GlitchArrow'
-import type { Project } from '@studioco2/data/homepageFallback'
 
 const slide = { type: 'spring' as const, duration: .5, bounce: 0 }
 
@@ -45,15 +45,17 @@ function SlideCard({ project, index, total, quiet, glitch, open }: { project: Pr
         <span className="slide-category">{project.type}</span>
         <h3><GlitchText quiet={quiet || !glitch} play={show}>{project.title}</GlitchText></h3>
         <p>{project.description}</p>
-        <button className="project-open" onClick={() => open(project)}>Open project <ArrowUpRight /></button>
+        {project.href
+          ? <Link className="project-open" href={project.href}>Open project <ArrowUpRight /></Link>
+          : <button className="project-open" onClick={() => open(project)}>Open project <ArrowUpRight /></button>}
       </div>
       <motion.button className="slide-image" aria-label={`${show ? 'Cover' : 'Reveal'} details for ${project.title}`} aria-expanded={show} aria-controls={`project-detail-${index}`}
         onClick={toggle} tabIndex={quiet && show ? -1 : 0}
         style={{ pointerEvents: quiet && show ? 'none' : 'auto' }}
         animate={quiet ? { transform: 'translateX(0%)', opacity: show ? 0 : 1 } : { transform: `translateX(${show ? 73 : hint ? 7 : 0}%)`, opacity: 1 }}
         transition={quiet ? { duration: .12 } : slide}>
-        <img src={project.image} alt={project.alt} width="800" height="500" loading="lazy" />
-        {glitch && <span className="hover-glitch" aria-hidden="true">
+        {project.image && <img src={project.image} alt={project.alt} width="800" height="500" loading="lazy" />}
+        {glitch && project.image && <span className="hover-glitch" aria-hidden="true">
           <img className="glitch-slice glitch-slice-a" src={project.image} alt="" width="800" height="500" loading="lazy" />
           <img className="glitch-slice glitch-slice-b" src={project.image} alt="" width="800" height="500" loading="lazy" />
         </span>}
@@ -62,7 +64,9 @@ function SlideCard({ project, index, total, quiet, glitch, open }: { project: Pr
       </motion.button>
     </div>
     <div className="slide-caption">
-      <button onClick={() => open(project)} className="slide-title"><GlitchText quiet={quiet || !glitch}>{project.title}</GlitchText><ArrowUpRight /></button>
+      {project.href
+        ? <Link href={project.href} className="slide-title"><GlitchText quiet={quiet || !glitch}>{project.title}</GlitchText><ArrowUpRight /></Link>
+        : <button onClick={() => open(project)} className="slide-title"><GlitchText quiet={quiet || !glitch}>{project.title}</GlitchText><ArrowUpRight /></button>}
       <button className="reveal-control" onClick={toggle} aria-expanded={show} aria-controls={`project-detail-${index}`} aria-label={`${show ? 'Cover' : 'Reveal'} ${project.title}`}>{show ? 'Cover' : 'Reveal'} {show ? <ArrowLeft /> : <ArrowRight />}</button>
     </div>
   </motion.article>
@@ -72,15 +76,22 @@ function SlideCard({ project, index, total, quiet, glitch, open }: { project: Pr
 
 export default function WorkGallery({ content, quiet, glitch, filters, resetFilters, open }: { content: WorkContent; quiet: boolean; glitch: boolean; filters: CaseFilters; resetFilters: () => void; open: (project: Project) => void }) {
   const projects = filterProjects(content.projects, filters)
-  return <section id="work" className="work section-pad" aria-labelledby="work-title">
+  const { head, before, final } = splitLastWord(content.headline)
+  const titleQuiet = quiet || !glitch
+  return <section id={content.anchor} className="work section-pad" aria-labelledby="work-title">
     <div className="work-top"><span>{content.label}{(filters.service || filters.sector) && ` — ${projects.length} ${projects.length === 1 ? 'case' : 'cases'}`}</span><span>{content.hint}</span></div>
     <div className="digital-work-layout">
       <div className="digital-work-heading">
-        <h2 id="work-title" tabIndex={-1}><GlitchText quiet={quiet || !glitch}>{content.headline.first}</GlitchText><br /><GlitchText quiet={quiet || !glitch} delay={60}>{content.headline.second}</GlitchText> <span className="work-title-muted"><GlitchText quiet={quiet || !glitch} delay={120}>{content.headline.muted}</GlitchText></span><SignalBurst quiet={quiet || !glitch} /></h2>
-        <p>{content.text.map((line, index) => <Fragment key={line}>{index > 0 && <br />}{line}</Fragment>)}</p>
+        <h2 id="work-title" tabIndex={-1}>
+          {head.map((line, index) => <Fragment key={line}><GlitchText quiet={titleQuiet} delay={index * 60}>{line}</GlitchText><br /></Fragment>)}
+          {before && <><GlitchText quiet={titleQuiet} delay={head.length * 60}>{before}</GlitchText>{' '}</>}
+          <span className="work-title-muted"><GlitchText quiet={titleQuiet} delay={(head.length + (before ? 1 : 0)) * 60}>{final}</GlitchText></span>
+          <SignalBurst quiet={titleQuiet} />
+        </h2>
+        {content.text.length > 0 && <p>{content.text.map((line, index) => <Fragment key={line}>{index > 0 && <br />}{line}</Fragment>)}</p>}
         <GlitchArrow quiet={quiet || !glitch} />
       </div>
-      <div className="slide-gallery" data-stack-quiet={quiet}>{projects.map((project, index) => <SlideCard key={`${project.title}:${filters.service}:${filters.sector}`} project={project} index={index} total={projects.length} quiet={quiet} glitch={glitch} open={open} />)}{projects.length === 0 && <div className="work-empty"><h3>No cases in this combination.</h3><p>Try another service or sector to explore the archive.</p><button onClick={resetFilters}>Show all cases <ArrowRight /></button></div>}</div>
+      <div className="slide-gallery" data-stack-quiet={quiet}>{projects.map((project, index) => <SlideCard key={`${project.id}:${filters.service}:${filters.sector}`} project={project} index={index} total={projects.length} quiet={quiet} glitch={glitch} open={open} />)}{projects.length === 0 && <div className="work-empty"><h3>No cases in this combination.</h3><p>Try another service or sector to explore the archive.</p><button onClick={resetFilters}>Show all cases <ArrowRight /></button></div>}</div>
     </div>
   </section>
 }
