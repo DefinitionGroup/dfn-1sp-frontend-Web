@@ -31,8 +31,9 @@ Queries live in [lib/queries.ts](lib/queries.ts), not in the shared page queries
 
 ## Current state
 
-- **CMS-first homepage.** Without a published Studio CO2 homepage with content, [homepageFallback.ts](data/homepageFallback.ts) renders P5's copy, archive imagery and editorial project proposals in the same block shapes. Contact falls back the same way until Site Settings has an email.
-- **Reel.** The fallback's `public/media/reel.mp4` and `reel-mobile.mp4` are gitignored. Copy them from the prototype's `public/media/` for local work; CMS heroes use Cloudinary videos.
+- **CMS content.** The published homepage is `page-studioco2-home-en` and contact comes from `site-settings-studioco2Web-en`. Four cases are assigned to Studio CO2 (Microsoft, Logitech | Anker, Marshall, EA). The first three carry P5's card title, summary and still in their Studio CO2 version and keep the case's own video; EA uses its shared copy and media. P5's media is in Cloudinary under `1sp/STUDIOCO2/Homepage-v1`. See the [Phase 3 record](../../docs/records/project/studioco2-phase3-content-2026-10-27.md).
+- **Fallback.** If the homepage is unpublished or empty, or its query fails, [homepageFallback.ts](data/homepageFallback.ts) renders P5's copy, archive imagery and editorial project proposals in the same block shapes. Contact falls back the same way when Site Settings has no email. The fallback's `public/media/reel.mp4` and `reel-mobile.mp4` are gitignored; copy them from the prototype's `public/media/` for local work.
+- **New slugs render on demand.** Cases and pages published after a deploy render on first request (1h ISR). Keep `dynamicParams` off the `[locale]` layout; it would turn them into static 404s on Vercel.
 - **Effects drawer.** Public visitors get the defaults in [effects.ts](lib/effects.ts). The drawer and saved settings appear in development, or for the session after opening any URL with `?fx`. Theme and Pause are always available.
 - **Indexing.** Pages send `noindex` until site-config names a production domain ([deployment.ts](lib/deployment.ts)).
 - **Navigation** is code-owned (Work, Studio, Get in touch) because navbar menus cannot hold section anchors.
