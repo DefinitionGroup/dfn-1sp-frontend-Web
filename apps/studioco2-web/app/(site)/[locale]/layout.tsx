@@ -1,4 +1,5 @@
 import { draftMode } from "next/headers";
+import { notFound } from "next/navigation";
 import { SITE_CONFIGS } from "@1sp/site-config";
 import SiteFooter from "@studioco2/components/SiteFooter";
 import SiteProvider from "@studioco2/components/SiteProvider";
@@ -7,14 +8,15 @@ import { contactContent } from "@studioco2/lib/content";
 import { getContact } from "@studioco2/lib/queries";
 
 // English only; middleware serves public URLs from this internal /en segment.
-export const dynamicParams = false;
-
+// Unknown locales 404 here rather than via dynamicParams = false, which would also
+// stop case and page slugs published after the build from rendering on demand.
 export function generateStaticParams() {
   return SITE_CONFIGS.studioco2Web.locales.map((locale) => ({ locale }));
 }
 
 export default async function SiteLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  if (!SITE_CONFIGS.studioco2Web.locales.some((code) => code === locale)) notFound();
   const settings = await getContact(locale).catch((error) => {
     console.error("Studio CO2 contact settings query failed; using the fallback.", error);
     return null;
