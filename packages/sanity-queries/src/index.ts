@@ -35,7 +35,7 @@ import { sanityFetch } from "./fetch";
 import { defineQuery } from "next-sanity";
 import { getChannelFromEnv } from "@1sp/site-config";
 import type { NavbarMenu } from "@1sp/sanity-types/menu";
-import type { FooterExternalBannerData, FooterExternalBannerUnit } from "@1sp/sanity-types";
+import type { FooterExportGroup, FooterExternalBannerData, FooterExternalBannerUnit } from "@1sp/sanity-types";
 
 const INTERACTIVE_CAROUSEL_FIELD_MAP = {
   "1spWeb": "connectedDataCarouselPromo1SP",
@@ -769,6 +769,18 @@ export const getFooterExternalBannerUnits = cache(
       tags: ["units"],
     });
     return data || [];
+  },
+);
+
+export const getFooterExportGroup = cache(
+  async (groupId: string): Promise<FooterExportGroup | null> => {
+    const { FOOTER_EXPORT_GROUP_QUERY } = await import("./groq");
+    const { data } = await sanityFetch({
+      query: FOOTER_EXPORT_GROUP_QUERY,
+      params: { groupId },
+      tags: ["pages"],
+    });
+    return data ?? null;
   },
 );
 

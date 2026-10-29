@@ -1664,6 +1664,16 @@ export const FOOTER_EXTERNAL_BANNER_UNITS_QUERY = defineQuery(`
 }
 `);
 
+/** The first Footer External Banner in a 1SP Component Group, for the /1spfooter HTML exports. */
+export const FOOTER_EXPORT_GROUP_QUERY = defineQuery(`
+*[_type == "oneSpComponentGroup" && _id == $groupId][0]{
+  _id,
+  title,
+  language,
+  "banner": content[_type == "footerExternalBanner"][0]{..., cta{..., link{..., page->{slug}}}}
+}
+`);
+
 export const UNIT_LOGO_FLOAT_QUERY = defineQuery(`
 *[
   _type == "unit" &&
