@@ -7,6 +7,7 @@ import { useInView } from "motion/react";
 import { assetUrl, cloudinaryPosterUrl, optimizedVideoUrl } from "@1sp/utils/cloudinary";
 import { getRenderableCta, resolveCtaLink } from "@1sp/utils/cta";
 import type { FooterExternalBannerData, FooterExternalBannerUnit } from "@1sp/sanity-types";
+import { orderFooterBannerUnits } from "./footerExternalBannerOrder";
 import styles from "./footerExternalBanner.module.css";
 import arrow from "./footerExternalBannerArrow.svg";
 
@@ -24,17 +25,6 @@ function localizeHref(href: string, language: string) {
   const prefix = `/${language}`;
   if (href === prefix) return "/";
   return href.startsWith(`${prefix}/`) ? href.slice(prefix.length) : href;
-}
-
-function orderUnits(units: FooterExternalBannerUnit[], order: FooterExternalBannerData["unitOrder"]) {
-  const refs = (order ?? []).map((ref) => ref?._ref);
-  if (!refs.some(Boolean)) return units;
-  const rank = (unit: FooterExternalBannerUnit) => {
-    const index = refs.indexOf(unit._id);
-    return index === -1 ? refs.length : index;
-  };
-  // The sort is stable, so unlisted units keep the query's A–Z order after the listed ones.
-  return [...units].sort((a, b) => rank(a) - rank(b));
 }
 
 function UnitCard({ unit, language, reducedMotion }: {
@@ -138,7 +128,7 @@ export default function FooterExternalBanner({ data, units = [], language = "en"
           </div>}
         </div>
         {units.length > 0 && <ul className={styles.units}>
-          {orderUnits(units, data.unitOrder).map((unit) => <UnitCard key={unit._id} unit={unit} language={language} reducedMotion={reducedMotion} />)}
+          {orderFooterBannerUnits(units, data.unitOrder).map((unit) => <UnitCard key={unit._id} unit={unit} language={language} reducedMotion={reducedMotion} />)}
         </ul>}
         {cta && <div className={styles.action}>
           <Link href={localizeHref(cta.href, language)} className={styles.cta}

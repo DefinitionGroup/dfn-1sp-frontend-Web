@@ -20,6 +20,21 @@ Edit each card in **Units → English → [Unit]**: **General → Footer Banner 
 
 The component uses five columns on desktop, three on tablet and two on mobile. Video playback is deferred until near the viewport and paused outside the viewport. Reduced-motion preferences show the poster and disable entrance/hover movement, including when the preference changes while the page is open.
 
+## Export to sites outside this repository
+
+Sites on other CMSes (promoPers, New Fluence) embed the banner as a self-contained HTML snippet served by live 1SP:
+
+| File | Studio source (Reusable 1SP Component Groups) |
+| --- | --- |
+| `https://www.1sp.agency/1spfooter/promopers.footer.html` | **Footer export: promoPers** (`onesp-footer-export-promopers`) |
+| `https://www.1sp.agency/1spfooter/newfluence.html` | **Footer export: New Fluence** (`onesp-footer-export-newfluence`) |
+
+Each export renders the first Footer External Banner in its group with the same unit catalog as the other placements. `<name>.html` and `<name>.footer.html` serve the same snippet; `<name>.preview.html` shows it on a stand-in host page. The snippet carries its CSS, script and the Aspekta font inline and renders in a shadow root, so host styles cannot reach it. Images and videos load from Cloudinary; links are absolute.
+
+The files are static and rebuilt after every Sanity publish through `/api/revalidate`, without a deploy. A host that pastes the snippet keeps that copy; the comment at the top of each snippet contains a one-line loader that fetches the latest version instead. To add a site, add an entry to `FOOTER_EXPORTS` in `lib/footer-banner-export.ts` and create its group in Studio.
+
+The snippet reads `footerExternalBanner.module.css` as text and repeats the component's markup, so keep `lib/footer-banner-export.ts` in step with `components/menu/footerExternalBanner.tsx` when either changes.
+
 ## Integration and release
 
 - Client component: `components/menu/footerExternalBanner.tsx`
