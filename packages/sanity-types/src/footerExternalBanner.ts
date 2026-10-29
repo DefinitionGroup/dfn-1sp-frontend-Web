@@ -16,6 +16,14 @@ export interface FooterExternalBannerData {
   copyright?: string;
 }
 
+/** A 1SP Component Group whose Footer External Banner is served as an HTML export. */
+export interface FooterExportGroup {
+  _id: string;
+  title?: string;
+  language?: string;
+  banner?: FooterExternalBannerData | null;
+}
+
 export interface FooterExternalBannerUnit {
   _id: string;
   name?: string;
