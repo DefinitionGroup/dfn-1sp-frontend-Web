@@ -22,16 +22,19 @@ The component uses five columns on desktop, three on tablet and two on mobile. V
 
 ## Export to sites outside this repository
 
-Sites on other CMSes (promoPers, New Fluence) embed the banner as a self-contained HTML snippet served by live 1SP:
+Sites on other CMSes (promoPers, New Fluence, 1SP XR Studio) embed the banner as a self-contained HTML snippet served by live 1SP:
 
 | File | Studio source (Reusable 1SP Component Groups) |
 | --- | --- |
 | `https://www.1sp.agency/1spfooter/promopers.footer.html` | **Footer export: promoPers** (`onesp-footer-export-promopers`) |
 | `https://www.1sp.agency/1spfooter/newfluence.html` | **Footer export: New Fluence** (`onesp-footer-export-newfluence`) |
+| `https://www.1sp.agency/1spfooter/1spxrstudio.footer.html` | **Footer export: 1SP XR Studio** (`onesp-footer-export-1spxrstudio`) |
 
 Each export renders the first Footer External Banner in its group with the same unit catalog as the other placements. `<name>.html` and `<name>.footer.html` serve the same snippet; `<name>.preview.html` shows it on a stand-in host page. The snippet carries its CSS, script and the Aspekta font inline and renders in a shadow root, so host styles cannot reach it. Images and videos load from Cloudinary; links are absolute.
 
 The files are static and rebuilt after every Sanity publish through `/api/revalidate`, without a deploy. A host that pastes the snippet keeps that copy; the comment at the top of each snippet contains a one-line loader that fetches the latest version instead. To add a site, add an entry to `FOOTER_EXPORTS` in `lib/footer-banner-export.ts` and create its group in Studio.
+
+The snippet only renders when its `<script>` survives the host CMS. In Joomla (1SP XR Studio), add it as a Custom module with the editor set to CodeMirror or None; Joomla's text filters strip scripts for accounts other than Super Users.
 
 The snippet reads `footerExternalBanner.module.css` as text and repeats the component's markup, so keep `lib/footer-banner-export.ts` in step with `components/menu/footerExternalBanner.tsx` when either changes.
 
