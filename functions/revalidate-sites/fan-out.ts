@@ -48,6 +48,26 @@ export const TARGETS: RevalidateTarget[] = [
 ];
 
 /**
+ * Document types whose changes never alter a rendered page. Contact-form
+ * submissions and Presentation's preview secrets are created all the time,
+ * and every delivery expires the receiving site's whole cache.
+ */
+export const UNRENDERED_TYPES = [
+  "sanity.imageAsset",
+  "sanity.fileAsset",
+  "sanity.previewUrlSecret",
+  "contactSubmission",
+  "system.group",
+  "system.retention",
+  "system.schema",
+];
+
+/** GROQ filter for the function's document events in the given datasets. */
+export function eventFilter(datasets: string[]): string {
+  return `!(_type in ${JSON.stringify(UNRENDERED_TYPES)}) && sanity::dataset() in ${JSON.stringify(datasets)}`;
+}
+
+/**
  * Signs a body the way Sanity webhooks do, so the sites' `parseBody` from
  * `next-sanity/webhook` accepts it: `t=<ms>,v1=<base64url HMAC-SHA256>`
  * over `<ms>.<body>`.
