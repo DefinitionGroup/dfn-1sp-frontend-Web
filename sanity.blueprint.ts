@@ -1,5 +1,5 @@
 import { defineBlueprint, defineDocumentFunction } from "@sanity/blueprints";
-import { TARGETS } from "./functions/revalidate-sites/fan-out";
+import { TARGETS, eventFilter } from "./functions/revalidate-sites/fan-out";
 
 // Only datasets a live site reads trigger the function; imports into any
 // other dataset never invoke it.
@@ -14,8 +14,9 @@ export default defineBlueprint({
       timeout: 30,
       event: {
         on: ["create", "update", "delete"],
-        // Asset uploads do not change rendered pages.
-        filter: `!(_type in ["sanity.imageAsset", "sanity.fileAsset"]) && sanity::dataset() in ${JSON.stringify(LIVE_DATASETS)}`,
+        // Assets, form submissions, preview secrets and system documents
+        // do not change rendered pages.
+        filter: eventFilter(LIVE_DATASETS),
         projection: "{_id, _type, slug, language, channel}",
       },
     }),

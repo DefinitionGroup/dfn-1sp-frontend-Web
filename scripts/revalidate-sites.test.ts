@@ -3,6 +3,8 @@ import test from "node:test";
 import { parseBody } from "next-sanity/webhook";
 import {
   TARGETS,
+  UNRENDERED_TYPES,
+  eventFilter,
   revalidateSites,
   signatureHeader,
   type RevalidateTarget,
@@ -111,4 +113,17 @@ test("every live target posts to an https revalidate endpoint with its own secre
     assert.match(target.secretEnv, /^REVALIDATE_SECRET_[A-Z0-9]+$/);
   }
   assert.equal(new Set(TARGETS.map((target) => target.secretEnv)).size, TARGETS.length);
+});
+
+test("form submissions, preview secrets and assets never trigger a refresh", () => {
+  for (const type of ["contactSubmission", "sanity.previewUrlSecret", "sanity.imageAsset", "sanity.fileAsset", "system.group"]) {
+    assert.ok(UNRENDERED_TYPES.includes(type), `${type} should be ignored`);
+  }
+  for (const type of ["page", "caseStudy", "services", "person", "client", "unit", "menu", "siteSettings", "translation.metadata"]) {
+    assert.ok(!UNRENDERED_TYPES.includes(type), `${type} should refresh sites`);
+  }
+  assert.equal(
+    eventFilter(["production"]),
+    `!(_type in ${JSON.stringify(UNRENDERED_TYPES)}) && sanity::dataset() in ["production"]`,
+  );
 });
