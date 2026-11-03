@@ -31,7 +31,6 @@ import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
-  JsonLdScript,
   generateWebPageJsonLd,
   generateBreadcrumbJsonLd,
   generateItemListJsonLd,
@@ -48,6 +47,7 @@ import {
   getBreadcrumbLabel,
   CANONICAL_URL,
 } from "@/lib/structured-data";
+import { JsonLdScript } from "@flzr/lib/structured-data";
 
 // Allow new pages to be rendered on-demand (ISR)
 export const dynamicParams = true;
