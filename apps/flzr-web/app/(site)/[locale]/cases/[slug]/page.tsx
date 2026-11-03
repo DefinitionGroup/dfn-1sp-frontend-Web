@@ -30,12 +30,12 @@ import CaseStudyPageClient from "./CaseStudyPageClient";
 import FlzrSiteWrapper from "@flzr/components/FlzrSiteWrapper";
 import type { Metadata } from "next";
 import {
-  JsonLdScript,
   generateCaseStudyJsonLd,
   generateBreadcrumbJsonLd,
   getBreadcrumbLabel,
   CANONICAL_URL,
 } from "@/lib/structured-data";
+import { JsonLdScript } from "@flzr/lib/structured-data";
 
 // Allow new case studies to be rendered on-demand (ISR)
 export const dynamicParams = true;

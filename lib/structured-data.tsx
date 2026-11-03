@@ -37,8 +37,8 @@ import { CANONICAL_SITE_URL } from "@1sp/utils/site-url";
 // =============================================================================
 
 export const CANONICAL_URL = CANONICAL_SITE_URL;
-const SITE_NAME = "1SP Agency";
-const SITE_DESCRIPTION =
+export const SITE_NAME = "1SP Agency";
+export const SITE_DESCRIPTION =
   "1SP is a full-service agency specializing in brand engagement, experiential marketing, creative content, and talent management.";
 
 // Localized breadcrumb labels

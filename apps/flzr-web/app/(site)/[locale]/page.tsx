@@ -27,7 +27,6 @@ import { resolveImageUrl } from "@1sp/sanity-queries/image";
 import type { Metadata } from "next";
 import { getHeroPreloadData, HeroPreloadLinks } from "@/lib/hero-utils";
 import {
-  JsonLdScript,
   generateHomepageJsonLd,
   generateBreadcrumbJsonLd,
   generateItemListJsonLd,
@@ -44,6 +43,7 @@ import {
   getBreadcrumbLabel,
   CANONICAL_URL,
 } from "@/lib/structured-data";
+import { JsonLdScript } from "@flzr/lib/structured-data";
 
 const DEFAULT_CHANNEL = "flizrWeb";
 const SUPPORTED_LOCALES = ["en", "de", "pl"];
