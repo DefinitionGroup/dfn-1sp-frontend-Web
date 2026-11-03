@@ -2,7 +2,7 @@
 
 Start with the [whole-project handoff](HANDOFF.md). It covers all four webapps, shared CMS contracts, Studio, previews, integrations, current work and operational quirks. Reviewed 21 September 2026 ([scope and findings](records/project/project-handoff-review-2026-09-21.md)); updated 4 October 2026 with the later commits, their side effects and open issues.
 
-The subsequent [MSM fixes, SEO and legal-copy review](records/msm/msm-fixes-seo-and-legal-review-2026-10-04.md) records the implementation and staging CMS patch committed and pushed in `cc0b37a4c`, followed by the detached navigation update. Live 1SP reads `dev-dataset`; `production` is currently the staging ground.
+The subsequent [MSM fixes, SEO and legal-copy review](records/msm/msm-fixes-seo-and-legal-review-2026-10-04.md) records the implementation and staging CMS patch committed and pushed in `cc0b37a4c`, followed by the detached navigation update. Since 15 October 2026 live 1SP, live MSM and every preview read `production`; `dev-dataset` is a read-only archive ([switch record](records/project/1sp-production-dataset-switch-2026-10-15.md)).
 
 The [MSM metadata implementation and verification](records/msm/msm-metadata-implementation-2026-10-06.md) records metadata populated for all 176 public routes and the verified MSM beta and shared staging Studio release. The source changes are committed with that record.
 

@@ -10,7 +10,7 @@ Repository reference, checked against source on 2026-09-21. This describes the c
 | FLZR | `apps/flzr-web` | `flizrWeb` | EN, DE, PL |
 | MSM | `apps/msm-web` | `msmWeb` | EN, DE |
 | Renaissance | `apps/renaissance-web` | `renaissanceWeb` | EN |
-| Studio CO2 | `apps/studioco2-web` (static homepage from P5; CMS wiring pending) | `studioco2Web` | EN |
+| Studio CO2 | `apps/studioco2-web` (P5 homepage, CMS-wired since 26 October 2026) | `studioco2Web` | EN |
 
 [Site configuration](../packages/site-config/src/index.ts) owns channel names, supported locales, domain configuration and brand defaults. A configured domain does not prove that this code is deployed there.
 
