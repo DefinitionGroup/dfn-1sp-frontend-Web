@@ -1,6 +1,6 @@
 # Whole-project handoff
 
-Reviewed 21 September 2026 against the local checkout; **updated 4 October 2026** with the 21 commits since then, a side-effect review of each and a read-only check of content in the `production` dataset, currently used as staging. This is the entry point for the **entire 1SP multisite platform**, not only service consolidation. Use [the documentation index](README.md) for task-specific guides, [the feature map](PROJECT_FEATURES.md) for implementation locations, and [operations](PROJECT_OPERATIONS.md) for previews, data changes and verification.
+Reviewed 21 September 2026 against the local checkout; **updated 4 October 2026** with the 21 commits since then, a side-effect review of each and a read-only check of content in the `production` dataset, then used as staging. Since 15 October `production` is the live dataset for every site. This is the entry point for the **entire 1SP multisite platform**, not only service consolidation. Use [the documentation index](README.md) for task-specific guides, [the feature map](PROJECT_FEATURES.md) for implementation locations, and [operations](PROJECT_OPERATIONS.md) for previews, data changes and verification.
 
 The subsequent [MSM implementation and legal-copy review](records/msm/msm-fixes-seo-and-legal-review-2026-10-04.md) records fixes, metadata fields, successful builds and the authorized staging CMS mutation, committed and pushed in `cc0b37a4c`. The resolved findings below refer to that follow-up; remaining risks still need their own checks.
 
@@ -41,10 +41,10 @@ The root 1SP app is the established production baseline. Preserve its routing, S
 | `multiseite/stage` | Integration branch for all four apps; all September work lives here | Git-connected FLZR, MSM and Renaissance projects deploy previews only; nothing beyond 1SP has been promoted |
 | Beta tier | `DEPLOYMENT_TIER=beta` added in `ff62c213a`. The CLI-deployed `1sp-beta`, `flzr-beta`, `msm-beta` and `renaissance-beta` projects of 22 September no longer exist (checked 15 October; their URLs return 404) | The tier code remains. `dfn-msm2026-prod` still links its Studio to `1sp-beta`; see the [dataset switch checklist](DEPLOYMENT.md#switching-live-1sp-to-production) |
 | Live dataset | Since 15 October live 1SP (stage merged into `main` in #143) and live MSM both read `wu6i3y0h/production`, as do all previews | Publishing in `production` changes the live sites. `dev-dataset` is a read-only archive ([checklist](DEPLOYMENT.md#switching-live-1sp-to-production), [audit](records/project/1sp-production-dataset-switch-2026-10-15.md)) |
-| Staging dataset | Every local app loads `wu6i3y0h/production`. Despite its name, `production` is currently the staging ground and is intended to become the live dataset later | Publishing here affects apps configured to read `production`, not the current live 1SP deployment. The future dataset switch is a separate release step |
+| Staging dataset | None. Every local app, test project and preview loads `wu6i3y0h/production`, the live dataset | Content edits cannot be staged by dataset; test URLs only stage code |
 | Hosted Studio | One Studio application registered (2026-07-13). No schema deployed to the Content Lake | Schema state is whatever Studio bundle the editor opens |
 
-The dataset roles above were confirmed by the user on 4 October after switching back. The public 1SP JavaScript bundle also identifies `dev-dataset`. The content inventory below concerns staging `production`; it does not establish the content or drafts currently in live `dev-dataset`.
+The content inventory below was taken from `production` on 4 October, when it was still the staging dataset and live 1SP read `dev-dataset`. References to “staging `production`” below describe that date.
 
 ## Content and editorial ownership
 
@@ -220,7 +220,7 @@ The subsequent implementation ran root/MSM/Renaissance production builds, target
 | Trap | Required distinction |
 | --- | --- |
 | “Production” means the live site | Dataset name, Vercel environment name and actual public release are separate states |
-| Publishing to a dataset named `production` changes live 1SP | Live 1SP currently reads `dev-dataset`; `production` is staging. Publication affects deployments reading the same dataset. Reconfirm these roles at the future cutover |
+| Publishing to `production` only affects the site I am working on | Since 15 October every live site, test project and preview reads `production`. A publish changes all of them at once |
 | Test previews can use any dataset | Since 6 October the `test` tier requires `production` and remains strict; it is not a staging-data isolation boundary because live MSM also reads that dataset. The `beta` tier accepts only `*.vercel.app` and skips dataset/channel checks. See [operations](PROJECT_OPERATIONS.md) |
 | Studio looks current, so the frontend is current | Source schema, stored schema, Studio bundle (main vs stage), dataset, app deployment and caches are separate |
 | Preview query string means draft session is active | Draft Mode must be enabled on the correct app origin; verify cookie/perspective and viewer-token setup |
