@@ -43,7 +43,7 @@ Stega belongs on visible editable copy. It can break equality checks for enum va
 
 Publishing is a Sanity document operation, not a Git commit. A case/service document can include shared fields and multiple website editions, so publication may affect more than one website. Inspect the complete draft diff before publishing a shared document.
 
-Freshness has multiple paths: tagged server fetches, live events, app-local webhook endpoints and Studio's revalidation action. The [root webhook](../app/api/revalidate/route.ts) and app copies accept a signed Sanity webhook or a query-secret fallback. Inspect current code and actual webhook configuration for the target app; do not assume one endpoint invalidates the other apps' caches. Do not put secrets into diagnostic URLs or reports.
+Freshness has multiple paths: tagged server fetches, live events (Draft Mode only), app-local webhook endpoints and the `revalidate-sites` Function, which calls them on publish. The [root webhook](../app/api/revalidate/route.ts) and app copies accept a signed Sanity webhook or a query-secret fallback. Inspect current code and actual webhook configuration for the target app; do not assume one endpoint invalidates the other apps' caches. Do not put secrets into diagnostic URLs or reports.
 
 Relationship synchronization is a separate write operation. The Studio action is shown only when `NEXT_PUBLIC_ENABLE_RELATIONSHIP_SYNC=true`; the server route separately requires `RELATIONSHIP_SYNC_ENABLED=true` and `SANITY_SYNC_SECRET`. It can add and remove reciprocal references. Do not enable it as a generic cache repair or apply it to MSM's one-way Unit relationships without reviewing that model.
 

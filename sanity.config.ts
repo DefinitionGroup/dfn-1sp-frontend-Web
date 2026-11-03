@@ -11,7 +11,6 @@ import { documentInternationalization } from "@sanity/document-internationalizat
 import { cloudinarySchemaPlugin } from "sanity-plugin-cloudinary";
 import { presentationTool } from 'sanity/presentation'
 import { syncServiceGroupRelationships } from './sanity/lib/syncRelationships'
-import { revalidateAction } from './sanity/plugins/revalidateAction'
 
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
 import { apiVersion, dataset, projectId } from '@1sp/sanity-queries/env'
@@ -320,18 +319,14 @@ export default defineConfig({
     ],
   },
   document: {
+    // Publishing refreshes the live sites through the revalidate-sites Sanity
+    // Function (functions/revalidate-sites), so there is no manual cache action.
     actions: (prev, context) => {
       const { schemaType } = context
 
       // Add our custom sync action for documents with bidirectional relationships
-      if (schemaType === 'services' || schemaType === 'serviceGroup' || schemaType === 'unit' || schemaType === 'caseStudy' || schemaType === 'client' || schemaType === 'person') {
-        return RELATIONSHIP_SYNC_ENABLED
-          ? [...prev, syncServiceGroupRelationships, revalidateAction]
-          : [...prev, revalidateAction]
-      }
-
-      if (schemaType === 'page' || schemaType === 'menu' || schemaType === 'siteSettings' || schemaType === 'oneSpComponentGroup' || schemaType === 'msmUnit' || schemaType === 'renaissanceSharedPortraits' || schemaType === 'renaissanceSharedAwards' || schemaType === 'renaissanceClientCollection' || schemaType === 'renaissanceXPost') {
-        return [...prev, revalidateAction]
+      if (RELATIONSHIP_SYNC_ENABLED && (schemaType === 'services' || schemaType === 'serviceGroup' || schemaType === 'unit' || schemaType === 'caseStudy' || schemaType === 'client' || schemaType === 'person')) {
+        return [...prev, syncServiceGroupRelationships]
       }
 
       return prev
