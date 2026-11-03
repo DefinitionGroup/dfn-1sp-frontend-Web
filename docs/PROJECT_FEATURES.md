@@ -16,7 +16,7 @@ Source inventory checked 21 September 2026 in the local worktree; new September 
 | Translation | [guidelines schema](../packages/sanity-schema/src/Global/translationGuidelines.ts), [translation helpers](../packages/utils/src/translations.ts), [strategy](SANITY_AGENTIC_TRANSLATION_STRATEGY.md) | Separate translated documents and metadata; do not mistake schema support for a completed provider rollout |
 | Cloudinary storage | [normalizer](../packages/utils/src/cloudinary-storage.ts), [Studio input](../sanity/components/CloudinaryStorageInput.tsx) | Embedded media objects remain; normalize redundant provider payload while retaining rendering fields |
 | Shared component groups | [schema directory](../packages/sanity-schema/src/1SP), [import tests](../scripts/onesp-component-group-import.test.mjs) | Shared block references coexist with site-owned composition; validate consumers before changing a group |
-| Relationships and cache actions | [Studio actions](../sanity/plugins/revalidateAction.ts), [relationship action](../sanity/lib/syncRelationships.ts), [server endpoint](../app/api/sync-relationships/route.ts) | Revalidate is separate from relationship mutation; synchronization is explicitly gated |
+| Relationships and cache refresh | [relationship action](../sanity/lib/syncRelationships.ts), [server endpoint](../app/api/sync-relationships/route.ts), [revalidate-sites Function](../functions/revalidate-sites/fan-out.ts) | Publishing refreshes sites through the Function; there is no manual Studio cache action. Synchronization is explicitly gated |
 
 ## Renderers, composition and motion
 
@@ -60,7 +60,7 @@ Read app design contracts before adjusting motion. Use `motion/react` where the 
 - [Personio jobs endpoint](../app/api/personio/jobs/route.ts): recruiting credentials, normalization, process-local cache and XML fallback on any v2 failure when a feed is configured (v2 currently answers 403). The four app copies are identical as of 30 September; check them independently after any change.
 - [Cookiebot](../components/CookiebotBanner.tsx), [consent-aware Google Analytics](../components/GoogleAnalyticsConsent.tsx), [deployment-tier guards](../packages/utils/src/deployment-tier.ts) (`test` and `beta` tiers): configuration and actual consent/network behavior are separate checks.
 - SEO: each app owns metadata, sitemap and robots alongside its route model; see [deployment checks](DEPLOYMENT.md). Service structured data is another content consumer, not merely visible page text.
-- Revalidation: app-local `/api/revalidate` and `/api/revalidate-home`, Studio action and Sanity live events; invalidating one deployment is not proof that all app caches were invalidated.
+- Revalidation: app-local `/api/revalidate` and `/api/revalidate-home`, the `revalidate-sites` Function and Sanity live events; invalidating one deployment is not proof that all app caches were invalidated.
 - Diagnostics: [local environment guide](local-sanity-debugging.md), package `doctor:*` scripts, component debug badges and root CSS diagnostic mode.
 
 The [operations guide](PROJECT_OPERATIONS.md) records the practical checks and known boundaries for these integrations.
