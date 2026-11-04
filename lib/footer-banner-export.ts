@@ -23,6 +23,7 @@ export const FOOTER_EXPORTS = {
   promopers: { site: "promoPers", file: "promopers.footer.html", groupId: "onesp-footer-export-promopers", language: "en" },
   newfluence: { site: "New Fluence", file: "newfluence.html", groupId: "onesp-footer-export-newfluence", language: "en" },
   "1spxrstudio": { site: "1SP XR Studio", file: "1spxrstudio.footer.html", groupId: "onesp-footer-export-1spxrstudio", language: "en" },
+  one2five: { site: "one2five", file: "one2five.footer.html", groupId: "onesp-footer-export-one2five", language: "en" },
 } satisfies Record<string, { site: string; file: string; groupId: string; language: string }>;
 
 export type FooterExportName = keyof typeof FOOTER_EXPORTS;
