@@ -26,6 +26,10 @@ interface GlobeComponentProps {
   data: GlobeComponentType;
   language?: string;
   presentationRole?: RenaissanceSectionRole;
+  /** Globe and legend only, without the title and subheadline. */
+  hideCopy?: boolean;
+  /** CSS min-height for the block, e.g. "100svh"; defaults to 40rem. */
+  minHeight?: string;
 }
 
 const LEGEND_COPY: Record<string, Record<GlobeLocationType, string>> = {
@@ -53,7 +57,13 @@ const LOCATION_ICONS: Record<GlobeLocationType, GlobeMarkerIcon> = {
   },
 };
 
-function GlobeComponent({ data, language, presentationRole }: GlobeComponentProps) {
+function GlobeComponent({
+  data,
+  language,
+  presentationRole,
+  hideCopy = false,
+  minHeight,
+}: GlobeComponentProps) {
   const { sectionTitle, sectionSubtitle, navPointName } = data || {};
   const configuredLocations = data?.locations;
 
@@ -204,11 +214,12 @@ function GlobeComponent({ data, language, presentationRole }: GlobeComponentProp
         markers={markers}
         legend={legend}
         globeConfig={globeConfig}
-        title={sectionTitle || "Our Locations"}
-        description={sectionSubtitle}
+        title={hideCopy ? "" : sectionTitle || "Our Locations"}
+        description={hideCopy ? "" : sectionSubtitle}
         backgroundTone="muted"
         layout="split"
         clearSectionBadge={presentationRole === "reach"}
+        minHeight={minHeight}
       />
     </section>
   );
