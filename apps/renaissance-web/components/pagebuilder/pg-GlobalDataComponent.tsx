@@ -2,6 +2,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "motion/react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { hasVisibleText } from "@1sp/utils/text-content";
 import type { GlobeConfig, GlobeMarker } from "@renaissance/components/ui/globe";
 
@@ -10,6 +11,8 @@ export type GlobeLegendEntry = {
   key: string;
   label: string;
   color: string;
+  /** Same image as the globe markers, on a `color` disc. */
+  icon?: string;
   /** Location names, read out to screen readers. */
   names: string[];
 };
@@ -147,9 +150,24 @@ export default function GlobalDataComponent({
                   >
                     <span
                       aria-hidden="true"
-                      className="size-2.5 shrink-0 rounded-full shadow-[0_0_0_2px_#ffffff]"
-                      style={{ backgroundColor: entry.color }}
-                    />
+                      className="shrink-0 overflow-hidden rounded-full shadow-[0_0_0_2px_#ffffff]"
+                      style={{
+                        backgroundColor: entry.color,
+                        width: entry.icon ? 22 : 10,
+                        height: entry.icon ? 22 : 10,
+                      }}
+                    >
+                      {entry.icon ? (
+                        <Image
+                          src={entry.icon}
+                          alt=""
+                          width={22}
+                          height={22}
+                          className="block"
+                          style={{ width: 22, height: 22 }}
+                        />
+                      ) : null}
+                    </span>
                     <span>{entry.label}</span>
                     <span
                       aria-hidden="true"
