@@ -8,6 +8,7 @@ import {getMsmSeoInventory} from '@msm/lib/seo-inventory';
 import MsmSiteWrapper from '@msm/components/MsmSiteWrapper';
 import CaseGallery from '@msm/components/data/data-CaseGallery';
 import Button2 from '@msm/components/ui/Button2';
+import MosaicPortrait from '@msm/components/ui/MosaicPortrait';
 
 type Props = {params: Promise<{locale: string; slug: string}>};
 // Prerender every MSM profile; new ones render on first visit and stay cached.
@@ -39,7 +40,7 @@ export default async function PersonPage({params}: Props) {
       {edition.quote && <blockquote className="text-2xl leading-relaxed mt-12">{edition.quote}</blockquote>}
       {edition.phone && <a className="block mt-6 underline underline-offset-4" href={edition.phone}>{edition.phone.replace(/^tel:/, "")}</a>}
       {person.email && <div className="mt-8"><Button2 text={de ? 'E-Mail schreiben' : 'Get in touch'} href={`mailto:${person.email}`} /></div>}</div>
-      {image && <div className="relative aspect-[4/5]"><Image src={image} alt={person.altText || person.name} fill priority sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" /></div>}
+      {image && <div className="relative aspect-[4/5] overflow-hidden"><MosaicPortrait seedKey={person._id} /><Image src={image} alt={person.altText || person.name} fill priority sizes="(min-width: 768px) 50vw, 100vw" className="z-[1] object-cover" /></div>}
     </header>
     <div className="grid gap-12 md:grid-cols-2 border-t border-white/20 py-16">
       {edition.iDo && <section><h2 className="msm-title mb-6">{de ? 'Das mache ich' : 'I do'}</h2><p className="msm-copy whitespace-pre-line">{edition.iDo}</p></section>}

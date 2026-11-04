@@ -6,6 +6,7 @@ import { assetUrl, optimizedVideoUrl, cloudinaryPosterUrl } from "@1sp/utils/clo
 import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
 import StaggeredFadeIn from "@msm/components/ui/StaggeredFadeIn";
 import CornerMarkers from "@msm/components/ui/CornerMarkers";
+import MosaicPortrait from "@msm/components/ui/MosaicPortrait";
 import Image from "next/image";
 import Link from "next/link";
 import { createPortal } from "react-dom";
@@ -237,8 +238,10 @@ function PeopleShowcaseHero({
                 }
                 onMouseLeave={() => setHoveredMember(null)}
               >
+                {/* Shader field and triangle lattice behind the cutout */}
+                <MosaicPortrait seedKey={key} />
                 {isVideo ? (
-                  <LazyVideo src={src ?? ""} priority={index < 4} />
+                  <LazyVideo src={src ?? ""} priority={index < 4} className="z-[1]" />
                 ) : (
                   <Image
                     src={src}
@@ -246,7 +249,7 @@ function PeopleShowcaseHero({
                     fill
                     priority={index < 4}
                     sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                    className="object-cover pointer-events-none transition-all duration-300 group-hover:brightness-110 "
+                    className="z-[1] object-cover pointer-events-none transition-all duration-300 group-hover:brightness-110 "
                   />
                 )}
                 {/* System pattern: corner markers frame each portrait
@@ -255,7 +258,8 @@ function PeopleShowcaseHero({
                   className="text-msm-teal/50 group-hover:text-white transition-colors duration-300 text-[10px]"
                   inset="4px"
                 />
-                <div className="absolute inset-0 hidden bg-gradient-to-t from-black/80 via-black/60 to-black/65 opacity-0 lg:flex lg:opacity-0 lg:group-hover:opacity-100  transition-opacity duration-300 flex-col justify-end p-4">
+                {/* Bottom-weighted so the filled mosaic stays visible above the name */}
+                <div className="absolute inset-0 z-[2] hidden bg-gradient-to-t from-black/85 via-black/30 via-45% to-transparent opacity-0 lg:flex lg:opacity-0 lg:group-hover:opacity-100  transition-opacity duration-300 flex-col justify-end p-4">
                   <StaggeredFadeIn
                     className="flex flex-col"
                     triggerOnView={false}
