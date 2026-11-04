@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {createRequire} from 'node:module';
 import {buildMsmPlan, rows, approvedCopy} from './msm-content-model';
-import {HOME_PAGE_QUERY, CASE_STUDY_BY_SLUG_QUERY, MSM_UNIT_BY_SLUG_QUERY} from '../packages/sanity-queries/src/groq';
+import {HOME_PAGE_QUERY, CASE_STUDY_BY_SLUG_QUERY, MSM_UNIT_BY_SLUG_QUERY, SMART_PEOPLE_QUERY} from '../packages/sanity-queries/src/groq';
 import {createPresentationResolvers} from '../sanity/presentation/resolve';
 
 const require=createRequire(import.meta.url);
@@ -63,6 +63,31 @@ test('unit leadership resolves the MSM portrait without changing another website
   assert.equal(result.leadership[0].person.imageUrl,override.secure_url);
   const fallback=await run(MSM_UNIT_BY_SLUG_QUERY,[unit,{...person,siteContent:[]}],{language:'en',slug:'portrait-test'});
   assert.equal(fallback.leadership[0].person.imageUrl,shared.secure_url);
+});
+test('an MSM photo outranks the shared video on MSM while other websites stay video-first',async()=>{
+  const video={_type:'cloudinary.asset',resource_type:'video',secure_url:'https://example.test/1sp.mp4'};
+  const photo={_type:'cloudinary.asset',secure_url:'https://example.test/msm.jpg'};
+  const shared={_type:'cloudinary.asset',secure_url:'https://example.test/shared.jpg'};
+  const person={_id:'media-person',_type:'person',name:'Person',language:'en',channel:['msmWeb','1spWeb'],smartPeoplePromo1SP:true,image:shared,video,siteContent:[{_key:'msmWeb',channel:'msmWeb',image:photo}]};
+  const withoutPhoto={...person,siteContent:[]};
+  const caseStudy={_id:'media-case',_type:'caseStudy',language:'en',channel:['msmWeb','1spWeb'],isPublished:true,slug:{current:'media-case'},people:[{person:{_ref:person._id}}]};
+  const surfaces=async(doc:any,channel:string)=>{
+    const home={_id:`home-${channel}`,_type:'page',isHomepage:true,channel,language:'en',content:[{_key:'people',_type:'galleryPeopleStep',teamMembers:[{_ref:doc._id}]}]};
+    const dataset=[doc,home,caseStudy],params={channel,language:'en',slug:'media-case',maxItems:6};
+    return [
+      (await run(HOME_PAGE_QUERY,dataset,params)).content.find((b:any)=>b._type==='galleryPeopleStep').teamMembers[0],
+      (await run(CASE_STUDY_BY_SLUG_QUERY,dataset,params)).people[0].person,
+      (await (await evaluate(parse(SMART_PEOPLE_QUERY,{params}),{dataset,params})).get())[0],
+    ];
+  };
+  for(const m of await surfaces(person,'msmWeb')){assert.deepEqual(m.image,photo);assert.equal(m.video??null,null);}
+  for(const m of await surfaces(withoutPhoto,'msmWeb')){assert.deepEqual(m.image,shared);assert.deepEqual(m.video,video);}
+  for(const m of await surfaces(person,'1spWeb')){assert.deepEqual(m.image,shared);assert.deepEqual(m.video,video);}
+  const unit={_id:'media-unit',_type:'msmUnit',language:'en',slug:{current:'media-test'},leadership:[{person:{_ref:person._id}}]};
+  const leader=(await run(MSM_UNIT_BY_SLUG_QUERY,[unit,person],{language:'en',slug:'media-test'})).leadership[0].person;
+  assert.equal(leader.imageUrl,photo.secure_url);assert.equal(leader.video??null,null);assert.equal(leader.videoUrl??null,null);
+  const fallback=(await run(MSM_UNIT_BY_SLUG_QUERY,[unit,withoutPhoto],{language:'en',slug:'media-test'})).leadership[0].person;
+  assert.equal(fallback.videoUrl,video.secure_url);
 });
 test('home has one visible editorial hero and channel-specific staff quotes',async()=>{
   const home=await run(HOME_PAGE_QUERY,documents,{channel:'msmWeb',language:'en'});

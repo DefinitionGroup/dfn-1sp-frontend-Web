@@ -1,6 +1,7 @@
 import {servicePresentationFields, SERVICE_REFERENCE_PROJECTION} from "./service-presentation";
 import { defineQuery } from "next-sanity";
 import { casePresentationFields, CASE_BODY_PROJECTION } from "./case-presentation";
+import { msmPhotoWins, personMediaFields } from "./person-presentation";
 
 const MINIMAL_CLOUDINARY_ASSET_PROJECTION = `{
   secure_url,
@@ -242,13 +243,7 @@ export const ONE_SP_COMPONENT_GROUP_PROJECTION = `_type == 'oneSpComponentGroupR
         teamMembers[]->{
           _id,
           name,
-          "image": coalesce(siteContent[channel == $channel][0].image, image),
-          video{
-            ...,
-            secure_url,
-            resource_type,
-            public_id
-          },
+          ${personMediaFields()},
           altText,
           fullname,
           position,
@@ -476,13 +471,7 @@ export const PAGE_QUERY =
           teamMembers[$channel in @->channel]->{
             _id,
             name,
-            "image": coalesce(siteContent[channel == $channel][0].image, image),
-            video{
-              ...,
-              secure_url,
-              resource_type,
-              public_id
-            },
+            ${personMediaFields()},
             altText,
             fullname,
             position,
@@ -579,13 +568,7 @@ export const PAGE_QUERY =
       teamMembers[$channel in @->channel]->{
         _id,
         name,
-        "image": coalesce(siteContent[channel == $channel][0].image, image),
-        video{
-          ...,
-          secure_url,
-          resource_type,
-          public_id
-        },
+        ${personMediaFields()},
         altText,
         fullname,
         position,
@@ -798,13 +781,7 @@ export const HOME_PAGE_QUERY =
           teamMembers[$channel in @->channel]->{
             _id,
             name,
-            "image": coalesce(siteContent[channel == $channel][0].image, image),
-            video{
-              ...,
-              secure_url,
-              resource_type,
-              public_id
-            },
+            ${personMediaFields()},
             altText,
             fullname,
             position,
@@ -865,13 +842,7 @@ export const HOME_PAGE_QUERY =
       teamMembers[$channel in @->channel]->{
         _id,
         name,
-        "image": coalesce(siteContent[channel == $channel][0].image, image),
-        video{
-          ...,
-          secure_url,
-          resource_type,
-          public_id
-        },
+        ${personMediaFields()},
         altText,
         fullname,
         position,
@@ -1238,8 +1209,7 @@ export const CASE_STUDY_BY_SLUG_QUERY = defineQuery(`
       position,
       email,
       profileUrl,
-      "image": coalesce(siteContent[channel == $channel][0].image, image),
-      video,
+      ${personMediaFields()},
       unit->{
         _id,
         name,
@@ -1337,10 +1307,9 @@ export const MSM_UNIT_BY_SLUG_QUERY = defineQuery(`
       email,
       profileUrl,
       "profileSlug": siteContent[channel == "msmWeb"][0].slug.current,
-      "image": coalesce(siteContent[channel == "msmWeb"][0].image, image),
-      video,
+      ${personMediaFields('"msmWeb"')},
       "imageUrl": coalesce(siteContent[channel == "msmWeb"][0].image.secure_url, siteContent[channel == "msmWeb"][0].image.url, image.secure_url, image.url),
-      "videoUrl": coalesce(video.secure_url, video.url)
+      "videoUrl": select(${msmPhotoWins('"msmWeb"')} => null, coalesce(video.secure_url, video.url))
     }
   },
   "cases": caseStudies[@->language == $language && "msmWeb" in @->channel && @->isPublished == true]->{
@@ -1536,8 +1505,7 @@ export const SMART_PEOPLE_QUERY = defineQuery(`
   _id,
   name,
   slug,
-  "image": coalesce(siteContent[channel == $channel][0].image, image),
-  video,
+  ${personMediaFields()},
   altText,
   fullname,
   position,
