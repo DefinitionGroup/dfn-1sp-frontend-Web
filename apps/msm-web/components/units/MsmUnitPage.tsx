@@ -8,6 +8,7 @@ import Button2 from "@msm/components/ui/Button2";
 import Badgemodule from "@msm/components/ui/Badgemodule";
 import MsmLogoAnimated from "@msm/components/ui/MsmLogoAnimated";
 import CornerMarkers from "@msm/components/ui/CornerMarkers";
+import MosaicPortrait from "@msm/components/ui/MosaicPortrait";
 import StaggeredSlideUp from "@msm/components/ui/StaggeredSlideUp";
 import CaseGalleryComponent from "@msm/components/data/data-CaseGallery";
 import cards from "@msm/components/ui/SelectionCards.module.css";
@@ -82,7 +83,7 @@ export default function MsmUnitPage({ unit, language, units = [] }: { unit: MsmU
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {leadership.map(({ person, isPrimary, position, quote, phone }) => person ? (
               <article key={person._id}>
-                {person.imageUrl ? <div className="relative aspect-[4/5] overflow-hidden"><Image src={person.imageUrl} alt={person.altText || person.fullname || person.name || ""} fill sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover" /></div> : null}
+                {person.imageUrl ? <div className="relative aspect-[4/5] overflow-hidden"><MosaicPortrait seedKey={person._id} /><Image src={person.imageUrl} alt={person.altText || person.fullname || person.name || ""} fill sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="z-[1] object-cover" /></div> : null}
                 <div className="border-t border-white/25 py-6">
                   <h3 className="text-2xl">{person.profileSlug ? <Link href={localizedPath(language, `people/${person.profileSlug}`)}>{person.fullname || person.name}</Link> : person.fullname || person.name}</h3>
                   {(position || person.position) ? <p className="mt-2 text-white/70">{position || person.position}</p> : null}
