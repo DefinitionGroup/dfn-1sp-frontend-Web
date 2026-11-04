@@ -3,7 +3,16 @@ import React, { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "motion/react";
 import dynamic from "next/dynamic";
 import { hasVisibleText } from "@1sp/utils/text-content";
-import type { GlobeConfig } from "@renaissance/components/ui/globe";
+import type { GlobeConfig, GlobeMarker } from "@renaissance/components/ui/globe";
+
+/** One location type in the legend under the copy. */
+export type GlobeLegendEntry = {
+  key: string;
+  label: string;
+  color: string;
+  /** Location names, read out to screen readers. */
+  names: string[];
+};
 
 const World = dynamic(
   () => import("@renaissance/components/ui/globe").then((m) => m.World),
@@ -25,6 +34,7 @@ interface Arc {
   endLng: number;
   arcAlt: number;
   color: string;
+  colors?: [string, string];
   label: string;
   labelOffsetX?: number;
   labelOffsetY?: number;
@@ -32,6 +42,10 @@ interface Arc {
 
 interface GlobalDataComponentProps {
   arcs: Arc[];
+  /** Location markers; replace the arc-end labels when set. */
+  markers?: GlobeMarker[];
+  /** Split layout only: colour key under the copy. */
+  legend?: GlobeLegendEntry[];
   globeConfig: GlobeConfig;
   title?: string;
   description?: string;
@@ -43,6 +57,8 @@ interface GlobalDataComponentProps {
 
 export default function GlobalDataComponent({
   arcs,
+  markers,
+  legend,
   globeConfig,
   title = "We are global.",
   description,
@@ -83,21 +99,23 @@ export default function GlobalDataComponent({
           data-globe-viewport
           data-globe-arc-count={arcs.length}
           data-globe-label-count={
+            markers?.length ??
             arcs.filter((arc) => arc.label.trim().length > 0).length
           }
           className="absolute inset-0 z-0"
         >
           {shouldLoadGlobe ? (
-            <World data={arcs} globeConfig={globeConfig} />
+            <World data={arcs} markers={markers} globeConfig={globeConfig} />
           ) : (
             <div className="absolute inset-0 grid place-items-center md:pl-[40%]" aria-hidden="true">
               <div className="h-64 w-64 rounded-full bg-renaissance-accent/10" />
             </div>
           )}
-          {/* Keeps the copy legible where the zoomed globe passes under it. */}
+          {/* Keeps the copy legible where the zoomed globe passes under it.
+              z-[2] sits above the globe's location markers (z-index 0–1). */}
           <div
             aria-hidden="true"
-            className={`pointer-events-none absolute inset-0 bg-gradient-to-b from-25% via-45% to-65% md:bg-gradient-to-r md:from-20% md:via-35% md:to-55% ${
+            className={`pointer-events-none absolute inset-0 z-[2] bg-gradient-to-b from-25% via-45% to-65% md:bg-gradient-to-r md:from-20% md:via-35% md:to-55% ${
               muted
                 ? "from-renaissance-mist via-renaissance-mist/70 to-transparent"
                 : "from-renaissance-paper via-renaissance-paper/70 to-transparent"
@@ -115,6 +133,34 @@ export default function GlobalDataComponent({
               <p className="mt-6 max-w-[38ch] text-[clamp(1.05rem,1.3vw,1.375rem)] leading-[1.4] text-renaissance-ink/75">
                 {description}
               </p>
+            ) : null}
+            {legend?.length ? (
+              <ul
+                data-globe-legend
+                className="mt-8 flex flex-wrap gap-x-7 gap-y-3"
+              >
+                {legend.map((entry) => (
+                  <li
+                    key={entry.key}
+                    data-globe-legend-type={entry.key}
+                    className="flex items-center gap-2.5 text-[0.8125rem] font-semibold uppercase leading-none tracking-[0.04em] text-renaissance-ink"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="size-2.5 shrink-0 rounded-full shadow-[0_0_0_2px_#ffffff]"
+                      style={{ backgroundColor: entry.color }}
+                    />
+                    <span>{entry.label}</span>
+                    <span
+                      aria-hidden="true"
+                      className="font-mono text-[0.75rem] font-medium text-renaissance-ink/55"
+                    >
+                      {String(entry.names.length).padStart(2, "0")}
+                    </span>
+                    <span className="sr-only">: {entry.names.join(", ")}</span>
+                  </li>
+                ))}
+              </ul>
             ) : null}
           </div>
         </div>
@@ -167,7 +213,7 @@ export default function GlobalDataComponent({
       />
       <div className="absolute inset-0 z-0">
         {shouldLoadGlobe ? (
-          <World data={arcs} globeConfig={globeConfig} />
+          <World data={arcs} markers={markers} globeConfig={globeConfig} />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-32 h-32 bg-neutral-200 dark:bg-neutral-800 animate-pulse" />

@@ -1,14 +1,26 @@
 "use client";
-import React from "react";
+import React, { useMemo } from "react";
+import { stegaClean } from "@sanity/client/stega";
 import type {
   GlobeComponent as GlobeComponentType,
+  GlobeLocationType,
   RenaissanceSectionRole,
 } from "@1sp/sanity-types";
-import GlobalDataComponent from "@renaissance/components/pagebuilder/pg-GlobalDataComponent";
+import GlobalDataComponent, {
+  type GlobeLegendEntry,
+} from "@renaissance/components/pagebuilder/pg-GlobalDataComponent";
+import type { GlobeMarker } from "@renaissance/components/ui/globe";
 import {
   getRenaissanceEuropeanLocations,
   getRenaissanceGlobeSectionId,
 } from "@renaissance/data/europeanLocations";
+import {
+  GLOBE_LOCATION_PALETTE,
+  buildNetworkArcs,
+  buildNetworkRegions,
+  getGlobeLocationType,
+  type NetworkLocation,
+} from "@renaissance/lib/globeNetwork";
 
 interface GlobeComponentProps {
   data: GlobeComponentType;
@@ -16,37 +28,103 @@ interface GlobeComponentProps {
   presentationRole?: RenaissanceSectionRole;
 }
 
-type GlobeLocation = {
-  name: string;
-  coordinateLat: number;
-  coordinateLon: number;
-  labelOffsetX?: number;
-  labelOffsetY?: number;
+const LEGEND_COPY: Record<string, Record<GlobeLocationType, string>> = {
+  en: { office: "Renaissance offices", partner: "Partner agencies" },
+  de: { office: "Renaissance-Standorte", partner: "Partneragenturen" },
+  pl: { office: "Biura Renaissance", partner: "Agencje partnerskie" },
 };
 
-// Arc height grows with the distance it spans, so long hops clear the globe.
-function arcAltitude(from: GlobeLocation, to: GlobeLocation) {
-  const toRadians = (degrees: number) => (degrees * Math.PI) / 180;
-  const [lat1, lat2] = [toRadians(from.coordinateLat), toRadians(to.coordinateLat)];
-  const deltaLng = toRadians(to.coordinateLon - from.coordinateLon);
-  const angle = Math.acos(
-    Math.min(1, Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(deltaLng)),
-  );
-  return 0.05 + 0.3 * (angle / Math.PI);
-}
+const LOCATION_TYPES: GlobeLocationType[] = ["office", "partner"];
 
 function GlobeComponent({ data, language, presentationRole }: GlobeComponentProps) {
   const { sectionTitle, sectionSubtitle, navPointName } = data || {};
-  const configuredLocations = Array.isArray(data?.locations)
-    ? data.locations.filter(
-        (location) =>
-          Number.isFinite(location?.coordinateLat) &&
-          Number.isFinite(location?.coordinateLon),
-      )
-    : [];
-  const locations = configuredLocations.length
-    ? configuredLocations
-    : getRenaissanceEuropeanLocations(language);
+  const configuredLocations = data?.locations;
+
+  const locations = useMemo<NetworkLocation[]>(() => {
+    const configured = Array.isArray(configuredLocations)
+      ? configuredLocations
+          .filter(
+            (location) =>
+              Boolean(location?.name) &&
+              Number.isFinite(location?.coordinateLat) &&
+              Number.isFinite(location?.coordinateLon),
+          )
+          .map((location, index) => ({
+            key: location._key ?? `${stegaClean(location.name)}-${index}`,
+            name: location.name,
+            lat: location.coordinateLat,
+            lng: location.coordinateLon,
+            type: getGlobeLocationType(location.locationType),
+          }))
+      : [];
+    if (configured.length) return configured;
+    return getRenaissanceEuropeanLocations(language).map((location) => ({
+      key: location.code,
+      name: location.name,
+      lat: location.coordinateLat,
+      lng: location.coordinateLon,
+      type: "office" as const,
+    }));
+  }, [configuredLocations, language]);
+
+  const { arcs, markers, tour, legend } = useMemo(() => {
+    const markers: GlobeMarker[] = locations.map((location) => {
+      const palette = GLOBE_LOCATION_PALETTE[location.type];
+      return {
+        key: location.key,
+        lat: location.lat,
+        lng: location.lng,
+        label: location.name,
+        kind: location.type,
+        color: palette.marker,
+        ringColor: palette.ring,
+        labelBackground: palette.label,
+        labelColor: palette.labelText,
+      };
+    });
+
+    const arcs = buildNetworkArcs(locations).map(({ from, to, order, altitude }) => ({
+      order,
+      startLat: from.lat,
+      startLng: from.lng,
+      endLat: to.lat,
+      endLng: to.lng,
+      arcAlt: altitude,
+      color: GLOBE_LOCATION_PALETTE[to.type].arc,
+      colors: [
+        GLOBE_LOCATION_PALETTE[from.type].arc,
+        GLOBE_LOCATION_PALETTE[to.type].arc,
+      ] as [string, string],
+      label: "",
+    }));
+
+    // The camera visits regions rather than single cities, so neighbouring
+    // labels share one close-up instead of each getting their own.
+    const tour = {
+      stops: buildNetworkRegions(locations).map((region) => ({
+        lat: region.lat,
+        lng: region.lng,
+        label: "",
+        keys: region.keys,
+        spread: region.spread,
+      })),
+      nearRadius: 150,
+      dwellMs: 3400,
+      travelMs: 3400,
+    };
+
+    const copy = LEGEND_COPY[language ?? "en"] ?? LEGEND_COPY.en;
+    const legend: GlobeLegendEntry[] = LOCATION_TYPES.map((type) => ({
+      key: type,
+      label: copy[type],
+      color: GLOBE_LOCATION_PALETTE[type].marker,
+      names: locations
+        .filter((location) => location.type === type)
+        .map((location) => location.name),
+    })).filter((entry) => entry.names.length > 0);
+
+    return { arcs, markers, tour, legend };
+  }, [locations, language]);
 
   const sectionId = getRenaissanceGlobeSectionId(navPointName || sectionTitle);
 
@@ -54,30 +132,6 @@ function GlobeComponent({ data, language, presentationRole }: GlobeComponentProp
   const navPointDataAttr = navPointName
     ? { "data-navpoint-name": navPointName }
     : {};
-
-  const colors = ["#245e66", "#99bbba", "#dbe5e5"];
-  const destinations = locations as GlobeLocation[];
-
-  // Each destination is reached from the one before it (labelled, along the
-  // tour route) and from the one two back, so the arcs read as a network.
-  const arcs = destinations.flatMap((location, index) => {
-    const before = (steps: number) =>
-      destinations[(index - steps + destinations.length) % destinations.length];
-    const routes = [{ from: before(1), label: location.name }];
-    if (destinations.length > 2) routes.push({ from: before(2), label: "" });
-    return routes.map(({ from, label }, route) => ({
-        order: index + 1,
-        startLat: from.coordinateLat,
-        startLng: from.coordinateLon,
-        endLat: location.coordinateLat,
-        endLng: location.coordinateLon,
-        arcAlt: arcAltitude(from, location),
-        color: colors[(index + route) % colors.length],
-        label,
-        labelOffsetX: label ? location.labelOffsetX : undefined,
-        labelOffsetY: label ? location.labelOffsetY : undefined,
-      }));
-  });
 
   // Globe configuration
   const globeConfig = {
@@ -99,9 +153,11 @@ function GlobeComponent({ data, language, presentationRole }: GlobeComponentProp
     arcLength: 0.95,
     rings: 1,
     maxRings: 3,
+    // Over the Atlantic, so the static (reduced-motion) view shows Europe
+    // and North America and the tour opens by swinging east.
     initialPosition: {
-      lat: 50,
-      lng: 10,
+      lat: 45,
+      lng: -30,
     },
     autoRotate: false,
     autoRotateSpeed: 0.15,
@@ -111,17 +167,7 @@ function GlobeComponent({ data, language, presentationRole }: GlobeComponentProp
     // below it on phones.
     framing: { x: 0.2, y: 0 },
     mobileFraming: { x: 0, y: 0.26 },
-    // Zoom into each destination in the CMS order, then spin on to the next.
-    tour: {
-      stops: destinations.map((location) => ({
-        lat: location.coordinateLat,
-        lng: location.coordinateLon,
-        label: location.name,
-      })),
-      nearRadius: 150,
-      dwellMs: 2600,
-      travelMs: 3400,
-    },
+    tour,
   };
 
   return (
@@ -136,6 +182,8 @@ function GlobeComponent({ data, language, presentationRole }: GlobeComponentProp
     >
       <GlobalDataComponent
         arcs={arcs}
+        markers={markers}
+        legend={legend}
         globeConfig={globeConfig}
         title={sectionTitle || "Our Locations"}
         description={sectionSubtitle}

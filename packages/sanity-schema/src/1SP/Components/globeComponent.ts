@@ -4,6 +4,12 @@ import { validateOptionalCta } from '../../shared/ctaValidation'
 
 const isFlzrChannel = (channel: unknown) => channel === 'flizrWeb'
 const isMsmChannel = (channel: unknown) => channel === 'msmWeb'
+const isRenaissanceChannel = (channel: unknown) => channel === 'renaissanceWeb'
+
+const LOCATION_TYPE_TITLES: Record<string, string> = {
+    office: 'Renaissance office',
+    partner: 'Partner agency',
+}
 
 export default defineType({
     name: 'globeComponent',
@@ -91,6 +97,22 @@ export default defineType({
                             validation: (Rule) => Rule.required()
                         }),
                         defineField({
+                            name: 'locationType',
+                            title: 'Location type',
+                            type: 'string',
+                            description: 'Offices get an orange marker, partner agencies a petrol one. Offices also appear in the footer.',
+                            initialValue: 'office',
+                            hidden: ({ document }) => !isRenaissanceChannel(document?.channel),
+                            options: {
+                                list: [
+                                    { title: LOCATION_TYPE_TITLES.office, value: 'office' },
+                                    { title: LOCATION_TYPE_TITLES.partner, value: 'partner' },
+                                ],
+                                layout: 'radio',
+                                direction: 'horizontal',
+                            },
+                        }),
+                        defineField({
                             name: 'subtitle',
                             title: 'Subtitle',
                             type: 'string',
@@ -115,15 +137,19 @@ export default defineType({
                         select: {
                             title: 'name',
                             subtitle: 'subtitle',
+                            locationType: 'locationType',
                             lat: 'coordinateLat',
                             lon: 'coordinateLon'
                         },
-                        prepare({ title, subtitle, lat, lon }) {
+                        prepare({ title, subtitle, locationType, lat, lon }) {
+                            const coordinates = `${lat?.toFixed(2)}, ${lon?.toFixed(2)}`
+                            const details = [
+                                locationType ? LOCATION_TYPE_TITLES[locationType] : undefined,
+                                subtitle,
+                            ].filter(Boolean).join(' · ')
                             return {
                                 title: title || 'Unnamed Location',
-                                subtitle: subtitle
-                                    ? `${subtitle} (${lat?.toFixed(2)}, ${lon?.toFixed(2)})`
-                                    : `${lat?.toFixed(2)}, ${lon?.toFixed(2)}`
+                                subtitle: details ? `${details} (${coordinates})` : coordinates
                             }
                         }
                     }

@@ -45,6 +45,19 @@ const ACTIVE_LABEL_COLOR = "#f49a24";
 const ACTIVE_LABEL_TEXT = "#163f45";
 // Below this zoom level (0 = far, 1 = focused) only the focused city keeps its label.
 const LABEL_ZOOM_THRESHOLD = 0.6;
+// Location markers: a DOM dot with a flat pulse ring on the surface.
+const MARKER_ALTITUDE = 0.004;
+const MARKER_DOT_SIZE = 10;
+const MARKER_LABEL_GAP = 6;
+const MARKER_LABEL_PADDING = 3;
+// Markers hide slightly before the horizon so they never sit on the limb.
+const MARKER_HORIZON_MARGIN = 0.03;
+// Two to three rings in flight per marker, like the approved Figma frame.
+const MARKER_RING_MAX_RADIUS = 2.4;
+const MARKER_RING_SPEED = 1.2;
+const MARKER_RING_PERIOD_MS = 900;
+// Share of the space around the globe centre a tour region may fill.
+const TOUR_REGION_ROOM = 0.7;
 
 /** Camera position facing a lat/lng point using ThreeGlobe's coordinate
  *  orientation, so the configured location lands in the opening view. */
@@ -66,9 +79,25 @@ type Position = {
   endLng: number;
   arcAlt: number;
   color: string;
+  /** Start and end colour; draws the arc as a gradient instead of `color`. */
+  colors?: [string, string];
   label: string;
   labelOffsetX?: number;
   labelOffsetY?: number;
+};
+
+/** A location drawn as a coloured dot with a pulse ring and a label chip. */
+export type GlobeMarker = {
+  key: string;
+  lat: number;
+  lng: number;
+  label: string;
+  /** Category name for the DOM, e.g. "office". */
+  kind?: string;
+  color: string;
+  ringColor: string;
+  labelBackground: string;
+  labelColor: string;
 };
 
 export type GlobeConfig = {
@@ -109,7 +138,16 @@ export type GlobeConfig = {
 
 export type GlobeFraming = { x: number; y: number };
 
-export type GlobeTourStop = { lat: number; lng: number; label: string };
+export type GlobeTourStop = {
+  lat: number;
+  lng: number;
+  label: string;
+  /** Marker keys whose labels this stop shows; defaults to `label`. */
+  keys?: string[];
+  /** Angle in radians from the stop to its farthest marker. The camera
+   *  backs off from nearRadius until they all fit. */
+  spread?: number;
+};
 
 /** Camera flight that zooms into each stop, then zooms out while spinning to the next. */
 export type GlobeTour = {
@@ -122,11 +160,14 @@ export type GlobeTour = {
   travelMs?: number;
 };
 
-type TourState = { activeLabel: string | null; zoom: number };
+/** Labels (or marker keys) the tour currently focuses, and how far it is zoomed in. */
+type TourState = { active: ReadonlySet<string> | null; zoom: number };
 
 interface WorldProps {
   globeConfig: GlobeConfig;
   data: Position[];
+  /** When set, markers replace the arc-end points and labels. */
+  markers?: GlobeMarker[];
 }
 
 const numbersOfRings = [0];
@@ -224,7 +265,8 @@ function LandDotPattern({ color }: { color: string }) {
   );
 }
 
-export function Globe({ globeConfig, data }: WorldProps) {
+export function Globe({ globeConfig, data, markers }: WorldProps) {
+  const reducedMotion = useReducedMotion();
   const globeRef = useRef<ThreeGlobe | null>(null);
   const groupRef = useRef<Group | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -282,11 +324,10 @@ export function Globe({ globeConfig, data }: WorldProps) {
   useEffect(() => {
     if (!globeRef.current || !isInitialized || !data) return;
 
-    const arcs = data;
+    const arcs = markers ? [] : data;
     const points = [];
     for (let i = 0; i < arcs.length; i++) {
       const arc = arcs[i];
-      const rgb = hexToRgb(arc.color) as { r: number; g: number; b: number };
       points.push({
         size: defaultProps.pointSize,
         order: arc.order,
@@ -324,7 +365,7 @@ export function Globe({ globeConfig, data }: WorldProps) {
       .arcStartLng((d) => (d as { startLng: number }).startLng * 1)
       .arcEndLat((d) => (d as { endLat: number }).endLat * 1)
       .arcEndLng((d) => (d as { endLng: number }).endLng * 1)
-      .arcColor((e: any) => (e as { color: string }).color)
+      .arcColor((e: object) => (e as Position).colors ?? (e as Position).color)
       .arcAltitude((e) => (e as { arcAlt: number }).arcAlt * 1)
       .arcStroke(defaultProps.arcStroke)
       .arcDashLength(defaultProps.arcLength)
@@ -339,6 +380,31 @@ export function Globe({ globeConfig, data }: WorldProps) {
       .pointAltitude(0.0)
       .pointRadius((e) => (e as { size: number }).size);
 
+    if (markers) {
+      // One steady pulse per marker in its own colour, fading as it spreads.
+      // Staggered periods keep neighbouring markers out of step.
+      globeRef.current
+        .ringColor((d: object) => {
+          const color = (d as { color: string }).color;
+          // Holds its strength for most of the spread, then fades out.
+          return (t: number) => withAlpha(color, Math.pow(1 - t, 0.6));
+        })
+        .ringMaxRadius(MARKER_RING_MAX_RADIUS)
+        .ringPropagationSpeed(MARKER_RING_SPEED)
+        .ringRepeatPeriod((d) => (d as { period: number }).period)
+        .ringsData(
+          reducedMotion
+            ? []
+            : markers.map((marker, index) => ({
+                lat: marker.lat,
+                lng: marker.lng,
+                color: marker.ringColor,
+                period: MARKER_RING_PERIOD_MS + (index % 4) * 140,
+              }))
+        );
+      return;
+    }
+
     globeRef.current
       .ringsData([])
       .ringColor(() => defaultProps.polygonColor)
@@ -350,6 +416,8 @@ export function Globe({ globeConfig, data }: WorldProps) {
   }, [
     isInitialized,
     data,
+    markers,
+    reducedMotion,
     defaultProps.pointSize,
     defaultProps.showAtmosphere,
     defaultProps.atmosphereColor,
@@ -364,7 +432,7 @@ export function Globe({ globeConfig, data }: WorldProps) {
 
   // Handle rings animation with cleanup
   useEffect(() => {
-    if (!globeRef.current || !isInitialized || !data) return;
+    if (!globeRef.current || !isInitialized || !data || markers) return;
 
     const interval = setInterval(() => {
       if (!globeRef.current) return;
@@ -389,7 +457,7 @@ export function Globe({ globeConfig, data }: WorldProps) {
     return () => {
       clearInterval(interval);
     };
-  }, [isInitialized, data]);
+  }, [isInitialized, data, markers]);
 
   return <group ref={groupRef} />;
 }
@@ -483,7 +551,7 @@ function ArcLabels({
     for (const point of points) {
       const element = labelRefs.current[point.key];
       if (!element) continue;
-      const isActive = tour?.activeLabel === point.text;
+      const isActive = tour?.active?.has(point.text) ?? false;
       const isVisible =
         cameraDirection.dot(point.normal) > horizon &&
         (!tour || isActive || tour.zoom >= LABEL_ZOOM_THRESHOLD);
@@ -541,6 +609,280 @@ function ArcLabels({
             </span>
           </Html>
         </group>
+      ))}
+    </group>
+  );
+}
+
+type ScreenBox = { left: number; top: number; right: number; bottom: number };
+
+const MARKER_RADIUS = MARKER_DOT_SIZE / 2;
+const LABEL_SPACING = MARKER_RADIUS + MARKER_LABEL_GAP;
+
+/** Label centre offsets from the marker, in order of preference. */
+const LABEL_PLACEMENTS: Array<(w: number, h: number) => [number, number]> = [
+  (w) => [LABEL_SPACING + w / 2, 0],
+  (w, h) => [w / 2 + 2, -(LABEL_SPACING + h / 2)],
+  (w) => [-(LABEL_SPACING + w / 2), 0],
+  (w, h) => [-(w / 2 + 2), -(LABEL_SPACING + h / 2)],
+  (w, h) => [w / 2 + 2, LABEL_SPACING + h / 2],
+  (w, h) => [-(w / 2 + 2), LABEL_SPACING + h / 2],
+];
+
+function boxesOverlap(a: ScreenBox, b: ScreenBox) {
+  return a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+}
+
+function setShown(element: HTMLElement | null | undefined, shown: boolean) {
+  if (!element || element.dataset.shown === String(shown)) return;
+  element.dataset.shown = String(shown);
+  element.style.opacity = shown ? "1" : "0";
+  element.style.visibility = shown ? "visible" : "hidden";
+}
+
+/**
+ * Location markers with label chips. Every frame, each visible label takes
+ * the first spot beside its marker that stays on the canvas and clears the
+ * other markers and labels; a label with no free spot hides. On a tour only
+ * the focused region's labels show, and they always do.
+ */
+function MarkerLayer({
+  markers,
+  fixedLabelSize = false,
+  tourState,
+}: {
+  markers: GlobeMarker[];
+  fixedLabelSize?: boolean;
+  tourState?: MutableRefObject<TourState>;
+}) {
+  const reducedMotion = useReducedMotion();
+  const anchors = useMemo(
+    () =>
+      markers.map((marker) => {
+        const position = latLngToVector3(marker.lat, marker.lng, MARKER_ALTITUDE);
+        return {
+          marker,
+          position,
+          normal: position.clone().normalize(),
+          tuple: position.toArray() as [number, number, number],
+        };
+      }),
+    [markers]
+  );
+  const anchorsRef = useRef(anchors);
+  useEffect(() => {
+    anchorsRef.current = anchors;
+  }, [anchors]);
+
+  const wrappers = useRef<Record<string, HTMLDivElement | null>>({});
+  const chips = useRef<Record<string, HTMLSpanElement | null>>({});
+  const chipSizes = useRef<Record<string, { w: number; h: number }>>({});
+  const placements = useRef<Record<string, number>>({});
+  const resizeObserver = useRef<ResizeObserver | null>(null);
+  // Chip sizes feed the overlap check; fonts loading late can change them.
+  const trackChip = useCallback((key: string, element: HTMLSpanElement | null) => {
+    const previous = chips.current[key];
+    if (previous && previous !== element) resizeObserver.current?.unobserve(previous);
+    if (!element) {
+      delete chips.current[key];
+      return;
+    }
+    chips.current[key] = element;
+    if (typeof ResizeObserver === "undefined") return;
+    resizeObserver.current ??= new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const target = entry.target as HTMLElement;
+        const markerKey = target.dataset.markerKey;
+        if (markerKey) {
+          chipSizes.current[markerKey] = {
+            w: target.offsetWidth,
+            h: target.offsetHeight,
+          };
+        }
+      }
+    });
+    resizeObserver.current.observe(element);
+  }, []);
+  useEffect(
+    () => () => {
+      resizeObserver.current?.disconnect();
+      resizeObserver.current = null;
+    },
+    []
+  );
+
+  const cameraPosition = useMemo(() => new Vector3(), []);
+  const cameraDirection = useMemo(() => new Vector3(), []);
+  const projected = useMemo(() => new Vector3(), []);
+
+  useFrame(({ camera, size }) => {
+    camera.getWorldPosition(cameraPosition);
+    cameraDirection.copy(cameraPosition).normalize();
+    const horizon =
+      Math.min(1, GLOBE_RADIUS / cameraPosition.length()) + MARKER_HORIZON_MARGIN;
+    const tour = tourState?.current;
+
+    const visible: Array<{
+      key: string;
+      label: string;
+      x: number;
+      y: number;
+      active: boolean;
+    }> = [];
+    for (const anchor of anchorsRef.current) {
+      const { key, label } = anchor.marker;
+      const inFront = cameraDirection.dot(anchor.normal) > horizon;
+      setShown(wrappers.current[key], inFront);
+      if (!inFront) {
+        setShown(chips.current[key], false);
+        continue;
+      }
+      projected.copy(anchor.position).project(camera);
+      visible.push({
+        key,
+        label,
+        x:((projected.x + 1) / 2) * size.width,
+        y: ((1 - projected.y) / 2) * size.height,
+        active: tour?.active?.has(key) ?? false,
+      });
+    }
+
+    // Every visible dot is an obstacle; placed labels join them.
+    const obstacles: ScreenBox[] = visible.map(({ x, y }) => ({
+      left: x - MARKER_RADIUS - 1,
+      right: x + MARKER_RADIUS + 1,
+      top: y - MARKER_RADIUS - 1,
+      bottom: y + MARKER_RADIUS + 1,
+    }));
+    const ordered = [...visible].sort((a, b) => Number(b.active) - Number(a.active));
+
+    for (const { key, label, x, y, active } of ordered) {
+      const chip = chips.current[key];
+      if (!chip) continue;
+      // On tour, only the focused region is labelled; other regions keep
+      // their dots, which are often out on the rim.
+      if (tour && !active) {
+        setShown(chip, false);
+        continue;
+      }
+      const { w, h } = chipSizes.current[key] ?? { w: label.length * 7 + 14, h: 18 };
+      const boxAt = (index: number): ScreenBox => {
+        const [dx, dy] = LABEL_PLACEMENTS[index](w, h);
+        return {
+          left: x + dx - w / 2 - MARKER_LABEL_PADDING,
+          right: x + dx + w / 2 + MARKER_LABEL_PADDING,
+          top: y + dy - h / 2 - MARKER_LABEL_PADDING,
+          bottom: y + dy + h / 2 + MARKER_LABEL_PADDING,
+        };
+      };
+      const previous = placements.current[key];
+      // Keep last frame's spot while it is still free, so labels don't hop.
+      const candidates = LABEL_PLACEMENTS.map((_, index) => index);
+      if (previous !== undefined) candidates.unshift(previous);
+
+      let chosen = candidates.find((index) => {
+        const box = boxAt(index);
+        return (
+          box.left >= 0 &&
+          box.top >= 0 &&
+          box.right <= size.width &&
+          box.bottom <= size.height &&
+          !obstacles.some((obstacle) => boxesOverlap(obstacle, box))
+        );
+      });
+      if (chosen === undefined) {
+        // Focused labels keep a spot when close in; zoomed out, crowded
+        // ones step aside like any other.
+        if (!active || (tour?.zoom ?? 0) < LABEL_ZOOM_THRESHOLD) {
+          setShown(chip, false);
+          continue;
+        }
+        chosen = previous ?? 0;
+      }
+
+      obstacles.push(boxAt(chosen));
+      if (chosen !== previous || chip.dataset.placedWidth !== String(w)) {
+        const [dx, dy] = LABEL_PLACEMENTS[chosen](w, h);
+        chip.style.transform = `translate(-50%, -50%) translate(${dx}px, ${dy}px)`;
+        chip.dataset.placedWidth = String(w);
+        placements.current[key] = chosen;
+      }
+      setShown(chip, true);
+    }
+  });
+
+  const transition = reducedMotion
+    ? "none"
+    : "opacity 200ms ease-out, visibility 200ms, transform 260ms cubic-bezier(0.22, 1, 0.36, 1)";
+
+  return (
+    <group>
+      {anchors.map(({ marker, tuple }) => (
+        <Html
+          key={marker.key}
+          position={tuple}
+          // Low z-index keeps markers under the host's copy-legibility
+          // gradient, so they fade with the globe behind the text.
+          zIndexRange={[1, 0]}
+          ref={(instance) => {
+            if (instance) {
+              wrappers.current[marker.key] = instance;
+              // Hidden until the first frame has checked the horizon.
+              if (instance.dataset.shown === undefined) setShown(instance, false);
+            } else {
+              delete wrappers.current[marker.key];
+            }
+          }}
+          style={{ pointerEvents: "none" }}
+        >
+          {/* Decorative: the host lists the locations for screen readers. */}
+          <span
+            aria-hidden="true"
+            data-globe-marker={marker.key}
+            data-globe-location-type={marker.kind}
+            style={{ position: "relative", display: "block", width: 0, height: 0 }}
+          >
+            <span
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                left: -MARKER_RADIUS,
+                top: -MARKER_RADIUS,
+                width: MARKER_DOT_SIZE,
+                height: MARKER_DOT_SIZE,
+                borderRadius: "50%",
+                backgroundColor: marker.color,
+                boxShadow: "0 0 0 2px #ffffff",
+              }}
+            />
+            <span
+              ref={(element) => trackChip(marker.key, element)}
+              data-marker-key={marker.key}
+              data-globe-label={marker.label}
+              style={{
+                position: "absolute",
+                left: 0,
+                top: 0,
+                display: "block",
+                opacity: 0,
+                visibility: "hidden",
+                transform: "translate(-50%, -50%)",
+                transition,
+                color: marker.labelColor,
+                backgroundColor: marker.labelBackground,
+                fontWeight: 600,
+                fontSize: fixedLabelSize ? "0.6875rem" : "1.125rem",
+                lineHeight: 1.2,
+                padding: "0.195rem 0.45rem",
+                borderRadius: "var(--radius-control)",
+                textTransform: "uppercase",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {marker.label}
+            </span>
+          </span>
+        </Html>
       ))}
     </group>
   );
@@ -631,30 +973,85 @@ function slerpDirection(from: Vector3, to: Vector3, t: number, target: Vector3) 
     .addScaledVector(to, Math.sin(t * angle) / sin);
 }
 
+/**
+ * Camera distance at which every point within `spread` radians of the
+ * focused stop projects inside the room around the globe centre.
+ */
+function fitRegionRadius({
+  spread,
+  fov,
+  width,
+  height,
+  frame,
+  near,
+  far,
+}: {
+  spread: number;
+  fov: number;
+  width: number;
+  height: number;
+  frame: GlobeFraming;
+  near: number;
+  far: number;
+}) {
+  if (!(spread > 0)) return near;
+  const centreX = (0.5 + frame.x) * width;
+  const centreY = (0.5 + frame.y) * height;
+  const room =
+    Math.min(centreX, width - centreX, centreY, height - centreY) * TOUR_REGION_ROOM;
+  if (room <= 0) return far;
+  const focal = height / 2 / Math.tan((fov * Math.PI) / 360);
+  // A point `spread` from the stop sits R·sin(spread) off-axis and
+  // D − R·cos(spread) in front of the camera.
+  const distance =
+    GLOBE_RADIUS * Math.cos(spread) + (focal * GLOBE_RADIUS * Math.sin(spread)) / room;
+  return Math.min(far, Math.max(near, distance));
+}
+
 function CameraTour({
   tour,
   initialPosition,
   cameraRadius,
+  framing,
+  mobileFraming,
   onProgress,
 }: {
   tour: GlobeTour;
   initialPosition: { lat: number; lng: number };
   cameraRadius: number;
-  onProgress: (activeLabel: string | null, zoom: number) => void;
+  framing: GlobeFraming;
+  mobileFraming?: GlobeFraming;
+  onProgress: (active: ReadonlySet<string> | null, zoom: number) => void;
 }) {
-  const { camera } = useThree();
+  const { camera, size } = useThree();
   const elapsed = useRef(0);
   const scratch = useRef<Vector3 | null>(null);
+  const near = tour.nearRadius ?? 150;
+  const far = tour.farRadius ?? cameraRadius;
+  const { x: frameX, y: frameY } =
+    size.width < 768 && mobileFraming ? mobileFraming : framing;
+  const fov = (camera as PerspectiveCamera).fov;
   const stops = useMemo(
-    () => tour.stops.map((stop) => ({ ...stop, direction: surfaceDirection(stop.lat, stop.lng) })),
-    [tour.stops],
+    () =>
+      tour.stops.map((stop) => ({
+        direction: surfaceDirection(stop.lat, stop.lng),
+        active: new Set(stop.keys ?? [stop.label]) as ReadonlySet<string>,
+        near: fitRegionRadius({
+          spread: stop.spread ?? 0,
+          fov,
+          width: size.width,
+          height: size.height,
+          frame: { x: frameX, y: frameY },
+          near,
+          far,
+        }),
+      })),
+    [tour.stops, fov, size.width, size.height, frameX, frameY, near, far],
   );
   const start = useMemo(
     () => surfaceDirection(initialPosition.lat, initialPosition.lng),
     [initialPosition.lat, initialPosition.lng],
   );
-  const near = tour.nearRadius ?? 150;
-  const far = tour.farRadius ?? cameraRadius;
   const dwell = (tour.dwellMs ?? 2600) / 1000;
   const travel = (tour.travelMs ?? 3400) / 1000;
 
@@ -663,16 +1060,15 @@ function CameraTour({
     const direction = (scratch.current ??= new Vector3());
     // Clamp long gaps (a background tab) so the flight resumes where it was.
     elapsed.current += Math.min(delta, 0.1);
-    let radius: number;
     let zoom: number;
-    let activeLabel: string | null = null;
+    let focus: (typeof stops)[number];
 
     if (elapsed.current < travel) {
       // Opening move: from the wide default view into the first stop.
       const progress = easeInOutCubic(elapsed.current / travel);
       slerpDirection(start, stops[0].direction, progress, direction);
       zoom = progress;
-      radius = far + (near - far) * zoom;
+      focus = stops[0];
     } else {
       const leg = dwell + travel;
       const time = (elapsed.current - travel) % (leg * stops.length);
@@ -683,40 +1079,42 @@ function CameraTour({
       if (local < dwell) {
         direction.copy(current.direction);
         zoom = 1;
-        activeLabel = current.label;
+        focus = current;
       } else {
         const progress = easeInOutCubic((local - dwell) / travel);
         slerpDirection(current.direction, next.direction, progress, direction);
         // Out over the first half of the hop, back in over the second.
         zoom = 1 - Math.sin(Math.PI * progress);
-        activeLabel = progress < 0.5 ? current.label : next.label;
+        focus = progress < 0.5 ? current : next;
       }
-      radius = far + (near - far) * zoom;
     }
 
+    // Each stop has its own close-up distance; at zoom 0 they all meet at `far`.
+    const radius = far + (focus.near - far) * zoom;
     camera.position.copy(direction).multiplyScalar(radius);
     camera.lookAt(CAMERA_TARGET);
-    onProgress(activeLabel, zoom);
+    onProgress(focus.active, zoom);
   });
 
   return null;
 }
 
 export function World(props: WorldProps) {
-  const { globeConfig, data } = props;
+  const { globeConfig, data, markers } = props;
   const scene = new Scene();
   const reducedMotion = useReducedMotion();
   const tour = !reducedMotion && globeConfig.tour?.stops.length ? globeConfig.tour : undefined;
-  const tourState = useRef<TourState>({ activeLabel: null, zoom: 0 });
-  const reportTour = useCallback((activeLabel: string | null, zoom: number) => {
-    tourState.current = { activeLabel, zoom };
+  const tourState = useRef<TourState>({ active: null, zoom: 0 });
+  const reportTour = useCallback((active: ReadonlySet<string> | null, zoom: number) => {
+    tourState.current = { active, zoom };
   }, []);
+  const framing = globeConfig.framing ?? { x: 0, y: globeConfig.verticalOffset ?? 0 };
 
   return (
     <Canvas scene={scene} camera={new PerspectiveCamera(50, aspect, 0.1, 2000)}>
       <WebGLRendererConfig />
       <CameraAspectController
-        framing={globeConfig.framing ?? { x: 0, y: globeConfig.verticalOffset ?? 0 }}
+        framing={framing}
         mobileFraming={globeConfig.mobileFraming}
       />
       <CameraInitialView initialPosition={globeConfig.initialPosition} cameraRadius={globeConfig.cameraRadius} />
@@ -729,14 +1127,24 @@ export function World(props: WorldProps) {
           tour={tour}
           initialPosition={globeConfig.initialPosition ?? DEFAULT_VIEW}
           cameraRadius={globeConfig.cameraRadius ?? CAMERA_RADIUS}
+          framing={framing}
+          mobileFraming={globeConfig.mobileFraming}
           onProgress={reportTour}
         />
       ) : null}
-      <ArcLabels
-        data={data}
-        fixedLabelSize={globeConfig.fixedLabelSize}
-        tourState={tour ? tourState : undefined}
-      />
+      {markers ? (
+        <MarkerLayer
+          markers={markers}
+          fixedLabelSize={globeConfig.fixedLabelSize}
+          tourState={tour ? tourState : undefined}
+        />
+      ) : (
+        <ArcLabels
+          data={data}
+          fixedLabelSize={globeConfig.fixedLabelSize}
+          tourState={tour ? tourState : undefined}
+        />
+      )}
       {/* enableZoom=false: distance is pinned anyway (min === max), and a
           wheel listener here would swallow page scrolling over the globe */}
       {/* The tour drives the camera itself; orbit controls would clamp its
@@ -755,6 +1163,12 @@ export function World(props: WorldProps) {
       />
     </Canvas>
   );
+}
+
+function withAlpha(hex: string, alpha: number) {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return hex;
+  return `rgba(${rgb.r},${rgb.g},${rgb.b},${Math.max(0, Math.min(1, alpha))})`;
 }
 
 export function hexToRgb(hex: string) {

@@ -17,6 +17,7 @@ import {
   getRenaissanceEuropeanLocations,
   getRenaissanceGlobeSectionId,
 } from "@renaissance/data/europeanLocations";
+import { getGlobeLocationType } from "@renaissance/lib/globeNetwork";
 import type { PageBuilderBlock } from "@1sp/sanity-types";
 import type { FooterMenu, NavbarMenu } from "@1sp/sanity-types/menu";
 import {
@@ -245,12 +246,22 @@ async function RenaissanceFooter({
     | {
         sectionTitle?: string;
         navPointName?: string;
-        locations?: Array<{ _key?: string; name?: string; subtitle?: string }>;
+        locations?: Array<{
+          _key?: string;
+          name?: string;
+          subtitle?: string;
+          locationType?: string;
+        }>;
       }
     | undefined;
+  // Partner agencies are globe-only; the footer lists Renaissance's own offices.
   const configuredLocations = Array.isArray(globeBlock?.locations)
     ? globeBlock.locations
-        .filter((location) => Boolean(location?.name))
+        .filter(
+          (location) =>
+            Boolean(location?.name) &&
+            getGlobeLocationType(location.locationType) === "office",
+        )
         .map((location) => ({
           _key: location._key,
           name: location.name as string,
