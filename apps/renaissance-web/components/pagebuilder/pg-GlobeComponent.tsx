@@ -9,7 +9,7 @@ import type {
 import GlobalDataComponent, {
   type GlobeLegendEntry,
 } from "@renaissance/components/pagebuilder/pg-GlobalDataComponent";
-import type { GlobeMarker } from "@renaissance/components/ui/globe";
+import type { GlobeMarker, GlobeMarkerIcon } from "@renaissance/components/ui/globe";
 import {
   getRenaissanceEuropeanLocations,
   getRenaissanceGlobeSectionId,
@@ -36,8 +36,22 @@ const LEGEND_COPY: Record<string, Record<GlobeLocationType, string>> = {
 
 const LOCATION_TYPES: GlobeLocationType[] = ["office", "partner"];
 
-// The Renaissance signet from the section badges; its disc takes the type colour.
-const LOCATION_ICON = "/renaissance/figma/section-badge.svg";
+// The approved location icons, at 80% of their drawn size. The office pin
+// stands on its tip; the partner-agency group is centred on the city.
+const LOCATION_ICONS: Record<GlobeLocationType, GlobeMarkerIcon> = {
+  office: {
+    src: "/renaissance/globe/location-office.svg",
+    width: 21,
+    height: 26,
+    anchor: "bottom",
+  },
+  partner: {
+    src: "/renaissance/globe/location-partner.svg",
+    width: 24,
+    height: 18,
+    anchor: "center",
+  },
+};
 
 function GlobeComponent({ data, language, presentationRole }: GlobeComponentProps) {
   const { sectionTitle, sectionSubtitle, navPointName } = data || {};
@@ -79,7 +93,7 @@ function GlobeComponent({ data, language, presentationRole }: GlobeComponentProp
         lng: location.lng,
         label: location.name,
         kind: location.type,
-        icon: LOCATION_ICON,
+        icon: LOCATION_ICONS[location.type],
         color: palette.marker,
         ringColor: palette.ring,
         labelBackground: palette.label,
@@ -122,7 +136,7 @@ function GlobeComponent({ data, language, presentationRole }: GlobeComponentProp
       key: type,
       label: copy[type],
       color: GLOBE_LOCATION_PALETTE[type].marker,
-      icon: LOCATION_ICON,
+      icon: LOCATION_ICONS[type],
       names: locations
         .filter((location) => location.type === type)
         .map((location) => location.name),
