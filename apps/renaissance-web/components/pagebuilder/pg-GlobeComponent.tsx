@@ -36,6 +36,9 @@ const LEGEND_COPY: Record<string, Record<GlobeLocationType, string>> = {
 
 const LOCATION_TYPES: GlobeLocationType[] = ["office", "partner"];
 
+// The Renaissance signet from the section badges; its disc takes the type colour.
+const LOCATION_ICON = "/renaissance/figma/section-badge.svg";
+
 function GlobeComponent({ data, language, presentationRole }: GlobeComponentProps) {
   const { sectionTitle, sectionSubtitle, navPointName } = data || {};
   const configuredLocations = data?.locations;
@@ -76,6 +79,7 @@ function GlobeComponent({ data, language, presentationRole }: GlobeComponentProp
         lng: location.lng,
         label: location.name,
         kind: location.type,
+        icon: LOCATION_ICON,
         color: palette.marker,
         ringColor: palette.ring,
         labelBackground: palette.label,
@@ -118,6 +122,7 @@ function GlobeComponent({ data, language, presentationRole }: GlobeComponentProp
       key: type,
       label: copy[type],
       color: GLOBE_LOCATION_PALETTE[type].marker,
+      icon: LOCATION_ICON,
       names: locations
         .filter((location) => location.type === type)
         .map((location) => location.name),
