@@ -22,13 +22,14 @@ The component uses five columns on desktop, three on tablet and two on mobile. V
 
 ## Export to sites outside this repository
 
-Sites on other CMSes (promoPers, New Fluence, 1SP XR Studio) embed the banner as a self-contained HTML snippet served by live 1SP:
+Sites on other CMSes (promoPers, New Fluence, 1SP XR Studio, one2five) embed the banner as a self-contained HTML snippet served by live 1SP:
 
 | File | Studio source (Reusable 1SP Component Groups) |
 | --- | --- |
 | `https://www.1sp.agency/1spfooter/promopers.footer.html` | **Footer export: promoPers** (`onesp-footer-export-promopers`) |
 | `https://www.1sp.agency/1spfooter/newfluence.html` | **Footer export: New Fluence** (`onesp-footer-export-newfluence`) |
 | `https://www.1sp.agency/1spfooter/1spxrstudio.footer.html` | **Footer export: 1SP XR Studio** (`onesp-footer-export-1spxrstudio`) |
+| `https://www.1sp.agency/1spfooter/one2five.footer.html` | **Footer export: one2five** (`onesp-footer-export-one2five`) |
 
 Each export renders the first Footer External Banner in its group with the same unit catalog as the other placements. `<name>.html` and `<name>.footer.html` serve the same snippet; `<name>.preview.html` shows it on a stand-in host page. The snippet carries its CSS, script and the Aspekta font inline and renders in a shadow root, so host styles cannot reach it. Images and videos load from Cloudinary; links are absolute.
 
