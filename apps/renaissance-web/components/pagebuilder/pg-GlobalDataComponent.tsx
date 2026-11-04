@@ -61,6 +61,8 @@ interface GlobalDataComponentProps {
   layout?: "centered" | "split";
   /** The section badge overlays the block from tablet up; start the text below it. */
   clearSectionBadge?: boolean;
+  /** Split layout only: CSS min-height overriding the default 40rem. */
+  minHeight?: string;
 }
 
 export default function GlobalDataComponent({
@@ -73,6 +75,7 @@ export default function GlobalDataComponent({
   backgroundTone = "default",
   layout = "centered",
   clearSectionBadge = false,
+  minHeight,
 }: GlobalDataComponentProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [shouldLoadGlobe, setShouldLoadGlobe] = useState(false);
@@ -95,101 +98,122 @@ export default function GlobalDataComponent({
 
   if (layout === "split") {
     const muted = backgroundTone === "muted";
+    const hasTitle = hasVisibleText(title);
+    const hasDescription = hasVisibleText(description);
+    const hasCopy = hasTitle || hasDescription;
     return (
       <div
         ref={containerRef}
         data-globe-layout="split"
         className={`relative w-full overflow-hidden ${muted ? "bg-renaissance-mist" : "bg-renaissance-paper"}`}
       >
-        {/* The globe fills the whole block behind the copy. z-0 keeps its
-            city labels in this layer, under the text. */}
-        <div
-          data-globe-viewport
-          data-globe-arc-count={arcs.length}
-          data-globe-label-count={
-            markers?.length ??
-            arcs.filter((arc) => arc.label.trim().length > 0).length
-          }
-          className="absolute inset-0 z-0"
-        >
-          {shouldLoadGlobe ? (
-            <World data={arcs} markers={markers} globeConfig={globeConfig} />
-          ) : (
-            <div className="absolute inset-0 grid place-items-center md:pl-[40%]" aria-hidden="true">
-              <div className="h-64 w-64 rounded-full bg-renaissance-accent/10" />
-            </div>
-          )}
-          {/* Keeps the copy legible where the zoomed globe passes under it.
-              z-[2] sits above the globe's location markers (z-index 0–1). */}
+        {/* The stage: the globe fills it behind the copy. z-0 keeps its city
+            labels in this layer, under the text. */}
+        <div className="relative">
           <div
-            aria-hidden="true"
-            className={`pointer-events-none absolute inset-0 z-[2] bg-gradient-to-b from-25% via-45% to-65% md:bg-gradient-to-r md:from-20% md:via-35% md:to-55% ${
-              muted
-                ? "from-renaissance-mist via-renaissance-mist/70 to-transparent"
-                : "from-renaissance-paper via-renaissance-paper/70 to-transparent"
-            }`}
-          />
-        </div>
-        <div className="pointer-events-none relative z-10 grid min-h-[40rem] content-start px-5 py-12 sm:px-8 md:grid-cols-12 md:py-16 lg:px-12">
-          <div className={`pointer-events-auto min-w-0 md:col-span-5 ${clearSectionBadge ? "md:pt-24" : ""}`}>
-            {hasVisibleText(title) ? (
-              <h2 className="renaissance-display max-w-[16ch] text-[clamp(2.7rem,3.5vw,3.75rem)] font-bold leading-[0.95] tracking-[-0.025em] text-renaissance-ink">
-                {title}
-              </h2>
+            data-globe-viewport
+            data-globe-arc-count={arcs.length}
+            data-globe-label-count={
+              markers?.length ??
+              arcs.filter((arc) => arc.label.trim().length > 0).length
+            }
+            className="absolute inset-0 z-0"
+          >
+            {shouldLoadGlobe ? (
+              <World data={arcs} markers={markers} globeConfig={globeConfig} />
+            ) : (
+              <div className="absolute inset-0 grid place-items-center md:pl-[40%]" aria-hidden="true">
+                <div className="h-64 w-64 rounded-full bg-renaissance-accent/10" />
+              </div>
+            )}
+            {/* Keeps the copy legible where the zoomed globe passes under it.
+                z-[2] sits above the globe's location markers (z-index 0–1). */}
+            {hasCopy ? (
+              <div
+                aria-hidden="true"
+                className={`pointer-events-none absolute inset-0 z-[2] bg-gradient-to-b from-25% via-45% to-65% md:bg-gradient-to-r md:from-20% md:via-35% md:to-55% ${
+                  muted
+                    ? "from-renaissance-mist via-renaissance-mist/70 to-transparent"
+                    : "from-renaissance-paper via-renaissance-paper/70 to-transparent"
+                }`}
+              />
             ) : null}
-            {hasVisibleText(description) ? (
-              <p className="mt-6 max-w-[38ch] text-[clamp(1.05rem,1.3vw,1.375rem)] leading-[1.4] text-renaissance-ink/75">
-                {description}
-              </p>
-            ) : null}
-            {legend?.length ? (
-              <ul
-                data-globe-legend
-                className="mt-8 flex flex-wrap gap-x-7 gap-y-3"
-              >
-                {legend.map((entry) => (
-                  <li
-                    key={entry.key}
-                    data-globe-legend-type={entry.key}
-                    className="flex items-center gap-2.5 text-[0.8125rem] font-semibold uppercase leading-none tracking-[0.04em] text-renaissance-ink"
-                  >
-                    {entry.icon ? (
-                      // A fixed-width slot keeps both labels aligned.
-                      <span
-                        aria-hidden="true"
-                        className="flex shrink-0 items-center justify-center"
-                        style={{ width: 26, height: 26 }}
-                      >
-                        <Image
-                          src={entry.icon.src}
-                          alt=""
-                          width={entry.icon.width}
-                          height={entry.icon.height}
-                          className="block max-w-none"
-                          style={{ width: entry.icon.width, height: entry.icon.height }}
-                        />
-                      </span>
-                    ) : (
-                      <span
-                        aria-hidden="true"
-                        className="shrink-0 rounded-full shadow-[0_0_0_2px_#ffffff]"
-                        style={{ backgroundColor: entry.color, width: 10, height: 10 }}
-                      />
-                    )}
-                    <span>{entry.label}</span>
-                    <span
-                      aria-hidden="true"
-                      className="font-mono text-[0.75rem] font-medium text-renaissance-ink/55"
-                    >
-                      {String(entry.names.length).padStart(2, "0")}
-                    </span>
-                    <span className="sr-only">: {entry.names.join(", ")}</span>
-                  </li>
-                ))}
-              </ul>
+          </div>
+          <div
+            className="pointer-events-none relative z-10 flex min-h-[40rem] flex-col px-5 py-12 sm:px-8 md:py-16 lg:px-12"
+            style={minHeight ? { minHeight } : undefined}
+          >
+            {hasCopy ? (
+              <div className={`pointer-events-auto min-w-0 md:w-5/12 ${clearSectionBadge ? "md:pt-24" : ""}`}>
+                {hasTitle ? (
+                  <h2 className="renaissance-display max-w-[16ch] text-[clamp(2.7rem,3.5vw,3.75rem)] font-bold leading-[0.95] tracking-[-0.025em] text-renaissance-ink">
+                    {title}
+                  </h2>
+                ) : null}
+                {hasDescription ? (
+                  <p className="mt-6 max-w-[38ch] text-[clamp(1.05rem,1.3vw,1.375rem)] leading-[1.4] text-renaissance-ink/75">
+                    {description}
+                  </p>
+                ) : null}
+              </div>
             ) : null}
           </div>
         </div>
+        {/* Legend at the bottom of the block: its own strip under the globe
+            on phones, pinned bottom-left over the globe from tablet up. */}
+        {legend?.length ? (
+          <div className="relative z-10 px-5 pb-10 sm:px-8 md:pointer-events-none md:absolute md:inset-x-0 md:bottom-0 md:pb-16 lg:px-12">
+            {/* The panel's padding is offset so the text aligns with the copy;
+                from tablet up it softens the globe behind it. */}
+            <ul
+              data-globe-legend
+              className={`pointer-events-auto -ml-3 flex w-fit flex-col gap-3 p-3 md:backdrop-blur-sm ${
+                muted ? "md:bg-renaissance-mist/80" : "md:bg-renaissance-paper/80"
+              }`}
+              style={{ borderRadius: "var(--radius-card)" }}
+            >
+              {legend.map((entry) => (
+                <li
+                  key={entry.key}
+                  data-globe-legend-type={entry.key}
+                  className="flex items-center gap-2.5 text-[0.8125rem] font-semibold uppercase leading-none tracking-[0.04em] text-renaissance-ink"
+                >
+                  {entry.icon ? (
+                    // A fixed-width slot keeps both labels aligned.
+                    <span
+                      aria-hidden="true"
+                      className="flex shrink-0 items-center justify-center"
+                      style={{ width: 26, height: 26 }}
+                    >
+                      <Image
+                        src={entry.icon.src}
+                        alt=""
+                        width={entry.icon.width}
+                        height={entry.icon.height}
+                        className="block max-w-none"
+                        style={{ width: entry.icon.width, height: entry.icon.height }}
+                      />
+                    </span>
+                  ) : (
+                    <span
+                      aria-hidden="true"
+                      className="shrink-0 rounded-full shadow-[0_0_0_2px_#ffffff]"
+                      style={{ backgroundColor: entry.color, width: 10, height: 10 }}
+                    />
+                  )}
+                  <span>{entry.label}</span>
+                  <span
+                    aria-hidden="true"
+                    className="font-mono text-[0.75rem] font-medium text-renaissance-ink/55"
+                  >
+                    {String(entry.names.length).padStart(2, "0")}
+                  </span>
+                  <span className="sr-only">: {entry.names.join(", ")}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </div>
     );
   }
