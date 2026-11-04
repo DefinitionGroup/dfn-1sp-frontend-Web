@@ -75,7 +75,7 @@ The system is implemented through registered `RenaissancePageBuilder` blocks. Th
 
 ## Colors
 
-Petrol is the primary action and headline signal; teal is the supporting highlight; mist and sand create quiet light surfaces; ink anchors text, navigation, dark sections, and the footer; white is reserved for contrast on media and ink. Signal Orange `#f49a24` is a deliberately narrow accent for the approved Figma section badges and signal details.
+Petrol is the primary action and headline signal; teal is the supporting highlight; mist and sand create quiet light surfaces; ink anchors text, navigation, dark sections, and the footer; white is reserved for contrast on media and ink. Signal Orange `#f49a24` is a deliberately narrow accent for the approved Figma section badges, Renaissance office markers on the global-reach globe, and signal details.
 
 **The Renaissance-Only Rule.** Legacy violet, purple, lime, and blue APIs must resolve to the Renaissance teal family. Never expose FLZR violet in Renaissance-owned UI, and never broaden Signal Orange beyond the approved Figma signal role.
 
@@ -139,6 +139,8 @@ All Join Us cards use the canonical `/contact` route. Do not split content-creat
 
 Client logos use a borderless fixed six-column, single-row signal grid. The grid resolves into view with a one-time staggered blur/fade; after that, one randomly selected slot swaps every 1.5 seconds through a sequential two-phase transition while the geometry remains stable. The outgoing logo first blurs and fades while rising fully out over 0.75 seconds; only after it disappears does the incoming logo rise from below, fade in and sharpen over the next 0.75 seconds. Swapping pauses offscreen, while the document is hidden, on hover/focus, and for reduced motion. The unsupported Tencent AVIF logo is intentionally absent; do not restore it without a verified browser-safe asset.
 
+The global-reach globe colour-codes each CMS location by its Location type: Renaissance offices use a Signal Orange dot, pulse and label with ink text; partner agencies use a Petrol dot and label with white text and an Action Teal pulse. A legend under the copy names both types with their counts, and lists the locations for screen readers. Arcs run from the first office to every other office and from each partner agency to its nearest office. The camera tour visits regions, not cities: locations within 3,000 km of one another share a stop, the camera backs off until the whole region fits, and only that region is labelled. Labels move beside their dot to avoid overlaps and hide when there is no room. Reduced motion keeps a static Atlantic view without pulses. The footer Locations column lists offices only.
+
 ## Do's and Don'ts
 
 ### Do:
@@ -191,7 +193,7 @@ Primitive names describe a stable brand color. Semantic names describe why it is
 | `text.muted` | `#536f73` | temporary muted body role | normal text until darkened to ≥4.5:1 on paper |
 | `text.decorative` | `#7d9899` | large accent phrase/non-essential graphics | normal body, labels, legal or navigation text |
 | `accent.support` | Teal `#99bbba` | streaks, large emphasis, focus-support detail | white normal text; use ink on teal |
-| `accent.signal` | Signal Orange `#f49a24` | approved Figma section badges and narrow signal details | general CTAs, body text or large surfaces |
+| `accent.signal` | Signal Orange `#f49a24` | approved Figma section badges, globe office markers and narrow signal details | general CTAs, body text or large surfaces |
 | `border.light` | `#c8d2d0` | hairlines on paper/mist | interactive state without another cue |
 | `border.dark` | white at 15% | hairlines on ink/media | small essential text |
 | `focus` | Petrol `#245e66` | focus ring on light surfaces | focus on petrol/ink; use white there |

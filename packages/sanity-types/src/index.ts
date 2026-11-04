@@ -984,9 +984,14 @@ export interface ResultsMetricsComponent {
     paddingY?: string;
 }
 
+/** Renaissance only: offices get the signal marker, partner agencies the petrol one. */
+export type GlobeLocationType = "office" | "partner";
+
 export interface GlobeLocation {
     name: string;
     subtitle?: string;
+    /** Renaissance only. Missing means "office". */
+    locationType?: GlobeLocationType;
     coordinateLon: number;
     coordinateLat: number;
     _key?: string;
