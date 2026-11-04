@@ -38,19 +38,20 @@ export const GLOBE_LOCATION_PALETTE: Record<
   GlobeLocationType,
   { marker: string; ring: string; label: string; labelText: string; arc: string }
 > = {
-  // Signal Orange with ink text, as on the approved Figma label.
+  // Colours of the approved location icons: orange pin, ink label text.
   office: {
-    marker: "#f49a24",
-    ring: "#f49a24",
-    label: "#f49a24",
+    marker: "#ff9500",
+    ring: "#ff9500",
+    label: "#ff9500",
     labelText: "#163f45",
-    arc: "#f49a24",
+    arc: "#ff9500",
   },
-  // Petrol label and dot; the pulse uses Action Teal so it reads on the petrol land dots.
+  // Green partner-agency icon; the pulse and arcs use Action Teal so they
+  // read on the petrol land dots.
   partner: {
-    marker: "#245e66",
+    marker: "#006067",
     ring: "#3b9ca7",
-    label: "#245e66",
+    label: "#006067",
     labelText: "#ffffff",
     arc: "#3b9ca7",
   },

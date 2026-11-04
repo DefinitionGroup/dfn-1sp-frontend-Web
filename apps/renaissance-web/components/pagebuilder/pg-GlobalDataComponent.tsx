@@ -4,15 +4,20 @@ import { motion, useInView } from "motion/react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { hasVisibleText } from "@1sp/utils/text-content";
-import type { GlobeConfig, GlobeMarker } from "@renaissance/components/ui/globe";
+import type {
+  GlobeConfig,
+  GlobeMarker,
+  GlobeMarkerIcon,
+} from "@renaissance/components/ui/globe";
 
 /** One location type in the legend under the copy. */
 export type GlobeLegendEntry = {
   key: string;
   label: string;
+  /** Dot colour when there is no icon. */
   color: string;
-  /** Same image as the globe markers, on a `color` disc. */
-  icon?: string;
+  /** Same icon as the globe markers. */
+  icon?: GlobeMarkerIcon;
   /** Location names, read out to screen readers. */
   names: string[];
 };
@@ -148,26 +153,29 @@ export default function GlobalDataComponent({
                     data-globe-legend-type={entry.key}
                     className="flex items-center gap-2.5 text-[0.8125rem] font-semibold uppercase leading-none tracking-[0.04em] text-renaissance-ink"
                   >
-                    <span
-                      aria-hidden="true"
-                      className="shrink-0 overflow-hidden rounded-full shadow-[0_0_0_2px_#ffffff]"
-                      style={{
-                        backgroundColor: entry.color,
-                        width: entry.icon ? 22 : 10,
-                        height: entry.icon ? 22 : 10,
-                      }}
-                    >
-                      {entry.icon ? (
+                    {entry.icon ? (
+                      // A fixed-width slot keeps both labels aligned.
+                      <span
+                        aria-hidden="true"
+                        className="flex shrink-0 items-center justify-center"
+                        style={{ width: 26, height: 26 }}
+                      >
                         <Image
-                          src={entry.icon}
+                          src={entry.icon.src}
                           alt=""
-                          width={22}
-                          height={22}
-                          className="block"
-                          style={{ width: 22, height: 22 }}
+                          width={entry.icon.width}
+                          height={entry.icon.height}
+                          className="block max-w-none"
+                          style={{ width: entry.icon.width, height: entry.icon.height }}
                         />
-                      ) : null}
-                    </span>
+                      </span>
+                    ) : (
+                      <span
+                        aria-hidden="true"
+                        className="shrink-0 rounded-full shadow-[0_0_0_2px_#ffffff]"
+                        style={{ backgroundColor: entry.color, width: 10, height: 10 }}
+                      />
+                    )}
                     <span>{entry.label}</span>
                     <span
                       aria-hidden="true"

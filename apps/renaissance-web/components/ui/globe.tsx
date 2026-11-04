@@ -48,7 +48,9 @@ const LABEL_ZOOM_THRESHOLD = 0.6;
 // Location markers: a DOM dot with a flat pulse ring on the surface.
 const MARKER_ALTITUDE = 0.004;
 const MARKER_DOT_SIZE = 10;
-const MARKER_ICON_SIZE = 22;
+// A thin white halo keeps dark icons legible on the dotted land.
+const MARKER_ICON_HALO =
+  "drop-shadow(0 0 1px #ffffff) drop-shadow(0 0 1px #ffffff) drop-shadow(0 1px 1px rgba(22,63,69,0.25))";
 const MARKER_LABEL_GAP = 6;
 const MARKER_LABEL_PADDING = 3;
 // Markers hide slightly before the horizon so they never sit on the limb.
@@ -87,7 +89,17 @@ type Position = {
   labelOffsetY?: number;
 };
 
-/** A location drawn as a coloured dot with a pulse ring and a label chip. */
+export type GlobeMarkerIcon = {
+  src: string;
+  /** Rendered size in CSS px. */
+  width: number;
+  height: number;
+  /** Which point of the icon sits on the location: its centre, or the
+   *  middle of its bottom edge (a map pin's tip). */
+  anchor?: "center" | "bottom";
+};
+
+/** A location drawn as a coloured dot (or icon) with a pulse ring and a label chip. */
 export type GlobeMarker = {
   key: string;
   lat: number;
@@ -95,8 +107,8 @@ export type GlobeMarker = {
   label: string;
   /** Category name for the DOM, e.g. "office". */
   kind?: string;
-  /** Image drawn on a `color` disc instead of a plain dot. */
-  icon?: string;
+  /** Image drawn instead of a plain `color` dot. */
+  icon?: GlobeMarkerIcon;
   color: string;
   ringColor: string;
   labelBackground: string;
@@ -619,19 +631,29 @@ function ArcLabels({
 
 type ScreenBox = { left: number; top: number; right: number; bottom: number };
 
-function markerSize(marker: GlobeMarker) {
-  return marker.icon ? MARKER_ICON_SIZE : MARKER_DOT_SIZE;
+/** The marker's drawn box relative to its location point, in CSS px. */
+type MarkerBox = { left: number; top: number; right: number; bottom: number };
+
+function markerBox(marker: GlobeMarker): MarkerBox {
+  if (!marker.icon) {
+    const radius = MARKER_DOT_SIZE / 2;
+    return { left: -radius, top: -radius, right: radius, bottom: radius };
+  }
+  const { width, height, anchor = "center" } = marker.icon;
+  return anchor === "bottom"
+    ? { left: -width / 2, top: -height, right: width / 2, bottom: 0 }
+    : { left: -width / 2, top: -height / 2, right: width / 2, bottom: height / 2 };
 }
 
-/** Label centre offsets from the marker, in order of preference; `s` is
- *  the marker radius plus the gap. */
-const LABEL_PLACEMENTS: Array<(w: number, h: number, s: number) => [number, number]> = [
-  (w, _h, s) => [s + w / 2, 0],
-  (w, h, s) => [w / 2 + 2, -(s + h / 2)],
-  (w, _h, s) => [-(s + w / 2), 0],
-  (w, h, s) => [-(w / 2 + 2), -(s + h / 2)],
-  (w, h, s) => [w / 2 + 2, s + h / 2],
-  (w, h, s) => [-(w / 2 + 2), s + h / 2],
+/** Label centre offsets from the location point, in order of preference:
+ *  beside the marker at its vertical middle, then above, then below. */
+const LABEL_PLACEMENTS: Array<(w: number, h: number, box: MarkerBox) => [number, number]> = [
+  (w, _h, b) => [b.right + MARKER_LABEL_GAP + w / 2, (b.top + b.bottom) / 2],
+  (w, h, b) => [w / 2 + 2, b.top - MARKER_LABEL_GAP - h / 2],
+  (w, _h, b) => [b.left - MARKER_LABEL_GAP - w / 2, (b.top + b.bottom) / 2],
+  (w, h, b) => [-(w / 2 + 2), b.top - MARKER_LABEL_GAP - h / 2],
+  (w, h, b) => [w / 2 + 2, b.bottom + MARKER_LABEL_GAP + h / 2],
+  (w, h, b) => [-(w / 2 + 2), b.bottom + MARKER_LABEL_GAP + h / 2],
 ];
 
 function boxesOverlap(a: ScreenBox, b: ScreenBox) {
@@ -670,6 +692,7 @@ function MarkerLayer({
           position,
           normal: position.clone().normalize(),
           tuple: position.toArray() as [number, number, number],
+          box: markerBox(marker),
         };
       }),
     [markers]
@@ -730,7 +753,7 @@ function MarkerLayer({
     const visible: Array<{
       key: string;
       label: string;
-      radius: number;
+      box: MarkerBox;
       x: number;
       y: number;
       active: boolean;
@@ -747,24 +770,23 @@ function MarkerLayer({
       visible.push({
         key,
         label,
-        radius: markerSize(anchor.marker) / 2,
-        x:((projected.x + 1) / 2) * size.width,
+        box: anchor.box,
+        x: ((projected.x + 1) / 2) * size.width,
         y: ((1 - projected.y) / 2) * size.height,
         active: tour?.active?.has(key) ?? false,
       });
     }
 
     // Every visible marker is an obstacle; placed labels join them.
-    const obstacles: ScreenBox[] = visible.map(({ x, y, radius }) => ({
-      left: x - radius - 1,
-      right: x + radius + 1,
-      top: y - radius - 1,
-      bottom: y + radius + 1,
+    const obstacles: ScreenBox[] = visible.map(({ x, y, box }) => ({
+      left: x + box.left - 1,
+      right: x + box.right + 1,
+      top: y + box.top - 1,
+      bottom: y + box.bottom + 1,
     }));
     const ordered = [...visible].sort((a, b) => Number(b.active) - Number(a.active));
 
-    for (const { key, label, radius, x, y, active } of ordered) {
-      const spacing = radius + MARKER_LABEL_GAP;
+    for (const { key, label, box: markerBounds, x, y, active } of ordered) {
       const chip = chips.current[key];
       if (!chip) continue;
       // On tour, only the focused region is labelled; other regions keep
@@ -775,7 +797,7 @@ function MarkerLayer({
       }
       const { w, h } = chipSizes.current[key] ?? { w: label.length * 7 + 14, h: 18 };
       const boxAt = (index: number): ScreenBox => {
-        const [dx, dy] = LABEL_PLACEMENTS[index](w, h, spacing);
+        const [dx, dy] = LABEL_PLACEMENTS[index](w, h, markerBounds);
         return {
           left: x + dx - w / 2 - MARKER_LABEL_PADDING,
           right: x + dx + w / 2 + MARKER_LABEL_PADDING,
@@ -810,7 +832,7 @@ function MarkerLayer({
 
       obstacles.push(boxAt(chosen));
       if (chosen !== previous || chip.dataset.placedWidth !== String(w)) {
-        const [dx, dy] = LABEL_PLACEMENTS[chosen](w, h, spacing);
+        const [dx, dy] = LABEL_PLACEMENTS[chosen](w, h, markerBounds);
         chip.style.transform = `translate(-50%, -50%) translate(${dx}px, ${dy}px)`;
         chip.dataset.placedWidth = String(w);
         placements.current[key] = chosen;
@@ -825,7 +847,7 @@ function MarkerLayer({
 
   return (
     <group>
-      {anchors.map(({ marker, tuple }) => (
+      {anchors.map(({ marker, tuple, box }) => (
         <Html
           key={marker.key}
           position={tuple}
@@ -850,33 +872,41 @@ function MarkerLayer({
             data-globe-location-type={marker.kind}
             style={{ position: "relative", display: "block", width: 0, height: 0 }}
           >
-            <span
-              data-globe-marker-icon={marker.icon ? "" : undefined}
-              style={{
-                position: "absolute",
-                left: -markerSize(marker) / 2,
-                top: -markerSize(marker) / 2,
-                width: markerSize(marker),
-                height: markerSize(marker),
-                borderRadius: "50%",
-                overflow: "hidden",
-                backgroundColor: marker.color,
-                boxShadow: "0 0 0 2px #ffffff",
-              }}
-            >
-              {marker.icon ? (
-                // A plain img: this tree renders in drei's own React root,
-                // outside next/image's context.
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={marker.icon}
-                  alt=""
-                  width={markerSize(marker)}
-                  height={markerSize(marker)}
-                  style={{ display: "block", width: "100%", height: "100%" }}
-                />
-              ) : null}
-            </span>
+            {marker.icon ? (
+              // A plain img: this tree renders in drei's own React root,
+              // outside next/image's context.
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                data-globe-marker-icon
+                src={marker.icon.src}
+                alt=""
+                width={marker.icon.width}
+                height={marker.icon.height}
+                style={{
+                  position: "absolute",
+                  left: box.left,
+                  top: box.top,
+                  display: "block",
+                  width: marker.icon.width,
+                  height: marker.icon.height,
+                  maxWidth: "none",
+                  filter: MARKER_ICON_HALO,
+                }}
+              />
+            ) : (
+              <span
+                style={{
+                  position: "absolute",
+                  left: box.left,
+                  top: box.top,
+                  width: MARKER_DOT_SIZE,
+                  height: MARKER_DOT_SIZE,
+                  borderRadius: "50%",
+                  backgroundColor: marker.color,
+                  boxShadow: "0 0 0 2px #ffffff",
+                }}
+              />
+            )}
             <span
               ref={(element) => trackChip(marker.key, element)}
               data-marker-key={marker.key}
